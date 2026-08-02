@@ -29,7 +29,6 @@ import * as Duration from "effect/Duration";
 import * as Effect from "effect/Effect";
 import { pipe } from "effect/Function";
 import * as Layer from "effect/Layer";
-import * as Option from "effect/Option";
 import * as Redacted from "effect/Redacted";
 import * as Stream from "effect/Stream";
 import * as HttpBody from "effect/unstable/http/HttpBody";
@@ -170,9 +169,7 @@ const encode = ({
     let resolvedRequest = request;
     let signingRegion = region; // Default to context region
     let signingServiceName = serviceName; // Default to service name from sigv4 trait
-    const customEndpoint = yield* yield* Effect.serviceOption(
-      Endpoint.Endpoint,
-    ).pipe(Effect.map(Option.getOrElse(() => Effect.undefined)));
+    const customEndpoint = yield* Endpoint.resolve(serviceName);
 
     if (customEndpoint) {
       // User provided a custom endpoint - use it directly
