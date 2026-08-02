@@ -20,7 +20,7 @@ export interface ServiceEndpointResolver {
 
 export class ServiceEndpoint extends Context.Service<
   ServiceEndpoint,
-  Effect.Effect<ServiceEndpointResolver>
+  ServiceEndpointResolver
 >()("AWS::ServiceEndpoint") {}
 
 /**
@@ -34,8 +34,8 @@ export const resolve = Effect.fnUntraced(function* (service: string) {
   );
   if (explicit !== undefined) return explicit;
 
-  const resolver = yield* yield* Effect.serviceOption(ServiceEndpoint).pipe(
-    Effect.map(Option.getOrElse(() => Effect.undefined)),
+  const resolver = yield* Effect.serviceOption(ServiceEndpoint).pipe(
+    Effect.map(Option.getOrUndefined),
   );
   return resolver?.resolve(service);
 });
