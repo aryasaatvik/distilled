@@ -20,22 +20,14 @@ describe("service endpoint resolution", () => {
       expect(yield* Endpoint.resolve("not-supported-by-floci")).toBe(
         "http://floci.test:4566",
       );
-    }).pipe(
-      Effect.provideService(
-        Endpoint.ServiceEndpoint,
-        Effect.succeed(endpoints),
-      ),
-    ),
+    }).pipe(Effect.provideService(Endpoint.ServiceEndpoint, endpoints)),
   );
 
   it.effect("keeps an explicit operation endpoint authoritative", () =>
     Effect.gen(function* () {
       expect(yield* Endpoint.resolve("ses")).toBe("http://operation.test");
     }).pipe(
-      Effect.provideService(
-        Endpoint.ServiceEndpoint,
-        Effect.succeed(endpoints),
-      ),
+      Effect.provideService(Endpoint.ServiceEndpoint, endpoints),
       Effect.provideService(
         Endpoint.Endpoint,
         Effect.succeed("http://operation.test"),
