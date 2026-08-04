@@ -104,7 +104,7 @@ export class NotFoundException extends S.TaggedErrorClass<NotFoundException>()(
   "NotFoundException",
   { Message: S.optional(S.String), ResourceType: S.optional(S.String) },
   T.HttpError(404),
-).pipe(C.withBadRequestError) {}
+).pipe(C.withNotFoundError) {}
 export class TooManyRequestsException extends S.TaggedErrorClass<TooManyRequestsException>()(
   "TooManyRequestsException",
   { LimitType: S.optional(S.String), Message: S.optional(S.String) },

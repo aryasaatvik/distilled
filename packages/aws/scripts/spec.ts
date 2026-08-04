@@ -2189,9 +2189,10 @@ export const awsSpec = (
             categories.push("C.withAuthError");
           } else if (code === 402) {
             categories.push("C.withQuotaError");
+          } else if (code === 404) {
+            categories.push("C.withNotFoundError");
           } else if (
             code === 400 ||
-            code === 404 ||
             code === 405 ||
             code === 406 ||
             code === 410 ||
