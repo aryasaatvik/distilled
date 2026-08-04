@@ -54,75 +54,82 @@ const rules = T.EndpointResolver((p, _) => {
   return err("Invalid Configuration: Missing Region");
 });
 
-export class AccessDeniedException extends S.TaggedErrorClass<AccessDeniedException>()(
-  "AccessDeniedException",
-  {
-    Message: S.String,
-    Reason: S.suspend(() => AccessDeniedExceptionReason).annotate({
-      identifier: "AccessDeniedExceptionReason",
-    }),
-  },
-  T.HttpError(403),
-).pipe(C.withAuthError) {}
-export class ConflictException extends S.TaggedErrorClass<ConflictException>()(
-  "ConflictException",
-  {
-    Message: S.String,
-    Reason: S.suspend(() => ConflictExceptionReason).annotate({
-      identifier: "ConflictExceptionReason",
-    }),
-  },
-  T.HttpError(409),
-).pipe(C.withConflictError) {}
-export class InternalServerException extends S.TaggedErrorClass<InternalServerException>()(
-  "InternalServerException",
-  { Message: S.String },
-  T.all(T.HttpError(500), T.Retryable()),
-).pipe(C.withServerError, C.withRetryableError) {}
-export class ResourceNotFoundException extends S.TaggedErrorClass<ResourceNotFoundException>()(
-  "ResourceNotFoundException",
-  {
-    Message: S.String,
-    Reason: S.suspend(() => ResourceNotFoundExceptionReason).annotate({
-      identifier: "ResourceNotFoundExceptionReason",
-    }),
-  },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class ServiceQuotaExceededException extends S.TaggedErrorClass<ServiceQuotaExceededException>()(
-  "ServiceQuotaExceededException",
-  {
-    Message: S.String,
-    Reason: S.suspend(() => ServiceQuotaExceededExceptionReason).annotate({
-      identifier: "ServiceQuotaExceededExceptionReason",
-    }),
-  },
-  T.HttpError(402),
-).pipe(C.withQuotaError) {}
-export class ThrottlingException extends S.TaggedErrorClass<ThrottlingException>()(
-  "ThrottlingException",
-  {
-    Message: S.String,
-    ServiceCode: S.optional(S.String),
-    QuotaCode: S.optional(S.String),
-  },
-  T.all(T.HttpError(429), T.Retryable()),
-).pipe(C.withThrottlingError, C.withRetryableError) {}
-export class ValidationException extends S.TaggedErrorClass<ValidationException>()(
-  "ValidationException",
-  {
-    Message: S.String,
-    Reason: S.suspend(() => ValidationExceptionReason).annotate({
-      identifier: "ValidationExceptionReason",
-    }),
-    ErrorDetails: S.optional(
-      S.suspend(() => ValidationErrorList).annotate({
-        identifier: "ValidationErrorList",
+export class AccessDeniedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
+    "AccessDeniedException",
+    {
+      Message: S.String,
+      Reason: S.suspend(() => AccessDeniedExceptionReason).annotate({
+        identifier: "AccessDeniedExceptionReason",
       }),
-    ),
-  },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
+    },
+    T.HttpError(403),
+  ).pipe(C.withAuthError) {}
+export class ConflictException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
+    "ConflictException",
+    {
+      Message: S.String,
+      Reason: S.suspend(() => ConflictExceptionReason).annotate({
+        identifier: "ConflictExceptionReason",
+      }),
+    },
+    T.HttpError(409),
+  ).pipe(C.withConflictError) {}
+export class InternalServerException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
+    "InternalServerException",
+    { Message: S.String },
+    T.all(T.HttpError(500), T.Retryable()),
+  ).pipe(C.withServerError, C.withRetryableError) {}
+export class ResourceNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
+    "ResourceNotFoundException",
+    {
+      Message: S.String,
+      Reason: S.suspend(() => ResourceNotFoundExceptionReason).annotate({
+        identifier: "ResourceNotFoundExceptionReason",
+      }),
+    },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class ServiceQuotaExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
+    "ServiceQuotaExceededException",
+    {
+      Message: S.String,
+      Reason: S.suspend(() => ServiceQuotaExceededExceptionReason).annotate({
+        identifier: "ServiceQuotaExceededExceptionReason",
+      }),
+    },
+    T.HttpError(402),
+  ).pipe(C.withQuotaError) {}
+export class ThrottlingException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
+    "ThrottlingException",
+    {
+      Message: S.String,
+      ServiceCode: S.optional(S.String),
+      QuotaCode: S.optional(S.String),
+    },
+    T.all(T.HttpError(429), T.Retryable()),
+  ).pipe(C.withThrottlingError, C.withRetryableError) {}
+export class ValidationException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
+    "ValidationException",
+    {
+      Message: S.String,
+      Reason: S.suspend(() => ValidationExceptionReason).annotate({
+        identifier: "ValidationExceptionReason",
+      }),
+      ErrorDetails: S.optional(
+        S.suspend(() => ValidationErrorList).annotate({
+          identifier: "ValidationErrorList",
+        }),
+      ),
+    },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
 export type Catalog = string;
 export type ConnectionInvitationId = string;
 export type ClientToken = string;
@@ -2303,7 +2310,27 @@ export const listConnectionInvitations: API.OperationMethod<
     items: "ConnectionInvitationSummaries",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListConnectionInvitationsRequest,
+  ListConnectionInvitationsResponse,
+  ListConnectionInvitationsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListConnectionInvitationsRequest,
+  ) => stream.Stream<
+    ListConnectionInvitationsResponse,
+    ListConnectionInvitationsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListConnectionInvitationsRequest,
+  ) => stream.Stream<
+    ConnectionInvitationSummary,
+    ListConnectionInvitationsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListConnectionsError =
   | AccessDeniedException
@@ -2352,7 +2379,27 @@ export const listConnections: API.OperationMethod<
     items: "ConnectionSummaries",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListConnectionsRequest,
+  ListConnectionsResponse,
+  ListConnectionsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListConnectionsRequest,
+  ) => stream.Stream<
+    ListConnectionsResponse,
+    ListConnectionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListConnectionsRequest,
+  ) => stream.Stream<
+    ConnectionSummary,
+    ListConnectionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListPartnersError =
   | AccessDeniedException
@@ -2400,7 +2447,27 @@ export const listPartners: API.OperationMethod<
     outputToken: "NextToken",
     items: "PartnerSummaryList",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListPartnersRequest,
+  ListPartnersResponse,
+  ListPartnersError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListPartnersRequest,
+  ) => stream.Stream<
+    ListPartnersResponse,
+    ListPartnersError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListPartnersRequest,
+  ) => stream.Stream<
+    PartnerSummary,
+    ListPartnersError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListTagsForResourceError =
   | AccessDeniedException

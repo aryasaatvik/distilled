@@ -222,282 +222,332 @@ const rules = T.EndpointResolver((p, _) => {
   return err("Invalid Configuration: Missing Region");
 });
 
-export class AccessDeniedException extends S.TaggedErrorClass<AccessDeniedException>()(
-  "AccessDeniedException",
-  { Message: S.optional(S.String) },
-  T.HttpError(403),
-).pipe(C.withAuthError) {}
-export class AccessDeniedForDependencyException extends S.TaggedErrorClass<AccessDeniedForDependencyException>()(
-  "AccessDeniedForDependencyException",
-  {
-    Message: S.optional(S.String),
-    Reason: S.optional(
-      S.suspend(() => AccessDeniedForDependencyExceptionReason).annotate({
-        identifier: "AccessDeniedForDependencyExceptionReason",
-      }),
-    ),
-  },
-  T.HttpError(403),
-).pipe(C.withAuthError) {}
-export class AccountAlreadyClosedException extends S.TaggedErrorClass<AccountAlreadyClosedException>()(
-  "AccountAlreadyClosedException",
-  { Message: S.optional(S.String) },
-  T.HttpError(409),
-).pipe(C.withConflictError) {}
-export class AccountAlreadyRegisteredException extends S.TaggedErrorClass<AccountAlreadyRegisteredException>()(
-  "AccountAlreadyRegisteredException",
-  { Message: S.optional(S.String) },
-  T.HttpError(409),
-).pipe(C.withConflictError) {}
-export class AccountNotFoundException extends S.TaggedErrorClass<AccountNotFoundException>()(
-  "AccountNotFoundException",
-  { Message: S.optional(S.String) },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class AccountNotRegisteredException extends S.TaggedErrorClass<AccountNotRegisteredException>()(
-  "AccountNotRegisteredException",
-  { Message: S.optional(S.String) },
-  T.HttpError(409),
-).pipe(C.withConflictError) {}
-export class AccountOwnerNotVerifiedException extends S.TaggedErrorClass<AccountOwnerNotVerifiedException>()(
-  "AccountOwnerNotVerifiedException",
-  { Message: S.optional(S.String) },
-  T.HttpError(403),
-).pipe(C.withAuthError) {}
-export class AlreadyInOrganizationException extends S.TaggedErrorClass<AlreadyInOrganizationException>()(
-  "AlreadyInOrganizationException",
-  { Message: S.optional(S.String) },
-  T.HttpError(409),
-).pipe(C.withConflictError) {}
-export class AWSOrganizationsNotInUseException extends S.TaggedErrorClass<AWSOrganizationsNotInUseException>()(
-  "AWSOrganizationsNotInUseException",
-  { Message: S.optional(S.String) },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class ChildNotFoundException extends S.TaggedErrorClass<ChildNotFoundException>()(
-  "ChildNotFoundException",
-  { Message: S.optional(S.String) },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class ConcurrentModificationException extends S.TaggedErrorClass<ConcurrentModificationException>()(
-  "ConcurrentModificationException",
-  { Message: S.optional(S.String) },
-  T.HttpError(409),
-).pipe(C.withConflictError) {}
-export class ConflictException extends S.TaggedErrorClass<ConflictException>()(
-  "ConflictException",
-  { Message: S.optional(S.String) },
-  T.HttpError(409),
-).pipe(C.withConflictError) {}
-export class ConstraintViolationException extends S.TaggedErrorClass<ConstraintViolationException>()(
-  "ConstraintViolationException",
-  {
-    Message: S.optional(S.String),
-    Reason: S.optional(
-      S.suspend(() => ConstraintViolationExceptionReason).annotate({
-        identifier: "ConstraintViolationExceptionReason",
-      }),
-    ),
-  },
-  T.HttpError(409),
-).pipe(C.withConflictError) {}
-export class CreateAccountStatusNotFoundException extends S.TaggedErrorClass<CreateAccountStatusNotFoundException>()(
-  "CreateAccountStatusNotFoundException",
-  { Message: S.optional(S.String) },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class DestinationParentNotFoundException extends S.TaggedErrorClass<DestinationParentNotFoundException>()(
-  "DestinationParentNotFoundException",
-  { Message: S.optional(S.String) },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class DuplicateAccountException extends S.TaggedErrorClass<DuplicateAccountException>()(
-  "DuplicateAccountException",
-  { Message: S.optional(S.String) },
-  T.HttpError(409),
-).pipe(C.withConflictError) {}
-export class DuplicateHandshakeException extends S.TaggedErrorClass<DuplicateHandshakeException>()(
-  "DuplicateHandshakeException",
-  { Message: S.optional(S.String) },
-  T.HttpError(409),
-).pipe(C.withConflictError) {}
-export class DuplicateOrganizationalUnitException extends S.TaggedErrorClass<DuplicateOrganizationalUnitException>()(
-  "DuplicateOrganizationalUnitException",
-  { Message: S.optional(S.String) },
-  T.HttpError(409),
-).pipe(C.withConflictError) {}
-export class DuplicatePolicyAttachmentException extends S.TaggedErrorClass<DuplicatePolicyAttachmentException>()(
-  "DuplicatePolicyAttachmentException",
-  { Message: S.optional(S.String) },
-  T.HttpError(409),
-).pipe(C.withConflictError) {}
-export class DuplicatePolicyException extends S.TaggedErrorClass<DuplicatePolicyException>()(
-  "DuplicatePolicyException",
-  { Message: S.optional(S.String) },
-  T.HttpError(409),
-).pipe(C.withConflictError) {}
-export class EffectivePolicyNotFoundException extends S.TaggedErrorClass<EffectivePolicyNotFoundException>()(
-  "EffectivePolicyNotFoundException",
-  { Message: S.optional(S.String) },
-) {}
-export class FinalizingOrganizationException extends S.TaggedErrorClass<FinalizingOrganizationException>()(
-  "FinalizingOrganizationException",
-  { Message: S.optional(S.String) },
-  T.HttpError(409),
-).pipe(C.withConflictError) {}
-export class HandshakeAlreadyInStateException extends S.TaggedErrorClass<HandshakeAlreadyInStateException>()(
-  "HandshakeAlreadyInStateException",
-  { Message: S.optional(S.String) },
-  T.HttpError(409),
-).pipe(C.withConflictError) {}
-export class HandshakeConstraintViolationException extends S.TaggedErrorClass<HandshakeConstraintViolationException>()(
-  "HandshakeConstraintViolationException",
-  {
-    Message: S.optional(S.String),
-    Reason: S.optional(
-      S.suspend(() => HandshakeConstraintViolationExceptionReason).annotate({
-        identifier: "HandshakeConstraintViolationExceptionReason",
-      }),
-    ),
-  },
-  T.HttpError(409),
-).pipe(C.withConflictError) {}
-export class HandshakeNotFoundException extends S.TaggedErrorClass<HandshakeNotFoundException>()(
-  "HandshakeNotFoundException",
-  { Message: S.optional(S.String) },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class InvalidHandshakeTransitionException extends S.TaggedErrorClass<InvalidHandshakeTransitionException>()(
-  "InvalidHandshakeTransitionException",
-  { Message: S.optional(S.String) },
-  T.HttpError(409),
-).pipe(C.withConflictError) {}
-export class InvalidInputException extends S.TaggedErrorClass<InvalidInputException>()(
-  "InvalidInputException",
-  {
-    Message: S.optional(S.String),
-    Reason: S.optional(
-      S.suspend(() => InvalidInputExceptionReason).annotate({
-        identifier: "InvalidInputExceptionReason",
-      }),
-    ),
-  },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class InvalidResponsibilityTransferTransitionException extends S.TaggedErrorClass<InvalidResponsibilityTransferTransitionException>()(
-  "InvalidResponsibilityTransferTransitionException",
-  { Message: S.optional(S.String) },
-  T.HttpError(409),
-).pipe(C.withConflictError) {}
-export class MalformedPolicyDocumentException extends S.TaggedErrorClass<MalformedPolicyDocumentException>()(
-  "MalformedPolicyDocumentException",
-  { Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class MasterCannotLeaveOrganizationException extends S.TaggedErrorClass<MasterCannotLeaveOrganizationException>()(
-  "MasterCannotLeaveOrganizationException",
-  { Message: S.optional(S.String) },
-  T.HttpError(409),
-).pipe(C.withConflictError) {}
-export class OrganizationalUnitNotEmptyException extends S.TaggedErrorClass<OrganizationalUnitNotEmptyException>()(
-  "OrganizationalUnitNotEmptyException",
-  { Message: S.optional(S.String) },
-  T.HttpError(409),
-).pipe(C.withConflictError) {}
-export class OrganizationalUnitNotFoundException extends S.TaggedErrorClass<OrganizationalUnitNotFoundException>()(
-  "OrganizationalUnitNotFoundException",
-  { Message: S.optional(S.String) },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class OrganizationNotEmptyException extends S.TaggedErrorClass<OrganizationNotEmptyException>()(
-  "OrganizationNotEmptyException",
-  { Message: S.optional(S.String) },
-  T.HttpError(409),
-).pipe(C.withConflictError) {}
-export class ParentNotFoundException extends S.TaggedErrorClass<ParentNotFoundException>()(
-  "ParentNotFoundException",
-  { Message: S.optional(S.String) },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class PolicyChangesInProgressException extends S.TaggedErrorClass<PolicyChangesInProgressException>()(
-  "PolicyChangesInProgressException",
-  { Message: S.optional(S.String) },
-) {}
-export class PolicyInUseException extends S.TaggedErrorClass<PolicyInUseException>()(
-  "PolicyInUseException",
-  { Message: S.optional(S.String) },
-  T.HttpError(409),
-).pipe(C.withConflictError) {}
-export class PolicyNotAttachedException extends S.TaggedErrorClass<PolicyNotAttachedException>()(
-  "PolicyNotAttachedException",
-  { Message: S.optional(S.String) },
-  T.HttpError(409),
-).pipe(C.withConflictError) {}
-export class PolicyNotFoundException extends S.TaggedErrorClass<PolicyNotFoundException>()(
-  "PolicyNotFoundException",
-  { Message: S.optional(S.String) },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class PolicyTypeAlreadyEnabledException extends S.TaggedErrorClass<PolicyTypeAlreadyEnabledException>()(
-  "PolicyTypeAlreadyEnabledException",
-  { Message: S.optional(S.String) },
-  T.HttpError(409),
-).pipe(C.withConflictError) {}
-export class PolicyTypeNotAvailableForOrganizationException extends S.TaggedErrorClass<PolicyTypeNotAvailableForOrganizationException>()(
-  "PolicyTypeNotAvailableForOrganizationException",
-  { Message: S.optional(S.String) },
-  T.HttpError(409),
-).pipe(C.withConflictError) {}
-export class PolicyTypeNotEnabledException extends S.TaggedErrorClass<PolicyTypeNotEnabledException>()(
-  "PolicyTypeNotEnabledException",
-  { Message: S.optional(S.String) },
-  T.HttpError(409),
-).pipe(C.withConflictError) {}
-export class ResourcePolicyNotFoundException extends S.TaggedErrorClass<ResourcePolicyNotFoundException>()(
-  "ResourcePolicyNotFoundException",
-  { Message: S.optional(S.String) },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class ResponsibilityTransferAlreadyInStatusException extends S.TaggedErrorClass<ResponsibilityTransferAlreadyInStatusException>()(
-  "ResponsibilityTransferAlreadyInStatusException",
-  { Message: S.optional(S.String) },
-  T.HttpError(409),
-).pipe(C.withConflictError) {}
-export class ResponsibilityTransferNotFoundException extends S.TaggedErrorClass<ResponsibilityTransferNotFoundException>()(
-  "ResponsibilityTransferNotFoundException",
-  { Message: S.optional(S.String) },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class RootNotFoundException extends S.TaggedErrorClass<RootNotFoundException>()(
-  "RootNotFoundException",
-  { Message: S.optional(S.String) },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class ServiceException extends S.TaggedErrorClass<ServiceException>()(
-  "ServiceException",
-  { Message: S.optional(S.String) },
-  T.HttpError(500),
-).pipe(C.withServerError) {}
-export class SourceParentNotFoundException extends S.TaggedErrorClass<SourceParentNotFoundException>()(
-  "SourceParentNotFoundException",
-  { Message: S.optional(S.String) },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class TargetNotFoundException extends S.TaggedErrorClass<TargetNotFoundException>()(
-  "TargetNotFoundException",
-  { Message: S.optional(S.String) },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class TooManyRequestsException extends S.TaggedErrorClass<TooManyRequestsException>()(
-  "TooManyRequestsException",
-  { Type: S.optional(S.String), Message: S.optional(S.String) },
-  T.HttpError(429),
-).pipe(C.withThrottlingError) {}
-export class UnsupportedAPIEndpointException extends S.TaggedErrorClass<UnsupportedAPIEndpointException>()(
-  "UnsupportedAPIEndpointException",
-  { Message: S.optional(S.String) },
-  T.HttpError(403),
-).pipe(C.withAuthError) {}
+export class AccessDeniedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
+    "AccessDeniedException",
+    { Message: S.optional(S.String) },
+    T.HttpError(403),
+  ).pipe(C.withAuthError) {}
+export class AccessDeniedForDependencyException
+  extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedForDependencyException>()(
+    "AccessDeniedForDependencyException",
+    {
+      Message: S.optional(S.String),
+      Reason: S.optional(
+        S.suspend(() => AccessDeniedForDependencyExceptionReason).annotate({
+          identifier: "AccessDeniedForDependencyExceptionReason",
+        }),
+      ),
+    },
+    T.HttpError(403),
+  ).pipe(C.withAuthError) {}
+export class AccountAlreadyClosedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<AccountAlreadyClosedException>()(
+    "AccountAlreadyClosedException",
+    { Message: S.optional(S.String) },
+    T.HttpError(409),
+  ).pipe(C.withConflictError) {}
+export class AccountAlreadyRegisteredException
+  extends /*@__PURE__*/ S.TaggedErrorClass<AccountAlreadyRegisteredException>()(
+    "AccountAlreadyRegisteredException",
+    { Message: S.optional(S.String) },
+    T.HttpError(409),
+  ).pipe(C.withConflictError) {}
+export class AccountNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<AccountNotFoundException>()(
+    "AccountNotFoundException",
+    { Message: S.optional(S.String) },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class AccountNotRegisteredException
+  extends /*@__PURE__*/ S.TaggedErrorClass<AccountNotRegisteredException>()(
+    "AccountNotRegisteredException",
+    { Message: S.optional(S.String) },
+    T.HttpError(409),
+  ).pipe(C.withConflictError) {}
+export class AccountOwnerNotVerifiedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<AccountOwnerNotVerifiedException>()(
+    "AccountOwnerNotVerifiedException",
+    { Message: S.optional(S.String) },
+    T.HttpError(403),
+  ).pipe(C.withAuthError) {}
+export class AlreadyInOrganizationException
+  extends /*@__PURE__*/ S.TaggedErrorClass<AlreadyInOrganizationException>()(
+    "AlreadyInOrganizationException",
+    { Message: S.optional(S.String) },
+    T.HttpError(409),
+  ).pipe(C.withConflictError) {}
+export class AWSOrganizationsNotInUseException
+  extends /*@__PURE__*/ S.TaggedErrorClass<AWSOrganizationsNotInUseException>()(
+    "AWSOrganizationsNotInUseException",
+    { Message: S.optional(S.String) },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class ChildNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ChildNotFoundException>()(
+    "ChildNotFoundException",
+    { Message: S.optional(S.String) },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class ConcurrentModificationException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ConcurrentModificationException>()(
+    "ConcurrentModificationException",
+    { Message: S.optional(S.String) },
+    T.HttpError(409),
+  ).pipe(C.withConflictError) {}
+export class ConflictException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
+    "ConflictException",
+    { Message: S.optional(S.String) },
+    T.HttpError(409),
+  ).pipe(C.withConflictError) {}
+export class ConstraintViolationException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ConstraintViolationException>()(
+    "ConstraintViolationException",
+    {
+      Message: S.optional(S.String),
+      Reason: S.optional(
+        S.suspend(() => ConstraintViolationExceptionReason).annotate({
+          identifier: "ConstraintViolationExceptionReason",
+        }),
+      ),
+    },
+    T.HttpError(409),
+  ).pipe(C.withConflictError) {}
+export class CreateAccountStatusNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<CreateAccountStatusNotFoundException>()(
+    "CreateAccountStatusNotFoundException",
+    { Message: S.optional(S.String) },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class DestinationParentNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<DestinationParentNotFoundException>()(
+    "DestinationParentNotFoundException",
+    { Message: S.optional(S.String) },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class DuplicateAccountException
+  extends /*@__PURE__*/ S.TaggedErrorClass<DuplicateAccountException>()(
+    "DuplicateAccountException",
+    { Message: S.optional(S.String) },
+    T.HttpError(409),
+  ).pipe(C.withConflictError) {}
+export class DuplicateHandshakeException
+  extends /*@__PURE__*/ S.TaggedErrorClass<DuplicateHandshakeException>()(
+    "DuplicateHandshakeException",
+    { Message: S.optional(S.String) },
+    T.HttpError(409),
+  ).pipe(C.withConflictError) {}
+export class DuplicateOrganizationalUnitException
+  extends /*@__PURE__*/ S.TaggedErrorClass<DuplicateOrganizationalUnitException>()(
+    "DuplicateOrganizationalUnitException",
+    { Message: S.optional(S.String) },
+    T.HttpError(409),
+  ).pipe(C.withConflictError) {}
+export class DuplicatePolicyAttachmentException
+  extends /*@__PURE__*/ S.TaggedErrorClass<DuplicatePolicyAttachmentException>()(
+    "DuplicatePolicyAttachmentException",
+    { Message: S.optional(S.String) },
+    T.HttpError(409),
+  ).pipe(C.withConflictError) {}
+export class DuplicatePolicyException
+  extends /*@__PURE__*/ S.TaggedErrorClass<DuplicatePolicyException>()(
+    "DuplicatePolicyException",
+    { Message: S.optional(S.String) },
+    T.HttpError(409),
+  ).pipe(C.withConflictError) {}
+export class EffectivePolicyNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<EffectivePolicyNotFoundException>()(
+    "EffectivePolicyNotFoundException",
+    { Message: S.optional(S.String) },
+  ) {}
+export class FinalizingOrganizationException
+  extends /*@__PURE__*/ S.TaggedErrorClass<FinalizingOrganizationException>()(
+    "FinalizingOrganizationException",
+    { Message: S.optional(S.String) },
+    T.HttpError(409),
+  ).pipe(C.withConflictError) {}
+export class HandshakeAlreadyInStateException
+  extends /*@__PURE__*/ S.TaggedErrorClass<HandshakeAlreadyInStateException>()(
+    "HandshakeAlreadyInStateException",
+    { Message: S.optional(S.String) },
+    T.HttpError(409),
+  ).pipe(C.withConflictError) {}
+export class HandshakeConstraintViolationException
+  extends /*@__PURE__*/ S.TaggedErrorClass<HandshakeConstraintViolationException>()(
+    "HandshakeConstraintViolationException",
+    {
+      Message: S.optional(S.String),
+      Reason: S.optional(
+        S.suspend(() => HandshakeConstraintViolationExceptionReason).annotate({
+          identifier: "HandshakeConstraintViolationExceptionReason",
+        }),
+      ),
+    },
+    T.HttpError(409),
+  ).pipe(C.withConflictError) {}
+export class HandshakeNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<HandshakeNotFoundException>()(
+    "HandshakeNotFoundException",
+    { Message: S.optional(S.String) },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class InvalidHandshakeTransitionException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidHandshakeTransitionException>()(
+    "InvalidHandshakeTransitionException",
+    { Message: S.optional(S.String) },
+    T.HttpError(409),
+  ).pipe(C.withConflictError) {}
+export class InvalidInputException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidInputException>()(
+    "InvalidInputException",
+    {
+      Message: S.optional(S.String),
+      Reason: S.optional(
+        S.suspend(() => InvalidInputExceptionReason).annotate({
+          identifier: "InvalidInputExceptionReason",
+        }),
+      ),
+    },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class InvalidResponsibilityTransferTransitionException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidResponsibilityTransferTransitionException>()(
+    "InvalidResponsibilityTransferTransitionException",
+    { Message: S.optional(S.String) },
+    T.HttpError(409),
+  ).pipe(C.withConflictError) {}
+export class MalformedPolicyDocumentException
+  extends /*@__PURE__*/ S.TaggedErrorClass<MalformedPolicyDocumentException>()(
+    "MalformedPolicyDocumentException",
+    { Message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class MasterCannotLeaveOrganizationException
+  extends /*@__PURE__*/ S.TaggedErrorClass<MasterCannotLeaveOrganizationException>()(
+    "MasterCannotLeaveOrganizationException",
+    { Message: S.optional(S.String) },
+    T.HttpError(409),
+  ).pipe(C.withConflictError) {}
+export class OrganizationalUnitNotEmptyException
+  extends /*@__PURE__*/ S.TaggedErrorClass<OrganizationalUnitNotEmptyException>()(
+    "OrganizationalUnitNotEmptyException",
+    { Message: S.optional(S.String) },
+    T.HttpError(409),
+  ).pipe(C.withConflictError) {}
+export class OrganizationalUnitNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<OrganizationalUnitNotFoundException>()(
+    "OrganizationalUnitNotFoundException",
+    { Message: S.optional(S.String) },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class OrganizationNotEmptyException
+  extends /*@__PURE__*/ S.TaggedErrorClass<OrganizationNotEmptyException>()(
+    "OrganizationNotEmptyException",
+    { Message: S.optional(S.String) },
+    T.HttpError(409),
+  ).pipe(C.withConflictError) {}
+export class ParentNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ParentNotFoundException>()(
+    "ParentNotFoundException",
+    { Message: S.optional(S.String) },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class PolicyChangesInProgressException
+  extends /*@__PURE__*/ S.TaggedErrorClass<PolicyChangesInProgressException>()(
+    "PolicyChangesInProgressException",
+    { Message: S.optional(S.String) },
+  ) {}
+export class PolicyInUseException
+  extends /*@__PURE__*/ S.TaggedErrorClass<PolicyInUseException>()(
+    "PolicyInUseException",
+    { Message: S.optional(S.String) },
+    T.HttpError(409),
+  ).pipe(C.withConflictError) {}
+export class PolicyNotAttachedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<PolicyNotAttachedException>()(
+    "PolicyNotAttachedException",
+    { Message: S.optional(S.String) },
+    T.HttpError(409),
+  ).pipe(C.withConflictError) {}
+export class PolicyNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<PolicyNotFoundException>()(
+    "PolicyNotFoundException",
+    { Message: S.optional(S.String) },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class PolicyTypeAlreadyEnabledException
+  extends /*@__PURE__*/ S.TaggedErrorClass<PolicyTypeAlreadyEnabledException>()(
+    "PolicyTypeAlreadyEnabledException",
+    { Message: S.optional(S.String) },
+    T.HttpError(409),
+  ).pipe(C.withConflictError) {}
+export class PolicyTypeNotAvailableForOrganizationException
+  extends /*@__PURE__*/ S.TaggedErrorClass<PolicyTypeNotAvailableForOrganizationException>()(
+    "PolicyTypeNotAvailableForOrganizationException",
+    { Message: S.optional(S.String) },
+    T.HttpError(409),
+  ).pipe(C.withConflictError) {}
+export class PolicyTypeNotEnabledException
+  extends /*@__PURE__*/ S.TaggedErrorClass<PolicyTypeNotEnabledException>()(
+    "PolicyTypeNotEnabledException",
+    { Message: S.optional(S.String) },
+    T.HttpError(409),
+  ).pipe(C.withConflictError) {}
+export class ResourcePolicyNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourcePolicyNotFoundException>()(
+    "ResourcePolicyNotFoundException",
+    { Message: S.optional(S.String) },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class ResponsibilityTransferAlreadyInStatusException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResponsibilityTransferAlreadyInStatusException>()(
+    "ResponsibilityTransferAlreadyInStatusException",
+    { Message: S.optional(S.String) },
+    T.HttpError(409),
+  ).pipe(C.withConflictError) {}
+export class ResponsibilityTransferNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResponsibilityTransferNotFoundException>()(
+    "ResponsibilityTransferNotFoundException",
+    { Message: S.optional(S.String) },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class RootNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<RootNotFoundException>()(
+    "RootNotFoundException",
+    { Message: S.optional(S.String) },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class ServiceException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ServiceException>()(
+    "ServiceException",
+    { Message: S.optional(S.String) },
+    T.HttpError(500),
+  ).pipe(C.withServerError) {}
+export class SourceParentNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<SourceParentNotFoundException>()(
+    "SourceParentNotFoundException",
+    { Message: S.optional(S.String) },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class TargetNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<TargetNotFoundException>()(
+    "TargetNotFoundException",
+    { Message: S.optional(S.String) },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class TooManyRequestsException
+  extends /*@__PURE__*/ S.TaggedErrorClass<TooManyRequestsException>()(
+    "TooManyRequestsException",
+    { Type: S.optional(S.String), Message: S.optional(S.String) },
+    T.HttpError(429),
+  ).pipe(C.withThrottlingError) {}
+export class UnsupportedAPIEndpointException
+  extends /*@__PURE__*/ S.TaggedErrorClass<UnsupportedAPIEndpointException>()(
+    "UnsupportedAPIEndpointException",
+    { Message: S.optional(S.String) },
+    T.HttpError(403),
+  ).pipe(C.withAuthError) {}
 export type HandshakeId = string;
 export interface AcceptHandshakeRequest {
   HandshakeId: string;
@@ -5107,7 +5157,27 @@ export const listAccounts: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListAccountsRequest,
+  ListAccountsResponse,
+  ListAccountsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListAccountsRequest,
+  ) => stream.Stream<
+    ListAccountsResponse,
+    ListAccountsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListAccountsRequest,
+  ) => stream.Stream<
+    unknown,
+    ListAccountsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListAccountsForParentError =
   | AccessDeniedException
@@ -5169,7 +5239,27 @@ export const listAccountsForParent: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListAccountsForParentRequest,
+  ListAccountsForParentResponse,
+  ListAccountsForParentError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListAccountsForParentRequest,
+  ) => stream.Stream<
+    ListAccountsForParentResponse,
+    ListAccountsForParentError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListAccountsForParentRequest,
+  ) => stream.Stream<
+    unknown,
+    ListAccountsForParentError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListAccountsWithInvalidEffectivePolicyError =
   | AccessDeniedException
@@ -5231,7 +5321,27 @@ export const listAccountsWithInvalidEffectivePolicy: API.OperationMethod<
     items: "Accounts",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListAccountsWithInvalidEffectivePolicyRequest,
+  ListAccountsWithInvalidEffectivePolicyResponse,
+  ListAccountsWithInvalidEffectivePolicyError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListAccountsWithInvalidEffectivePolicyRequest,
+  ) => stream.Stream<
+    ListAccountsWithInvalidEffectivePolicyResponse,
+    ListAccountsWithInvalidEffectivePolicyError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListAccountsWithInvalidEffectivePolicyRequest,
+  ) => stream.Stream<
+    Account,
+    ListAccountsWithInvalidEffectivePolicyError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListAWSServiceAccessForOrganizationError =
   | AccessDeniedException
@@ -5293,7 +5403,27 @@ export const listAWSServiceAccessForOrganization: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListAWSServiceAccessForOrganizationRequest,
+  ListAWSServiceAccessForOrganizationResponse,
+  ListAWSServiceAccessForOrganizationError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListAWSServiceAccessForOrganizationRequest,
+  ) => stream.Stream<
+    ListAWSServiceAccessForOrganizationResponse,
+    ListAWSServiceAccessForOrganizationError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListAWSServiceAccessForOrganizationRequest,
+  ) => stream.Stream<
+    unknown,
+    ListAWSServiceAccessForOrganizationError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListChildrenError =
   | AccessDeniedException
@@ -5353,7 +5483,27 @@ export const listChildren: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListChildrenRequest,
+  ListChildrenResponse,
+  ListChildrenError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListChildrenRequest,
+  ) => stream.Stream<
+    ListChildrenResponse,
+    ListChildrenError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListChildrenRequest,
+  ) => stream.Stream<
+    unknown,
+    ListChildrenError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListCreateAccountStatusError =
   | AccessDeniedException
@@ -5412,7 +5562,27 @@ export const listCreateAccountStatus: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListCreateAccountStatusRequest,
+  ListCreateAccountStatusResponse,
+  ListCreateAccountStatusError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListCreateAccountStatusRequest,
+  ) => stream.Stream<
+    ListCreateAccountStatusResponse,
+    ListCreateAccountStatusError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListCreateAccountStatusRequest,
+  ) => stream.Stream<
+    unknown,
+    ListCreateAccountStatusError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListDelegatedAdministratorsError =
   | AccessDeniedException
@@ -5470,7 +5640,27 @@ export const listDelegatedAdministrators: API.OperationMethod<
     items: "DelegatedAdministrators",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListDelegatedAdministratorsRequest,
+  ListDelegatedAdministratorsResponse,
+  ListDelegatedAdministratorsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListDelegatedAdministratorsRequest,
+  ) => stream.Stream<
+    ListDelegatedAdministratorsResponse,
+    ListDelegatedAdministratorsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListDelegatedAdministratorsRequest,
+  ) => stream.Stream<
+    DelegatedAdministrator,
+    ListDelegatedAdministratorsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListDelegatedServicesForAccountError =
   | AccessDeniedException
@@ -5532,7 +5722,27 @@ export const listDelegatedServicesForAccount: API.OperationMethod<
     items: "DelegatedServices",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListDelegatedServicesForAccountRequest,
+  ListDelegatedServicesForAccountResponse,
+  ListDelegatedServicesForAccountError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListDelegatedServicesForAccountRequest,
+  ) => stream.Stream<
+    ListDelegatedServicesForAccountResponse,
+    ListDelegatedServicesForAccountError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListDelegatedServicesForAccountRequest,
+  ) => stream.Stream<
+    DelegatedService,
+    ListDelegatedServicesForAccountError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListEffectivePolicyValidationErrorsError =
   | AccessDeniedException
@@ -5594,7 +5804,27 @@ export const listEffectivePolicyValidationErrors: API.OperationMethod<
     items: "EffectivePolicyValidationErrors",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListEffectivePolicyValidationErrorsRequest,
+  ListEffectivePolicyValidationErrorsResponse,
+  ListEffectivePolicyValidationErrorsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListEffectivePolicyValidationErrorsRequest,
+  ) => stream.Stream<
+    ListEffectivePolicyValidationErrorsResponse,
+    ListEffectivePolicyValidationErrorsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListEffectivePolicyValidationErrorsRequest,
+  ) => stream.Stream<
+    EffectivePolicyValidationError,
+    ListEffectivePolicyValidationErrorsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListHandshakesForAccountError =
   | AccessDeniedException
@@ -5654,7 +5884,27 @@ export const listHandshakesForAccount: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListHandshakesForAccountRequest,
+  ListHandshakesForAccountResponse,
+  ListHandshakesForAccountError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListHandshakesForAccountRequest,
+  ) => stream.Stream<
+    ListHandshakesForAccountResponse,
+    ListHandshakesForAccountError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListHandshakesForAccountRequest,
+  ) => stream.Stream<
+    unknown,
+    ListHandshakesForAccountError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListHandshakesForOrganizationError =
   | AccessDeniedException
@@ -5716,7 +5966,27 @@ export const listHandshakesForOrganization: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListHandshakesForOrganizationRequest,
+  ListHandshakesForOrganizationResponse,
+  ListHandshakesForOrganizationError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListHandshakesForOrganizationRequest,
+  ) => stream.Stream<
+    ListHandshakesForOrganizationResponse,
+    ListHandshakesForOrganizationError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListHandshakesForOrganizationRequest,
+  ) => stream.Stream<
+    unknown,
+    ListHandshakesForOrganizationError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListInboundResponsibilityTransfersError =
   | AccessDeniedException
@@ -5815,7 +6085,27 @@ export const listOrganizationalUnitsForParent: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListOrganizationalUnitsForParentRequest,
+  ListOrganizationalUnitsForParentResponse,
+  ListOrganizationalUnitsForParentError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListOrganizationalUnitsForParentRequest,
+  ) => stream.Stream<
+    ListOrganizationalUnitsForParentResponse,
+    ListOrganizationalUnitsForParentError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListOrganizationalUnitsForParentRequest,
+  ) => stream.Stream<
+    unknown,
+    ListOrganizationalUnitsForParentError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListOutboundResponsibilityTransfersError =
   | AccessDeniedException
@@ -5917,7 +6207,27 @@ export const listParents: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListParentsRequest,
+  ListParentsResponse,
+  ListParentsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListParentsRequest,
+  ) => stream.Stream<
+    ListParentsResponse,
+    ListParentsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListParentsRequest,
+  ) => stream.Stream<
+    unknown,
+    ListParentsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListPoliciesError =
   | AccessDeniedException
@@ -5975,7 +6285,27 @@ export const listPolicies: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListPoliciesRequest,
+  ListPoliciesResponse,
+  ListPoliciesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListPoliciesRequest,
+  ) => stream.Stream<
+    ListPoliciesResponse,
+    ListPoliciesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListPoliciesRequest,
+  ) => stream.Stream<
+    unknown,
+    ListPoliciesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListPoliciesForTargetError =
   | AccessDeniedException
@@ -6037,7 +6367,27 @@ export const listPoliciesForTarget: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListPoliciesForTargetRequest,
+  ListPoliciesForTargetResponse,
+  ListPoliciesForTargetError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListPoliciesForTargetRequest,
+  ) => stream.Stream<
+    ListPoliciesForTargetResponse,
+    ListPoliciesForTargetError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListPoliciesForTargetRequest,
+  ) => stream.Stream<
+    unknown,
+    ListPoliciesForTargetError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListRootsError =
   | AccessDeniedException
@@ -6099,7 +6449,27 @@ export const listRoots: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListRootsRequest,
+  ListRootsResponse,
+  ListRootsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListRootsRequest,
+  ) => stream.Stream<
+    ListRootsResponse,
+    ListRootsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListRootsRequest,
+  ) => stream.Stream<
+    unknown,
+    ListRootsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListTagsForResourceError =
   | AccessDeniedException
@@ -6163,7 +6533,27 @@ export const listTagsForResource: API.OperationMethod<
     outputToken: "NextToken",
     items: "Tags",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListTagsForResourceRequest,
+  ListTagsForResourceResponse,
+  ListTagsForResourceError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListTagsForResourceRequest,
+  ) => stream.Stream<
+    ListTagsForResourceResponse,
+    ListTagsForResourceError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListTagsForResourceRequest,
+  ) => stream.Stream<
+    Tag,
+    ListTagsForResourceError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListTargetsForPolicyError =
   | AccessDeniedException
@@ -6224,7 +6614,27 @@ export const listTargetsForPolicy: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListTargetsForPolicyRequest,
+  ListTargetsForPolicyResponse,
+  ListTargetsForPolicyError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListTargetsForPolicyRequest,
+  ) => stream.Stream<
+    ListTargetsForPolicyResponse,
+    ListTargetsForPolicyError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListTargetsForPolicyRequest,
+  ) => stream.Stream<
+    unknown,
+    ListTargetsForPolicyError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type MoveAccountError =
   | AccessDeniedException

@@ -87,69 +87,75 @@ const rules = T.EndpointResolver((p, _) => {
   return err("Invalid Configuration: Missing Region");
 });
 
-export class AccessDeniedException extends S.TaggedErrorClass<AccessDeniedException>()(
-  "AccessDeniedException",
-  { Message: S.String },
-  T.HttpError(403),
-).pipe(C.withAuthError) {}
-export class ConflictException extends S.TaggedErrorClass<ConflictException>()(
-  "ConflictException",
-  {
-    Message: S.String,
-    ResourceId: S.String,
-    ResourceType: S.String,
-    ErrorId: S.optional(S.String),
-    ErrorArguments: S.optional(
-      S.suspend(() => ConflictExceptionErrorArgumentList).annotate({
-        identifier: "ConflictExceptionErrorArgumentList",
-      }),
-    ),
-  },
-  T.HttpError(409),
-).pipe(C.withConflictError) {}
-export class InternalServerException extends S.TaggedErrorClass<InternalServerException>()(
-  "InternalServerException",
-  {
-    Message: S.String,
-    RetryAfterSeconds: S.optional(S.Number).pipe(T.HttpHeader("Retry-After")),
-  },
-  T.HttpError(500),
-).pipe(C.withServerError) {}
-export class ResourceNotFoundException extends S.TaggedErrorClass<ResourceNotFoundException>()(
-  "ResourceNotFoundException",
-  { Message: S.String, ResourceId: S.String, ResourceType: S.String },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class ServiceQuotaExceededException extends S.TaggedErrorClass<ServiceQuotaExceededException>()(
-  "ServiceQuotaExceededException",
-  {
-    Message: S.String,
-    ResourceId: S.optional(S.String),
-    ResourceType: S.optional(S.String),
-    QuotaCode: S.String,
-    ServiceCode: S.String,
-  },
-  T.HttpError(402),
-).pipe(C.withQuotaError) {}
-export class ValidationException extends S.TaggedErrorClass<ValidationException>()(
-  "ValidationException",
-  {
-    Message: S.String,
-    Reason: S.optional(S.String),
-    ErrorId: S.optional(S.String),
-    ErrorArguments: S.optional(
-      S.suspend(() => ValidationExceptionErrorArgumentList).annotate({
-        identifier: "ValidationExceptionErrorArgumentList",
-      }),
-    ),
-    Fields: S.optional(
-      S.suspend(() => ValidationExceptionFieldList).annotate({
-        identifier: "ValidationExceptionFieldList",
-      }),
-    ),
-  },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
+export class AccessDeniedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
+    "AccessDeniedException",
+    { Message: S.String },
+    T.HttpError(403),
+  ).pipe(C.withAuthError) {}
+export class ConflictException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
+    "ConflictException",
+    {
+      Message: S.String,
+      ResourceId: S.String,
+      ResourceType: S.String,
+      ErrorId: S.optional(S.String),
+      ErrorArguments: S.optional(
+        S.suspend(() => ConflictExceptionErrorArgumentList).annotate({
+          identifier: "ConflictExceptionErrorArgumentList",
+        }),
+      ),
+    },
+    T.HttpError(409),
+  ).pipe(C.withConflictError) {}
+export class InternalServerException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
+    "InternalServerException",
+    {
+      Message: S.String,
+      RetryAfterSeconds: S.optional(S.Number).pipe(T.HttpHeader("Retry-After")),
+    },
+    T.HttpError(500),
+  ).pipe(C.withServerError) {}
+export class ResourceNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
+    "ResourceNotFoundException",
+    { Message: S.String, ResourceId: S.String, ResourceType: S.String },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class ServiceQuotaExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
+    "ServiceQuotaExceededException",
+    {
+      Message: S.String,
+      ResourceId: S.optional(S.String),
+      ResourceType: S.optional(S.String),
+      QuotaCode: S.String,
+      ServiceCode: S.String,
+    },
+    T.HttpError(402),
+  ).pipe(C.withQuotaError) {}
+export class ValidationException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
+    "ValidationException",
+    {
+      Message: S.String,
+      Reason: S.optional(S.String),
+      ErrorId: S.optional(S.String),
+      ErrorArguments: S.optional(
+        S.suspend(() => ValidationExceptionErrorArgumentList).annotate({
+          identifier: "ValidationExceptionErrorArgumentList",
+        }),
+      ),
+      Fields: S.optional(
+        S.suspend(() => ValidationExceptionFieldList).annotate({
+          identifier: "ValidationExceptionFieldList",
+        }),
+      ),
+    },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
 export type ApplicationInstanceName = string;
 export type Description = string;
 export type ManifestPayloadData = string;
@@ -2720,7 +2726,27 @@ export const listApplicationInstanceDependencies: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListApplicationInstanceDependenciesRequest,
+  ListApplicationInstanceDependenciesResponse,
+  ListApplicationInstanceDependenciesError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListApplicationInstanceDependenciesRequest,
+  ) => stream.Stream<
+    ListApplicationInstanceDependenciesResponse,
+    ListApplicationInstanceDependenciesError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListApplicationInstanceDependenciesRequest,
+  ) => stream.Stream<
+    unknown,
+    ListApplicationInstanceDependenciesError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type ListApplicationInstanceNodeInstancesError =
   | AccessDeniedException
@@ -2761,7 +2787,27 @@ export const listApplicationInstanceNodeInstances: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListApplicationInstanceNodeInstancesRequest,
+  ListApplicationInstanceNodeInstancesResponse,
+  ListApplicationInstanceNodeInstancesError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListApplicationInstanceNodeInstancesRequest,
+  ) => stream.Stream<
+    ListApplicationInstanceNodeInstancesResponse,
+    ListApplicationInstanceNodeInstancesError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListApplicationInstanceNodeInstancesRequest,
+  ) => stream.Stream<
+    unknown,
+    ListApplicationInstanceNodeInstancesError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type ListApplicationInstancesError =
   | AccessDeniedException
@@ -2802,7 +2848,27 @@ export const listApplicationInstances: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListApplicationInstancesRequest,
+  ListApplicationInstancesResponse,
+  ListApplicationInstancesError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListApplicationInstancesRequest,
+  ) => stream.Stream<
+    ListApplicationInstancesResponse,
+    ListApplicationInstancesError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListApplicationInstancesRequest,
+  ) => stream.Stream<
+    unknown,
+    ListApplicationInstancesError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type ListDevicesError =
   | AccessDeniedException
@@ -2850,7 +2916,27 @@ export const listDevices: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListDevicesRequest,
+  ListDevicesResponse,
+  ListDevicesError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListDevicesRequest,
+  ) => stream.Stream<
+    ListDevicesResponse,
+    ListDevicesError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListDevicesRequest,
+  ) => stream.Stream<
+    unknown,
+    ListDevicesError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type ListDevicesJobsError =
   | AccessDeniedException
@@ -2900,7 +2986,27 @@ export const listDevicesJobs: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListDevicesJobsRequest,
+  ListDevicesJobsResponse,
+  ListDevicesJobsError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListDevicesJobsRequest,
+  ) => stream.Stream<
+    ListDevicesJobsResponse,
+    ListDevicesJobsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListDevicesJobsRequest,
+  ) => stream.Stream<
+    unknown,
+    ListDevicesJobsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type ListNodeFromTemplateJobsError =
   | AccessDeniedException
@@ -2948,7 +3054,27 @@ export const listNodeFromTemplateJobs: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListNodeFromTemplateJobsRequest,
+  ListNodeFromTemplateJobsResponse,
+  ListNodeFromTemplateJobsError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListNodeFromTemplateJobsRequest,
+  ) => stream.Stream<
+    ListNodeFromTemplateJobsResponse,
+    ListNodeFromTemplateJobsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListNodeFromTemplateJobsRequest,
+  ) => stream.Stream<
+    unknown,
+    ListNodeFromTemplateJobsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type ListNodesError =
   | ConflictException
@@ -2990,7 +3116,27 @@ export const listNodes: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListNodesRequest,
+  ListNodesResponse,
+  ListNodesError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListNodesRequest,
+  ) => stream.Stream<
+    ListNodesResponse,
+    ListNodesError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListNodesRequest,
+  ) => stream.Stream<
+    unknown,
+    ListNodesError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type ListPackageImportJobsError =
   | AccessDeniedException
@@ -3038,7 +3184,27 @@ export const listPackageImportJobs: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListPackageImportJobsRequest,
+  ListPackageImportJobsResponse,
+  ListPackageImportJobsError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListPackageImportJobsRequest,
+  ) => stream.Stream<
+    ListPackageImportJobsResponse,
+    ListPackageImportJobsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListPackageImportJobsRequest,
+  ) => stream.Stream<
+    unknown,
+    ListPackageImportJobsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type ListPackagesError =
   | AccessDeniedException
@@ -3088,7 +3254,27 @@ export const listPackages: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListPackagesRequest,
+  ListPackagesResponse,
+  ListPackagesError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListPackagesRequest,
+  ) => stream.Stream<
+    ListPackagesResponse,
+    ListPackagesError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListPackagesRequest,
+  ) => stream.Stream<
+    unknown,
+    ListPackagesError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type ListTagsForResourceError =
   | InternalServerException

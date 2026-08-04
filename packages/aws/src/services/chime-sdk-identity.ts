@@ -87,96 +87,105 @@ const rules = T.EndpointResolver((p, _) => {
   return err("Invalid Configuration: Missing Region");
 });
 
-export class BadRequestException extends S.TaggedErrorClass<BadRequestException>()(
-  "BadRequestException",
-  {
-    Code: S.optional(
-      S.suspend(() => ErrorCode).annotate({ identifier: "ErrorCode" }),
-    ),
-    Message: S.optional(S.String),
-  },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class ConflictException extends S.TaggedErrorClass<ConflictException>()(
-  "ConflictException",
-  {
-    Code: S.optional(
-      S.suspend(() => ErrorCode).annotate({ identifier: "ErrorCode" }),
-    ),
-    Message: S.optional(S.String),
-  },
-  T.HttpError(409),
-).pipe(C.withConflictError) {}
-export class ForbiddenException extends S.TaggedErrorClass<ForbiddenException>()(
-  "ForbiddenException",
-  {
-    Code: S.optional(
-      S.suspend(() => ErrorCode).annotate({ identifier: "ErrorCode" }),
-    ),
-    Message: S.optional(S.String),
-  },
-  T.HttpError(403),
-).pipe(C.withAuthError) {}
-export class NotFoundException extends S.TaggedErrorClass<NotFoundException>()(
-  "NotFoundException",
-  {
-    Code: S.optional(
-      S.suspend(() => ErrorCode).annotate({ identifier: "ErrorCode" }),
-    ),
-    Message: S.optional(S.String),
-  },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class ResourceLimitExceededException extends S.TaggedErrorClass<ResourceLimitExceededException>()(
-  "ResourceLimitExceededException",
-  {
-    Code: S.optional(
-      S.suspend(() => ErrorCode).annotate({ identifier: "ErrorCode" }),
-    ),
-    Message: S.optional(S.String),
-  },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class ServiceFailureException extends S.TaggedErrorClass<ServiceFailureException>()(
-  "ServiceFailureException",
-  {
-    Code: S.optional(
-      S.suspend(() => ErrorCode).annotate({ identifier: "ErrorCode" }),
-    ),
-    Message: S.optional(S.String),
-  },
-  T.HttpError(500),
-).pipe(C.withServerError) {}
-export class ServiceUnavailableException extends S.TaggedErrorClass<ServiceUnavailableException>()(
-  "ServiceUnavailableException",
-  {
-    Code: S.optional(
-      S.suspend(() => ErrorCode).annotate({ identifier: "ErrorCode" }),
-    ),
-    Message: S.optional(S.String),
-  },
-  T.HttpError(503),
-).pipe(C.withServerError) {}
-export class ThrottledClientException extends S.TaggedErrorClass<ThrottledClientException>()(
-  "ThrottledClientException",
-  {
-    Code: S.optional(
-      S.suspend(() => ErrorCode).annotate({ identifier: "ErrorCode" }),
-    ),
-    Message: S.optional(S.String),
-  },
-  T.HttpError(429),
-).pipe(C.withThrottlingError) {}
-export class UnauthorizedClientException extends S.TaggedErrorClass<UnauthorizedClientException>()(
-  "UnauthorizedClientException",
-  {
-    Code: S.optional(
-      S.suspend(() => ErrorCode).annotate({ identifier: "ErrorCode" }),
-    ),
-    Message: S.optional(S.String),
-  },
-  T.HttpError(401),
-).pipe(C.withAuthError) {}
+export class BadRequestException
+  extends /*@__PURE__*/ S.TaggedErrorClass<BadRequestException>()(
+    "BadRequestException",
+    {
+      Code: S.optional(
+        S.suspend(() => ErrorCode).annotate({ identifier: "ErrorCode" }),
+      ),
+      Message: S.optional(S.String),
+    },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class ConflictException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
+    "ConflictException",
+    {
+      Code: S.optional(
+        S.suspend(() => ErrorCode).annotate({ identifier: "ErrorCode" }),
+      ),
+      Message: S.optional(S.String),
+    },
+    T.HttpError(409),
+  ).pipe(C.withConflictError) {}
+export class ForbiddenException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ForbiddenException>()(
+    "ForbiddenException",
+    {
+      Code: S.optional(
+        S.suspend(() => ErrorCode).annotate({ identifier: "ErrorCode" }),
+      ),
+      Message: S.optional(S.String),
+    },
+    T.HttpError(403),
+  ).pipe(C.withAuthError) {}
+export class NotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<NotFoundException>()(
+    "NotFoundException",
+    {
+      Code: S.optional(
+        S.suspend(() => ErrorCode).annotate({ identifier: "ErrorCode" }),
+      ),
+      Message: S.optional(S.String),
+    },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class ResourceLimitExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceLimitExceededException>()(
+    "ResourceLimitExceededException",
+    {
+      Code: S.optional(
+        S.suspend(() => ErrorCode).annotate({ identifier: "ErrorCode" }),
+      ),
+      Message: S.optional(S.String),
+    },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class ServiceFailureException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ServiceFailureException>()(
+    "ServiceFailureException",
+    {
+      Code: S.optional(
+        S.suspend(() => ErrorCode).annotate({ identifier: "ErrorCode" }),
+      ),
+      Message: S.optional(S.String),
+    },
+    T.HttpError(500),
+  ).pipe(C.withServerError) {}
+export class ServiceUnavailableException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ServiceUnavailableException>()(
+    "ServiceUnavailableException",
+    {
+      Code: S.optional(
+        S.suspend(() => ErrorCode).annotate({ identifier: "ErrorCode" }),
+      ),
+      Message: S.optional(S.String),
+    },
+    T.HttpError(503),
+  ).pipe(C.withServerError) {}
+export class ThrottledClientException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ThrottledClientException>()(
+    "ThrottledClientException",
+    {
+      Code: S.optional(
+        S.suspend(() => ErrorCode).annotate({ identifier: "ErrorCode" }),
+      ),
+      Message: S.optional(S.String),
+    },
+    T.HttpError(429),
+  ).pipe(C.withThrottlingError) {}
+export class UnauthorizedClientException
+  extends /*@__PURE__*/ S.TaggedErrorClass<UnauthorizedClientException>()(
+    "UnauthorizedClientException",
+    {
+      Code: S.optional(
+        S.suspend(() => ErrorCode).annotate({ identifier: "ErrorCode" }),
+      ),
+      Message: S.optional(S.String),
+    },
+    T.HttpError(401),
+  ).pipe(C.withAuthError) {}
 export type NonEmptyResourceName = string | redacted.Redacted<string>;
 export type Metadata = string | redacted.Redacted<string>;
 export type ClientRequestToken = string;
@@ -2132,7 +2141,27 @@ export const listAppInstanceAdmins: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListAppInstanceAdminsRequest,
+  ListAppInstanceAdminsResponse,
+  ListAppInstanceAdminsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListAppInstanceAdminsRequest,
+  ) => stream.Stream<
+    ListAppInstanceAdminsResponse,
+    ListAppInstanceAdminsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListAppInstanceAdminsRequest,
+  ) => stream.Stream<
+    unknown,
+    ListAppInstanceAdminsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListAppInstanceBotsError =
   | BadRequestException
@@ -2186,7 +2215,27 @@ export const listAppInstanceBots: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListAppInstanceBotsRequest,
+  ListAppInstanceBotsResponse,
+  ListAppInstanceBotsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListAppInstanceBotsRequest,
+  ) => stream.Stream<
+    ListAppInstanceBotsResponse,
+    ListAppInstanceBotsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListAppInstanceBotsRequest,
+  ) => stream.Stream<
+    unknown,
+    ListAppInstanceBotsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListAppInstancesError =
   | BadRequestException
@@ -2239,7 +2288,27 @@ export const listAppInstances: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListAppInstancesRequest,
+  ListAppInstancesResponse,
+  ListAppInstancesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListAppInstancesRequest,
+  ) => stream.Stream<
+    ListAppInstancesResponse,
+    ListAppInstancesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListAppInstancesRequest,
+  ) => stream.Stream<
+    unknown,
+    ListAppInstancesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListAppInstanceUserEndpointsError =
   | BadRequestException
@@ -2291,7 +2360,27 @@ export const listAppInstanceUserEndpoints: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListAppInstanceUserEndpointsRequest,
+  ListAppInstanceUserEndpointsResponse,
+  ListAppInstanceUserEndpointsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListAppInstanceUserEndpointsRequest,
+  ) => stream.Stream<
+    ListAppInstanceUserEndpointsResponse,
+    ListAppInstanceUserEndpointsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListAppInstanceUserEndpointsRequest,
+  ) => stream.Stream<
+    unknown,
+    ListAppInstanceUserEndpointsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListAppInstanceUsersError =
   | BadRequestException
@@ -2344,7 +2433,27 @@ export const listAppInstanceUsers: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListAppInstanceUsersRequest,
+  ListAppInstanceUsersResponse,
+  ListAppInstanceUsersError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListAppInstanceUsersRequest,
+  ) => stream.Stream<
+    ListAppInstanceUsersResponse,
+    ListAppInstanceUsersError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListAppInstanceUsersRequest,
+  ) => stream.Stream<
+    unknown,
+    ListAppInstanceUsersError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListTagsForResourceError =
   | BadRequestException

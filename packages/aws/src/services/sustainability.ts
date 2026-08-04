@@ -112,26 +112,30 @@ const rules = T.EndpointResolver((p, _) => {
   return err("Invalid Configuration: Missing Region");
 });
 
-export class AccessDeniedException extends S.TaggedErrorClass<AccessDeniedException>()(
-  "AccessDeniedException",
-  { Message: S.String },
-  T.HttpError(403),
-).pipe(C.withAuthError) {}
-export class InternalServerException extends S.TaggedErrorClass<InternalServerException>()(
-  "InternalServerException",
-  { Message: S.String },
-  T.all(T.HttpError(500), T.Retryable()),
-).pipe(C.withServerError, C.withRetryableError) {}
-export class ThrottlingException extends S.TaggedErrorClass<ThrottlingException>()(
-  "ThrottlingException",
-  { Message: S.String },
-  T.all(T.HttpError(429), T.Retryable()),
-).pipe(C.withThrottlingError, C.withRetryableError) {}
-export class ValidationException extends S.TaggedErrorClass<ValidationException>()(
-  "ValidationException",
-  { Message: S.String },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
+export class AccessDeniedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
+    "AccessDeniedException",
+    { Message: S.String },
+    T.HttpError(403),
+  ).pipe(C.withAuthError) {}
+export class InternalServerException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
+    "InternalServerException",
+    { Message: S.String },
+    T.all(T.HttpError(500), T.Retryable()),
+  ).pipe(C.withServerError, C.withRetryableError) {}
+export class ThrottlingException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
+    "ThrottlingException",
+    { Message: S.String },
+    T.all(T.HttpError(429), T.Retryable()),
+  ).pipe(C.withThrottlingError, C.withRetryableError) {}
+export class ValidationException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
+    "ValidationException",
+    { Message: S.String },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
 export interface TimePeriod {
   Start: Date;
   End: Date;
@@ -383,7 +387,27 @@ export const getEstimatedCarbonEmissions: API.OperationMethod<
     items: "Results",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  GetEstimatedCarbonEmissionsRequest,
+  GetEstimatedCarbonEmissionsResponse,
+  GetEstimatedCarbonEmissionsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: GetEstimatedCarbonEmissionsRequest,
+  ) => stream.Stream<
+    GetEstimatedCarbonEmissionsResponse,
+    GetEstimatedCarbonEmissionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: GetEstimatedCarbonEmissionsRequest,
+  ) => stream.Stream<
+    EstimatedCarbonEmissions,
+    GetEstimatedCarbonEmissionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type GetEstimatedCarbonEmissionsDimensionValuesError =
   | AccessDeniedException
@@ -432,4 +456,24 @@ export const getEstimatedCarbonEmissionsDimensionValues: API.OperationMethod<
     items: "Results",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  GetEstimatedCarbonEmissionsDimensionValuesRequest,
+  GetEstimatedCarbonEmissionsDimensionValuesResponse,
+  GetEstimatedCarbonEmissionsDimensionValuesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: GetEstimatedCarbonEmissionsDimensionValuesRequest,
+  ) => stream.Stream<
+    GetEstimatedCarbonEmissionsDimensionValuesResponse,
+    GetEstimatedCarbonEmissionsDimensionValuesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: GetEstimatedCarbonEmissionsDimensionValuesRequest,
+  ) => stream.Stream<
+    DimensionEntry,
+    GetEstimatedCarbonEmissionsDimensionValuesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};

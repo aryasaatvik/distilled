@@ -52,70 +52,78 @@ const rules = T.EndpointResolver((p, _) => {
   return err("Invalid Configuration: Missing Region");
 });
 
-export class AccessDeniedException extends S.TaggedErrorClass<AccessDeniedException>()(
-  "AccessDeniedException",
-  { Message: S.String },
-  T.HttpError(403),
-).pipe(C.withAuthError) {}
-export class ConflictException extends S.TaggedErrorClass<ConflictException>()(
-  "ConflictException",
-  { Message: S.String, ResourceId: S.String, ResourceType: S.String },
-  T.HttpError(409),
-).pipe(C.withConflictError) {}
-export class InternalServerException extends S.TaggedErrorClass<InternalServerException>()(
-  "InternalServerException",
-  {
-    Message: S.String,
-    RetryAfterSeconds: S.optional(S.Number).pipe(T.HttpHeader("Retry-After")),
-  },
-  T.all(T.HttpError(500), T.Retryable()),
-).pipe(C.withServerError, C.withRetryableError) {}
-export class OperationTimeoutException extends S.TaggedErrorClass<OperationTimeoutException>()(
-  "OperationTimeoutException",
-  { Message: S.optional(S.String) },
-  T.HttpError(504),
-).pipe(C.withTimeoutError) {}
-export class ResourceNotFoundException extends S.TaggedErrorClass<ResourceNotFoundException>()(
-  "ResourceNotFoundException",
-  { Message: S.String, ResourceId: S.String, ResourceType: S.String },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class ServiceQuotaExceededException extends S.TaggedErrorClass<ServiceQuotaExceededException>()(
-  "ServiceQuotaExceededException",
-  {
-    Message: S.String,
-    ResourceId: S.String,
-    ResourceType: S.String,
-    ServiceCode: S.String,
-    QuotaCode: S.String,
-  },
-  T.HttpError(402),
-).pipe(C.withQuotaError) {}
-export class ThrottlingException extends S.TaggedErrorClass<ThrottlingException>()(
-  "ThrottlingException",
-  {
-    Message: S.String,
-    ServiceCode: S.String,
-    QuotaCode: S.String,
-    RetryAfterSeconds: S.optional(S.Number).pipe(T.HttpHeader("Retry-After")),
-  },
-  T.all(T.HttpError(429), T.Retryable({ throttling: true })),
-).pipe(C.withThrottlingError, C.withRetryableError) {}
-export class ValidationException extends S.TaggedErrorClass<ValidationException>()(
-  "ValidationException",
-  {
-    Message: S.String,
-    Reason: S.suspend(() => ValidationExceptionReason).annotate({
-      identifier: "ValidationExceptionReason",
-    }),
-    FieldList: S.optional(
-      S.suspend(() => ValidationExceptionFields).annotate({
-        identifier: "ValidationExceptionFields",
+export class AccessDeniedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
+    "AccessDeniedException",
+    { Message: S.String },
+    T.HttpError(403),
+  ).pipe(C.withAuthError) {}
+export class ConflictException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
+    "ConflictException",
+    { Message: S.String, ResourceId: S.String, ResourceType: S.String },
+    T.HttpError(409),
+  ).pipe(C.withConflictError) {}
+export class InternalServerException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
+    "InternalServerException",
+    {
+      Message: S.String,
+      RetryAfterSeconds: S.optional(S.Number).pipe(T.HttpHeader("Retry-After")),
+    },
+    T.all(T.HttpError(500), T.Retryable()),
+  ).pipe(C.withServerError, C.withRetryableError) {}
+export class OperationTimeoutException
+  extends /*@__PURE__*/ S.TaggedErrorClass<OperationTimeoutException>()(
+    "OperationTimeoutException",
+    { Message: S.optional(S.String) },
+    T.HttpError(504),
+  ).pipe(C.withTimeoutError) {}
+export class ResourceNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
+    "ResourceNotFoundException",
+    { Message: S.String, ResourceId: S.String, ResourceType: S.String },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class ServiceQuotaExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
+    "ServiceQuotaExceededException",
+    {
+      Message: S.String,
+      ResourceId: S.String,
+      ResourceType: S.String,
+      ServiceCode: S.String,
+      QuotaCode: S.String,
+    },
+    T.HttpError(402),
+  ).pipe(C.withQuotaError) {}
+export class ThrottlingException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
+    "ThrottlingException",
+    {
+      Message: S.String,
+      ServiceCode: S.String,
+      QuotaCode: S.String,
+      RetryAfterSeconds: S.optional(S.Number).pipe(T.HttpHeader("Retry-After")),
+    },
+    T.all(T.HttpError(429), T.Retryable({ throttling: true })),
+  ).pipe(C.withThrottlingError, C.withRetryableError) {}
+export class ValidationException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
+    "ValidationException",
+    {
+      Message: S.String,
+      Reason: S.suspend(() => ValidationExceptionReason).annotate({
+        identifier: "ValidationExceptionReason",
       }),
-    ),
-  },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
+      FieldList: S.optional(
+        S.suspend(() => ValidationExceptionFields).annotate({
+          identifier: "ValidationExceptionFields",
+        }),
+      ),
+    },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
 export type NameString = string;
 export type IdempotencyTokenString = string;
 export interface DefinitionS3Location {
@@ -1299,7 +1307,27 @@ export const listTaskInstances: API.OperationMethod<
     items: "TaskInstances",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListTaskInstancesRequest,
+  ListTaskInstancesResponse,
+  ListTaskInstancesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListTaskInstancesRequest,
+  ) => stream.Stream<
+    ListTaskInstancesResponse,
+    ListTaskInstancesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListTaskInstancesRequest,
+  ) => stream.Stream<
+    TaskInstanceSummary,
+    ListTaskInstancesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListWorkflowRunsError =
   | AccessDeniedException
@@ -1350,7 +1378,27 @@ export const listWorkflowRuns: API.OperationMethod<
     items: "WorkflowRuns",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListWorkflowRunsRequest,
+  ListWorkflowRunsResponse,
+  ListWorkflowRunsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListWorkflowRunsRequest,
+  ) => stream.Stream<
+    ListWorkflowRunsResponse,
+    ListWorkflowRunsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListWorkflowRunsRequest,
+  ) => stream.Stream<
+    WorkflowRunSummary,
+    ListWorkflowRunsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListWorkflowsError =
   | AccessDeniedException
@@ -1401,7 +1449,27 @@ export const listWorkflows: API.OperationMethod<
     items: "Workflows",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListWorkflowsRequest,
+  ListWorkflowsResponse,
+  ListWorkflowsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListWorkflowsRequest,
+  ) => stream.Stream<
+    ListWorkflowsResponse,
+    ListWorkflowsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListWorkflowsRequest,
+  ) => stream.Stream<
+    WorkflowSummary,
+    ListWorkflowsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListWorkflowVersionsError =
   | AccessDeniedException
@@ -1452,7 +1520,27 @@ export const listWorkflowVersions: API.OperationMethod<
     items: "WorkflowVersions",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListWorkflowVersionsRequest,
+  ListWorkflowVersionsResponse,
+  ListWorkflowVersionsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListWorkflowVersionsRequest,
+  ) => stream.Stream<
+    ListWorkflowVersionsResponse,
+    ListWorkflowVersionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListWorkflowVersionsRequest,
+  ) => stream.Stream<
+    WorkflowVersionSummary,
+    ListWorkflowVersionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type StartWorkflowRunError =
   | AccessDeniedException

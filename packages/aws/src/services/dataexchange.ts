@@ -87,53 +87,60 @@ const rules = T.EndpointResolver((p, _) => {
   return err("Invalid Configuration: Missing Region");
 });
 
-export class AccessDeniedException extends S.TaggedErrorClass<AccessDeniedException>()(
-  "AccessDeniedException",
-  { Message: S.String },
-  T.HttpError(403),
-).pipe(C.withAuthError) {}
-export class ConflictException extends S.TaggedErrorClass<ConflictException>()(
-  "ConflictException",
-  {
-    Message: S.String,
-    ResourceId: S.optional(S.String),
-    ResourceType: S.optional(S.String),
-  },
-  T.HttpError(409),
-).pipe(C.withConflictError) {}
-export class InternalServerException extends S.TaggedErrorClass<InternalServerException>()(
-  "InternalServerException",
-  { Message: S.String },
-  T.HttpError(500),
-).pipe(C.withServerError) {}
-export class ResourceNotFoundException extends S.TaggedErrorClass<ResourceNotFoundException>()(
-  "ResourceNotFoundException",
-  {
-    Message: S.String,
-    ResourceId: S.optional(S.String),
-    ResourceType: S.optional(S.String),
-  },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class ServiceLimitExceededException extends S.TaggedErrorClass<ServiceLimitExceededException>()(
-  "ServiceLimitExceededException",
-  {
-    LimitName: S.optional(S.String),
-    LimitValue: S.optional(S.Number),
-    Message: S.String,
-  },
-  T.HttpError(402),
-).pipe(C.withQuotaError) {}
-export class ThrottlingException extends S.TaggedErrorClass<ThrottlingException>()(
-  "ThrottlingException",
-  { Message: S.String },
-  T.HttpError(429),
-).pipe(C.withThrottlingError) {}
-export class ValidationException extends S.TaggedErrorClass<ValidationException>()(
-  "ValidationException",
-  { Message: S.String, ExceptionCause: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
+export class AccessDeniedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
+    "AccessDeniedException",
+    { Message: S.String },
+    T.HttpError(403),
+  ).pipe(C.withAuthError) {}
+export class ConflictException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
+    "ConflictException",
+    {
+      Message: S.String,
+      ResourceId: S.optional(S.String),
+      ResourceType: S.optional(S.String),
+    },
+    T.HttpError(409),
+  ).pipe(C.withConflictError) {}
+export class InternalServerException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
+    "InternalServerException",
+    { Message: S.String },
+    T.HttpError(500),
+  ).pipe(C.withServerError) {}
+export class ResourceNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
+    "ResourceNotFoundException",
+    {
+      Message: S.String,
+      ResourceId: S.optional(S.String),
+      ResourceType: S.optional(S.String),
+    },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class ServiceLimitExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ServiceLimitExceededException>()(
+    "ServiceLimitExceededException",
+    {
+      LimitName: S.optional(S.String),
+      LimitValue: S.optional(S.Number),
+      Message: S.String,
+    },
+    T.HttpError(402),
+  ).pipe(C.withQuotaError) {}
+export class ThrottlingException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
+    "ThrottlingException",
+    { Message: S.String },
+    T.HttpError(429),
+  ).pipe(C.withThrottlingError) {}
+export class ValidationException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
+    "ValidationException",
+    { Message: S.String, ExceptionCause: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
 export type DataGrantArn = string;
 export interface AcceptDataGrantRequest {
   DataGrantArn: string;
@@ -3525,7 +3532,27 @@ export const listDataGrants: API.OperationMethod<
     items: "DataGrantSummaries",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListDataGrantsRequest,
+  ListDataGrantsResponse,
+  ListDataGrantsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListDataGrantsRequest,
+  ) => stream.Stream<
+    ListDataGrantsResponse,
+    ListDataGrantsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListDataGrantsRequest,
+  ) => stream.Stream<
+    DataGrantSummaryEntry,
+    ListDataGrantsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListDataSetRevisionsError =
   | InternalServerException
@@ -3574,7 +3601,27 @@ export const listDataSetRevisions: API.OperationMethod<
     items: "Revisions",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListDataSetRevisionsRequest,
+  ListDataSetRevisionsResponse,
+  ListDataSetRevisionsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListDataSetRevisionsRequest,
+  ) => stream.Stream<
+    ListDataSetRevisionsResponse,
+    ListDataSetRevisionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListDataSetRevisionsRequest,
+  ) => stream.Stream<
+    RevisionEntry,
+    ListDataSetRevisionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListDataSetsError =
   | InternalServerException
@@ -3623,7 +3670,27 @@ export const listDataSets: API.OperationMethod<
     items: "DataSets",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListDataSetsRequest,
+  ListDataSetsResponse,
+  ListDataSetsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListDataSetsRequest,
+  ) => stream.Stream<
+    ListDataSetsResponse,
+    ListDataSetsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListDataSetsRequest,
+  ) => stream.Stream<
+    DataSetEntry,
+    ListDataSetsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListEventActionsError =
   | InternalServerException
@@ -3672,7 +3739,27 @@ export const listEventActions: API.OperationMethod<
     items: "EventActions",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListEventActionsRequest,
+  ListEventActionsResponse,
+  ListEventActionsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListEventActionsRequest,
+  ) => stream.Stream<
+    ListEventActionsResponse,
+    ListEventActionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListEventActionsRequest,
+  ) => stream.Stream<
+    EventActionEntry,
+    ListEventActionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListJobsError =
   | InternalServerException
@@ -3721,7 +3808,27 @@ export const listJobs: API.OperationMethod<
     items: "Jobs",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListJobsRequest,
+  ListJobsResponse,
+  ListJobsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListJobsRequest,
+  ) => stream.Stream<
+    ListJobsResponse,
+    ListJobsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListJobsRequest,
+  ) => stream.Stream<
+    JobEntry,
+    ListJobsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListReceivedDataGrantsError =
   | AccessDeniedException
@@ -3772,7 +3879,27 @@ export const listReceivedDataGrants: API.OperationMethod<
     items: "DataGrantSummaries",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListReceivedDataGrantsRequest,
+  ListReceivedDataGrantsResponse,
+  ListReceivedDataGrantsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListReceivedDataGrantsRequest,
+  ) => stream.Stream<
+    ListReceivedDataGrantsResponse,
+    ListReceivedDataGrantsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListReceivedDataGrantsRequest,
+  ) => stream.Stream<
+    ReceivedDataGrantSummariesEntry,
+    ListReceivedDataGrantsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListRevisionAssetsError =
   | InternalServerException
@@ -3821,7 +3948,27 @@ export const listRevisionAssets: API.OperationMethod<
     items: "Assets",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListRevisionAssetsRequest,
+  ListRevisionAssetsResponse,
+  ListRevisionAssetsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListRevisionAssetsRequest,
+  ) => stream.Stream<
+    ListRevisionAssetsResponse,
+    ListRevisionAssetsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListRevisionAssetsRequest,
+  ) => stream.Stream<
+    AssetEntry,
+    ListRevisionAssetsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListTagsForResourceError = CommonErrors;
 /**

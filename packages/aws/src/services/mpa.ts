@@ -54,51 +54,60 @@ const rules = T.EndpointResolver((p, _) => {
   return err("Invalid Configuration: Missing Region");
 });
 
-export class AccessDeniedException extends S.TaggedErrorClass<AccessDeniedException>()(
-  "AccessDeniedException",
-  { Message: S.String },
-  T.HttpError(403),
-).pipe(C.withAuthError) {}
-export class ConflictException extends S.TaggedErrorClass<ConflictException>()(
-  "ConflictException",
-  { Message: S.String },
-  T.HttpError(409),
-).pipe(C.withConflictError) {}
-export class InternalServerException extends S.TaggedErrorClass<InternalServerException>()(
-  "InternalServerException",
-  { Message: S.String },
-  T.all(T.HttpError(500), T.Retryable()),
-).pipe(C.withServerError, C.withRetryableError) {}
-export class InvalidParameterException extends S.TaggedErrorClass<InvalidParameterException>()(
-  "InvalidParameterException",
-  { Message: S.String },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class ResourceNotFoundException extends S.TaggedErrorClass<ResourceNotFoundException>()(
-  "ResourceNotFoundException",
-  { Message: S.String },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class ServiceQuotaExceededException extends S.TaggedErrorClass<ServiceQuotaExceededException>()(
-  "ServiceQuotaExceededException",
-  { Message: S.String },
-  T.HttpError(402),
-).pipe(C.withQuotaError) {}
-export class ThrottlingException extends S.TaggedErrorClass<ThrottlingException>()(
-  "ThrottlingException",
-  { Message: S.String },
-  T.HttpError(429),
-).pipe(C.withThrottlingError) {}
-export class TooManyTagsException extends S.TaggedErrorClass<TooManyTagsException>()(
-  "TooManyTagsException",
-  { Message: S.String, ResourceName: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class ValidationException extends S.TaggedErrorClass<ValidationException>()(
-  "ValidationException",
-  { Message: S.String },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
+export class AccessDeniedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
+    "AccessDeniedException",
+    { Message: S.String },
+    T.HttpError(403),
+  ).pipe(C.withAuthError) {}
+export class ConflictException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
+    "ConflictException",
+    { Message: S.String },
+    T.HttpError(409),
+  ).pipe(C.withConflictError) {}
+export class InternalServerException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
+    "InternalServerException",
+    { Message: S.String },
+    T.all(T.HttpError(500), T.Retryable()),
+  ).pipe(C.withServerError, C.withRetryableError) {}
+export class InvalidParameterException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidParameterException>()(
+    "InvalidParameterException",
+    { Message: S.String },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class ResourceNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
+    "ResourceNotFoundException",
+    { Message: S.String },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class ServiceQuotaExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
+    "ServiceQuotaExceededException",
+    { Message: S.String },
+    T.HttpError(402),
+  ).pipe(C.withQuotaError) {}
+export class ThrottlingException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
+    "ThrottlingException",
+    { Message: S.String },
+    T.HttpError(429),
+  ).pipe(C.withThrottlingError) {}
+export class TooManyTagsException
+  extends /*@__PURE__*/ S.TaggedErrorClass<TooManyTagsException>()(
+    "TooManyTagsException",
+    { Message: S.String, ResourceName: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class ValidationException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
+    "ValidationException",
+    { Message: S.String },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
 export type SessionArn = string;
 export interface CancelSessionRequest {
   SessionArn: string;
@@ -1853,7 +1862,27 @@ export const listApprovalTeams: API.OperationMethod<
     items: "ApprovalTeams",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListApprovalTeamsRequest,
+  ListApprovalTeamsResponse,
+  ListApprovalTeamsError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListApprovalTeamsRequest,
+  ) => stream.Stream<
+    ListApprovalTeamsResponse,
+    ListApprovalTeamsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListApprovalTeamsRequest,
+  ) => stream.Stream<
+    ListApprovalTeamsResponseApprovalTeam,
+    ListApprovalTeamsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type ListIdentitySourcesError =
   | AccessDeniedException
@@ -1902,7 +1931,27 @@ export const listIdentitySources: API.OperationMethod<
     items: "IdentitySources",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListIdentitySourcesRequest,
+  ListIdentitySourcesResponse,
+  ListIdentitySourcesError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListIdentitySourcesRequest,
+  ) => stream.Stream<
+    ListIdentitySourcesResponse,
+    ListIdentitySourcesError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListIdentitySourcesRequest,
+  ) => stream.Stream<
+    IdentitySourceForList,
+    ListIdentitySourcesError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type ListPoliciesError =
   | AccessDeniedException
@@ -1951,7 +2000,27 @@ export const listPolicies: API.OperationMethod<
     items: "Policies",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListPoliciesRequest,
+  ListPoliciesResponse,
+  ListPoliciesError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListPoliciesRequest,
+  ) => stream.Stream<
+    ListPoliciesResponse,
+    ListPoliciesError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListPoliciesRequest,
+  ) => stream.Stream<
+    Policy,
+    ListPoliciesError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type ListPolicyVersionsError =
   | AccessDeniedException
@@ -2002,7 +2071,27 @@ export const listPolicyVersions: API.OperationMethod<
     items: "PolicyVersions",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListPolicyVersionsRequest,
+  ListPolicyVersionsResponse,
+  ListPolicyVersionsError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListPolicyVersionsRequest,
+  ) => stream.Stream<
+    ListPolicyVersionsResponse,
+    ListPolicyVersionsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListPolicyVersionsRequest,
+  ) => stream.Stream<
+    PolicyVersionSummary,
+    ListPolicyVersionsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type ListResourcePoliciesError =
   | AccessDeniedException
@@ -2053,7 +2142,27 @@ export const listResourcePolicies: API.OperationMethod<
     items: "ResourcePolicies",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListResourcePoliciesRequest,
+  ListResourcePoliciesResponse,
+  ListResourcePoliciesError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListResourcePoliciesRequest,
+  ) => stream.Stream<
+    ListResourcePoliciesResponse,
+    ListResourcePoliciesError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListResourcePoliciesRequest,
+  ) => stream.Stream<
+    ListResourcePoliciesResponseResourcePolicy,
+    ListResourcePoliciesError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type ListSessionsError =
   | AccessDeniedException
@@ -2104,7 +2213,27 @@ export const listSessions: API.OperationMethod<
     items: "Sessions",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListSessionsRequest,
+  ListSessionsResponse,
+  ListSessionsError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListSessionsRequest,
+  ) => stream.Stream<
+    ListSessionsResponse,
+    ListSessionsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListSessionsRequest,
+  ) => stream.Stream<
+    ListSessionsResponseSession,
+    ListSessionsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type ListTagsForResourceError =
   | AccessDeniedException

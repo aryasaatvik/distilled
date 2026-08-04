@@ -86,51 +86,60 @@ const rules = T.EndpointResolver((p, _) => {
   return err("Invalid Configuration: Missing Region");
 });
 
-export class AccessDeniedException extends S.TaggedErrorClass<AccessDeniedException>()(
-  "AccessDeniedException",
-  { message: S.optional(S.String) },
-  T.HttpError(403),
-).pipe(C.withAuthError) {}
-export class ConflictException extends S.TaggedErrorClass<ConflictException>()(
-  "ConflictException",
-  { message: S.optional(S.String) },
-  T.HttpError(409),
-).pipe(C.withConflictError) {}
-export class DisabledOperationException extends S.TaggedErrorClass<DisabledOperationException>()(
-  "DisabledOperationException",
-  { message: S.optional(S.String) },
-  T.HttpError(409),
-).pipe(C.withConflictError) {}
-export class InternalException extends S.TaggedErrorClass<InternalException>()(
-  "InternalException",
-  { message: S.optional(S.String) },
-  T.HttpError(500),
-).pipe(C.withServerError) {}
-export class InvalidPaginationTokenException extends S.TaggedErrorClass<InvalidPaginationTokenException>()(
-  "InvalidPaginationTokenException",
-  { message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class LimitExceededException extends S.TaggedErrorClass<LimitExceededException>()(
-  "LimitExceededException",
-  { message: S.optional(S.String) },
-  T.HttpError(409),
-).pipe(C.withConflictError) {}
-export class ResourceAlreadyExistsException extends S.TaggedErrorClass<ResourceAlreadyExistsException>()(
-  "ResourceAlreadyExistsException",
-  { message: S.optional(S.String) },
-  T.HttpError(409),
-).pipe(C.withConflictError, C.withAlreadyExistsError) {}
-export class ResourceNotFoundException extends S.TaggedErrorClass<ResourceNotFoundException>()(
-  "ResourceNotFoundException",
-  { message: S.optional(S.String) },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class ValidationException extends S.TaggedErrorClass<ValidationException>()(
-  "ValidationException",
-  { message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
+export class AccessDeniedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
+    "AccessDeniedException",
+    { message: S.optional(S.String) },
+    T.HttpError(403),
+  ).pipe(C.withAuthError) {}
+export class ConflictException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
+    "ConflictException",
+    { message: S.optional(S.String) },
+    T.HttpError(409),
+  ).pipe(C.withConflictError) {}
+export class DisabledOperationException
+  extends /*@__PURE__*/ S.TaggedErrorClass<DisabledOperationException>()(
+    "DisabledOperationException",
+    { message: S.optional(S.String) },
+    T.HttpError(409),
+  ).pipe(C.withConflictError) {}
+export class InternalException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InternalException>()(
+    "InternalException",
+    { message: S.optional(S.String) },
+    T.HttpError(500),
+  ).pipe(C.withServerError) {}
+export class InvalidPaginationTokenException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidPaginationTokenException>()(
+    "InvalidPaginationTokenException",
+    { message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class LimitExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<LimitExceededException>()(
+    "LimitExceededException",
+    { message: S.optional(S.String) },
+    T.HttpError(409),
+  ).pipe(C.withConflictError) {}
+export class ResourceAlreadyExistsException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceAlreadyExistsException>()(
+    "ResourceAlreadyExistsException",
+    { message: S.optional(S.String) },
+    T.HttpError(409),
+  ).pipe(C.withConflictError, C.withAlreadyExistsError) {}
+export class ResourceNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
+    "ResourceNotFoundException",
+    { message: S.optional(S.String) },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class ValidationException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
+    "ValidationException",
+    { message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
 export type PipelineName = string;
 export type PipelineUnits = number;
 export type PipelineConfigurationBody = string;
@@ -1633,7 +1642,27 @@ export const listPipelineEndpointConnections: API.OperationMethod<
     items: "PipelineEndpointConnections",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListPipelineEndpointConnectionsRequest,
+  ListPipelineEndpointConnectionsResponse,
+  ListPipelineEndpointConnectionsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListPipelineEndpointConnectionsRequest,
+  ) => stream.Stream<
+    ListPipelineEndpointConnectionsResponse,
+    ListPipelineEndpointConnectionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListPipelineEndpointConnectionsRequest,
+  ) => stream.Stream<
+    PipelineEndpointConnection,
+    ListPipelineEndpointConnectionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListPipelineEndpointsError =
   | AccessDeniedException
@@ -1684,7 +1713,27 @@ export const listPipelineEndpoints: API.OperationMethod<
     items: "PipelineEndpoints",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListPipelineEndpointsRequest,
+  ListPipelineEndpointsResponse,
+  ListPipelineEndpointsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListPipelineEndpointsRequest,
+  ) => stream.Stream<
+    ListPipelineEndpointsResponse,
+    ListPipelineEndpointsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListPipelineEndpointsRequest,
+  ) => stream.Stream<
+    PipelineEndpoint,
+    ListPipelineEndpointsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListPipelinesError =
   | AccessDeniedException
@@ -1736,7 +1785,27 @@ export const listPipelines: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListPipelinesRequest,
+  ListPipelinesResponse,
+  ListPipelinesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListPipelinesRequest,
+  ) => stream.Stream<
+    ListPipelinesResponse,
+    ListPipelinesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListPipelinesRequest,
+  ) => stream.Stream<
+    unknown,
+    ListPipelinesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListTagsForResourceError =
   | AccessDeniedException

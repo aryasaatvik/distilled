@@ -106,74 +106,81 @@ const rules = T.EndpointResolver((p, _) => {
   return err("Invalid Configuration: Missing Region");
 });
 
-export class AccessDeniedException extends S.TaggedErrorClass<AccessDeniedException>()(
-  "AccessDeniedException",
-  { Message: S.String },
-  T.HttpError(403),
-).pipe(C.withAuthError) {}
-export class ConflictException extends S.TaggedErrorClass<ConflictException>()(
-  "ConflictException",
-  {
-    Message: S.String,
-    ResourceId: S.String,
-    ResourceType: S.String,
-    Reason: S.optional(
-      S.suspend(() => ConflictExceptionReason).annotate({
-        identifier: "ConflictExceptionReason",
-      }),
-    ),
-  },
-  T.HttpError(409),
-).pipe(C.withConflictError) {}
-export class InternalServerException extends S.TaggedErrorClass<InternalServerException>()(
-  "InternalServerException",
-  {
-    Message: S.String,
-    RetryAfterSeconds: S.optional(S.Number).pipe(T.HttpHeader("Retry-After")),
-  },
-  T.HttpError(500),
-).pipe(C.withServerError) {}
-export class ResourceNotFoundException extends S.TaggedErrorClass<ResourceNotFoundException>()(
-  "ResourceNotFoundException",
-  { Message: S.String, ResourceId: S.String, ResourceType: S.String },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class ServiceLimitExceededException extends S.TaggedErrorClass<ServiceLimitExceededException>()(
-  "ServiceLimitExceededException",
-  {
-    Message: S.String,
-    ResourceId: S.optional(S.String),
-    ResourceType: S.optional(S.String),
-    LimitCode: S.String,
-    ServiceCode: S.String,
-  },
-  T.HttpError(402),
-).pipe(C.withQuotaError) {}
-export class ThrottlingException extends S.TaggedErrorClass<ThrottlingException>()(
-  "ThrottlingException",
-  {
-    Message: S.String,
-    RetryAfterSeconds: S.optional(S.Number).pipe(T.HttpHeader("Retry-After")),
-  },
-  T.HttpError(429),
-).pipe(C.withThrottlingError) {}
-export class ValidationException extends S.TaggedErrorClass<ValidationException>()(
-  "ValidationException",
-  {
-    Message: S.String,
-    Reason: S.optional(
-      S.suspend(() => ValidationExceptionReason).annotate({
-        identifier: "ValidationExceptionReason",
-      }),
-    ),
-    Fields: S.optional(
-      S.suspend(() => ValidationExceptionFieldList).annotate({
-        identifier: "ValidationExceptionFieldList",
-      }),
-    ),
-  },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
+export class AccessDeniedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
+    "AccessDeniedException",
+    { Message: S.String },
+    T.HttpError(403),
+  ).pipe(C.withAuthError) {}
+export class ConflictException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
+    "ConflictException",
+    {
+      Message: S.String,
+      ResourceId: S.String,
+      ResourceType: S.String,
+      Reason: S.optional(
+        S.suspend(() => ConflictExceptionReason).annotate({
+          identifier: "ConflictExceptionReason",
+        }),
+      ),
+    },
+    T.HttpError(409),
+  ).pipe(C.withConflictError) {}
+export class InternalServerException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
+    "InternalServerException",
+    {
+      Message: S.String,
+      RetryAfterSeconds: S.optional(S.Number).pipe(T.HttpHeader("Retry-After")),
+    },
+    T.HttpError(500),
+  ).pipe(C.withServerError) {}
+export class ResourceNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
+    "ResourceNotFoundException",
+    { Message: S.String, ResourceId: S.String, ResourceType: S.String },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class ServiceLimitExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ServiceLimitExceededException>()(
+    "ServiceLimitExceededException",
+    {
+      Message: S.String,
+      ResourceId: S.optional(S.String),
+      ResourceType: S.optional(S.String),
+      LimitCode: S.String,
+      ServiceCode: S.String,
+    },
+    T.HttpError(402),
+  ).pipe(C.withQuotaError) {}
+export class ThrottlingException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
+    "ThrottlingException",
+    {
+      Message: S.String,
+      RetryAfterSeconds: S.optional(S.Number).pipe(T.HttpHeader("Retry-After")),
+    },
+    T.HttpError(429),
+  ).pipe(C.withThrottlingError) {}
+export class ValidationException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
+    "ValidationException",
+    {
+      Message: S.String,
+      Reason: S.optional(
+        S.suspend(() => ValidationExceptionReason).annotate({
+          identifier: "ValidationExceptionReason",
+        }),
+      ),
+      Fields: S.optional(
+        S.suspend(() => ValidationExceptionFieldList).annotate({
+          identifier: "ValidationExceptionFieldList",
+        }),
+      ),
+    },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
 export type BillingGroupArn = string;
 export type AccountId = string;
 export type AccountIdList = string[];
@@ -2820,7 +2827,27 @@ export const getBillingGroupCostReport: API.OperationMethod<
     items: "BillingGroupCostReportResults",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  GetBillingGroupCostReportInput,
+  GetBillingGroupCostReportOutput,
+  GetBillingGroupCostReportError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: GetBillingGroupCostReportInput,
+  ) => stream.Stream<
+    GetBillingGroupCostReportOutput,
+    GetBillingGroupCostReportError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: GetBillingGroupCostReportInput,
+  ) => stream.Stream<
+    BillingGroupCostReportResultElement,
+    GetBillingGroupCostReportError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListAccountAssociationsError =
   | AccessDeniedException
@@ -2870,7 +2897,27 @@ export const listAccountAssociations: API.OperationMethod<
     outputToken: "NextToken",
     items: "LinkedAccounts",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListAccountAssociationsInput,
+  ListAccountAssociationsOutput,
+  ListAccountAssociationsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListAccountAssociationsInput,
+  ) => stream.Stream<
+    ListAccountAssociationsOutput,
+    ListAccountAssociationsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListAccountAssociationsInput,
+  ) => stream.Stream<
+    AccountAssociationsListElement,
+    ListAccountAssociationsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListBillingGroupCostReportsError =
   | AccessDeniedException
@@ -2921,7 +2968,27 @@ export const listBillingGroupCostReports: API.OperationMethod<
     items: "BillingGroupCostReports",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListBillingGroupCostReportsInput,
+  ListBillingGroupCostReportsOutput,
+  ListBillingGroupCostReportsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListBillingGroupCostReportsInput,
+  ) => stream.Stream<
+    ListBillingGroupCostReportsOutput,
+    ListBillingGroupCostReportsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListBillingGroupCostReportsInput,
+  ) => stream.Stream<
+    BillingGroupCostReportElement,
+    ListBillingGroupCostReportsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListBillingGroupsError =
   | AccessDeniedException
@@ -2972,7 +3039,27 @@ export const listBillingGroups: API.OperationMethod<
     items: "BillingGroups",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListBillingGroupsInput,
+  ListBillingGroupsOutput,
+  ListBillingGroupsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListBillingGroupsInput,
+  ) => stream.Stream<
+    ListBillingGroupsOutput,
+    ListBillingGroupsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListBillingGroupsInput,
+  ) => stream.Stream<
+    BillingGroupListElement,
+    ListBillingGroupsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListCustomLineItemsError =
   | AccessDeniedException
@@ -3023,7 +3110,27 @@ export const listCustomLineItems: API.OperationMethod<
     items: "CustomLineItems",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListCustomLineItemsInput,
+  ListCustomLineItemsOutput,
+  ListCustomLineItemsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListCustomLineItemsInput,
+  ) => stream.Stream<
+    ListCustomLineItemsOutput,
+    ListCustomLineItemsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListCustomLineItemsInput,
+  ) => stream.Stream<
+    CustomLineItemListElement,
+    ListCustomLineItemsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListCustomLineItemVersionsError =
   | AccessDeniedException
@@ -3072,7 +3179,27 @@ export const listCustomLineItemVersions: API.OperationMethod<
     items: "CustomLineItemVersions",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListCustomLineItemVersionsInput,
+  ListCustomLineItemVersionsOutput,
+  ListCustomLineItemVersionsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListCustomLineItemVersionsInput,
+  ) => stream.Stream<
+    ListCustomLineItemVersionsOutput,
+    ListCustomLineItemVersionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListCustomLineItemVersionsInput,
+  ) => stream.Stream<
+    CustomLineItemVersionListElement,
+    ListCustomLineItemVersionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListPricingPlansError =
   | AccessDeniedException
@@ -3121,7 +3248,27 @@ export const listPricingPlans: API.OperationMethod<
     items: "PricingPlans",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListPricingPlansInput,
+  ListPricingPlansOutput,
+  ListPricingPlansError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListPricingPlansInput,
+  ) => stream.Stream<
+    ListPricingPlansOutput,
+    ListPricingPlansError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListPricingPlansInput,
+  ) => stream.Stream<
+    PricingPlanListElement,
+    ListPricingPlansError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListPricingPlansAssociatedWithPricingRuleError =
   | AccessDeniedException
@@ -3172,7 +3319,27 @@ export const listPricingPlansAssociatedWithPricingRule: API.OperationMethod<
     items: "PricingPlanArns",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListPricingPlansAssociatedWithPricingRuleInput,
+  ListPricingPlansAssociatedWithPricingRuleOutput,
+  ListPricingPlansAssociatedWithPricingRuleError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListPricingPlansAssociatedWithPricingRuleInput,
+  ) => stream.Stream<
+    ListPricingPlansAssociatedWithPricingRuleOutput,
+    ListPricingPlansAssociatedWithPricingRuleError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListPricingPlansAssociatedWithPricingRuleInput,
+  ) => stream.Stream<
+    PricingPlanArn,
+    ListPricingPlansAssociatedWithPricingRuleError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListPricingRulesError =
   | AccessDeniedException
@@ -3221,7 +3388,27 @@ export const listPricingRules: API.OperationMethod<
     items: "PricingRules",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListPricingRulesInput,
+  ListPricingRulesOutput,
+  ListPricingRulesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListPricingRulesInput,
+  ) => stream.Stream<
+    ListPricingRulesOutput,
+    ListPricingRulesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListPricingRulesInput,
+  ) => stream.Stream<
+    PricingRuleListElement,
+    ListPricingRulesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListPricingRulesAssociatedToPricingPlanError =
   | AccessDeniedException
@@ -3272,7 +3459,27 @@ export const listPricingRulesAssociatedToPricingPlan: API.OperationMethod<
     items: "PricingRuleArns",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListPricingRulesAssociatedToPricingPlanInput,
+  ListPricingRulesAssociatedToPricingPlanOutput,
+  ListPricingRulesAssociatedToPricingPlanError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListPricingRulesAssociatedToPricingPlanInput,
+  ) => stream.Stream<
+    ListPricingRulesAssociatedToPricingPlanOutput,
+    ListPricingRulesAssociatedToPricingPlanError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListPricingRulesAssociatedToPricingPlanInput,
+  ) => stream.Stream<
+    PricingRuleArn,
+    ListPricingRulesAssociatedToPricingPlanError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListResourcesAssociatedToCustomLineItemError =
   | AccessDeniedException
@@ -3323,7 +3530,27 @@ export const listResourcesAssociatedToCustomLineItem: API.OperationMethod<
     items: "AssociatedResources",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListResourcesAssociatedToCustomLineItemInput,
+  ListResourcesAssociatedToCustomLineItemOutput,
+  ListResourcesAssociatedToCustomLineItemError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListResourcesAssociatedToCustomLineItemInput,
+  ) => stream.Stream<
+    ListResourcesAssociatedToCustomLineItemOutput,
+    ListResourcesAssociatedToCustomLineItemError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListResourcesAssociatedToCustomLineItemInput,
+  ) => stream.Stream<
+    ListResourcesAssociatedToCustomLineItemResponseElement,
+    ListResourcesAssociatedToCustomLineItemError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListTagsForResourceError =
   | AccessDeniedException

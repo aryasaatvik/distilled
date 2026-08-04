@@ -88,136 +88,161 @@ const rules = T.EndpointResolver((p, _) => {
   return err("Invalid Configuration: Missing Region");
 });
 
-export class ConcurrentModificationException extends S.TaggedErrorClass<ConcurrentModificationException>()(
-  "ConcurrentModificationException",
-  { Message: S.optional(S.String) },
-  T.HttpError(409),
-).pipe(C.withConflictError) {}
-export class ConflictingOperationException extends S.TaggedErrorClass<ConflictingOperationException>()(
-  "ConflictingOperationException",
-  { Message: S.optional(S.String) },
-  T.HttpError(409),
-).pipe(C.withConflictError) {}
-export class CustomMetadataLimitExceededException extends S.TaggedErrorClass<CustomMetadataLimitExceededException>()(
-  "CustomMetadataLimitExceededException",
-  { Message: S.optional(S.String) },
-  T.HttpError(429),
-).pipe(C.withThrottlingError) {}
-export class DeactivatingLastSystemUserException extends S.TaggedErrorClass<DeactivatingLastSystemUserException>()(
-  "DeactivatingLastSystemUserException",
-  { Message: S.optional(S.String), Code: S.optional(S.String) },
-  T.HttpError(409),
-).pipe(C.withConflictError) {}
-export class DocumentLockedForCommentsException extends S.TaggedErrorClass<DocumentLockedForCommentsException>()(
-  "DocumentLockedForCommentsException",
-  { Message: S.optional(S.String) },
-  T.HttpError(409),
-).pipe(C.withConflictError) {}
-export class DraftUploadOutOfSyncException extends S.TaggedErrorClass<DraftUploadOutOfSyncException>()(
-  "DraftUploadOutOfSyncException",
-  { Message: S.optional(S.String) },
-  T.HttpError(409),
-).pipe(C.withConflictError) {}
-export class EntityAlreadyExistsException extends S.TaggedErrorClass<EntityAlreadyExistsException>()(
-  "EntityAlreadyExistsException",
-  { Message: S.optional(S.String) },
-  T.HttpError(409),
-).pipe(C.withConflictError, C.withAlreadyExistsError) {}
-export class EntityNotExistsException extends S.TaggedErrorClass<EntityNotExistsException>()(
-  "EntityNotExistsException",
-  {
-    Message: S.optional(S.String),
-    EntityIds: S.optional(
-      S.suspend(() => EntityIdList).annotate({ identifier: "EntityIdList" }),
-    ),
-  },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class FailedDependencyException extends S.TaggedErrorClass<FailedDependencyException>()(
-  "FailedDependencyException",
-  { Message: S.optional(S.String) },
-  T.HttpError(424),
-) {}
-export class IllegalUserStateException extends S.TaggedErrorClass<IllegalUserStateException>()(
-  "IllegalUserStateException",
-  { Message: S.optional(S.String) },
-  T.HttpError(409),
-).pipe(C.withConflictError) {}
-export class InvalidArgumentException extends S.TaggedErrorClass<InvalidArgumentException>()(
-  "InvalidArgumentException",
-  { Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class InvalidCommentOperationException extends S.TaggedErrorClass<InvalidCommentOperationException>()(
-  "InvalidCommentOperationException",
-  { Message: S.optional(S.String) },
-  T.HttpError(409),
-).pipe(C.withConflictError) {}
-export class InvalidOperationException extends S.TaggedErrorClass<InvalidOperationException>()(
-  "InvalidOperationException",
-  { Message: S.optional(S.String) },
-  T.HttpError(405),
-).pipe(C.withBadRequestError) {}
-export class InvalidPasswordException extends S.TaggedErrorClass<InvalidPasswordException>()(
-  "InvalidPasswordException",
-  { Message: S.optional(S.String) },
-  T.HttpError(401),
-).pipe(C.withAuthError) {}
-export class LimitExceededException extends S.TaggedErrorClass<LimitExceededException>()(
-  "LimitExceededException",
-  { Message: S.optional(S.String) },
-  T.HttpError(409),
-).pipe(C.withConflictError) {}
-export class ProhibitedStateException extends S.TaggedErrorClass<ProhibitedStateException>()(
-  "ProhibitedStateException",
-  { Message: S.optional(S.String) },
-  T.HttpError(409),
-).pipe(C.withConflictError) {}
-export class RequestedEntityTooLargeException extends S.TaggedErrorClass<RequestedEntityTooLargeException>()(
-  "RequestedEntityTooLargeException",
-  { Message: S.optional(S.String) },
-  T.HttpError(413),
-).pipe(C.withBadRequestError) {}
-export class ResourceAlreadyCheckedOutException extends S.TaggedErrorClass<ResourceAlreadyCheckedOutException>()(
-  "ResourceAlreadyCheckedOutException",
-  { Message: S.optional(S.String) },
-  T.HttpError(409),
-).pipe(C.withConflictError) {}
-export class ServiceUnavailableException extends S.TaggedErrorClass<ServiceUnavailableException>()(
-  "ServiceUnavailableException",
-  { Message: S.optional(S.String) },
-  T.HttpError(503),
-).pipe(C.withServerError) {}
-export class StorageLimitExceededException extends S.TaggedErrorClass<StorageLimitExceededException>()(
-  "StorageLimitExceededException",
-  { Message: S.optional(S.String) },
-  T.HttpError(409),
-).pipe(C.withConflictError) {}
-export class StorageLimitWillExceedException extends S.TaggedErrorClass<StorageLimitWillExceedException>()(
-  "StorageLimitWillExceedException",
-  { Message: S.optional(S.String) },
-  T.HttpError(413),
-).pipe(C.withBadRequestError) {}
-export class TooManyLabelsException extends S.TaggedErrorClass<TooManyLabelsException>()(
-  "TooManyLabelsException",
-  { Message: S.optional(S.String) },
-  T.HttpError(429),
-).pipe(C.withThrottlingError) {}
-export class TooManySubscriptionsException extends S.TaggedErrorClass<TooManySubscriptionsException>()(
-  "TooManySubscriptionsException",
-  { Message: S.optional(S.String) },
-  T.HttpError(429),
-).pipe(C.withThrottlingError) {}
-export class UnauthorizedOperationException extends S.TaggedErrorClass<UnauthorizedOperationException>()(
-  "UnauthorizedOperationException",
-  { Message: S.optional(S.String), Code: S.optional(S.String) },
-  T.HttpError(403),
-).pipe(C.withAuthError) {}
-export class UnauthorizedResourceAccessException extends S.TaggedErrorClass<UnauthorizedResourceAccessException>()(
-  "UnauthorizedResourceAccessException",
-  { Message: S.optional(S.String) },
-  T.HttpError(404),
-).pipe(C.withBadRequestError, C.withAuthError) {}
+export class ConcurrentModificationException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ConcurrentModificationException>()(
+    "ConcurrentModificationException",
+    { Message: S.optional(S.String) },
+    T.HttpError(409),
+  ).pipe(C.withConflictError) {}
+export class ConflictingOperationException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ConflictingOperationException>()(
+    "ConflictingOperationException",
+    { Message: S.optional(S.String) },
+    T.HttpError(409),
+  ).pipe(C.withConflictError) {}
+export class CustomMetadataLimitExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<CustomMetadataLimitExceededException>()(
+    "CustomMetadataLimitExceededException",
+    { Message: S.optional(S.String) },
+    T.HttpError(429),
+  ).pipe(C.withThrottlingError) {}
+export class DeactivatingLastSystemUserException
+  extends /*@__PURE__*/ S.TaggedErrorClass<DeactivatingLastSystemUserException>()(
+    "DeactivatingLastSystemUserException",
+    { Message: S.optional(S.String), Code: S.optional(S.String) },
+    T.HttpError(409),
+  ).pipe(C.withConflictError) {}
+export class DocumentLockedForCommentsException
+  extends /*@__PURE__*/ S.TaggedErrorClass<DocumentLockedForCommentsException>()(
+    "DocumentLockedForCommentsException",
+    { Message: S.optional(S.String) },
+    T.HttpError(409),
+  ).pipe(C.withConflictError) {}
+export class DraftUploadOutOfSyncException
+  extends /*@__PURE__*/ S.TaggedErrorClass<DraftUploadOutOfSyncException>()(
+    "DraftUploadOutOfSyncException",
+    { Message: S.optional(S.String) },
+    T.HttpError(409),
+  ).pipe(C.withConflictError) {}
+export class EntityAlreadyExistsException
+  extends /*@__PURE__*/ S.TaggedErrorClass<EntityAlreadyExistsException>()(
+    "EntityAlreadyExistsException",
+    { Message: S.optional(S.String) },
+    T.HttpError(409),
+  ).pipe(C.withConflictError, C.withAlreadyExistsError) {}
+export class EntityNotExistsException
+  extends /*@__PURE__*/ S.TaggedErrorClass<EntityNotExistsException>()(
+    "EntityNotExistsException",
+    {
+      Message: S.optional(S.String),
+      EntityIds: S.optional(
+        S.suspend(() => EntityIdList).annotate({ identifier: "EntityIdList" }),
+      ),
+    },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class FailedDependencyException
+  extends /*@__PURE__*/ S.TaggedErrorClass<FailedDependencyException>()(
+    "FailedDependencyException",
+    { Message: S.optional(S.String) },
+    T.HttpError(424),
+  ) {}
+export class IllegalUserStateException
+  extends /*@__PURE__*/ S.TaggedErrorClass<IllegalUserStateException>()(
+    "IllegalUserStateException",
+    { Message: S.optional(S.String) },
+    T.HttpError(409),
+  ).pipe(C.withConflictError) {}
+export class InvalidArgumentException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidArgumentException>()(
+    "InvalidArgumentException",
+    { Message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class InvalidCommentOperationException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidCommentOperationException>()(
+    "InvalidCommentOperationException",
+    { Message: S.optional(S.String) },
+    T.HttpError(409),
+  ).pipe(C.withConflictError) {}
+export class InvalidOperationException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidOperationException>()(
+    "InvalidOperationException",
+    { Message: S.optional(S.String) },
+    T.HttpError(405),
+  ).pipe(C.withBadRequestError) {}
+export class InvalidPasswordException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidPasswordException>()(
+    "InvalidPasswordException",
+    { Message: S.optional(S.String) },
+    T.HttpError(401),
+  ).pipe(C.withAuthError) {}
+export class LimitExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<LimitExceededException>()(
+    "LimitExceededException",
+    { Message: S.optional(S.String) },
+    T.HttpError(409),
+  ).pipe(C.withConflictError) {}
+export class ProhibitedStateException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ProhibitedStateException>()(
+    "ProhibitedStateException",
+    { Message: S.optional(S.String) },
+    T.HttpError(409),
+  ).pipe(C.withConflictError) {}
+export class RequestedEntityTooLargeException
+  extends /*@__PURE__*/ S.TaggedErrorClass<RequestedEntityTooLargeException>()(
+    "RequestedEntityTooLargeException",
+    { Message: S.optional(S.String) },
+    T.HttpError(413),
+  ).pipe(C.withBadRequestError) {}
+export class ResourceAlreadyCheckedOutException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceAlreadyCheckedOutException>()(
+    "ResourceAlreadyCheckedOutException",
+    { Message: S.optional(S.String) },
+    T.HttpError(409),
+  ).pipe(C.withConflictError) {}
+export class ServiceUnavailableException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ServiceUnavailableException>()(
+    "ServiceUnavailableException",
+    { Message: S.optional(S.String) },
+    T.HttpError(503),
+  ).pipe(C.withServerError) {}
+export class StorageLimitExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<StorageLimitExceededException>()(
+    "StorageLimitExceededException",
+    { Message: S.optional(S.String) },
+    T.HttpError(409),
+  ).pipe(C.withConflictError) {}
+export class StorageLimitWillExceedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<StorageLimitWillExceedException>()(
+    "StorageLimitWillExceedException",
+    { Message: S.optional(S.String) },
+    T.HttpError(413),
+  ).pipe(C.withBadRequestError) {}
+export class TooManyLabelsException
+  extends /*@__PURE__*/ S.TaggedErrorClass<TooManyLabelsException>()(
+    "TooManyLabelsException",
+    { Message: S.optional(S.String) },
+    T.HttpError(429),
+  ).pipe(C.withThrottlingError) {}
+export class TooManySubscriptionsException
+  extends /*@__PURE__*/ S.TaggedErrorClass<TooManySubscriptionsException>()(
+    "TooManySubscriptionsException",
+    { Message: S.optional(S.String) },
+    T.HttpError(429),
+  ).pipe(C.withThrottlingError) {}
+export class UnauthorizedOperationException
+  extends /*@__PURE__*/ S.TaggedErrorClass<UnauthorizedOperationException>()(
+    "UnauthorizedOperationException",
+    { Message: S.optional(S.String), Code: S.optional(S.String) },
+    T.HttpError(403),
+  ).pipe(C.withAuthError) {}
+export class UnauthorizedResourceAccessException
+  extends /*@__PURE__*/ S.TaggedErrorClass<UnauthorizedResourceAccessException>()(
+    "UnauthorizedResourceAccessException",
+    { Message: S.optional(S.String) },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError, C.withAuthError) {}
 export type AuthenticationHeaderType = string | redacted.Redacted<string>;
 export type ResourceIdType = string;
 export type DocumentVersionIdType = string;
@@ -3497,7 +3522,27 @@ export const describeActivities: API.OperationMethod<
     items: "UserActivities",
     pageSize: "Limit",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  DescribeActivitiesRequest,
+  DescribeActivitiesResponse,
+  DescribeActivitiesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: DescribeActivitiesRequest,
+  ) => stream.Stream<
+    DescribeActivitiesResponse,
+    DescribeActivitiesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: DescribeActivitiesRequest,
+  ) => stream.Stream<
+    Activity,
+    DescribeActivitiesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type DescribeCommentsError =
   | EntityNotExistsException
@@ -3550,7 +3595,27 @@ export const describeComments: API.OperationMethod<
     items: "Comments",
     pageSize: "Limit",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  DescribeCommentsRequest,
+  DescribeCommentsResponse,
+  DescribeCommentsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: DescribeCommentsRequest,
+  ) => stream.Stream<
+    DescribeCommentsResponse,
+    DescribeCommentsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: DescribeCommentsRequest,
+  ) => stream.Stream<
+    Comment,
+    DescribeCommentsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type DescribeDocumentVersionsError =
   | EntityNotExistsException
@@ -3609,7 +3674,27 @@ export const describeDocumentVersions: API.OperationMethod<
     items: "DocumentVersions",
     pageSize: "Limit",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  DescribeDocumentVersionsRequest,
+  DescribeDocumentVersionsResponse,
+  DescribeDocumentVersionsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: DescribeDocumentVersionsRequest,
+  ) => stream.Stream<
+    DescribeDocumentVersionsResponse,
+    DescribeDocumentVersionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: DescribeDocumentVersionsRequest,
+  ) => stream.Stream<
+    DocumentVersionMetadata,
+    DescribeDocumentVersionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type DescribeFolderContentsError =
   | EntityNotExistsException
@@ -3667,7 +3752,27 @@ export const describeFolderContents: API.OperationMethod<
     outputToken: "Marker",
     pageSize: "Limit",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  DescribeFolderContentsRequest,
+  DescribeFolderContentsResponse,
+  DescribeFolderContentsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: DescribeFolderContentsRequest,
+  ) => stream.Stream<
+    DescribeFolderContentsResponse,
+    DescribeFolderContentsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: DescribeFolderContentsRequest,
+  ) => stream.Stream<
+    unknown,
+    DescribeFolderContentsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type DescribeGroupsError =
   | FailedDependencyException
@@ -3717,7 +3822,27 @@ export const describeGroups: API.OperationMethod<
     items: "Groups",
     pageSize: "Limit",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  DescribeGroupsRequest,
+  DescribeGroupsResponse,
+  DescribeGroupsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: DescribeGroupsRequest,
+  ) => stream.Stream<
+    DescribeGroupsResponse,
+    DescribeGroupsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: DescribeGroupsRequest,
+  ) => stream.Stream<
+    GroupMetadata,
+    DescribeGroupsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type DescribeNotificationSubscriptionsError =
   | EntityNotExistsException
@@ -3764,7 +3889,27 @@ export const describeNotificationSubscriptions: API.OperationMethod<
     items: "Subscriptions",
     pageSize: "Limit",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  DescribeNotificationSubscriptionsRequest,
+  DescribeNotificationSubscriptionsResponse,
+  DescribeNotificationSubscriptionsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: DescribeNotificationSubscriptionsRequest,
+  ) => stream.Stream<
+    DescribeNotificationSubscriptionsResponse,
+    DescribeNotificationSubscriptionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: DescribeNotificationSubscriptionsRequest,
+  ) => stream.Stream<
+    Subscription,
+    DescribeNotificationSubscriptionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type DescribeResourcePermissionsError =
   | FailedDependencyException
@@ -3815,7 +3960,27 @@ export const describeResourcePermissions: API.OperationMethod<
     items: "Principals",
     pageSize: "Limit",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  DescribeResourcePermissionsRequest,
+  DescribeResourcePermissionsResponse,
+  DescribeResourcePermissionsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: DescribeResourcePermissionsRequest,
+  ) => stream.Stream<
+    DescribeResourcePermissionsResponse,
+    DescribeResourcePermissionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: DescribeResourcePermissionsRequest,
+  ) => stream.Stream<
+    Principal,
+    DescribeResourcePermissionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type DescribeRootFoldersError =
   | FailedDependencyException
@@ -3875,7 +4040,27 @@ export const describeRootFolders: API.OperationMethod<
     items: "Folders",
     pageSize: "Limit",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  DescribeRootFoldersRequest,
+  DescribeRootFoldersResponse,
+  DescribeRootFoldersError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: DescribeRootFoldersRequest,
+  ) => stream.Stream<
+    DescribeRootFoldersResponse,
+    DescribeRootFoldersError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: DescribeRootFoldersRequest,
+  ) => stream.Stream<
+    FolderMetadata,
+    DescribeRootFoldersError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type DescribeUsersError =
   | EntityNotExistsException
@@ -3935,7 +4120,27 @@ export const describeUsers: API.OperationMethod<
     items: "Users",
     pageSize: "Limit",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  DescribeUsersRequest,
+  DescribeUsersResponse,
+  DescribeUsersError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: DescribeUsersRequest,
+  ) => stream.Stream<
+    DescribeUsersResponse,
+    DescribeUsersError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: DescribeUsersRequest,
+  ) => stream.Stream<
+    User,
+    DescribeUsersError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type GetCurrentUserError =
   | EntityNotExistsException
@@ -4374,7 +4579,27 @@ export const searchResources: API.OperationMethod<
     items: "Items",
     pageSize: "Limit",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  SearchResourcesRequest,
+  SearchResourcesResponse,
+  SearchResourcesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: SearchResourcesRequest,
+  ) => stream.Stream<
+    SearchResourcesResponse,
+    SearchResourcesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: SearchResourcesRequest,
+  ) => stream.Stream<
+    ResponseItem,
+    SearchResourcesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type UpdateDocumentError =
   | ConcurrentModificationException

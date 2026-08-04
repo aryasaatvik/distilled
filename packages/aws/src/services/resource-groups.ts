@@ -88,49 +88,57 @@ const rules = T.EndpointResolver((p, _) => {
   return err("Invalid Configuration: Missing Region");
 });
 
-export class BadRequestException extends S.TaggedErrorClass<BadRequestException>()(
-  "BadRequestException",
-  { Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class ForbiddenException extends S.TaggedErrorClass<ForbiddenException>()(
-  "ForbiddenException",
-  { Message: S.optional(S.String) },
-  T.HttpError(403),
-).pipe(C.withAuthError) {}
-export class GroupAlreadyExists extends S.TaggedErrorClass<GroupAlreadyExists>()(
-  "GroupAlreadyExists",
-  { Message: S.optional(S.String) },
-  T.SyntheticError({
-    from: "BadRequestException",
-    message: { includes: "group already exists" },
-  }),
-).pipe(C.withAlreadyExistsError) {}
-export class InternalServerErrorException extends S.TaggedErrorClass<InternalServerErrorException>()(
-  "InternalServerErrorException",
-  { Message: S.optional(S.String) },
-  T.HttpError(500),
-).pipe(C.withServerError) {}
-export class MethodNotAllowedException extends S.TaggedErrorClass<MethodNotAllowedException>()(
-  "MethodNotAllowedException",
-  { Message: S.optional(S.String) },
-  T.HttpError(405),
-).pipe(C.withBadRequestError) {}
-export class NotFoundException extends S.TaggedErrorClass<NotFoundException>()(
-  "NotFoundException",
-  { Message: S.optional(S.String) },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class TooManyRequestsException extends S.TaggedErrorClass<TooManyRequestsException>()(
-  "TooManyRequestsException",
-  { Message: S.optional(S.String) },
-  T.HttpError(429),
-).pipe(C.withThrottlingError) {}
-export class UnauthorizedException extends S.TaggedErrorClass<UnauthorizedException>()(
-  "UnauthorizedException",
-  { Message: S.optional(S.String) },
-  T.HttpError(401),
-).pipe(C.withAuthError) {}
+export class BadRequestException
+  extends /*@__PURE__*/ S.TaggedErrorClass<BadRequestException>()(
+    "BadRequestException",
+    { Message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class ForbiddenException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ForbiddenException>()(
+    "ForbiddenException",
+    { Message: S.optional(S.String) },
+    T.HttpError(403),
+  ).pipe(C.withAuthError) {}
+export class GroupAlreadyExists
+  extends /*@__PURE__*/ S.TaggedErrorClass<GroupAlreadyExists>()(
+    "GroupAlreadyExists",
+    { Message: S.optional(S.String) },
+    T.SyntheticError({
+      from: "BadRequestException",
+      message: { includes: "group already exists" },
+    }),
+  ).pipe(C.withAlreadyExistsError) {}
+export class InternalServerErrorException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerErrorException>()(
+    "InternalServerErrorException",
+    { Message: S.optional(S.String) },
+    T.HttpError(500),
+  ).pipe(C.withServerError) {}
+export class MethodNotAllowedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<MethodNotAllowedException>()(
+    "MethodNotAllowedException",
+    { Message: S.optional(S.String) },
+    T.HttpError(405),
+  ).pipe(C.withBadRequestError) {}
+export class NotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<NotFoundException>()(
+    "NotFoundException",
+    { Message: S.optional(S.String) },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class TooManyRequestsException
+  extends /*@__PURE__*/ S.TaggedErrorClass<TooManyRequestsException>()(
+    "TooManyRequestsException",
+    { Message: S.optional(S.String) },
+    T.HttpError(429),
+  ).pipe(C.withThrottlingError) {}
+export class UnauthorizedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<UnauthorizedException>()(
+    "UnauthorizedException",
+    { Message: S.optional(S.String) },
+    T.HttpError(401),
+  ).pipe(C.withAuthError) {}
 export type TagSyncTaskArn = string;
 export interface CancelTagSyncTaskInput {
   TaskArn: string;
@@ -1736,7 +1744,27 @@ export const listGroupingStatuses: API.OperationMethod<
     items: "GroupingStatuses",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListGroupingStatusesInput,
+  ListGroupingStatusesOutput,
+  ListGroupingStatusesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListGroupingStatusesInput,
+  ) => stream.Stream<
+    ListGroupingStatusesOutput,
+    ListGroupingStatusesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListGroupingStatusesInput,
+  ) => stream.Stream<
+    GroupingStatusesItem,
+    ListGroupingStatusesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListGroupResourcesError =
   | BadRequestException
@@ -1804,7 +1832,27 @@ export const listGroupResources: API.OperationMethod<
     items: "ResourceIdentifiers",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListGroupResourcesInput,
+  ListGroupResourcesOutput,
+  ListGroupResourcesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListGroupResourcesInput,
+  ) => stream.Stream<
+    ListGroupResourcesOutput,
+    ListGroupResourcesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListGroupResourcesInput,
+  ) => stream.Stream<
+    ResourceIdentifier,
+    ListGroupResourcesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListGroupsError =
   | BadRequestException
@@ -1861,7 +1909,27 @@ export const listGroups: API.OperationMethod<
     items: "GroupIdentifiers",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListGroupsInput,
+  ListGroupsOutput,
+  ListGroupsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListGroupsInput,
+  ) => stream.Stream<
+    ListGroupsOutput,
+    ListGroupsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListGroupsInput,
+  ) => stream.Stream<
+    GroupIdentifier,
+    ListGroupsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListTagSyncTasksError =
   | BadRequestException
@@ -1921,7 +1989,27 @@ export const listTagSyncTasks: API.OperationMethod<
     items: "TagSyncTasks",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListTagSyncTasksInput,
+  ListTagSyncTasksOutput,
+  ListTagSyncTasksError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListTagSyncTasksInput,
+  ) => stream.Stream<
+    ListTagSyncTasksOutput,
+    ListTagSyncTasksError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListTagSyncTasksInput,
+  ) => stream.Stream<
+    TagSyncTaskItem,
+    ListTagSyncTasksError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type PutGroupConfigurationError =
   | BadRequestException
@@ -2028,7 +2116,27 @@ export const searchResources: API.OperationMethod<
     items: "ResourceIdentifiers",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  SearchResourcesInput,
+  SearchResourcesOutput,
+  SearchResourcesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: SearchResourcesInput,
+  ) => stream.Stream<
+    SearchResourcesOutput,
+    SearchResourcesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: SearchResourcesInput,
+  ) => stream.Stream<
+    ResourceIdentifier,
+    SearchResourcesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type StartTagSyncTaskError =
   | BadRequestException

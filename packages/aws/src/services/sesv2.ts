@@ -136,71 +136,84 @@ const rules = T.EndpointResolver((p, _) => {
   return err("Invalid Configuration: Missing Region");
 });
 
-export class AccountSuspendedException extends S.TaggedErrorClass<AccountSuspendedException>()(
-  "AccountSuspendedException",
-  { message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class AlreadyExistsException extends S.TaggedErrorClass<AlreadyExistsException>()(
-  "AlreadyExistsException",
-  { message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError, C.withAlreadyExistsError) {}
-export class BadRequestException extends S.TaggedErrorClass<BadRequestException>()(
-  "BadRequestException",
-  { message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class ConcurrentModificationException extends S.TaggedErrorClass<ConcurrentModificationException>()(
-  "ConcurrentModificationException",
-  { message: S.optional(S.String) },
-  T.HttpError(500),
-).pipe(C.withServerError) {}
-export class ConflictException extends S.TaggedErrorClass<ConflictException>()(
-  "ConflictException",
-  { message: S.optional(S.String) },
-  T.HttpError(409),
-).pipe(C.withConflictError) {}
-export class InternalServiceErrorException extends S.TaggedErrorClass<InternalServiceErrorException>()(
-  "InternalServiceErrorException",
-  { message: S.optional(S.String) },
-  T.HttpError(500),
-).pipe(C.withServerError) {}
-export class InvalidNextTokenException extends S.TaggedErrorClass<InvalidNextTokenException>()(
-  "InvalidNextTokenException",
-  { message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class LimitExceededException extends S.TaggedErrorClass<LimitExceededException>()(
-  "LimitExceededException",
-  { message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class MailFromDomainNotVerifiedException extends S.TaggedErrorClass<MailFromDomainNotVerifiedException>()(
-  "MailFromDomainNotVerifiedException",
-  { message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class MessageRejected extends S.TaggedErrorClass<MessageRejected>()(
-  "MessageRejected",
-  { message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class NotFoundException extends S.TaggedErrorClass<NotFoundException>()(
-  "NotFoundException",
-  { message: S.optional(S.String) },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class SendingPausedException extends S.TaggedErrorClass<SendingPausedException>()(
-  "SendingPausedException",
-  { message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class TooManyRequestsException extends S.TaggedErrorClass<TooManyRequestsException>()(
-  "TooManyRequestsException",
-  { message: S.optional(S.String) },
-  T.HttpError(429),
-).pipe(C.withThrottlingError) {}
+export class AccountSuspendedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<AccountSuspendedException>()(
+    "AccountSuspendedException",
+    { message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class AlreadyExistsException
+  extends /*@__PURE__*/ S.TaggedErrorClass<AlreadyExistsException>()(
+    "AlreadyExistsException",
+    { message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError, C.withAlreadyExistsError) {}
+export class BadRequestException
+  extends /*@__PURE__*/ S.TaggedErrorClass<BadRequestException>()(
+    "BadRequestException",
+    { message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class ConcurrentModificationException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ConcurrentModificationException>()(
+    "ConcurrentModificationException",
+    { message: S.optional(S.String) },
+    T.HttpError(500),
+  ).pipe(C.withServerError) {}
+export class ConflictException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
+    "ConflictException",
+    { message: S.optional(S.String) },
+    T.HttpError(409),
+  ).pipe(C.withConflictError) {}
+export class InternalServiceErrorException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InternalServiceErrorException>()(
+    "InternalServiceErrorException",
+    { message: S.optional(S.String) },
+    T.HttpError(500),
+  ).pipe(C.withServerError) {}
+export class InvalidNextTokenException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidNextTokenException>()(
+    "InvalidNextTokenException",
+    { message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class LimitExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<LimitExceededException>()(
+    "LimitExceededException",
+    { message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class MailFromDomainNotVerifiedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<MailFromDomainNotVerifiedException>()(
+    "MailFromDomainNotVerifiedException",
+    { message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class MessageRejected
+  extends /*@__PURE__*/ S.TaggedErrorClass<MessageRejected>()(
+    "MessageRejected",
+    { message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class NotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<NotFoundException>()(
+    "NotFoundException",
+    { message: S.optional(S.String) },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class SendingPausedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<SendingPausedException>()(
+    "SendingPausedException",
+    { message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class TooManyRequestsException
+  extends /*@__PURE__*/ S.TaggedErrorClass<TooManyRequestsException>()(
+    "TooManyRequestsException",
+    { message: S.optional(S.String) },
+    T.HttpError(429),
+  ).pipe(C.withThrottlingError) {}
 export type QueryIdentifier = string;
 export type MetricNamespace = "VDM" | (string & {});
 export const MetricNamespace = /*@__PURE__*/ S.String;
@@ -7256,7 +7269,27 @@ export const getDedicatedIps: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "PageSize",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  GetDedicatedIpsRequest,
+  GetDedicatedIpsResponse,
+  GetDedicatedIpsError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: GetDedicatedIpsRequest,
+  ) => stream.Stream<
+    GetDedicatedIpsResponse,
+    GetDedicatedIpsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: GetDedicatedIpsRequest,
+  ) => stream.Stream<
+    unknown,
+    GetDedicatedIpsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type GetDeliverabilityDashboardOptionsError =
   | BadRequestException
@@ -7680,7 +7713,27 @@ export const listConfigurationSets: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "PageSize",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListConfigurationSetsRequest,
+  ListConfigurationSetsResponse,
+  ListConfigurationSetsError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListConfigurationSetsRequest,
+  ) => stream.Stream<
+    ListConfigurationSetsResponse,
+    ListConfigurationSetsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListConfigurationSetsRequest,
+  ) => stream.Stream<
+    unknown,
+    ListConfigurationSetsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type ListContactListsError =
   | BadRequestException
@@ -7724,7 +7777,27 @@ export const listContactLists: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "PageSize",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListContactListsRequest,
+  ListContactListsResponse,
+  ListContactListsError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListContactListsRequest,
+  ) => stream.Stream<
+    ListContactListsResponse,
+    ListContactListsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListContactListsRequest,
+  ) => stream.Stream<
+    unknown,
+    ListContactListsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type ListContactsError =
   | BadRequestException
@@ -7766,7 +7839,27 @@ export const listContacts: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "PageSize",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListContactsRequest,
+  ListContactsResponse,
+  ListContactsError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListContactsRequest,
+  ) => stream.Stream<
+    ListContactsResponse,
+    ListContactsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListContactsRequest,
+  ) => stream.Stream<
+    unknown,
+    ListContactsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type ListCustomVerificationEmailTemplatesError =
   | BadRequestException
@@ -7814,7 +7907,27 @@ export const listCustomVerificationEmailTemplates: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "PageSize",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListCustomVerificationEmailTemplatesRequest,
+  ListCustomVerificationEmailTemplatesResponse,
+  ListCustomVerificationEmailTemplatesError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListCustomVerificationEmailTemplatesRequest,
+  ) => stream.Stream<
+    ListCustomVerificationEmailTemplatesResponse,
+    ListCustomVerificationEmailTemplatesError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListCustomVerificationEmailTemplatesRequest,
+  ) => stream.Stream<
+    unknown,
+    ListCustomVerificationEmailTemplatesError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type ListDedicatedIpPoolsError =
   | BadRequestException
@@ -7856,7 +7969,27 @@ export const listDedicatedIpPools: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "PageSize",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListDedicatedIpPoolsRequest,
+  ListDedicatedIpPoolsResponse,
+  ListDedicatedIpPoolsError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListDedicatedIpPoolsRequest,
+  ) => stream.Stream<
+    ListDedicatedIpPoolsResponse,
+    ListDedicatedIpPoolsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListDedicatedIpPoolsRequest,
+  ) => stream.Stream<
+    unknown,
+    ListDedicatedIpPoolsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type ListDeliverabilityTestReportsError =
   | BadRequestException
@@ -7900,7 +8033,27 @@ export const listDeliverabilityTestReports: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "PageSize",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListDeliverabilityTestReportsRequest,
+  ListDeliverabilityTestReportsResponse,
+  ListDeliverabilityTestReportsError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListDeliverabilityTestReportsRequest,
+  ) => stream.Stream<
+    ListDeliverabilityTestReportsResponse,
+    ListDeliverabilityTestReportsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListDeliverabilityTestReportsRequest,
+  ) => stream.Stream<
+    unknown,
+    ListDeliverabilityTestReportsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type ListDomainDeliverabilityCampaignsError =
   | BadRequestException
@@ -7944,7 +8097,27 @@ export const listDomainDeliverabilityCampaigns: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "PageSize",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListDomainDeliverabilityCampaignsRequest,
+  ListDomainDeliverabilityCampaignsResponse,
+  ListDomainDeliverabilityCampaignsError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListDomainDeliverabilityCampaignsRequest,
+  ) => stream.Stream<
+    ListDomainDeliverabilityCampaignsResponse,
+    ListDomainDeliverabilityCampaignsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListDomainDeliverabilityCampaignsRequest,
+  ) => stream.Stream<
+    unknown,
+    ListDomainDeliverabilityCampaignsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type ListEmailIdentitiesError =
   | BadRequestException
@@ -7988,7 +8161,27 @@ export const listEmailIdentities: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "PageSize",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListEmailIdentitiesRequest,
+  ListEmailIdentitiesResponse,
+  ListEmailIdentitiesError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListEmailIdentitiesRequest,
+  ) => stream.Stream<
+    ListEmailIdentitiesResponse,
+    ListEmailIdentitiesError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListEmailIdentitiesRequest,
+  ) => stream.Stream<
+    unknown,
+    ListEmailIdentitiesError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type ListEmailTemplatesError =
   | BadRequestException
@@ -8032,7 +8225,27 @@ export const listEmailTemplates: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "PageSize",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListEmailTemplatesRequest,
+  ListEmailTemplatesResponse,
+  ListEmailTemplatesError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListEmailTemplatesRequest,
+  ) => stream.Stream<
+    ListEmailTemplatesResponse,
+    ListEmailTemplatesError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListEmailTemplatesRequest,
+  ) => stream.Stream<
+    unknown,
+    ListEmailTemplatesError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type ListExportJobsError =
   | BadRequestException
@@ -8073,7 +8286,27 @@ export const listExportJobs: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "PageSize",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListExportJobsRequest,
+  ListExportJobsResponse,
+  ListExportJobsError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListExportJobsRequest,
+  ) => stream.Stream<
+    ListExportJobsResponse,
+    ListExportJobsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListExportJobsRequest,
+  ) => stream.Stream<
+    unknown,
+    ListExportJobsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type ListImportJobsError =
   | BadRequestException
@@ -8114,7 +8347,27 @@ export const listImportJobs: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "PageSize",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListImportJobsRequest,
+  ListImportJobsResponse,
+  ListImportJobsError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListImportJobsRequest,
+  ) => stream.Stream<
+    ListImportJobsResponse,
+    ListImportJobsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListImportJobsRequest,
+  ) => stream.Stream<
+    unknown,
+    ListImportJobsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type ListMultiRegionEndpointsError =
   | BadRequestException
@@ -8159,7 +8412,27 @@ export const listMultiRegionEndpoints: API.OperationMethod<
     items: "MultiRegionEndpoints",
     pageSize: "PageSize",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListMultiRegionEndpointsRequest,
+  ListMultiRegionEndpointsResponse,
+  ListMultiRegionEndpointsError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListMultiRegionEndpointsRequest,
+  ) => stream.Stream<
+    ListMultiRegionEndpointsResponse,
+    ListMultiRegionEndpointsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListMultiRegionEndpointsRequest,
+  ) => stream.Stream<
+    MultiRegionEndpoint,
+    ListMultiRegionEndpointsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type ListRecommendationsError =
   | BadRequestException
@@ -8203,7 +8476,27 @@ export const listRecommendations: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "PageSize",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListRecommendationsRequest,
+  ListRecommendationsResponse,
+  ListRecommendationsError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListRecommendationsRequest,
+  ) => stream.Stream<
+    ListRecommendationsResponse,
+    ListRecommendationsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListRecommendationsRequest,
+  ) => stream.Stream<
+    unknown,
+    ListRecommendationsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type ListReputationEntitiesError =
   | BadRequestException
@@ -8251,7 +8544,27 @@ export const listReputationEntities: API.OperationMethod<
     items: "ReputationEntities",
     pageSize: "PageSize",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListReputationEntitiesRequest,
+  ListReputationEntitiesResponse,
+  ListReputationEntitiesError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListReputationEntitiesRequest,
+  ) => stream.Stream<
+    ListReputationEntitiesResponse,
+    ListReputationEntitiesError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListReputationEntitiesRequest,
+  ) => stream.Stream<
+    ReputationEntity,
+    ListReputationEntitiesError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type ListResourceTenantsError =
   | BadRequestException
@@ -8298,7 +8611,27 @@ export const listResourceTenants: API.OperationMethod<
     items: "ResourceTenants",
     pageSize: "PageSize",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListResourceTenantsRequest,
+  ListResourceTenantsResponse,
+  ListResourceTenantsError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListResourceTenantsRequest,
+  ) => stream.Stream<
+    ListResourceTenantsResponse,
+    ListResourceTenantsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListResourceTenantsRequest,
+  ) => stream.Stream<
+    ResourceTenantMetadata,
+    ListResourceTenantsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type ListSuppressedDestinationsError =
   | BadRequestException
@@ -8349,7 +8682,27 @@ export const listSuppressedDestinations: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "PageSize",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListSuppressedDestinationsRequest,
+  ListSuppressedDestinationsResponse,
+  ListSuppressedDestinationsError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListSuppressedDestinationsRequest,
+  ) => stream.Stream<
+    ListSuppressedDestinationsResponse,
+    ListSuppressedDestinationsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListSuppressedDestinationsRequest,
+  ) => stream.Stream<
+    unknown,
+    ListSuppressedDestinationsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type ListTagsForResourceError =
   | BadRequestException
@@ -8423,7 +8776,27 @@ export const listTenantResources: API.OperationMethod<
     items: "TenantResources",
     pageSize: "PageSize",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListTenantResourcesRequest,
+  ListTenantResourcesResponse,
+  ListTenantResourcesError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListTenantResourcesRequest,
+  ) => stream.Stream<
+    ListTenantResourcesResponse,
+    ListTenantResourcesError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListTenantResourcesRequest,
+  ) => stream.Stream<
+    TenantResource,
+    ListTenantResourcesError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type ListTenantsError =
   | BadRequestException
@@ -8468,7 +8841,27 @@ export const listTenants: API.OperationMethod<
     items: "Tenants",
     pageSize: "PageSize",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListTenantsRequest,
+  ListTenantsResponse,
+  ListTenantsError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListTenantsRequest,
+  ) => stream.Stream<
+    ListTenantsResponse,
+    ListTenantsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListTenantsRequest,
+  ) => stream.Stream<
+    TenantInfo,
+    ListTenantsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type PutAccountDedicatedIpWarmupAttributesError =
   | BadRequestException

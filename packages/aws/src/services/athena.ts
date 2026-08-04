@@ -85,61 +85,70 @@ const rules = T.EndpointResolver((p, _) => {
   return err("Invalid Configuration: Missing Region");
 });
 
-export class DataCatalogNotFound extends S.TaggedErrorClass<DataCatalogNotFound>()(
-  "DataCatalogNotFound",
-  { AthenaErrorCode: S.optional(S.String), Message: S.optional(S.String) },
-  T.SyntheticError({
-    from: "InvalidRequestException",
-    message: { matches: "DataCatalog.*not found" },
-  }),
-).pipe(C.withNotFoundError) {}
-export class InternalServerException extends S.TaggedErrorClass<InternalServerException>()(
-  "InternalServerException",
-  { Message: S.optional(S.String) },
-) {}
-export class InvalidRequestException extends S.TaggedErrorClass<InvalidRequestException>()(
-  "InvalidRequestException",
-  { AthenaErrorCode: S.optional(S.String), Message: S.optional(S.String) },
-) {}
-export class MetadataException extends S.TaggedErrorClass<MetadataException>()(
-  "MetadataException",
-  { Message: S.optional(S.String) },
-) {}
-export class NamedQueryNotFound extends S.TaggedErrorClass<NamedQueryNotFound>()(
-  "NamedQueryNotFound",
-  { AthenaErrorCode: S.optional(S.String), Message: S.optional(S.String) },
-  T.SyntheticError({
-    from: "InvalidRequestException",
-    message: { matches: "NamedQuery.*does not exist" },
-  }),
-).pipe(C.withNotFoundError) {}
-export class ResourceNotFoundException extends S.TaggedErrorClass<ResourceNotFoundException>()(
-  "ResourceNotFoundException",
-  { Message: S.optional(S.String), ResourceName: S.optional(S.String) },
-) {}
-export class SessionAlreadyExistsException extends S.TaggedErrorClass<SessionAlreadyExistsException>()(
-  "SessionAlreadyExistsException",
-  { Message: S.optional(S.String) },
-).pipe(C.withAlreadyExistsError) {}
-export class TooManyRequestsException extends S.TaggedErrorClass<TooManyRequestsException>()(
-  "TooManyRequestsException",
-  {
-    Message: S.optional(S.String),
-    Reason: S.optional(
-      S.suspend(() => ThrottleReason).annotate({
-        identifier: "ThrottleReason",
-      }),
-    ),
-  },
-) {}
-export class WorkGroupNotFound extends S.TaggedErrorClass<WorkGroupNotFound>()(
-  "WorkGroupNotFound",
-  { AthenaErrorCode: S.optional(S.String), Message: S.optional(S.String) },
-  T.SyntheticError({
-    from: "InvalidRequestException",
-    message: { matches: "WorkGroup.*not found" },
-  }),
-).pipe(C.withNotFoundError) {}
+export class DataCatalogNotFound
+  extends /*@__PURE__*/ S.TaggedErrorClass<DataCatalogNotFound>()(
+    "DataCatalogNotFound",
+    { AthenaErrorCode: S.optional(S.String), Message: S.optional(S.String) },
+    T.SyntheticError({
+      from: "InvalidRequestException",
+      message: { matches: "DataCatalog.*not found" },
+    }),
+  ).pipe(C.withNotFoundError) {}
+export class InternalServerException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
+    "InternalServerException",
+    { Message: S.optional(S.String) },
+  ) {}
+export class InvalidRequestException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidRequestException>()(
+    "InvalidRequestException",
+    { AthenaErrorCode: S.optional(S.String), Message: S.optional(S.String) },
+  ) {}
+export class MetadataException
+  extends /*@__PURE__*/ S.TaggedErrorClass<MetadataException>()(
+    "MetadataException",
+    { Message: S.optional(S.String) },
+  ) {}
+export class NamedQueryNotFound
+  extends /*@__PURE__*/ S.TaggedErrorClass<NamedQueryNotFound>()(
+    "NamedQueryNotFound",
+    { AthenaErrorCode: S.optional(S.String), Message: S.optional(S.String) },
+    T.SyntheticError({
+      from: "InvalidRequestException",
+      message: { matches: "NamedQuery.*does not exist" },
+    }),
+  ).pipe(C.withNotFoundError) {}
+export class ResourceNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
+    "ResourceNotFoundException",
+    { Message: S.optional(S.String), ResourceName: S.optional(S.String) },
+  ) {}
+export class SessionAlreadyExistsException
+  extends /*@__PURE__*/ S.TaggedErrorClass<SessionAlreadyExistsException>()(
+    "SessionAlreadyExistsException",
+    { Message: S.optional(S.String) },
+  ).pipe(C.withAlreadyExistsError) {}
+export class TooManyRequestsException
+  extends /*@__PURE__*/ S.TaggedErrorClass<TooManyRequestsException>()(
+    "TooManyRequestsException",
+    {
+      Message: S.optional(S.String),
+      Reason: S.optional(
+        S.suspend(() => ThrottleReason).annotate({
+          identifier: "ThrottleReason",
+        }),
+      ),
+    },
+  ) {}
+export class WorkGroupNotFound
+  extends /*@__PURE__*/ S.TaggedErrorClass<WorkGroupNotFound>()(
+    "WorkGroupNotFound",
+    { AthenaErrorCode: S.optional(S.String), Message: S.optional(S.String) },
+    T.SyntheticError({
+      from: "InvalidRequestException",
+      message: { matches: "WorkGroup.*not found" },
+    }),
+  ).pipe(C.withNotFoundError) {}
 export type NamedQueryId = string;
 export type NamedQueryIdList = string[];
 export const NamedQueryIdList = /*@__PURE__*/ S.Array(S.String);
@@ -4042,7 +4051,27 @@ export const getQueryResults: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  GetQueryResultsInput,
+  GetQueryResultsOutput,
+  GetQueryResultsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: GetQueryResultsInput,
+  ) => stream.Stream<
+    GetQueryResultsOutput,
+    GetQueryResultsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: GetQueryResultsInput,
+  ) => stream.Stream<
+    unknown,
+    GetQueryResultsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type GetQueryRuntimeStatisticsError =
   | InternalServerException
@@ -4296,7 +4325,27 @@ export const listApplicationDPUSizes: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListApplicationDPUSizesInput,
+  ListApplicationDPUSizesOutput,
+  ListApplicationDPUSizesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListApplicationDPUSizesInput,
+  ) => stream.Stream<
+    ListApplicationDPUSizesOutput,
+    ListApplicationDPUSizesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListApplicationDPUSizesInput,
+  ) => stream.Stream<
+    unknown,
+    ListApplicationDPUSizesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListCalculationExecutionsError =
   | InternalServerException
@@ -4343,7 +4392,27 @@ export const listCalculationExecutions: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListCalculationExecutionsRequest,
+  ListCalculationExecutionsResponse,
+  ListCalculationExecutionsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListCalculationExecutionsRequest,
+  ) => stream.Stream<
+    ListCalculationExecutionsResponse,
+    ListCalculationExecutionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListCalculationExecutionsRequest,
+  ) => stream.Stream<
+    unknown,
+    ListCalculationExecutionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListCapacityReservationsError =
   | InternalServerException
@@ -4384,7 +4453,27 @@ export const listCapacityReservations: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListCapacityReservationsInput,
+  ListCapacityReservationsOutput,
+  ListCapacityReservationsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListCapacityReservationsInput,
+  ) => stream.Stream<
+    ListCapacityReservationsOutput,
+    ListCapacityReservationsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListCapacityReservationsInput,
+  ) => stream.Stream<
+    unknown,
+    ListCapacityReservationsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListDatabasesError =
   | InternalServerException
@@ -4427,7 +4516,27 @@ export const listDatabases: API.OperationMethod<
     items: "DatabaseList",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListDatabasesInput,
+  ListDatabasesOutput,
+  ListDatabasesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListDatabasesInput,
+  ) => stream.Stream<
+    ListDatabasesOutput,
+    ListDatabasesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListDatabasesInput,
+  ) => stream.Stream<
+    Database,
+    ListDatabasesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListDataCatalogsError =
   | InternalServerException
@@ -4472,7 +4581,27 @@ export const listDataCatalogs: API.OperationMethod<
     items: "DataCatalogsSummary",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListDataCatalogsInput,
+  ListDataCatalogsOutput,
+  ListDataCatalogsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListDataCatalogsInput,
+  ) => stream.Stream<
+    ListDataCatalogsOutput,
+    ListDataCatalogsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListDataCatalogsInput,
+  ) => stream.Stream<
+    DataCatalogSummary,
+    ListDataCatalogsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListEngineVersionsError =
   | InternalServerException
@@ -4514,7 +4643,27 @@ export const listEngineVersions: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListEngineVersionsInput,
+  ListEngineVersionsOutput,
+  ListEngineVersionsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListEngineVersionsInput,
+  ) => stream.Stream<
+    ListEngineVersionsOutput,
+    ListEngineVersionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListEngineVersionsInput,
+  ) => stream.Stream<
+    unknown,
+    ListEngineVersionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListExecutorsError =
   | InternalServerException
@@ -4562,7 +4711,27 @@ export const listExecutors: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListExecutorsRequest,
+  ListExecutorsResponse,
+  ListExecutorsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListExecutorsRequest,
+  ) => stream.Stream<
+    ListExecutorsResponse,
+    ListExecutorsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListExecutorsRequest,
+  ) => stream.Stream<
+    unknown,
+    ListExecutorsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListNamedQueriesError =
   | InternalServerException
@@ -4605,7 +4774,27 @@ export const listNamedQueries: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListNamedQueriesInput,
+  ListNamedQueriesOutput,
+  ListNamedQueriesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListNamedQueriesInput,
+  ) => stream.Stream<
+    ListNamedQueriesOutput,
+    ListNamedQueriesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListNamedQueriesInput,
+  ) => stream.Stream<
+    unknown,
+    ListNamedQueriesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListNotebookMetadataError =
   | InternalServerException
@@ -4701,7 +4890,27 @@ export const listPreparedStatements: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListPreparedStatementsInput,
+  ListPreparedStatementsOutput,
+  ListPreparedStatementsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListPreparedStatementsInput,
+  ) => stream.Stream<
+    ListPreparedStatementsOutput,
+    ListPreparedStatementsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListPreparedStatementsInput,
+  ) => stream.Stream<
+    unknown,
+    ListPreparedStatementsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListQueryExecutionsError =
   | InternalServerException
@@ -4745,7 +4954,27 @@ export const listQueryExecutions: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListQueryExecutionsInput,
+  ListQueryExecutionsOutput,
+  ListQueryExecutionsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListQueryExecutionsInput,
+  ) => stream.Stream<
+    ListQueryExecutionsOutput,
+    ListQueryExecutionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListQueryExecutionsInput,
+  ) => stream.Stream<
+    unknown,
+    ListQueryExecutionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListSessionsError =
   | InternalServerException
@@ -4794,7 +5023,27 @@ export const listSessions: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListSessionsRequest,
+  ListSessionsResponse,
+  ListSessionsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListSessionsRequest,
+  ) => stream.Stream<
+    ListSessionsResponse,
+    ListSessionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListSessionsRequest,
+  ) => stream.Stream<
+    unknown,
+    ListSessionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListTableMetadataError =
   | InternalServerException
@@ -4837,7 +5086,27 @@ export const listTableMetadata: API.OperationMethod<
     items: "TableMetadataList",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListTableMetadataInput,
+  ListTableMetadataOutput,
+  ListTableMetadataError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListTableMetadataInput,
+  ) => stream.Stream<
+    ListTableMetadataOutput,
+    ListTableMetadataError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListTableMetadataInput,
+  ) => stream.Stream<
+    TableMetadata,
+    ListTableMetadataError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListTagsForResourceError =
   | InternalServerException
@@ -4884,7 +5153,27 @@ export const listTagsForResource: API.OperationMethod<
     items: "Tags",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListTagsForResourceInput,
+  ListTagsForResourceOutput,
+  ListTagsForResourceError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListTagsForResourceInput,
+  ) => stream.Stream<
+    ListTagsForResourceOutput,
+    ListTagsForResourceError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListTagsForResourceInput,
+  ) => stream.Stream<
+    Tag,
+    ListTagsForResourceError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListWorkGroupsError =
   | InternalServerException
@@ -4925,7 +5214,27 @@ export const listWorkGroups: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListWorkGroupsInput,
+  ListWorkGroupsOutput,
+  ListWorkGroupsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListWorkGroupsInput,
+  ) => stream.Stream<
+    ListWorkGroupsOutput,
+    ListWorkGroupsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListWorkGroupsInput,
+  ) => stream.Stream<
+    unknown,
+    ListWorkGroupsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type PutCapacityAssignmentConfigurationError =
   | InternalServerException

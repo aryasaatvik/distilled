@@ -85,45 +85,52 @@ const rules = T.EndpointResolver((p, _) => {
   return err("Invalid Configuration: Missing Region");
 });
 
-export class AccessDeniedException extends S.TaggedErrorClass<AccessDeniedException>()(
-  "AccessDeniedException",
-  { message: S.String },
-  T.HttpError(403),
-).pipe(C.withAuthError) {}
-export class ConflictException extends S.TaggedErrorClass<ConflictException>()(
-  "ConflictException",
-  { message: S.String },
-  T.HttpError(409),
-).pipe(C.withConflictError) {}
-export class InternalServiceException extends S.TaggedErrorClass<InternalServiceException>()(
-  "InternalServiceException",
-  { message: S.String },
-  T.HttpError(500),
-).pipe(C.withServerError) {}
-export class ResourceNotFoundException extends S.TaggedErrorClass<ResourceNotFoundException>()(
-  "ResourceNotFoundException",
-  { message: S.String },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class ServiceQuotaExceededException extends S.TaggedErrorClass<ServiceQuotaExceededException>()(
-  "ServiceQuotaExceededException",
-  {
-    message: S.String,
-    quotaName: S.optional(S.String),
-    quotaValue: S.optional(S.Number),
-  },
-  T.HttpError(402),
-).pipe(C.withQuotaError) {}
-export class ThrottlingException extends S.TaggedErrorClass<ThrottlingException>()(
-  "ThrottlingException",
-  { message: S.String },
-  T.HttpError(429),
-).pipe(C.withThrottlingError) {}
-export class ValidationException extends S.TaggedErrorClass<ValidationException>()(
-  "ValidationException",
-  { message: S.String },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
+export class AccessDeniedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
+    "AccessDeniedException",
+    { message: S.String },
+    T.HttpError(403),
+  ).pipe(C.withAuthError) {}
+export class ConflictException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
+    "ConflictException",
+    { message: S.String },
+    T.HttpError(409),
+  ).pipe(C.withConflictError) {}
+export class InternalServiceException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InternalServiceException>()(
+    "InternalServiceException",
+    { message: S.String },
+    T.HttpError(500),
+  ).pipe(C.withServerError) {}
+export class ResourceNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
+    "ResourceNotFoundException",
+    { message: S.String },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class ServiceQuotaExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
+    "ServiceQuotaExceededException",
+    {
+      message: S.String,
+      quotaName: S.optional(S.String),
+      quotaValue: S.optional(S.Number),
+    },
+    T.HttpError(402),
+  ).pipe(C.withQuotaError) {}
+export class ThrottlingException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
+    "ThrottlingException",
+    { message: S.String },
+    T.HttpError(429),
+  ).pipe(C.withThrottlingError) {}
+export class ValidationException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
+    "ValidationException",
+    { message: S.String },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
 export type UUID = string;
 export type TrainedModelArn = string;
 export interface CancelTrainedModelRequest {
@@ -5344,7 +5351,27 @@ export const listAudienceExportJobs: API.OperationMethod<
     items: "audienceExportJobs",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListAudienceExportJobsRequest,
+  ListAudienceExportJobsResponse,
+  ListAudienceExportJobsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListAudienceExportJobsRequest,
+  ) => stream.Stream<
+    ListAudienceExportJobsResponse,
+    ListAudienceExportJobsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListAudienceExportJobsRequest,
+  ) => stream.Stream<
+    AudienceExportJobSummary,
+    ListAudienceExportJobsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListAudienceGenerationJobsError =
   | AccessDeniedException
@@ -5386,7 +5413,27 @@ export const listAudienceGenerationJobs: API.OperationMethod<
     items: "audienceGenerationJobs",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListAudienceGenerationJobsRequest,
+  ListAudienceGenerationJobsResponse,
+  ListAudienceGenerationJobsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListAudienceGenerationJobsRequest,
+  ) => stream.Stream<
+    ListAudienceGenerationJobsResponse,
+    ListAudienceGenerationJobsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListAudienceGenerationJobsRequest,
+  ) => stream.Stream<
+    AudienceGenerationJobSummary,
+    ListAudienceGenerationJobsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListAudienceModelsError =
   | AccessDeniedException
@@ -5428,7 +5475,27 @@ export const listAudienceModels: API.OperationMethod<
     items: "audienceModels",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListAudienceModelsRequest,
+  ListAudienceModelsResponse,
+  ListAudienceModelsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListAudienceModelsRequest,
+  ) => stream.Stream<
+    ListAudienceModelsResponse,
+    ListAudienceModelsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListAudienceModelsRequest,
+  ) => stream.Stream<
+    AudienceModelSummary,
+    ListAudienceModelsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListCollaborationConfiguredModelAlgorithmAssociationsError =
   | AccessDeniedException
@@ -5471,7 +5538,27 @@ export const listCollaborationConfiguredModelAlgorithmAssociations: API.Operatio
     items: "collaborationConfiguredModelAlgorithmAssociations",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListCollaborationConfiguredModelAlgorithmAssociationsRequest,
+  ListCollaborationConfiguredModelAlgorithmAssociationsResponse,
+  ListCollaborationConfiguredModelAlgorithmAssociationsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListCollaborationConfiguredModelAlgorithmAssociationsRequest,
+  ) => stream.Stream<
+    ListCollaborationConfiguredModelAlgorithmAssociationsResponse,
+    ListCollaborationConfiguredModelAlgorithmAssociationsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListCollaborationConfiguredModelAlgorithmAssociationsRequest,
+  ) => stream.Stream<
+    CollaborationConfiguredModelAlgorithmAssociationSummary,
+    ListCollaborationConfiguredModelAlgorithmAssociationsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListCollaborationMLInputChannelsError =
   | AccessDeniedException
@@ -5514,7 +5601,27 @@ export const listCollaborationMLInputChannels: API.OperationMethod<
     items: "collaborationMLInputChannelsList",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListCollaborationMLInputChannelsRequest,
+  ListCollaborationMLInputChannelsResponse,
+  ListCollaborationMLInputChannelsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListCollaborationMLInputChannelsRequest,
+  ) => stream.Stream<
+    ListCollaborationMLInputChannelsResponse,
+    ListCollaborationMLInputChannelsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListCollaborationMLInputChannelsRequest,
+  ) => stream.Stream<
+    CollaborationMLInputChannelSummary,
+    ListCollaborationMLInputChannelsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListCollaborationTrainedModelExportJobsError =
   | AccessDeniedException
@@ -5557,7 +5664,27 @@ export const listCollaborationTrainedModelExportJobs: API.OperationMethod<
     items: "collaborationTrainedModelExportJobs",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListCollaborationTrainedModelExportJobsRequest,
+  ListCollaborationTrainedModelExportJobsResponse,
+  ListCollaborationTrainedModelExportJobsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListCollaborationTrainedModelExportJobsRequest,
+  ) => stream.Stream<
+    ListCollaborationTrainedModelExportJobsResponse,
+    ListCollaborationTrainedModelExportJobsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListCollaborationTrainedModelExportJobsRequest,
+  ) => stream.Stream<
+    CollaborationTrainedModelExportJobSummary,
+    ListCollaborationTrainedModelExportJobsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListCollaborationTrainedModelInferenceJobsError =
   | AccessDeniedException
@@ -5600,7 +5727,27 @@ export const listCollaborationTrainedModelInferenceJobs: API.OperationMethod<
     items: "collaborationTrainedModelInferenceJobs",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListCollaborationTrainedModelInferenceJobsRequest,
+  ListCollaborationTrainedModelInferenceJobsResponse,
+  ListCollaborationTrainedModelInferenceJobsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListCollaborationTrainedModelInferenceJobsRequest,
+  ) => stream.Stream<
+    ListCollaborationTrainedModelInferenceJobsResponse,
+    ListCollaborationTrainedModelInferenceJobsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListCollaborationTrainedModelInferenceJobsRequest,
+  ) => stream.Stream<
+    CollaborationTrainedModelInferenceJobSummary,
+    ListCollaborationTrainedModelInferenceJobsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListCollaborationTrainedModelsError =
   | AccessDeniedException
@@ -5643,7 +5790,27 @@ export const listCollaborationTrainedModels: API.OperationMethod<
     items: "collaborationTrainedModels",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListCollaborationTrainedModelsRequest,
+  ListCollaborationTrainedModelsResponse,
+  ListCollaborationTrainedModelsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListCollaborationTrainedModelsRequest,
+  ) => stream.Stream<
+    ListCollaborationTrainedModelsResponse,
+    ListCollaborationTrainedModelsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListCollaborationTrainedModelsRequest,
+  ) => stream.Stream<
+    CollaborationTrainedModelSummary,
+    ListCollaborationTrainedModelsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListConfiguredAudienceModelsError =
   | AccessDeniedException
@@ -5685,7 +5852,27 @@ export const listConfiguredAudienceModels: API.OperationMethod<
     items: "configuredAudienceModels",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListConfiguredAudienceModelsRequest,
+  ListConfiguredAudienceModelsResponse,
+  ListConfiguredAudienceModelsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListConfiguredAudienceModelsRequest,
+  ) => stream.Stream<
+    ListConfiguredAudienceModelsResponse,
+    ListConfiguredAudienceModelsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListConfiguredAudienceModelsRequest,
+  ) => stream.Stream<
+    ConfiguredAudienceModelSummary,
+    ListConfiguredAudienceModelsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListConfiguredModelAlgorithmAssociationsError =
   | AccessDeniedException
@@ -5728,7 +5915,27 @@ export const listConfiguredModelAlgorithmAssociations: API.OperationMethod<
     items: "configuredModelAlgorithmAssociations",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListConfiguredModelAlgorithmAssociationsRequest,
+  ListConfiguredModelAlgorithmAssociationsResponse,
+  ListConfiguredModelAlgorithmAssociationsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListConfiguredModelAlgorithmAssociationsRequest,
+  ) => stream.Stream<
+    ListConfiguredModelAlgorithmAssociationsResponse,
+    ListConfiguredModelAlgorithmAssociationsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListConfiguredModelAlgorithmAssociationsRequest,
+  ) => stream.Stream<
+    ConfiguredModelAlgorithmAssociationSummary,
+    ListConfiguredModelAlgorithmAssociationsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListConfiguredModelAlgorithmsError =
   | AccessDeniedException
@@ -5770,7 +5977,27 @@ export const listConfiguredModelAlgorithms: API.OperationMethod<
     items: "configuredModelAlgorithms",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListConfiguredModelAlgorithmsRequest,
+  ListConfiguredModelAlgorithmsResponse,
+  ListConfiguredModelAlgorithmsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListConfiguredModelAlgorithmsRequest,
+  ) => stream.Stream<
+    ListConfiguredModelAlgorithmsResponse,
+    ListConfiguredModelAlgorithmsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListConfiguredModelAlgorithmsRequest,
+  ) => stream.Stream<
+    ConfiguredModelAlgorithmSummary,
+    ListConfiguredModelAlgorithmsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListMLInputChannelsError =
   | AccessDeniedException
@@ -5813,7 +6040,27 @@ export const listMLInputChannels: API.OperationMethod<
     items: "mlInputChannelsList",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListMLInputChannelsRequest,
+  ListMLInputChannelsResponse,
+  ListMLInputChannelsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListMLInputChannelsRequest,
+  ) => stream.Stream<
+    ListMLInputChannelsResponse,
+    ListMLInputChannelsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListMLInputChannelsRequest,
+  ) => stream.Stream<
+    MLInputChannelSummary,
+    ListMLInputChannelsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListTagsForResourceError =
   | AccessDeniedException
@@ -5882,7 +6129,27 @@ export const listTrainedModelInferenceJobs: API.OperationMethod<
     items: "trainedModelInferenceJobs",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListTrainedModelInferenceJobsRequest,
+  ListTrainedModelInferenceJobsResponse,
+  ListTrainedModelInferenceJobsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListTrainedModelInferenceJobsRequest,
+  ) => stream.Stream<
+    ListTrainedModelInferenceJobsResponse,
+    ListTrainedModelInferenceJobsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListTrainedModelInferenceJobsRequest,
+  ) => stream.Stream<
+    TrainedModelInferenceJobSummary,
+    ListTrainedModelInferenceJobsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListTrainedModelsError =
   | AccessDeniedException
@@ -5925,7 +6192,27 @@ export const listTrainedModels: API.OperationMethod<
     items: "trainedModels",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListTrainedModelsRequest,
+  ListTrainedModelsResponse,
+  ListTrainedModelsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListTrainedModelsRequest,
+  ) => stream.Stream<
+    ListTrainedModelsResponse,
+    ListTrainedModelsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListTrainedModelsRequest,
+  ) => stream.Stream<
+    TrainedModelSummary,
+    ListTrainedModelsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListTrainedModelVersionsError =
   | AccessDeniedException
@@ -5974,7 +6261,27 @@ export const listTrainedModelVersions: API.OperationMethod<
     items: "trainedModels",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListTrainedModelVersionsRequest,
+  ListTrainedModelVersionsResponse,
+  ListTrainedModelVersionsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListTrainedModelVersionsRequest,
+  ) => stream.Stream<
+    ListTrainedModelVersionsResponse,
+    ListTrainedModelVersionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListTrainedModelVersionsRequest,
+  ) => stream.Stream<
+    TrainedModelSummary,
+    ListTrainedModelVersionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListTrainingDatasetsError =
   | AccessDeniedException
@@ -6016,7 +6323,27 @@ export const listTrainingDatasets: API.OperationMethod<
     items: "trainingDatasets",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListTrainingDatasetsRequest,
+  ListTrainingDatasetsResponse,
+  ListTrainingDatasetsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListTrainingDatasetsRequest,
+  ) => stream.Stream<
+    ListTrainingDatasetsResponse,
+    ListTrainingDatasetsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListTrainingDatasetsRequest,
+  ) => stream.Stream<
+    TrainingDatasetSummary,
+    ListTrainingDatasetsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type PutConfiguredAudienceModelPolicyError =
   | AccessDeniedException

@@ -84,31 +84,36 @@ const rules = T.EndpointResolver((p, _) => {
   return err("Invalid Configuration: Missing Region");
 });
 
-export class ConflictException extends S.TaggedErrorClass<ConflictException>()(
-  "ConflictException",
-  { Message: S.optional(S.String) },
-  T.HttpError(409),
-).pipe(C.withConflictError) {}
-export class InternalServerException extends S.TaggedErrorClass<InternalServerException>()(
-  "InternalServerException",
-  { Message: S.optional(S.String) },
-  T.HttpError(500),
-).pipe(C.withServerError) {}
-export class ResourceNotFoundException extends S.TaggedErrorClass<ResourceNotFoundException>()(
-  "ResourceNotFoundException",
-  { Message: S.optional(S.String) },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class UnauthorizedException extends S.TaggedErrorClass<UnauthorizedException>()(
-  "UnauthorizedException",
-  { Message: S.optional(S.String) },
-  T.HttpError(401),
-).pipe(C.withAuthError) {}
-export class ValidationException extends S.TaggedErrorClass<ValidationException>()(
-  "ValidationException",
-  { Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
+export class ConflictException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
+    "ConflictException",
+    { Message: S.optional(S.String) },
+    T.HttpError(409),
+  ).pipe(C.withConflictError) {}
+export class InternalServerException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
+    "InternalServerException",
+    { Message: S.optional(S.String) },
+    T.HttpError(500),
+  ).pipe(C.withServerError) {}
+export class ResourceNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
+    "ResourceNotFoundException",
+    { Message: S.optional(S.String) },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class UnauthorizedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<UnauthorizedException>()(
+    "UnauthorizedException",
+    { Message: S.optional(S.String) },
+    T.HttpError(401),
+  ).pipe(C.withAuthError) {}
+export class ValidationException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
+    "ValidationException",
+    { Message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
 export type PermissionActionType = "RESTORE" | (string & {});
 export const PermissionActionType = /*@__PURE__*/ S.String;
 
@@ -1883,7 +1888,27 @@ export const listApplications: API.OperationMethod<
     items: "Applications",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListApplicationsInput,
+  ListApplicationsOutput,
+  ListApplicationsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListApplicationsInput,
+  ) => stream.Stream<
+    ListApplicationsOutput,
+    ListApplicationsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListApplicationsInput,
+  ) => stream.Stream<
+    ApplicationSummary,
+    ListApplicationsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListComponentsError =
   | InternalServerException
@@ -1932,7 +1957,27 @@ export const listComponents: API.OperationMethod<
     items: "Components",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListComponentsInput,
+  ListComponentsOutput,
+  ListComponentsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListComponentsInput,
+  ) => stream.Stream<
+    ListComponentsOutput,
+    ListComponentsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListComponentsInput,
+  ) => stream.Stream<
+    ComponentSummary,
+    ListComponentsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListConfigurationCheckDefinitionsError =
   | InternalServerException
@@ -1974,7 +2019,27 @@ export const listConfigurationCheckDefinitions: API.OperationMethod<
     items: "ConfigurationChecks",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListConfigurationCheckDefinitionsInput,
+  ListConfigurationCheckDefinitionsOutput,
+  ListConfigurationCheckDefinitionsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListConfigurationCheckDefinitionsInput,
+  ) => stream.Stream<
+    ListConfigurationCheckDefinitionsOutput,
+    ListConfigurationCheckDefinitionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListConfigurationCheckDefinitionsInput,
+  ) => stream.Stream<
+    ConfigurationCheckDefinition,
+    ListConfigurationCheckDefinitionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListConfigurationCheckOperationsError =
   | InternalServerException
@@ -2021,7 +2086,27 @@ export const listConfigurationCheckOperations: API.OperationMethod<
     items: "ConfigurationCheckOperations",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListConfigurationCheckOperationsInput,
+  ListConfigurationCheckOperationsOutput,
+  ListConfigurationCheckOperationsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListConfigurationCheckOperationsInput,
+  ) => stream.Stream<
+    ListConfigurationCheckOperationsOutput,
+    ListConfigurationCheckOperationsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListConfigurationCheckOperationsInput,
+  ) => stream.Stream<
+    ConfigurationCheckOperation,
+    ListConfigurationCheckOperationsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListDatabasesError =
   | InternalServerException
@@ -2068,7 +2153,27 @@ export const listDatabases: API.OperationMethod<
     items: "Databases",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListDatabasesInput,
+  ListDatabasesOutput,
+  ListDatabasesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListDatabasesInput,
+  ) => stream.Stream<
+    ListDatabasesOutput,
+    ListDatabasesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListDatabasesInput,
+  ) => stream.Stream<
+    DatabaseSummary,
+    ListDatabasesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListOperationEventsError =
   | InternalServerException
@@ -2112,7 +2217,27 @@ export const listOperationEvents: API.OperationMethod<
     items: "OperationEvents",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListOperationEventsInput,
+  ListOperationEventsOutput,
+  ListOperationEventsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListOperationEventsInput,
+  ) => stream.Stream<
+    ListOperationEventsOutput,
+    ListOperationEventsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListOperationEventsInput,
+  ) => stream.Stream<
+    OperationEvent,
+    ListOperationEventsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListOperationsError =
   | InternalServerException
@@ -2154,7 +2279,27 @@ export const listOperations: API.OperationMethod<
     items: "Operations",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListOperationsInput,
+  ListOperationsOutput,
+  ListOperationsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListOperationsInput,
+  ) => stream.Stream<
+    ListOperationsOutput,
+    ListOperationsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListOperationsInput,
+  ) => stream.Stream<
+    Operation,
+    ListOperationsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListSubCheckResultsError =
   | InternalServerException
@@ -2196,7 +2341,27 @@ export const listSubCheckResults: API.OperationMethod<
     items: "SubCheckResults",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListSubCheckResultsInput,
+  ListSubCheckResultsOutput,
+  ListSubCheckResultsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListSubCheckResultsInput,
+  ) => stream.Stream<
+    ListSubCheckResultsOutput,
+    ListSubCheckResultsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListSubCheckResultsInput,
+  ) => stream.Stream<
+    SubCheckResult,
+    ListSubCheckResultsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListSubCheckRuleResultsError =
   | InternalServerException
@@ -2238,7 +2403,27 @@ export const listSubCheckRuleResults: API.OperationMethod<
     items: "RuleResults",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListSubCheckRuleResultsInput,
+  ListSubCheckRuleResultsOutput,
+  ListSubCheckRuleResultsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListSubCheckRuleResultsInput,
+  ) => stream.Stream<
+    ListSubCheckRuleResultsOutput,
+    ListSubCheckRuleResultsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListSubCheckRuleResultsInput,
+  ) => stream.Stream<
+    RuleResult,
+    ListSubCheckRuleResultsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListTagsForResourceError =
   | ConflictException

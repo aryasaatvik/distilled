@@ -85,54 +85,63 @@ const rules = T.EndpointResolver((p, _) => {
   return err("Invalid Configuration: Missing Region");
 });
 
-export class AccessDeniedException extends S.TaggedErrorClass<AccessDeniedException>()(
-  "AccessDeniedException",
-  { message: S.String },
-  T.HttpError(403),
-).pipe(C.withAuthError) {}
-export class BadRequestException extends S.TaggedErrorClass<BadRequestException>()(
-  "BadRequestException",
-  {},
-).pipe(C.withBadRequestError) {}
-export class ConflictException extends S.TaggedErrorClass<ConflictException>()(
-  "ConflictException",
-  { message: S.String },
-  T.HttpError(409),
-).pipe(C.withConflictError) {}
-export class InternalServerException extends S.TaggedErrorClass<InternalServerException>()(
-  "InternalServerException",
-  { message: S.String },
-  T.all(T.HttpError(500), T.Retryable()),
-).pipe(C.withServerError, C.withRetryableError) {}
-export class ResourceNotFoundException extends S.TaggedErrorClass<ResourceNotFoundException>()(
-  "ResourceNotFoundException",
-  { message: S.String },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class ServiceQuotaExceededException extends S.TaggedErrorClass<ServiceQuotaExceededException>()(
-  "ServiceQuotaExceededException",
-  { message: S.String },
-  T.HttpError(402),
-).pipe(C.withQuotaError) {}
-export class ThrottlingException extends S.TaggedErrorClass<ThrottlingException>()(
-  "ThrottlingException",
-  {
-    message: S.String,
-    serviceCode: S.optional(S.String),
-    quotaCode: S.optional(S.String),
-    retryAfterSeconds: S.optional(S.Number).pipe(T.HttpHeader("Retry-After")),
-  },
-  T.all(T.HttpError(429), T.Retryable({ throttling: true })),
-).pipe(C.withThrottlingError, C.withRetryableError) {}
-export class UnauthorizedException extends S.TaggedErrorClass<UnauthorizedException>()(
-  "UnauthorizedException",
-  {},
-).pipe(C.withAuthError) {}
-export class ValidationException extends S.TaggedErrorClass<ValidationException>()(
-  "ValidationException",
-  { message: S.String },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
+export class AccessDeniedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
+    "AccessDeniedException",
+    { message: S.String },
+    T.HttpError(403),
+  ).pipe(C.withAuthError) {}
+export class BadRequestException
+  extends /*@__PURE__*/ S.TaggedErrorClass<BadRequestException>()(
+    "BadRequestException",
+    {},
+  ).pipe(C.withBadRequestError) {}
+export class ConflictException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
+    "ConflictException",
+    { message: S.String },
+    T.HttpError(409),
+  ).pipe(C.withConflictError) {}
+export class InternalServerException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
+    "InternalServerException",
+    { message: S.String },
+    T.all(T.HttpError(500), T.Retryable()),
+  ).pipe(C.withServerError, C.withRetryableError) {}
+export class ResourceNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
+    "ResourceNotFoundException",
+    { message: S.String },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class ServiceQuotaExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
+    "ServiceQuotaExceededException",
+    { message: S.String },
+    T.HttpError(402),
+  ).pipe(C.withQuotaError) {}
+export class ThrottlingException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
+    "ThrottlingException",
+    {
+      message: S.String,
+      serviceCode: S.optional(S.String),
+      quotaCode: S.optional(S.String),
+      retryAfterSeconds: S.optional(S.Number).pipe(T.HttpHeader("Retry-After")),
+    },
+    T.all(T.HttpError(429), T.Retryable({ throttling: true })),
+  ).pipe(C.withThrottlingError, C.withRetryableError) {}
+export class UnauthorizedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<UnauthorizedException>()(
+    "UnauthorizedException",
+    {},
+  ).pipe(C.withAuthError) {}
+export class ValidationException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
+    "ValidationException",
+    { message: S.String },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
 export type LandingZoneVersion = string;
 export type RemediationType = "INHERITANCE_DRIFT" | (string & {});
 export const RemediationType = /*@__PURE__*/ S.String;
@@ -2055,7 +2064,27 @@ export const listBaselines: API.OperationMethod<
     items: "baselines",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListBaselinesInput,
+  ListBaselinesOutput,
+  ListBaselinesError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListBaselinesInput,
+  ) => stream.Stream<
+    ListBaselinesOutput,
+    ListBaselinesError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListBaselinesInput,
+  ) => stream.Stream<
+    BaselineSummary,
+    ListBaselinesError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type ListControlOperationsError =
   | AccessDeniedException
@@ -2104,7 +2133,27 @@ export const listControlOperations: API.OperationMethod<
     items: "controlOperations",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListControlOperationsInput,
+  ListControlOperationsOutput,
+  ListControlOperationsError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListControlOperationsInput,
+  ) => stream.Stream<
+    ListControlOperationsOutput,
+    ListControlOperationsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListControlOperationsInput,
+  ) => stream.Stream<
+    ControlOperationSummary,
+    ListControlOperationsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type ListEnabledBaselinesError =
   | AccessDeniedException
@@ -2155,7 +2204,27 @@ export const listEnabledBaselines: API.OperationMethod<
     items: "enabledBaselines",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListEnabledBaselinesInput,
+  ListEnabledBaselinesOutput,
+  ListEnabledBaselinesError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListEnabledBaselinesInput,
+  ) => stream.Stream<
+    ListEnabledBaselinesOutput,
+    ListEnabledBaselinesError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListEnabledBaselinesInput,
+  ) => stream.Stream<
+    EnabledBaselineSummary,
+    ListEnabledBaselinesError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type ListEnabledControlsError =
   | AccessDeniedException
@@ -2206,7 +2275,27 @@ export const listEnabledControls: API.OperationMethod<
     items: "enabledControls",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListEnabledControlsInput,
+  ListEnabledControlsOutput,
+  ListEnabledControlsError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListEnabledControlsInput,
+  ) => stream.Stream<
+    ListEnabledControlsOutput,
+    ListEnabledControlsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListEnabledControlsInput,
+  ) => stream.Stream<
+    EnabledControlSummary,
+    ListEnabledControlsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type ListLandingZoneOperationsError =
   | AccessDeniedException
@@ -2257,7 +2346,27 @@ export const listLandingZoneOperations: API.OperationMethod<
     items: "landingZoneOperations",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListLandingZoneOperationsInput,
+  ListLandingZoneOperationsOutput,
+  ListLandingZoneOperationsError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListLandingZoneOperationsInput,
+  ) => stream.Stream<
+    ListLandingZoneOperationsOutput,
+    ListLandingZoneOperationsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListLandingZoneOperationsInput,
+  ) => stream.Stream<
+    LandingZoneOperationSummary,
+    ListLandingZoneOperationsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type ListLandingZonesError =
   | AccessDeniedException
@@ -2310,7 +2419,27 @@ export const listLandingZones: API.OperationMethod<
     items: "landingZones",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListLandingZonesInput,
+  ListLandingZonesOutput,
+  ListLandingZonesError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListLandingZonesInput,
+  ) => stream.Stream<
+    ListLandingZonesOutput,
+    ListLandingZonesError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListLandingZonesInput,
+  ) => stream.Stream<
+    LandingZoneSummary,
+    ListLandingZonesError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type ListTagsForResourceError =
   | InternalServerException

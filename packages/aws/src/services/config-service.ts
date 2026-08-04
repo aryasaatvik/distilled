@@ -89,231 +89,287 @@ const rules = T.EndpointResolver((p, _) => {
   return err("Invalid Configuration: Missing Region");
 });
 
-export class ConflictException extends S.TaggedErrorClass<ConflictException>()(
-  "ConflictException",
-  { message: S.optional(S.String) },
-) {}
-export class ConformancePackTemplateValidationException extends S.TaggedErrorClass<ConformancePackTemplateValidationException>()(
-  "ConformancePackTemplateValidationException",
-  { message: S.optional(S.String) },
-) {}
-export class IdempotentParameterMismatch extends S.TaggedErrorClass<IdempotentParameterMismatch>()(
-  "IdempotentParameterMismatch",
-  { message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError, C.withConflictError) {}
-export class InsufficientDeliveryPolicyException extends S.TaggedErrorClass<InsufficientDeliveryPolicyException>()(
-  "InsufficientDeliveryPolicyException",
-  { message: S.optional(S.String) },
-) {}
-export class InsufficientPermissionsException extends S.TaggedErrorClass<InsufficientPermissionsException>()(
-  "InsufficientPermissionsException",
-  { message: S.optional(S.String) },
-) {}
-export class InvalidConfigurationRecorderNameException extends S.TaggedErrorClass<InvalidConfigurationRecorderNameException>()(
-  "InvalidConfigurationRecorderNameException",
-  { message: S.optional(S.String) },
-) {}
-export class InvalidDeliveryChannelNameException extends S.TaggedErrorClass<InvalidDeliveryChannelNameException>()(
-  "InvalidDeliveryChannelNameException",
-  { message: S.optional(S.String) },
-) {}
-export class InvalidExpressionException extends S.TaggedErrorClass<InvalidExpressionException>()(
-  "InvalidExpressionException",
-  { message: S.optional(S.String) },
-) {}
-export class InvalidLimitException extends S.TaggedErrorClass<InvalidLimitException>()(
-  "InvalidLimitException",
-  { message: S.optional(S.String) },
-) {}
-export class InvalidNextTokenException extends S.TaggedErrorClass<InvalidNextTokenException>()(
-  "InvalidNextTokenException",
-  { message: S.optional(S.String) },
-) {}
-export class InvalidParameterValueException extends S.TaggedErrorClass<InvalidParameterValueException>()(
-  "InvalidParameterValueException",
-  { message: S.optional(S.String) },
-) {}
-export class InvalidRecordingGroupException extends S.TaggedErrorClass<InvalidRecordingGroupException>()(
-  "InvalidRecordingGroupException",
-  { message: S.optional(S.String) },
-) {}
-export class InvalidResultTokenException extends S.TaggedErrorClass<InvalidResultTokenException>()(
-  "InvalidResultTokenException",
-  { message: S.optional(S.String) },
-) {}
-export class InvalidRoleException extends S.TaggedErrorClass<InvalidRoleException>()(
-  "InvalidRoleException",
-  { message: S.optional(S.String) },
-) {}
-export class InvalidS3KeyPrefixException extends S.TaggedErrorClass<InvalidS3KeyPrefixException>()(
-  "InvalidS3KeyPrefixException",
-  { message: S.optional(S.String) },
-) {}
-export class InvalidS3KmsKeyArnException extends S.TaggedErrorClass<InvalidS3KmsKeyArnException>()(
-  "InvalidS3KmsKeyArnException",
-  { message: S.optional(S.String) },
-) {}
-export class InvalidSNSTopicARNException extends S.TaggedErrorClass<InvalidSNSTopicARNException>()(
-  "InvalidSNSTopicARNException",
-  { message: S.optional(S.String) },
-) {}
-export class InvalidTimeRangeException extends S.TaggedErrorClass<InvalidTimeRangeException>()(
-  "InvalidTimeRangeException",
-  { message: S.optional(S.String) },
-) {}
-export class LastDeliveryChannelDeleteFailedException extends S.TaggedErrorClass<LastDeliveryChannelDeleteFailedException>()(
-  "LastDeliveryChannelDeleteFailedException",
-  { message: S.optional(S.String) },
-) {}
-export class LimitExceededException extends S.TaggedErrorClass<LimitExceededException>()(
-  "LimitExceededException",
-  { message: S.optional(S.String) },
-) {}
-export class MaxActiveResourcesExceededException extends S.TaggedErrorClass<MaxActiveResourcesExceededException>()(
-  "MaxActiveResourcesExceededException",
-  { message: S.optional(S.String) },
-) {}
-export class MaxNumberOfConfigRulesExceededException extends S.TaggedErrorClass<MaxNumberOfConfigRulesExceededException>()(
-  "MaxNumberOfConfigRulesExceededException",
-  { message: S.optional(S.String) },
-) {}
-export class MaxNumberOfConfigurationRecordersExceededException extends S.TaggedErrorClass<MaxNumberOfConfigurationRecordersExceededException>()(
-  "MaxNumberOfConfigurationRecordersExceededException",
-  { message: S.optional(S.String) },
-) {}
-export class MaxNumberOfConformancePacksExceededException extends S.TaggedErrorClass<MaxNumberOfConformancePacksExceededException>()(
-  "MaxNumberOfConformancePacksExceededException",
-  { message: S.optional(S.String) },
-) {}
-export class MaxNumberOfDeliveryChannelsExceededException extends S.TaggedErrorClass<MaxNumberOfDeliveryChannelsExceededException>()(
-  "MaxNumberOfDeliveryChannelsExceededException",
-  { message: S.optional(S.String) },
-) {}
-export class MaxNumberOfOrganizationConfigRulesExceededException extends S.TaggedErrorClass<MaxNumberOfOrganizationConfigRulesExceededException>()(
-  "MaxNumberOfOrganizationConfigRulesExceededException",
-  { message: S.optional(S.String) },
-) {}
-export class MaxNumberOfOrganizationConformancePacksExceededException extends S.TaggedErrorClass<MaxNumberOfOrganizationConformancePacksExceededException>()(
-  "MaxNumberOfOrganizationConformancePacksExceededException",
-  { message: S.optional(S.String) },
-) {}
-export class MaxNumberOfRetentionConfigurationsExceededException extends S.TaggedErrorClass<MaxNumberOfRetentionConfigurationsExceededException>()(
-  "MaxNumberOfRetentionConfigurationsExceededException",
-  { message: S.optional(S.String) },
-) {}
-export class NoAvailableConfigurationRecorderException extends S.TaggedErrorClass<NoAvailableConfigurationRecorderException>()(
-  "NoAvailableConfigurationRecorderException",
-  { message: S.optional(S.String) },
-) {}
-export class NoAvailableDeliveryChannelException extends S.TaggedErrorClass<NoAvailableDeliveryChannelException>()(
-  "NoAvailableDeliveryChannelException",
-  { message: S.optional(S.String) },
-) {}
-export class NoAvailableOrganizationException extends S.TaggedErrorClass<NoAvailableOrganizationException>()(
-  "NoAvailableOrganizationException",
-  { message: S.optional(S.String) },
-) {}
-export class NoRunningConfigurationRecorderException extends S.TaggedErrorClass<NoRunningConfigurationRecorderException>()(
-  "NoRunningConfigurationRecorderException",
-  { message: S.optional(S.String) },
-) {}
-export class NoSuchBucketException extends S.TaggedErrorClass<NoSuchBucketException>()(
-  "NoSuchBucketException",
-  { message: S.optional(S.String) },
-) {}
-export class NoSuchConfigRuleException extends S.TaggedErrorClass<NoSuchConfigRuleException>()(
-  "NoSuchConfigRuleException",
-  { message: S.optional(S.String) },
-) {}
-export class NoSuchConfigRuleInConformancePackException extends S.TaggedErrorClass<NoSuchConfigRuleInConformancePackException>()(
-  "NoSuchConfigRuleInConformancePackException",
-  { message: S.optional(S.String) },
-) {}
-export class NoSuchConfigurationAggregatorException extends S.TaggedErrorClass<NoSuchConfigurationAggregatorException>()(
-  "NoSuchConfigurationAggregatorException",
-  { message: S.optional(S.String) },
-) {}
-export class NoSuchConfigurationRecorderException extends S.TaggedErrorClass<NoSuchConfigurationRecorderException>()(
-  "NoSuchConfigurationRecorderException",
-  { message: S.optional(S.String) },
-) {}
-export class NoSuchConformancePackException extends S.TaggedErrorClass<NoSuchConformancePackException>()(
-  "NoSuchConformancePackException",
-  { message: S.optional(S.String) },
-) {}
-export class NoSuchDeliveryChannelException extends S.TaggedErrorClass<NoSuchDeliveryChannelException>()(
-  "NoSuchDeliveryChannelException",
-  { message: S.optional(S.String) },
-) {}
-export class NoSuchOrganizationConfigRuleException extends S.TaggedErrorClass<NoSuchOrganizationConfigRuleException>()(
-  "NoSuchOrganizationConfigRuleException",
-  { message: S.optional(S.String) },
-) {}
-export class NoSuchOrganizationConformancePackException extends S.TaggedErrorClass<NoSuchOrganizationConformancePackException>()(
-  "NoSuchOrganizationConformancePackException",
-  { message: S.optional(S.String) },
-) {}
-export class NoSuchRemediationConfigurationException extends S.TaggedErrorClass<NoSuchRemediationConfigurationException>()(
-  "NoSuchRemediationConfigurationException",
-  { message: S.optional(S.String) },
-) {}
-export class NoSuchRemediationExceptionException extends S.TaggedErrorClass<NoSuchRemediationExceptionException>()(
-  "NoSuchRemediationExceptionException",
-  { message: S.optional(S.String) },
-) {}
-export class NoSuchRetentionConfigurationException extends S.TaggedErrorClass<NoSuchRetentionConfigurationException>()(
-  "NoSuchRetentionConfigurationException",
-  { message: S.optional(S.String) },
-) {}
-export class OrganizationAccessDeniedException extends S.TaggedErrorClass<OrganizationAccessDeniedException>()(
-  "OrganizationAccessDeniedException",
-  { message: S.optional(S.String) },
-).pipe(C.withAuthError) {}
-export class OrganizationAllFeaturesNotEnabledException extends S.TaggedErrorClass<OrganizationAllFeaturesNotEnabledException>()(
-  "OrganizationAllFeaturesNotEnabledException",
-  { message: S.optional(S.String) },
-) {}
-export class OrganizationConformancePackTemplateValidationException extends S.TaggedErrorClass<OrganizationConformancePackTemplateValidationException>()(
-  "OrganizationConformancePackTemplateValidationException",
-  { message: S.optional(S.String) },
-) {}
-export class OversizedConfigurationItemException extends S.TaggedErrorClass<OversizedConfigurationItemException>()(
-  "OversizedConfigurationItemException",
-  { message: S.optional(S.String) },
-) {}
-export class RemediationInProgressException extends S.TaggedErrorClass<RemediationInProgressException>()(
-  "RemediationInProgressException",
-  { message: S.optional(S.String) },
-) {}
-export class ResourceConcurrentModificationException extends S.TaggedErrorClass<ResourceConcurrentModificationException>()(
-  "ResourceConcurrentModificationException",
-  { message: S.optional(S.String) },
-) {}
-export class ResourceInUseException extends S.TaggedErrorClass<ResourceInUseException>()(
-  "ResourceInUseException",
-  { message: S.optional(S.String) },
-) {}
-export class ResourceNotDiscoveredException extends S.TaggedErrorClass<ResourceNotDiscoveredException>()(
-  "ResourceNotDiscoveredException",
-  { message: S.optional(S.String) },
-) {}
-export class ResourceNotFoundException extends S.TaggedErrorClass<ResourceNotFoundException>()(
-  "ResourceNotFoundException",
-  { message: S.optional(S.String) },
-) {}
-export class TooManyTagsException extends S.TaggedErrorClass<TooManyTagsException>()(
-  "TooManyTagsException",
-  { message: S.optional(S.String) },
-) {}
-export class UnmodifiableEntityException extends S.TaggedErrorClass<UnmodifiableEntityException>()(
-  "UnmodifiableEntityException",
-  { message: S.optional(S.String) },
-) {}
-export class ValidationException extends S.TaggedErrorClass<ValidationException>()(
-  "ValidationException",
-  { message: S.optional(S.String) },
-) {}
+export class ConflictException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
+    "ConflictException",
+    { message: S.optional(S.String) },
+  ) {}
+export class ConformancePackTemplateValidationException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ConformancePackTemplateValidationException>()(
+    "ConformancePackTemplateValidationException",
+    { message: S.optional(S.String) },
+  ) {}
+export class IdempotentParameterMismatch
+  extends /*@__PURE__*/ S.TaggedErrorClass<IdempotentParameterMismatch>()(
+    "IdempotentParameterMismatch",
+    { message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError, C.withConflictError) {}
+export class InsufficientDeliveryPolicyException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InsufficientDeliveryPolicyException>()(
+    "InsufficientDeliveryPolicyException",
+    { message: S.optional(S.String) },
+  ) {}
+export class InsufficientPermissionsException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InsufficientPermissionsException>()(
+    "InsufficientPermissionsException",
+    { message: S.optional(S.String) },
+  ) {}
+export class InvalidConfigurationRecorderNameException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidConfigurationRecorderNameException>()(
+    "InvalidConfigurationRecorderNameException",
+    { message: S.optional(S.String) },
+  ) {}
+export class InvalidDeliveryChannelNameException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidDeliveryChannelNameException>()(
+    "InvalidDeliveryChannelNameException",
+    { message: S.optional(S.String) },
+  ) {}
+export class InvalidExpressionException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidExpressionException>()(
+    "InvalidExpressionException",
+    { message: S.optional(S.String) },
+  ) {}
+export class InvalidLimitException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidLimitException>()(
+    "InvalidLimitException",
+    { message: S.optional(S.String) },
+  ) {}
+export class InvalidNextTokenException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidNextTokenException>()(
+    "InvalidNextTokenException",
+    { message: S.optional(S.String) },
+  ) {}
+export class InvalidParameterValueException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidParameterValueException>()(
+    "InvalidParameterValueException",
+    { message: S.optional(S.String) },
+  ) {}
+export class InvalidRecordingGroupException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidRecordingGroupException>()(
+    "InvalidRecordingGroupException",
+    { message: S.optional(S.String) },
+  ) {}
+export class InvalidResultTokenException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidResultTokenException>()(
+    "InvalidResultTokenException",
+    { message: S.optional(S.String) },
+  ) {}
+export class InvalidRoleException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidRoleException>()(
+    "InvalidRoleException",
+    { message: S.optional(S.String) },
+  ) {}
+export class InvalidS3KeyPrefixException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidS3KeyPrefixException>()(
+    "InvalidS3KeyPrefixException",
+    { message: S.optional(S.String) },
+  ) {}
+export class InvalidS3KmsKeyArnException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidS3KmsKeyArnException>()(
+    "InvalidS3KmsKeyArnException",
+    { message: S.optional(S.String) },
+  ) {}
+export class InvalidSNSTopicARNException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidSNSTopicARNException>()(
+    "InvalidSNSTopicARNException",
+    { message: S.optional(S.String) },
+  ) {}
+export class InvalidTimeRangeException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidTimeRangeException>()(
+    "InvalidTimeRangeException",
+    { message: S.optional(S.String) },
+  ) {}
+export class LastDeliveryChannelDeleteFailedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<LastDeliveryChannelDeleteFailedException>()(
+    "LastDeliveryChannelDeleteFailedException",
+    { message: S.optional(S.String) },
+  ) {}
+export class LimitExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<LimitExceededException>()(
+    "LimitExceededException",
+    { message: S.optional(S.String) },
+  ) {}
+export class MaxActiveResourcesExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<MaxActiveResourcesExceededException>()(
+    "MaxActiveResourcesExceededException",
+    { message: S.optional(S.String) },
+  ) {}
+export class MaxNumberOfConfigRulesExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<MaxNumberOfConfigRulesExceededException>()(
+    "MaxNumberOfConfigRulesExceededException",
+    { message: S.optional(S.String) },
+  ) {}
+export class MaxNumberOfConfigurationRecordersExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<MaxNumberOfConfigurationRecordersExceededException>()(
+    "MaxNumberOfConfigurationRecordersExceededException",
+    { message: S.optional(S.String) },
+  ) {}
+export class MaxNumberOfConformancePacksExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<MaxNumberOfConformancePacksExceededException>()(
+    "MaxNumberOfConformancePacksExceededException",
+    { message: S.optional(S.String) },
+  ) {}
+export class MaxNumberOfDeliveryChannelsExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<MaxNumberOfDeliveryChannelsExceededException>()(
+    "MaxNumberOfDeliveryChannelsExceededException",
+    { message: S.optional(S.String) },
+  ) {}
+export class MaxNumberOfOrganizationConfigRulesExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<MaxNumberOfOrganizationConfigRulesExceededException>()(
+    "MaxNumberOfOrganizationConfigRulesExceededException",
+    { message: S.optional(S.String) },
+  ) {}
+export class MaxNumberOfOrganizationConformancePacksExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<MaxNumberOfOrganizationConformancePacksExceededException>()(
+    "MaxNumberOfOrganizationConformancePacksExceededException",
+    { message: S.optional(S.String) },
+  ) {}
+export class MaxNumberOfRetentionConfigurationsExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<MaxNumberOfRetentionConfigurationsExceededException>()(
+    "MaxNumberOfRetentionConfigurationsExceededException",
+    { message: S.optional(S.String) },
+  ) {}
+export class NoAvailableConfigurationRecorderException
+  extends /*@__PURE__*/ S.TaggedErrorClass<NoAvailableConfigurationRecorderException>()(
+    "NoAvailableConfigurationRecorderException",
+    { message: S.optional(S.String) },
+  ) {}
+export class NoAvailableDeliveryChannelException
+  extends /*@__PURE__*/ S.TaggedErrorClass<NoAvailableDeliveryChannelException>()(
+    "NoAvailableDeliveryChannelException",
+    { message: S.optional(S.String) },
+  ) {}
+export class NoAvailableOrganizationException
+  extends /*@__PURE__*/ S.TaggedErrorClass<NoAvailableOrganizationException>()(
+    "NoAvailableOrganizationException",
+    { message: S.optional(S.String) },
+  ) {}
+export class NoRunningConfigurationRecorderException
+  extends /*@__PURE__*/ S.TaggedErrorClass<NoRunningConfigurationRecorderException>()(
+    "NoRunningConfigurationRecorderException",
+    { message: S.optional(S.String) },
+  ) {}
+export class NoSuchBucketException
+  extends /*@__PURE__*/ S.TaggedErrorClass<NoSuchBucketException>()(
+    "NoSuchBucketException",
+    { message: S.optional(S.String) },
+  ) {}
+export class NoSuchConfigRuleException
+  extends /*@__PURE__*/ S.TaggedErrorClass<NoSuchConfigRuleException>()(
+    "NoSuchConfigRuleException",
+    { message: S.optional(S.String) },
+  ) {}
+export class NoSuchConfigRuleInConformancePackException
+  extends /*@__PURE__*/ S.TaggedErrorClass<NoSuchConfigRuleInConformancePackException>()(
+    "NoSuchConfigRuleInConformancePackException",
+    { message: S.optional(S.String) },
+  ) {}
+export class NoSuchConfigurationAggregatorException
+  extends /*@__PURE__*/ S.TaggedErrorClass<NoSuchConfigurationAggregatorException>()(
+    "NoSuchConfigurationAggregatorException",
+    { message: S.optional(S.String) },
+  ) {}
+export class NoSuchConfigurationRecorderException
+  extends /*@__PURE__*/ S.TaggedErrorClass<NoSuchConfigurationRecorderException>()(
+    "NoSuchConfigurationRecorderException",
+    { message: S.optional(S.String) },
+  ) {}
+export class NoSuchConformancePackException
+  extends /*@__PURE__*/ S.TaggedErrorClass<NoSuchConformancePackException>()(
+    "NoSuchConformancePackException",
+    { message: S.optional(S.String) },
+  ) {}
+export class NoSuchDeliveryChannelException
+  extends /*@__PURE__*/ S.TaggedErrorClass<NoSuchDeliveryChannelException>()(
+    "NoSuchDeliveryChannelException",
+    { message: S.optional(S.String) },
+  ) {}
+export class NoSuchOrganizationConfigRuleException
+  extends /*@__PURE__*/ S.TaggedErrorClass<NoSuchOrganizationConfigRuleException>()(
+    "NoSuchOrganizationConfigRuleException",
+    { message: S.optional(S.String) },
+  ) {}
+export class NoSuchOrganizationConformancePackException
+  extends /*@__PURE__*/ S.TaggedErrorClass<NoSuchOrganizationConformancePackException>()(
+    "NoSuchOrganizationConformancePackException",
+    { message: S.optional(S.String) },
+  ) {}
+export class NoSuchRemediationConfigurationException
+  extends /*@__PURE__*/ S.TaggedErrorClass<NoSuchRemediationConfigurationException>()(
+    "NoSuchRemediationConfigurationException",
+    { message: S.optional(S.String) },
+  ) {}
+export class NoSuchRemediationExceptionException
+  extends /*@__PURE__*/ S.TaggedErrorClass<NoSuchRemediationExceptionException>()(
+    "NoSuchRemediationExceptionException",
+    { message: S.optional(S.String) },
+  ) {}
+export class NoSuchRetentionConfigurationException
+  extends /*@__PURE__*/ S.TaggedErrorClass<NoSuchRetentionConfigurationException>()(
+    "NoSuchRetentionConfigurationException",
+    { message: S.optional(S.String) },
+  ) {}
+export class OrganizationAccessDeniedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<OrganizationAccessDeniedException>()(
+    "OrganizationAccessDeniedException",
+    { message: S.optional(S.String) },
+  ).pipe(C.withAuthError) {}
+export class OrganizationAllFeaturesNotEnabledException
+  extends /*@__PURE__*/ S.TaggedErrorClass<OrganizationAllFeaturesNotEnabledException>()(
+    "OrganizationAllFeaturesNotEnabledException",
+    { message: S.optional(S.String) },
+  ) {}
+export class OrganizationConformancePackTemplateValidationException
+  extends /*@__PURE__*/ S.TaggedErrorClass<OrganizationConformancePackTemplateValidationException>()(
+    "OrganizationConformancePackTemplateValidationException",
+    { message: S.optional(S.String) },
+  ) {}
+export class OversizedConfigurationItemException
+  extends /*@__PURE__*/ S.TaggedErrorClass<OversizedConfigurationItemException>()(
+    "OversizedConfigurationItemException",
+    { message: S.optional(S.String) },
+  ) {}
+export class RemediationInProgressException
+  extends /*@__PURE__*/ S.TaggedErrorClass<RemediationInProgressException>()(
+    "RemediationInProgressException",
+    { message: S.optional(S.String) },
+  ) {}
+export class ResourceConcurrentModificationException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceConcurrentModificationException>()(
+    "ResourceConcurrentModificationException",
+    { message: S.optional(S.String) },
+  ) {}
+export class ResourceInUseException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceInUseException>()(
+    "ResourceInUseException",
+    { message: S.optional(S.String) },
+  ) {}
+export class ResourceNotDiscoveredException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotDiscoveredException>()(
+    "ResourceNotDiscoveredException",
+    { message: S.optional(S.String) },
+  ) {}
+export class ResourceNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
+    "ResourceNotFoundException",
+    { message: S.optional(S.String) },
+  ) {}
+export class TooManyTagsException
+  extends /*@__PURE__*/ S.TaggedErrorClass<TooManyTagsException>()(
+    "TooManyTagsException",
+    { message: S.optional(S.String) },
+  ) {}
+export class UnmodifiableEntityException
+  extends /*@__PURE__*/ S.TaggedErrorClass<UnmodifiableEntityException>()(
+    "UnmodifiableEntityException",
+    { message: S.optional(S.String) },
+  ) {}
+export class ValidationException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
+    "ValidationException",
+    { message: S.optional(S.String) },
+  ) {}
 export type AmazonResourceName = string;
 export type ResourceType =
   | "AWS::EC2::CustomerGateway"
@@ -7273,7 +7329,27 @@ export const describeAggregateComplianceByConfigRules: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "Limit",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  DescribeAggregateComplianceByConfigRulesRequest,
+  DescribeAggregateComplianceByConfigRulesResponse,
+  DescribeAggregateComplianceByConfigRulesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: DescribeAggregateComplianceByConfigRulesRequest,
+  ) => stream.Stream<
+    DescribeAggregateComplianceByConfigRulesResponse,
+    DescribeAggregateComplianceByConfigRulesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: DescribeAggregateComplianceByConfigRulesRequest,
+  ) => stream.Stream<
+    unknown,
+    DescribeAggregateComplianceByConfigRulesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type DescribeAggregateComplianceByConformancePacksError =
   | InvalidLimitException
@@ -7325,7 +7401,27 @@ export const describeAggregateComplianceByConformancePacks: API.OperationMethod<
     items: "AggregateComplianceByConformancePacks",
     pageSize: "Limit",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  DescribeAggregateComplianceByConformancePacksRequest,
+  DescribeAggregateComplianceByConformancePacksResponse,
+  DescribeAggregateComplianceByConformancePacksError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: DescribeAggregateComplianceByConformancePacksRequest,
+  ) => stream.Stream<
+    DescribeAggregateComplianceByConformancePacksResponse,
+    DescribeAggregateComplianceByConformancePacksError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: DescribeAggregateComplianceByConformancePacksRequest,
+  ) => stream.Stream<
+    AggregateComplianceByConformancePack,
+    DescribeAggregateComplianceByConformancePacksError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type DescribeAggregationAuthorizationsError =
   | InvalidLimitException
@@ -7373,7 +7469,27 @@ export const describeAggregationAuthorizations: API.OperationMethod<
     items: "AggregationAuthorizations",
     pageSize: "Limit",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  DescribeAggregationAuthorizationsRequest,
+  DescribeAggregationAuthorizationsResponse,
+  DescribeAggregationAuthorizationsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: DescribeAggregationAuthorizationsRequest,
+  ) => stream.Stream<
+    DescribeAggregationAuthorizationsResponse,
+    DescribeAggregationAuthorizationsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: DescribeAggregationAuthorizationsRequest,
+  ) => stream.Stream<
+    AggregationAuthorization,
+    DescribeAggregationAuthorizationsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type DescribeComplianceByConfigRuleError =
   | InvalidNextTokenException
@@ -7448,7 +7564,27 @@ export const describeComplianceByConfigRule: API.OperationMethod<
     outputToken: "NextToken",
     items: "ComplianceByConfigRules",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  DescribeComplianceByConfigRuleRequest,
+  DescribeComplianceByConfigRuleResponse,
+  DescribeComplianceByConfigRuleError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: DescribeComplianceByConfigRuleRequest,
+  ) => stream.Stream<
+    DescribeComplianceByConfigRuleResponse,
+    DescribeComplianceByConfigRuleError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: DescribeComplianceByConfigRuleRequest,
+  ) => stream.Stream<
+    ComplianceByConfigRule,
+    DescribeComplianceByConfigRuleError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type DescribeComplianceByResourceError =
   | InvalidNextTokenException
@@ -7519,7 +7655,27 @@ export const describeComplianceByResource: API.OperationMethod<
     items: "ComplianceByResources",
     pageSize: "Limit",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  DescribeComplianceByResourceRequest,
+  DescribeComplianceByResourceResponse,
+  DescribeComplianceByResourceError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: DescribeComplianceByResourceRequest,
+  ) => stream.Stream<
+    DescribeComplianceByResourceResponse,
+    DescribeComplianceByResourceError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: DescribeComplianceByResourceRequest,
+  ) => stream.Stream<
+    ComplianceByResource,
+    DescribeComplianceByResourceError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type DescribeConfigRuleEvaluationStatusError =
   | InvalidNextTokenException
@@ -7567,7 +7723,27 @@ export const describeConfigRuleEvaluationStatus: API.OperationMethod<
     items: "ConfigRulesEvaluationStatus",
     pageSize: "Limit",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  DescribeConfigRuleEvaluationStatusRequest,
+  DescribeConfigRuleEvaluationStatusResponse,
+  DescribeConfigRuleEvaluationStatusError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: DescribeConfigRuleEvaluationStatusRequest,
+  ) => stream.Stream<
+    DescribeConfigRuleEvaluationStatusResponse,
+    DescribeConfigRuleEvaluationStatusError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: DescribeConfigRuleEvaluationStatusRequest,
+  ) => stream.Stream<
+    ConfigRuleEvaluationStatus,
+    DescribeConfigRuleEvaluationStatusError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type DescribeConfigRulesError =
   | InvalidNextTokenException
@@ -7613,7 +7789,27 @@ export const describeConfigRules: API.OperationMethod<
     outputToken: "NextToken",
     items: "ConfigRules",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  DescribeConfigRulesRequest,
+  DescribeConfigRulesResponse,
+  DescribeConfigRulesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: DescribeConfigRulesRequest,
+  ) => stream.Stream<
+    DescribeConfigRulesResponse,
+    DescribeConfigRulesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: DescribeConfigRulesRequest,
+  ) => stream.Stream<
+    ConfigRule,
+    DescribeConfigRulesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type DescribeConfigurationAggregatorsError =
   | InvalidLimitException
@@ -7665,7 +7861,27 @@ export const describeConfigurationAggregators: API.OperationMethod<
     items: "ConfigurationAggregators",
     pageSize: "Limit",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  DescribeConfigurationAggregatorsRequest,
+  DescribeConfigurationAggregatorsResponse,
+  DescribeConfigurationAggregatorsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: DescribeConfigurationAggregatorsRequest,
+  ) => stream.Stream<
+    DescribeConfigurationAggregatorsResponse,
+    DescribeConfigurationAggregatorsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: DescribeConfigurationAggregatorsRequest,
+  ) => stream.Stream<
+    ConfigurationAggregator,
+    DescribeConfigurationAggregatorsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type DescribeConfigurationAggregatorSourcesStatusError =
   | InvalidLimitException
@@ -7715,7 +7931,27 @@ export const describeConfigurationAggregatorSourcesStatus: API.OperationMethod<
     items: "AggregatedSourceStatusList",
     pageSize: "Limit",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  DescribeConfigurationAggregatorSourcesStatusRequest,
+  DescribeConfigurationAggregatorSourcesStatusResponse,
+  DescribeConfigurationAggregatorSourcesStatusError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: DescribeConfigurationAggregatorSourcesStatusRequest,
+  ) => stream.Stream<
+    DescribeConfigurationAggregatorSourcesStatusResponse,
+    DescribeConfigurationAggregatorSourcesStatusError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: DescribeConfigurationAggregatorSourcesStatusRequest,
+  ) => stream.Stream<
+    AggregatedSourceStatus,
+    DescribeConfigurationAggregatorSourcesStatusError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type DescribeConfigurationRecordersError =
   | NoSuchConfigurationRecorderException
@@ -7823,7 +8059,27 @@ export const describeConformancePackCompliance: API.OperationMethod<
     items: "ConformancePackRuleComplianceList",
     pageSize: "Limit",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  DescribeConformancePackComplianceRequest,
+  DescribeConformancePackComplianceResponse,
+  DescribeConformancePackComplianceError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: DescribeConformancePackComplianceRequest,
+  ) => stream.Stream<
+    DescribeConformancePackComplianceResponse,
+    DescribeConformancePackComplianceError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: DescribeConformancePackComplianceRequest,
+  ) => stream.Stream<
+    ConformancePackRuleCompliance,
+    DescribeConformancePackComplianceError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type DescribeConformancePacksError =
   | InvalidLimitException
@@ -7872,7 +8128,27 @@ export const describeConformancePacks: API.OperationMethod<
     items: "ConformancePackDetails",
     pageSize: "Limit",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  DescribeConformancePacksRequest,
+  DescribeConformancePacksResponse,
+  DescribeConformancePacksError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: DescribeConformancePacksRequest,
+  ) => stream.Stream<
+    DescribeConformancePacksResponse,
+    DescribeConformancePacksError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: DescribeConformancePacksRequest,
+  ) => stream.Stream<
+    ConformancePackDetail,
+    DescribeConformancePacksError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type DescribeConformancePackStatusError =
   | InvalidLimitException
@@ -7921,7 +8197,27 @@ export const describeConformancePackStatus: API.OperationMethod<
     items: "ConformancePackStatusDetails",
     pageSize: "Limit",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  DescribeConformancePackStatusRequest,
+  DescribeConformancePackStatusResponse,
+  DescribeConformancePackStatusError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: DescribeConformancePackStatusRequest,
+  ) => stream.Stream<
+    DescribeConformancePackStatusResponse,
+    DescribeConformancePackStatusError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: DescribeConformancePackStatusRequest,
+  ) => stream.Stream<
+    ConformancePackStatusDetail,
+    DescribeConformancePackStatusError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type DescribeDeliveryChannelsError =
   | NoSuchDeliveryChannelException
@@ -8039,7 +8335,27 @@ export const describeOrganizationConfigRules: API.OperationMethod<
     items: "OrganizationConfigRules",
     pageSize: "Limit",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  DescribeOrganizationConfigRulesRequest,
+  DescribeOrganizationConfigRulesResponse,
+  DescribeOrganizationConfigRulesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: DescribeOrganizationConfigRulesRequest,
+  ) => stream.Stream<
+    DescribeOrganizationConfigRulesResponse,
+    DescribeOrganizationConfigRulesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: DescribeOrganizationConfigRulesRequest,
+  ) => stream.Stream<
+    OrganizationConfigRule,
+    DescribeOrganizationConfigRulesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type DescribeOrganizationConfigRuleStatusesError =
   | InvalidLimitException
@@ -8095,7 +8411,27 @@ export const describeOrganizationConfigRuleStatuses: API.OperationMethod<
     items: "OrganizationConfigRuleStatuses",
     pageSize: "Limit",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  DescribeOrganizationConfigRuleStatusesRequest,
+  DescribeOrganizationConfigRuleStatusesResponse,
+  DescribeOrganizationConfigRuleStatusesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: DescribeOrganizationConfigRuleStatusesRequest,
+  ) => stream.Stream<
+    DescribeOrganizationConfigRuleStatusesResponse,
+    DescribeOrganizationConfigRuleStatusesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: DescribeOrganizationConfigRuleStatusesRequest,
+  ) => stream.Stream<
+    OrganizationConfigRuleStatus,
+    DescribeOrganizationConfigRuleStatusesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type DescribeOrganizationConformancePacksError =
   | InvalidLimitException
@@ -8162,7 +8498,27 @@ export const describeOrganizationConformancePacks: API.OperationMethod<
     items: "OrganizationConformancePacks",
     pageSize: "Limit",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  DescribeOrganizationConformancePacksRequest,
+  DescribeOrganizationConformancePacksResponse,
+  DescribeOrganizationConformancePacksError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: DescribeOrganizationConformancePacksRequest,
+  ) => stream.Stream<
+    DescribeOrganizationConformancePacksResponse,
+    DescribeOrganizationConformancePacksError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: DescribeOrganizationConformancePacksRequest,
+  ) => stream.Stream<
+    OrganizationConformancePack,
+    DescribeOrganizationConformancePacksError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type DescribeOrganizationConformancePackStatusesError =
   | InvalidLimitException
@@ -8218,7 +8574,27 @@ export const describeOrganizationConformancePackStatuses: API.OperationMethod<
     items: "OrganizationConformancePackStatuses",
     pageSize: "Limit",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  DescribeOrganizationConformancePackStatusesRequest,
+  DescribeOrganizationConformancePackStatusesResponse,
+  DescribeOrganizationConformancePackStatusesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: DescribeOrganizationConformancePackStatusesRequest,
+  ) => stream.Stream<
+    DescribeOrganizationConformancePackStatusesResponse,
+    DescribeOrganizationConformancePackStatusesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: DescribeOrganizationConformancePackStatusesRequest,
+  ) => stream.Stream<
+    OrganizationConformancePackStatus,
+    DescribeOrganizationConformancePackStatusesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type DescribePendingAggregationRequestsError =
   | InvalidLimitException
@@ -8265,7 +8641,27 @@ export const describePendingAggregationRequests: API.OperationMethod<
     items: "PendingAggregationRequests",
     pageSize: "Limit",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  DescribePendingAggregationRequestsRequest,
+  DescribePendingAggregationRequestsResponse,
+  DescribePendingAggregationRequestsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: DescribePendingAggregationRequestsRequest,
+  ) => stream.Stream<
+    DescribePendingAggregationRequestsResponse,
+    DescribePendingAggregationRequestsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: DescribePendingAggregationRequestsRequest,
+  ) => stream.Stream<
+    PendingAggregationRequest,
+    DescribePendingAggregationRequestsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type DescribeRemediationConfigurationsError = CommonErrors;
 /**
@@ -8332,7 +8728,27 @@ export const describeRemediationExceptions: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "Limit",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  DescribeRemediationExceptionsRequest,
+  DescribeRemediationExceptionsResponse,
+  DescribeRemediationExceptionsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: DescribeRemediationExceptionsRequest,
+  ) => stream.Stream<
+    DescribeRemediationExceptionsResponse,
+    DescribeRemediationExceptionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: DescribeRemediationExceptionsRequest,
+  ) => stream.Stream<
+    unknown,
+    DescribeRemediationExceptionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type DescribeRemediationExecutionStatusError =
   | InvalidNextTokenException
@@ -8380,7 +8796,27 @@ export const describeRemediationExecutionStatus: API.OperationMethod<
     items: "RemediationExecutionStatuses",
     pageSize: "Limit",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  DescribeRemediationExecutionStatusRequest,
+  DescribeRemediationExecutionStatusResponse,
+  DescribeRemediationExecutionStatusError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: DescribeRemediationExecutionStatusRequest,
+  ) => stream.Stream<
+    DescribeRemediationExecutionStatusResponse,
+    DescribeRemediationExecutionStatusError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: DescribeRemediationExecutionStatusRequest,
+  ) => stream.Stream<
+    RemediationExecutionStatus,
+    DescribeRemediationExecutionStatusError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type DescribeRetentionConfigurationsError =
   | InvalidNextTokenException
@@ -8432,7 +8868,27 @@ export const describeRetentionConfigurations: API.OperationMethod<
     outputToken: "NextToken",
     items: "RetentionConfigurations",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  DescribeRetentionConfigurationsRequest,
+  DescribeRetentionConfigurationsResponse,
+  DescribeRetentionConfigurationsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: DescribeRetentionConfigurationsRequest,
+  ) => stream.Stream<
+    DescribeRetentionConfigurationsResponse,
+    DescribeRetentionConfigurationsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: DescribeRetentionConfigurationsRequest,
+  ) => stream.Stream<
+    RetentionConfiguration,
+    DescribeRetentionConfigurationsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type DisassociateResourceTypesError =
   | ConflictException
@@ -8516,7 +8972,27 @@ export const getAggregateComplianceDetailsByConfigRule: API.OperationMethod<
     items: "AggregateEvaluationResults",
     pageSize: "Limit",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  GetAggregateComplianceDetailsByConfigRuleRequest,
+  GetAggregateComplianceDetailsByConfigRuleResponse,
+  GetAggregateComplianceDetailsByConfigRuleError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: GetAggregateComplianceDetailsByConfigRuleRequest,
+  ) => stream.Stream<
+    GetAggregateComplianceDetailsByConfigRuleResponse,
+    GetAggregateComplianceDetailsByConfigRuleError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: GetAggregateComplianceDetailsByConfigRuleRequest,
+  ) => stream.Stream<
+    AggregateEvaluationResult,
+    GetAggregateComplianceDetailsByConfigRuleError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type GetAggregateConfigRuleComplianceSummaryError =
   | InvalidLimitException
@@ -8569,7 +9045,27 @@ export const getAggregateConfigRuleComplianceSummary: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "Limit",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  GetAggregateConfigRuleComplianceSummaryRequest,
+  GetAggregateConfigRuleComplianceSummaryResponse,
+  GetAggregateConfigRuleComplianceSummaryError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: GetAggregateConfigRuleComplianceSummaryRequest,
+  ) => stream.Stream<
+    GetAggregateConfigRuleComplianceSummaryResponse,
+    GetAggregateConfigRuleComplianceSummaryError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: GetAggregateConfigRuleComplianceSummaryRequest,
+  ) => stream.Stream<
+    unknown,
+    GetAggregateConfigRuleComplianceSummaryError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type GetAggregateConformancePackComplianceSummaryError =
   | InvalidLimitException
@@ -8619,7 +9115,27 @@ export const getAggregateConformancePackComplianceSummary: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "Limit",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  GetAggregateConformancePackComplianceSummaryRequest,
+  GetAggregateConformancePackComplianceSummaryResponse,
+  GetAggregateConformancePackComplianceSummaryError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: GetAggregateConformancePackComplianceSummaryRequest,
+  ) => stream.Stream<
+    GetAggregateConformancePackComplianceSummaryResponse,
+    GetAggregateConformancePackComplianceSummaryError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: GetAggregateConformancePackComplianceSummaryRequest,
+  ) => stream.Stream<
+    unknown,
+    GetAggregateConformancePackComplianceSummaryError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type GetAggregateDiscoveredResourceCountsError =
   | InvalidLimitException
@@ -8670,7 +9186,27 @@ export const getAggregateDiscoveredResourceCounts: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "Limit",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  GetAggregateDiscoveredResourceCountsRequest,
+  GetAggregateDiscoveredResourceCountsResponse,
+  GetAggregateDiscoveredResourceCountsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: GetAggregateDiscoveredResourceCountsRequest,
+  ) => stream.Stream<
+    GetAggregateDiscoveredResourceCountsResponse,
+    GetAggregateDiscoveredResourceCountsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: GetAggregateDiscoveredResourceCountsRequest,
+  ) => stream.Stream<
+    unknown,
+    GetAggregateDiscoveredResourceCountsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type GetAggregateResourceConfigError =
   | NoSuchConfigurationAggregatorException
@@ -8750,7 +9286,27 @@ export const getComplianceDetailsByConfigRule: API.OperationMethod<
     items: "EvaluationResults",
     pageSize: "Limit",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  GetComplianceDetailsByConfigRuleRequest,
+  GetComplianceDetailsByConfigRuleResponse,
+  GetComplianceDetailsByConfigRuleError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: GetComplianceDetailsByConfigRuleRequest,
+  ) => stream.Stream<
+    GetComplianceDetailsByConfigRuleResponse,
+    GetComplianceDetailsByConfigRuleError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: GetComplianceDetailsByConfigRuleRequest,
+  ) => stream.Stream<
+    EvaluationResult,
+    GetComplianceDetailsByConfigRuleError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type GetComplianceDetailsByResourceError =
   | InvalidParameterValueException
@@ -8793,7 +9349,27 @@ export const getComplianceDetailsByResource: API.OperationMethod<
     outputToken: "NextToken",
     items: "EvaluationResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  GetComplianceDetailsByResourceRequest,
+  GetComplianceDetailsByResourceResponse,
+  GetComplianceDetailsByResourceError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: GetComplianceDetailsByResourceRequest,
+  ) => stream.Stream<
+    GetComplianceDetailsByResourceResponse,
+    GetComplianceDetailsByResourceError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: GetComplianceDetailsByResourceRequest,
+  ) => stream.Stream<
+    EvaluationResult,
+    GetComplianceDetailsByResourceError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type GetComplianceSummaryByConfigRuleError = CommonErrors;
 /**
@@ -8885,7 +9461,27 @@ export const getConformancePackComplianceDetails: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "Limit",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  GetConformancePackComplianceDetailsRequest,
+  GetConformancePackComplianceDetailsResponse,
+  GetConformancePackComplianceDetailsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: GetConformancePackComplianceDetailsRequest,
+  ) => stream.Stream<
+    GetConformancePackComplianceDetailsResponse,
+    GetConformancePackComplianceDetailsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: GetConformancePackComplianceDetailsRequest,
+  ) => stream.Stream<
+    unknown,
+    GetConformancePackComplianceDetailsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type GetConformancePackComplianceSummaryError =
   | InvalidLimitException
@@ -8932,7 +9528,27 @@ export const getConformancePackComplianceSummary: API.OperationMethod<
     items: "ConformancePackComplianceSummaryList",
     pageSize: "Limit",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  GetConformancePackComplianceSummaryRequest,
+  GetConformancePackComplianceSummaryResponse,
+  GetConformancePackComplianceSummaryError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: GetConformancePackComplianceSummaryRequest,
+  ) => stream.Stream<
+    GetConformancePackComplianceSummaryResponse,
+    GetConformancePackComplianceSummaryError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: GetConformancePackComplianceSummaryRequest,
+  ) => stream.Stream<
+    ConformancePackComplianceSummary,
+    GetConformancePackComplianceSummaryError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type GetCustomRulePolicyError = NoSuchConfigRuleException | CommonErrors;
 /**
@@ -9038,7 +9654,27 @@ export const getDiscoveredResourceCounts: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "limit",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  GetDiscoveredResourceCountsRequest,
+  GetDiscoveredResourceCountsResponse,
+  GetDiscoveredResourceCountsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: GetDiscoveredResourceCountsRequest,
+  ) => stream.Stream<
+    GetDiscoveredResourceCountsResponse,
+    GetDiscoveredResourceCountsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: GetDiscoveredResourceCountsRequest,
+  ) => stream.Stream<
+    unknown,
+    GetDiscoveredResourceCountsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type GetOrganizationConfigRuleDetailedStatusError =
   | InvalidLimitException
@@ -9087,7 +9723,27 @@ export const getOrganizationConfigRuleDetailedStatus: API.OperationMethod<
     items: "OrganizationConfigRuleDetailedStatus",
     pageSize: "Limit",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  GetOrganizationConfigRuleDetailedStatusRequest,
+  GetOrganizationConfigRuleDetailedStatusResponse,
+  GetOrganizationConfigRuleDetailedStatusError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: GetOrganizationConfigRuleDetailedStatusRequest,
+  ) => stream.Stream<
+    GetOrganizationConfigRuleDetailedStatusResponse,
+    GetOrganizationConfigRuleDetailedStatusError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: GetOrganizationConfigRuleDetailedStatusRequest,
+  ) => stream.Stream<
+    MemberAccountStatus,
+    GetOrganizationConfigRuleDetailedStatusError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type GetOrganizationConformancePackDetailedStatusError =
   | InvalidLimitException
@@ -9136,7 +9792,27 @@ export const getOrganizationConformancePackDetailedStatus: API.OperationMethod<
     items: "OrganizationConformancePackDetailedStatuses",
     pageSize: "Limit",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  GetOrganizationConformancePackDetailedStatusRequest,
+  GetOrganizationConformancePackDetailedStatusResponse,
+  GetOrganizationConformancePackDetailedStatusError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: GetOrganizationConformancePackDetailedStatusRequest,
+  ) => stream.Stream<
+    GetOrganizationConformancePackDetailedStatusResponse,
+    GetOrganizationConformancePackDetailedStatusError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: GetOrganizationConformancePackDetailedStatusRequest,
+  ) => stream.Stream<
+    OrganizationConformancePackDetailedStatus,
+    GetOrganizationConformancePackDetailedStatusError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type GetOrganizationCustomRulePolicyError =
   | NoSuchOrganizationConfigRuleException
@@ -9241,7 +9917,27 @@ export const getResourceConfigHistory: API.OperationMethod<
     items: "configurationItems",
     pageSize: "limit",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  GetResourceConfigHistoryRequest,
+  GetResourceConfigHistoryResponse,
+  GetResourceConfigHistoryError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: GetResourceConfigHistoryRequest,
+  ) => stream.Stream<
+    GetResourceConfigHistoryResponse,
+    GetResourceConfigHistoryError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: GetResourceConfigHistoryRequest,
+  ) => stream.Stream<
+    ConfigurationItem,
+    GetResourceConfigHistoryError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type GetResourceEvaluationSummaryError =
   | ResourceNotFoundException
@@ -9340,7 +10036,27 @@ export const listAggregateDiscoveredResources: API.OperationMethod<
     items: "ResourceIdentifiers",
     pageSize: "Limit",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListAggregateDiscoveredResourcesRequest,
+  ListAggregateDiscoveredResourcesResponse,
+  ListAggregateDiscoveredResourcesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListAggregateDiscoveredResourcesRequest,
+  ) => stream.Stream<
+    ListAggregateDiscoveredResourcesResponse,
+    ListAggregateDiscoveredResourcesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListAggregateDiscoveredResourcesRequest,
+  ) => stream.Stream<
+    AggregateResourceIdentifier,
+    ListAggregateDiscoveredResourcesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListConfigurationRecordersError =
   | ValidationException
@@ -9381,7 +10097,27 @@ export const listConfigurationRecorders: API.OperationMethod<
     items: "ConfigurationRecorderSummaries",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListConfigurationRecordersRequest,
+  ListConfigurationRecordersResponse,
+  ListConfigurationRecordersError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListConfigurationRecordersRequest,
+  ) => stream.Stream<
+    ListConfigurationRecordersResponse,
+    ListConfigurationRecordersError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListConfigurationRecordersRequest,
+  ) => stream.Stream<
+    ConfigurationRecorderSummary,
+    ListConfigurationRecordersError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListConformancePackComplianceScoresError =
   | InvalidLimitException
@@ -9432,7 +10168,27 @@ export const listConformancePackComplianceScores: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "Limit",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListConformancePackComplianceScoresRequest,
+  ListConformancePackComplianceScoresResponse,
+  ListConformancePackComplianceScoresError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListConformancePackComplianceScoresRequest,
+  ) => stream.Stream<
+    ListConformancePackComplianceScoresResponse,
+    ListConformancePackComplianceScoresError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListConformancePackComplianceScoresRequest,
+  ) => stream.Stream<
+    unknown,
+    ListConformancePackComplianceScoresError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListDiscoveredResourcesError =
   | InvalidLimitException
@@ -9514,7 +10270,27 @@ export const listDiscoveredResources: API.OperationMethod<
     items: "resourceIdentifiers",
     pageSize: "limit",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListDiscoveredResourcesRequest,
+  ListDiscoveredResourcesResponse,
+  ListDiscoveredResourcesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListDiscoveredResourcesRequest,
+  ) => stream.Stream<
+    ListDiscoveredResourcesResponse,
+    ListDiscoveredResourcesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListDiscoveredResourcesRequest,
+  ) => stream.Stream<
+    ResourceIdentifier,
+    ListDiscoveredResourcesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListResourceEvaluationsError =
   | InvalidNextTokenException
@@ -9561,7 +10337,27 @@ export const listResourceEvaluations: API.OperationMethod<
     items: "ResourceEvaluations",
     pageSize: "Limit",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListResourceEvaluationsRequest,
+  ListResourceEvaluationsResponse,
+  ListResourceEvaluationsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListResourceEvaluationsRequest,
+  ) => stream.Stream<
+    ListResourceEvaluationsResponse,
+    ListResourceEvaluationsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListResourceEvaluationsRequest,
+  ) => stream.Stream<
+    ResourceEvaluation,
+    ListResourceEvaluationsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListStoredQueriesError =
   | InvalidNextTokenException
@@ -9602,7 +10398,27 @@ export const listStoredQueries: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListStoredQueriesRequest,
+  ListStoredQueriesResponse,
+  ListStoredQueriesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListStoredQueriesRequest,
+  ) => stream.Stream<
+    ListStoredQueriesResponse,
+    ListStoredQueriesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListStoredQueriesRequest,
+  ) => stream.Stream<
+    unknown,
+    ListStoredQueriesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListTagsForResourceError =
   | InvalidLimitException
@@ -9651,7 +10467,27 @@ export const listTagsForResource: API.OperationMethod<
     items: "Tags",
     pageSize: "Limit",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListTagsForResourceRequest,
+  ListTagsForResourceResponse,
+  ListTagsForResourceError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListTagsForResourceRequest,
+  ) => stream.Stream<
+    ListTagsForResourceResponse,
+    ListTagsForResourceError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListTagsForResourceRequest,
+  ) => stream.Stream<
+    Tag,
+    ListTagsForResourceError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type PutAggregationAuthorizationError =
   | InvalidParameterValueException
@@ -10481,7 +11317,27 @@ export const selectAggregateResourceConfig: API.OperationMethod<
     items: "Results",
     pageSize: "Limit",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  SelectAggregateResourceConfigRequest,
+  SelectAggregateResourceConfigResponse,
+  SelectAggregateResourceConfigError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: SelectAggregateResourceConfigRequest,
+  ) => stream.Stream<
+    SelectAggregateResourceConfigResponse,
+    SelectAggregateResourceConfigError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: SelectAggregateResourceConfigRequest,
+  ) => stream.Stream<
+    string,
+    SelectAggregateResourceConfigError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type SelectResourceConfigError =
   | InvalidExpressionException
@@ -10533,7 +11389,27 @@ export const selectResourceConfig: API.OperationMethod<
     items: "Results",
     pageSize: "Limit",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  SelectResourceConfigRequest,
+  SelectResourceConfigResponse,
+  SelectResourceConfigError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: SelectResourceConfigRequest,
+  ) => stream.Stream<
+    SelectResourceConfigResponse,
+    SelectResourceConfigError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: SelectResourceConfigRequest,
+  ) => stream.Stream<
+    string,
+    SelectResourceConfigError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type StartConfigRulesEvaluationError =
   | InvalidParameterValueException

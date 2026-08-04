@@ -52,56 +52,64 @@ const rules = T.EndpointResolver((p, _) => {
   return err("Invalid Configuration: Missing Region");
 });
 
-export class AccessDeniedException extends S.TaggedErrorClass<AccessDeniedException>()(
-  "AccessDeniedException",
-  { message: S.optional(S.String) },
-  T.all(
-    T.AwsQueryError({ code: "AccessDeniedException", httpResponseCode: 403 }),
-    T.HttpError(403),
-  ),
-).pipe(C.withAuthError) {}
-export class InternalServerException extends S.TaggedErrorClass<InternalServerException>()(
-  "InternalServerException",
-  { message: S.optional(S.String) },
-  T.all(
-    T.AwsQueryError({ code: "InternalServerException", httpResponseCode: 500 }),
-    T.HttpError(500),
-  ),
-).pipe(C.withServerError) {}
-export class ResourceNotFoundException extends S.TaggedErrorClass<ResourceNotFoundException>()(
-  "ResourceNotFoundException",
-  { message: S.optional(S.String) },
-  T.all(
-    T.AwsQueryError({
-      code: "ResourceNotFoundException",
-      httpResponseCode: 404,
-    }),
-    T.HttpError(404),
-  ),
-).pipe(C.withBadRequestError) {}
-export class ThrottlingException extends S.TaggedErrorClass<ThrottlingException>()(
-  "ThrottlingException",
-  { message: S.optional(S.String) },
-  T.all(
-    T.AwsQueryError({ code: "ThrottlingException", httpResponseCode: 429 }),
-    T.HttpError(429),
-  ),
-).pipe(C.withThrottlingError) {}
-export class ValidationException extends S.TaggedErrorClass<ValidationException>()(
-  "ValidationException",
-  {
-    message: S.optional(S.String),
-    errorCode: S.optional(
-      S.suspend(() => ValidationExceptionType).annotate({
-        identifier: "ValidationExceptionType",
-      }),
+export class AccessDeniedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
+    "AccessDeniedException",
+    { message: S.optional(S.String) },
+    T.all(
+      T.AwsQueryError({ code: "AccessDeniedException", httpResponseCode: 403 }),
+      T.HttpError(403),
     ),
-  },
-  T.all(
-    T.AwsQueryError({ code: "ValidationException", httpResponseCode: 400 }),
-    T.HttpError(400),
-  ),
-).pipe(C.withBadRequestError) {}
+  ).pipe(C.withAuthError) {}
+export class InternalServerException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
+    "InternalServerException",
+    { message: S.optional(S.String) },
+    T.all(
+      T.AwsQueryError({
+        code: "InternalServerException",
+        httpResponseCode: 500,
+      }),
+      T.HttpError(500),
+    ),
+  ).pipe(C.withServerError) {}
+export class ResourceNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
+    "ResourceNotFoundException",
+    { message: S.optional(S.String) },
+    T.all(
+      T.AwsQueryError({
+        code: "ResourceNotFoundException",
+        httpResponseCode: 404,
+      }),
+      T.HttpError(404),
+    ),
+  ).pipe(C.withBadRequestError) {}
+export class ThrottlingException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
+    "ThrottlingException",
+    { message: S.optional(S.String) },
+    T.all(
+      T.AwsQueryError({ code: "ThrottlingException", httpResponseCode: 429 }),
+      T.HttpError(429),
+    ),
+  ).pipe(C.withThrottlingError) {}
+export class ValidationException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
+    "ValidationException",
+    {
+      message: S.optional(S.String),
+      errorCode: S.optional(
+        S.suspend(() => ValidationExceptionType).annotate({
+          identifier: "ValidationExceptionType",
+        }),
+      ),
+    },
+    T.all(
+      T.AwsQueryError({ code: "ValidationException", httpResponseCode: 400 }),
+      T.HttpError(400),
+    ),
+  ).pipe(C.withBadRequestError) {}
 export type ShardIterator = string;
 export interface GetRecordsInput {
   shardIterator: string;
@@ -1341,7 +1349,27 @@ export const getStream: API.OperationMethod<
     items: "shards",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  GetStreamInput,
+  GetStreamOutput,
+  GetStreamError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: GetStreamInput,
+  ) => stream.Stream<
+    GetStreamOutput,
+    GetStreamError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: GetStreamInput,
+  ) => stream.Stream<
+    Shard,
+    GetStreamError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListStreamsError =
   | AccessDeniedException
@@ -1392,4 +1420,24 @@ export const listStreams: API.OperationMethod<
     items: "streams",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListStreamsInput,
+  ListStreamsOutput,
+  ListStreamsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListStreamsInput,
+  ) => stream.Stream<
+    ListStreamsOutput,
+    ListStreamsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListStreamsInput,
+  ) => stream.Stream<
+    Stream,
+    ListStreamsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};

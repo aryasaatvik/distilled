@@ -93,43 +93,50 @@ const rules = T.EndpointResolver((p, _) => {
   return err("Invalid Configuration: Missing Region");
 });
 
-export class EKSRequestThrottledException extends S.TaggedErrorClass<EKSRequestThrottledException>()(
-  "EKSRequestThrottledException",
-  { message: S.optional(S.String) },
-  T.HttpError(429),
-).pipe(C.withThrottlingError) {}
-export class InternalServerException extends S.TaggedErrorClass<InternalServerException>()(
-  "InternalServerException",
-  { message: S.optional(S.String) },
-  T.HttpError(500),
-).pipe(C.withServerError) {}
-export class InvalidResourceArn extends S.TaggedErrorClass<InvalidResourceArn>()(
-  "InvalidResourceArn",
-  {},
-  T.SyntheticError({
-    from: "BadRequestException",
-    message: { includes: "Invalid input resource arn" },
-  }),
-) {}
-export class RequestThrottledException extends S.TaggedErrorClass<RequestThrottledException>()(
-  "RequestThrottledException",
-  { message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class ResourceNotFoundException extends S.TaggedErrorClass<ResourceNotFoundException>()(
-  "ResourceNotFoundException",
-  { message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class TooManyRequestsException extends S.TaggedErrorClass<TooManyRequestsException>()(
-  "TooManyRequestsException",
-  {},
-).pipe(C.withThrottlingError, C.withRetryableError) {}
-export class ValidationException extends S.TaggedErrorClass<ValidationException>()(
-  "ValidationException",
-  { message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
+export class EKSRequestThrottledException
+  extends /*@__PURE__*/ S.TaggedErrorClass<EKSRequestThrottledException>()(
+    "EKSRequestThrottledException",
+    { message: S.optional(S.String) },
+    T.HttpError(429),
+  ).pipe(C.withThrottlingError) {}
+export class InternalServerException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
+    "InternalServerException",
+    { message: S.optional(S.String) },
+    T.HttpError(500),
+  ).pipe(C.withServerError) {}
+export class InvalidResourceArn
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidResourceArn>()(
+    "InvalidResourceArn",
+    {},
+    T.SyntheticError({
+      from: "BadRequestException",
+      message: { includes: "Invalid input resource arn" },
+    }),
+  ) {}
+export class RequestThrottledException
+  extends /*@__PURE__*/ S.TaggedErrorClass<RequestThrottledException>()(
+    "RequestThrottledException",
+    { message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class ResourceNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
+    "ResourceNotFoundException",
+    { message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class TooManyRequestsException
+  extends /*@__PURE__*/ S.TaggedErrorClass<TooManyRequestsException>()(
+    "TooManyRequestsException",
+    {},
+  ).pipe(C.withThrottlingError, C.withRetryableError) {}
+export class ValidationException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
+    "ValidationException",
+    { message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
 export type ResourceIdString = string;
 export interface CancelJobRunRequest {
   id: string;
@@ -2123,7 +2130,27 @@ export const listJobRuns: API.OperationMethod<
     items: "jobRuns",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListJobRunsRequest,
+  ListJobRunsResponse,
+  ListJobRunsError,
+  Creds | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListJobRunsRequest,
+  ) => stream.Stream<
+    ListJobRunsResponse,
+    ListJobRunsError,
+    Creds | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListJobRunsRequest,
+  ) => stream.Stream<
+    JobRun,
+    ListJobRunsError,
+    Creds | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListJobTemplatesError =
   | InternalServerException
@@ -2173,7 +2200,27 @@ export const listJobTemplates: API.OperationMethod<
     items: "templates",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListJobTemplatesRequest,
+  ListJobTemplatesResponse,
+  ListJobTemplatesError,
+  Creds | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListJobTemplatesRequest,
+  ) => stream.Stream<
+    ListJobTemplatesResponse,
+    ListJobTemplatesError,
+    Creds | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListJobTemplatesRequest,
+  ) => stream.Stream<
+    JobTemplate,
+    ListJobTemplatesError,
+    Creds | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListManagedEndpointsError =
   | InternalServerException
@@ -2221,7 +2268,27 @@ export const listManagedEndpoints: API.OperationMethod<
     items: "endpoints",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListManagedEndpointsRequest,
+  ListManagedEndpointsResponse,
+  ListManagedEndpointsError,
+  Creds | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListManagedEndpointsRequest,
+  ) => stream.Stream<
+    ListManagedEndpointsResponse,
+    ListManagedEndpointsError,
+    Creds | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListManagedEndpointsRequest,
+  ) => stream.Stream<
+    Endpoint,
+    ListManagedEndpointsError,
+    Creds | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListSecurityConfigurationsError =
   | InternalServerException
@@ -2272,7 +2339,27 @@ export const listSecurityConfigurations: API.OperationMethod<
     items: "securityConfigurations",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListSecurityConfigurationsRequest,
+  ListSecurityConfigurationsResponse,
+  ListSecurityConfigurationsError,
+  Creds | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListSecurityConfigurationsRequest,
+  ) => stream.Stream<
+    ListSecurityConfigurationsResponse,
+    ListSecurityConfigurationsError,
+    Creds | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListSecurityConfigurationsRequest,
+  ) => stream.Stream<
+    SecurityConfiguration,
+    ListSecurityConfigurationsError,
+    Creds | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListTagsForResourceError =
   | InternalServerException
@@ -2352,7 +2439,27 @@ export const listVirtualClusters: API.OperationMethod<
     items: "virtualClusters",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListVirtualClustersRequest,
+  ListVirtualClustersResponse,
+  ListVirtualClustersError,
+  Creds | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListVirtualClustersRequest,
+  ) => stream.Stream<
+    ListVirtualClustersResponse,
+    ListVirtualClustersError,
+    Creds | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListVirtualClustersRequest,
+  ) => stream.Stream<
+    VirtualCluster,
+    ListVirtualClustersError,
+    Creds | Region | HttpClient.HttpClient
+  >;
+};
 
 export type StartJobRunError =
   | InternalServerException

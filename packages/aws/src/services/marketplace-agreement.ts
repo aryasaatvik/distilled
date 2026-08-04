@@ -87,83 +87,90 @@ const rules = T.EndpointResolver((p, _) => {
   return err("Invalid Configuration: Missing Region");
 });
 
-export class AccessDeniedException extends S.TaggedErrorClass<AccessDeniedException>()(
-  "AccessDeniedException",
-  {
-    requestId: S.optional(S.String),
-    message: S.optional(S.String),
-    reason: S.optional(
-      S.suspend(() => AccessDeniedExceptionReason).annotate({
-        identifier: "AccessDeniedExceptionReason",
-      }),
-    ),
-  },
-  T.HttpError(403),
-).pipe(C.withAuthError) {}
-export class ConflictException extends S.TaggedErrorClass<ConflictException>()(
-  "ConflictException",
-  {
-    requestId: S.optional(S.String),
-    message: S.optional(S.String),
-    resourceId: S.optional(S.String),
-    resourceType: S.optional(
-      S.suspend(() => ResourceType).annotate({ identifier: "ResourceType" }),
-    ),
-  },
-  T.HttpError(409),
-).pipe(C.withConflictError) {}
-export class InternalServerException extends S.TaggedErrorClass<InternalServerException>()(
-  "InternalServerException",
-  { requestId: S.optional(S.String), message: S.optional(S.String) },
-  T.HttpError(500),
-).pipe(C.withServerError) {}
-export class ResourceNotFoundException extends S.TaggedErrorClass<ResourceNotFoundException>()(
-  "ResourceNotFoundException",
-  {
-    requestId: S.optional(S.String),
-    message: S.optional(S.String),
-    resourceId: S.optional(S.String),
-    resourceType: S.optional(
-      S.suspend(() => ResourceType).annotate({ identifier: "ResourceType" }),
-    ),
-  },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class ServiceQuotaExceededException extends S.TaggedErrorClass<ServiceQuotaExceededException>()(
-  "ServiceQuotaExceededException",
-  {
-    requestId: S.optional(S.String),
-    message: S.optional(S.String),
-    quotaCode: S.optional(S.String),
-    serviceCode: S.optional(S.String),
-    resourceType: S.optional(S.String),
-    resourceId: S.optional(S.String),
-  },
-  T.HttpError(402),
-).pipe(C.withQuotaError) {}
-export class ThrottlingException extends S.TaggedErrorClass<ThrottlingException>()(
-  "ThrottlingException",
-  { requestId: S.optional(S.String), message: S.optional(S.String) },
-  T.HttpError(429),
-).pipe(C.withThrottlingError) {}
-export class ValidationException extends S.TaggedErrorClass<ValidationException>()(
-  "ValidationException",
-  {
-    requestId: S.optional(S.String),
-    message: S.optional(S.String),
-    reason: S.optional(
-      S.suspend(() => ValidationExceptionReason).annotate({
-        identifier: "ValidationExceptionReason",
-      }),
-    ),
-    fields: S.optional(
-      S.suspend(() => ValidationExceptionFieldList).annotate({
-        identifier: "ValidationExceptionFieldList",
-      }),
-    ),
-  },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
+export class AccessDeniedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
+    "AccessDeniedException",
+    {
+      requestId: S.optional(S.String),
+      message: S.optional(S.String),
+      reason: S.optional(
+        S.suspend(() => AccessDeniedExceptionReason).annotate({
+          identifier: "AccessDeniedExceptionReason",
+        }),
+      ),
+    },
+    T.HttpError(403),
+  ).pipe(C.withAuthError) {}
+export class ConflictException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
+    "ConflictException",
+    {
+      requestId: S.optional(S.String),
+      message: S.optional(S.String),
+      resourceId: S.optional(S.String),
+      resourceType: S.optional(
+        S.suspend(() => ResourceType).annotate({ identifier: "ResourceType" }),
+      ),
+    },
+    T.HttpError(409),
+  ).pipe(C.withConflictError) {}
+export class InternalServerException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
+    "InternalServerException",
+    { requestId: S.optional(S.String), message: S.optional(S.String) },
+    T.HttpError(500),
+  ).pipe(C.withServerError) {}
+export class ResourceNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
+    "ResourceNotFoundException",
+    {
+      requestId: S.optional(S.String),
+      message: S.optional(S.String),
+      resourceId: S.optional(S.String),
+      resourceType: S.optional(
+        S.suspend(() => ResourceType).annotate({ identifier: "ResourceType" }),
+      ),
+    },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class ServiceQuotaExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
+    "ServiceQuotaExceededException",
+    {
+      requestId: S.optional(S.String),
+      message: S.optional(S.String),
+      quotaCode: S.optional(S.String),
+      serviceCode: S.optional(S.String),
+      resourceType: S.optional(S.String),
+      resourceId: S.optional(S.String),
+    },
+    T.HttpError(402),
+  ).pipe(C.withQuotaError) {}
+export class ThrottlingException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
+    "ThrottlingException",
+    { requestId: S.optional(S.String), message: S.optional(S.String) },
+    T.HttpError(429),
+  ).pipe(C.withThrottlingError) {}
+export class ValidationException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
+    "ValidationException",
+    {
+      requestId: S.optional(S.String),
+      message: S.optional(S.String),
+      reason: S.optional(
+        S.suspend(() => ValidationExceptionReason).annotate({
+          identifier: "ValidationExceptionReason",
+        }),
+      ),
+      fields: S.optional(
+        S.suspend(() => ValidationExceptionFieldList).annotate({
+          identifier: "ValidationExceptionFieldList",
+        }),
+      ),
+    },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
 export type AgreementId = string;
 export type AgreementCancellationRequestId = string;
 export interface AcceptAgreementCancellationRequestInput {
@@ -2734,7 +2741,27 @@ export const getAgreementEntitlements: API.OperationMethod<
     items: "agreementEntitlements",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  GetAgreementEntitlementsInput,
+  GetAgreementEntitlementsOutput,
+  GetAgreementEntitlementsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: GetAgreementEntitlementsInput,
+  ) => stream.Stream<
+    GetAgreementEntitlementsOutput,
+    GetAgreementEntitlementsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: GetAgreementEntitlementsInput,
+  ) => stream.Stream<
+    AgreementEntitlement,
+    GetAgreementEntitlementsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type GetAgreementPaymentRequestError =
   | AccessDeniedException
@@ -2827,7 +2854,27 @@ export const getAgreementTerms: API.OperationMethod<
     items: "acceptedTerms",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  GetAgreementTermsInput,
+  GetAgreementTermsOutput,
+  GetAgreementTermsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: GetAgreementTermsInput,
+  ) => stream.Stream<
+    GetAgreementTermsOutput,
+    GetAgreementTermsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: GetAgreementTermsInput,
+  ) => stream.Stream<
+    AcceptedTerm,
+    GetAgreementTermsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type GetBillingAdjustmentRequestError =
   | AccessDeniedException
@@ -2908,7 +2955,27 @@ export const listAgreementCancellationRequests: API.OperationMethod<
     items: "items",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListAgreementCancellationRequestsInput,
+  ListAgreementCancellationRequestsOutput,
+  ListAgreementCancellationRequestsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListAgreementCancellationRequestsInput,
+  ) => stream.Stream<
+    ListAgreementCancellationRequestsOutput,
+    ListAgreementCancellationRequestsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListAgreementCancellationRequestsInput,
+  ) => stream.Stream<
+    AgreementCancellationRequestSummary,
+    ListAgreementCancellationRequestsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListAgreementChargesError =
   | AccessDeniedException
@@ -2957,7 +3024,27 @@ export const listAgreementCharges: API.OperationMethod<
     items: "items",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListAgreementChargesInput,
+  ListAgreementChargesOutput,
+  ListAgreementChargesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListAgreementChargesInput,
+  ) => stream.Stream<
+    ListAgreementChargesOutput,
+    ListAgreementChargesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListAgreementChargesInput,
+  ) => stream.Stream<
+    Charge,
+    ListAgreementChargesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListAgreementInvoiceLineItemsError =
   | AccessDeniedException
@@ -3010,7 +3097,27 @@ export const listAgreementInvoiceLineItems: API.OperationMethod<
     items: "agreementInvoiceLineItemGroupSummaries",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListAgreementInvoiceLineItemsInput,
+  ListAgreementInvoiceLineItemsOutput,
+  ListAgreementInvoiceLineItemsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListAgreementInvoiceLineItemsInput,
+  ) => stream.Stream<
+    ListAgreementInvoiceLineItemsOutput,
+    ListAgreementInvoiceLineItemsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListAgreementInvoiceLineItemsInput,
+  ) => stream.Stream<
+    AgreementInvoiceLineItemGroupSummary,
+    ListAgreementInvoiceLineItemsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListAgreementPaymentRequestsError =
   | AccessDeniedException
@@ -3061,7 +3168,27 @@ export const listAgreementPaymentRequests: API.OperationMethod<
     items: "items",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListAgreementPaymentRequestsInput,
+  ListAgreementPaymentRequestsOutput,
+  ListAgreementPaymentRequestsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListAgreementPaymentRequestsInput,
+  ) => stream.Stream<
+    ListAgreementPaymentRequestsOutput,
+    ListAgreementPaymentRequestsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListAgreementPaymentRequestsInput,
+  ) => stream.Stream<
+    PaymentRequestSummary,
+    ListAgreementPaymentRequestsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListBillingAdjustmentRequestsError =
   | AccessDeniedException
@@ -3110,7 +3237,27 @@ export const listBillingAdjustmentRequests: API.OperationMethod<
     items: "items",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListBillingAdjustmentRequestsInput,
+  ListBillingAdjustmentRequestsOutput,
+  ListBillingAdjustmentRequestsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListBillingAdjustmentRequestsInput,
+  ) => stream.Stream<
+    ListBillingAdjustmentRequestsOutput,
+    ListBillingAdjustmentRequestsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListBillingAdjustmentRequestsInput,
+  ) => stream.Stream<
+    BillingAdjustmentSummary,
+    ListBillingAdjustmentRequestsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type RejectAgreementCancellationRequestError =
   | AccessDeniedException
@@ -3341,7 +3488,27 @@ export const searchAgreements: API.OperationMethod<
     items: "agreementViewSummaries",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  SearchAgreementsInput,
+  SearchAgreementsOutput,
+  SearchAgreementsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: SearchAgreementsInput,
+  ) => stream.Stream<
+    SearchAgreementsOutput,
+    SearchAgreementsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: SearchAgreementsInput,
+  ) => stream.Stream<
+    AgreementViewSummary,
+    SearchAgreementsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type SendAgreementCancellationRequestError =
   | AccessDeniedException

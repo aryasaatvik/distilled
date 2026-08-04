@@ -54,27 +54,30 @@ const rules = T.EndpointResolver((p, _) => {
   return err("Invalid Configuration: Missing Region");
 });
 
-export class ConflictException extends S.TaggedErrorClass<ConflictException>()(
-  "ConflictException",
-  { message: S.String, resourceId: S.String, resourceType: S.String },
-  T.HttpError(409),
-).pipe(C.withConflictError) {}
-export class ResourceNotFoundException extends S.TaggedErrorClass<ResourceNotFoundException>()(
-  "ResourceNotFoundException",
-  { message: S.String, resourceId: S.String, resourceType: S.String },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class ServiceQuotaExceededException extends S.TaggedErrorClass<ServiceQuotaExceededException>()(
-  "ServiceQuotaExceededException",
-  {
-    message: S.String,
-    resourceId: S.String,
-    resourceType: S.String,
-    serviceCode: S.String,
-    quotaCode: S.String,
-  },
-  T.HttpError(402),
-).pipe(C.withQuotaError) {}
+export class ConflictException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
+    "ConflictException",
+    { message: S.String, resourceId: S.String, resourceType: S.String },
+    T.HttpError(409),
+  ).pipe(C.withConflictError) {}
+export class ResourceNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
+    "ResourceNotFoundException",
+    { message: S.String, resourceId: S.String, resourceType: S.String },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class ServiceQuotaExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
+    "ServiceQuotaExceededException",
+    {
+      message: S.String,
+      resourceId: S.String,
+      resourceType: S.String,
+      serviceCode: S.String,
+      quotaCode: S.String,
+    },
+    T.HttpError(402),
+  ).pipe(C.withQuotaError) {}
 export type GenericId = string;
 export interface GetSearchJobInput {
   SearchJobIdentifier: string;
@@ -938,7 +941,27 @@ export const listSearchJobBackups: API.OperationMethod<
     items: "Results",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListSearchJobBackupsInput,
+  ListSearchJobBackupsOutput,
+  ListSearchJobBackupsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListSearchJobBackupsInput,
+  ) => stream.Stream<
+    ListSearchJobBackupsOutput,
+    ListSearchJobBackupsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListSearchJobBackupsInput,
+  ) => stream.Stream<
+    SearchJobBackupsResult,
+    ListSearchJobBackupsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListSearchJobResultsError =
   | ResourceNotFoundException
@@ -979,7 +1002,27 @@ export const listSearchJobResults: API.OperationMethod<
     items: "Results",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListSearchJobResultsInput,
+  ListSearchJobResultsOutput,
+  ListSearchJobResultsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListSearchJobResultsInput,
+  ) => stream.Stream<
+    ListSearchJobResultsOutput,
+    ListSearchJobResultsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListSearchJobResultsInput,
+  ) => stream.Stream<
+    ResultItem,
+    ListSearchJobResultsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListSearchJobsError = CommonErrors;
 /**
@@ -1018,7 +1061,27 @@ export const listSearchJobs: API.OperationMethod<
     items: "SearchJobs",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListSearchJobsInput,
+  ListSearchJobsOutput,
+  ListSearchJobsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListSearchJobsInput,
+  ) => stream.Stream<
+    ListSearchJobsOutput,
+    ListSearchJobsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListSearchJobsInput,
+  ) => stream.Stream<
+    SearchJobSummary,
+    ListSearchJobsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListSearchResultExportJobsError =
   | ResourceNotFoundException
@@ -1060,7 +1123,27 @@ export const listSearchResultExportJobs: API.OperationMethod<
     items: "ExportJobs",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListSearchResultExportJobsInput,
+  ListSearchResultExportJobsOutput,
+  ListSearchResultExportJobsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListSearchResultExportJobsInput,
+  ) => stream.Stream<
+    ListSearchResultExportJobsOutput,
+    ListSearchResultExportJobsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListSearchResultExportJobsInput,
+  ) => stream.Stream<
+    ExportJobSummary,
+    ListSearchResultExportJobsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListTagsForResourceError = ResourceNotFoundException | CommonErrors;
 /**

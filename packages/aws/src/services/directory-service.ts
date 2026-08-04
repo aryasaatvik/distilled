@@ -90,166 +90,206 @@ const rules = T.EndpointResolver((p, _) => {
   return err("Invalid Configuration: Missing Region");
 });
 
-export class AccessDeniedException extends S.TaggedErrorClass<AccessDeniedException>()(
-  "AccessDeniedException",
-  { Message: S.optional(S.String), RequestId: S.optional(S.String) },
-).pipe(C.withAuthError) {}
-export class ADAssessmentLimitExceededException extends S.TaggedErrorClass<ADAssessmentLimitExceededException>()(
-  "ADAssessmentLimitExceededException",
-  { Message: S.optional(S.String), RequestId: S.optional(S.String) },
-) {}
-export class AuthenticationFailedException extends S.TaggedErrorClass<AuthenticationFailedException>()(
-  "AuthenticationFailedException",
-  { Message: S.optional(S.String), RequestId: S.optional(S.String) },
-) {}
-export class CertificateAlreadyExistsException extends S.TaggedErrorClass<CertificateAlreadyExistsException>()(
-  "CertificateAlreadyExistsException",
-  { Message: S.optional(S.String), RequestId: S.optional(S.String) },
-).pipe(C.withAlreadyExistsError) {}
-export class CertificateDoesNotExistException extends S.TaggedErrorClass<CertificateDoesNotExistException>()(
-  "CertificateDoesNotExistException",
-  { Message: S.optional(S.String), RequestId: S.optional(S.String) },
-) {}
-export class CertificateInUseException extends S.TaggedErrorClass<CertificateInUseException>()(
-  "CertificateInUseException",
-  { Message: S.optional(S.String), RequestId: S.optional(S.String) },
-) {}
-export class CertificateLimitExceededException extends S.TaggedErrorClass<CertificateLimitExceededException>()(
-  "CertificateLimitExceededException",
-  { Message: S.optional(S.String), RequestId: S.optional(S.String) },
-) {}
-export class ClientException extends S.TaggedErrorClass<ClientException>()(
-  "ClientException",
-  { Message: S.optional(S.String), RequestId: S.optional(S.String) },
-) {}
-export class DirectoryAlreadyInRegionException extends S.TaggedErrorClass<DirectoryAlreadyInRegionException>()(
-  "DirectoryAlreadyInRegionException",
-  { Message: S.optional(S.String), RequestId: S.optional(S.String) },
-) {}
-export class DirectoryAlreadySharedException extends S.TaggedErrorClass<DirectoryAlreadySharedException>()(
-  "DirectoryAlreadySharedException",
-  { Message: S.optional(S.String), RequestId: S.optional(S.String) },
-) {}
-export class DirectoryDoesNotExistException extends S.TaggedErrorClass<DirectoryDoesNotExistException>()(
-  "DirectoryDoesNotExistException",
-  { Message: S.optional(S.String), RequestId: S.optional(S.String) },
-) {}
-export class DirectoryInDesiredStateException extends S.TaggedErrorClass<DirectoryInDesiredStateException>()(
-  "DirectoryInDesiredStateException",
-  { Message: S.optional(S.String), RequestId: S.optional(S.String) },
-) {}
-export class DirectoryLimitExceededException extends S.TaggedErrorClass<DirectoryLimitExceededException>()(
-  "DirectoryLimitExceededException",
-  { Message: S.optional(S.String), RequestId: S.optional(S.String) },
-) {}
-export class DirectoryNotSharedException extends S.TaggedErrorClass<DirectoryNotSharedException>()(
-  "DirectoryNotSharedException",
-  { Message: S.optional(S.String), RequestId: S.optional(S.String) },
-) {}
-export class DirectoryUnavailableException extends S.TaggedErrorClass<DirectoryUnavailableException>()(
-  "DirectoryUnavailableException",
-  { Message: S.optional(S.String), RequestId: S.optional(S.String) },
-) {}
-export class DisableAlreadyInProgressException extends S.TaggedErrorClass<DisableAlreadyInProgressException>()(
-  "DisableAlreadyInProgressException",
-  { Message: S.optional(S.String), RequestId: S.optional(S.String) },
-) {}
-export class DomainControllerLimitExceededException extends S.TaggedErrorClass<DomainControllerLimitExceededException>()(
-  "DomainControllerLimitExceededException",
-  { Message: S.optional(S.String), RequestId: S.optional(S.String) },
-) {}
-export class EnableAlreadyInProgressException extends S.TaggedErrorClass<EnableAlreadyInProgressException>()(
-  "EnableAlreadyInProgressException",
-  { Message: S.optional(S.String), RequestId: S.optional(S.String) },
-) {}
-export class EntityAlreadyExistsException extends S.TaggedErrorClass<EntityAlreadyExistsException>()(
-  "EntityAlreadyExistsException",
-  { Message: S.optional(S.String), RequestId: S.optional(S.String) },
-).pipe(C.withAlreadyExistsError) {}
-export class EntityDoesNotExistException extends S.TaggedErrorClass<EntityDoesNotExistException>()(
-  "EntityDoesNotExistException",
-  { Message: S.optional(S.String), RequestId: S.optional(S.String) },
-) {}
-export class IncompatibleSettingsException extends S.TaggedErrorClass<IncompatibleSettingsException>()(
-  "IncompatibleSettingsException",
-  { Message: S.optional(S.String), RequestId: S.optional(S.String) },
-) {}
-export class InsufficientPermissionsException extends S.TaggedErrorClass<InsufficientPermissionsException>()(
-  "InsufficientPermissionsException",
-  { Message: S.optional(S.String), RequestId: S.optional(S.String) },
-) {}
-export class InvalidCertificateException extends S.TaggedErrorClass<InvalidCertificateException>()(
-  "InvalidCertificateException",
-  { Message: S.optional(S.String), RequestId: S.optional(S.String) },
-) {}
-export class InvalidClientAuthStatusException extends S.TaggedErrorClass<InvalidClientAuthStatusException>()(
-  "InvalidClientAuthStatusException",
-  { Message: S.optional(S.String), RequestId: S.optional(S.String) },
-) {}
-export class InvalidLDAPSStatusException extends S.TaggedErrorClass<InvalidLDAPSStatusException>()(
-  "InvalidLDAPSStatusException",
-  { Message: S.optional(S.String), RequestId: S.optional(S.String) },
-) {}
-export class InvalidNextTokenException extends S.TaggedErrorClass<InvalidNextTokenException>()(
-  "InvalidNextTokenException",
-  { Message: S.optional(S.String), RequestId: S.optional(S.String) },
-) {}
-export class InvalidParameterException extends S.TaggedErrorClass<InvalidParameterException>()(
-  "InvalidParameterException",
-  { Message: S.optional(S.String), RequestId: S.optional(S.String) },
-) {}
-export class InvalidPasswordException extends S.TaggedErrorClass<InvalidPasswordException>()(
-  "InvalidPasswordException",
-  { Message: S.optional(S.String), RequestId: S.optional(S.String) },
-) {}
-export class InvalidTargetException extends S.TaggedErrorClass<InvalidTargetException>()(
-  "InvalidTargetException",
-  { Message: S.optional(S.String), RequestId: S.optional(S.String) },
-) {}
-export class IpRouteLimitExceededException extends S.TaggedErrorClass<IpRouteLimitExceededException>()(
-  "IpRouteLimitExceededException",
-  { Message: S.optional(S.String), RequestId: S.optional(S.String) },
-) {}
-export class NoAvailableCertificateException extends S.TaggedErrorClass<NoAvailableCertificateException>()(
-  "NoAvailableCertificateException",
-  { Message: S.optional(S.String), RequestId: S.optional(S.String) },
-) {}
-export class OrganizationsException extends S.TaggedErrorClass<OrganizationsException>()(
-  "OrganizationsException",
-  { Message: S.optional(S.String), RequestId: S.optional(S.String) },
-) {}
-export class RegionLimitExceededException extends S.TaggedErrorClass<RegionLimitExceededException>()(
-  "RegionLimitExceededException",
-  { Message: S.optional(S.String), RequestId: S.optional(S.String) },
-) {}
-export class ServiceException extends S.TaggedErrorClass<ServiceException>()(
-  "ServiceException",
-  { Message: S.optional(S.String), RequestId: S.optional(S.String) },
-) {}
-export class ShareLimitExceededException extends S.TaggedErrorClass<ShareLimitExceededException>()(
-  "ShareLimitExceededException",
-  { Message: S.optional(S.String), RequestId: S.optional(S.String) },
-) {}
-export class SnapshotLimitExceededException extends S.TaggedErrorClass<SnapshotLimitExceededException>()(
-  "SnapshotLimitExceededException",
-  { Message: S.optional(S.String), RequestId: S.optional(S.String) },
-) {}
-export class TagLimitExceededException extends S.TaggedErrorClass<TagLimitExceededException>()(
-  "TagLimitExceededException",
-  { Message: S.optional(S.String), RequestId: S.optional(S.String) },
-) {}
-export class UnsupportedOperationException extends S.TaggedErrorClass<UnsupportedOperationException>()(
-  "UnsupportedOperationException",
-  { Message: S.optional(S.String), RequestId: S.optional(S.String) },
-) {}
-export class UnsupportedSettingsException extends S.TaggedErrorClass<UnsupportedSettingsException>()(
-  "UnsupportedSettingsException",
-  { Message: S.optional(S.String), RequestId: S.optional(S.String) },
-) {}
-export class UserDoesNotExistException extends S.TaggedErrorClass<UserDoesNotExistException>()(
-  "UserDoesNotExistException",
-  { Message: S.optional(S.String), RequestId: S.optional(S.String) },
-) {}
+export class AccessDeniedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
+    "AccessDeniedException",
+    { Message: S.optional(S.String), RequestId: S.optional(S.String) },
+  ).pipe(C.withAuthError) {}
+export class ADAssessmentLimitExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ADAssessmentLimitExceededException>()(
+    "ADAssessmentLimitExceededException",
+    { Message: S.optional(S.String), RequestId: S.optional(S.String) },
+  ) {}
+export class AuthenticationFailedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<AuthenticationFailedException>()(
+    "AuthenticationFailedException",
+    { Message: S.optional(S.String), RequestId: S.optional(S.String) },
+  ) {}
+export class CertificateAlreadyExistsException
+  extends /*@__PURE__*/ S.TaggedErrorClass<CertificateAlreadyExistsException>()(
+    "CertificateAlreadyExistsException",
+    { Message: S.optional(S.String), RequestId: S.optional(S.String) },
+  ).pipe(C.withAlreadyExistsError) {}
+export class CertificateDoesNotExistException
+  extends /*@__PURE__*/ S.TaggedErrorClass<CertificateDoesNotExistException>()(
+    "CertificateDoesNotExistException",
+    { Message: S.optional(S.String), RequestId: S.optional(S.String) },
+  ) {}
+export class CertificateInUseException
+  extends /*@__PURE__*/ S.TaggedErrorClass<CertificateInUseException>()(
+    "CertificateInUseException",
+    { Message: S.optional(S.String), RequestId: S.optional(S.String) },
+  ) {}
+export class CertificateLimitExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<CertificateLimitExceededException>()(
+    "CertificateLimitExceededException",
+    { Message: S.optional(S.String), RequestId: S.optional(S.String) },
+  ) {}
+export class ClientException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ClientException>()(
+    "ClientException",
+    { Message: S.optional(S.String), RequestId: S.optional(S.String) },
+  ) {}
+export class DirectoryAlreadyInRegionException
+  extends /*@__PURE__*/ S.TaggedErrorClass<DirectoryAlreadyInRegionException>()(
+    "DirectoryAlreadyInRegionException",
+    { Message: S.optional(S.String), RequestId: S.optional(S.String) },
+  ) {}
+export class DirectoryAlreadySharedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<DirectoryAlreadySharedException>()(
+    "DirectoryAlreadySharedException",
+    { Message: S.optional(S.String), RequestId: S.optional(S.String) },
+  ) {}
+export class DirectoryDoesNotExistException
+  extends /*@__PURE__*/ S.TaggedErrorClass<DirectoryDoesNotExistException>()(
+    "DirectoryDoesNotExistException",
+    { Message: S.optional(S.String), RequestId: S.optional(S.String) },
+  ) {}
+export class DirectoryInDesiredStateException
+  extends /*@__PURE__*/ S.TaggedErrorClass<DirectoryInDesiredStateException>()(
+    "DirectoryInDesiredStateException",
+    { Message: S.optional(S.String), RequestId: S.optional(S.String) },
+  ) {}
+export class DirectoryLimitExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<DirectoryLimitExceededException>()(
+    "DirectoryLimitExceededException",
+    { Message: S.optional(S.String), RequestId: S.optional(S.String) },
+  ) {}
+export class DirectoryNotSharedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<DirectoryNotSharedException>()(
+    "DirectoryNotSharedException",
+    { Message: S.optional(S.String), RequestId: S.optional(S.String) },
+  ) {}
+export class DirectoryUnavailableException
+  extends /*@__PURE__*/ S.TaggedErrorClass<DirectoryUnavailableException>()(
+    "DirectoryUnavailableException",
+    { Message: S.optional(S.String), RequestId: S.optional(S.String) },
+  ) {}
+export class DisableAlreadyInProgressException
+  extends /*@__PURE__*/ S.TaggedErrorClass<DisableAlreadyInProgressException>()(
+    "DisableAlreadyInProgressException",
+    { Message: S.optional(S.String), RequestId: S.optional(S.String) },
+  ) {}
+export class DomainControllerLimitExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<DomainControllerLimitExceededException>()(
+    "DomainControllerLimitExceededException",
+    { Message: S.optional(S.String), RequestId: S.optional(S.String) },
+  ) {}
+export class EnableAlreadyInProgressException
+  extends /*@__PURE__*/ S.TaggedErrorClass<EnableAlreadyInProgressException>()(
+    "EnableAlreadyInProgressException",
+    { Message: S.optional(S.String), RequestId: S.optional(S.String) },
+  ) {}
+export class EntityAlreadyExistsException
+  extends /*@__PURE__*/ S.TaggedErrorClass<EntityAlreadyExistsException>()(
+    "EntityAlreadyExistsException",
+    { Message: S.optional(S.String), RequestId: S.optional(S.String) },
+  ).pipe(C.withAlreadyExistsError) {}
+export class EntityDoesNotExistException
+  extends /*@__PURE__*/ S.TaggedErrorClass<EntityDoesNotExistException>()(
+    "EntityDoesNotExistException",
+    { Message: S.optional(S.String), RequestId: S.optional(S.String) },
+  ) {}
+export class IncompatibleSettingsException
+  extends /*@__PURE__*/ S.TaggedErrorClass<IncompatibleSettingsException>()(
+    "IncompatibleSettingsException",
+    { Message: S.optional(S.String), RequestId: S.optional(S.String) },
+  ) {}
+export class InsufficientPermissionsException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InsufficientPermissionsException>()(
+    "InsufficientPermissionsException",
+    { Message: S.optional(S.String), RequestId: S.optional(S.String) },
+  ) {}
+export class InvalidCertificateException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidCertificateException>()(
+    "InvalidCertificateException",
+    { Message: S.optional(S.String), RequestId: S.optional(S.String) },
+  ) {}
+export class InvalidClientAuthStatusException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidClientAuthStatusException>()(
+    "InvalidClientAuthStatusException",
+    { Message: S.optional(S.String), RequestId: S.optional(S.String) },
+  ) {}
+export class InvalidLDAPSStatusException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidLDAPSStatusException>()(
+    "InvalidLDAPSStatusException",
+    { Message: S.optional(S.String), RequestId: S.optional(S.String) },
+  ) {}
+export class InvalidNextTokenException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidNextTokenException>()(
+    "InvalidNextTokenException",
+    { Message: S.optional(S.String), RequestId: S.optional(S.String) },
+  ) {}
+export class InvalidParameterException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidParameterException>()(
+    "InvalidParameterException",
+    { Message: S.optional(S.String), RequestId: S.optional(S.String) },
+  ) {}
+export class InvalidPasswordException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidPasswordException>()(
+    "InvalidPasswordException",
+    { Message: S.optional(S.String), RequestId: S.optional(S.String) },
+  ) {}
+export class InvalidTargetException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidTargetException>()(
+    "InvalidTargetException",
+    { Message: S.optional(S.String), RequestId: S.optional(S.String) },
+  ) {}
+export class IpRouteLimitExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<IpRouteLimitExceededException>()(
+    "IpRouteLimitExceededException",
+    { Message: S.optional(S.String), RequestId: S.optional(S.String) },
+  ) {}
+export class NoAvailableCertificateException
+  extends /*@__PURE__*/ S.TaggedErrorClass<NoAvailableCertificateException>()(
+    "NoAvailableCertificateException",
+    { Message: S.optional(S.String), RequestId: S.optional(S.String) },
+  ) {}
+export class OrganizationsException
+  extends /*@__PURE__*/ S.TaggedErrorClass<OrganizationsException>()(
+    "OrganizationsException",
+    { Message: S.optional(S.String), RequestId: S.optional(S.String) },
+  ) {}
+export class RegionLimitExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<RegionLimitExceededException>()(
+    "RegionLimitExceededException",
+    { Message: S.optional(S.String), RequestId: S.optional(S.String) },
+  ) {}
+export class ServiceException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ServiceException>()(
+    "ServiceException",
+    { Message: S.optional(S.String), RequestId: S.optional(S.String) },
+  ) {}
+export class ShareLimitExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ShareLimitExceededException>()(
+    "ShareLimitExceededException",
+    { Message: S.optional(S.String), RequestId: S.optional(S.String) },
+  ) {}
+export class SnapshotLimitExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<SnapshotLimitExceededException>()(
+    "SnapshotLimitExceededException",
+    { Message: S.optional(S.String), RequestId: S.optional(S.String) },
+  ) {}
+export class TagLimitExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<TagLimitExceededException>()(
+    "TagLimitExceededException",
+    { Message: S.optional(S.String), RequestId: S.optional(S.String) },
+  ) {}
+export class UnsupportedOperationException
+  extends /*@__PURE__*/ S.TaggedErrorClass<UnsupportedOperationException>()(
+    "UnsupportedOperationException",
+    { Message: S.optional(S.String), RequestId: S.optional(S.String) },
+  ) {}
+export class UnsupportedSettingsException
+  extends /*@__PURE__*/ S.TaggedErrorClass<UnsupportedSettingsException>()(
+    "UnsupportedSettingsException",
+    { Message: S.optional(S.String), RequestId: S.optional(S.String) },
+  ) {}
+export class UserDoesNotExistException
+  extends /*@__PURE__*/ S.TaggedErrorClass<UserDoesNotExistException>()(
+    "UserDoesNotExistException",
+    { Message: S.optional(S.String), RequestId: S.optional(S.String) },
+  ) {}
 export type DirectoryId = string;
 export interface AcceptSharedDirectoryRequest {
   SharedDirectoryId: string;
@@ -4971,7 +5011,27 @@ export const describeClientAuthenticationSettings: API.OperationMethod<
     items: "ClientAuthenticationSettingsInfo",
     pageSize: "Limit",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  DescribeClientAuthenticationSettingsRequest,
+  DescribeClientAuthenticationSettingsResult,
+  DescribeClientAuthenticationSettingsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: DescribeClientAuthenticationSettingsRequest,
+  ) => stream.Stream<
+    DescribeClientAuthenticationSettingsResult,
+    DescribeClientAuthenticationSettingsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: DescribeClientAuthenticationSettingsRequest,
+  ) => stream.Stream<
+    ClientAuthenticationSettingInfo,
+    DescribeClientAuthenticationSettingsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type DescribeConditionalForwardersError =
   | ClientException
@@ -5070,7 +5130,27 @@ export const describeDirectories: API.OperationMethod<
     items: "DirectoryDescriptions",
     pageSize: "Limit",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  DescribeDirectoriesRequest,
+  DescribeDirectoriesResult,
+  DescribeDirectoriesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: DescribeDirectoriesRequest,
+  ) => stream.Stream<
+    DescribeDirectoriesResult,
+    DescribeDirectoriesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: DescribeDirectoriesRequest,
+  ) => stream.Stream<
+    DirectoryDescription,
+    DescribeDirectoriesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type DescribeDirectoryDataAccessError =
   | AccessDeniedException
@@ -5153,7 +5233,27 @@ export const describeDomainControllers: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "Limit",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  DescribeDomainControllersRequest,
+  DescribeDomainControllersResult,
+  DescribeDomainControllersError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: DescribeDomainControllersRequest,
+  ) => stream.Stream<
+    DescribeDomainControllersResult,
+    DescribeDomainControllersError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: DescribeDomainControllersRequest,
+  ) => stream.Stream<
+    unknown,
+    DescribeDomainControllersError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type DescribeEventTopicsError =
   | ClientException
@@ -5272,7 +5372,27 @@ export const describeLDAPSSettings: API.OperationMethod<
     items: "LDAPSSettingsInfo",
     pageSize: "Limit",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  DescribeLDAPSSettingsRequest,
+  DescribeLDAPSSettingsResult,
+  DescribeLDAPSSettingsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: DescribeLDAPSSettingsRequest,
+  ) => stream.Stream<
+    DescribeLDAPSSettingsResult,
+    DescribeLDAPSSettingsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: DescribeLDAPSSettingsRequest,
+  ) => stream.Stream<
+    LDAPSSettingInfo,
+    DescribeLDAPSSettingsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type DescribeRegionsError =
   | AccessDeniedException
@@ -5327,7 +5447,27 @@ export const describeRegions: API.OperationMethod<
     outputToken: "NextToken",
     items: "RegionsDescription",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  DescribeRegionsRequest,
+  DescribeRegionsResult,
+  DescribeRegionsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: DescribeRegionsRequest,
+  ) => stream.Stream<
+    DescribeRegionsResult,
+    DescribeRegionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: DescribeRegionsRequest,
+  ) => stream.Stream<
+    RegionDescription,
+    DescribeRegionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type DescribeSettingsError =
   | ClientException
@@ -5412,7 +5552,27 @@ export const describeSharedDirectories: API.OperationMethod<
     items: "SharedDirectories",
     pageSize: "Limit",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  DescribeSharedDirectoriesRequest,
+  DescribeSharedDirectoriesResult,
+  DescribeSharedDirectoriesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: DescribeSharedDirectoriesRequest,
+  ) => stream.Stream<
+    DescribeSharedDirectoriesResult,
+    DescribeSharedDirectoriesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: DescribeSharedDirectoriesRequest,
+  ) => stream.Stream<
+    SharedDirectory,
+    DescribeSharedDirectoriesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type DescribeSnapshotsError =
   | ClientException
@@ -5471,7 +5631,27 @@ export const describeSnapshots: API.OperationMethod<
     items: "Snapshots",
     pageSize: "Limit",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  DescribeSnapshotsRequest,
+  DescribeSnapshotsResult,
+  DescribeSnapshotsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: DescribeSnapshotsRequest,
+  ) => stream.Stream<
+    DescribeSnapshotsResult,
+    DescribeSnapshotsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: DescribeSnapshotsRequest,
+  ) => stream.Stream<
+    Snapshot,
+    DescribeSnapshotsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type DescribeTrustsError =
   | ClientException
@@ -5527,7 +5707,27 @@ export const describeTrusts: API.OperationMethod<
     items: "Trusts",
     pageSize: "Limit",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  DescribeTrustsRequest,
+  DescribeTrustsResult,
+  DescribeTrustsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: DescribeTrustsRequest,
+  ) => stream.Stream<
+    DescribeTrustsResult,
+    DescribeTrustsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: DescribeTrustsRequest,
+  ) => stream.Stream<
+    Trust,
+    DescribeTrustsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type DescribeUpdateDirectoryError =
   | AccessDeniedException
@@ -5579,7 +5779,27 @@ export const describeUpdateDirectory: API.OperationMethod<
     outputToken: "NextToken",
     items: "UpdateActivities",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  DescribeUpdateDirectoryRequest,
+  DescribeUpdateDirectoryResult,
+  DescribeUpdateDirectoryError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: DescribeUpdateDirectoryRequest,
+  ) => stream.Stream<
+    DescribeUpdateDirectoryResult,
+    DescribeUpdateDirectoryError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: DescribeUpdateDirectoryRequest,
+  ) => stream.Stream<
+    UpdateInfoEntry,
+    DescribeUpdateDirectoryError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type DisableCAEnrollmentPolicyError =
   | AccessDeniedException
@@ -6083,7 +6303,27 @@ export const listADAssessments: API.OperationMethod<
     items: "Assessments",
     pageSize: "Limit",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListADAssessmentsRequest,
+  ListADAssessmentsResult,
+  ListADAssessmentsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListADAssessmentsRequest,
+  ) => stream.Stream<
+    ListADAssessmentsResult,
+    ListADAssessmentsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListADAssessmentsRequest,
+  ) => stream.Stream<
+    AssessmentSummary,
+    ListADAssessmentsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListCertificatesError =
   | ClientException
@@ -6137,7 +6377,27 @@ export const listCertificates: API.OperationMethod<
     items: "CertificatesInfo",
     pageSize: "Limit",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListCertificatesRequest,
+  ListCertificatesResult,
+  ListCertificatesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListCertificatesRequest,
+  ) => stream.Stream<
+    ListCertificatesResult,
+    ListCertificatesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListCertificatesRequest,
+  ) => stream.Stream<
+    CertificateInfo,
+    ListCertificatesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListIpRoutesError =
   | ClientException
@@ -6188,7 +6448,27 @@ export const listIpRoutes: API.OperationMethod<
     items: "IpRoutesInfo",
     pageSize: "Limit",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListIpRoutesRequest,
+  ListIpRoutesResult,
+  ListIpRoutesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListIpRoutesRequest,
+  ) => stream.Stream<
+    ListIpRoutesResult,
+    ListIpRoutesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListIpRoutesRequest,
+  ) => stream.Stream<
+    IpRouteInfo,
+    ListIpRoutesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListLogSubscriptionsError =
   | ClientException
@@ -6237,7 +6517,27 @@ export const listLogSubscriptions: API.OperationMethod<
     items: "LogSubscriptions",
     pageSize: "Limit",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListLogSubscriptionsRequest,
+  ListLogSubscriptionsResult,
+  ListLogSubscriptionsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListLogSubscriptionsRequest,
+  ) => stream.Stream<
+    ListLogSubscriptionsResult,
+    ListLogSubscriptionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListLogSubscriptionsRequest,
+  ) => stream.Stream<
+    LogSubscription,
+    ListLogSubscriptionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListSchemaExtensionsError =
   | ClientException
@@ -6286,7 +6586,27 @@ export const listSchemaExtensions: API.OperationMethod<
     items: "SchemaExtensionsInfo",
     pageSize: "Limit",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListSchemaExtensionsRequest,
+  ListSchemaExtensionsResult,
+  ListSchemaExtensionsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListSchemaExtensionsRequest,
+  ) => stream.Stream<
+    ListSchemaExtensionsResult,
+    ListSchemaExtensionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListSchemaExtensionsRequest,
+  ) => stream.Stream<
+    SchemaExtensionInfo,
+    ListSchemaExtensionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListTagsForResourceError =
   | ClientException
@@ -6337,7 +6657,27 @@ export const listTagsForResource: API.OperationMethod<
     items: "Tags",
     pageSize: "Limit",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListTagsForResourceRequest,
+  ListTagsForResourceResult,
+  ListTagsForResourceError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListTagsForResourceRequest,
+  ) => stream.Stream<
+    ListTagsForResourceResult,
+    ListTagsForResourceError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListTagsForResourceRequest,
+  ) => stream.Stream<
+    Tag,
+    ListTagsForResourceError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type RegisterCertificateError =
   | CertificateAlreadyExistsException

@@ -85,63 +85,70 @@ const rules = T.EndpointResolver((p, _) => {
   return err("Invalid Configuration: Missing Region");
 });
 
-export class AccessDeniedException extends S.TaggedErrorClass<AccessDeniedException>()(
-  "AccessDeniedException",
-  { message: S.String },
-  T.HttpError(403),
-).pipe(C.withAuthError) {}
-export class ConflictException extends S.TaggedErrorClass<ConflictException>()(
-  "ConflictException",
-  { message: S.String, resourceId: S.String, resourceType: S.String },
-  T.HttpError(409),
-).pipe(C.withConflictError) {}
-export class InternalServerException extends S.TaggedErrorClass<InternalServerException>()(
-  "InternalServerException",
-  {
-    message: S.String,
-    retryAfterSeconds: S.optional(S.Number).pipe(T.HttpHeader("Retry-After")),
-  },
-  T.all(T.HttpError(500), T.Retryable()),
-).pipe(C.withServerError, C.withRetryableError) {}
-export class ResourceNotFoundException extends S.TaggedErrorClass<ResourceNotFoundException>()(
-  "ResourceNotFoundException",
-  { message: S.String, resourceId: S.String, resourceType: S.String },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class ServiceQuotaExceededException extends S.TaggedErrorClass<ServiceQuotaExceededException>()(
-  "ServiceQuotaExceededException",
-  {
-    message: S.String,
-    resourceId: S.String,
-    resourceType: S.String,
-    serviceCode: S.String,
-    quotaCode: S.String,
-  },
-  T.HttpError(402),
-).pipe(C.withQuotaError) {}
-export class ThrottlingException extends S.TaggedErrorClass<ThrottlingException>()(
-  "ThrottlingException",
-  {
-    message: S.String,
-    serviceCode: S.optional(S.String),
-    quotaCode: S.optional(S.String),
-    retryAfterSeconds: S.optional(S.Number).pipe(T.HttpHeader("Retry-After")),
-  },
-  T.all(T.HttpError(429), T.Retryable()),
-).pipe(C.withThrottlingError, C.withRetryableError) {}
-export class ValidationException extends S.TaggedErrorClass<ValidationException>()(
-  "ValidationException",
-  {
-    message: S.String,
-    reason: S.String,
-    fieldList: S.optional(
-      S.suspend(() => ValidationExceptionFieldList).annotate({
-        identifier: "ValidationExceptionFieldList",
-      }),
-    ),
-  },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
+export class AccessDeniedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
+    "AccessDeniedException",
+    { message: S.String },
+    T.HttpError(403),
+  ).pipe(C.withAuthError) {}
+export class ConflictException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
+    "ConflictException",
+    { message: S.String, resourceId: S.String, resourceType: S.String },
+    T.HttpError(409),
+  ).pipe(C.withConflictError) {}
+export class InternalServerException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
+    "InternalServerException",
+    {
+      message: S.String,
+      retryAfterSeconds: S.optional(S.Number).pipe(T.HttpHeader("Retry-After")),
+    },
+    T.all(T.HttpError(500), T.Retryable()),
+  ).pipe(C.withServerError, C.withRetryableError) {}
+export class ResourceNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
+    "ResourceNotFoundException",
+    { message: S.String, resourceId: S.String, resourceType: S.String },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class ServiceQuotaExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
+    "ServiceQuotaExceededException",
+    {
+      message: S.String,
+      resourceId: S.String,
+      resourceType: S.String,
+      serviceCode: S.String,
+      quotaCode: S.String,
+    },
+    T.HttpError(402),
+  ).pipe(C.withQuotaError) {}
+export class ThrottlingException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
+    "ThrottlingException",
+    {
+      message: S.String,
+      serviceCode: S.optional(S.String),
+      quotaCode: S.optional(S.String),
+      retryAfterSeconds: S.optional(S.Number).pipe(T.HttpHeader("Retry-After")),
+    },
+    T.all(T.HttpError(429), T.Retryable()),
+  ).pipe(C.withThrottlingError, C.withRetryableError) {}
+export class ValidationException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
+    "ValidationException",
+    {
+      message: S.String,
+      reason: S.String,
+      fieldList: S.optional(
+        S.suspend(() => ValidationExceptionFieldList).annotate({
+          identifier: "ValidationExceptionFieldList",
+        }),
+      ),
+    },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
 export type WorkspaceId = string;
 export type AlertManagerDefinitionData = Uint8Array;
 export type IdempotencyToken = string;
@@ -3179,7 +3186,27 @@ export const listAnomalyDetectors: API.OperationMethod<
     items: "anomalyDetectors",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListAnomalyDetectorsRequest,
+  ListAnomalyDetectorsResponse,
+  ListAnomalyDetectorsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListAnomalyDetectorsRequest,
+  ) => stream.Stream<
+    ListAnomalyDetectorsResponse,
+    ListAnomalyDetectorsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListAnomalyDetectorsRequest,
+  ) => stream.Stream<
+    AnomalyDetectorSummary,
+    ListAnomalyDetectorsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListRuleGroupsNamespacesError =
   | AccessDeniedException
@@ -3230,7 +3257,27 @@ export const listRuleGroupsNamespaces: API.OperationMethod<
     items: "ruleGroupsNamespaces",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListRuleGroupsNamespacesRequest,
+  ListRuleGroupsNamespacesResponse,
+  ListRuleGroupsNamespacesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListRuleGroupsNamespacesRequest,
+  ) => stream.Stream<
+    ListRuleGroupsNamespacesResponse,
+    ListRuleGroupsNamespacesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListRuleGroupsNamespacesRequest,
+  ) => stream.Stream<
+    RuleGroupsNamespaceSummary,
+    ListRuleGroupsNamespacesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListScrapersError =
   | AccessDeniedException
@@ -3279,7 +3326,27 @@ export const listScrapers: API.OperationMethod<
     items: "scrapers",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListScrapersRequest,
+  ListScrapersResponse,
+  ListScrapersError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListScrapersRequest,
+  ) => stream.Stream<
+    ListScrapersResponse,
+    ListScrapersError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListScrapersRequest,
+  ) => stream.Stream<
+    ScraperSummary,
+    ListScrapersError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListTagsForResourceError =
   | AccessDeniedException
@@ -3358,7 +3425,27 @@ export const listWorkspaces: API.OperationMethod<
     items: "workspaces",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListWorkspacesRequest,
+  ListWorkspacesResponse,
+  ListWorkspacesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListWorkspacesRequest,
+  ) => stream.Stream<
+    ListWorkspacesResponse,
+    ListWorkspacesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListWorkspacesRequest,
+  ) => stream.Stream<
+    WorkspaceSummary,
+    ListWorkspacesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type PutAlertManagerDefinitionError =
   | AccessDeniedException

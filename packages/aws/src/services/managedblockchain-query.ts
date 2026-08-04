@@ -85,58 +85,64 @@ const rules = T.EndpointResolver((p, _) => {
   return err("Invalid Configuration: Missing Region");
 });
 
-export class AccessDeniedException extends S.TaggedErrorClass<AccessDeniedException>()(
-  "AccessDeniedException",
-  { message: S.String },
-  T.HttpError(403),
-).pipe(C.withAuthError) {}
-export class InternalServerException extends S.TaggedErrorClass<InternalServerException>()(
-  "InternalServerException",
-  {
-    message: S.String,
-    retryAfterSeconds: S.optional(S.Number).pipe(T.HttpHeader("Retry-After")),
-  },
-  T.all(T.HttpError(500), T.Retryable()),
-).pipe(C.withServerError, C.withRetryableError) {}
-export class ResourceNotFoundException extends S.TaggedErrorClass<ResourceNotFoundException>()(
-  "ResourceNotFoundException",
-  { message: S.String, resourceId: S.String, resourceType: S.String },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class ServiceQuotaExceededException extends S.TaggedErrorClass<ServiceQuotaExceededException>()(
-  "ServiceQuotaExceededException",
-  {
-    message: S.String,
-    resourceId: S.String,
-    resourceType: S.String,
-    serviceCode: S.String,
-    quotaCode: S.String,
-  },
-  T.HttpError(402),
-).pipe(C.withQuotaError) {}
-export class ThrottlingException extends S.TaggedErrorClass<ThrottlingException>()(
-  "ThrottlingException",
-  {
-    message: S.String,
-    serviceCode: S.String,
-    quotaCode: S.String,
-    retryAfterSeconds: S.optional(S.Number).pipe(T.HttpHeader("Retry-After")),
-  },
-  T.all(T.HttpError(429), T.Retryable({ throttling: true })),
-).pipe(C.withThrottlingError, C.withRetryableError) {}
-export class ValidationException extends S.TaggedErrorClass<ValidationException>()(
-  "ValidationException",
-  {
-    message: S.String,
-    reason: S.String,
-    fieldList: S.optional(
-      S.suspend(() => ValidationExceptionFieldList).annotate({
-        identifier: "ValidationExceptionFieldList",
-      }),
-    ),
-  },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
+export class AccessDeniedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
+    "AccessDeniedException",
+    { message: S.String },
+    T.HttpError(403),
+  ).pipe(C.withAuthError) {}
+export class InternalServerException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
+    "InternalServerException",
+    {
+      message: S.String,
+      retryAfterSeconds: S.optional(S.Number).pipe(T.HttpHeader("Retry-After")),
+    },
+    T.all(T.HttpError(500), T.Retryable()),
+  ).pipe(C.withServerError, C.withRetryableError) {}
+export class ResourceNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
+    "ResourceNotFoundException",
+    { message: S.String, resourceId: S.String, resourceType: S.String },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class ServiceQuotaExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
+    "ServiceQuotaExceededException",
+    {
+      message: S.String,
+      resourceId: S.String,
+      resourceType: S.String,
+      serviceCode: S.String,
+      quotaCode: S.String,
+    },
+    T.HttpError(402),
+  ).pipe(C.withQuotaError) {}
+export class ThrottlingException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
+    "ThrottlingException",
+    {
+      message: S.String,
+      serviceCode: S.String,
+      quotaCode: S.String,
+      retryAfterSeconds: S.optional(S.Number).pipe(T.HttpHeader("Retry-After")),
+    },
+    T.all(T.HttpError(429), T.Retryable({ throttling: true })),
+  ).pipe(C.withThrottlingError, C.withRetryableError) {}
+export class ValidationException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
+    "ValidationException",
+    {
+      message: S.String,
+      reason: S.String,
+      fieldList: S.optional(
+        S.suspend(() => ValidationExceptionFieldList).annotate({
+          identifier: "ValidationExceptionFieldList",
+        }),
+      ),
+    },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
 export type QueryNetwork = string;
 export type ChainAddress = string;
 export type QueryTokenId = string;
@@ -1042,7 +1048,27 @@ export const listAssetContracts: API.OperationMethod<
     items: "contracts",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListAssetContractsInput,
+  ListAssetContractsOutput,
+  ListAssetContractsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListAssetContractsInput,
+  ) => stream.Stream<
+    ListAssetContractsOutput,
+    ListAssetContractsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListAssetContractsInput,
+  ) => stream.Stream<
+    AssetContract,
+    ListAssetContractsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListFilteredTransactionEventsError =
   | AccessDeniedException
@@ -1095,7 +1121,27 @@ export const listFilteredTransactionEvents: API.OperationMethod<
     items: "events",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListFilteredTransactionEventsInput,
+  ListFilteredTransactionEventsOutput,
+  ListFilteredTransactionEventsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListFilteredTransactionEventsInput,
+  ) => stream.Stream<
+    ListFilteredTransactionEventsOutput,
+    ListFilteredTransactionEventsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListFilteredTransactionEventsInput,
+  ) => stream.Stream<
+    TransactionEvent,
+    ListFilteredTransactionEventsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListTokenBalancesError =
   | AccessDeniedException
@@ -1156,7 +1202,27 @@ export const listTokenBalances: API.OperationMethod<
     items: "tokenBalances",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListTokenBalancesInput,
+  ListTokenBalancesOutput,
+  ListTokenBalancesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListTokenBalancesInput,
+  ) => stream.Stream<
+    ListTokenBalancesOutput,
+    ListTokenBalancesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListTokenBalancesInput,
+  ) => stream.Stream<
+    TokenBalance,
+    ListTokenBalancesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListTransactionEventsError =
   | AccessDeniedException
@@ -1211,7 +1277,27 @@ export const listTransactionEvents: API.OperationMethod<
     items: "events",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListTransactionEventsInput,
+  ListTransactionEventsOutput,
+  ListTransactionEventsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListTransactionEventsInput,
+  ) => stream.Stream<
+    ListTransactionEventsOutput,
+    ListTransactionEventsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListTransactionEventsInput,
+  ) => stream.Stream<
+    TransactionEvent,
+    ListTransactionEventsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListTransactionsError =
   | AccessDeniedException
@@ -1262,4 +1348,24 @@ export const listTransactions: API.OperationMethod<
     items: "transactions",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListTransactionsInput,
+  ListTransactionsOutput,
+  ListTransactionsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListTransactionsInput,
+  ) => stream.Stream<
+    ListTransactionsOutput,
+    ListTransactionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListTransactionsInput,
+  ) => stream.Stream<
+    TransactionOutputItem,
+    ListTransactionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};

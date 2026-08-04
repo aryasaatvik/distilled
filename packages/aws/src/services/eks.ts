@@ -91,130 +91,145 @@ const rules = T.EndpointResolver((p, _) => {
   return err("Invalid Configuration: Missing Region");
 });
 
-export class AccessDeniedException extends S.TaggedErrorClass<AccessDeniedException>()(
-  "AccessDeniedException",
-  { message: S.optional(S.String) },
-  T.HttpError(403),
-).pipe(C.withAuthError) {}
-export class BadRequestException extends S.TaggedErrorClass<BadRequestException>()(
-  "BadRequestException",
-  { message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class ClientException extends S.TaggedErrorClass<ClientException>()(
-  "ClientException",
-  {
-    clusterName: S.optional(S.String),
-    nodegroupName: S.optional(S.String),
-    addonName: S.optional(S.String),
-    subscriptionId: S.optional(S.String),
-    message: S.optional(S.String),
-  },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class InvalidParameterException extends S.TaggedErrorClass<InvalidParameterException>()(
-  "InvalidParameterException",
-  {
-    clusterName: S.optional(S.String),
-    nodegroupName: S.optional(S.String),
-    fargateProfileName: S.optional(S.String),
-    addonName: S.optional(S.String),
-    subscriptionId: S.optional(S.String),
-    message: S.optional(S.String),
-  },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class InvalidRequestException extends S.TaggedErrorClass<InvalidRequestException>()(
-  "InvalidRequestException",
-  {
-    clusterName: S.optional(S.String),
-    nodegroupName: S.optional(S.String),
-    addonName: S.optional(S.String),
-    subscriptionId: S.optional(S.String),
-    message: S.optional(S.String),
-  },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class InvalidStateException extends S.TaggedErrorClass<InvalidStateException>()(
-  "InvalidStateException",
-  { clusterName: S.optional(S.String), message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class NotFoundException extends S.TaggedErrorClass<NotFoundException>()(
-  "NotFoundException",
-  { message: S.optional(S.String) },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class ResourceInUseException extends S.TaggedErrorClass<ResourceInUseException>()(
-  "ResourceInUseException",
-  {
-    clusterName: S.optional(S.String),
-    nodegroupName: S.optional(S.String),
-    addonName: S.optional(S.String),
-    message: S.optional(S.String),
-  },
-  T.HttpError(409),
-).pipe(C.withConflictError) {}
-export class ResourceLimitExceededException extends S.TaggedErrorClass<ResourceLimitExceededException>()(
-  "ResourceLimitExceededException",
-  {
-    clusterName: S.optional(S.String),
-    nodegroupName: S.optional(S.String),
-    subscriptionId: S.optional(S.String),
-    message: S.optional(S.String),
-  },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class ResourceNotFoundException extends S.TaggedErrorClass<ResourceNotFoundException>()(
-  "ResourceNotFoundException",
-  {
-    clusterName: S.optional(S.String),
-    nodegroupName: S.optional(S.String),
-    fargateProfileName: S.optional(S.String),
-    addonName: S.optional(S.String),
-    subscriptionId: S.optional(S.String),
-    message: S.optional(S.String),
-  },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class ResourcePropagationDelayException extends S.TaggedErrorClass<ResourcePropagationDelayException>()(
-  "ResourcePropagationDelayException",
-  { message: S.optional(S.String) },
-  T.HttpError(428),
-) {}
-export class ServerException extends S.TaggedErrorClass<ServerException>()(
-  "ServerException",
-  {
-    clusterName: S.optional(S.String),
-    nodegroupName: S.optional(S.String),
-    addonName: S.optional(S.String),
-    subscriptionId: S.optional(S.String),
-    message: S.optional(S.String),
-  },
-  T.HttpError(500),
-).pipe(C.withServerError) {}
-export class ServiceUnavailableException extends S.TaggedErrorClass<ServiceUnavailableException>()(
-  "ServiceUnavailableException",
-  { message: S.optional(S.String) },
-  T.HttpError(503),
-).pipe(C.withServerError) {}
-export class ThrottlingException extends S.TaggedErrorClass<ThrottlingException>()(
-  "ThrottlingException",
-  { clusterName: S.optional(S.String), message: S.optional(S.String) },
-  T.HttpError(429),
-).pipe(C.withThrottlingError) {}
-export class UnsupportedAvailabilityZoneException extends S.TaggedErrorClass<UnsupportedAvailabilityZoneException>()(
-  "UnsupportedAvailabilityZoneException",
-  {
-    message: S.optional(S.String),
-    clusterName: S.optional(S.String),
-    nodegroupName: S.optional(S.String),
-    validZones: S.optional(
-      S.suspend(() => StringList).annotate({ identifier: "StringList" }),
-    ),
-  },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
+export class AccessDeniedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
+    "AccessDeniedException",
+    { message: S.optional(S.String) },
+    T.HttpError(403),
+  ).pipe(C.withAuthError) {}
+export class BadRequestException
+  extends /*@__PURE__*/ S.TaggedErrorClass<BadRequestException>()(
+    "BadRequestException",
+    { message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class ClientException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ClientException>()(
+    "ClientException",
+    {
+      clusterName: S.optional(S.String),
+      nodegroupName: S.optional(S.String),
+      addonName: S.optional(S.String),
+      subscriptionId: S.optional(S.String),
+      message: S.optional(S.String),
+    },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class InvalidParameterException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidParameterException>()(
+    "InvalidParameterException",
+    {
+      clusterName: S.optional(S.String),
+      nodegroupName: S.optional(S.String),
+      fargateProfileName: S.optional(S.String),
+      addonName: S.optional(S.String),
+      subscriptionId: S.optional(S.String),
+      message: S.optional(S.String),
+    },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class InvalidRequestException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidRequestException>()(
+    "InvalidRequestException",
+    {
+      clusterName: S.optional(S.String),
+      nodegroupName: S.optional(S.String),
+      addonName: S.optional(S.String),
+      subscriptionId: S.optional(S.String),
+      message: S.optional(S.String),
+    },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class InvalidStateException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidStateException>()(
+    "InvalidStateException",
+    { clusterName: S.optional(S.String), message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class NotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<NotFoundException>()(
+    "NotFoundException",
+    { message: S.optional(S.String) },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class ResourceInUseException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceInUseException>()(
+    "ResourceInUseException",
+    {
+      clusterName: S.optional(S.String),
+      nodegroupName: S.optional(S.String),
+      addonName: S.optional(S.String),
+      message: S.optional(S.String),
+    },
+    T.HttpError(409),
+  ).pipe(C.withConflictError) {}
+export class ResourceLimitExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceLimitExceededException>()(
+    "ResourceLimitExceededException",
+    {
+      clusterName: S.optional(S.String),
+      nodegroupName: S.optional(S.String),
+      subscriptionId: S.optional(S.String),
+      message: S.optional(S.String),
+    },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class ResourceNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
+    "ResourceNotFoundException",
+    {
+      clusterName: S.optional(S.String),
+      nodegroupName: S.optional(S.String),
+      fargateProfileName: S.optional(S.String),
+      addonName: S.optional(S.String),
+      subscriptionId: S.optional(S.String),
+      message: S.optional(S.String),
+    },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class ResourcePropagationDelayException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourcePropagationDelayException>()(
+    "ResourcePropagationDelayException",
+    { message: S.optional(S.String) },
+    T.HttpError(428),
+  ) {}
+export class ServerException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ServerException>()(
+    "ServerException",
+    {
+      clusterName: S.optional(S.String),
+      nodegroupName: S.optional(S.String),
+      addonName: S.optional(S.String),
+      subscriptionId: S.optional(S.String),
+      message: S.optional(S.String),
+    },
+    T.HttpError(500),
+  ).pipe(C.withServerError) {}
+export class ServiceUnavailableException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ServiceUnavailableException>()(
+    "ServiceUnavailableException",
+    { message: S.optional(S.String) },
+    T.HttpError(503),
+  ).pipe(C.withServerError) {}
+export class ThrottlingException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
+    "ThrottlingException",
+    { clusterName: S.optional(S.String), message: S.optional(S.String) },
+    T.HttpError(429),
+  ).pipe(C.withThrottlingError) {}
+export class UnsupportedAvailabilityZoneException
+  extends /*@__PURE__*/ S.TaggedErrorClass<UnsupportedAvailabilityZoneException>()(
+    "UnsupportedAvailabilityZoneException",
+    {
+      message: S.optional(S.String),
+      clusterName: S.optional(S.String),
+      nodegroupName: S.optional(S.String),
+      validZones: S.optional(
+        S.suspend(() => StringList).annotate({ identifier: "StringList" }),
+      ),
+    },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
 export type AccessScopeType = "cluster" | "namespace" | (string & {});
 export const AccessScopeType = /*@__PURE__*/ S.String;
 
@@ -5703,7 +5718,27 @@ export const describeAddonVersions: API.OperationMethod<
     items: "addons",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  DescribeAddonVersionsRequest,
+  DescribeAddonVersionsResponse,
+  DescribeAddonVersionsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: DescribeAddonVersionsRequest,
+  ) => stream.Stream<
+    DescribeAddonVersionsResponse,
+    DescribeAddonVersionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: DescribeAddonVersionsRequest,
+  ) => stream.Stream<
+    AddonInfo,
+    DescribeAddonVersionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type DescribeCapabilityError =
   | AccessDeniedException
@@ -5810,7 +5845,27 @@ export const describeClusterVersions: API.OperationMethod<
     items: "clusterVersions",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  DescribeClusterVersionsRequest,
+  DescribeClusterVersionsResponse,
+  DescribeClusterVersionsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: DescribeClusterVersionsRequest,
+  ) => stream.Stream<
+    DescribeClusterVersionsResponse,
+    DescribeClusterVersionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: DescribeClusterVersionsRequest,
+  ) => stream.Stream<
+    ClusterVersionInformation,
+    DescribeClusterVersionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type DescribeEksAnywhereSubscriptionError =
   | ClientException
@@ -6156,7 +6211,27 @@ export const listAccessEntries: API.OperationMethod<
     items: "accessEntries",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListAccessEntriesRequest,
+  ListAccessEntriesResponse,
+  ListAccessEntriesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListAccessEntriesRequest,
+  ) => stream.Stream<
+    ListAccessEntriesResponse,
+    ListAccessEntriesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListAccessEntriesRequest,
+  ) => stream.Stream<
+    string,
+    ListAccessEntriesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListAccessPoliciesError = ServerException | CommonErrors;
 /**
@@ -6195,7 +6270,27 @@ export const listAccessPolicies: API.OperationMethod<
     items: "accessPolicies",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListAccessPoliciesRequest,
+  ListAccessPoliciesResponse,
+  ListAccessPoliciesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListAccessPoliciesRequest,
+  ) => stream.Stream<
+    ListAccessPoliciesResponse,
+    ListAccessPoliciesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListAccessPoliciesRequest,
+  ) => stream.Stream<
+    AccessPolicy,
+    ListAccessPoliciesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListAddonsError =
   | ClientException
@@ -6246,7 +6341,27 @@ export const listAddons: API.OperationMethod<
     items: "addons",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListAddonsRequest,
+  ListAddonsResponse,
+  ListAddonsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListAddonsRequest,
+  ) => stream.Stream<
+    ListAddonsResponse,
+    ListAddonsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListAddonsRequest,
+  ) => stream.Stream<
+    string,
+    ListAddonsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListAssociatedAccessPoliciesError =
   | InvalidRequestException
@@ -6289,7 +6404,27 @@ export const listAssociatedAccessPolicies: API.OperationMethod<
     items: "associatedAccessPolicies",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListAssociatedAccessPoliciesRequest,
+  ListAssociatedAccessPoliciesResponse,
+  ListAssociatedAccessPoliciesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListAssociatedAccessPoliciesRequest,
+  ) => stream.Stream<
+    ListAssociatedAccessPoliciesResponse,
+    ListAssociatedAccessPoliciesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListAssociatedAccessPoliciesRequest,
+  ) => stream.Stream<
+    AssociatedAccessPolicy,
+    ListAssociatedAccessPoliciesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListCapabilitiesError =
   | InvalidParameterException
@@ -6331,7 +6466,27 @@ export const listCapabilities: API.OperationMethod<
     items: "capabilities",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListCapabilitiesRequest,
+  ListCapabilitiesResponse,
+  ListCapabilitiesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListCapabilitiesRequest,
+  ) => stream.Stream<
+    ListCapabilitiesResponse,
+    ListCapabilitiesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListCapabilitiesRequest,
+  ) => stream.Stream<
+    CapabilitySummary,
+    ListCapabilitiesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListClustersError =
   | ClientException
@@ -6380,7 +6535,27 @@ export const listClusters: API.OperationMethod<
     items: "clusters",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListClustersRequest,
+  ListClustersResponse,
+  ListClustersError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListClustersRequest,
+  ) => stream.Stream<
+    ListClustersResponse,
+    ListClustersError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListClustersRequest,
+  ) => stream.Stream<
+    string,
+    ListClustersError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListEksAnywhereSubscriptionsError =
   | ClientException
@@ -6429,7 +6604,27 @@ export const listEksAnywhereSubscriptions: API.OperationMethod<
     items: "subscriptions",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListEksAnywhereSubscriptionsRequest,
+  ListEksAnywhereSubscriptionsResponse,
+  ListEksAnywhereSubscriptionsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListEksAnywhereSubscriptionsRequest,
+  ) => stream.Stream<
+    ListEksAnywhereSubscriptionsResponse,
+    ListEksAnywhereSubscriptionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListEksAnywhereSubscriptionsRequest,
+  ) => stream.Stream<
+    EksAnywhereSubscription,
+    ListEksAnywhereSubscriptionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListFargateProfilesError =
   | ClientException
@@ -6479,7 +6674,27 @@ export const listFargateProfiles: API.OperationMethod<
     items: "fargateProfileNames",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListFargateProfilesRequest,
+  ListFargateProfilesResponse,
+  ListFargateProfilesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListFargateProfilesRequest,
+  ) => stream.Stream<
+    ListFargateProfilesResponse,
+    ListFargateProfilesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListFargateProfilesRequest,
+  ) => stream.Stream<
+    string,
+    ListFargateProfilesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListIdentityProviderConfigsError =
   | ClientException
@@ -6530,7 +6745,27 @@ export const listIdentityProviderConfigs: API.OperationMethod<
     items: "identityProviderConfigs",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListIdentityProviderConfigsRequest,
+  ListIdentityProviderConfigsResponse,
+  ListIdentityProviderConfigsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListIdentityProviderConfigsRequest,
+  ) => stream.Stream<
+    ListIdentityProviderConfigsResponse,
+    ListIdentityProviderConfigsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListIdentityProviderConfigsRequest,
+  ) => stream.Stream<
+    IdentityProviderConfig,
+    ListIdentityProviderConfigsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListInsightsError =
   | InvalidParameterException
@@ -6590,7 +6825,27 @@ export const listInsights: API.OperationMethod<
     items: "insights",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListInsightsRequest,
+  ListInsightsResponse,
+  ListInsightsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListInsightsRequest,
+  ) => stream.Stream<
+    ListInsightsResponse,
+    ListInsightsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListInsightsRequest,
+  ) => stream.Stream<
+    InsightSummary,
+    ListInsightsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListNodegroupsError =
   | ClientException
@@ -6642,7 +6897,27 @@ export const listNodegroups: API.OperationMethod<
     items: "nodegroups",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListNodegroupsRequest,
+  ListNodegroupsResponse,
+  ListNodegroupsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListNodegroupsRequest,
+  ) => stream.Stream<
+    ListNodegroupsResponse,
+    ListNodegroupsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListNodegroupsRequest,
+  ) => stream.Stream<
+    string,
+    ListNodegroupsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListPodIdentityAssociationsError =
   | InvalidParameterException
@@ -6692,7 +6967,27 @@ export const listPodIdentityAssociations: API.OperationMethod<
     items: "associations",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListPodIdentityAssociationsRequest,
+  ListPodIdentityAssociationsResponse,
+  ListPodIdentityAssociationsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListPodIdentityAssociationsRequest,
+  ) => stream.Stream<
+    ListPodIdentityAssociationsResponse,
+    ListPodIdentityAssociationsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListPodIdentityAssociationsRequest,
+  ) => stream.Stream<
+    PodIdentityAssociationSummary,
+    ListPodIdentityAssociationsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListTagsForResourceError =
   | BadRequestException
@@ -6763,7 +7058,27 @@ export const listUpdates: API.OperationMethod<
     items: "updateIds",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListUpdatesRequest,
+  ListUpdatesResponse,
+  ListUpdatesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListUpdatesRequest,
+  ) => stream.Stream<
+    ListUpdatesResponse,
+    ListUpdatesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListUpdatesRequest,
+  ) => stream.Stream<
+    string,
+    ListUpdatesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type RegisterClusterError =
   | AccessDeniedException

@@ -248,294 +248,340 @@ const rules = T.EndpointResolver((p, _) => {
   return err("Invalid Configuration: Missing Region");
 });
 
-export class AccountNotManagementOrDelegatedAdministratorException extends S.TaggedErrorClass<AccountNotManagementOrDelegatedAdministratorException>()(
-  "AccountNotManagementOrDelegatedAdministratorException",
-  { Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class CallerIsNotManagementAccountException extends S.TaggedErrorClass<CallerIsNotManagementAccountException>()(
-  "CallerIsNotManagementAccountException",
-  { Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class ConcurrentModificationException extends S.TaggedErrorClass<ConcurrentModificationException>()(
-  "ConcurrentModificationException",
-  { message: S.optional(S.String) },
-  T.all(
-    T.AwsQueryError({ code: "ConcurrentModification", httpResponseCode: 409 }),
-    T.HttpError(409),
-  ),
-).pipe(C.withConflictError, C.withRetryableError) {}
-export class CredentialReportExpiredException extends S.TaggedErrorClass<CredentialReportExpiredException>()(
-  "CredentialReportExpiredException",
-  { message: S.optional(S.String) },
-  T.all(
-    T.AwsQueryError({ code: "ReportExpired", httpResponseCode: 410 }),
-    T.HttpError(410),
-  ),
-).pipe(C.withBadRequestError) {}
-export class CredentialReportNotPresentException extends S.TaggedErrorClass<CredentialReportNotPresentException>()(
-  "CredentialReportNotPresentException",
-  { message: S.optional(S.String) },
-  T.all(
-    T.AwsQueryError({ code: "ReportNotPresent", httpResponseCode: 410 }),
-    T.HttpError(410),
-  ),
-).pipe(C.withBadRequestError) {}
-export class CredentialReportNotReadyException extends S.TaggedErrorClass<CredentialReportNotReadyException>()(
-  "CredentialReportNotReadyException",
-  { message: S.optional(S.String) },
-  T.all(
-    T.AwsQueryError({ code: "ReportInProgress", httpResponseCode: 404 }),
-    T.HttpError(404),
-  ),
-).pipe(C.withBadRequestError) {}
-export class DeleteConflictException extends S.TaggedErrorClass<DeleteConflictException>()(
-  "DeleteConflictException",
-  { message: S.optional(S.String) },
-  T.all(
-    T.AwsQueryError({ code: "DeleteConflict", httpResponseCode: 409 }),
-    T.HttpError(409),
-  ),
-).pipe(C.withConflictError) {}
-export class DuplicateCertificateException extends S.TaggedErrorClass<DuplicateCertificateException>()(
-  "DuplicateCertificateException",
-  { message: S.optional(S.String) },
-  T.all(
-    T.AwsQueryError({ code: "DuplicateCertificate", httpResponseCode: 409 }),
-    T.HttpError(409),
-  ),
-).pipe(C.withConflictError) {}
-export class DuplicateSSHPublicKeyException extends S.TaggedErrorClass<DuplicateSSHPublicKeyException>()(
-  "DuplicateSSHPublicKeyException",
-  { message: S.optional(S.String) },
-  T.all(
-    T.AwsQueryError({ code: "DuplicateSSHPublicKey", httpResponseCode: 400 }),
+export class AccountNotManagementOrDelegatedAdministratorException
+  extends /*@__PURE__*/ S.TaggedErrorClass<AccountNotManagementOrDelegatedAdministratorException>()(
+    "AccountNotManagementOrDelegatedAdministratorException",
+    { Message: S.optional(S.String) },
     T.HttpError(400),
-  ),
-).pipe(C.withBadRequestError) {}
-export class EntityAlreadyExistsException extends S.TaggedErrorClass<EntityAlreadyExistsException>()(
-  "EntityAlreadyExistsException",
-  { message: S.optional(S.String) },
-  T.all(
-    T.AwsQueryError({ code: "EntityAlreadyExists", httpResponseCode: 409 }),
-    T.HttpError(409),
-  ),
-).pipe(C.withConflictError, C.withAlreadyExistsError) {}
-export class EntityTemporarilyUnmodifiableException extends S.TaggedErrorClass<EntityTemporarilyUnmodifiableException>()(
-  "EntityTemporarilyUnmodifiableException",
-  { message: S.optional(S.String) },
-  T.all(
-    T.AwsQueryError({
-      code: "EntityTemporarilyUnmodifiable",
-      httpResponseCode: 409,
-    }),
-    T.HttpError(409),
-  ),
-).pipe(C.withConflictError, C.withRetryableError) {}
-export class FeatureDisabledException extends S.TaggedErrorClass<FeatureDisabledException>()(
-  "FeatureDisabledException",
-  { message: S.optional(S.String) },
-  T.all(
-    T.AwsQueryError({ code: "FeatureDisabled", httpResponseCode: 404 }),
-    T.HttpError(404),
-  ),
-).pipe(C.withBadRequestError) {}
-export class FeatureEnabledException extends S.TaggedErrorClass<FeatureEnabledException>()(
-  "FeatureEnabledException",
-  { message: S.optional(S.String) },
-  T.all(
-    T.AwsQueryError({ code: "FeatureEnabled", httpResponseCode: 409 }),
-    T.HttpError(409),
-  ),
-).pipe(C.withConflictError) {}
-export class InvalidAuthenticationCodeException extends S.TaggedErrorClass<InvalidAuthenticationCodeException>()(
-  "InvalidAuthenticationCodeException",
-  { message: S.optional(S.String) },
-  T.all(
-    T.AwsQueryError({
-      code: "InvalidAuthenticationCode",
-      httpResponseCode: 403,
-    }),
-    T.HttpError(403),
-  ),
-).pipe(C.withAuthError) {}
-export class InvalidCertificateException extends S.TaggedErrorClass<InvalidCertificateException>()(
-  "InvalidCertificateException",
-  { message: S.optional(S.String) },
-  T.all(
-    T.AwsQueryError({ code: "InvalidCertificate", httpResponseCode: 400 }),
+  ).pipe(C.withBadRequestError) {}
+export class CallerIsNotManagementAccountException
+  extends /*@__PURE__*/ S.TaggedErrorClass<CallerIsNotManagementAccountException>()(
+    "CallerIsNotManagementAccountException",
+    { Message: S.optional(S.String) },
     T.HttpError(400),
-  ),
-).pipe(C.withBadRequestError) {}
-export class InvalidInput extends S.TaggedErrorClass<InvalidInput>()(
-  "InvalidInput",
-  {},
-) {}
-export class InvalidInputException extends S.TaggedErrorClass<InvalidInputException>()(
-  "InvalidInputException",
-  { message: S.optional(S.String) },
-  T.all(
-    T.AwsQueryError({ code: "InvalidInput", httpResponseCode: 400 }),
+  ).pipe(C.withBadRequestError) {}
+export class ConcurrentModificationException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ConcurrentModificationException>()(
+    "ConcurrentModificationException",
+    { message: S.optional(S.String) },
+    T.all(
+      T.AwsQueryError({
+        code: "ConcurrentModification",
+        httpResponseCode: 409,
+      }),
+      T.HttpError(409),
+    ),
+  ).pipe(C.withConflictError, C.withRetryableError) {}
+export class CredentialReportExpiredException
+  extends /*@__PURE__*/ S.TaggedErrorClass<CredentialReportExpiredException>()(
+    "CredentialReportExpiredException",
+    { message: S.optional(S.String) },
+    T.all(
+      T.AwsQueryError({ code: "ReportExpired", httpResponseCode: 410 }),
+      T.HttpError(410),
+    ),
+  ).pipe(C.withBadRequestError) {}
+export class CredentialReportNotPresentException
+  extends /*@__PURE__*/ S.TaggedErrorClass<CredentialReportNotPresentException>()(
+    "CredentialReportNotPresentException",
+    { message: S.optional(S.String) },
+    T.all(
+      T.AwsQueryError({ code: "ReportNotPresent", httpResponseCode: 410 }),
+      T.HttpError(410),
+    ),
+  ).pipe(C.withBadRequestError) {}
+export class CredentialReportNotReadyException
+  extends /*@__PURE__*/ S.TaggedErrorClass<CredentialReportNotReadyException>()(
+    "CredentialReportNotReadyException",
+    { message: S.optional(S.String) },
+    T.all(
+      T.AwsQueryError({ code: "ReportInProgress", httpResponseCode: 404 }),
+      T.HttpError(404),
+    ),
+  ).pipe(C.withBadRequestError) {}
+export class DeleteConflictException
+  extends /*@__PURE__*/ S.TaggedErrorClass<DeleteConflictException>()(
+    "DeleteConflictException",
+    { message: S.optional(S.String) },
+    T.all(
+      T.AwsQueryError({ code: "DeleteConflict", httpResponseCode: 409 }),
+      T.HttpError(409),
+    ),
+  ).pipe(C.withConflictError) {}
+export class DuplicateCertificateException
+  extends /*@__PURE__*/ S.TaggedErrorClass<DuplicateCertificateException>()(
+    "DuplicateCertificateException",
+    { message: S.optional(S.String) },
+    T.all(
+      T.AwsQueryError({ code: "DuplicateCertificate", httpResponseCode: 409 }),
+      T.HttpError(409),
+    ),
+  ).pipe(C.withConflictError) {}
+export class DuplicateSSHPublicKeyException
+  extends /*@__PURE__*/ S.TaggedErrorClass<DuplicateSSHPublicKeyException>()(
+    "DuplicateSSHPublicKeyException",
+    { message: S.optional(S.String) },
+    T.all(
+      T.AwsQueryError({ code: "DuplicateSSHPublicKey", httpResponseCode: 400 }),
+      T.HttpError(400),
+    ),
+  ).pipe(C.withBadRequestError) {}
+export class EntityAlreadyExistsException
+  extends /*@__PURE__*/ S.TaggedErrorClass<EntityAlreadyExistsException>()(
+    "EntityAlreadyExistsException",
+    { message: S.optional(S.String) },
+    T.all(
+      T.AwsQueryError({ code: "EntityAlreadyExists", httpResponseCode: 409 }),
+      T.HttpError(409),
+    ),
+  ).pipe(C.withConflictError, C.withAlreadyExistsError) {}
+export class EntityTemporarilyUnmodifiableException
+  extends /*@__PURE__*/ S.TaggedErrorClass<EntityTemporarilyUnmodifiableException>()(
+    "EntityTemporarilyUnmodifiableException",
+    { message: S.optional(S.String) },
+    T.all(
+      T.AwsQueryError({
+        code: "EntityTemporarilyUnmodifiable",
+        httpResponseCode: 409,
+      }),
+      T.HttpError(409),
+    ),
+  ).pipe(C.withConflictError, C.withRetryableError) {}
+export class FeatureDisabledException
+  extends /*@__PURE__*/ S.TaggedErrorClass<FeatureDisabledException>()(
+    "FeatureDisabledException",
+    { message: S.optional(S.String) },
+    T.all(
+      T.AwsQueryError({ code: "FeatureDisabled", httpResponseCode: 404 }),
+      T.HttpError(404),
+    ),
+  ).pipe(C.withBadRequestError) {}
+export class FeatureEnabledException
+  extends /*@__PURE__*/ S.TaggedErrorClass<FeatureEnabledException>()(
+    "FeatureEnabledException",
+    { message: S.optional(S.String) },
+    T.all(
+      T.AwsQueryError({ code: "FeatureEnabled", httpResponseCode: 409 }),
+      T.HttpError(409),
+    ),
+  ).pipe(C.withConflictError) {}
+export class InvalidAuthenticationCodeException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidAuthenticationCodeException>()(
+    "InvalidAuthenticationCodeException",
+    { message: S.optional(S.String) },
+    T.all(
+      T.AwsQueryError({
+        code: "InvalidAuthenticationCode",
+        httpResponseCode: 403,
+      }),
+      T.HttpError(403),
+    ),
+  ).pipe(C.withAuthError) {}
+export class InvalidCertificateException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidCertificateException>()(
+    "InvalidCertificateException",
+    { message: S.optional(S.String) },
+    T.all(
+      T.AwsQueryError({ code: "InvalidCertificate", httpResponseCode: 400 }),
+      T.HttpError(400),
+    ),
+  ).pipe(C.withBadRequestError) {}
+export class InvalidInput
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidInput>()(
+    "InvalidInput",
+    {},
+  ) {}
+export class InvalidInputException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidInputException>()(
+    "InvalidInputException",
+    { message: S.optional(S.String) },
+    T.all(
+      T.AwsQueryError({ code: "InvalidInput", httpResponseCode: 400 }),
+      T.HttpError(400),
+    ),
+  ).pipe(C.withBadRequestError) {}
+export class InvalidPublicKeyException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidPublicKeyException>()(
+    "InvalidPublicKeyException",
+    { message: S.optional(S.String) },
+    T.all(
+      T.AwsQueryError({ code: "InvalidPublicKey", httpResponseCode: 400 }),
+      T.HttpError(400),
+    ),
+  ).pipe(C.withBadRequestError) {}
+export class InvalidUserTypeException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidUserTypeException>()(
+    "InvalidUserTypeException",
+    { message: S.optional(S.String) },
+    T.all(
+      T.AwsQueryError({ code: "InvalidUserType", httpResponseCode: 400 }),
+      T.HttpError(400),
+    ),
+  ).pipe(C.withBadRequestError) {}
+export class KeyPairMismatchException
+  extends /*@__PURE__*/ S.TaggedErrorClass<KeyPairMismatchException>()(
+    "KeyPairMismatchException",
+    { message: S.optional(S.String) },
+    T.all(
+      T.AwsQueryError({ code: "KeyPairMismatch", httpResponseCode: 400 }),
+      T.HttpError(400),
+    ),
+  ).pipe(C.withBadRequestError) {}
+export class LimitExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<LimitExceededException>()(
+    "LimitExceededException",
+    { message: S.optional(S.String) },
+    T.all(
+      T.AwsQueryError({ code: "LimitExceeded", httpResponseCode: 409 }),
+      T.HttpError(409),
+    ),
+  ).pipe(C.withConflictError, C.withQuotaError) {}
+export class MalformedCertificateException
+  extends /*@__PURE__*/ S.TaggedErrorClass<MalformedCertificateException>()(
+    "MalformedCertificateException",
+    { message: S.optional(S.String) },
+    T.all(
+      T.AwsQueryError({ code: "MalformedCertificate", httpResponseCode: 400 }),
+      T.HttpError(400),
+    ),
+  ).pipe(C.withBadRequestError) {}
+export class MalformedPolicyDocumentException
+  extends /*@__PURE__*/ S.TaggedErrorClass<MalformedPolicyDocumentException>()(
+    "MalformedPolicyDocumentException",
+    { message: S.optional(S.String) },
+    T.all(
+      T.AwsQueryError({
+        code: "MalformedPolicyDocument",
+        httpResponseCode: 400,
+      }),
+      T.HttpError(400),
+    ),
+  ).pipe(C.withBadRequestError) {}
+export class NoSuchEntityException
+  extends /*@__PURE__*/ S.TaggedErrorClass<NoSuchEntityException>()(
+    "NoSuchEntityException",
+    { message: S.optional(S.String) },
+    T.all(
+      T.AwsQueryError({ code: "NoSuchEntity", httpResponseCode: 404 }),
+      T.HttpError(404),
+    ),
+  ).pipe(C.withBadRequestError, C.withNotFoundError) {}
+export class OpenIdIdpCommunicationErrorException
+  extends /*@__PURE__*/ S.TaggedErrorClass<OpenIdIdpCommunicationErrorException>()(
+    "OpenIdIdpCommunicationErrorException",
+    { message: S.optional(S.String) },
+    T.all(
+      T.AwsQueryError({
+        code: "OpenIdIdpCommunicationError",
+        httpResponseCode: 400,
+      }),
+      T.HttpError(400),
+    ),
+  ).pipe(C.withBadRequestError) {}
+export class OrganizationNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<OrganizationNotFoundException>()(
+    "OrganizationNotFoundException",
+    { Message: S.optional(S.String) },
     T.HttpError(400),
-  ),
-).pipe(C.withBadRequestError) {}
-export class InvalidPublicKeyException extends S.TaggedErrorClass<InvalidPublicKeyException>()(
-  "InvalidPublicKeyException",
-  { message: S.optional(S.String) },
-  T.all(
-    T.AwsQueryError({ code: "InvalidPublicKey", httpResponseCode: 400 }),
+  ).pipe(C.withBadRequestError) {}
+export class OrganizationNotInAllFeaturesModeException
+  extends /*@__PURE__*/ S.TaggedErrorClass<OrganizationNotInAllFeaturesModeException>()(
+    "OrganizationNotInAllFeaturesModeException",
+    { Message: S.optional(S.String) },
     T.HttpError(400),
-  ),
-).pipe(C.withBadRequestError) {}
-export class InvalidUserTypeException extends S.TaggedErrorClass<InvalidUserTypeException>()(
-  "InvalidUserTypeException",
-  { message: S.optional(S.String) },
-  T.all(
-    T.AwsQueryError({ code: "InvalidUserType", httpResponseCode: 400 }),
+  ).pipe(C.withBadRequestError) {}
+export class PasswordPolicyViolationException
+  extends /*@__PURE__*/ S.TaggedErrorClass<PasswordPolicyViolationException>()(
+    "PasswordPolicyViolationException",
+    { message: S.optional(S.String) },
+    T.all(
+      T.AwsQueryError({
+        code: "PasswordPolicyViolation",
+        httpResponseCode: 400,
+      }),
+      T.HttpError(400),
+    ),
+  ).pipe(C.withBadRequestError) {}
+export class PolicyEvaluationException
+  extends /*@__PURE__*/ S.TaggedErrorClass<PolicyEvaluationException>()(
+    "PolicyEvaluationException",
+    { message: S.optional(S.String) },
+    T.all(
+      T.AwsQueryError({ code: "PolicyEvaluation", httpResponseCode: 500 }),
+      T.HttpError(500),
+    ),
+  ).pipe(C.withServerError) {}
+export class PolicyNotAttachableException
+  extends /*@__PURE__*/ S.TaggedErrorClass<PolicyNotAttachableException>()(
+    "PolicyNotAttachableException",
+    { message: S.optional(S.String) },
+    T.all(
+      T.AwsQueryError({ code: "PolicyNotAttachable", httpResponseCode: 400 }),
+      T.HttpError(400),
+    ),
+  ).pipe(C.withBadRequestError) {}
+export class ReportGenerationLimitExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ReportGenerationLimitExceededException>()(
+    "ReportGenerationLimitExceededException",
+    { message: S.optional(S.String) },
+    T.all(
+      T.AwsQueryError({
+        code: "ReportGenerationLimitExceeded",
+        httpResponseCode: 409,
+      }),
+      T.HttpError(409),
+    ),
+  ).pipe(C.withConflictError) {}
+export class RequestLimitExceeded
+  extends /*@__PURE__*/ S.TaggedErrorClass<RequestLimitExceeded>()(
+    "RequestLimitExceeded",
+    {},
+  ).pipe(C.withThrottlingError, C.withRetryableError) {}
+export class ServiceAccessNotEnabledException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ServiceAccessNotEnabledException>()(
+    "ServiceAccessNotEnabledException",
+    { Message: S.optional(S.String) },
     T.HttpError(400),
-  ),
-).pipe(C.withBadRequestError) {}
-export class KeyPairMismatchException extends S.TaggedErrorClass<KeyPairMismatchException>()(
-  "KeyPairMismatchException",
-  { message: S.optional(S.String) },
-  T.all(
-    T.AwsQueryError({ code: "KeyPairMismatch", httpResponseCode: 400 }),
-    T.HttpError(400),
-  ),
-).pipe(C.withBadRequestError) {}
-export class LimitExceededException extends S.TaggedErrorClass<LimitExceededException>()(
-  "LimitExceededException",
-  { message: S.optional(S.String) },
-  T.all(
-    T.AwsQueryError({ code: "LimitExceeded", httpResponseCode: 409 }),
-    T.HttpError(409),
-  ),
-).pipe(C.withConflictError, C.withQuotaError) {}
-export class MalformedCertificateException extends S.TaggedErrorClass<MalformedCertificateException>()(
-  "MalformedCertificateException",
-  { message: S.optional(S.String) },
-  T.all(
-    T.AwsQueryError({ code: "MalformedCertificate", httpResponseCode: 400 }),
-    T.HttpError(400),
-  ),
-).pipe(C.withBadRequestError) {}
-export class MalformedPolicyDocumentException extends S.TaggedErrorClass<MalformedPolicyDocumentException>()(
-  "MalformedPolicyDocumentException",
-  { message: S.optional(S.String) },
-  T.all(
-    T.AwsQueryError({ code: "MalformedPolicyDocument", httpResponseCode: 400 }),
-    T.HttpError(400),
-  ),
-).pipe(C.withBadRequestError) {}
-export class NoSuchEntityException extends S.TaggedErrorClass<NoSuchEntityException>()(
-  "NoSuchEntityException",
-  { message: S.optional(S.String) },
-  T.all(
-    T.AwsQueryError({ code: "NoSuchEntity", httpResponseCode: 404 }),
-    T.HttpError(404),
-  ),
-).pipe(C.withBadRequestError, C.withNotFoundError) {}
-export class OpenIdIdpCommunicationErrorException extends S.TaggedErrorClass<OpenIdIdpCommunicationErrorException>()(
-  "OpenIdIdpCommunicationErrorException",
-  { message: S.optional(S.String) },
-  T.all(
-    T.AwsQueryError({
-      code: "OpenIdIdpCommunicationError",
-      httpResponseCode: 400,
-    }),
-    T.HttpError(400),
-  ),
-).pipe(C.withBadRequestError) {}
-export class OrganizationNotFoundException extends S.TaggedErrorClass<OrganizationNotFoundException>()(
-  "OrganizationNotFoundException",
-  { Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class OrganizationNotInAllFeaturesModeException extends S.TaggedErrorClass<OrganizationNotInAllFeaturesModeException>()(
-  "OrganizationNotInAllFeaturesModeException",
-  { Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class PasswordPolicyViolationException extends S.TaggedErrorClass<PasswordPolicyViolationException>()(
-  "PasswordPolicyViolationException",
-  { message: S.optional(S.String) },
-  T.all(
-    T.AwsQueryError({ code: "PasswordPolicyViolation", httpResponseCode: 400 }),
-    T.HttpError(400),
-  ),
-).pipe(C.withBadRequestError) {}
-export class PolicyEvaluationException extends S.TaggedErrorClass<PolicyEvaluationException>()(
-  "PolicyEvaluationException",
-  { message: S.optional(S.String) },
-  T.all(
-    T.AwsQueryError({ code: "PolicyEvaluation", httpResponseCode: 500 }),
-    T.HttpError(500),
-  ),
-).pipe(C.withServerError) {}
-export class PolicyNotAttachableException extends S.TaggedErrorClass<PolicyNotAttachableException>()(
-  "PolicyNotAttachableException",
-  { message: S.optional(S.String) },
-  T.all(
-    T.AwsQueryError({ code: "PolicyNotAttachable", httpResponseCode: 400 }),
-    T.HttpError(400),
-  ),
-).pipe(C.withBadRequestError) {}
-export class ReportGenerationLimitExceededException extends S.TaggedErrorClass<ReportGenerationLimitExceededException>()(
-  "ReportGenerationLimitExceededException",
-  { message: S.optional(S.String) },
-  T.all(
-    T.AwsQueryError({
-      code: "ReportGenerationLimitExceeded",
-      httpResponseCode: 409,
-    }),
-    T.HttpError(409),
-  ),
-).pipe(C.withConflictError) {}
-export class RequestLimitExceeded extends S.TaggedErrorClass<RequestLimitExceeded>()(
-  "RequestLimitExceeded",
-  {},
-).pipe(C.withThrottlingError, C.withRetryableError) {}
-export class ServiceAccessNotEnabledException extends S.TaggedErrorClass<ServiceAccessNotEnabledException>()(
-  "ServiceAccessNotEnabledException",
-  { Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class ServiceFailureException extends S.TaggedErrorClass<ServiceFailureException>()(
-  "ServiceFailureException",
-  { message: S.optional(S.String) },
-  T.all(
-    T.AwsQueryError({ code: "ServiceFailure", httpResponseCode: 500 }),
-    T.HttpError(500),
-  ),
-).pipe(C.withServerError, C.withRetryableError) {}
-export class ServiceNotSupportedException extends S.TaggedErrorClass<ServiceNotSupportedException>()(
-  "ServiceNotSupportedException",
-  { message: S.optional(S.String) },
-  T.all(
-    T.AwsQueryError({ code: "NotSupportedService", httpResponseCode: 404 }),
-    T.HttpError(404),
-  ),
-).pipe(C.withBadRequestError) {}
-export class UnmodifiableEntityException extends S.TaggedErrorClass<UnmodifiableEntityException>()(
-  "UnmodifiableEntityException",
-  { message: S.optional(S.String) },
-  T.all(
-    T.AwsQueryError({ code: "UnmodifiableEntity", httpResponseCode: 400 }),
-    T.HttpError(400),
-  ),
-).pipe(C.withBadRequestError) {}
-export class UnrecognizedPublicKeyEncodingException extends S.TaggedErrorClass<UnrecognizedPublicKeyEncodingException>()(
-  "UnrecognizedPublicKeyEncodingException",
-  { message: S.optional(S.String) },
-  T.all(
-    T.AwsQueryError({
-      code: "UnrecognizedPublicKeyEncoding",
-      httpResponseCode: 400,
-    }),
-    T.HttpError(400),
-  ),
-).pipe(C.withBadRequestError) {}
+  ).pipe(C.withBadRequestError) {}
+export class ServiceFailureException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ServiceFailureException>()(
+    "ServiceFailureException",
+    { message: S.optional(S.String) },
+    T.all(
+      T.AwsQueryError({ code: "ServiceFailure", httpResponseCode: 500 }),
+      T.HttpError(500),
+    ),
+  ).pipe(C.withServerError, C.withRetryableError) {}
+export class ServiceNotSupportedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ServiceNotSupportedException>()(
+    "ServiceNotSupportedException",
+    { message: S.optional(S.String) },
+    T.all(
+      T.AwsQueryError({ code: "NotSupportedService", httpResponseCode: 404 }),
+      T.HttpError(404),
+    ),
+  ).pipe(C.withBadRequestError) {}
+export class UnmodifiableEntityException
+  extends /*@__PURE__*/ S.TaggedErrorClass<UnmodifiableEntityException>()(
+    "UnmodifiableEntityException",
+    { message: S.optional(S.String) },
+    T.all(
+      T.AwsQueryError({ code: "UnmodifiableEntity", httpResponseCode: 400 }),
+      T.HttpError(400),
+    ),
+  ).pipe(C.withBadRequestError) {}
+export class UnrecognizedPublicKeyEncodingException
+  extends /*@__PURE__*/ S.TaggedErrorClass<UnrecognizedPublicKeyEncodingException>()(
+    "UnrecognizedPublicKeyEncodingException",
+    { message: S.optional(S.String) },
+    T.all(
+      T.AwsQueryError({
+        code: "UnrecognizedPublicKeyEncoding",
+        httpResponseCode: 400,
+      }),
+      T.HttpError(400),
+    ),
+  ).pipe(C.withBadRequestError) {}
 export type DelegationRequestIdType = string;
 export interface AcceptDelegationRequestRequest {
   DelegationRequestId: string;
@@ -9883,7 +9929,27 @@ export const getAccountAuthorizationDetails: API.OperationMethod<
     outputToken: "Marker",
     pageSize: "MaxItems",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  GetAccountAuthorizationDetailsRequest,
+  GetAccountAuthorizationDetailsResponse,
+  GetAccountAuthorizationDetailsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: GetAccountAuthorizationDetailsRequest,
+  ) => stream.Stream<
+    GetAccountAuthorizationDetailsResponse,
+    GetAccountAuthorizationDetailsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: GetAccountAuthorizationDetailsRequest,
+  ) => stream.Stream<
+    unknown,
+    GetAccountAuthorizationDetailsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type GetAccountPasswordPolicyError =
   | NoSuchEntityException
@@ -10098,7 +10164,27 @@ export const getGroup: API.OperationMethod<
     items: "Users",
     pageSize: "MaxItems",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  GetGroupRequest,
+  GetGroupResponse,
+  GetGroupError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: GetGroupRequest,
+  ) => stream.Stream<
+    GetGroupResponse,
+    GetGroupError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: GetGroupRequest,
+  ) => stream.Stream<
+    User,
+    GetGroupError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type GetGroupPolicyError =
   | NoSuchEntityException
@@ -10836,7 +10922,27 @@ export const listAccessKeys: API.OperationMethod<
     items: "AccessKeyMetadata",
     pageSize: "MaxItems",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListAccessKeysRequest,
+  ListAccessKeysResponse,
+  ListAccessKeysError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListAccessKeysRequest,
+  ) => stream.Stream<
+    ListAccessKeysResponse,
+    ListAccessKeysError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListAccessKeysRequest,
+  ) => stream.Stream<
+    AccessKeyMetadata,
+    ListAccessKeysError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListAccountAliasesError = ServiceFailureException | CommonErrors;
 /**
@@ -10878,7 +10984,27 @@ export const listAccountAliases: API.OperationMethod<
     items: "AccountAliases",
     pageSize: "MaxItems",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListAccountAliasesRequest,
+  ListAccountAliasesResponse,
+  ListAccountAliasesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListAccountAliasesRequest,
+  ) => stream.Stream<
+    ListAccountAliasesResponse,
+    ListAccountAliasesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListAccountAliasesRequest,
+  ) => stream.Stream<
+    AccountAliasType,
+    ListAccountAliasesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListAttachedGroupPoliciesError =
   | InvalidInputException
@@ -10936,7 +11062,27 @@ export const listAttachedGroupPolicies: API.OperationMethod<
     items: "AttachedPolicies",
     pageSize: "MaxItems",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListAttachedGroupPoliciesRequest,
+  ListAttachedGroupPoliciesResponse,
+  ListAttachedGroupPoliciesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListAttachedGroupPoliciesRequest,
+  ) => stream.Stream<
+    ListAttachedGroupPoliciesResponse,
+    ListAttachedGroupPoliciesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListAttachedGroupPoliciesRequest,
+  ) => stream.Stream<
+    AttachedPolicy,
+    ListAttachedGroupPoliciesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListAttachedRolePoliciesError =
   | InvalidInputException
@@ -10994,7 +11140,27 @@ export const listAttachedRolePolicies: API.OperationMethod<
     items: "AttachedPolicies",
     pageSize: "MaxItems",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListAttachedRolePoliciesRequest,
+  ListAttachedRolePoliciesResponse,
+  ListAttachedRolePoliciesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListAttachedRolePoliciesRequest,
+  ) => stream.Stream<
+    ListAttachedRolePoliciesResponse,
+    ListAttachedRolePoliciesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListAttachedRolePoliciesRequest,
+  ) => stream.Stream<
+    AttachedPolicy,
+    ListAttachedRolePoliciesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListAttachedUserPoliciesError =
   | InvalidInputException
@@ -11052,7 +11218,27 @@ export const listAttachedUserPolicies: API.OperationMethod<
     items: "AttachedPolicies",
     pageSize: "MaxItems",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListAttachedUserPoliciesRequest,
+  ListAttachedUserPoliciesResponse,
+  ListAttachedUserPoliciesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListAttachedUserPoliciesRequest,
+  ) => stream.Stream<
+    ListAttachedUserPoliciesResponse,
+    ListAttachedUserPoliciesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListAttachedUserPoliciesRequest,
+  ) => stream.Stream<
+    AttachedPolicy,
+    ListAttachedUserPoliciesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListDelegationRequestsError =
   | InvalidInputException
@@ -11140,7 +11326,27 @@ export const listEntitiesForPolicy: API.OperationMethod<
     outputToken: "Marker",
     pageSize: "MaxItems",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListEntitiesForPolicyRequest,
+  ListEntitiesForPolicyResponse,
+  ListEntitiesForPolicyError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListEntitiesForPolicyRequest,
+  ) => stream.Stream<
+    ListEntitiesForPolicyResponse,
+    ListEntitiesForPolicyError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListEntitiesForPolicyRequest,
+  ) => stream.Stream<
+    unknown,
+    ListEntitiesForPolicyError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListGroupPoliciesError =
   | NoSuchEntityException
@@ -11192,7 +11398,27 @@ export const listGroupPolicies: API.OperationMethod<
     items: "PolicyNames",
     pageSize: "MaxItems",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListGroupPoliciesRequest,
+  ListGroupPoliciesResponse,
+  ListGroupPoliciesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListGroupPoliciesRequest,
+  ) => stream.Stream<
+    ListGroupPoliciesResponse,
+    ListGroupPoliciesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListGroupPoliciesRequest,
+  ) => stream.Stream<
+    PolicyNameType,
+    ListGroupPoliciesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListGroupsError = ServiceFailureException | CommonErrors;
 /**
@@ -11234,7 +11460,27 @@ export const listGroups: API.OperationMethod<
     items: "Groups",
     pageSize: "MaxItems",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListGroupsRequest,
+  ListGroupsResponse,
+  ListGroupsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListGroupsRequest,
+  ) => stream.Stream<
+    ListGroupsResponse,
+    ListGroupsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListGroupsRequest,
+  ) => stream.Stream<
+    Group,
+    ListGroupsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListGroupsForUserError =
   | NoSuchEntityException
@@ -11279,7 +11525,27 @@ export const listGroupsForUser: API.OperationMethod<
     items: "Groups",
     pageSize: "MaxItems",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListGroupsForUserRequest,
+  ListGroupsForUserResponse,
+  ListGroupsForUserError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListGroupsForUserRequest,
+  ) => stream.Stream<
+    ListGroupsForUserResponse,
+    ListGroupsForUserError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListGroupsForUserRequest,
+  ) => stream.Stream<
+    Group,
+    ListGroupsForUserError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListInstanceProfilesError = ServiceFailureException | CommonErrors;
 /**
@@ -11328,7 +11594,27 @@ export const listInstanceProfiles: API.OperationMethod<
     items: "InstanceProfiles",
     pageSize: "MaxItems",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListInstanceProfilesRequest,
+  ListInstanceProfilesResponse,
+  ListInstanceProfilesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListInstanceProfilesRequest,
+  ) => stream.Stream<
+    ListInstanceProfilesResponse,
+    ListInstanceProfilesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListInstanceProfilesRequest,
+  ) => stream.Stream<
+    InstanceProfile,
+    ListInstanceProfilesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListInstanceProfilesForRoleError =
   | NoSuchEntityException
@@ -11376,7 +11662,27 @@ export const listInstanceProfilesForRole: API.OperationMethod<
     items: "InstanceProfiles",
     pageSize: "MaxItems",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListInstanceProfilesForRoleRequest,
+  ListInstanceProfilesForRoleResponse,
+  ListInstanceProfilesForRoleError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListInstanceProfilesForRoleRequest,
+  ) => stream.Stream<
+    ListInstanceProfilesForRoleResponse,
+    ListInstanceProfilesForRoleError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListInstanceProfilesForRoleRequest,
+  ) => stream.Stream<
+    InstanceProfile,
+    ListInstanceProfilesForRoleError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListInstanceProfileTagsError =
   | NoSuchEntityException
@@ -11420,7 +11726,27 @@ export const listInstanceProfileTags: API.OperationMethod<
     items: "Tags",
     pageSize: "MaxItems",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListInstanceProfileTagsRequest,
+  ListInstanceProfileTagsResponse,
+  ListInstanceProfileTagsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListInstanceProfileTagsRequest,
+  ) => stream.Stream<
+    ListInstanceProfileTagsResponse,
+    ListInstanceProfileTagsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListInstanceProfileTagsRequest,
+  ) => stream.Stream<
+    Tag,
+    ListInstanceProfileTagsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListMFADevicesError =
   | NoSuchEntityException
@@ -11468,7 +11794,27 @@ export const listMFADevices: API.OperationMethod<
     items: "MFADevices",
     pageSize: "MaxItems",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListMFADevicesRequest,
+  ListMFADevicesResponse,
+  ListMFADevicesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListMFADevicesRequest,
+  ) => stream.Stream<
+    ListMFADevicesResponse,
+    ListMFADevicesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListMFADevicesRequest,
+  ) => stream.Stream<
+    MFADevice,
+    ListMFADevicesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListMFADeviceTagsError =
   | InvalidInputException
@@ -11517,7 +11863,27 @@ export const listMFADeviceTags: API.OperationMethod<
     items: "Tags",
     pageSize: "MaxItems",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListMFADeviceTagsRequest,
+  ListMFADeviceTagsResponse,
+  ListMFADeviceTagsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListMFADeviceTagsRequest,
+  ) => stream.Stream<
+    ListMFADeviceTagsResponse,
+    ListMFADeviceTagsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListMFADeviceTagsRequest,
+  ) => stream.Stream<
+    Tag,
+    ListMFADeviceTagsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListOpenIDConnectProvidersError =
   | ServiceFailureException
@@ -11593,7 +11959,27 @@ export const listOpenIDConnectProviderTags: API.OperationMethod<
     items: "Tags",
     pageSize: "MaxItems",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListOpenIDConnectProviderTagsRequest,
+  ListOpenIDConnectProviderTagsResponse,
+  ListOpenIDConnectProviderTagsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListOpenIDConnectProviderTagsRequest,
+  ) => stream.Stream<
+    ListOpenIDConnectProviderTagsResponse,
+    ListOpenIDConnectProviderTagsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListOpenIDConnectProviderTagsRequest,
+  ) => stream.Stream<
+    Tag,
+    ListOpenIDConnectProviderTagsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListOrganizationsFeaturesError =
   | AccountNotManagementOrDelegatedAdministratorException
@@ -11678,7 +12064,27 @@ export const listPolicies: API.OperationMethod<
     items: "Policies",
     pageSize: "MaxItems",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListPoliciesRequest,
+  ListPoliciesResponse,
+  ListPoliciesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListPoliciesRequest,
+  ) => stream.Stream<
+    ListPoliciesResponse,
+    ListPoliciesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListPoliciesRequest,
+  ) => stream.Stream<
+    Policy,
+    ListPoliciesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListPoliciesGrantingServiceAccessError =
   | InvalidInputException
@@ -11781,7 +12187,27 @@ export const listPolicyTags: API.OperationMethod<
     items: "Tags",
     pageSize: "MaxItems",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListPolicyTagsRequest,
+  ListPolicyTagsResponse,
+  ListPolicyTagsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListPolicyTagsRequest,
+  ) => stream.Stream<
+    ListPolicyTagsResponse,
+    ListPolicyTagsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListPolicyTagsRequest,
+  ) => stream.Stream<
+    Tag,
+    ListPolicyTagsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListPolicyVersionsError =
   | InvalidInputException
@@ -11832,7 +12258,27 @@ export const listPolicyVersions: API.OperationMethod<
     items: "Versions",
     pageSize: "MaxItems",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListPolicyVersionsRequest,
+  ListPolicyVersionsResponse,
+  ListPolicyVersionsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListPolicyVersionsRequest,
+  ) => stream.Stream<
+    ListPolicyVersionsResponse,
+    ListPolicyVersionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListPolicyVersionsRequest,
+  ) => stream.Stream<
+    PolicyVersion,
+    ListPolicyVersionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListRolePoliciesError =
   | NoSuchEntityException
@@ -11884,7 +12330,27 @@ export const listRolePolicies: API.OperationMethod<
     items: "PolicyNames",
     pageSize: "MaxItems",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListRolePoliciesRequest,
+  ListRolePoliciesResponse,
+  ListRolePoliciesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListRolePoliciesRequest,
+  ) => stream.Stream<
+    ListRolePoliciesResponse,
+    ListRolePoliciesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListRolePoliciesRequest,
+  ) => stream.Stream<
+    PolicyNameType,
+    ListRolePoliciesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListRolesError = ServiceFailureException | CommonErrors;
 /**
@@ -11939,7 +12405,27 @@ export const listRoles: API.OperationMethod<
     items: "Roles",
     pageSize: "MaxItems",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListRolesRequest,
+  ListRolesResponse,
+  ListRolesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListRolesRequest,
+  ) => stream.Stream<
+    ListRolesResponse,
+    ListRolesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListRolesRequest,
+  ) => stream.Stream<
+    Role,
+    ListRolesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListRoleTagsError =
   | NoSuchEntityException
@@ -11983,7 +12469,27 @@ export const listRoleTags: API.OperationMethod<
     items: "Tags",
     pageSize: "MaxItems",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListRoleTagsRequest,
+  ListRoleTagsResponse,
+  ListRoleTagsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListRoleTagsRequest,
+  ) => stream.Stream<
+    ListRoleTagsResponse,
+    ListRoleTagsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListRoleTagsRequest,
+  ) => stream.Stream<
+    Tag,
+    ListRoleTagsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListSAMLProvidersError = ServiceFailureException | CommonErrors;
 /**
@@ -12057,7 +12563,27 @@ export const listSAMLProviderTags: API.OperationMethod<
     items: "Tags",
     pageSize: "MaxItems",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListSAMLProviderTagsRequest,
+  ListSAMLProviderTagsResponse,
+  ListSAMLProviderTagsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListSAMLProviderTagsRequest,
+  ) => stream.Stream<
+    ListSAMLProviderTagsResponse,
+    ListSAMLProviderTagsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListSAMLProviderTagsRequest,
+  ) => stream.Stream<
+    Tag,
+    ListSAMLProviderTagsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListServerCertificatesError =
   | ServiceFailureException
@@ -12111,7 +12637,27 @@ export const listServerCertificates: API.OperationMethod<
     items: "ServerCertificateMetadataList",
     pageSize: "MaxItems",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListServerCertificatesRequest,
+  ListServerCertificatesResponse,
+  ListServerCertificatesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListServerCertificatesRequest,
+  ) => stream.Stream<
+    ListServerCertificatesResponse,
+    ListServerCertificatesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListServerCertificatesRequest,
+  ) => stream.Stream<
+    ServerCertificateMetadata,
+    ListServerCertificatesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListServerCertificateTagsError =
   | NoSuchEntityException
@@ -12161,7 +12707,27 @@ export const listServerCertificateTags: API.OperationMethod<
     items: "Tags",
     pageSize: "MaxItems",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListServerCertificateTagsRequest,
+  ListServerCertificateTagsResponse,
+  ListServerCertificateTagsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListServerCertificateTagsRequest,
+  ) => stream.Stream<
+    ListServerCertificateTagsResponse,
+    ListServerCertificateTagsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListServerCertificateTagsRequest,
+  ) => stream.Stream<
+    Tag,
+    ListServerCertificateTagsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListServiceSpecificCredentialsError =
   | NoSuchEntityException
@@ -12257,7 +12823,27 @@ export const listSigningCertificates: API.OperationMethod<
     items: "Certificates",
     pageSize: "MaxItems",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListSigningCertificatesRequest,
+  ListSigningCertificatesResponse,
+  ListSigningCertificatesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListSigningCertificatesRequest,
+  ) => stream.Stream<
+    ListSigningCertificatesResponse,
+    ListSigningCertificatesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListSigningCertificatesRequest,
+  ) => stream.Stream<
+    SigningCertificate,
+    ListSigningCertificatesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListSSHPublicKeysError = NoSuchEntityException | CommonErrors;
 /**
@@ -12305,7 +12891,27 @@ export const listSSHPublicKeys: API.OperationMethod<
     items: "SSHPublicKeys",
     pageSize: "MaxItems",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListSSHPublicKeysRequest,
+  ListSSHPublicKeysResponse,
+  ListSSHPublicKeysError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListSSHPublicKeysRequest,
+  ) => stream.Stream<
+    ListSSHPublicKeysResponse,
+    ListSSHPublicKeysError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListSSHPublicKeysRequest,
+  ) => stream.Stream<
+    SSHPublicKeyMetadata,
+    ListSSHPublicKeysError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListUserPoliciesError =
   | NoSuchEntityException
@@ -12356,7 +12962,27 @@ export const listUserPolicies: API.OperationMethod<
     items: "PolicyNames",
     pageSize: "MaxItems",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListUserPoliciesRequest,
+  ListUserPoliciesResponse,
+  ListUserPoliciesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListUserPoliciesRequest,
+  ) => stream.Stream<
+    ListUserPoliciesResponse,
+    ListUserPoliciesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListUserPoliciesRequest,
+  ) => stream.Stream<
+    PolicyNameType,
+    ListUserPoliciesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListUsersError = ServiceFailureException | CommonErrors;
 /**
@@ -12409,7 +13035,27 @@ export const listUsers: API.OperationMethod<
     items: "Users",
     pageSize: "MaxItems",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListUsersRequest,
+  ListUsersResponse,
+  ListUsersError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListUsersRequest,
+  ) => stream.Stream<
+    ListUsersResponse,
+    ListUsersError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListUsersRequest,
+  ) => stream.Stream<
+    User,
+    ListUsersError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListUserTagsError =
   | NoSuchEntityException
@@ -12452,7 +13098,27 @@ export const listUserTags: API.OperationMethod<
     items: "Tags",
     pageSize: "MaxItems",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListUserTagsRequest,
+  ListUserTagsResponse,
+  ListUserTagsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListUserTagsRequest,
+  ) => stream.Stream<
+    ListUserTagsResponse,
+    ListUserTagsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListUserTagsRequest,
+  ) => stream.Stream<
+    Tag,
+    ListUserTagsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListVirtualMFADevicesError = CommonErrors;
 /**
@@ -12500,7 +13166,27 @@ export const listVirtualMFADevices: API.OperationMethod<
     items: "VirtualMFADevices",
     pageSize: "MaxItems",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListVirtualMFADevicesRequest,
+  ListVirtualMFADevicesResponse,
+  ListVirtualMFADevicesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListVirtualMFADevicesRequest,
+  ) => stream.Stream<
+    ListVirtualMFADevicesResponse,
+    ListVirtualMFADevicesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListVirtualMFADevicesRequest,
+  ) => stream.Stream<
+    VirtualMFADevice,
+    ListVirtualMFADevicesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type PutGroupPolicyError =
   | LimitExceededException
@@ -13105,7 +13791,27 @@ export const simulateCustomPolicy: API.OperationMethod<
     items: "EvaluationResults",
     pageSize: "MaxItems",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  SimulateCustomPolicyRequest,
+  SimulatePolicyResponse,
+  SimulateCustomPolicyError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: SimulateCustomPolicyRequest,
+  ) => stream.Stream<
+    SimulatePolicyResponse,
+    SimulateCustomPolicyError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: SimulateCustomPolicyRequest,
+  ) => stream.Stream<
+    EvaluationResult,
+    SimulateCustomPolicyError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type SimulatePrincipalPolicyError =
   | InvalidInputException
@@ -13187,7 +13893,27 @@ export const simulatePrincipalPolicy: API.OperationMethod<
     items: "EvaluationResults",
     pageSize: "MaxItems",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  SimulatePrincipalPolicyRequest,
+  SimulatePolicyResponse,
+  SimulatePrincipalPolicyError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: SimulatePrincipalPolicyRequest,
+  ) => stream.Stream<
+    SimulatePolicyResponse,
+    SimulatePrincipalPolicyError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: SimulatePrincipalPolicyRequest,
+  ) => stream.Stream<
+    EvaluationResult,
+    SimulatePrincipalPolicyError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type TagInstanceProfileError =
   | ConcurrentModificationException

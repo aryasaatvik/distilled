@@ -87,57 +87,68 @@ const rules = T.EndpointResolver((p, _) => {
   return err("Invalid Configuration: Missing Region");
 });
 
-export class AccessDeniedException extends S.TaggedErrorClass<AccessDeniedException>()(
-  "AccessDeniedException",
-  { Message: S.optional(S.String) },
-  T.all(
-    T.AwsQueryError({ code: "AccessDenied", httpResponseCode: 403 }),
-    T.HttpError(403),
-  ),
-).pipe(C.withAuthError) {}
-export class ConflictException extends S.TaggedErrorClass<ConflictException>()(
-  "ConflictException",
-  { Message: S.String },
-  T.HttpError(409),
-).pipe(C.withConflictError) {}
-export class InternalServiceError extends S.TaggedErrorClass<InternalServiceError>()(
-  "InternalServiceError",
-  { Message: S.String },
-  T.HttpError(503),
-).pipe(C.withServerError) {}
-export class InvalidNextTokenException extends S.TaggedErrorClass<InvalidNextTokenException>()(
-  "InvalidNextTokenException",
-  { Message: S.String },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class InvalidRequestException extends S.TaggedErrorClass<InvalidRequestException>()(
-  "InvalidRequestException",
-  { Message: S.String },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class ResourceExistsException extends S.TaggedErrorClass<ResourceExistsException>()(
-  "ResourceExistsException",
-  { Message: S.String, Resource: S.String, ResourceType: S.String },
-  T.HttpError(409),
-).pipe(C.withConflictError) {}
-export class ResourceNotFoundException extends S.TaggedErrorClass<ResourceNotFoundException>()(
-  "ResourceNotFoundException",
-  { Message: S.String, Resource: S.String, ResourceType: S.String },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class ServiceUnavailableException extends S.TaggedErrorClass<ServiceUnavailableException>()(
-  "ServiceUnavailableException",
-  { Message: S.optional(S.String) },
-  T.all(
-    T.AwsQueryError({ code: "ServiceUnavailable", httpResponseCode: 503 }),
+export class AccessDeniedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
+    "AccessDeniedException",
+    { Message: S.optional(S.String) },
+    T.all(
+      T.AwsQueryError({ code: "AccessDenied", httpResponseCode: 403 }),
+      T.HttpError(403),
+    ),
+  ).pipe(C.withAuthError) {}
+export class ConflictException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
+    "ConflictException",
+    { Message: S.String },
+    T.HttpError(409),
+  ).pipe(C.withConflictError) {}
+export class InternalServiceError
+  extends /*@__PURE__*/ S.TaggedErrorClass<InternalServiceError>()(
+    "InternalServiceError",
+    { Message: S.String },
     T.HttpError(503),
-  ),
-).pipe(C.withServerError) {}
-export class ThrottlingException extends S.TaggedErrorClass<ThrottlingException>()(
-  "ThrottlingException",
-  { RetryAfterSeconds: S.optional(S.String).pipe(T.HttpHeader("Retry-After")) },
-  T.HttpError(429),
-).pipe(C.withThrottlingError) {}
+  ).pipe(C.withServerError) {}
+export class InvalidNextTokenException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidNextTokenException>()(
+    "InvalidNextTokenException",
+    { Message: S.String },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class InvalidRequestException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidRequestException>()(
+    "InvalidRequestException",
+    { Message: S.String },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class ResourceExistsException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceExistsException>()(
+    "ResourceExistsException",
+    { Message: S.String, Resource: S.String, ResourceType: S.String },
+    T.HttpError(409),
+  ).pipe(C.withConflictError) {}
+export class ResourceNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
+    "ResourceNotFoundException",
+    { Message: S.String, Resource: S.String, ResourceType: S.String },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class ServiceUnavailableException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ServiceUnavailableException>()(
+    "ServiceUnavailableException",
+    { Message: S.optional(S.String) },
+    T.all(
+      T.AwsQueryError({ code: "ServiceUnavailable", httpResponseCode: 503 }),
+      T.HttpError(503),
+    ),
+  ).pipe(C.withServerError) {}
+export class ThrottlingException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
+    "ThrottlingException",
+    {
+      RetryAfterSeconds: S.optional(S.String).pipe(T.HttpHeader("Retry-After")),
+    },
+    T.HttpError(429),
+  ).pipe(C.withThrottlingError) {}
 export type HomeDirectory = string;
 export type HomeDirectoryType = "PATH" | "LOGICAL" | (string & {});
 export const HomeDirectoryType = /*@__PURE__*/ S.String;
@@ -4722,7 +4733,27 @@ export const listAccesses: API.OperationMethod<
     items: "Accesses",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListAccessesRequest,
+  ListAccessesResponse,
+  ListAccessesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListAccessesRequest,
+  ) => stream.Stream<
+    ListAccessesResponse,
+    ListAccessesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListAccessesRequest,
+  ) => stream.Stream<
+    ListedAccess,
+    ListAccessesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListAgreementsError =
   | InternalServiceError
@@ -4773,7 +4804,27 @@ export const listAgreements: API.OperationMethod<
     items: "Agreements",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListAgreementsRequest,
+  ListAgreementsResponse,
+  ListAgreementsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListAgreementsRequest,
+  ) => stream.Stream<
+    ListAgreementsResponse,
+    ListAgreementsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListAgreementsRequest,
+  ) => stream.Stream<
+    ListedAgreement,
+    ListAgreementsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListCertificatesError =
   | InternalServiceError
@@ -4824,7 +4875,27 @@ export const listCertificates: API.OperationMethod<
     items: "Certificates",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListCertificatesRequest,
+  ListCertificatesResponse,
+  ListCertificatesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListCertificatesRequest,
+  ) => stream.Stream<
+    ListCertificatesResponse,
+    ListCertificatesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListCertificatesRequest,
+  ) => stream.Stream<
+    ListedCertificate,
+    ListCertificatesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListConnectorsError =
   | InternalServiceError
@@ -4875,7 +4946,27 @@ export const listConnectors: API.OperationMethod<
     items: "Connectors",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListConnectorsRequest,
+  ListConnectorsResponse,
+  ListConnectorsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListConnectorsRequest,
+  ) => stream.Stream<
+    ListConnectorsResponse,
+    ListConnectorsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListConnectorsRequest,
+  ) => stream.Stream<
+    ListedConnector,
+    ListConnectorsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListExecutionsError =
   | InternalServiceError
@@ -4928,7 +5019,27 @@ export const listExecutions: API.OperationMethod<
     items: "Executions",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListExecutionsRequest,
+  ListExecutionsResponse,
+  ListExecutionsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListExecutionsRequest,
+  ) => stream.Stream<
+    ListExecutionsResponse,
+    ListExecutionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListExecutionsRequest,
+  ) => stream.Stream<
+    ListedExecution,
+    ListExecutionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListFileTransferResultsError =
   | InternalServiceError
@@ -4979,7 +5090,27 @@ export const listFileTransferResults: API.OperationMethod<
     items: "FileTransferResults",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListFileTransferResultsRequest,
+  ListFileTransferResultsResponse,
+  ListFileTransferResultsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListFileTransferResultsRequest,
+  ) => stream.Stream<
+    ListFileTransferResultsResponse,
+    ListFileTransferResultsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListFileTransferResultsRequest,
+  ) => stream.Stream<
+    ConnectorFileTransferResult,
+    ListFileTransferResultsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListHostKeysError =
   | InternalServiceError
@@ -5060,7 +5191,27 @@ export const listProfiles: API.OperationMethod<
     items: "Profiles",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListProfilesRequest,
+  ListProfilesResponse,
+  ListProfilesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListProfilesRequest,
+  ) => stream.Stream<
+    ListProfilesResponse,
+    ListProfilesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListProfilesRequest,
+  ) => stream.Stream<
+    ListedProfile,
+    ListProfilesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListSecurityPoliciesError =
   | InternalServiceError
@@ -5109,7 +5260,27 @@ export const listSecurityPolicies: API.OperationMethod<
     items: "SecurityPolicyNames",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListSecurityPoliciesRequest,
+  ListSecurityPoliciesResponse,
+  ListSecurityPoliciesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListSecurityPoliciesRequest,
+  ) => stream.Stream<
+    ListSecurityPoliciesResponse,
+    ListSecurityPoliciesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListSecurityPoliciesRequest,
+  ) => stream.Stream<
+    SecurityPolicyName,
+    ListSecurityPoliciesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListServersError =
   | InternalServiceError
@@ -5158,7 +5329,27 @@ export const listServers: API.OperationMethod<
     items: "Servers",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListServersRequest,
+  ListServersResponse,
+  ListServersError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListServersRequest,
+  ) => stream.Stream<
+    ListServersResponse,
+    ListServersError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListServersRequest,
+  ) => stream.Stream<
+    ListedServer,
+    ListServersError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListTagsForResourceError =
   | InternalServiceError
@@ -5207,7 +5398,27 @@ export const listTagsForResource: API.OperationMethod<
     items: "Tags",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListTagsForResourceRequest,
+  ListTagsForResourceResponse,
+  ListTagsForResourceError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListTagsForResourceRequest,
+  ) => stream.Stream<
+    ListTagsForResourceResponse,
+    ListTagsForResourceError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListTagsForResourceRequest,
+  ) => stream.Stream<
+    Tag,
+    ListTagsForResourceError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListUsersError =
   | InternalServiceError
@@ -5258,7 +5469,27 @@ export const listUsers: API.OperationMethod<
     items: "Users",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListUsersRequest,
+  ListUsersResponse,
+  ListUsersError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListUsersRequest,
+  ) => stream.Stream<
+    ListUsersResponse,
+    ListUsersError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListUsersRequest,
+  ) => stream.Stream<
+    ListedUser,
+    ListUsersError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListWebAppsError =
   | InternalServiceError
@@ -5309,7 +5540,27 @@ export const listWebApps: API.OperationMethod<
     items: "WebApps",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListWebAppsRequest,
+  ListWebAppsResponse,
+  ListWebAppsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListWebAppsRequest,
+  ) => stream.Stream<
+    ListWebAppsResponse,
+    ListWebAppsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListWebAppsRequest,
+  ) => stream.Stream<
+    ListedWebApp,
+    ListWebAppsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListWorkflowsError =
   | InternalServiceError
@@ -5358,7 +5609,27 @@ export const listWorkflows: API.OperationMethod<
     items: "Workflows",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListWorkflowsRequest,
+  ListWorkflowsResponse,
+  ListWorkflowsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListWorkflowsRequest,
+  ) => stream.Stream<
+    ListWorkflowsResponse,
+    ListWorkflowsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListWorkflowsRequest,
+  ) => stream.Stream<
+    ListedWorkflow,
+    ListWorkflowsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type SendWorkflowStepStateError =
   | AccessDeniedException

@@ -85,36 +85,42 @@ const rules = T.EndpointResolver((p, _) => {
   return err("Invalid Configuration: Missing Region");
 });
 
-export class AccessDeniedException extends S.TaggedErrorClass<AccessDeniedException>()(
-  "AccessDeniedException",
-  { message: S.String },
-  T.HttpError(403),
-).pipe(C.withAuthError) {}
-export class InternalServerException extends S.TaggedErrorClass<InternalServerException>()(
-  "InternalServerException",
-  { message: S.String },
-  T.all(T.HttpError(500), T.Retryable()),
-).pipe(C.withServerError, C.withRetryableError) {}
-export class ResourceNotFoundException extends S.TaggedErrorClass<ResourceNotFoundException>()(
-  "ResourceNotFoundException",
-  { message: S.String },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class ServiceQuotaExceededException extends S.TaggedErrorClass<ServiceQuotaExceededException>()(
-  "ServiceQuotaExceededException",
-  { message: S.String },
-  T.HttpError(402),
-).pipe(C.withQuotaError) {}
-export class ThrottlingException extends S.TaggedErrorClass<ThrottlingException>()(
-  "ThrottlingException",
-  { message: S.String },
-  T.all(T.HttpError(429), T.Retryable({ throttling: true })),
-).pipe(C.withThrottlingError, C.withRetryableError) {}
-export class ValidationException extends S.TaggedErrorClass<ValidationException>()(
-  "ValidationException",
-  { message: S.String },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
+export class AccessDeniedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
+    "AccessDeniedException",
+    { message: S.String },
+    T.HttpError(403),
+  ).pipe(C.withAuthError) {}
+export class InternalServerException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
+    "InternalServerException",
+    { message: S.String },
+    T.all(T.HttpError(500), T.Retryable()),
+  ).pipe(C.withServerError, C.withRetryableError) {}
+export class ResourceNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
+    "ResourceNotFoundException",
+    { message: S.String },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class ServiceQuotaExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
+    "ServiceQuotaExceededException",
+    { message: S.String },
+    T.HttpError(402),
+  ).pipe(C.withQuotaError) {}
+export class ThrottlingException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
+    "ThrottlingException",
+    { message: S.String },
+    T.all(T.HttpError(429), T.Retryable({ throttling: true })),
+  ).pipe(C.withThrottlingError, C.withRetryableError) {}
+export class ValidationException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
+    "ValidationException",
+    { message: S.String },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
 export type TaskId = string;
 export interface CancelTaskInput {
   taskId: string;
@@ -1084,7 +1090,27 @@ export const listDeviceResources: API.OperationMethod<
     items: "resources",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListDeviceResourcesInput,
+  ListDeviceResourcesOutput,
+  ListDeviceResourcesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListDeviceResourcesInput,
+  ) => stream.Stream<
+    ListDeviceResourcesOutput,
+    ListDeviceResourcesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListDeviceResourcesInput,
+  ) => stream.Stream<
+    ResourceSummary,
+    ListDeviceResourcesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListDevicesError =
   | AccessDeniedException
@@ -1134,7 +1160,27 @@ export const listDevices: API.OperationMethod<
     items: "devices",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListDevicesInput,
+  ListDevicesOutput,
+  ListDevicesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListDevicesInput,
+  ) => stream.Stream<
+    ListDevicesOutput,
+    ListDevicesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListDevicesInput,
+  ) => stream.Stream<
+    DeviceSummary,
+    ListDevicesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListExecutionsError =
   | AccessDeniedException
@@ -1185,7 +1231,27 @@ export const listExecutions: API.OperationMethod<
     items: "executions",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListExecutionsInput,
+  ListExecutionsOutput,
+  ListExecutionsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListExecutionsInput,
+  ) => stream.Stream<
+    ListExecutionsOutput,
+    ListExecutionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListExecutionsInput,
+  ) => stream.Stream<
+    ExecutionSummary,
+    ListExecutionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListTagsForResourceError =
   | InternalServerException
@@ -1260,7 +1326,27 @@ export const listTasks: API.OperationMethod<
     items: "tasks",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListTasksInput,
+  ListTasksOutput,
+  ListTasksError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListTasksInput,
+  ) => stream.Stream<
+    ListTasksOutput,
+    ListTasksError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListTasksInput,
+  ) => stream.Stream<
+    TaskSummary,
+    ListTasksError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type TagResourceError =
   | InternalServerException

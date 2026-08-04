@@ -86,56 +86,66 @@ const rules = T.EndpointResolver((p, _) => {
   return err("Invalid Configuration: Missing Region");
 });
 
-export class AuthorizationErrorException extends S.TaggedErrorClass<AuthorizationErrorException>()(
-  "AuthorizationErrorException",
-  { message: S.optional(S.String) },
-  T.HttpError(403),
-).pipe(C.withAuthError) {}
-export class ConflictErrorException extends S.TaggedErrorClass<ConflictErrorException>()(
-  "ConflictErrorException",
-  { message: S.optional(S.String) },
-  T.HttpError(409),
-).pipe(C.withConflictError) {}
-export class HomeRegionNotSetException extends S.TaggedErrorClass<HomeRegionNotSetException>()(
-  "HomeRegionNotSetException",
-  { message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class InvalidParameterException extends S.TaggedErrorClass<InvalidParameterException>()(
-  "InvalidParameterException",
-  { message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class InvalidParameterValueException extends S.TaggedErrorClass<InvalidParameterValueException>()(
-  "InvalidParameterValueException",
-  { message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class LimitExceededException extends S.TaggedErrorClass<LimitExceededException>()(
-  "LimitExceededException",
-  { message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class OperationNotPermittedException extends S.TaggedErrorClass<OperationNotPermittedException>()(
-  "OperationNotPermittedException",
-  { message: S.optional(S.String) },
-  T.HttpError(429),
-).pipe(C.withThrottlingError) {}
-export class ResourceInUseException extends S.TaggedErrorClass<ResourceInUseException>()(
-  "ResourceInUseException",
-  { message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class ResourceNotFoundException extends S.TaggedErrorClass<ResourceNotFoundException>()(
-  "ResourceNotFoundException",
-  { message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class ServerInternalErrorException extends S.TaggedErrorClass<ServerInternalErrorException>()(
-  "ServerInternalErrorException",
-  { message: S.optional(S.String) },
-  T.HttpError(500),
-).pipe(C.withServerError) {}
+export class AuthorizationErrorException
+  extends /*@__PURE__*/ S.TaggedErrorClass<AuthorizationErrorException>()(
+    "AuthorizationErrorException",
+    { message: S.optional(S.String) },
+    T.HttpError(403),
+  ).pipe(C.withAuthError) {}
+export class ConflictErrorException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ConflictErrorException>()(
+    "ConflictErrorException",
+    { message: S.optional(S.String) },
+    T.HttpError(409),
+  ).pipe(C.withConflictError) {}
+export class HomeRegionNotSetException
+  extends /*@__PURE__*/ S.TaggedErrorClass<HomeRegionNotSetException>()(
+    "HomeRegionNotSetException",
+    { message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class InvalidParameterException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidParameterException>()(
+    "InvalidParameterException",
+    { message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class InvalidParameterValueException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidParameterValueException>()(
+    "InvalidParameterValueException",
+    { message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class LimitExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<LimitExceededException>()(
+    "LimitExceededException",
+    { message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class OperationNotPermittedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<OperationNotPermittedException>()(
+    "OperationNotPermittedException",
+    { message: S.optional(S.String) },
+    T.HttpError(429),
+  ).pipe(C.withThrottlingError) {}
+export class ResourceInUseException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceInUseException>()(
+    "ResourceInUseException",
+    { message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class ResourceNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
+    "ResourceNotFoundException",
+    { message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class ServerInternalErrorException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ServerInternalErrorException>()(
+    "ServerInternalErrorException",
+    { message: S.optional(S.String) },
+    T.HttpError(500),
+  ).pipe(C.withServerError) {}
 export type ApplicationId = string;
 export type ConfigurationId = string;
 export type ConfigurationIdList = string[];
@@ -2035,7 +2045,27 @@ export const describeAgents: API.OperationMethod<
     items: "agentsInfo",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  DescribeAgentsRequest,
+  DescribeAgentsResponse,
+  DescribeAgentsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: DescribeAgentsRequest,
+  ) => stream.Stream<
+    DescribeAgentsResponse,
+    DescribeAgentsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: DescribeAgentsRequest,
+  ) => stream.Stream<
+    AgentInfo,
+    DescribeAgentsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type DescribeBatchDeleteConfigurationTaskError =
   | AuthorizationErrorException
@@ -2168,7 +2198,27 @@ export const describeContinuousExports: API.OperationMethod<
     items: "descriptions",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  DescribeContinuousExportsRequest,
+  DescribeContinuousExportsResponse,
+  DescribeContinuousExportsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: DescribeContinuousExportsRequest,
+  ) => stream.Stream<
+    DescribeContinuousExportsResponse,
+    DescribeContinuousExportsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: DescribeContinuousExportsRequest,
+  ) => stream.Stream<
+    ContinuousExportDescription,
+    DescribeContinuousExportsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type DescribeExportConfigurationsError =
   | AuthorizationErrorException
@@ -2221,7 +2271,27 @@ export const describeExportConfigurations: API.OperationMethod<
     items: "exportsInfo",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  DescribeExportConfigurationsRequest,
+  DescribeExportConfigurationsResponse,
+  DescribeExportConfigurationsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: DescribeExportConfigurationsRequest,
+  ) => stream.Stream<
+    DescribeExportConfigurationsResponse,
+    DescribeExportConfigurationsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: DescribeExportConfigurationsRequest,
+  ) => stream.Stream<
+    ExportInfo,
+    DescribeExportConfigurationsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type DescribeExportTasksError =
   | AuthorizationErrorException
@@ -2273,7 +2343,27 @@ export const describeExportTasks: API.OperationMethod<
     items: "exportsInfo",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  DescribeExportTasksRequest,
+  DescribeExportTasksResponse,
+  DescribeExportTasksError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: DescribeExportTasksRequest,
+  ) => stream.Stream<
+    DescribeExportTasksResponse,
+    DescribeExportTasksError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: DescribeExportTasksRequest,
+  ) => stream.Stream<
+    ExportInfo,
+    DescribeExportTasksError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type DescribeImportTasksError =
   | AuthorizationErrorException
@@ -2325,7 +2415,27 @@ export const describeImportTasks: API.OperationMethod<
     items: "tasks",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  DescribeImportTasksRequest,
+  DescribeImportTasksResponse,
+  DescribeImportTasksError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: DescribeImportTasksRequest,
+  ) => stream.Stream<
+    DescribeImportTasksResponse,
+    DescribeImportTasksError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: DescribeImportTasksRequest,
+  ) => stream.Stream<
+    ImportTask,
+    DescribeImportTasksError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type DescribeTagsError =
   | AuthorizationErrorException
@@ -2390,7 +2500,27 @@ export const describeTags: API.OperationMethod<
     items: "tags",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  DescribeTagsRequest,
+  DescribeTagsResponse,
+  DescribeTagsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: DescribeTagsRequest,
+  ) => stream.Stream<
+    DescribeTagsResponse,
+    DescribeTagsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: DescribeTagsRequest,
+  ) => stream.Stream<
+    ConfigurationTag,
+    DescribeTagsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type DisassociateConfigurationItemsFromApplicationError =
   | AuthorizationErrorException
@@ -2546,7 +2676,27 @@ export const listConfigurations: API.OperationMethod<
     items: "configurations",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListConfigurationsRequest,
+  ListConfigurationsResponse,
+  ListConfigurationsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListConfigurationsRequest,
+  ) => stream.Stream<
+    ListConfigurationsResponse,
+    ListConfigurationsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListConfigurationsRequest,
+  ) => stream.Stream<
+    { [key: string]: string | undefined },
+    ListConfigurationsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListServerNeighborsError =
   | AuthorizationErrorException

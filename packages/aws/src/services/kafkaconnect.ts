@@ -105,46 +105,54 @@ const rules = T.EndpointResolver((p, _) => {
   return err("Invalid Configuration: Missing Region");
 });
 
-export class BadRequestException extends S.TaggedErrorClass<BadRequestException>()(
-  "BadRequestException",
-  { message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class ConflictException extends S.TaggedErrorClass<ConflictException>()(
-  "ConflictException",
-  { message: S.optional(S.String) },
-  T.HttpError(409),
-).pipe(C.withConflictError) {}
-export class ForbiddenException extends S.TaggedErrorClass<ForbiddenException>()(
-  "ForbiddenException",
-  { message: S.optional(S.String) },
-  T.HttpError(403),
-).pipe(C.withAuthError) {}
-export class InternalServerErrorException extends S.TaggedErrorClass<InternalServerErrorException>()(
-  "InternalServerErrorException",
-  { message: S.optional(S.String) },
-  T.HttpError(500),
-).pipe(C.withServerError) {}
-export class NotFoundException extends S.TaggedErrorClass<NotFoundException>()(
-  "NotFoundException",
-  { message: S.optional(S.String) },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class ServiceUnavailableException extends S.TaggedErrorClass<ServiceUnavailableException>()(
-  "ServiceUnavailableException",
-  { message: S.optional(S.String) },
-  T.HttpError(503),
-).pipe(C.withServerError) {}
-export class TooManyRequestsException extends S.TaggedErrorClass<TooManyRequestsException>()(
-  "TooManyRequestsException",
-  { message: S.optional(S.String) },
-  T.HttpError(429),
-).pipe(C.withThrottlingError) {}
-export class UnauthorizedException extends S.TaggedErrorClass<UnauthorizedException>()(
-  "UnauthorizedException",
-  { message: S.optional(S.String) },
-  T.HttpError(401),
-).pipe(C.withAuthError) {}
+export class BadRequestException
+  extends /*@__PURE__*/ S.TaggedErrorClass<BadRequestException>()(
+    "BadRequestException",
+    { message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class ConflictException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
+    "ConflictException",
+    { message: S.optional(S.String) },
+    T.HttpError(409),
+  ).pipe(C.withConflictError) {}
+export class ForbiddenException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ForbiddenException>()(
+    "ForbiddenException",
+    { message: S.optional(S.String) },
+    T.HttpError(403),
+  ).pipe(C.withAuthError) {}
+export class InternalServerErrorException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerErrorException>()(
+    "InternalServerErrorException",
+    { message: S.optional(S.String) },
+    T.HttpError(500),
+  ).pipe(C.withServerError) {}
+export class NotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<NotFoundException>()(
+    "NotFoundException",
+    { message: S.optional(S.String) },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class ServiceUnavailableException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ServiceUnavailableException>()(
+    "ServiceUnavailableException",
+    { message: S.optional(S.String) },
+    T.HttpError(503),
+  ).pipe(C.withServerError) {}
+export class TooManyRequestsException
+  extends /*@__PURE__*/ S.TaggedErrorClass<TooManyRequestsException>()(
+    "TooManyRequestsException",
+    { message: S.optional(S.String) },
+    T.HttpError(429),
+  ).pipe(C.withThrottlingError) {}
+export class UnauthorizedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<UnauthorizedException>()(
+    "UnauthorizedException",
+    { message: S.optional(S.String) },
+    T.HttpError(401),
+  ).pipe(C.withAuthError) {}
 export type __integerMin1Max8 = number;
 export type __integerMin1Max100 = number;
 export interface ScaleInPolicy {
@@ -1987,7 +1995,27 @@ export const listConnectorOperations: API.OperationMethod<
     items: "connectorOperations",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListConnectorOperationsRequest,
+  ListConnectorOperationsResponse,
+  ListConnectorOperationsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListConnectorOperationsRequest,
+  ) => stream.Stream<
+    ListConnectorOperationsResponse,
+    ListConnectorOperationsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListConnectorOperationsRequest,
+  ) => stream.Stream<
+    ConnectorOperationSummary,
+    ListConnectorOperationsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListConnectorsError =
   | BadRequestException
@@ -2042,7 +2070,27 @@ export const listConnectors: API.OperationMethod<
     items: "connectors",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListConnectorsRequest,
+  ListConnectorsResponse,
+  ListConnectorsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListConnectorsRequest,
+  ) => stream.Stream<
+    ListConnectorsResponse,
+    ListConnectorsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListConnectorsRequest,
+  ) => stream.Stream<
+    ConnectorSummary,
+    ListConnectorsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListCustomPluginsError =
   | BadRequestException
@@ -2097,7 +2145,27 @@ export const listCustomPlugins: API.OperationMethod<
     items: "customPlugins",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListCustomPluginsRequest,
+  ListCustomPluginsResponse,
+  ListCustomPluginsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListCustomPluginsRequest,
+  ) => stream.Stream<
+    ListCustomPluginsResponse,
+    ListCustomPluginsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListCustomPluginsRequest,
+  ) => stream.Stream<
+    CustomPluginSummary,
+    ListCustomPluginsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListTagsForResourceError =
   | BadRequestException
@@ -2186,7 +2254,27 @@ export const listWorkerConfigurations: API.OperationMethod<
     items: "workerConfigurations",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListWorkerConfigurationsRequest,
+  ListWorkerConfigurationsResponse,
+  ListWorkerConfigurationsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListWorkerConfigurationsRequest,
+  ) => stream.Stream<
+    ListWorkerConfigurationsResponse,
+    ListWorkerConfigurationsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListWorkerConfigurationsRequest,
+  ) => stream.Stream<
+    WorkerConfigurationSummary,
+    ListWorkerConfigurationsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type TagResourceError =
   | BadRequestException

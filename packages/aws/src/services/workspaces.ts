@@ -86,98 +86,121 @@ const rules = T.EndpointResolver((p, _) => {
   return err("Invalid Configuration: Missing Region");
 });
 
-export class AccessDeniedException extends S.TaggedErrorClass<AccessDeniedException>()(
-  "AccessDeniedException",
-  { message: S.optional(S.String) },
-).pipe(C.withAuthError) {}
-export class ApplicationNotSupportedException extends S.TaggedErrorClass<ApplicationNotSupportedException>()(
-  "ApplicationNotSupportedException",
-  {},
-) {}
-export class ComputeNotCompatibleException extends S.TaggedErrorClass<ComputeNotCompatibleException>()(
-  "ComputeNotCompatibleException",
-  {},
-) {}
-export class ConflictException extends S.TaggedErrorClass<ConflictException>()(
-  "ConflictException",
-  { message: S.optional(S.String) },
-) {}
-export class IncompatibleApplicationsException extends S.TaggedErrorClass<IncompatibleApplicationsException>()(
-  "IncompatibleApplicationsException",
-  {},
-) {}
-export class InternalServerException extends S.TaggedErrorClass<InternalServerException>()(
-  "InternalServerException",
-  { message: S.optional(S.String) },
-) {}
-export class InvalidParameterCombinationException extends S.TaggedErrorClass<InvalidParameterCombinationException>()(
-  "InvalidParameterCombinationException",
-  { message: S.optional(S.String) },
-) {}
-export class InvalidParameterValuesException extends S.TaggedErrorClass<InvalidParameterValuesException>()(
-  "InvalidParameterValuesException",
-  { message: S.optional(S.String) },
-) {}
-export class InvalidResourceStateException extends S.TaggedErrorClass<InvalidResourceStateException>()(
-  "InvalidResourceStateException",
-  { message: S.optional(S.String) },
-) {}
-export class OperatingSystemNotCompatibleException extends S.TaggedErrorClass<OperatingSystemNotCompatibleException>()(
-  "OperatingSystemNotCompatibleException",
-  {},
-) {}
-export class OperationInProgressException extends S.TaggedErrorClass<OperationInProgressException>()(
-  "OperationInProgressException",
-  { message: S.optional(S.String) },
-) {}
-export class OperationNotSupportedException extends S.TaggedErrorClass<OperationNotSupportedException>()(
-  "OperationNotSupportedException",
-  { message: S.optional(S.String), reason: S.optional(S.String) },
-) {}
-export class ResourceAlreadyExistsException extends S.TaggedErrorClass<ResourceAlreadyExistsException>()(
-  "ResourceAlreadyExistsException",
-  { message: S.optional(S.String) },
-).pipe(C.withAlreadyExistsError) {}
-export class ResourceAssociatedException extends S.TaggedErrorClass<ResourceAssociatedException>()(
-  "ResourceAssociatedException",
-  { message: S.optional(S.String) },
-) {}
-export class ResourceCreationFailedException extends S.TaggedErrorClass<ResourceCreationFailedException>()(
-  "ResourceCreationFailedException",
-  { message: S.optional(S.String) },
-) {}
-export class ResourceInUseException extends S.TaggedErrorClass<ResourceInUseException>()(
-  "ResourceInUseException",
-  { message: S.optional(S.String), ResourceId: S.optional(S.String) },
-) {}
-export class ResourceLimitExceededException extends S.TaggedErrorClass<ResourceLimitExceededException>()(
-  "ResourceLimitExceededException",
-  { message: S.optional(S.String) },
-) {}
-export class ResourceNotFoundException extends S.TaggedErrorClass<ResourceNotFoundException>()(
-  "ResourceNotFoundException",
-  { message: S.optional(S.String), ResourceId: S.optional(S.String) },
-) {}
-export class ResourceUnavailableException extends S.TaggedErrorClass<ResourceUnavailableException>()(
-  "ResourceUnavailableException",
-  { message: S.optional(S.String), ResourceId: S.optional(S.String) },
-) {}
-export class UnsupportedNetworkConfigurationException extends S.TaggedErrorClass<UnsupportedNetworkConfigurationException>()(
-  "UnsupportedNetworkConfigurationException",
-  { message: S.optional(S.String) },
-) {}
-export class UnsupportedWorkspaceConfigurationException extends S.TaggedErrorClass<UnsupportedWorkspaceConfigurationException>()(
-  "UnsupportedWorkspaceConfigurationException",
-  { message: S.optional(S.String) },
-) {}
-export class ValidationException extends S.TaggedErrorClass<ValidationException>()(
-  "ValidationException",
-  { message: S.optional(S.String) },
-) {}
-export class WorkspacesDefaultRoleNotFoundException extends S.TaggedErrorClass<WorkspacesDefaultRoleNotFoundException>()(
-  "WorkspacesDefaultRoleNotFoundException",
-  { message: S.optional(S.String) },
-) {}
+export class AccessDeniedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
+    "AccessDeniedException",
+    { message: S.optional(S.String) },
+  ).pipe(C.withAuthError) {}
+export class ApplicationNotSupportedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ApplicationNotSupportedException>()(
+    "ApplicationNotSupportedException",
+    {},
+  ) {}
+export class ComputeNotCompatibleException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ComputeNotCompatibleException>()(
+    "ComputeNotCompatibleException",
+    {},
+  ) {}
+export class ConflictException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
+    "ConflictException",
+    { message: S.optional(S.String) },
+  ) {}
+export class IncompatibleApplicationsException
+  extends /*@__PURE__*/ S.TaggedErrorClass<IncompatibleApplicationsException>()(
+    "IncompatibleApplicationsException",
+    {},
+  ) {}
+export class InternalServerException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
+    "InternalServerException",
+    { message: S.optional(S.String) },
+  ) {}
+export class InvalidParameterCombinationException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidParameterCombinationException>()(
+    "InvalidParameterCombinationException",
+    { message: S.optional(S.String) },
+  ) {}
+export class InvalidParameterValuesException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidParameterValuesException>()(
+    "InvalidParameterValuesException",
+    { message: S.optional(S.String) },
+  ) {}
+export class InvalidResourceStateException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidResourceStateException>()(
+    "InvalidResourceStateException",
+    { message: S.optional(S.String) },
+  ) {}
+export class OperatingSystemNotCompatibleException
+  extends /*@__PURE__*/ S.TaggedErrorClass<OperatingSystemNotCompatibleException>()(
+    "OperatingSystemNotCompatibleException",
+    {},
+  ) {}
+export class OperationInProgressException
+  extends /*@__PURE__*/ S.TaggedErrorClass<OperationInProgressException>()(
+    "OperationInProgressException",
+    { message: S.optional(S.String) },
+  ) {}
+export class OperationNotSupportedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<OperationNotSupportedException>()(
+    "OperationNotSupportedException",
+    { message: S.optional(S.String), reason: S.optional(S.String) },
+  ) {}
+export class ResourceAlreadyExistsException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceAlreadyExistsException>()(
+    "ResourceAlreadyExistsException",
+    { message: S.optional(S.String) },
+  ).pipe(C.withAlreadyExistsError) {}
+export class ResourceAssociatedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceAssociatedException>()(
+    "ResourceAssociatedException",
+    { message: S.optional(S.String) },
+  ) {}
+export class ResourceCreationFailedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceCreationFailedException>()(
+    "ResourceCreationFailedException",
+    { message: S.optional(S.String) },
+  ) {}
+export class ResourceInUseException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceInUseException>()(
+    "ResourceInUseException",
+    { message: S.optional(S.String), ResourceId: S.optional(S.String) },
+  ) {}
+export class ResourceLimitExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceLimitExceededException>()(
+    "ResourceLimitExceededException",
+    { message: S.optional(S.String) },
+  ) {}
+export class ResourceNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
+    "ResourceNotFoundException",
+    { message: S.optional(S.String), ResourceId: S.optional(S.String) },
+  ) {}
+export class ResourceUnavailableException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceUnavailableException>()(
+    "ResourceUnavailableException",
+    { message: S.optional(S.String), ResourceId: S.optional(S.String) },
+  ) {}
+export class UnsupportedNetworkConfigurationException
+  extends /*@__PURE__*/ S.TaggedErrorClass<UnsupportedNetworkConfigurationException>()(
+    "UnsupportedNetworkConfigurationException",
+    { message: S.optional(S.String) },
+  ) {}
+export class UnsupportedWorkspaceConfigurationException
+  extends /*@__PURE__*/ S.TaggedErrorClass<UnsupportedWorkspaceConfigurationException>()(
+    "UnsupportedWorkspaceConfigurationException",
+    { message: S.optional(S.String) },
+  ) {}
+export class ValidationException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
+    "ValidationException",
+    { message: S.optional(S.String) },
+  ) {}
+export class WorkspacesDefaultRoleNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<WorkspacesDefaultRoleNotFoundException>()(
+    "WorkspacesDefaultRoleNotFoundException",
+    { message: S.optional(S.String) },
+  ) {}
 export type LinkId = string;
 export type ClientToken = string;
 export interface AcceptAccountLinkInvitationRequest {
@@ -6261,7 +6284,27 @@ export const describeApplicationAssociations: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  DescribeApplicationAssociationsRequest,
+  DescribeApplicationAssociationsResult,
+  DescribeApplicationAssociationsError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: DescribeApplicationAssociationsRequest,
+  ) => stream.Stream<
+    DescribeApplicationAssociationsResult,
+    DescribeApplicationAssociationsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: DescribeApplicationAssociationsRequest,
+  ) => stream.Stream<
+    unknown,
+    DescribeApplicationAssociationsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type DescribeApplicationsError =
   | AccessDeniedException
@@ -6309,7 +6352,27 @@ export const describeApplications: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  DescribeApplicationsRequest,
+  DescribeApplicationsResult,
+  DescribeApplicationsError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: DescribeApplicationsRequest,
+  ) => stream.Stream<
+    DescribeApplicationsResult,
+    DescribeApplicationsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: DescribeApplicationsRequest,
+  ) => stream.Stream<
+    unknown,
+    DescribeApplicationsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type DescribeBundleAssociationsError =
   | AccessDeniedException
@@ -6638,7 +6701,27 @@ export const describeWorkspaceBundles: API.OperationMethod<
     outputToken: "NextToken",
     items: "Bundles",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  DescribeWorkspaceBundlesRequest,
+  DescribeWorkspaceBundlesResult,
+  DescribeWorkspaceBundlesError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: DescribeWorkspaceBundlesRequest,
+  ) => stream.Stream<
+    DescribeWorkspaceBundlesResult,
+    DescribeWorkspaceBundlesError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: DescribeWorkspaceBundlesRequest,
+  ) => stream.Stream<
+    WorkspaceBundle,
+    DescribeWorkspaceBundlesError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type DescribeWorkspaceDirectoriesError =
   | InvalidParameterValuesException
@@ -6678,7 +6761,27 @@ export const describeWorkspaceDirectories: API.OperationMethod<
     outputToken: "NextToken",
     items: "Directories",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  DescribeWorkspaceDirectoriesRequest,
+  DescribeWorkspaceDirectoriesResult,
+  DescribeWorkspaceDirectoriesError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: DescribeWorkspaceDirectoriesRequest,
+  ) => stream.Stream<
+    DescribeWorkspaceDirectoriesResult,
+    DescribeWorkspaceDirectoriesError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: DescribeWorkspaceDirectoriesRequest,
+  ) => stream.Stream<
+    WorkspaceDirectory,
+    DescribeWorkspaceDirectoriesError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type DescribeWorkspaceImagePermissionsError =
   | AccessDeniedException
@@ -6768,7 +6871,27 @@ export const describeWorkspaces: API.OperationMethod<
     items: "Workspaces",
     pageSize: "Limit",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  DescribeWorkspacesRequest,
+  DescribeWorkspacesResult,
+  DescribeWorkspacesError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: DescribeWorkspacesRequest,
+  ) => stream.Stream<
+    DescribeWorkspacesResult,
+    DescribeWorkspacesError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: DescribeWorkspacesRequest,
+  ) => stream.Stream<
+    Workspace,
+    DescribeWorkspacesError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type DescribeWorkspacesConnectionStatusError =
   | InvalidParameterValuesException
@@ -7154,7 +7277,27 @@ export const listAccountLinks: API.OperationMethod<
     items: "AccountLinks",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListAccountLinksRequest,
+  ListAccountLinksResult,
+  ListAccountLinksError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListAccountLinksRequest,
+  ) => stream.Stream<
+    ListAccountLinksResult,
+    ListAccountLinksError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListAccountLinksRequest,
+  ) => stream.Stream<
+    AccountLink,
+    ListAccountLinksError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type ListAvailableManagementCidrRangesError =
   | AccessDeniedException

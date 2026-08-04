@@ -87,66 +87,72 @@ const rules = T.EndpointResolver((p, _) => {
   return err("Invalid Configuration: Missing Region");
 });
 
-export class InternalException extends S.TaggedErrorClass<InternalException>()(
-  "InternalException",
-  { message: S.optional(S.String), errorCode: S.optional(S.String) },
-) {}
-export class InvalidRequestException extends S.TaggedErrorClass<InvalidRequestException>()(
-  "InvalidRequestException",
-  {
-    message: S.optional(S.String),
-    errorCode: S.optional(S.String),
-    datasyncErrorCode: S.optional(S.String),
-  },
-) {}
-export class LocationAccessTestFailed extends S.TaggedErrorClass<LocationAccessTestFailed>()(
-  "LocationAccessTestFailed",
-  {
-    message: S.optional(S.String),
-    errorCode: S.optional(S.String),
-    datasyncErrorCode: S.optional(S.String),
-  },
-  T.SyntheticError({
-    from: "InvalidRequestException",
-    message: { includes: "location access test failed" },
-  }),
-).pipe(C.withRetryableError) {}
-export class LocationNotFound extends S.TaggedErrorClass<LocationNotFound>()(
-  "LocationNotFound",
-  {
-    message: S.optional(S.String),
-    errorCode: S.optional(S.String),
-    datasyncErrorCode: S.optional(S.String),
-  },
-  T.SyntheticError({
-    from: "InvalidRequestException",
-    message: { matches: "^Location .* is not found" },
-  }),
-).pipe(C.withNotFoundError) {}
-export class LocationRoleNotAssumable extends S.TaggedErrorClass<LocationRoleNotAssumable>()(
-  "LocationRoleNotAssumable",
-  {
-    message: S.optional(S.String),
-    errorCode: S.optional(S.String),
-    datasyncErrorCode: S.optional(S.String),
-  },
-  T.SyntheticError({
-    from: "InvalidRequestException",
-    message: { includes: "Invalid IAM role" },
-  }),
-).pipe(C.withRetryableError) {}
-export class TaskNotFound extends S.TaggedErrorClass<TaskNotFound>()(
-  "TaskNotFound",
-  {
-    message: S.optional(S.String),
-    errorCode: S.optional(S.String),
-    datasyncErrorCode: S.optional(S.String),
-  },
-  T.SyntheticError({
-    from: "InvalidRequestException",
-    message: { matches: "^Task .* is not found" },
-  }),
-).pipe(C.withNotFoundError) {}
+export class InternalException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InternalException>()(
+    "InternalException",
+    { message: S.optional(S.String), errorCode: S.optional(S.String) },
+  ) {}
+export class InvalidRequestException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidRequestException>()(
+    "InvalidRequestException",
+    {
+      message: S.optional(S.String),
+      errorCode: S.optional(S.String),
+      datasyncErrorCode: S.optional(S.String),
+    },
+  ) {}
+export class LocationAccessTestFailed
+  extends /*@__PURE__*/ S.TaggedErrorClass<LocationAccessTestFailed>()(
+    "LocationAccessTestFailed",
+    {
+      message: S.optional(S.String),
+      errorCode: S.optional(S.String),
+      datasyncErrorCode: S.optional(S.String),
+    },
+    T.SyntheticError({
+      from: "InvalidRequestException",
+      message: { includes: "location access test failed" },
+    }),
+  ).pipe(C.withRetryableError) {}
+export class LocationNotFound
+  extends /*@__PURE__*/ S.TaggedErrorClass<LocationNotFound>()(
+    "LocationNotFound",
+    {
+      message: S.optional(S.String),
+      errorCode: S.optional(S.String),
+      datasyncErrorCode: S.optional(S.String),
+    },
+    T.SyntheticError({
+      from: "InvalidRequestException",
+      message: { matches: "^Location .* is not found" },
+    }),
+  ).pipe(C.withNotFoundError) {}
+export class LocationRoleNotAssumable
+  extends /*@__PURE__*/ S.TaggedErrorClass<LocationRoleNotAssumable>()(
+    "LocationRoleNotAssumable",
+    {
+      message: S.optional(S.String),
+      errorCode: S.optional(S.String),
+      datasyncErrorCode: S.optional(S.String),
+    },
+    T.SyntheticError({
+      from: "InvalidRequestException",
+      message: { includes: "Invalid IAM role" },
+    }),
+  ).pipe(C.withRetryableError) {}
+export class TaskNotFound
+  extends /*@__PURE__*/ S.TaggedErrorClass<TaskNotFound>()(
+    "TaskNotFound",
+    {
+      message: S.optional(S.String),
+      errorCode: S.optional(S.String),
+      datasyncErrorCode: S.optional(S.String),
+    },
+    T.SyntheticError({
+      from: "InvalidRequestException",
+      message: { matches: "^Task .* is not found" },
+    }),
+  ).pipe(C.withNotFoundError) {}
 export type TaskExecutionArn = string;
 export interface CancelTaskExecutionRequest {
   TaskExecutionArn: string;
@@ -3512,7 +3518,27 @@ export const listAgents: API.OperationMethod<
     items: "Agents",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListAgentsRequest,
+  ListAgentsResponse,
+  ListAgentsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListAgentsRequest,
+  ) => stream.Stream<
+    ListAgentsResponse,
+    ListAgentsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListAgentsRequest,
+  ) => stream.Stream<
+    AgentListEntry,
+    ListAgentsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListLocationsError =
   | InternalException
@@ -3558,7 +3584,27 @@ export const listLocations: API.OperationMethod<
     items: "Locations",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListLocationsRequest,
+  ListLocationsResponse,
+  ListLocationsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListLocationsRequest,
+  ) => stream.Stream<
+    ListLocationsResponse,
+    ListLocationsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListLocationsRequest,
+  ) => stream.Stream<
+    LocationListEntry,
+    ListLocationsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListTagsForResourceError =
   | InternalException
@@ -3600,7 +3646,27 @@ export const listTagsForResource: API.OperationMethod<
     items: "Tags",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListTagsForResourceRequest,
+  ListTagsForResourceResponse,
+  ListTagsForResourceError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListTagsForResourceRequest,
+  ) => stream.Stream<
+    ListTagsForResourceResponse,
+    ListTagsForResourceError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListTagsForResourceRequest,
+  ) => stream.Stream<
+    TagListEntry,
+    ListTagsForResourceError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListTaskExecutionsError =
   | InternalException
@@ -3642,7 +3708,27 @@ export const listTaskExecutions: API.OperationMethod<
     items: "TaskExecutions",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListTaskExecutionsRequest,
+  ListTaskExecutionsResponse,
+  ListTaskExecutionsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListTaskExecutionsRequest,
+  ) => stream.Stream<
+    ListTaskExecutionsResponse,
+    ListTaskExecutionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListTaskExecutionsRequest,
+  ) => stream.Stream<
+    TaskExecutionListEntry,
+    ListTaskExecutionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListTasksError =
   | InternalException
@@ -3684,7 +3770,27 @@ export const listTasks: API.OperationMethod<
     items: "Tasks",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListTasksRequest,
+  ListTasksResponse,
+  ListTasksError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListTasksRequest,
+  ) => stream.Stream<
+    ListTasksResponse,
+    ListTasksError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListTasksRequest,
+  ) => stream.Stream<
+    TaskListEntry,
+    ListTasksError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type StartTaskExecutionError =
   | InternalException

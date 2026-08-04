@@ -88,82 +88,101 @@ const rules = T.EndpointResolver((p, _) => {
   return err("Invalid Configuration: Missing Region");
 });
 
-export class CertificateMismatchException extends S.TaggedErrorClass<CertificateMismatchException>()(
-  "CertificateMismatchException",
-  { message: S.optional(S.String) },
-) {}
-export class ConcurrentModificationException extends S.TaggedErrorClass<ConcurrentModificationException>()(
-  "ConcurrentModificationException",
-  { message: S.optional(S.String) },
-) {}
-export class InvalidArgsException extends S.TaggedErrorClass<InvalidArgsException>()(
-  "InvalidArgsException",
-  { message: S.optional(S.String) },
-) {}
-export class InvalidArnException extends S.TaggedErrorClass<InvalidArnException>()(
-  "InvalidArnException",
-  { message: S.optional(S.String) },
-) {}
-export class InvalidNextTokenException extends S.TaggedErrorClass<InvalidNextTokenException>()(
-  "InvalidNextTokenException",
-  { message: S.optional(S.String) },
-) {}
-export class InvalidPolicyException extends S.TaggedErrorClass<InvalidPolicyException>()(
-  "InvalidPolicyException",
-  { message: S.optional(S.String) },
-) {}
-export class InvalidRequestException extends S.TaggedErrorClass<InvalidRequestException>()(
-  "InvalidRequestException",
-  { message: S.optional(S.String) },
-) {}
-export class InvalidStateException extends S.TaggedErrorClass<InvalidStateException>()(
-  "InvalidStateException",
-  { message: S.optional(S.String) },
-) {}
-export class InvalidTagException extends S.TaggedErrorClass<InvalidTagException>()(
-  "InvalidTagException",
-  { message: S.optional(S.String) },
-) {}
-export class LimitExceededException extends S.TaggedErrorClass<LimitExceededException>()(
-  "LimitExceededException",
-  { message: S.optional(S.String) },
-) {}
-export class LockoutPreventedException extends S.TaggedErrorClass<LockoutPreventedException>()(
-  "LockoutPreventedException",
-  { message: S.optional(S.String) },
-) {}
-export class MalformedCertificateException extends S.TaggedErrorClass<MalformedCertificateException>()(
-  "MalformedCertificateException",
-  { message: S.optional(S.String) },
-) {}
-export class MalformedCSRException extends S.TaggedErrorClass<MalformedCSRException>()(
-  "MalformedCSRException",
-  { message: S.optional(S.String) },
-) {}
-export class PermissionAlreadyExistsException extends S.TaggedErrorClass<PermissionAlreadyExistsException>()(
-  "PermissionAlreadyExistsException",
-  { message: S.optional(S.String) },
-).pipe(C.withAlreadyExistsError) {}
-export class RequestAlreadyProcessedException extends S.TaggedErrorClass<RequestAlreadyProcessedException>()(
-  "RequestAlreadyProcessedException",
-  { message: S.optional(S.String) },
-) {}
-export class RequestFailedException extends S.TaggedErrorClass<RequestFailedException>()(
-  "RequestFailedException",
-  { message: S.optional(S.String) },
-) {}
-export class RequestInProgressException extends S.TaggedErrorClass<RequestInProgressException>()(
-  "RequestInProgressException",
-  { message: S.optional(S.String) },
-) {}
-export class ResourceNotFoundException extends S.TaggedErrorClass<ResourceNotFoundException>()(
-  "ResourceNotFoundException",
-  { message: S.optional(S.String) },
-) {}
-export class TooManyTagsException extends S.TaggedErrorClass<TooManyTagsException>()(
-  "TooManyTagsException",
-  { message: S.optional(S.String) },
-) {}
+export class CertificateMismatchException
+  extends /*@__PURE__*/ S.TaggedErrorClass<CertificateMismatchException>()(
+    "CertificateMismatchException",
+    { message: S.optional(S.String) },
+  ) {}
+export class ConcurrentModificationException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ConcurrentModificationException>()(
+    "ConcurrentModificationException",
+    { message: S.optional(S.String) },
+  ) {}
+export class InvalidArgsException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidArgsException>()(
+    "InvalidArgsException",
+    { message: S.optional(S.String) },
+  ) {}
+export class InvalidArnException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidArnException>()(
+    "InvalidArnException",
+    { message: S.optional(S.String) },
+  ) {}
+export class InvalidNextTokenException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidNextTokenException>()(
+    "InvalidNextTokenException",
+    { message: S.optional(S.String) },
+  ) {}
+export class InvalidPolicyException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidPolicyException>()(
+    "InvalidPolicyException",
+    { message: S.optional(S.String) },
+  ) {}
+export class InvalidRequestException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidRequestException>()(
+    "InvalidRequestException",
+    { message: S.optional(S.String) },
+  ) {}
+export class InvalidStateException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidStateException>()(
+    "InvalidStateException",
+    { message: S.optional(S.String) },
+  ) {}
+export class InvalidTagException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidTagException>()(
+    "InvalidTagException",
+    { message: S.optional(S.String) },
+  ) {}
+export class LimitExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<LimitExceededException>()(
+    "LimitExceededException",
+    { message: S.optional(S.String) },
+  ) {}
+export class LockoutPreventedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<LockoutPreventedException>()(
+    "LockoutPreventedException",
+    { message: S.optional(S.String) },
+  ) {}
+export class MalformedCertificateException
+  extends /*@__PURE__*/ S.TaggedErrorClass<MalformedCertificateException>()(
+    "MalformedCertificateException",
+    { message: S.optional(S.String) },
+  ) {}
+export class MalformedCSRException
+  extends /*@__PURE__*/ S.TaggedErrorClass<MalformedCSRException>()(
+    "MalformedCSRException",
+    { message: S.optional(S.String) },
+  ) {}
+export class PermissionAlreadyExistsException
+  extends /*@__PURE__*/ S.TaggedErrorClass<PermissionAlreadyExistsException>()(
+    "PermissionAlreadyExistsException",
+    { message: S.optional(S.String) },
+  ).pipe(C.withAlreadyExistsError) {}
+export class RequestAlreadyProcessedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<RequestAlreadyProcessedException>()(
+    "RequestAlreadyProcessedException",
+    { message: S.optional(S.String) },
+  ) {}
+export class RequestFailedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<RequestFailedException>()(
+    "RequestFailedException",
+    { message: S.optional(S.String) },
+  ) {}
+export class RequestInProgressException
+  extends /*@__PURE__*/ S.TaggedErrorClass<RequestInProgressException>()(
+    "RequestInProgressException",
+    { message: S.optional(S.String) },
+  ) {}
+export class ResourceNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
+    "ResourceNotFoundException",
+    { message: S.optional(S.String) },
+  ) {}
+export class TooManyTagsException
+  extends /*@__PURE__*/ S.TaggedErrorClass<TooManyTagsException>()(
+    "TooManyTagsException",
+    { message: S.optional(S.String) },
+  ) {}
 export type KeyAlgorithm =
   | "RSA_2048"
   | "RSA_3072"
@@ -1856,7 +1875,27 @@ export const listCertificateAuthorities: API.OperationMethod<
     items: "CertificateAuthorities",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListCertificateAuthoritiesRequest,
+  ListCertificateAuthoritiesResponse,
+  ListCertificateAuthoritiesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListCertificateAuthoritiesRequest,
+  ) => stream.Stream<
+    ListCertificateAuthoritiesResponse,
+    ListCertificateAuthoritiesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListCertificateAuthoritiesRequest,
+  ) => stream.Stream<
+    CertificateAuthority,
+    ListCertificateAuthoritiesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListPermissionsError =
   | InvalidArnException
@@ -1918,7 +1957,27 @@ export const listPermissions: API.OperationMethod<
     items: "Permissions",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListPermissionsRequest,
+  ListPermissionsResponse,
+  ListPermissionsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListPermissionsRequest,
+  ) => stream.Stream<
+    ListPermissionsResponse,
+    ListPermissionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListPermissionsRequest,
+  ) => stream.Stream<
+    Permission,
+    ListPermissionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListTagsError =
   | InvalidArnException
@@ -1967,7 +2026,27 @@ export const listTags: API.OperationMethod<
     items: "Tags",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListTagsRequest,
+  ListTagsResponse,
+  ListTagsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListTagsRequest,
+  ) => stream.Stream<
+    ListTagsResponse,
+    ListTagsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListTagsRequest,
+  ) => stream.Stream<
+    Tag,
+    ListTagsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type PutPolicyError =
   | ConcurrentModificationException

@@ -85,36 +85,43 @@ const rules = T.EndpointResolver((p, _) => {
   return err("Invalid Configuration: Missing Region");
 });
 
-export class AccessDeniedException extends S.TaggedErrorClass<AccessDeniedException>()(
-  "AccessDeniedException",
-  { message: S.optional(S.String) },
-).pipe(C.withAuthError) {}
-export class ConflictException extends S.TaggedErrorClass<ConflictException>()(
-  "ConflictException",
-  { message: S.optional(S.String) },
-) {}
-export class InternalServerException extends S.TaggedErrorClass<InternalServerException>()(
-  "InternalServerException",
-  { message: S.optional(S.String) },
-  T.HttpError(500),
-).pipe(C.withServerError) {}
-export class ResourceNotFoundException extends S.TaggedErrorClass<ResourceNotFoundException>()(
-  "ResourceNotFoundException",
-  { message: S.optional(S.String) },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class ServiceQuotaExceededException extends S.TaggedErrorClass<ServiceQuotaExceededException>()(
-  "ServiceQuotaExceededException",
-  { message: S.optional(S.String) },
-) {}
-export class ThrottlingException extends S.TaggedErrorClass<ThrottlingException>()(
-  "ThrottlingException",
-  { message: S.optional(S.String) },
-) {}
-export class ValidationException extends S.TaggedErrorClass<ValidationException>()(
-  "ValidationException",
-  { message: S.optional(S.String) },
-) {}
+export class AccessDeniedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
+    "AccessDeniedException",
+    { message: S.optional(S.String) },
+  ).pipe(C.withAuthError) {}
+export class ConflictException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
+    "ConflictException",
+    { message: S.optional(S.String) },
+  ) {}
+export class InternalServerException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
+    "InternalServerException",
+    { message: S.optional(S.String) },
+    T.HttpError(500),
+  ).pipe(C.withServerError) {}
+export class ResourceNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
+    "ResourceNotFoundException",
+    { message: S.optional(S.String) },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class ServiceQuotaExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
+    "ServiceQuotaExceededException",
+    { message: S.optional(S.String) },
+  ) {}
+export class ThrottlingException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
+    "ThrottlingException",
+    { message: S.optional(S.String) },
+  ) {}
+export class ValidationException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
+    "ValidationException",
+    { message: S.optional(S.String) },
+  ) {}
 export type Directory = string;
 export type IpV4 = string;
 export type IpV4List = string[];
@@ -1224,7 +1231,27 @@ export const listIdentityProviders: API.OperationMethod<
     items: "IdentityProviderSummaries",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListIdentityProvidersRequest,
+  ListIdentityProvidersResponse,
+  ListIdentityProvidersError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListIdentityProvidersRequest,
+  ) => stream.Stream<
+    ListIdentityProvidersResponse,
+    ListIdentityProvidersError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListIdentityProvidersRequest,
+  ) => stream.Stream<
+    IdentityProviderSummary,
+    ListIdentityProvidersError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListInstancesError =
   | AccessDeniedException
@@ -1279,7 +1306,27 @@ export const listInstances: API.OperationMethod<
     items: "InstanceSummaries",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListInstancesRequest,
+  ListInstancesResponse,
+  ListInstancesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListInstancesRequest,
+  ) => stream.Stream<
+    ListInstancesResponse,
+    ListInstancesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListInstancesRequest,
+  ) => stream.Stream<
+    InstanceSummary,
+    ListInstancesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListLicenseServerEndpointsError =
   | AccessDeniedException
@@ -1332,7 +1379,27 @@ export const listLicenseServerEndpoints: API.OperationMethod<
     items: "LicenseServerEndpoints",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListLicenseServerEndpointsRequest,
+  ListLicenseServerEndpointsResponse,
+  ListLicenseServerEndpointsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListLicenseServerEndpointsRequest,
+  ) => stream.Stream<
+    ListLicenseServerEndpointsResponse,
+    ListLicenseServerEndpointsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListLicenseServerEndpointsRequest,
+  ) => stream.Stream<
+    LicenseServerEndpoint,
+    ListLicenseServerEndpointsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListProductSubscriptionsError =
   | AccessDeniedException
@@ -1387,7 +1454,27 @@ export const listProductSubscriptions: API.OperationMethod<
     items: "ProductUserSummaries",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListProductSubscriptionsRequest,
+  ListProductSubscriptionsResponse,
+  ListProductSubscriptionsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListProductSubscriptionsRequest,
+  ) => stream.Stream<
+    ListProductSubscriptionsResponse,
+    ListProductSubscriptionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListProductSubscriptionsRequest,
+  ) => stream.Stream<
+    ProductUserSummary,
+    ListProductSubscriptionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListTagsForResourceError =
   | InternalServerException
@@ -1468,7 +1555,27 @@ export const listUserAssociations: API.OperationMethod<
     items: "InstanceUserSummaries",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListUserAssociationsRequest,
+  ListUserAssociationsResponse,
+  ListUserAssociationsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListUserAssociationsRequest,
+  ) => stream.Stream<
+    ListUserAssociationsResponse,
+    ListUserAssociationsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListUserAssociationsRequest,
+  ) => stream.Stream<
+    InstanceUserSummary,
+    ListUserAssociationsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type RegisterIdentityProviderError =
   | AccessDeniedException

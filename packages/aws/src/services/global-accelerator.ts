@@ -85,106 +85,126 @@ const rules = T.EndpointResolver((p, _) => {
   return err("Invalid Configuration: Missing Region");
 });
 
-export class AcceleratorNotDisabledException extends S.TaggedErrorClass<AcceleratorNotDisabledException>()(
-  "AcceleratorNotDisabledException",
-  { Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class AcceleratorNotFoundException extends S.TaggedErrorClass<AcceleratorNotFoundException>()(
-  "AcceleratorNotFoundException",
-  { Message: S.optional(S.String) },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class AccessDeniedException extends S.TaggedErrorClass<AccessDeniedException>()(
-  "AccessDeniedException",
-  { Message: S.optional(S.String) },
-  T.HttpError(403),
-).pipe(C.withAuthError) {}
-export class AssociatedEndpointGroupFoundException extends S.TaggedErrorClass<AssociatedEndpointGroupFoundException>()(
-  "AssociatedEndpointGroupFoundException",
-  { Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class AssociatedListenerFoundException extends S.TaggedErrorClass<AssociatedListenerFoundException>()(
-  "AssociatedListenerFoundException",
-  { Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class AttachmentNotFoundException extends S.TaggedErrorClass<AttachmentNotFoundException>()(
-  "AttachmentNotFoundException",
-  { Message: S.optional(S.String) },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class ByoipCidrNotFoundException extends S.TaggedErrorClass<ByoipCidrNotFoundException>()(
-  "ByoipCidrNotFoundException",
-  { Message: S.optional(S.String) },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class ConflictException extends S.TaggedErrorClass<ConflictException>()(
-  "ConflictException",
-  { Message: S.optional(S.String) },
-  T.HttpError(409),
-).pipe(C.withConflictError) {}
-export class EndpointAlreadyExistsException extends S.TaggedErrorClass<EndpointAlreadyExistsException>()(
-  "EndpointAlreadyExistsException",
-  { Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError, C.withAlreadyExistsError) {}
-export class EndpointGroupAlreadyExistsException extends S.TaggedErrorClass<EndpointGroupAlreadyExistsException>()(
-  "EndpointGroupAlreadyExistsException",
-  { Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError, C.withAlreadyExistsError) {}
-export class EndpointGroupNotFoundException extends S.TaggedErrorClass<EndpointGroupNotFoundException>()(
-  "EndpointGroupNotFoundException",
-  { Message: S.optional(S.String) },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class EndpointNotFoundException extends S.TaggedErrorClass<EndpointNotFoundException>()(
-  "EndpointNotFoundException",
-  { Message: S.optional(S.String) },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class IncorrectCidrStateException extends S.TaggedErrorClass<IncorrectCidrStateException>()(
-  "IncorrectCidrStateException",
-  { Message: S.optional(S.String) },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class InternalServiceErrorException extends S.TaggedErrorClass<InternalServiceErrorException>()(
-  "InternalServiceErrorException",
-  { Message: S.optional(S.String) },
-  T.HttpError(500),
-).pipe(C.withServerError) {}
-export class InvalidArgumentException extends S.TaggedErrorClass<InvalidArgumentException>()(
-  "InvalidArgumentException",
-  { Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class InvalidNextTokenException extends S.TaggedErrorClass<InvalidNextTokenException>()(
-  "InvalidNextTokenException",
-  { Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class InvalidPortRangeException extends S.TaggedErrorClass<InvalidPortRangeException>()(
-  "InvalidPortRangeException",
-  { Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class LimitExceededException extends S.TaggedErrorClass<LimitExceededException>()(
-  "LimitExceededException",
-  { Message: S.optional(S.String) },
-  T.HttpError(403),
-).pipe(C.withAuthError) {}
-export class ListenerNotFoundException extends S.TaggedErrorClass<ListenerNotFoundException>()(
-  "ListenerNotFoundException",
-  { Message: S.optional(S.String) },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class TransactionInProgressException extends S.TaggedErrorClass<TransactionInProgressException>()(
-  "TransactionInProgressException",
-  { Message: S.optional(S.String) },
-  T.HttpError(409),
-).pipe(C.withConflictError) {}
+export class AcceleratorNotDisabledException
+  extends /*@__PURE__*/ S.TaggedErrorClass<AcceleratorNotDisabledException>()(
+    "AcceleratorNotDisabledException",
+    { Message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class AcceleratorNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<AcceleratorNotFoundException>()(
+    "AcceleratorNotFoundException",
+    { Message: S.optional(S.String) },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class AccessDeniedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
+    "AccessDeniedException",
+    { Message: S.optional(S.String) },
+    T.HttpError(403),
+  ).pipe(C.withAuthError) {}
+export class AssociatedEndpointGroupFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<AssociatedEndpointGroupFoundException>()(
+    "AssociatedEndpointGroupFoundException",
+    { Message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class AssociatedListenerFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<AssociatedListenerFoundException>()(
+    "AssociatedListenerFoundException",
+    { Message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class AttachmentNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<AttachmentNotFoundException>()(
+    "AttachmentNotFoundException",
+    { Message: S.optional(S.String) },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class ByoipCidrNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ByoipCidrNotFoundException>()(
+    "ByoipCidrNotFoundException",
+    { Message: S.optional(S.String) },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class ConflictException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
+    "ConflictException",
+    { Message: S.optional(S.String) },
+    T.HttpError(409),
+  ).pipe(C.withConflictError) {}
+export class EndpointAlreadyExistsException
+  extends /*@__PURE__*/ S.TaggedErrorClass<EndpointAlreadyExistsException>()(
+    "EndpointAlreadyExistsException",
+    { Message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError, C.withAlreadyExistsError) {}
+export class EndpointGroupAlreadyExistsException
+  extends /*@__PURE__*/ S.TaggedErrorClass<EndpointGroupAlreadyExistsException>()(
+    "EndpointGroupAlreadyExistsException",
+    { Message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError, C.withAlreadyExistsError) {}
+export class EndpointGroupNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<EndpointGroupNotFoundException>()(
+    "EndpointGroupNotFoundException",
+    { Message: S.optional(S.String) },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class EndpointNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<EndpointNotFoundException>()(
+    "EndpointNotFoundException",
+    { Message: S.optional(S.String) },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class IncorrectCidrStateException
+  extends /*@__PURE__*/ S.TaggedErrorClass<IncorrectCidrStateException>()(
+    "IncorrectCidrStateException",
+    { Message: S.optional(S.String) },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class InternalServiceErrorException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InternalServiceErrorException>()(
+    "InternalServiceErrorException",
+    { Message: S.optional(S.String) },
+    T.HttpError(500),
+  ).pipe(C.withServerError) {}
+export class InvalidArgumentException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidArgumentException>()(
+    "InvalidArgumentException",
+    { Message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class InvalidNextTokenException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidNextTokenException>()(
+    "InvalidNextTokenException",
+    { Message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class InvalidPortRangeException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidPortRangeException>()(
+    "InvalidPortRangeException",
+    { Message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class LimitExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<LimitExceededException>()(
+    "LimitExceededException",
+    { Message: S.optional(S.String) },
+    T.HttpError(403),
+  ).pipe(C.withAuthError) {}
+export class ListenerNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ListenerNotFoundException>()(
+    "ListenerNotFoundException",
+    { Message: S.optional(S.String) },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class TransactionInProgressException
+  extends /*@__PURE__*/ S.TaggedErrorClass<TransactionInProgressException>()(
+    "TransactionInProgressException",
+    { Message: S.optional(S.String) },
+    T.HttpError(409),
+  ).pipe(C.withConflictError) {}
 export interface CustomRoutingEndpointConfiguration {
   EndpointId?: string;
   AttachmentArn?: string;
@@ -3101,7 +3121,27 @@ export const listAccelerators: API.OperationMethod<
     items: "Accelerators",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListAcceleratorsRequest,
+  ListAcceleratorsResponse,
+  ListAcceleratorsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListAcceleratorsRequest,
+  ) => stream.Stream<
+    ListAcceleratorsResponse,
+    ListAcceleratorsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListAcceleratorsRequest,
+  ) => stream.Stream<
+    Accelerator,
+    ListAcceleratorsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListByoipCidrsError =
   | AccessDeniedException
@@ -3151,7 +3191,27 @@ export const listByoipCidrs: API.OperationMethod<
     items: "ByoipCidrs",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListByoipCidrsRequest,
+  ListByoipCidrsResponse,
+  ListByoipCidrsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListByoipCidrsRequest,
+  ) => stream.Stream<
+    ListByoipCidrsResponse,
+    ListByoipCidrsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListByoipCidrsRequest,
+  ) => stream.Stream<
+    ByoipCidr,
+    ListByoipCidrsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListCrossAccountAttachmentsError =
   | AccessDeniedException
@@ -3200,7 +3260,27 @@ export const listCrossAccountAttachments: API.OperationMethod<
     items: "CrossAccountAttachments",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListCrossAccountAttachmentsRequest,
+  ListCrossAccountAttachmentsResponse,
+  ListCrossAccountAttachmentsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListCrossAccountAttachmentsRequest,
+  ) => stream.Stream<
+    ListCrossAccountAttachmentsResponse,
+    ListCrossAccountAttachmentsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListCrossAccountAttachmentsRequest,
+  ) => stream.Stream<
+    Attachment,
+    ListCrossAccountAttachmentsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListCrossAccountResourceAccountsError =
   | AccessDeniedException
@@ -3276,7 +3356,27 @@ export const listCrossAccountResources: API.OperationMethod<
     items: "CrossAccountResources",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListCrossAccountResourcesRequest,
+  ListCrossAccountResourcesResponse,
+  ListCrossAccountResourcesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListCrossAccountResourcesRequest,
+  ) => stream.Stream<
+    ListCrossAccountResourcesResponse,
+    ListCrossAccountResourcesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListCrossAccountResourcesRequest,
+  ) => stream.Stream<
+    CrossAccountResource,
+    ListCrossAccountResourcesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListCustomRoutingAcceleratorsError =
   | InternalServiceErrorException
@@ -3323,7 +3423,27 @@ export const listCustomRoutingAccelerators: API.OperationMethod<
     items: "Accelerators",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListCustomRoutingAcceleratorsRequest,
+  ListCustomRoutingAcceleratorsResponse,
+  ListCustomRoutingAcceleratorsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListCustomRoutingAcceleratorsRequest,
+  ) => stream.Stream<
+    ListCustomRoutingAcceleratorsResponse,
+    ListCustomRoutingAcceleratorsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListCustomRoutingAcceleratorsRequest,
+  ) => stream.Stream<
+    CustomRoutingAccelerator,
+    ListCustomRoutingAcceleratorsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListCustomRoutingEndpointGroupsError =
   | InternalServiceErrorException
@@ -3372,7 +3492,27 @@ export const listCustomRoutingEndpointGroups: API.OperationMethod<
     items: "EndpointGroups",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListCustomRoutingEndpointGroupsRequest,
+  ListCustomRoutingEndpointGroupsResponse,
+  ListCustomRoutingEndpointGroupsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListCustomRoutingEndpointGroupsRequest,
+  ) => stream.Stream<
+    ListCustomRoutingEndpointGroupsResponse,
+    ListCustomRoutingEndpointGroupsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListCustomRoutingEndpointGroupsRequest,
+  ) => stream.Stream<
+    CustomRoutingEndpointGroup,
+    ListCustomRoutingEndpointGroupsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListCustomRoutingListenersError =
   | AcceleratorNotFoundException
@@ -3421,7 +3561,27 @@ export const listCustomRoutingListeners: API.OperationMethod<
     items: "Listeners",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListCustomRoutingListenersRequest,
+  ListCustomRoutingListenersResponse,
+  ListCustomRoutingListenersError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListCustomRoutingListenersRequest,
+  ) => stream.Stream<
+    ListCustomRoutingListenersResponse,
+    ListCustomRoutingListenersError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListCustomRoutingListenersRequest,
+  ) => stream.Stream<
+    CustomRoutingListener,
+    ListCustomRoutingListenersError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListCustomRoutingPortMappingsError =
   | AcceleratorNotFoundException
@@ -3482,7 +3642,27 @@ export const listCustomRoutingPortMappings: API.OperationMethod<
     items: "PortMappings",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListCustomRoutingPortMappingsRequest,
+  ListCustomRoutingPortMappingsResponse,
+  ListCustomRoutingPortMappingsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListCustomRoutingPortMappingsRequest,
+  ) => stream.Stream<
+    ListCustomRoutingPortMappingsResponse,
+    ListCustomRoutingPortMappingsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListCustomRoutingPortMappingsRequest,
+  ) => stream.Stream<
+    PortMapping,
+    ListCustomRoutingPortMappingsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListCustomRoutingPortMappingsByDestinationError =
   | EndpointNotFoundException
@@ -3534,7 +3714,27 @@ export const listCustomRoutingPortMappingsByDestination: API.OperationMethod<
     items: "DestinationPortMappings",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListCustomRoutingPortMappingsByDestinationRequest,
+  ListCustomRoutingPortMappingsByDestinationResponse,
+  ListCustomRoutingPortMappingsByDestinationError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListCustomRoutingPortMappingsByDestinationRequest,
+  ) => stream.Stream<
+    ListCustomRoutingPortMappingsByDestinationResponse,
+    ListCustomRoutingPortMappingsByDestinationError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListCustomRoutingPortMappingsByDestinationRequest,
+  ) => stream.Stream<
+    DestinationPortMapping,
+    ListCustomRoutingPortMappingsByDestinationError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListEndpointGroupsError =
   | InternalServiceErrorException
@@ -3583,7 +3783,27 @@ export const listEndpointGroups: API.OperationMethod<
     items: "EndpointGroups",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListEndpointGroupsRequest,
+  ListEndpointGroupsResponse,
+  ListEndpointGroupsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListEndpointGroupsRequest,
+  ) => stream.Stream<
+    ListEndpointGroupsResponse,
+    ListEndpointGroupsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListEndpointGroupsRequest,
+  ) => stream.Stream<
+    EndpointGroup,
+    ListEndpointGroupsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListListenersError =
   | AcceleratorNotFoundException
@@ -3632,7 +3852,27 @@ export const listListeners: API.OperationMethod<
     items: "Listeners",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListListenersRequest,
+  ListListenersResponse,
+  ListListenersError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListListenersRequest,
+  ) => stream.Stream<
+    ListListenersResponse,
+    ListListenersError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListListenersRequest,
+  ) => stream.Stream<
+    Listener,
+    ListListenersError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListTagsForResourceError =
   | AcceleratorNotFoundException

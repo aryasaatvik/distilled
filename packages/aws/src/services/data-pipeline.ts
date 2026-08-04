@@ -85,26 +85,31 @@ const rules = T.EndpointResolver((p, _) => {
   return err("Invalid Configuration: Missing Region");
 });
 
-export class InternalServiceError extends S.TaggedErrorClass<InternalServiceError>()(
-  "InternalServiceError",
-  { message: S.optional(S.String) },
-) {}
-export class InvalidRequestException extends S.TaggedErrorClass<InvalidRequestException>()(
-  "InvalidRequestException",
-  { message: S.optional(S.String) },
-) {}
-export class PipelineDeletedException extends S.TaggedErrorClass<PipelineDeletedException>()(
-  "PipelineDeletedException",
-  { message: S.optional(S.String) },
-) {}
-export class PipelineNotFoundException extends S.TaggedErrorClass<PipelineNotFoundException>()(
-  "PipelineNotFoundException",
-  { message: S.optional(S.String) },
-) {}
-export class TaskNotFoundException extends S.TaggedErrorClass<TaskNotFoundException>()(
-  "TaskNotFoundException",
-  { message: S.optional(S.String) },
-) {}
+export class InternalServiceError
+  extends /*@__PURE__*/ S.TaggedErrorClass<InternalServiceError>()(
+    "InternalServiceError",
+    { message: S.optional(S.String) },
+  ) {}
+export class InvalidRequestException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidRequestException>()(
+    "InvalidRequestException",
+    { message: S.optional(S.String) },
+  ) {}
+export class PipelineDeletedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<PipelineDeletedException>()(
+    "PipelineDeletedException",
+    { message: S.optional(S.String) },
+  ) {}
+export class PipelineNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<PipelineNotFoundException>()(
+    "PipelineNotFoundException",
+    { message: S.optional(S.String) },
+  ) {}
+export class TaskNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<TaskNotFoundException>()(
+    "TaskNotFoundException",
+    { message: S.optional(S.String) },
+  ) {}
 export type Id = string;
 export type FieldNameString = string;
 export type FieldStringValue = string;
@@ -1196,7 +1201,27 @@ export const describeObjects: API.OperationMethod<
     outputToken: "marker",
     items: "pipelineObjects",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  DescribeObjectsInput,
+  DescribeObjectsOutput,
+  DescribeObjectsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: DescribeObjectsInput,
+  ) => stream.Stream<
+    DescribeObjectsOutput,
+    DescribeObjectsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: DescribeObjectsInput,
+  ) => stream.Stream<
+    PipelineObject,
+    DescribeObjectsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type DescribePipelinesError =
   | InternalServiceError
@@ -1475,7 +1500,27 @@ export const listPipelines: API.OperationMethod<
     outputToken: "marker",
     items: "pipelineIdList",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListPipelinesInput,
+  ListPipelinesOutput,
+  ListPipelinesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListPipelinesInput,
+  ) => stream.Stream<
+    ListPipelinesOutput,
+    ListPipelinesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListPipelinesInput,
+  ) => stream.Stream<
+    PipelineIdName,
+    ListPipelinesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type PollForTaskError =
   | InternalServiceError
@@ -1813,7 +1858,27 @@ export const queryObjects: API.OperationMethod<
     items: "ids",
     pageSize: "limit",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  QueryObjectsInput,
+  QueryObjectsOutput,
+  QueryObjectsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: QueryObjectsInput,
+  ) => stream.Stream<
+    QueryObjectsOutput,
+    QueryObjectsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: QueryObjectsInput,
+  ) => stream.Stream<
+    Id,
+    QueryObjectsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type RemoveTagsError =
   | InternalServiceError

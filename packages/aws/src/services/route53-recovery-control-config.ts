@@ -126,41 +126,48 @@ const rules = T.EndpointResolver((p, _) => {
   return err("Invalid Configuration: Missing Region");
 });
 
-export class AccessDeniedException extends S.TaggedErrorClass<AccessDeniedException>()(
-  "AccessDeniedException",
-  { Message: S.optional(S.String) },
-  T.HttpError(403),
-).pipe(C.withAuthError) {}
-export class ConflictException extends S.TaggedErrorClass<ConflictException>()(
-  "ConflictException",
-  { Message: S.optional(S.String) },
-  T.HttpError(409),
-).pipe(C.withConflictError) {}
-export class InternalServerException extends S.TaggedErrorClass<InternalServerException>()(
-  "InternalServerException",
-  { Message: S.optional(S.String) },
-  T.HttpError(500),
-).pipe(C.withServerError) {}
-export class ResourceNotFoundException extends S.TaggedErrorClass<ResourceNotFoundException>()(
-  "ResourceNotFoundException",
-  { Message: S.optional(S.String) },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class ServiceQuotaExceededException extends S.TaggedErrorClass<ServiceQuotaExceededException>()(
-  "ServiceQuotaExceededException",
-  { Message: S.optional(S.String) },
-  T.HttpError(402),
-).pipe(C.withQuotaError) {}
-export class ThrottlingException extends S.TaggedErrorClass<ThrottlingException>()(
-  "ThrottlingException",
-  { Message: S.optional(S.String) },
-  T.HttpError(429),
-).pipe(C.withThrottlingError) {}
-export class ValidationException extends S.TaggedErrorClass<ValidationException>()(
-  "ValidationException",
-  { Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
+export class AccessDeniedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
+    "AccessDeniedException",
+    { Message: S.optional(S.String) },
+    T.HttpError(403),
+  ).pipe(C.withAuthError) {}
+export class ConflictException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
+    "ConflictException",
+    { Message: S.optional(S.String) },
+    T.HttpError(409),
+  ).pipe(C.withConflictError) {}
+export class InternalServerException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
+    "InternalServerException",
+    { Message: S.optional(S.String) },
+    T.HttpError(500),
+  ).pipe(C.withServerError) {}
+export class ResourceNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
+    "ResourceNotFoundException",
+    { Message: S.optional(S.String) },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class ServiceQuotaExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
+    "ServiceQuotaExceededException",
+    { Message: S.optional(S.String) },
+    T.HttpError(402),
+  ).pipe(C.withQuotaError) {}
+export class ThrottlingException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
+    "ThrottlingException",
+    { Message: S.optional(S.String) },
+    T.HttpError(429),
+  ).pipe(C.withThrottlingError) {}
+export class ValidationException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
+    "ValidationException",
+    { Message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
 export type __stringMin1Max64PatternS = string;
 export type __stringMin0Max256PatternS = string;
 export type __mapOf__stringMin0Max256PatternS = {
@@ -1698,7 +1705,27 @@ export const listAssociatedRoute53HealthChecks: API.OperationMethod<
     items: "HealthCheckIds",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListAssociatedRoute53HealthChecksRequest,
+  ListAssociatedRoute53HealthChecksResponse,
+  ListAssociatedRoute53HealthChecksError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListAssociatedRoute53HealthChecksRequest,
+  ) => stream.Stream<
+    ListAssociatedRoute53HealthChecksResponse,
+    ListAssociatedRoute53HealthChecksError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListAssociatedRoute53HealthChecksRequest,
+  ) => stream.Stream<
+    __stringMax36PatternS,
+    ListAssociatedRoute53HealthChecksError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListClustersError =
   | AccessDeniedException
@@ -1749,7 +1776,27 @@ export const listClusters: API.OperationMethod<
     items: "Clusters",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListClustersRequest,
+  ListClustersResponse,
+  ListClustersError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListClustersRequest,
+  ) => stream.Stream<
+    ListClustersResponse,
+    ListClustersError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListClustersRequest,
+  ) => stream.Stream<
+    Cluster,
+    ListClustersError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListControlPanelsError =
   | AccessDeniedException
@@ -1800,7 +1847,27 @@ export const listControlPanels: API.OperationMethod<
     items: "ControlPanels",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListControlPanelsRequest,
+  ListControlPanelsResponse,
+  ListControlPanelsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListControlPanelsRequest,
+  ) => stream.Stream<
+    ListControlPanelsResponse,
+    ListControlPanelsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListControlPanelsRequest,
+  ) => stream.Stream<
+    ControlPanel,
+    ListControlPanelsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListRoutingControlsError =
   | AccessDeniedException
@@ -1851,7 +1918,27 @@ export const listRoutingControls: API.OperationMethod<
     items: "RoutingControls",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListRoutingControlsRequest,
+  ListRoutingControlsResponse,
+  ListRoutingControlsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListRoutingControlsRequest,
+  ) => stream.Stream<
+    ListRoutingControlsResponse,
+    ListRoutingControlsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListRoutingControlsRequest,
+  ) => stream.Stream<
+    RoutingControl,
+    ListRoutingControlsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListSafetyRulesError =
   | AccessDeniedException
@@ -1902,7 +1989,27 @@ export const listSafetyRules: API.OperationMethod<
     items: "SafetyRules",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListSafetyRulesRequest,
+  ListSafetyRulesResponse,
+  ListSafetyRulesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListSafetyRulesRequest,
+  ) => stream.Stream<
+    ListSafetyRulesResponse,
+    ListSafetyRulesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListSafetyRulesRequest,
+  ) => stream.Stream<
+    Rule,
+    ListSafetyRulesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListTagsForResourceError =
   | InternalServerException

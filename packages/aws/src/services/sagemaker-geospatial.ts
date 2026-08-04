@@ -87,41 +87,48 @@ const rules = T.EndpointResolver((p, _) => {
   return err("Invalid Configuration: Missing Region");
 });
 
-export class AccessDeniedException extends S.TaggedErrorClass<AccessDeniedException>()(
-  "AccessDeniedException",
-  { Message: S.String },
-  T.HttpError(403),
-).pipe(C.withAuthError) {}
-export class ConflictException extends S.TaggedErrorClass<ConflictException>()(
-  "ConflictException",
-  { Message: S.String, ResourceId: S.optional(S.String) },
-  T.HttpError(409),
-).pipe(C.withConflictError) {}
-export class InternalServerException extends S.TaggedErrorClass<InternalServerException>()(
-  "InternalServerException",
-  { Message: S.String, ResourceId: S.optional(S.String) },
-  T.HttpError(500),
-).pipe(C.withServerError) {}
-export class ResourceNotFoundException extends S.TaggedErrorClass<ResourceNotFoundException>()(
-  "ResourceNotFoundException",
-  { Message: S.String, ResourceId: S.optional(S.String) },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class ServiceQuotaExceededException extends S.TaggedErrorClass<ServiceQuotaExceededException>()(
-  "ServiceQuotaExceededException",
-  { Message: S.String, ResourceId: S.optional(S.String) },
-  T.HttpError(402),
-).pipe(C.withQuotaError) {}
-export class ThrottlingException extends S.TaggedErrorClass<ThrottlingException>()(
-  "ThrottlingException",
-  { Message: S.String, ResourceId: S.optional(S.String) },
-  T.HttpError(429),
-).pipe(C.withThrottlingError) {}
-export class ValidationException extends S.TaggedErrorClass<ValidationException>()(
-  "ValidationException",
-  { Message: S.String, ResourceId: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
+export class AccessDeniedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
+    "AccessDeniedException",
+    { Message: S.String },
+    T.HttpError(403),
+  ).pipe(C.withAuthError) {}
+export class ConflictException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
+    "ConflictException",
+    { Message: S.String, ResourceId: S.optional(S.String) },
+    T.HttpError(409),
+  ).pipe(C.withConflictError) {}
+export class InternalServerException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
+    "InternalServerException",
+    { Message: S.String, ResourceId: S.optional(S.String) },
+    T.HttpError(500),
+  ).pipe(C.withServerError) {}
+export class ResourceNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
+    "ResourceNotFoundException",
+    { Message: S.String, ResourceId: S.optional(S.String) },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class ServiceQuotaExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
+    "ServiceQuotaExceededException",
+    { Message: S.String, ResourceId: S.optional(S.String) },
+    T.HttpError(402),
+  ).pipe(C.withQuotaError) {}
+export class ThrottlingException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
+    "ThrottlingException",
+    { Message: S.String, ResourceId: S.optional(S.String) },
+    T.HttpError(429),
+  ).pipe(C.withThrottlingError) {}
+export class ValidationException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
+    "ValidationException",
+    { Message: S.String, ResourceId: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
 export type EarthObservationJobArn = string;
 export interface DeleteEarthObservationJobInput {
   Arn: string;
@@ -2016,7 +2023,27 @@ export const listEarthObservationJobs: API.OperationMethod<
     outputToken: "NextToken",
     items: "EarthObservationJobSummaries",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListEarthObservationJobInput,
+  ListEarthObservationJobOutput,
+  ListEarthObservationJobsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListEarthObservationJobInput,
+  ) => stream.Stream<
+    ListEarthObservationJobOutput,
+    ListEarthObservationJobsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListEarthObservationJobInput,
+  ) => stream.Stream<
+    ListEarthObservationJobOutputConfig,
+    ListEarthObservationJobsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListRasterDataCollectionsError =
   | AccessDeniedException
@@ -2066,7 +2093,27 @@ export const listRasterDataCollections: API.OperationMethod<
     outputToken: "NextToken",
     items: "RasterDataCollectionSummaries",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListRasterDataCollectionsInput,
+  ListRasterDataCollectionsOutput,
+  ListRasterDataCollectionsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListRasterDataCollectionsInput,
+  ) => stream.Stream<
+    ListRasterDataCollectionsOutput,
+    ListRasterDataCollectionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListRasterDataCollectionsInput,
+  ) => stream.Stream<
+    RasterDataCollectionMetadata,
+    ListRasterDataCollectionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListTagsForResourceError =
   | AccessDeniedException
@@ -2146,7 +2193,27 @@ export const listVectorEnrichmentJobs: API.OperationMethod<
     outputToken: "NextToken",
     items: "VectorEnrichmentJobSummaries",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListVectorEnrichmentJobInput,
+  ListVectorEnrichmentJobOutput,
+  ListVectorEnrichmentJobsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListVectorEnrichmentJobInput,
+  ) => stream.Stream<
+    ListVectorEnrichmentJobOutput,
+    ListVectorEnrichmentJobsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListVectorEnrichmentJobInput,
+  ) => stream.Stream<
+    ListVectorEnrichmentJobOutputConfig,
+    ListVectorEnrichmentJobsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type SearchRasterDataCollectionError =
   | AccessDeniedException
@@ -2192,7 +2259,27 @@ export const searchRasterDataCollection: API.OperationMethod<
   retry: Retry,
   operationName: "SearchRasterDataCollection",
   pagination: { inputToken: "NextToken", outputToken: "NextToken" } as const,
-}));
+})) as any as API.OperationMethod<
+  SearchRasterDataCollectionInput,
+  SearchRasterDataCollectionOutput,
+  SearchRasterDataCollectionError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: SearchRasterDataCollectionInput,
+  ) => stream.Stream<
+    SearchRasterDataCollectionOutput,
+    SearchRasterDataCollectionError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: SearchRasterDataCollectionInput,
+  ) => stream.Stream<
+    unknown,
+    SearchRasterDataCollectionError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type StartEarthObservationJobError =
   | AccessDeniedException

@@ -82,86 +82,100 @@ const rules = T.EndpointResolver((p, _) => {
   return err("Invalid Configuration: Missing Region");
 });
 
-export class GroupAlreadyExists extends S.TaggedErrorClass<GroupAlreadyExists>()(
-  "GroupAlreadyExists",
-  { Message: S.optional(S.String) },
-  T.SyntheticError({
-    from: "InvalidRequestException",
-    message: { matches: " already exists$" },
-  }),
-).pipe(C.withAlreadyExistsError, C.withConflictError) {}
-export class GroupNotFound extends S.TaggedErrorClass<GroupNotFound>()(
-  "GroupNotFound",
-  { Message: S.optional(S.String) },
-  T.SyntheticError({
-    from: "InvalidRequestException",
-    message: "Group not found",
-  }),
-).pipe(C.withNotFoundError) {}
-export class InvalidPolicyRevisionIdException extends S.TaggedErrorClass<InvalidPolicyRevisionIdException>()(
-  "InvalidPolicyRevisionIdException",
-  { Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class InvalidRequestException extends S.TaggedErrorClass<InvalidRequestException>()(
-  "InvalidRequestException",
-  { Message: S.optional(S.String) },
-) {}
-export class LockoutPreventionException extends S.TaggedErrorClass<LockoutPreventionException>()(
-  "LockoutPreventionException",
-  { Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class MalformedPolicyDocumentException extends S.TaggedErrorClass<MalformedPolicyDocumentException>()(
-  "MalformedPolicyDocumentException",
-  { Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class PolicyCountLimitExceededException extends S.TaggedErrorClass<PolicyCountLimitExceededException>()(
-  "PolicyCountLimitExceededException",
-  { Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class PolicySizeLimitExceededException extends S.TaggedErrorClass<PolicySizeLimitExceededException>()(
-  "PolicySizeLimitExceededException",
-  { Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class ResourceNotFoundException extends S.TaggedErrorClass<ResourceNotFoundException>()(
-  "ResourceNotFoundException",
-  { Message: S.optional(S.String), ResourceName: S.optional(S.String) },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class RuleLimitExceededException extends S.TaggedErrorClass<RuleLimitExceededException>()(
-  "RuleLimitExceededException",
-  { Message: S.optional(S.String) },
-) {}
-export class SamplingRuleAlreadyExists extends S.TaggedErrorClass<SamplingRuleAlreadyExists>()(
-  "SamplingRuleAlreadyExists",
-  { Message: S.optional(S.String) },
-  T.SyntheticError({
-    from: "InvalidRequestException",
-    message: "Sampling rule already exists",
-  }),
-).pipe(C.withAlreadyExistsError, C.withConflictError) {}
-export class SamplingRuleNotFound extends S.TaggedErrorClass<SamplingRuleNotFound>()(
-  "SamplingRuleNotFound",
-  { Message: S.optional(S.String) },
-  T.SyntheticError({
-    from: "InvalidRequestException",
-    message: "Sampling rule does not exist",
-  }),
-).pipe(C.withNotFoundError) {}
-export class ThrottledException extends S.TaggedErrorClass<ThrottledException>()(
-  "ThrottledException",
-  { Message: S.optional(S.String) },
-  T.HttpError(429),
-).pipe(C.withThrottlingError) {}
-export class TooManyTagsException extends S.TaggedErrorClass<TooManyTagsException>()(
-  "TooManyTagsException",
-  { Message: S.optional(S.String), ResourceName: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
+export class GroupAlreadyExists
+  extends /*@__PURE__*/ S.TaggedErrorClass<GroupAlreadyExists>()(
+    "GroupAlreadyExists",
+    { Message: S.optional(S.String) },
+    T.SyntheticError({
+      from: "InvalidRequestException",
+      message: { matches: " already exists$" },
+    }),
+  ).pipe(C.withAlreadyExistsError, C.withConflictError) {}
+export class GroupNotFound
+  extends /*@__PURE__*/ S.TaggedErrorClass<GroupNotFound>()(
+    "GroupNotFound",
+    { Message: S.optional(S.String) },
+    T.SyntheticError({
+      from: "InvalidRequestException",
+      message: "Group not found",
+    }),
+  ).pipe(C.withNotFoundError) {}
+export class InvalidPolicyRevisionIdException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidPolicyRevisionIdException>()(
+    "InvalidPolicyRevisionIdException",
+    { Message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class InvalidRequestException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidRequestException>()(
+    "InvalidRequestException",
+    { Message: S.optional(S.String) },
+  ) {}
+export class LockoutPreventionException
+  extends /*@__PURE__*/ S.TaggedErrorClass<LockoutPreventionException>()(
+    "LockoutPreventionException",
+    { Message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class MalformedPolicyDocumentException
+  extends /*@__PURE__*/ S.TaggedErrorClass<MalformedPolicyDocumentException>()(
+    "MalformedPolicyDocumentException",
+    { Message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class PolicyCountLimitExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<PolicyCountLimitExceededException>()(
+    "PolicyCountLimitExceededException",
+    { Message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class PolicySizeLimitExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<PolicySizeLimitExceededException>()(
+    "PolicySizeLimitExceededException",
+    { Message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class ResourceNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
+    "ResourceNotFoundException",
+    { Message: S.optional(S.String), ResourceName: S.optional(S.String) },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class RuleLimitExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<RuleLimitExceededException>()(
+    "RuleLimitExceededException",
+    { Message: S.optional(S.String) },
+  ) {}
+export class SamplingRuleAlreadyExists
+  extends /*@__PURE__*/ S.TaggedErrorClass<SamplingRuleAlreadyExists>()(
+    "SamplingRuleAlreadyExists",
+    { Message: S.optional(S.String) },
+    T.SyntheticError({
+      from: "InvalidRequestException",
+      message: "Sampling rule already exists",
+    }),
+  ).pipe(C.withAlreadyExistsError, C.withConflictError) {}
+export class SamplingRuleNotFound
+  extends /*@__PURE__*/ S.TaggedErrorClass<SamplingRuleNotFound>()(
+    "SamplingRuleNotFound",
+    { Message: S.optional(S.String) },
+    T.SyntheticError({
+      from: "InvalidRequestException",
+      message: "Sampling rule does not exist",
+    }),
+  ).pipe(C.withNotFoundError) {}
+export class ThrottledException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ThrottledException>()(
+    "ThrottledException",
+    { Message: S.optional(S.String) },
+    T.HttpError(429),
+  ).pipe(C.withThrottlingError) {}
+export class TooManyTagsException
+  extends /*@__PURE__*/ S.TaggedErrorClass<TooManyTagsException>()(
+    "TooManyTagsException",
+    { Message: S.optional(S.String), ResourceName: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
 export type TraceId = string;
 export type TraceIdList = string[];
 export const TraceIdList = /*@__PURE__*/ S.Array(S.String);
@@ -2660,7 +2674,27 @@ export const batchGetTraces: API.OperationMethod<
     outputToken: "NextToken",
     items: "Traces",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  BatchGetTracesRequest,
+  BatchGetTracesResult,
+  BatchGetTracesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: BatchGetTracesRequest,
+  ) => stream.Stream<
+    BatchGetTracesResult,
+    BatchGetTracesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: BatchGetTracesRequest,
+  ) => stream.Stream<
+    Trace,
+    BatchGetTracesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type CancelTraceRetrievalError =
   | InvalidRequestException
@@ -2896,7 +2930,27 @@ export const getGroups: API.OperationMethod<
     outputToken: "NextToken",
     items: "Groups",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  GetGroupsRequest,
+  GetGroupsResult,
+  GetGroupsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: GetGroupsRequest,
+  ) => stream.Stream<
+    GetGroupsResult,
+    GetGroupsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: GetGroupsRequest,
+  ) => stream.Stream<
+    GroupSummary,
+    GetGroupsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type GetIndexingRulesError =
   | InvalidRequestException
@@ -2985,7 +3039,27 @@ export const getInsightEvents: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  GetInsightEventsRequest,
+  GetInsightEventsResult,
+  GetInsightEventsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: GetInsightEventsRequest,
+  ) => stream.Stream<
+    GetInsightEventsResult,
+    GetInsightEventsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: GetInsightEventsRequest,
+  ) => stream.Stream<
+    unknown,
+    GetInsightEventsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type GetInsightImpactGraphError =
   | InvalidRequestException
@@ -3048,7 +3122,27 @@ export const getInsightSummaries: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  GetInsightSummariesRequest,
+  GetInsightSummariesResult,
+  GetInsightSummariesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: GetInsightSummariesRequest,
+  ) => stream.Stream<
+    GetInsightSummariesResult,
+    GetInsightSummariesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: GetInsightSummariesRequest,
+  ) => stream.Stream<
+    unknown,
+    GetInsightSummariesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type GetRetrievedTracesGraphError =
   | InvalidRequestException
@@ -3123,7 +3217,27 @@ export const getSamplingRules: API.OperationMethod<
     outputToken: "NextToken",
     items: "SamplingRuleRecords",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  GetSamplingRulesRequest,
+  GetSamplingRulesResult,
+  GetSamplingRulesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: GetSamplingRulesRequest,
+  ) => stream.Stream<
+    GetSamplingRulesResult,
+    GetSamplingRulesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: GetSamplingRulesRequest,
+  ) => stream.Stream<
+    SamplingRuleRecord,
+    GetSamplingRulesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type GetSamplingStatisticSummariesError =
   | InvalidRequestException
@@ -3164,7 +3278,27 @@ export const getSamplingStatisticSummaries: API.OperationMethod<
     outputToken: "NextToken",
     items: "SamplingStatisticSummaries",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  GetSamplingStatisticSummariesRequest,
+  GetSamplingStatisticSummariesResult,
+  GetSamplingStatisticSummariesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: GetSamplingStatisticSummariesRequest,
+  ) => stream.Stream<
+    GetSamplingStatisticSummariesResult,
+    GetSamplingStatisticSummariesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: GetSamplingStatisticSummariesRequest,
+  ) => stream.Stream<
+    SamplingStatisticSummary,
+    GetSamplingStatisticSummariesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type GetSamplingTargetsError =
   | InvalidRequestException
@@ -3230,7 +3364,27 @@ export const getServiceGraph: API.OperationMethod<
     outputToken: "NextToken",
     items: "Services",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  GetServiceGraphRequest,
+  GetServiceGraphResult,
+  GetServiceGraphError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: GetServiceGraphRequest,
+  ) => stream.Stream<
+    GetServiceGraphResult,
+    GetServiceGraphError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: GetServiceGraphRequest,
+  ) => stream.Stream<
+    Service,
+    GetServiceGraphError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type GetTimeSeriesServiceStatisticsError =
   | InvalidRequestException
@@ -3272,7 +3426,27 @@ export const getTimeSeriesServiceStatistics: API.OperationMethod<
     outputToken: "NextToken",
     items: "TimeSeriesServiceStatistics",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  GetTimeSeriesServiceStatisticsRequest,
+  GetTimeSeriesServiceStatisticsResult,
+  GetTimeSeriesServiceStatisticsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: GetTimeSeriesServiceStatisticsRequest,
+  ) => stream.Stream<
+    GetTimeSeriesServiceStatisticsResult,
+    GetTimeSeriesServiceStatisticsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: GetTimeSeriesServiceStatisticsRequest,
+  ) => stream.Stream<
+    TimeSeriesServiceStatistics,
+    GetTimeSeriesServiceStatisticsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type GetTraceGraphError =
   | InvalidRequestException
@@ -3313,7 +3487,27 @@ export const getTraceGraph: API.OperationMethod<
     outputToken: "NextToken",
     items: "Services",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  GetTraceGraphRequest,
+  GetTraceGraphResult,
+  GetTraceGraphError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: GetTraceGraphRequest,
+  ) => stream.Stream<
+    GetTraceGraphResult,
+    GetTraceGraphError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: GetTraceGraphRequest,
+  ) => stream.Stream<
+    Service,
+    GetTraceGraphError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type GetTraceSegmentDestinationError =
   | InvalidRequestException
@@ -3392,7 +3586,27 @@ export const getTraceSummaries: API.OperationMethod<
     outputToken: "NextToken",
     items: "TraceSummaries",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  GetTraceSummariesRequest,
+  GetTraceSummariesResult,
+  GetTraceSummariesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: GetTraceSummariesRequest,
+  ) => stream.Stream<
+    GetTraceSummariesResult,
+    GetTraceSummariesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: GetTraceSummariesRequest,
+  ) => stream.Stream<
+    TraceSummary,
+    GetTraceSummariesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListResourcePoliciesError =
   | InvalidRequestException
@@ -3433,7 +3647,27 @@ export const listResourcePolicies: API.OperationMethod<
     outputToken: "NextToken",
     items: "ResourcePolicies",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListResourcePoliciesRequest,
+  ListResourcePoliciesResult,
+  ListResourcePoliciesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListResourcePoliciesRequest,
+  ) => stream.Stream<
+    ListResourcePoliciesResult,
+    ListResourcePoliciesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListResourcePoliciesRequest,
+  ) => stream.Stream<
+    ResourcePolicy,
+    ListResourcePoliciesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListRetrievedTracesError =
   | InvalidRequestException
@@ -3513,7 +3747,27 @@ export const listTagsForResource: API.OperationMethod<
     outputToken: "NextToken",
     items: "Tags",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListTagsForResourceRequest,
+  ListTagsForResourceResponse,
+  ListTagsForResourceError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListTagsForResourceRequest,
+  ) => stream.Stream<
+    ListTagsForResourceResponse,
+    ListTagsForResourceError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListTagsForResourceRequest,
+  ) => stream.Stream<
+    Tag,
+    ListTagsForResourceError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type PutEncryptionConfigError =
   | InvalidRequestException

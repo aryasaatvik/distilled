@@ -87,101 +87,111 @@ const rules = T.EndpointResolver((p, _) => {
   return err("Invalid Configuration: Missing Region");
 });
 
-export class AccessDeniedException extends S.TaggedErrorClass<AccessDeniedException>()(
-  "AccessDeniedException",
-  { message: S.String },
-  T.HttpError(403),
-).pipe(C.withAuthError) {}
-export class ConflictException extends S.TaggedErrorClass<ConflictException>()(
-  "ConflictException",
-  { message: S.String, resource: S.String, resourceType: S.String },
-  T.HttpError(409),
-).pipe(C.withConflictError) {}
-export class DecoderManifestValidationException extends S.TaggedErrorClass<DecoderManifestValidationException>()(
-  "DecoderManifestValidationException",
-  {
-    invalidSignals: S.optional(
-      S.suspend(() => InvalidSignalDecoders).annotate({
-        identifier: "InvalidSignalDecoders",
-      }),
-    ),
-    invalidNetworkInterfaces: S.optional(
-      S.suspend(() => InvalidNetworkInterfaces).annotate({
-        identifier: "InvalidNetworkInterfaces",
-      }),
-    ),
-    message: S.optional(S.String),
-  },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class InternalServerException extends S.TaggedErrorClass<InternalServerException>()(
-  "InternalServerException",
-  {
-    message: S.String,
-    retryAfterSeconds: S.optional(S.Number).pipe(T.HttpHeader("Retry-After")),
-  },
-  T.HttpError(500),
-).pipe(C.withServerError) {}
-export class InvalidNodeException extends S.TaggedErrorClass<InvalidNodeException>()(
-  "InvalidNodeException",
-  {
-    invalidNodes: S.optional(
-      S.suspend(() => Nodes).annotate({ identifier: "Nodes" }),
-    ),
-    reason: S.optional(S.String),
-    message: S.optional(S.String),
-  },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class InvalidSignalsException extends S.TaggedErrorClass<InvalidSignalsException>()(
-  "InvalidSignalsException",
-  {
-    message: S.optional(S.String),
-    invalidSignals: S.optional(
-      S.suspend(() => InvalidSignals).annotate({
-        identifier: "InvalidSignals",
-      }),
-    ),
-  },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class LimitExceededException extends S.TaggedErrorClass<LimitExceededException>()(
-  "LimitExceededException",
-  { message: S.String, resourceId: S.String, resourceType: S.String },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class ResourceNotFoundException extends S.TaggedErrorClass<ResourceNotFoundException>()(
-  "ResourceNotFoundException",
-  { message: S.String, resourceId: S.String, resourceType: S.String },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class ThrottlingException extends S.TaggedErrorClass<ThrottlingException>()(
-  "ThrottlingException",
-  {
-    message: S.String,
-    quotaCode: S.optional(S.String),
-    serviceCode: S.optional(S.String),
-    retryAfterSeconds: S.optional(S.Number).pipe(T.HttpHeader("Retry-After")),
-  },
-  T.HttpError(429),
-).pipe(C.withThrottlingError) {}
-export class ValidationException extends S.TaggedErrorClass<ValidationException>()(
-  "ValidationException",
-  {
-    message: S.String,
-    reason: S.optional(
-      S.suspend(() => ValidationExceptionReason).annotate({
-        identifier: "ValidationExceptionReason",
-      }),
-    ),
-    fieldList: S.optional(
-      S.suspend(() => ValidationExceptionFieldList).annotate({
-        identifier: "ValidationExceptionFieldList",
-      }),
-    ),
-  },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
+export class AccessDeniedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
+    "AccessDeniedException",
+    { message: S.String },
+    T.HttpError(403),
+  ).pipe(C.withAuthError) {}
+export class ConflictException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
+    "ConflictException",
+    { message: S.String, resource: S.String, resourceType: S.String },
+    T.HttpError(409),
+  ).pipe(C.withConflictError) {}
+export class DecoderManifestValidationException
+  extends /*@__PURE__*/ S.TaggedErrorClass<DecoderManifestValidationException>()(
+    "DecoderManifestValidationException",
+    {
+      invalidSignals: S.optional(
+        S.suspend(() => InvalidSignalDecoders).annotate({
+          identifier: "InvalidSignalDecoders",
+        }),
+      ),
+      invalidNetworkInterfaces: S.optional(
+        S.suspend(() => InvalidNetworkInterfaces).annotate({
+          identifier: "InvalidNetworkInterfaces",
+        }),
+      ),
+      message: S.optional(S.String),
+    },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class InternalServerException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
+    "InternalServerException",
+    {
+      message: S.String,
+      retryAfterSeconds: S.optional(S.Number).pipe(T.HttpHeader("Retry-After")),
+    },
+    T.HttpError(500),
+  ).pipe(C.withServerError) {}
+export class InvalidNodeException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidNodeException>()(
+    "InvalidNodeException",
+    {
+      invalidNodes: S.optional(
+        S.suspend(() => Nodes).annotate({ identifier: "Nodes" }),
+      ),
+      reason: S.optional(S.String),
+      message: S.optional(S.String),
+    },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class InvalidSignalsException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidSignalsException>()(
+    "InvalidSignalsException",
+    {
+      message: S.optional(S.String),
+      invalidSignals: S.optional(
+        S.suspend(() => InvalidSignals).annotate({
+          identifier: "InvalidSignals",
+        }),
+      ),
+    },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class LimitExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<LimitExceededException>()(
+    "LimitExceededException",
+    { message: S.String, resourceId: S.String, resourceType: S.String },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class ResourceNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
+    "ResourceNotFoundException",
+    { message: S.String, resourceId: S.String, resourceType: S.String },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class ThrottlingException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
+    "ThrottlingException",
+    {
+      message: S.String,
+      quotaCode: S.optional(S.String),
+      serviceCode: S.optional(S.String),
+      retryAfterSeconds: S.optional(S.Number).pipe(T.HttpHeader("Retry-After")),
+    },
+    T.HttpError(429),
+  ).pipe(C.withThrottlingError) {}
+export class ValidationException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
+    "ValidationException",
+    {
+      message: S.String,
+      reason: S.optional(
+        S.suspend(() => ValidationExceptionReason).annotate({
+          identifier: "ValidationExceptionReason",
+        }),
+      ),
+      fieldList: S.optional(
+        S.suspend(() => ValidationExceptionFieldList).annotate({
+          identifier: "ValidationExceptionFieldList",
+        }),
+      ),
+    },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
 export type VehicleName = string;
 export type FleetId = string;
 export interface AssociateVehicleFleetRequest {
@@ -4703,7 +4713,27 @@ export const getVehicleStatus: API.OperationMethod<
     items: "campaigns",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  GetVehicleStatusRequest,
+  GetVehicleStatusResponse,
+  GetVehicleStatusError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: GetVehicleStatusRequest,
+  ) => stream.Stream<
+    GetVehicleStatusResponse,
+    GetVehicleStatusError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: GetVehicleStatusRequest,
+  ) => stream.Stream<
+    VehicleStatus,
+    GetVehicleStatusError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ImportDecoderManifestError =
   | AccessDeniedException
@@ -4821,7 +4851,27 @@ export const listCampaigns: API.OperationMethod<
     items: "campaignSummaries",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListCampaignsRequest,
+  ListCampaignsResponse,
+  ListCampaignsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListCampaignsRequest,
+  ) => stream.Stream<
+    ListCampaignsResponse,
+    ListCampaignsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListCampaignsRequest,
+  ) => stream.Stream<
+    CampaignSummary,
+    ListCampaignsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListDecoderManifestNetworkInterfacesError =
   | AccessDeniedException
@@ -4874,7 +4924,27 @@ export const listDecoderManifestNetworkInterfaces: API.OperationMethod<
     items: "networkInterfaces",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListDecoderManifestNetworkInterfacesRequest,
+  ListDecoderManifestNetworkInterfacesResponse,
+  ListDecoderManifestNetworkInterfacesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListDecoderManifestNetworkInterfacesRequest,
+  ) => stream.Stream<
+    ListDecoderManifestNetworkInterfacesResponse,
+    ListDecoderManifestNetworkInterfacesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListDecoderManifestNetworkInterfacesRequest,
+  ) => stream.Stream<
+    NetworkInterface,
+    ListDecoderManifestNetworkInterfacesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListDecoderManifestsError =
   | AccessDeniedException
@@ -4925,7 +4995,27 @@ export const listDecoderManifests: API.OperationMethod<
     items: "summaries",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListDecoderManifestsRequest,
+  ListDecoderManifestsResponse,
+  ListDecoderManifestsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListDecoderManifestsRequest,
+  ) => stream.Stream<
+    ListDecoderManifestsResponse,
+    ListDecoderManifestsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListDecoderManifestsRequest,
+  ) => stream.Stream<
+    DecoderManifestSummary,
+    ListDecoderManifestsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListDecoderManifestSignalsError =
   | AccessDeniedException
@@ -4978,7 +5068,27 @@ export const listDecoderManifestSignals: API.OperationMethod<
     items: "signalDecoders",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListDecoderManifestSignalsRequest,
+  ListDecoderManifestSignalsResponse,
+  ListDecoderManifestSignalsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListDecoderManifestSignalsRequest,
+  ) => stream.Stream<
+    ListDecoderManifestSignalsResponse,
+    ListDecoderManifestSignalsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListDecoderManifestSignalsRequest,
+  ) => stream.Stream<
+    SignalDecoder,
+    ListDecoderManifestSignalsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListFleetsError =
   | AccessDeniedException
@@ -5031,7 +5141,27 @@ export const listFleets: API.OperationMethod<
     items: "fleetSummaries",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListFleetsRequest,
+  ListFleetsResponse,
+  ListFleetsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListFleetsRequest,
+  ) => stream.Stream<
+    ListFleetsResponse,
+    ListFleetsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListFleetsRequest,
+  ) => stream.Stream<
+    FleetSummary,
+    ListFleetsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListFleetsForVehicleError =
   | AccessDeniedException
@@ -5084,7 +5214,27 @@ export const listFleetsForVehicle: API.OperationMethod<
     items: "fleets",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListFleetsForVehicleRequest,
+  ListFleetsForVehicleResponse,
+  ListFleetsForVehicleError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListFleetsForVehicleRequest,
+  ) => stream.Stream<
+    ListFleetsForVehicleResponse,
+    ListFleetsForVehicleError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListFleetsForVehicleRequest,
+  ) => stream.Stream<
+    FleetId,
+    ListFleetsForVehicleError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListModelManifestNodesError =
   | AccessDeniedException
@@ -5139,7 +5289,27 @@ export const listModelManifestNodes: API.OperationMethod<
     items: "nodes",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListModelManifestNodesRequest,
+  ListModelManifestNodesResponse,
+  ListModelManifestNodesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListModelManifestNodesRequest,
+  ) => stream.Stream<
+    ListModelManifestNodesResponse,
+    ListModelManifestNodesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListModelManifestNodesRequest,
+  ) => stream.Stream<
+    Node,
+    ListModelManifestNodesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListModelManifestsError =
   | AccessDeniedException
@@ -5190,7 +5360,27 @@ export const listModelManifests: API.OperationMethod<
     items: "summaries",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListModelManifestsRequest,
+  ListModelManifestsResponse,
+  ListModelManifestsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListModelManifestsRequest,
+  ) => stream.Stream<
+    ListModelManifestsResponse,
+    ListModelManifestsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListModelManifestsRequest,
+  ) => stream.Stream<
+    ModelManifestSummary,
+    ListModelManifestsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListSignalCatalogNodesError =
   | AccessDeniedException
@@ -5245,7 +5435,27 @@ export const listSignalCatalogNodes: API.OperationMethod<
     items: "nodes",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListSignalCatalogNodesRequest,
+  ListSignalCatalogNodesResponse,
+  ListSignalCatalogNodesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListSignalCatalogNodesRequest,
+  ) => stream.Stream<
+    ListSignalCatalogNodesResponse,
+    ListSignalCatalogNodesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListSignalCatalogNodesRequest,
+  ) => stream.Stream<
+    Node,
+    ListSignalCatalogNodesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListSignalCatalogsError =
   | AccessDeniedException
@@ -5299,7 +5509,27 @@ export const listSignalCatalogs: API.OperationMethod<
     items: "summaries",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListSignalCatalogsRequest,
+  ListSignalCatalogsResponse,
+  ListSignalCatalogsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListSignalCatalogsRequest,
+  ) => stream.Stream<
+    ListSignalCatalogsResponse,
+    ListSignalCatalogsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListSignalCatalogsRequest,
+  ) => stream.Stream<
+    SignalCatalogSummary,
+    ListSignalCatalogsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListStateTemplatesError =
   | AccessDeniedException
@@ -5350,7 +5580,27 @@ export const listStateTemplates: API.OperationMethod<
     items: "summaries",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListStateTemplatesRequest,
+  ListStateTemplatesResponse,
+  ListStateTemplatesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListStateTemplatesRequest,
+  ) => stream.Stream<
+    ListStateTemplatesResponse,
+    ListStateTemplatesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListStateTemplatesRequest,
+  ) => stream.Stream<
+    StateTemplateSummary,
+    ListStateTemplatesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListTagsForResourceError =
   | AccessDeniedException
@@ -5431,7 +5681,27 @@ export const listVehicles: API.OperationMethod<
     items: "vehicleSummaries",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListVehiclesRequest,
+  ListVehiclesResponse,
+  ListVehiclesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListVehiclesRequest,
+  ) => stream.Stream<
+    ListVehiclesResponse,
+    ListVehiclesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListVehiclesRequest,
+  ) => stream.Stream<
+    VehicleSummary,
+    ListVehiclesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListVehiclesInFleetError =
   | AccessDeniedException
@@ -5484,7 +5754,27 @@ export const listVehiclesInFleet: API.OperationMethod<
     items: "vehicles",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListVehiclesInFleetRequest,
+  ListVehiclesInFleetResponse,
+  ListVehiclesInFleetError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListVehiclesInFleetRequest,
+  ) => stream.Stream<
+    ListVehiclesInFleetResponse,
+    ListVehiclesInFleetError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListVehiclesInFleetRequest,
+  ) => stream.Stream<
+    VehicleName,
+    ListVehiclesInFleetError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type PutEncryptionConfigurationError =
   | AccessDeniedException

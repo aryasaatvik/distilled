@@ -85,41 +85,48 @@ const rules = T.EndpointResolver((p, _) => {
   return err("Invalid Configuration: Missing Region");
 });
 
-export class AccessDeniedException extends S.TaggedErrorClass<AccessDeniedException>()(
-  "AccessDeniedException",
-  { message: S.String },
-  T.HttpError(403),
-).pipe(C.withAuthError) {}
-export class ConflictException extends S.TaggedErrorClass<ConflictException>()(
-  "ConflictException",
-  { message: S.String },
-  T.all(T.HttpError(409), T.Retryable()),
-).pipe(C.withConflictError, C.withRetryableError) {}
-export class InternalServerErrorException extends S.TaggedErrorClass<InternalServerErrorException>()(
-  "InternalServerErrorException",
-  { message: S.String },
-  T.all(T.HttpError(500), T.Retryable()),
-).pipe(C.withServerError, C.withRetryableError) {}
-export class ResourceNotFoundException extends S.TaggedErrorClass<ResourceNotFoundException>()(
-  "ResourceNotFoundException",
-  { message: S.String },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class ServiceQuotaExceededException extends S.TaggedErrorClass<ServiceQuotaExceededException>()(
-  "ServiceQuotaExceededException",
-  { message: S.String },
-  T.HttpError(402),
-).pipe(C.withQuotaError) {}
-export class TooManyRequestException extends S.TaggedErrorClass<TooManyRequestException>()(
-  "TooManyRequestException",
-  { message: S.String },
-  T.all(T.HttpError(429), T.Retryable()),
-).pipe(C.withThrottlingError, C.withRetryableError) {}
-export class ValidationException extends S.TaggedErrorClass<ValidationException>()(
-  "ValidationException",
-  { message: S.String },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
+export class AccessDeniedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
+    "AccessDeniedException",
+    { message: S.String },
+    T.HttpError(403),
+  ).pipe(C.withAuthError) {}
+export class ConflictException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
+    "ConflictException",
+    { message: S.String },
+    T.all(T.HttpError(409), T.Retryable()),
+  ).pipe(C.withConflictError, C.withRetryableError) {}
+export class InternalServerErrorException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerErrorException>()(
+    "InternalServerErrorException",
+    { message: S.String },
+    T.all(T.HttpError(500), T.Retryable()),
+  ).pipe(C.withServerError, C.withRetryableError) {}
+export class ResourceNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
+    "ResourceNotFoundException",
+    { message: S.String },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class ServiceQuotaExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
+    "ServiceQuotaExceededException",
+    { message: S.String },
+    T.HttpError(402),
+  ).pipe(C.withQuotaError) {}
+export class TooManyRequestException
+  extends /*@__PURE__*/ S.TaggedErrorClass<TooManyRequestException>()(
+    "TooManyRequestException",
+    { message: S.String },
+    T.all(T.HttpError(429), T.Retryable()),
+  ).pipe(C.withThrottlingError, C.withRetryableError) {}
+export class ValidationException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
+    "ValidationException",
+    { message: S.String },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
 export type FeedId = string;
 export type AssociatedResourceName = string;
 export type ResourceName = string;
@@ -1231,7 +1238,27 @@ export const listDictionaries: API.OperationMethod<
     items: "dictionaries",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListDictionariesRequest,
+  ListDictionariesResponse,
+  ListDictionariesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListDictionariesRequest,
+  ) => stream.Stream<
+    ListDictionariesResponse,
+    ListDictionariesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListDictionariesRequest,
+  ) => stream.Stream<
+    DictionarySummary,
+    ListDictionariesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListFeedsError =
   | AccessDeniedException
@@ -1282,7 +1309,27 @@ export const listFeeds: API.OperationMethod<
     items: "feeds",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListFeedsRequest,
+  ListFeedsResponse,
+  ListFeedsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListFeedsRequest,
+  ) => stream.Stream<
+    ListFeedsResponse,
+    ListFeedsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListFeedsRequest,
+  ) => stream.Stream<
+    FeedSummary,
+    ListFeedsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListTagsForResourceError =
   | AccessDeniedException

@@ -118,31 +118,36 @@ const rules = T.EndpointResolver((p, _) => {
   return err("Invalid Configuration: Missing Region");
 });
 
-export class AccessDeniedException extends S.TaggedErrorClass<AccessDeniedException>()(
-  "AccessDeniedException",
-  { message: S.String },
-  T.HttpError(403),
-).pipe(C.withAuthError) {}
-export class InternalServerException extends S.TaggedErrorClass<InternalServerException>()(
-  "InternalServerException",
-  { message: S.String },
-  T.HttpError(500),
-).pipe(C.withServerError) {}
-export class ResourceNotFoundException extends S.TaggedErrorClass<ResourceNotFoundException>()(
-  "ResourceNotFoundException",
-  { message: S.String },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class ThrottlingException extends S.TaggedErrorClass<ThrottlingException>()(
-  "ThrottlingException",
-  { message: S.String },
-  T.HttpError(429),
-).pipe(C.withThrottlingError) {}
-export class ValidationException extends S.TaggedErrorClass<ValidationException>()(
-  "ValidationException",
-  { message: S.String },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
+export class AccessDeniedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
+    "AccessDeniedException",
+    { message: S.String },
+    T.HttpError(403),
+  ).pipe(C.withAuthError) {}
+export class InternalServerException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
+    "InternalServerException",
+    { message: S.String },
+    T.HttpError(500),
+  ).pipe(C.withServerError) {}
+export class ResourceNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
+    "ResourceNotFoundException",
+    { message: S.String },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class ThrottlingException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
+    "ThrottlingException",
+    { message: S.String },
+    T.HttpError(429),
+  ).pipe(C.withThrottlingError) {}
+export class ValidationException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
+    "ValidationException",
+    { message: S.String },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
 export type ActivityId = string;
 export type LanguageCode =
   | "en-US"
@@ -558,7 +563,27 @@ export const getFreeTierUsage: API.OperationMethod<
     items: "freeTierUsages",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  GetFreeTierUsageRequest,
+  GetFreeTierUsageResponse,
+  GetFreeTierUsageError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: GetFreeTierUsageRequest,
+  ) => stream.Stream<
+    GetFreeTierUsageResponse,
+    GetFreeTierUsageError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: GetFreeTierUsageRequest,
+  ) => stream.Stream<
+    FreeTierUsage,
+    GetFreeTierUsageError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListAccountActivitiesError =
   | InternalServerException
@@ -601,7 +626,27 @@ export const listAccountActivities: API.OperationMethod<
     items: "activities",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListAccountActivitiesRequest,
+  ListAccountActivitiesResponse,
+  ListAccountActivitiesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListAccountActivitiesRequest,
+  ) => stream.Stream<
+    ListAccountActivitiesResponse,
+    ListAccountActivitiesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListAccountActivitiesRequest,
+  ) => stream.Stream<
+    ActivitySummary,
+    ListAccountActivitiesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type UpgradeAccountPlanError =
   | AccessDeniedException

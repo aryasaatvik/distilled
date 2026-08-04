@@ -87,68 +87,75 @@ const rules = T.EndpointResolver((p, _) => {
   return err("Invalid Configuration: Missing Region");
 });
 
-export class AccessDeniedException extends S.TaggedErrorClass<AccessDeniedException>()(
-  "AccessDeniedException",
-  { message: S.String },
-  T.HttpError(403),
-).pipe(C.withAuthError) {}
-export class AuditManagerMaintenanceMode extends S.TaggedErrorClass<AuditManagerMaintenanceMode>()(
-  "AuditManagerMaintenanceMode",
-  {
-    message: S.String,
-    reason: S.optional(
-      S.suspend(() => ValidationExceptionReason).annotate({
-        identifier: "ValidationExceptionReason",
-      }),
-    ),
-    fields: S.optional(
-      S.suspend(() => ValidationExceptionFieldList).annotate({
-        identifier: "ValidationExceptionFieldList",
-      }),
-    ),
-  },
-  T.SyntheticError({
-    from: "ValidationException",
-    message: { includes: "maintenance mode" },
-  }),
-).pipe(C.withBadRequestError) {}
-export class InternalServerException extends S.TaggedErrorClass<InternalServerException>()(
-  "InternalServerException",
-  { message: S.String },
-  T.HttpError(500),
-).pipe(C.withServerError) {}
-export class ResourceNotFoundException extends S.TaggedErrorClass<ResourceNotFoundException>()(
-  "ResourceNotFoundException",
-  { message: S.String, resourceId: S.String, resourceType: S.String },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class ServiceQuotaExceededException extends S.TaggedErrorClass<ServiceQuotaExceededException>()(
-  "ServiceQuotaExceededException",
-  { message: S.String },
-  T.HttpError(402),
-).pipe(C.withQuotaError) {}
-export class ThrottlingException extends S.TaggedErrorClass<ThrottlingException>()(
-  "ThrottlingException",
-  { message: S.String },
-  T.HttpError(429),
-).pipe(C.withThrottlingError) {}
-export class ValidationException extends S.TaggedErrorClass<ValidationException>()(
-  "ValidationException",
-  {
-    message: S.String,
-    reason: S.optional(
-      S.suspend(() => ValidationExceptionReason).annotate({
-        identifier: "ValidationExceptionReason",
-      }),
-    ),
-    fields: S.optional(
-      S.suspend(() => ValidationExceptionFieldList).annotate({
-        identifier: "ValidationExceptionFieldList",
-      }),
-    ),
-  },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
+export class AccessDeniedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
+    "AccessDeniedException",
+    { message: S.String },
+    T.HttpError(403),
+  ).pipe(C.withAuthError) {}
+export class AuditManagerMaintenanceMode
+  extends /*@__PURE__*/ S.TaggedErrorClass<AuditManagerMaintenanceMode>()(
+    "AuditManagerMaintenanceMode",
+    {
+      message: S.String,
+      reason: S.optional(
+        S.suspend(() => ValidationExceptionReason).annotate({
+          identifier: "ValidationExceptionReason",
+        }),
+      ),
+      fields: S.optional(
+        S.suspend(() => ValidationExceptionFieldList).annotate({
+          identifier: "ValidationExceptionFieldList",
+        }),
+      ),
+    },
+    T.SyntheticError({
+      from: "ValidationException",
+      message: { includes: "maintenance mode" },
+    }),
+  ).pipe(C.withBadRequestError) {}
+export class InternalServerException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
+    "InternalServerException",
+    { message: S.String },
+    T.HttpError(500),
+  ).pipe(C.withServerError) {}
+export class ResourceNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
+    "ResourceNotFoundException",
+    { message: S.String, resourceId: S.String, resourceType: S.String },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class ServiceQuotaExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
+    "ServiceQuotaExceededException",
+    { message: S.String },
+    T.HttpError(402),
+  ).pipe(C.withQuotaError) {}
+export class ThrottlingException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
+    "ThrottlingException",
+    { message: S.String },
+    T.HttpError(429),
+  ).pipe(C.withThrottlingError) {}
+export class ValidationException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
+    "ValidationException",
+    {
+      message: S.String,
+      reason: S.optional(
+        S.suspend(() => ValidationExceptionReason).annotate({
+          identifier: "ValidationExceptionReason",
+        }),
+      ),
+      fields: S.optional(
+        S.suspend(() => ValidationExceptionFieldList).annotate({
+          identifier: "ValidationExceptionFieldList",
+        }),
+      ),
+    },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
 export type UUID = string;
 export interface AssociateAssessmentReportEvidenceFolderRequest {
   assessmentId: string;
@@ -4333,7 +4340,27 @@ export const getChangeLogs: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  GetChangeLogsRequest,
+  GetChangeLogsResponse,
+  GetChangeLogsError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: GetChangeLogsRequest,
+  ) => stream.Stream<
+    GetChangeLogsResponse,
+    GetChangeLogsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: GetChangeLogsRequest,
+  ) => stream.Stream<
+    unknown,
+    GetChangeLogsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type GetControlError =
   | AccessDeniedException
@@ -4403,7 +4430,27 @@ export const getDelegations: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  GetDelegationsRequest,
+  GetDelegationsResponse,
+  GetDelegationsError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: GetDelegationsRequest,
+  ) => stream.Stream<
+    GetDelegationsResponse,
+    GetDelegationsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: GetDelegationsRequest,
+  ) => stream.Stream<
+    unknown,
+    GetDelegationsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type GetEvidenceError =
   | AccessDeniedException
@@ -4479,7 +4526,27 @@ export const getEvidenceByEvidenceFolder: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  GetEvidenceByEvidenceFolderRequest,
+  GetEvidenceByEvidenceFolderResponse,
+  GetEvidenceByEvidenceFolderError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: GetEvidenceByEvidenceFolderRequest,
+  ) => stream.Stream<
+    GetEvidenceByEvidenceFolderResponse,
+    GetEvidenceByEvidenceFolderError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: GetEvidenceByEvidenceFolderRequest,
+  ) => stream.Stream<
+    unknown,
+    GetEvidenceByEvidenceFolderError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type GetEvidenceFileUploadUrlError =
   | AccessDeniedException
@@ -4596,7 +4663,27 @@ export const getEvidenceFoldersByAssessment: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  GetEvidenceFoldersByAssessmentRequest,
+  GetEvidenceFoldersByAssessmentResponse,
+  GetEvidenceFoldersByAssessmentError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: GetEvidenceFoldersByAssessmentRequest,
+  ) => stream.Stream<
+    GetEvidenceFoldersByAssessmentResponse,
+    GetEvidenceFoldersByAssessmentError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: GetEvidenceFoldersByAssessmentRequest,
+  ) => stream.Stream<
+    unknown,
+    GetEvidenceFoldersByAssessmentError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type GetEvidenceFoldersByAssessmentControlError =
   | AccessDeniedException
@@ -4645,7 +4732,27 @@ export const getEvidenceFoldersByAssessmentControl: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  GetEvidenceFoldersByAssessmentControlRequest,
+  GetEvidenceFoldersByAssessmentControlResponse,
+  GetEvidenceFoldersByAssessmentControlError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: GetEvidenceFoldersByAssessmentControlRequest,
+  ) => stream.Stream<
+    GetEvidenceFoldersByAssessmentControlResponse,
+    GetEvidenceFoldersByAssessmentControlError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: GetEvidenceFoldersByAssessmentControlRequest,
+  ) => stream.Stream<
+    unknown,
+    GetEvidenceFoldersByAssessmentControlError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type GetInsightsError =
   | AccessDeniedException
@@ -4831,7 +4938,27 @@ export const listAssessmentControlInsightsByControlDomain: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListAssessmentControlInsightsByControlDomainRequest,
+  ListAssessmentControlInsightsByControlDomainResponse,
+  ListAssessmentControlInsightsByControlDomainError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListAssessmentControlInsightsByControlDomainRequest,
+  ) => stream.Stream<
+    ListAssessmentControlInsightsByControlDomainResponse,
+    ListAssessmentControlInsightsByControlDomainError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListAssessmentControlInsightsByControlDomainRequest,
+  ) => stream.Stream<
+    unknown,
+    ListAssessmentControlInsightsByControlDomainError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type ListAssessmentFrameworksError =
   | AccessDeniedException
@@ -4874,7 +5001,27 @@ export const listAssessmentFrameworks: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListAssessmentFrameworksRequest,
+  ListAssessmentFrameworksResponse,
+  ListAssessmentFrameworksError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListAssessmentFrameworksRequest,
+  ) => stream.Stream<
+    ListAssessmentFrameworksResponse,
+    ListAssessmentFrameworksError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListAssessmentFrameworksRequest,
+  ) => stream.Stream<
+    unknown,
+    ListAssessmentFrameworksError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type ListAssessmentFrameworkShareRequestsError =
   | AccessDeniedException
@@ -4916,7 +5063,27 @@ export const listAssessmentFrameworkShareRequests: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListAssessmentFrameworkShareRequestsRequest,
+  ListAssessmentFrameworkShareRequestsResponse,
+  ListAssessmentFrameworkShareRequestsError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListAssessmentFrameworkShareRequestsRequest,
+  ) => stream.Stream<
+    ListAssessmentFrameworkShareRequestsResponse,
+    ListAssessmentFrameworkShareRequestsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListAssessmentFrameworkShareRequestsRequest,
+  ) => stream.Stream<
+    unknown,
+    ListAssessmentFrameworkShareRequestsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type ListAssessmentReportsError =
   | AccessDeniedException
@@ -4958,7 +5125,27 @@ export const listAssessmentReports: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListAssessmentReportsRequest,
+  ListAssessmentReportsResponse,
+  ListAssessmentReportsError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListAssessmentReportsRequest,
+  ) => stream.Stream<
+    ListAssessmentReportsResponse,
+    ListAssessmentReportsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListAssessmentReportsRequest,
+  ) => stream.Stream<
+    unknown,
+    ListAssessmentReportsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type ListAssessmentsError =
   | AccessDeniedException
@@ -5000,7 +5187,27 @@ export const listAssessments: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListAssessmentsRequest,
+  ListAssessmentsResponse,
+  ListAssessmentsError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListAssessmentsRequest,
+  ) => stream.Stream<
+    ListAssessmentsResponse,
+    ListAssessmentsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListAssessmentsRequest,
+  ) => stream.Stream<
+    unknown,
+    ListAssessmentsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type ListControlDomainInsightsError =
   | AccessDeniedException
@@ -5061,7 +5268,27 @@ export const listControlDomainInsights: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListControlDomainInsightsRequest,
+  ListControlDomainInsightsResponse,
+  ListControlDomainInsightsError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListControlDomainInsightsRequest,
+  ) => stream.Stream<
+    ListControlDomainInsightsResponse,
+    ListControlDomainInsightsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListControlDomainInsightsRequest,
+  ) => stream.Stream<
+    unknown,
+    ListControlDomainInsightsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type ListControlDomainInsightsByAssessmentError =
   | AccessDeniedException
@@ -5121,7 +5348,27 @@ export const listControlDomainInsightsByAssessment: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListControlDomainInsightsByAssessmentRequest,
+  ListControlDomainInsightsByAssessmentResponse,
+  ListControlDomainInsightsByAssessmentError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListControlDomainInsightsByAssessmentRequest,
+  ) => stream.Stream<
+    ListControlDomainInsightsByAssessmentResponse,
+    ListControlDomainInsightsByAssessmentError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListControlDomainInsightsByAssessmentRequest,
+  ) => stream.Stream<
+    unknown,
+    ListControlDomainInsightsByAssessmentError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type ListControlInsightsByControlDomainError =
   | AccessDeniedException
@@ -5175,7 +5422,27 @@ export const listControlInsightsByControlDomain: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListControlInsightsByControlDomainRequest,
+  ListControlInsightsByControlDomainResponse,
+  ListControlInsightsByControlDomainError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListControlInsightsByControlDomainRequest,
+  ) => stream.Stream<
+    ListControlInsightsByControlDomainResponse,
+    ListControlInsightsByControlDomainError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListControlInsightsByControlDomainRequest,
+  ) => stream.Stream<
+    unknown,
+    ListControlInsightsByControlDomainError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type ListControlsError =
   | AccessDeniedException
@@ -5217,7 +5484,27 @@ export const listControls: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListControlsRequest,
+  ListControlsResponse,
+  ListControlsError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListControlsRequest,
+  ) => stream.Stream<
+    ListControlsResponse,
+    ListControlsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListControlsRequest,
+  ) => stream.Stream<
+    unknown,
+    ListControlsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type ListKeywordsForDataSourceError =
   | AccessDeniedException
@@ -5260,7 +5547,27 @@ export const listKeywordsForDataSource: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListKeywordsForDataSourceRequest,
+  ListKeywordsForDataSourceResponse,
+  ListKeywordsForDataSourceError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListKeywordsForDataSourceRequest,
+  ) => stream.Stream<
+    ListKeywordsForDataSourceResponse,
+    ListKeywordsForDataSourceError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListKeywordsForDataSourceRequest,
+  ) => stream.Stream<
+    unknown,
+    ListKeywordsForDataSourceError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type ListNotificationsError =
   | AccessDeniedException
@@ -5302,7 +5609,27 @@ export const listNotifications: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListNotificationsRequest,
+  ListNotificationsResponse,
+  ListNotificationsError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListNotificationsRequest,
+  ) => stream.Stream<
+    ListNotificationsResponse,
+    ListNotificationsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListNotificationsRequest,
+  ) => stream.Stream<
+    unknown,
+    ListNotificationsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type ListTagsForResourceError =
   | InternalServerException

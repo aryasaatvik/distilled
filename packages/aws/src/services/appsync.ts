@@ -86,83 +86,96 @@ const rules = T.EndpointResolver((p, _) => {
   return err("Invalid Configuration: Missing Region");
 });
 
-export class AccessDeniedException extends S.TaggedErrorClass<AccessDeniedException>()(
-  "AccessDeniedException",
-  { message: S.optional(S.String) },
-  T.HttpError(403),
-).pipe(C.withAuthError) {}
-export class ApiKeyLimitExceededException extends S.TaggedErrorClass<ApiKeyLimitExceededException>()(
-  "ApiKeyLimitExceededException",
-  { message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class ApiKeyValidityOutOfBoundsException extends S.TaggedErrorClass<ApiKeyValidityOutOfBoundsException>()(
-  "ApiKeyValidityOutOfBoundsException",
-  { message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class ApiLimitExceededException extends S.TaggedErrorClass<ApiLimitExceededException>()(
-  "ApiLimitExceededException",
-  { message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class BadRequestException extends S.TaggedErrorClass<BadRequestException>()(
-  "BadRequestException",
-  {
-    message: S.optional(S.String),
-    reason: S.optional(
-      S.suspend(() => BadRequestReason).annotate({
-        identifier: "BadRequestReason",
-      }),
-    ),
-    detail: S.optional(
-      S.suspend(() => BadRequestDetail).annotate({
-        identifier: "BadRequestDetail",
-      }),
-    ),
-  },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class ConcurrentModificationException extends S.TaggedErrorClass<ConcurrentModificationException>()(
-  "ConcurrentModificationException",
-  { message: S.optional(S.String) },
-  T.HttpError(409),
-).pipe(C.withConflictError) {}
-export class ConflictException extends S.TaggedErrorClass<ConflictException>()(
-  "ConflictException",
-  { message: S.optional(S.String) },
-  T.HttpError(409),
-).pipe(C.withConflictError) {}
-export class GraphQLSchemaException extends S.TaggedErrorClass<GraphQLSchemaException>()(
-  "GraphQLSchemaException",
-  { message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class InternalFailureException extends S.TaggedErrorClass<InternalFailureException>()(
-  "InternalFailureException",
-  { message: S.optional(S.String) },
-  T.HttpError(500),
-).pipe(C.withServerError) {}
-export class LimitExceededException extends S.TaggedErrorClass<LimitExceededException>()(
-  "LimitExceededException",
-  { message: S.optional(S.String) },
-  T.HttpError(429),
-).pipe(C.withThrottlingError) {}
-export class NotFoundException extends S.TaggedErrorClass<NotFoundException>()(
-  "NotFoundException",
-  { message: S.optional(S.String) },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class ServiceQuotaExceededException extends S.TaggedErrorClass<ServiceQuotaExceededException>()(
-  "ServiceQuotaExceededException",
-  { message: S.optional(S.String) },
-  T.HttpError(402),
-).pipe(C.withQuotaError) {}
-export class UnauthorizedException extends S.TaggedErrorClass<UnauthorizedException>()(
-  "UnauthorizedException",
-  { message: S.optional(S.String) },
-  T.HttpError(401),
-).pipe(C.withAuthError) {}
+export class AccessDeniedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
+    "AccessDeniedException",
+    { message: S.optional(S.String) },
+    T.HttpError(403),
+  ).pipe(C.withAuthError) {}
+export class ApiKeyLimitExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ApiKeyLimitExceededException>()(
+    "ApiKeyLimitExceededException",
+    { message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class ApiKeyValidityOutOfBoundsException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ApiKeyValidityOutOfBoundsException>()(
+    "ApiKeyValidityOutOfBoundsException",
+    { message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class ApiLimitExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ApiLimitExceededException>()(
+    "ApiLimitExceededException",
+    { message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class BadRequestException
+  extends /*@__PURE__*/ S.TaggedErrorClass<BadRequestException>()(
+    "BadRequestException",
+    {
+      message: S.optional(S.String),
+      reason: S.optional(
+        S.suspend(() => BadRequestReason).annotate({
+          identifier: "BadRequestReason",
+        }),
+      ),
+      detail: S.optional(
+        S.suspend(() => BadRequestDetail).annotate({
+          identifier: "BadRequestDetail",
+        }),
+      ),
+    },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class ConcurrentModificationException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ConcurrentModificationException>()(
+    "ConcurrentModificationException",
+    { message: S.optional(S.String) },
+    T.HttpError(409),
+  ).pipe(C.withConflictError) {}
+export class ConflictException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
+    "ConflictException",
+    { message: S.optional(S.String) },
+    T.HttpError(409),
+  ).pipe(C.withConflictError) {}
+export class GraphQLSchemaException
+  extends /*@__PURE__*/ S.TaggedErrorClass<GraphQLSchemaException>()(
+    "GraphQLSchemaException",
+    { message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class InternalFailureException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InternalFailureException>()(
+    "InternalFailureException",
+    { message: S.optional(S.String) },
+    T.HttpError(500),
+  ).pipe(C.withServerError) {}
+export class LimitExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<LimitExceededException>()(
+    "LimitExceededException",
+    { message: S.optional(S.String) },
+    T.HttpError(429),
+  ).pipe(C.withThrottlingError) {}
+export class NotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<NotFoundException>()(
+    "NotFoundException",
+    { message: S.optional(S.String) },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class ServiceQuotaExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
+    "ServiceQuotaExceededException",
+    { message: S.optional(S.String) },
+    T.HttpError(402),
+  ).pipe(C.withQuotaError) {}
+export class UnauthorizedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<UnauthorizedException>()(
+    "UnauthorizedException",
+    { message: S.optional(S.String) },
+    T.HttpError(401),
+  ).pipe(C.withAuthError) {}
 export type DomainName = string;
 export interface AssociateApiRequest {
   domainName: string;
@@ -5320,7 +5333,27 @@ export const listApiKeys: API.OperationMethod<
     items: "apiKeys",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListApiKeysRequest,
+  ListApiKeysResponse,
+  ListApiKeysError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListApiKeysRequest,
+  ) => stream.Stream<
+    ListApiKeysResponse,
+    ListApiKeysError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListApiKeysRequest,
+  ) => stream.Stream<
+    ApiKey,
+    ListApiKeysError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListApisError =
   | BadRequestException
@@ -5370,7 +5403,27 @@ export const listApis: API.OperationMethod<
     items: "apis",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListApisRequest,
+  ListApisResponse,
+  ListApisError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListApisRequest,
+  ) => stream.Stream<
+    ListApisResponse,
+    ListApisError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListApisRequest,
+  ) => stream.Stream<
+    Api,
+    ListApisError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListChannelNamespacesError =
   | BadRequestException
@@ -5422,7 +5475,27 @@ export const listChannelNamespaces: API.OperationMethod<
     items: "channelNamespaces",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListChannelNamespacesRequest,
+  ListChannelNamespacesResponse,
+  ListChannelNamespacesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListChannelNamespacesRequest,
+  ) => stream.Stream<
+    ListChannelNamespacesResponse,
+    ListChannelNamespacesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListChannelNamespacesRequest,
+  ) => stream.Stream<
+    ChannelNamespace,
+    ListChannelNamespacesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListDataSourcesError =
   | BadRequestException
@@ -5471,7 +5544,27 @@ export const listDataSources: API.OperationMethod<
     items: "dataSources",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListDataSourcesRequest,
+  ListDataSourcesResponse,
+  ListDataSourcesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListDataSourcesRequest,
+  ) => stream.Stream<
+    ListDataSourcesResponse,
+    ListDataSourcesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListDataSourcesRequest,
+  ) => stream.Stream<
+    DataSource,
+    ListDataSourcesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListDomainNamesError =
   | AccessDeniedException
@@ -5518,7 +5611,27 @@ export const listDomainNames: API.OperationMethod<
     items: "domainNameConfigs",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListDomainNamesRequest,
+  ListDomainNamesResponse,
+  ListDomainNamesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListDomainNamesRequest,
+  ) => stream.Stream<
+    ListDomainNamesResponse,
+    ListDomainNamesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListDomainNamesRequest,
+  ) => stream.Stream<
+    DomainNameConfig,
+    ListDomainNamesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListFunctionsError =
   | BadRequestException
@@ -5567,7 +5680,27 @@ export const listFunctions: API.OperationMethod<
     items: "functions",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListFunctionsRequest,
+  ListFunctionsResponse,
+  ListFunctionsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListFunctionsRequest,
+  ) => stream.Stream<
+    ListFunctionsResponse,
+    ListFunctionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListFunctionsRequest,
+  ) => stream.Stream<
+    FunctionConfiguration,
+    ListFunctionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListGraphqlApisError =
   | BadRequestException
@@ -5614,7 +5747,27 @@ export const listGraphqlApis: API.OperationMethod<
     items: "graphqlApis",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListGraphqlApisRequest,
+  ListGraphqlApisResponse,
+  ListGraphqlApisError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListGraphqlApisRequest,
+  ) => stream.Stream<
+    ListGraphqlApisResponse,
+    ListGraphqlApisError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListGraphqlApisRequest,
+  ) => stream.Stream<
+    GraphqlApi,
+    ListGraphqlApisError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListResolversError =
   | BadRequestException
@@ -5663,7 +5816,27 @@ export const listResolvers: API.OperationMethod<
     items: "resolvers",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListResolversRequest,
+  ListResolversResponse,
+  ListResolversError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListResolversRequest,
+  ) => stream.Stream<
+    ListResolversResponse,
+    ListResolversError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListResolversRequest,
+  ) => stream.Stream<
+    Resolver,
+    ListResolversError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListResolversByFunctionError =
   | BadRequestException
@@ -5712,7 +5885,27 @@ export const listResolversByFunction: API.OperationMethod<
     items: "resolvers",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListResolversByFunctionRequest,
+  ListResolversByFunctionResponse,
+  ListResolversByFunctionError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListResolversByFunctionRequest,
+  ) => stream.Stream<
+    ListResolversByFunctionResponse,
+    ListResolversByFunctionError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListResolversByFunctionRequest,
+  ) => stream.Stream<
+    Resolver,
+    ListResolversByFunctionError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListSourceApiAssociationsError =
   | BadRequestException
@@ -5761,7 +5954,27 @@ export const listSourceApiAssociations: API.OperationMethod<
     items: "sourceApiAssociationSummaries",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListSourceApiAssociationsRequest,
+  ListSourceApiAssociationsResponse,
+  ListSourceApiAssociationsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListSourceApiAssociationsRequest,
+  ) => stream.Stream<
+    ListSourceApiAssociationsResponse,
+    ListSourceApiAssociationsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListSourceApiAssociationsRequest,
+  ) => stream.Stream<
+    SourceApiAssociationSummary,
+    ListSourceApiAssociationsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListTagsForResourceError =
   | AccessDeniedException
@@ -5844,7 +6057,27 @@ export const listTypes: API.OperationMethod<
     items: "types",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListTypesRequest,
+  ListTypesResponse,
+  ListTypesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListTypesRequest,
+  ) => stream.Stream<
+    ListTypesResponse,
+    ListTypesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListTypesRequest,
+  ) => stream.Stream<
+    Type,
+    ListTypesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListTypesByAssociationError =
   | BadRequestException
@@ -5895,7 +6128,27 @@ export const listTypesByAssociation: API.OperationMethod<
     items: "types",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListTypesByAssociationRequest,
+  ListTypesByAssociationResponse,
+  ListTypesByAssociationError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListTypesByAssociationRequest,
+  ) => stream.Stream<
+    ListTypesByAssociationResponse,
+    ListTypesByAssociationError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListTypesByAssociationRequest,
+  ) => stream.Stream<
+    Type,
+    ListTypesByAssociationError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type PutGraphqlApiEnvironmentVariablesError =
   | AccessDeniedException

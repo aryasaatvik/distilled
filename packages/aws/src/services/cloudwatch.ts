@@ -104,159 +104,181 @@ const rules = T.EndpointResolver((p, _) => {
   return err("Invalid Configuration: Missing Region");
 });
 
-export class ConcurrentModificationException extends S.TaggedErrorClass<ConcurrentModificationException>()(
-  "ConcurrentModificationException",
-  { Message: S.optional(S.String) },
-  T.all(
-    T.AwsQueryError({
-      code: "ConcurrentModificationException",
-      httpResponseCode: 429,
-    }),
-    T.HttpError(429),
-  ),
-).pipe(C.withThrottlingError) {}
-export class ConflictException extends S.TaggedErrorClass<ConflictException>()(
-  "ConflictException",
-  { Message: S.optional(S.String) },
-  T.HttpError(409),
-).pipe(C.withConflictError) {}
-export class DashboardInvalidInputError extends S.TaggedErrorClass<DashboardInvalidInputError>()(
-  "DashboardInvalidInputError",
-  {
-    message: S.optional(S.String),
-    dashboardValidationMessages: S.optional(
-      S.suspend(() => DashboardValidationMessages).annotate({
-        identifier: "DashboardValidationMessages",
+export class ConcurrentModificationException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ConcurrentModificationException>()(
+    "ConcurrentModificationException",
+    { Message: S.optional(S.String) },
+    T.all(
+      T.AwsQueryError({
+        code: "ConcurrentModificationException",
+        httpResponseCode: 429,
       }),
+      T.HttpError(429),
     ),
-  },
-  T.all(
-    T.AwsQueryError({ code: "InvalidParameterInput", httpResponseCode: 400 }),
-    T.HttpError(400),
-  ),
-).pipe(C.withBadRequestError) {}
-export class DashboardNotFoundError extends S.TaggedErrorClass<DashboardNotFoundError>()(
-  "DashboardNotFoundError",
-  { message: S.optional(S.String) },
-  T.all(
-    T.AwsQueryError({ code: "ResourceNotFound", httpResponseCode: 404 }),
-    T.HttpError(404),
-  ),
-).pipe(C.withBadRequestError) {}
-export class InternalServiceFault extends S.TaggedErrorClass<InternalServiceFault>()(
-  "InternalServiceFault",
-  { Message: S.optional(S.String) },
-  T.all(
-    T.AwsQueryError({ code: "InternalServiceError", httpResponseCode: 500 }),
-    T.HttpError(500),
-  ),
-).pipe(C.withServerError) {}
-export class InvalidFormatFault extends S.TaggedErrorClass<InvalidFormatFault>()(
-  "InvalidFormatFault",
-  { message: S.optional(S.String) },
-  T.all(
-    T.AwsQueryError({ code: "InvalidFormat", httpResponseCode: 400 }),
-    T.HttpError(400),
-  ),
-).pipe(C.withBadRequestError) {}
-export class InvalidNextToken extends S.TaggedErrorClass<InvalidNextToken>()(
-  "InvalidNextToken",
-  { message: S.optional(S.String) },
-  T.all(
-    T.AwsQueryError({ code: "InvalidNextToken", httpResponseCode: 400 }),
-    T.HttpError(400),
-  ),
-).pipe(C.withBadRequestError) {}
-export class InvalidParameterCombinationException extends S.TaggedErrorClass<InvalidParameterCombinationException>()(
-  "InvalidParameterCombinationException",
-  { message: S.optional(S.String) },
-  T.all(
-    T.AwsQueryError({
-      code: "InvalidParameterCombination",
-      httpResponseCode: 400,
-    }),
-    T.HttpError(400),
-  ),
-).pipe(C.withBadRequestError) {}
-export class InvalidParameterValueException extends S.TaggedErrorClass<InvalidParameterValueException>()(
-  "InvalidParameterValueException",
-  { message: S.optional(S.String) },
-  T.all(
-    T.AwsQueryError({ code: "InvalidParameterValue", httpResponseCode: 400 }),
-    T.HttpError(400),
-  ),
-).pipe(C.withBadRequestError) {}
-export class KmsAccessDeniedException extends S.TaggedErrorClass<KmsAccessDeniedException>()(
-  "KmsAccessDeniedException",
-  { Message: S.optional(S.String) },
-).pipe(C.withAuthError) {}
-export class KmsKeyDisabledException extends S.TaggedErrorClass<KmsKeyDisabledException>()(
-  "KmsKeyDisabledException",
-  { Message: S.optional(S.String) },
-) {}
-export class KmsKeyNotFoundException extends S.TaggedErrorClass<KmsKeyNotFoundException>()(
-  "KmsKeyNotFoundException",
-  { Message: S.optional(S.String) },
-) {}
-export class LimitExceededException extends S.TaggedErrorClass<LimitExceededException>()(
-  "LimitExceededException",
-  { Message: S.optional(S.String) },
-  T.all(
-    T.AwsQueryError({ code: "LimitExceededException", httpResponseCode: 400 }),
-    T.HttpError(400),
-  ),
-).pipe(C.withBadRequestError) {}
-export class LimitExceededFault extends S.TaggedErrorClass<LimitExceededFault>()(
-  "LimitExceededFault",
-  { message: S.optional(S.String) },
-  T.all(
-    T.AwsQueryError({ code: "LimitExceeded", httpResponseCode: 400 }),
-    T.HttpError(400),
-  ),
-).pipe(C.withBadRequestError) {}
-export class MissingRequiredParameterException extends S.TaggedErrorClass<MissingRequiredParameterException>()(
-  "MissingRequiredParameterException",
-  { message: S.optional(S.String) },
-  T.all(
-    T.AwsQueryError({ code: "MissingParameter", httpResponseCode: 400 }),
-    T.HttpError(400),
-  ),
-).pipe(C.withBadRequestError) {}
-export class ResourceConflict extends S.TaggedErrorClass<ResourceConflict>()(
-  "ResourceConflict",
-  { message: S.optional(S.String) },
-  T.all(
-    T.AwsQueryError({ code: "ResourceConflict", httpResponseCode: 409 }),
+  ).pipe(C.withThrottlingError) {}
+export class ConflictException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
+    "ConflictException",
+    { Message: S.optional(S.String) },
     T.HttpError(409),
-  ),
-).pipe(C.withConflictError) {}
-export class ResourceNotFound extends S.TaggedErrorClass<ResourceNotFound>()(
-  "ResourceNotFound",
-  { message: S.optional(S.String) },
-  T.all(
-    T.AwsQueryError({ code: "ResourceNotFound", httpResponseCode: 404 }),
-    T.HttpError(404),
-  ),
-).pipe(C.withBadRequestError) {}
-export class ResourceNotFoundException extends S.TaggedErrorClass<ResourceNotFoundException>()(
-  "ResourceNotFoundException",
-  {
-    ResourceType: S.optional(S.String),
-    ResourceId: S.optional(S.String),
-    Message: S.optional(S.String),
-  },
-  T.all(
-    T.AwsQueryError({
-      code: "ResourceNotFoundException",
-      httpResponseCode: 404,
-    }),
-    T.HttpError(404),
-  ),
-).pipe(C.withBadRequestError) {}
-export class ValidationException extends S.TaggedErrorClass<ValidationException>()(
-  "ValidationException",
-  {},
-).pipe(C.withBadRequestError) {}
+  ).pipe(C.withConflictError) {}
+export class DashboardInvalidInputError
+  extends /*@__PURE__*/ S.TaggedErrorClass<DashboardInvalidInputError>()(
+    "DashboardInvalidInputError",
+    {
+      message: S.optional(S.String),
+      dashboardValidationMessages: S.optional(
+        S.suspend(() => DashboardValidationMessages).annotate({
+          identifier: "DashboardValidationMessages",
+        }),
+      ),
+    },
+    T.all(
+      T.AwsQueryError({ code: "InvalidParameterInput", httpResponseCode: 400 }),
+      T.HttpError(400),
+    ),
+  ).pipe(C.withBadRequestError) {}
+export class DashboardNotFoundError
+  extends /*@__PURE__*/ S.TaggedErrorClass<DashboardNotFoundError>()(
+    "DashboardNotFoundError",
+    { message: S.optional(S.String) },
+    T.all(
+      T.AwsQueryError({ code: "ResourceNotFound", httpResponseCode: 404 }),
+      T.HttpError(404),
+    ),
+  ).pipe(C.withBadRequestError) {}
+export class InternalServiceFault
+  extends /*@__PURE__*/ S.TaggedErrorClass<InternalServiceFault>()(
+    "InternalServiceFault",
+    { Message: S.optional(S.String) },
+    T.all(
+      T.AwsQueryError({ code: "InternalServiceError", httpResponseCode: 500 }),
+      T.HttpError(500),
+    ),
+  ).pipe(C.withServerError) {}
+export class InvalidFormatFault
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidFormatFault>()(
+    "InvalidFormatFault",
+    { message: S.optional(S.String) },
+    T.all(
+      T.AwsQueryError({ code: "InvalidFormat", httpResponseCode: 400 }),
+      T.HttpError(400),
+    ),
+  ).pipe(C.withBadRequestError) {}
+export class InvalidNextToken
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidNextToken>()(
+    "InvalidNextToken",
+    { message: S.optional(S.String) },
+    T.all(
+      T.AwsQueryError({ code: "InvalidNextToken", httpResponseCode: 400 }),
+      T.HttpError(400),
+    ),
+  ).pipe(C.withBadRequestError) {}
+export class InvalidParameterCombinationException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidParameterCombinationException>()(
+    "InvalidParameterCombinationException",
+    { message: S.optional(S.String) },
+    T.all(
+      T.AwsQueryError({
+        code: "InvalidParameterCombination",
+        httpResponseCode: 400,
+      }),
+      T.HttpError(400),
+    ),
+  ).pipe(C.withBadRequestError) {}
+export class InvalidParameterValueException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidParameterValueException>()(
+    "InvalidParameterValueException",
+    { message: S.optional(S.String) },
+    T.all(
+      T.AwsQueryError({ code: "InvalidParameterValue", httpResponseCode: 400 }),
+      T.HttpError(400),
+    ),
+  ).pipe(C.withBadRequestError) {}
+export class KmsAccessDeniedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<KmsAccessDeniedException>()(
+    "KmsAccessDeniedException",
+    { Message: S.optional(S.String) },
+  ).pipe(C.withAuthError) {}
+export class KmsKeyDisabledException
+  extends /*@__PURE__*/ S.TaggedErrorClass<KmsKeyDisabledException>()(
+    "KmsKeyDisabledException",
+    { Message: S.optional(S.String) },
+  ) {}
+export class KmsKeyNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<KmsKeyNotFoundException>()(
+    "KmsKeyNotFoundException",
+    { Message: S.optional(S.String) },
+  ) {}
+export class LimitExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<LimitExceededException>()(
+    "LimitExceededException",
+    { Message: S.optional(S.String) },
+    T.all(
+      T.AwsQueryError({
+        code: "LimitExceededException",
+        httpResponseCode: 400,
+      }),
+      T.HttpError(400),
+    ),
+  ).pipe(C.withBadRequestError) {}
+export class LimitExceededFault
+  extends /*@__PURE__*/ S.TaggedErrorClass<LimitExceededFault>()(
+    "LimitExceededFault",
+    { message: S.optional(S.String) },
+    T.all(
+      T.AwsQueryError({ code: "LimitExceeded", httpResponseCode: 400 }),
+      T.HttpError(400),
+    ),
+  ).pipe(C.withBadRequestError) {}
+export class MissingRequiredParameterException
+  extends /*@__PURE__*/ S.TaggedErrorClass<MissingRequiredParameterException>()(
+    "MissingRequiredParameterException",
+    { message: S.optional(S.String) },
+    T.all(
+      T.AwsQueryError({ code: "MissingParameter", httpResponseCode: 400 }),
+      T.HttpError(400),
+    ),
+  ).pipe(C.withBadRequestError) {}
+export class ResourceConflict
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceConflict>()(
+    "ResourceConflict",
+    { message: S.optional(S.String) },
+    T.all(
+      T.AwsQueryError({ code: "ResourceConflict", httpResponseCode: 409 }),
+      T.HttpError(409),
+    ),
+  ).pipe(C.withConflictError) {}
+export class ResourceNotFound
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFound>()(
+    "ResourceNotFound",
+    { message: S.optional(S.String) },
+    T.all(
+      T.AwsQueryError({ code: "ResourceNotFound", httpResponseCode: 404 }),
+      T.HttpError(404),
+    ),
+  ).pipe(C.withBadRequestError) {}
+export class ResourceNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
+    "ResourceNotFoundException",
+    {
+      ResourceType: S.optional(S.String),
+      ResourceId: S.optional(S.String),
+      Message: S.optional(S.String),
+    },
+    T.all(
+      T.AwsQueryError({
+        code: "ResourceNotFoundException",
+        httpResponseCode: 404,
+      }),
+      T.HttpError(404),
+    ),
+  ).pipe(C.withBadRequestError) {}
+export class ValidationException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
+    "ValidationException",
+    {},
+  ).pipe(C.withBadRequestError) {}
 export type DatasetIdentifier = string;
 export type KmsKeyArn = string;
 export interface AssociateDatasetKmsKeyInput {
@@ -3615,7 +3637,27 @@ export const describeAlarmHistory: API.OperationMethod<
     items: "AlarmHistoryItems",
     pageSize: "MaxRecords",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  DescribeAlarmHistoryInput,
+  DescribeAlarmHistoryOutput,
+  DescribeAlarmHistoryError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: DescribeAlarmHistoryInput,
+  ) => stream.Stream<
+    DescribeAlarmHistoryOutput,
+    DescribeAlarmHistoryError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: DescribeAlarmHistoryInput,
+  ) => stream.Stream<
+    AlarmHistoryItem,
+    DescribeAlarmHistoryError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type DescribeAlarmsError = InvalidNextToken | CommonErrors;
 /**
@@ -3659,7 +3701,27 @@ export const describeAlarms: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxRecords",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  DescribeAlarmsInput,
+  DescribeAlarmsOutput,
+  DescribeAlarmsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: DescribeAlarmsInput,
+  ) => stream.Stream<
+    DescribeAlarmsOutput,
+    DescribeAlarmsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: DescribeAlarmsInput,
+  ) => stream.Stream<
+    unknown,
+    DescribeAlarmsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type DescribeAlarmsForMetricError = CommonErrors;
 /**
@@ -3736,7 +3798,27 @@ export const describeAnomalyDetectors: API.OperationMethod<
     items: "AnomalyDetectors",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  DescribeAnomalyDetectorsInput,
+  DescribeAnomalyDetectorsOutput,
+  DescribeAnomalyDetectorsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: DescribeAnomalyDetectorsInput,
+  ) => stream.Stream<
+    DescribeAnomalyDetectorsOutput,
+    DescribeAnomalyDetectorsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: DescribeAnomalyDetectorsInput,
+  ) => stream.Stream<
+    AnomalyDetector,
+    DescribeAnomalyDetectorsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type DescribeInsightRulesError = InvalidNextToken | CommonErrors;
 /**
@@ -3777,7 +3859,27 @@ export const describeInsightRules: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  DescribeInsightRulesInput,
+  DescribeInsightRulesOutput,
+  DescribeInsightRulesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: DescribeInsightRulesInput,
+  ) => stream.Stream<
+    DescribeInsightRulesOutput,
+    DescribeInsightRulesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: DescribeInsightRulesInput,
+  ) => stream.Stream<
+    unknown,
+    DescribeInsightRulesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type DisableAlarmActionsError = CommonErrors;
 /**
@@ -4167,7 +4269,27 @@ export const getMetricData: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxDatapoints",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  GetMetricDataInput,
+  GetMetricDataOutput,
+  GetMetricDataError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: GetMetricDataInput,
+  ) => stream.Stream<
+    GetMetricDataOutput,
+    GetMetricDataError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: GetMetricDataInput,
+  ) => stream.Stream<
+    unknown,
+    GetMetricDataError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type GetMetricStatisticsError =
   | InternalServiceFault
@@ -4385,7 +4507,27 @@ export const listAlarmMuteRules: API.OperationMethod<
     items: "AlarmMuteRuleSummaries",
     pageSize: "MaxRecords",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListAlarmMuteRulesInput,
+  ListAlarmMuteRulesOutput,
+  ListAlarmMuteRulesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListAlarmMuteRulesInput,
+  ) => stream.Stream<
+    ListAlarmMuteRulesOutput,
+    ListAlarmMuteRulesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListAlarmMuteRulesInput,
+  ) => stream.Stream<
+    AlarmMuteRuleSummary,
+    ListAlarmMuteRulesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListDashboardsError =
   | InternalServiceFault
@@ -4433,7 +4575,27 @@ export const listDashboards: API.OperationMethod<
     outputToken: "NextToken",
     items: "DashboardEntries",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListDashboardsInput,
+  ListDashboardsOutput,
+  ListDashboardsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListDashboardsInput,
+  ) => stream.Stream<
+    ListDashboardsOutput,
+    ListDashboardsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListDashboardsInput,
+  ) => stream.Stream<
+    DashboardEntry,
+    ListDashboardsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListManagedInsightRulesError =
   | InvalidNextToken
@@ -4480,7 +4642,27 @@ export const listManagedInsightRules: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListManagedInsightRulesInput,
+  ListManagedInsightRulesOutput,
+  ListManagedInsightRulesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListManagedInsightRulesInput,
+  ) => stream.Stream<
+    ListManagedInsightRulesOutput,
+    ListManagedInsightRulesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListManagedInsightRulesInput,
+  ) => stream.Stream<
+    unknown,
+    ListManagedInsightRulesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListMetricsError =
   | InternalServiceFault
@@ -4530,7 +4712,27 @@ export const listMetrics: API.OperationMethod<
   retry: Retry,
   operationName: "ListMetrics",
   pagination: { inputToken: "NextToken", outputToken: "NextToken" } as const,
-}));
+})) as any as API.OperationMethod<
+  ListMetricsInput,
+  ListMetricsOutput,
+  ListMetricsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListMetricsInput,
+  ) => stream.Stream<
+    ListMetricsOutput,
+    ListMetricsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListMetricsInput,
+  ) => stream.Stream<
+    unknown,
+    ListMetricsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListMetricStreamsError =
   | InternalServiceFault
@@ -4578,7 +4780,27 @@ export const listMetricStreams: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListMetricStreamsInput,
+  ListMetricStreamsOutput,
+  ListMetricStreamsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListMetricStreamsInput,
+  ) => stream.Stream<
+    ListMetricStreamsOutput,
+    ListMetricStreamsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListMetricStreamsInput,
+  ) => stream.Stream<
+    unknown,
+    ListMetricStreamsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListTagsForResourceError =
   | InternalServiceFault

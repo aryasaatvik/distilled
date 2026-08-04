@@ -84,22 +84,26 @@ const rules = T.EndpointResolver((p, _) => {
   return err("Invalid Configuration: Missing Region");
 });
 
-export class InternalServerException extends S.TaggedErrorClass<InternalServerException>()(
-  "InternalServerException",
-  { message: S.optional(S.String) },
-) {}
-export class ResourceNotFoundException extends S.TaggedErrorClass<ResourceNotFoundException>()(
-  "ResourceNotFoundException",
-  { message: S.optional(S.String) },
-) {}
-export class ThrottlingException extends S.TaggedErrorClass<ThrottlingException>()(
-  "ThrottlingException",
-  { message: S.optional(S.String) },
-) {}
-export class ValidationException extends S.TaggedErrorClass<ValidationException>()(
-  "ValidationException",
-  { message: S.optional(S.String) },
-) {}
+export class InternalServerException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
+    "InternalServerException",
+    { message: S.optional(S.String) },
+  ) {}
+export class ResourceNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
+    "ResourceNotFoundException",
+    { message: S.optional(S.String) },
+  ) {}
+export class ThrottlingException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
+    "ThrottlingException",
+    { message: S.optional(S.String) },
+  ) {}
+export class ValidationException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
+    "ValidationException",
+    { message: S.optional(S.String) },
+  ) {}
 export type SubscriptionProviderArn = string;
 export interface DeregisterSubscriptionProviderRequest {
   SubscriptionProviderArn: string;
@@ -730,7 +734,27 @@ export const listLinuxSubscriptionInstances: API.OperationMethod<
     items: "Instances",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListLinuxSubscriptionInstancesRequest,
+  ListLinuxSubscriptionInstancesResponse,
+  ListLinuxSubscriptionInstancesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListLinuxSubscriptionInstancesRequest,
+  ) => stream.Stream<
+    ListLinuxSubscriptionInstancesResponse,
+    ListLinuxSubscriptionInstancesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListLinuxSubscriptionInstancesRequest,
+  ) => stream.Stream<
+    Instance,
+    ListLinuxSubscriptionInstancesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListLinuxSubscriptionsError =
   | InternalServerException
@@ -775,7 +799,27 @@ export const listLinuxSubscriptions: API.OperationMethod<
     items: "Subscriptions",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListLinuxSubscriptionsRequest,
+  ListLinuxSubscriptionsResponse,
+  ListLinuxSubscriptionsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListLinuxSubscriptionsRequest,
+  ) => stream.Stream<
+    ListLinuxSubscriptionsResponse,
+    ListLinuxSubscriptionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListLinuxSubscriptionsRequest,
+  ) => stream.Stream<
+    Subscription,
+    ListLinuxSubscriptionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListRegisteredSubscriptionProvidersError =
   | InternalServerException
@@ -818,7 +862,27 @@ export const listRegisteredSubscriptionProviders: API.OperationMethod<
     items: "RegisteredSubscriptionProviders",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListRegisteredSubscriptionProvidersRequest,
+  ListRegisteredSubscriptionProvidersResponse,
+  ListRegisteredSubscriptionProvidersError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListRegisteredSubscriptionProvidersRequest,
+  ) => stream.Stream<
+    ListRegisteredSubscriptionProvidersResponse,
+    ListRegisteredSubscriptionProvidersError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListRegisteredSubscriptionProvidersRequest,
+  ) => stream.Stream<
+    RegisteredSubscriptionProvider,
+    ListRegisteredSubscriptionProvidersError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListTagsForResourceError =
   | InternalServerException

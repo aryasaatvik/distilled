@@ -88,278 +88,306 @@ const rules = T.EndpointResolver((p, _) => {
   return err("Invalid Configuration: Missing Region");
 });
 
-export class IdempotentParameterMismatchException extends S.TaggedErrorClass<IdempotentParameterMismatchException>()(
-  "IdempotentParameterMismatchException",
-  { message: S.String },
-  T.all(
-    T.AwsQueryError({
-      code: "IdempotentParameterMismatch",
-      httpResponseCode: 400,
-    }),
-    T.HttpError(400),
-  ),
-).pipe(C.withBadRequestError) {}
-export class InvalidClientTokenException extends S.TaggedErrorClass<InvalidClientTokenException>()(
-  "InvalidClientTokenException",
-  { message: S.String },
-  T.all(
-    T.AwsQueryError({ code: "InvalidClientToken", httpResponseCode: 400 }),
-    T.HttpError(400),
-  ),
-).pipe(C.withBadRequestError) {}
-export class InvalidMaxResultsException extends S.TaggedErrorClass<InvalidMaxResultsException>()(
-  "InvalidMaxResultsException",
-  { message: S.String },
-  T.all(
-    T.AwsQueryError({ code: "InvalidMaxResults", httpResponseCode: 400 }),
-    T.HttpError(400),
-  ),
-).pipe(C.withBadRequestError) {}
-export class InvalidNextTokenException extends S.TaggedErrorClass<InvalidNextTokenException>()(
-  "InvalidNextTokenException",
-  { message: S.String },
-  T.all(
-    T.AwsQueryError({ code: "InvalidNextToken", httpResponseCode: 400 }),
-    T.HttpError(400),
-  ),
-).pipe(C.withBadRequestError) {}
-export class InvalidParameterException extends S.TaggedErrorClass<InvalidParameterException>()(
-  "InvalidParameterException",
-  { message: S.String },
-  T.all(
-    T.AwsQueryError({ code: "InvalidParameter", httpResponseCode: 400 }),
-    T.HttpError(400),
-  ),
-).pipe(C.withBadRequestError) {}
-export class InvalidPolicyException extends S.TaggedErrorClass<InvalidPolicyException>()(
-  "InvalidPolicyException",
-  { message: S.String },
-  T.all(
-    T.AwsQueryError({ code: "InvalidPolicy", httpResponseCode: 400 }),
-    T.HttpError(400),
-  ),
-).pipe(C.withBadRequestError) {}
-export class InvalidResourceTypeException extends S.TaggedErrorClass<InvalidResourceTypeException>()(
-  "InvalidResourceTypeException",
-  { message: S.String },
-  T.all(
-    T.AwsQueryError({
-      code: "InvalidResourceType.Unknown",
-      httpResponseCode: 400,
-    }),
-    T.HttpError(400),
-  ),
-).pipe(C.withBadRequestError) {}
-export class InvalidStateTransitionException extends S.TaggedErrorClass<InvalidStateTransitionException>()(
-  "InvalidStateTransitionException",
-  { message: S.String },
-  T.all(
-    T.AwsQueryError({
-      code: "InvalidStateTransitionException.Unknown",
-      httpResponseCode: 400,
-    }),
-    T.HttpError(400),
-  ),
-).pipe(C.withBadRequestError) {}
-export class MalformedArnException extends S.TaggedErrorClass<MalformedArnException>()(
-  "MalformedArnException",
-  { message: S.String },
-  T.all(
-    T.AwsQueryError({ code: "InvalidArn.Malformed", httpResponseCode: 400 }),
-    T.HttpError(400),
-  ),
-).pipe(C.withBadRequestError) {}
-export class MalformedPolicyTemplateException extends S.TaggedErrorClass<MalformedPolicyTemplateException>()(
-  "MalformedPolicyTemplateException",
-  { message: S.String },
-  T.all(
-    T.AwsQueryError({
-      code: "MalformedPolicyTemplateException",
-      httpResponseCode: 400,
-    }),
-    T.HttpError(400),
-  ),
-).pipe(C.withBadRequestError) {}
-export class MissingRequiredParameterException extends S.TaggedErrorClass<MissingRequiredParameterException>()(
-  "MissingRequiredParameterException",
-  { message: S.String },
-  T.all(
-    T.AwsQueryError({
-      code: "MissingRequiredParameter",
-      httpResponseCode: 400,
-    }),
-    T.HttpError(400),
-  ),
-).pipe(C.withBadRequestError) {}
-export class OperationNotPermittedException extends S.TaggedErrorClass<OperationNotPermittedException>()(
-  "OperationNotPermittedException",
-  { message: S.String },
-  T.all(
-    T.AwsQueryError({ code: "OperationNotPermitted", httpResponseCode: 400 }),
-    T.HttpError(400),
-  ),
-).pipe(C.withBadRequestError) {}
-export class PermissionAlreadyExistsException extends S.TaggedErrorClass<PermissionAlreadyExistsException>()(
-  "PermissionAlreadyExistsException",
-  { message: S.String },
-  T.all(
-    T.AwsQueryError({
-      code: "PermissionAlreadyExistsException",
-      httpResponseCode: 409,
-    }),
-    T.HttpError(409),
-  ),
-).pipe(C.withConflictError, C.withAlreadyExistsError) {}
-export class PermissionLimitExceededException extends S.TaggedErrorClass<PermissionLimitExceededException>()(
-  "PermissionLimitExceededException",
-  { message: S.String },
-  T.all(
-    T.AwsQueryError({
-      code: "PermissionLimitExceededException",
-      httpResponseCode: 400,
-    }),
-    T.HttpError(400),
-  ),
-).pipe(C.withBadRequestError) {}
-export class PermissionVersionsLimitExceededException extends S.TaggedErrorClass<PermissionVersionsLimitExceededException>()(
-  "PermissionVersionsLimitExceededException",
-  { message: S.String },
-  T.all(
-    T.AwsQueryError({
-      code: "PermissionVersionsLimitExceededException",
-      httpResponseCode: 400,
-    }),
-    T.HttpError(400),
-  ),
-).pipe(C.withBadRequestError) {}
-export class ResourceArnNotFoundException extends S.TaggedErrorClass<ResourceArnNotFoundException>()(
-  "ResourceArnNotFoundException",
-  { message: S.String },
-  T.all(
-    T.AwsQueryError({
-      code: "InvalidResourceArn.NotFound",
-      httpResponseCode: 400,
-    }),
-    T.HttpError(400),
-  ),
-).pipe(C.withBadRequestError) {}
-export class ResourceShareInvitationAlreadyAcceptedException extends S.TaggedErrorClass<ResourceShareInvitationAlreadyAcceptedException>()(
-  "ResourceShareInvitationAlreadyAcceptedException",
-  { message: S.String },
-  T.all(
-    T.AwsQueryError({
-      code: "InvalidResourceShareInvitationArn.AlreadyAccepted",
-      httpResponseCode: 400,
-    }),
-    T.HttpError(400),
-  ),
-).pipe(C.withBadRequestError) {}
-export class ResourceShareInvitationAlreadyRejectedException extends S.TaggedErrorClass<ResourceShareInvitationAlreadyRejectedException>()(
-  "ResourceShareInvitationAlreadyRejectedException",
-  { message: S.String },
-  T.all(
-    T.AwsQueryError({
-      code: "InvalidResourceShareInvitationArn.AlreadyRejected",
-      httpResponseCode: 400,
-    }),
-    T.HttpError(400),
-  ),
-).pipe(C.withBadRequestError) {}
-export class ResourceShareInvitationArnNotFoundException extends S.TaggedErrorClass<ResourceShareInvitationArnNotFoundException>()(
-  "ResourceShareInvitationArnNotFoundException",
-  { message: S.String },
-  T.all(
-    T.AwsQueryError({
-      code: "InvalidResourceShareInvitationArn.NotFound",
-      httpResponseCode: 400,
-    }),
-    T.HttpError(400),
-  ),
-).pipe(C.withBadRequestError) {}
-export class ResourceShareInvitationExpiredException extends S.TaggedErrorClass<ResourceShareInvitationExpiredException>()(
-  "ResourceShareInvitationExpiredException",
-  { message: S.String },
-  T.all(
-    T.AwsQueryError({
-      code: "InvalidResourceShareInvitationArn.Expired",
-      httpResponseCode: 400,
-    }),
-    T.HttpError(400),
-  ),
-).pipe(C.withBadRequestError) {}
-export class ResourceShareLimitExceededException extends S.TaggedErrorClass<ResourceShareLimitExceededException>()(
-  "ResourceShareLimitExceededException",
-  { message: S.String },
-  T.all(
-    T.AwsQueryError({
-      code: "ResourceShareLimitExceeded",
-      httpResponseCode: 400,
-    }),
-    T.HttpError(400),
-  ),
-).pipe(C.withBadRequestError) {}
-export class ServerInternalException extends S.TaggedErrorClass<ServerInternalException>()(
-  "ServerInternalException",
-  { message: S.String },
-  T.all(
-    T.AwsQueryError({ code: "InternalError", httpResponseCode: 500 }),
-    T.HttpError(500),
-  ),
-).pipe(C.withServerError) {}
-export class ServiceUnavailableException extends S.TaggedErrorClass<ServiceUnavailableException>()(
-  "ServiceUnavailableException",
-  { message: S.String },
-  T.all(
-    T.AwsQueryError({ code: "Unavailable", httpResponseCode: 503 }),
-    T.HttpError(503),
-  ),
-).pipe(C.withServerError) {}
-export class TagLimitExceededException extends S.TaggedErrorClass<TagLimitExceededException>()(
-  "TagLimitExceededException",
-  { message: S.String },
-  T.all(
-    T.AwsQueryError({ code: "TagLimitExceeded", httpResponseCode: 400 }),
-    T.HttpError(400),
-  ),
-).pipe(C.withBadRequestError) {}
-export class TagPolicyViolationException extends S.TaggedErrorClass<TagPolicyViolationException>()(
-  "TagPolicyViolationException",
-  { message: S.String },
-  T.all(
-    T.AwsQueryError({ code: "TagPolicyViolation", httpResponseCode: 400 }),
-    T.HttpError(400),
-  ),
-).pipe(C.withBadRequestError) {}
-export class ThrottlingException extends S.TaggedErrorClass<ThrottlingException>()(
-  "ThrottlingException",
-  { message: S.String },
-  T.all(
-    T.AwsQueryError({ code: "ThrottlingException", httpResponseCode: 429 }),
-    T.HttpError(429),
-  ),
-).pipe(C.withThrottlingError) {}
-export class UnknownResourceException extends S.TaggedErrorClass<UnknownResourceException>()(
-  "UnknownResourceException",
-  { message: S.String },
-  T.all(
-    T.AwsQueryError({
-      code: "InvalidResourceShareArn.NotFound",
-      httpResponseCode: 400,
-    }),
-    T.HttpError(400),
-  ),
-).pipe(C.withBadRequestError) {}
-export class UnmatchedPolicyPermissionException extends S.TaggedErrorClass<UnmatchedPolicyPermissionException>()(
-  "UnmatchedPolicyPermissionException",
-  { message: S.String },
-  T.all(
-    T.AwsQueryError({
-      code: "UnmatchedPolicyPermissionException",
-      httpResponseCode: 400,
-    }),
-    T.HttpError(400),
-  ),
-).pipe(C.withBadRequestError) {}
+export class IdempotentParameterMismatchException
+  extends /*@__PURE__*/ S.TaggedErrorClass<IdempotentParameterMismatchException>()(
+    "IdempotentParameterMismatchException",
+    { message: S.String },
+    T.all(
+      T.AwsQueryError({
+        code: "IdempotentParameterMismatch",
+        httpResponseCode: 400,
+      }),
+      T.HttpError(400),
+    ),
+  ).pipe(C.withBadRequestError) {}
+export class InvalidClientTokenException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidClientTokenException>()(
+    "InvalidClientTokenException",
+    { message: S.String },
+    T.all(
+      T.AwsQueryError({ code: "InvalidClientToken", httpResponseCode: 400 }),
+      T.HttpError(400),
+    ),
+  ).pipe(C.withBadRequestError) {}
+export class InvalidMaxResultsException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidMaxResultsException>()(
+    "InvalidMaxResultsException",
+    { message: S.String },
+    T.all(
+      T.AwsQueryError({ code: "InvalidMaxResults", httpResponseCode: 400 }),
+      T.HttpError(400),
+    ),
+  ).pipe(C.withBadRequestError) {}
+export class InvalidNextTokenException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidNextTokenException>()(
+    "InvalidNextTokenException",
+    { message: S.String },
+    T.all(
+      T.AwsQueryError({ code: "InvalidNextToken", httpResponseCode: 400 }),
+      T.HttpError(400),
+    ),
+  ).pipe(C.withBadRequestError) {}
+export class InvalidParameterException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidParameterException>()(
+    "InvalidParameterException",
+    { message: S.String },
+    T.all(
+      T.AwsQueryError({ code: "InvalidParameter", httpResponseCode: 400 }),
+      T.HttpError(400),
+    ),
+  ).pipe(C.withBadRequestError) {}
+export class InvalidPolicyException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidPolicyException>()(
+    "InvalidPolicyException",
+    { message: S.String },
+    T.all(
+      T.AwsQueryError({ code: "InvalidPolicy", httpResponseCode: 400 }),
+      T.HttpError(400),
+    ),
+  ).pipe(C.withBadRequestError) {}
+export class InvalidResourceTypeException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidResourceTypeException>()(
+    "InvalidResourceTypeException",
+    { message: S.String },
+    T.all(
+      T.AwsQueryError({
+        code: "InvalidResourceType.Unknown",
+        httpResponseCode: 400,
+      }),
+      T.HttpError(400),
+    ),
+  ).pipe(C.withBadRequestError) {}
+export class InvalidStateTransitionException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidStateTransitionException>()(
+    "InvalidStateTransitionException",
+    { message: S.String },
+    T.all(
+      T.AwsQueryError({
+        code: "InvalidStateTransitionException.Unknown",
+        httpResponseCode: 400,
+      }),
+      T.HttpError(400),
+    ),
+  ).pipe(C.withBadRequestError) {}
+export class MalformedArnException
+  extends /*@__PURE__*/ S.TaggedErrorClass<MalformedArnException>()(
+    "MalformedArnException",
+    { message: S.String },
+    T.all(
+      T.AwsQueryError({ code: "InvalidArn.Malformed", httpResponseCode: 400 }),
+      T.HttpError(400),
+    ),
+  ).pipe(C.withBadRequestError) {}
+export class MalformedPolicyTemplateException
+  extends /*@__PURE__*/ S.TaggedErrorClass<MalformedPolicyTemplateException>()(
+    "MalformedPolicyTemplateException",
+    { message: S.String },
+    T.all(
+      T.AwsQueryError({
+        code: "MalformedPolicyTemplateException",
+        httpResponseCode: 400,
+      }),
+      T.HttpError(400),
+    ),
+  ).pipe(C.withBadRequestError) {}
+export class MissingRequiredParameterException
+  extends /*@__PURE__*/ S.TaggedErrorClass<MissingRequiredParameterException>()(
+    "MissingRequiredParameterException",
+    { message: S.String },
+    T.all(
+      T.AwsQueryError({
+        code: "MissingRequiredParameter",
+        httpResponseCode: 400,
+      }),
+      T.HttpError(400),
+    ),
+  ).pipe(C.withBadRequestError) {}
+export class OperationNotPermittedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<OperationNotPermittedException>()(
+    "OperationNotPermittedException",
+    { message: S.String },
+    T.all(
+      T.AwsQueryError({ code: "OperationNotPermitted", httpResponseCode: 400 }),
+      T.HttpError(400),
+    ),
+  ).pipe(C.withBadRequestError) {}
+export class PermissionAlreadyExistsException
+  extends /*@__PURE__*/ S.TaggedErrorClass<PermissionAlreadyExistsException>()(
+    "PermissionAlreadyExistsException",
+    { message: S.String },
+    T.all(
+      T.AwsQueryError({
+        code: "PermissionAlreadyExistsException",
+        httpResponseCode: 409,
+      }),
+      T.HttpError(409),
+    ),
+  ).pipe(C.withConflictError, C.withAlreadyExistsError) {}
+export class PermissionLimitExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<PermissionLimitExceededException>()(
+    "PermissionLimitExceededException",
+    { message: S.String },
+    T.all(
+      T.AwsQueryError({
+        code: "PermissionLimitExceededException",
+        httpResponseCode: 400,
+      }),
+      T.HttpError(400),
+    ),
+  ).pipe(C.withBadRequestError) {}
+export class PermissionVersionsLimitExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<PermissionVersionsLimitExceededException>()(
+    "PermissionVersionsLimitExceededException",
+    { message: S.String },
+    T.all(
+      T.AwsQueryError({
+        code: "PermissionVersionsLimitExceededException",
+        httpResponseCode: 400,
+      }),
+      T.HttpError(400),
+    ),
+  ).pipe(C.withBadRequestError) {}
+export class ResourceArnNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceArnNotFoundException>()(
+    "ResourceArnNotFoundException",
+    { message: S.String },
+    T.all(
+      T.AwsQueryError({
+        code: "InvalidResourceArn.NotFound",
+        httpResponseCode: 400,
+      }),
+      T.HttpError(400),
+    ),
+  ).pipe(C.withBadRequestError) {}
+export class ResourceShareInvitationAlreadyAcceptedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceShareInvitationAlreadyAcceptedException>()(
+    "ResourceShareInvitationAlreadyAcceptedException",
+    { message: S.String },
+    T.all(
+      T.AwsQueryError({
+        code: "InvalidResourceShareInvitationArn.AlreadyAccepted",
+        httpResponseCode: 400,
+      }),
+      T.HttpError(400),
+    ),
+  ).pipe(C.withBadRequestError) {}
+export class ResourceShareInvitationAlreadyRejectedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceShareInvitationAlreadyRejectedException>()(
+    "ResourceShareInvitationAlreadyRejectedException",
+    { message: S.String },
+    T.all(
+      T.AwsQueryError({
+        code: "InvalidResourceShareInvitationArn.AlreadyRejected",
+        httpResponseCode: 400,
+      }),
+      T.HttpError(400),
+    ),
+  ).pipe(C.withBadRequestError) {}
+export class ResourceShareInvitationArnNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceShareInvitationArnNotFoundException>()(
+    "ResourceShareInvitationArnNotFoundException",
+    { message: S.String },
+    T.all(
+      T.AwsQueryError({
+        code: "InvalidResourceShareInvitationArn.NotFound",
+        httpResponseCode: 400,
+      }),
+      T.HttpError(400),
+    ),
+  ).pipe(C.withBadRequestError) {}
+export class ResourceShareInvitationExpiredException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceShareInvitationExpiredException>()(
+    "ResourceShareInvitationExpiredException",
+    { message: S.String },
+    T.all(
+      T.AwsQueryError({
+        code: "InvalidResourceShareInvitationArn.Expired",
+        httpResponseCode: 400,
+      }),
+      T.HttpError(400),
+    ),
+  ).pipe(C.withBadRequestError) {}
+export class ResourceShareLimitExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceShareLimitExceededException>()(
+    "ResourceShareLimitExceededException",
+    { message: S.String },
+    T.all(
+      T.AwsQueryError({
+        code: "ResourceShareLimitExceeded",
+        httpResponseCode: 400,
+      }),
+      T.HttpError(400),
+    ),
+  ).pipe(C.withBadRequestError) {}
+export class ServerInternalException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ServerInternalException>()(
+    "ServerInternalException",
+    { message: S.String },
+    T.all(
+      T.AwsQueryError({ code: "InternalError", httpResponseCode: 500 }),
+      T.HttpError(500),
+    ),
+  ).pipe(C.withServerError) {}
+export class ServiceUnavailableException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ServiceUnavailableException>()(
+    "ServiceUnavailableException",
+    { message: S.String },
+    T.all(
+      T.AwsQueryError({ code: "Unavailable", httpResponseCode: 503 }),
+      T.HttpError(503),
+    ),
+  ).pipe(C.withServerError) {}
+export class TagLimitExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<TagLimitExceededException>()(
+    "TagLimitExceededException",
+    { message: S.String },
+    T.all(
+      T.AwsQueryError({ code: "TagLimitExceeded", httpResponseCode: 400 }),
+      T.HttpError(400),
+    ),
+  ).pipe(C.withBadRequestError) {}
+export class TagPolicyViolationException
+  extends /*@__PURE__*/ S.TaggedErrorClass<TagPolicyViolationException>()(
+    "TagPolicyViolationException",
+    { message: S.String },
+    T.all(
+      T.AwsQueryError({ code: "TagPolicyViolation", httpResponseCode: 400 }),
+      T.HttpError(400),
+    ),
+  ).pipe(C.withBadRequestError) {}
+export class ThrottlingException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
+    "ThrottlingException",
+    { message: S.String },
+    T.all(
+      T.AwsQueryError({ code: "ThrottlingException", httpResponseCode: 429 }),
+      T.HttpError(429),
+    ),
+  ).pipe(C.withThrottlingError) {}
+export class UnknownResourceException
+  extends /*@__PURE__*/ S.TaggedErrorClass<UnknownResourceException>()(
+    "UnknownResourceException",
+    { message: S.String },
+    T.all(
+      T.AwsQueryError({
+        code: "InvalidResourceShareArn.NotFound",
+        httpResponseCode: 400,
+      }),
+      T.HttpError(400),
+    ),
+  ).pipe(C.withBadRequestError) {}
+export class UnmatchedPolicyPermissionException
+  extends /*@__PURE__*/ S.TaggedErrorClass<UnmatchedPolicyPermissionException>()(
+    "UnmatchedPolicyPermissionException",
+    { message: S.String },
+    T.all(
+      T.AwsQueryError({
+        code: "UnmatchedPolicyPermissionException",
+        httpResponseCode: 400,
+      }),
+      T.HttpError(400),
+    ),
+  ).pipe(C.withBadRequestError) {}
 export interface AcceptResourceShareInvitationRequest {
   resourceShareInvitationArn: string;
   clientToken?: string;
@@ -2774,7 +2802,27 @@ export const getResourcePolicies: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  GetResourcePoliciesRequest,
+  GetResourcePoliciesResponse,
+  GetResourcePoliciesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: GetResourcePoliciesRequest,
+  ) => stream.Stream<
+    GetResourcePoliciesResponse,
+    GetResourcePoliciesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: GetResourcePoliciesRequest,
+  ) => stream.Stream<
+    unknown,
+    GetResourcePoliciesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type GetResourceShareAssociationsError =
   | InvalidNextTokenException
@@ -2835,7 +2883,27 @@ export const getResourceShareAssociations: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  GetResourceShareAssociationsRequest,
+  GetResourceShareAssociationsResponse,
+  GetResourceShareAssociationsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: GetResourceShareAssociationsRequest,
+  ) => stream.Stream<
+    GetResourceShareAssociationsResponse,
+    GetResourceShareAssociationsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: GetResourceShareAssociationsRequest,
+  ) => stream.Stream<
+    unknown,
+    GetResourceShareAssociationsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type GetResourceShareInvitationsError =
   | InvalidMaxResultsException
@@ -2897,7 +2965,27 @@ export const getResourceShareInvitations: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  GetResourceShareInvitationsRequest,
+  GetResourceShareInvitationsResponse,
+  GetResourceShareInvitationsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: GetResourceShareInvitationsRequest,
+  ) => stream.Stream<
+    GetResourceShareInvitationsResponse,
+    GetResourceShareInvitationsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: GetResourceShareInvitationsRequest,
+  ) => stream.Stream<
+    unknown,
+    GetResourceShareInvitationsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type GetResourceSharesError =
   | InvalidNextTokenException
@@ -2955,7 +3043,27 @@ export const getResourceShares: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  GetResourceSharesRequest,
+  GetResourceSharesResponse,
+  GetResourceSharesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: GetResourceSharesRequest,
+  ) => stream.Stream<
+    GetResourceSharesResponse,
+    GetResourceSharesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: GetResourceSharesRequest,
+  ) => stream.Stream<
+    unknown,
+    GetResourceSharesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListPendingInvitationResourcesError =
   | InvalidNextTokenException
@@ -3021,7 +3129,27 @@ export const listPendingInvitationResources: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListPendingInvitationResourcesRequest,
+  ListPendingInvitationResourcesResponse,
+  ListPendingInvitationResourcesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListPendingInvitationResourcesRequest,
+  ) => stream.Stream<
+    ListPendingInvitationResourcesResponse,
+    ListPendingInvitationResourcesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListPendingInvitationResourcesRequest,
+  ) => stream.Stream<
+    unknown,
+    ListPendingInvitationResourcesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListPermissionAssociationsError =
   | InvalidNextTokenException
@@ -3079,7 +3207,27 @@ export const listPermissionAssociations: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListPermissionAssociationsRequest,
+  ListPermissionAssociationsResponse,
+  ListPermissionAssociationsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListPermissionAssociationsRequest,
+  ) => stream.Stream<
+    ListPermissionAssociationsResponse,
+    ListPermissionAssociationsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListPermissionAssociationsRequest,
+  ) => stream.Stream<
+    unknown,
+    ListPermissionAssociationsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListPermissionsError =
   | InvalidNextTokenException
@@ -3136,7 +3284,27 @@ export const listPermissions: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListPermissionsRequest,
+  ListPermissionsResponse,
+  ListPermissionsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListPermissionsRequest,
+  ) => stream.Stream<
+    ListPermissionsResponse,
+    ListPermissionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListPermissionsRequest,
+  ) => stream.Stream<
+    unknown,
+    ListPermissionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListPermissionVersionsError =
   | InvalidNextTokenException
@@ -3196,7 +3364,27 @@ export const listPermissionVersions: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListPermissionVersionsRequest,
+  ListPermissionVersionsResponse,
+  ListPermissionVersionsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListPermissionVersionsRequest,
+  ) => stream.Stream<
+    ListPermissionVersionsResponse,
+    ListPermissionVersionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListPermissionVersionsRequest,
+  ) => stream.Stream<
+    unknown,
+    ListPermissionVersionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListPrincipalsError =
   | InvalidNextTokenException
@@ -3255,7 +3443,27 @@ export const listPrincipals: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListPrincipalsRequest,
+  ListPrincipalsResponse,
+  ListPrincipalsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListPrincipalsRequest,
+  ) => stream.Stream<
+    ListPrincipalsResponse,
+    ListPrincipalsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListPrincipalsRequest,
+  ) => stream.Stream<
+    unknown,
+    ListPrincipalsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListReplacePermissionAssociationsWorkError =
   | InvalidNextTokenException
@@ -3310,7 +3518,27 @@ export const listReplacePermissionAssociationsWork: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListReplacePermissionAssociationsWorkRequest,
+  ListReplacePermissionAssociationsWorkResponse,
+  ListReplacePermissionAssociationsWorkError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListReplacePermissionAssociationsWorkRequest,
+  ) => stream.Stream<
+    ListReplacePermissionAssociationsWorkResponse,
+    ListReplacePermissionAssociationsWorkError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListReplacePermissionAssociationsWorkRequest,
+  ) => stream.Stream<
+    unknown,
+    ListReplacePermissionAssociationsWorkError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListResourcesError =
   | InvalidNextTokenException
@@ -3371,7 +3599,27 @@ export const listResources: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListResourcesRequest,
+  ListResourcesResponse,
+  ListResourcesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListResourcesRequest,
+  ) => stream.Stream<
+    ListResourcesResponse,
+    ListResourcesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListResourcesRequest,
+  ) => stream.Stream<
+    unknown,
+    ListResourcesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListResourceSharePermissionsError =
   | InvalidNextTokenException
@@ -3431,7 +3679,27 @@ export const listResourceSharePermissions: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListResourceSharePermissionsRequest,
+  ListResourceSharePermissionsResponse,
+  ListResourceSharePermissionsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListResourceSharePermissionsRequest,
+  ) => stream.Stream<
+    ListResourceSharePermissionsResponse,
+    ListResourceSharePermissionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListResourceSharePermissionsRequest,
+  ) => stream.Stream<
+    unknown,
+    ListResourceSharePermissionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListResourceTypesError =
   | InvalidNextTokenException
@@ -3479,7 +3747,27 @@ export const listResourceTypes: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListResourceTypesRequest,
+  ListResourceTypesResponse,
+  ListResourceTypesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListResourceTypesRequest,
+  ) => stream.Stream<
+    ListResourceTypesResponse,
+    ListResourceTypesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListResourceTypesRequest,
+  ) => stream.Stream<
+    unknown,
+    ListResourceTypesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListSourceAssociationsError =
   | InvalidNextTokenException
@@ -3534,7 +3822,27 @@ export const listSourceAssociations: API.OperationMethod<
     items: "sourceAssociations",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListSourceAssociationsRequest,
+  ListSourceAssociationsResponse,
+  ListSourceAssociationsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListSourceAssociationsRequest,
+  ) => stream.Stream<
+    ListSourceAssociationsResponse,
+    ListSourceAssociationsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListSourceAssociationsRequest,
+  ) => stream.Stream<
+    AssociatedSource,
+    ListSourceAssociationsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type PromotePermissionCreatedFromPolicyError =
   | InvalidParameterException

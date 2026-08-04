@@ -85,31 +85,36 @@ const rules = T.EndpointResolver((p, _) => {
   return err("Invalid Configuration: Missing Region");
 });
 
-export class AccessDeniedException extends S.TaggedErrorClass<AccessDeniedException>()(
-  "AccessDeniedException",
-  { Message: S.optional(S.String) },
-  T.HttpError(403),
-).pipe(C.withAuthError) {}
-export class InternalServerException extends S.TaggedErrorClass<InternalServerException>()(
-  "InternalServerException",
-  { Message: S.optional(S.String) },
-  T.all(T.HttpError(500), T.Retryable()),
-).pipe(C.withServerError, C.withRetryableError) {}
-export class ResourceNotFoundException extends S.TaggedErrorClass<ResourceNotFoundException>()(
-  "ResourceNotFoundException",
-  { Message: S.optional(S.String) },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class ThrottlingException extends S.TaggedErrorClass<ThrottlingException>()(
-  "ThrottlingException",
-  { Message: S.optional(S.String) },
-  T.all(T.HttpError(429), T.Retryable({ throttling: true })),
-).pipe(C.withThrottlingError, C.withRetryableError) {}
-export class ValidationException extends S.TaggedErrorClass<ValidationException>()(
-  "ValidationException",
-  { Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
+export class AccessDeniedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
+    "AccessDeniedException",
+    { Message: S.optional(S.String) },
+    T.HttpError(403),
+  ).pipe(C.withAuthError) {}
+export class InternalServerException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
+    "InternalServerException",
+    { Message: S.optional(S.String) },
+    T.all(T.HttpError(500), T.Retryable()),
+  ).pipe(C.withServerError, C.withRetryableError) {}
+export class ResourceNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
+    "ResourceNotFoundException",
+    { Message: S.optional(S.String) },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class ThrottlingException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
+    "ThrottlingException",
+    { Message: S.optional(S.String) },
+    T.all(T.HttpError(429), T.Retryable({ throttling: true })),
+  ).pipe(C.withThrottlingError, C.withRetryableError) {}
+export class ValidationException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
+    "ValidationException",
+    { Message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
 export type ControlArn = string;
 export interface GetControlRequest {
   ControlArn: string;
@@ -790,7 +795,27 @@ export const listCommonControls: API.OperationMethod<
     items: "CommonControls",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListCommonControlsRequest,
+  ListCommonControlsResponse,
+  ListCommonControlsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListCommonControlsRequest,
+  ) => stream.Stream<
+    ListCommonControlsResponse,
+    ListCommonControlsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListCommonControlsRequest,
+  ) => stream.Stream<
+    CommonControlSummary,
+    ListCommonControlsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListControlMappingsError =
   | AccessDeniedException
@@ -839,7 +864,27 @@ export const listControlMappings: API.OperationMethod<
     items: "ControlMappings",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListControlMappingsRequest,
+  ListControlMappingsResponse,
+  ListControlMappingsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListControlMappingsRequest,
+  ) => stream.Stream<
+    ListControlMappingsResponse,
+    ListControlMappingsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListControlMappingsRequest,
+  ) => stream.Stream<
+    ControlMapping,
+    ListControlMappingsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListControlsError =
   | AccessDeniedException
@@ -888,7 +933,27 @@ export const listControls: API.OperationMethod<
     items: "Controls",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListControlsRequest,
+  ListControlsResponse,
+  ListControlsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListControlsRequest,
+  ) => stream.Stream<
+    ListControlsResponse,
+    ListControlsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListControlsRequest,
+  ) => stream.Stream<
+    ControlSummary,
+    ListControlsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListDomainsError =
   | AccessDeniedException
@@ -937,7 +1002,27 @@ export const listDomains: API.OperationMethod<
     items: "Domains",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListDomainsRequest,
+  ListDomainsResponse,
+  ListDomainsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListDomainsRequest,
+  ) => stream.Stream<
+    ListDomainsResponse,
+    ListDomainsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListDomainsRequest,
+  ) => stream.Stream<
+    DomainSummary,
+    ListDomainsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListObjectivesError =
   | AccessDeniedException
@@ -988,4 +1073,24 @@ export const listObjectives: API.OperationMethod<
     items: "Objectives",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListObjectivesRequest,
+  ListObjectivesResponse,
+  ListObjectivesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListObjectivesRequest,
+  ) => stream.Stream<
+    ListObjectivesResponse,
+    ListObjectivesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListObjectivesRequest,
+  ) => stream.Stream<
+    ObjectiveSummary,
+    ListObjectivesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};

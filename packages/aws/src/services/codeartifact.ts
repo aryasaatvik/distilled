@@ -87,69 +87,76 @@ const rules = T.EndpointResolver((p, _) => {
   return err("Invalid Configuration: Missing Region");
 });
 
-export class AccessDeniedException extends S.TaggedErrorClass<AccessDeniedException>()(
-  "AccessDeniedException",
-  { message: S.String },
-  T.HttpError(403),
-).pipe(C.withAuthError) {}
-export class ConflictException extends S.TaggedErrorClass<ConflictException>()(
-  "ConflictException",
-  {
-    message: S.String,
-    resourceId: S.optional(S.String),
-    resourceType: S.optional(
-      S.suspend(() => ResourceType).annotate({ identifier: "ResourceType" }),
-    ),
-  },
-  T.HttpError(409),
-).pipe(C.withConflictError) {}
-export class InternalServerException extends S.TaggedErrorClass<InternalServerException>()(
-  "InternalServerException",
-  { message: S.String },
-  T.HttpError(500),
-).pipe(C.withServerError) {}
-export class ResourceNotFoundException extends S.TaggedErrorClass<ResourceNotFoundException>()(
-  "ResourceNotFoundException",
-  {
-    message: S.String,
-    resourceId: S.optional(S.String),
-    resourceType: S.optional(
-      S.suspend(() => ResourceType).annotate({ identifier: "ResourceType" }),
-    ),
-  },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class ServiceQuotaExceededException extends S.TaggedErrorClass<ServiceQuotaExceededException>()(
-  "ServiceQuotaExceededException",
-  {
-    message: S.String,
-    resourceId: S.optional(S.String),
-    resourceType: S.optional(
-      S.suspend(() => ResourceType).annotate({ identifier: "ResourceType" }),
-    ),
-  },
-  T.HttpError(402),
-).pipe(C.withQuotaError) {}
-export class ThrottlingException extends S.TaggedErrorClass<ThrottlingException>()(
-  "ThrottlingException",
-  {
-    message: S.String,
-    retryAfterSeconds: S.optional(S.Number).pipe(T.HttpHeader("Retry-After")),
-  },
-  T.HttpError(429),
-).pipe(C.withThrottlingError) {}
-export class ValidationException extends S.TaggedErrorClass<ValidationException>()(
-  "ValidationException",
-  {
-    message: S.String,
-    reason: S.optional(
-      S.suspend(() => ValidationExceptionReason).annotate({
-        identifier: "ValidationExceptionReason",
-      }),
-    ),
-  },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
+export class AccessDeniedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
+    "AccessDeniedException",
+    { message: S.String },
+    T.HttpError(403),
+  ).pipe(C.withAuthError) {}
+export class ConflictException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
+    "ConflictException",
+    {
+      message: S.String,
+      resourceId: S.optional(S.String),
+      resourceType: S.optional(
+        S.suspend(() => ResourceType).annotate({ identifier: "ResourceType" }),
+      ),
+    },
+    T.HttpError(409),
+  ).pipe(C.withConflictError) {}
+export class InternalServerException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
+    "InternalServerException",
+    { message: S.String },
+    T.HttpError(500),
+  ).pipe(C.withServerError) {}
+export class ResourceNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
+    "ResourceNotFoundException",
+    {
+      message: S.String,
+      resourceId: S.optional(S.String),
+      resourceType: S.optional(
+        S.suspend(() => ResourceType).annotate({ identifier: "ResourceType" }),
+      ),
+    },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class ServiceQuotaExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
+    "ServiceQuotaExceededException",
+    {
+      message: S.String,
+      resourceId: S.optional(S.String),
+      resourceType: S.optional(
+        S.suspend(() => ResourceType).annotate({ identifier: "ResourceType" }),
+      ),
+    },
+    T.HttpError(402),
+  ).pipe(C.withQuotaError) {}
+export class ThrottlingException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
+    "ThrottlingException",
+    {
+      message: S.String,
+      retryAfterSeconds: S.optional(S.Number).pipe(T.HttpHeader("Retry-After")),
+    },
+    T.HttpError(429),
+  ).pipe(C.withThrottlingError) {}
+export class ValidationException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
+    "ValidationException",
+    {
+      message: S.String,
+      reason: S.optional(
+        S.suspend(() => ValidationExceptionReason).annotate({
+          identifier: "ValidationExceptionReason",
+        }),
+      ),
+    },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
 export type DomainName = string;
 export type AccountId = string;
 export type RepositoryName = string;
@@ -3674,7 +3681,27 @@ export const listAllowedRepositoriesForGroup: API.OperationMethod<
     items: "allowedRepositories",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListAllowedRepositoriesForGroupRequest,
+  ListAllowedRepositoriesForGroupResult,
+  ListAllowedRepositoriesForGroupError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListAllowedRepositoriesForGroupRequest,
+  ) => stream.Stream<
+    ListAllowedRepositoriesForGroupResult,
+    ListAllowedRepositoriesForGroupError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListAllowedRepositoriesForGroupRequest,
+  ) => stream.Stream<
+    RepositoryName,
+    ListAllowedRepositoriesForGroupError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListAssociatedPackagesError =
   | AccessDeniedException
@@ -3725,7 +3752,27 @@ export const listAssociatedPackages: API.OperationMethod<
     items: "packages",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListAssociatedPackagesRequest,
+  ListAssociatedPackagesResult,
+  ListAssociatedPackagesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListAssociatedPackagesRequest,
+  ) => stream.Stream<
+    ListAssociatedPackagesResult,
+    ListAssociatedPackagesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListAssociatedPackagesRequest,
+  ) => stream.Stream<
+    AssociatedPackage,
+    ListAssociatedPackagesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListDomainsError =
   | AccessDeniedException
@@ -3776,7 +3823,27 @@ export const listDomains: API.OperationMethod<
     items: "domains",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListDomainsRequest,
+  ListDomainsResult,
+  ListDomainsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListDomainsRequest,
+  ) => stream.Stream<
+    ListDomainsResult,
+    ListDomainsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListDomainsRequest,
+  ) => stream.Stream<
+    DomainSummary,
+    ListDomainsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListPackageGroupsError =
   | AccessDeniedException
@@ -3827,7 +3894,27 @@ export const listPackageGroups: API.OperationMethod<
     items: "packageGroups",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListPackageGroupsRequest,
+  ListPackageGroupsResult,
+  ListPackageGroupsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListPackageGroupsRequest,
+  ) => stream.Stream<
+    ListPackageGroupsResult,
+    ListPackageGroupsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListPackageGroupsRequest,
+  ) => stream.Stream<
+    PackageGroupSummary,
+    ListPackageGroupsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListPackagesError =
   | AccessDeniedException
@@ -3880,7 +3967,27 @@ export const listPackages: API.OperationMethod<
     items: "packages",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListPackagesRequest,
+  ListPackagesResult,
+  ListPackagesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListPackagesRequest,
+  ) => stream.Stream<
+    ListPackagesResult,
+    ListPackagesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListPackagesRequest,
+  ) => stream.Stream<
+    PackageSummary,
+    ListPackagesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListPackageVersionAssetsError =
   | AccessDeniedException
@@ -3933,7 +4040,27 @@ export const listPackageVersionAssets: API.OperationMethod<
     items: "assets",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListPackageVersionAssetsRequest,
+  ListPackageVersionAssetsResult,
+  ListPackageVersionAssetsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListPackageVersionAssetsRequest,
+  ) => stream.Stream<
+    ListPackageVersionAssetsResult,
+    ListPackageVersionAssetsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListPackageVersionAssetsRequest,
+  ) => stream.Stream<
+    AssetSummary,
+    ListPackageVersionAssetsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListPackageVersionDependenciesError =
   | AccessDeniedException
@@ -4020,7 +4147,27 @@ export const listPackageVersions: API.OperationMethod<
     items: "versions",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListPackageVersionsRequest,
+  ListPackageVersionsResult,
+  ListPackageVersionsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListPackageVersionsRequest,
+  ) => stream.Stream<
+    ListPackageVersionsResult,
+    ListPackageVersionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListPackageVersionsRequest,
+  ) => stream.Stream<
+    PackageVersionSummary,
+    ListPackageVersionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListRepositoriesError =
   | AccessDeniedException
@@ -4072,7 +4219,27 @@ export const listRepositories: API.OperationMethod<
     items: "repositories",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListRepositoriesRequest,
+  ListRepositoriesResult,
+  ListRepositoriesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListRepositoriesRequest,
+  ) => stream.Stream<
+    ListRepositoriesResult,
+    ListRepositoriesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListRepositoriesRequest,
+  ) => stream.Stream<
+    RepositorySummary,
+    ListRepositoriesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListRepositoriesInDomainError =
   | AccessDeniedException
@@ -4126,7 +4293,27 @@ export const listRepositoriesInDomain: API.OperationMethod<
     items: "repositories",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListRepositoriesInDomainRequest,
+  ListRepositoriesInDomainResult,
+  ListRepositoriesInDomainError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListRepositoriesInDomainRequest,
+  ) => stream.Stream<
+    ListRepositoriesInDomainResult,
+    ListRepositoriesInDomainError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListRepositoriesInDomainRequest,
+  ) => stream.Stream<
+    RepositorySummary,
+    ListRepositoriesInDomainError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListSubPackageGroupsError =
   | AccessDeniedException
@@ -4181,7 +4368,27 @@ export const listSubPackageGroups: API.OperationMethod<
     items: "packageGroups",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListSubPackageGroupsRequest,
+  ListSubPackageGroupsResult,
+  ListSubPackageGroupsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListSubPackageGroupsRequest,
+  ) => stream.Stream<
+    ListSubPackageGroupsResult,
+    ListSubPackageGroupsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListSubPackageGroupsRequest,
+  ) => stream.Stream<
+    PackageGroupSummary,
+    ListSubPackageGroupsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListTagsForResourceError =
   | AccessDeniedException

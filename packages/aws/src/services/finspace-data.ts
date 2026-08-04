@@ -87,41 +87,48 @@ const rules = T.EndpointResolver((p, _) => {
   return err("Invalid Configuration: Missing Region");
 });
 
-export class AccessDeniedException extends S.TaggedErrorClass<AccessDeniedException>()(
-  "AccessDeniedException",
-  { message: S.optional(S.String) },
-  T.HttpError(403),
-).pipe(C.withAuthError) {}
-export class ConflictException extends S.TaggedErrorClass<ConflictException>()(
-  "ConflictException",
-  { message: S.optional(S.String), reason: S.optional(S.String) },
-  T.HttpError(409),
-).pipe(C.withConflictError) {}
-export class InternalServerException extends S.TaggedErrorClass<InternalServerException>()(
-  "InternalServerException",
-  { message: S.optional(S.String) },
-  T.HttpError(500),
-).pipe(C.withServerError) {}
-export class LimitExceededException extends S.TaggedErrorClass<LimitExceededException>()(
-  "LimitExceededException",
-  { message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class ResourceNotFoundException extends S.TaggedErrorClass<ResourceNotFoundException>()(
-  "ResourceNotFoundException",
-  { message: S.optional(S.String), reason: S.optional(S.String) },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class ThrottlingException extends S.TaggedErrorClass<ThrottlingException>()(
-  "ThrottlingException",
-  {},
-  T.HttpError(429),
-).pipe(C.withThrottlingError) {}
-export class ValidationException extends S.TaggedErrorClass<ValidationException>()(
-  "ValidationException",
-  { message: S.optional(S.String), reason: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
+export class AccessDeniedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
+    "AccessDeniedException",
+    { message: S.optional(S.String) },
+    T.HttpError(403),
+  ).pipe(C.withAuthError) {}
+export class ConflictException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
+    "ConflictException",
+    { message: S.optional(S.String), reason: S.optional(S.String) },
+    T.HttpError(409),
+  ).pipe(C.withConflictError) {}
+export class InternalServerException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
+    "InternalServerException",
+    { message: S.optional(S.String) },
+    T.HttpError(500),
+  ).pipe(C.withServerError) {}
+export class LimitExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<LimitExceededException>()(
+    "LimitExceededException",
+    { message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class ResourceNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
+    "ResourceNotFoundException",
+    { message: S.optional(S.String), reason: S.optional(S.String) },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class ThrottlingException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
+    "ThrottlingException",
+    {},
+    T.HttpError(429),
+  ).pipe(C.withThrottlingError) {}
+export class ValidationException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
+    "ValidationException",
+    { message: S.optional(S.String), reason: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
 export type PermissionGroupId = string;
 export type UserId = string;
 export type ClientToken = string;
@@ -2457,7 +2464,27 @@ export const listChangesets: API.OperationMethod<
     items: "changesets",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListChangesetsRequest,
+  ListChangesetsResponse,
+  ListChangesetsError,
+  Creds | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListChangesetsRequest,
+  ) => stream.Stream<
+    ListChangesetsResponse,
+    ListChangesetsError,
+    Creds | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListChangesetsRequest,
+  ) => stream.Stream<
+    ChangesetSummary,
+    ListChangesetsError,
+    Creds | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListDatasetsError =
   | ConflictException
@@ -2508,7 +2535,27 @@ export const listDatasets: API.OperationMethod<
     items: "datasets",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListDatasetsRequest,
+  ListDatasetsResponse,
+  ListDatasetsError,
+  Creds | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListDatasetsRequest,
+  ) => stream.Stream<
+    ListDatasetsResponse,
+    ListDatasetsError,
+    Creds | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListDatasetsRequest,
+  ) => stream.Stream<
+    Dataset,
+    ListDatasetsError,
+    Creds | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListDataViewsError =
   | ConflictException
@@ -2559,7 +2606,27 @@ export const listDataViews: API.OperationMethod<
     items: "dataViews",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListDataViewsRequest,
+  ListDataViewsResponse,
+  ListDataViewsError,
+  Creds | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListDataViewsRequest,
+  ) => stream.Stream<
+    ListDataViewsResponse,
+    ListDataViewsError,
+    Creds | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListDataViewsRequest,
+  ) => stream.Stream<
+    DataViewSummary,
+    ListDataViewsError,
+    Creds | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListPermissionGroupsError =
   | AccessDeniedException
@@ -2608,7 +2675,27 @@ export const listPermissionGroups: API.OperationMethod<
     items: "permissionGroups",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListPermissionGroupsRequest,
+  ListPermissionGroupsResponse,
+  ListPermissionGroupsError,
+  Creds | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListPermissionGroupsRequest,
+  ) => stream.Stream<
+    ListPermissionGroupsResponse,
+    ListPermissionGroupsError,
+    Creds | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListPermissionGroupsRequest,
+  ) => stream.Stream<
+    PermissionGroup,
+    ListPermissionGroupsError,
+    Creds | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListPermissionGroupsByUserError =
   | AccessDeniedException
@@ -2687,7 +2774,27 @@ export const listUsers: API.OperationMethod<
     items: "users",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListUsersRequest,
+  ListUsersResponse,
+  ListUsersError,
+  Creds | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListUsersRequest,
+  ) => stream.Stream<
+    ListUsersResponse,
+    ListUsersError,
+    Creds | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListUsersRequest,
+  ) => stream.Stream<
+    User,
+    ListUsersError,
+    Creds | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListUsersByPermissionGroupError =
   | AccessDeniedException

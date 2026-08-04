@@ -85,46 +85,54 @@ const rules = T.EndpointResolver((p, _) => {
   return err("Invalid Configuration: Missing Region");
 });
 
-export class AccessDeniedException extends S.TaggedErrorClass<AccessDeniedException>()(
-  "AccessDeniedException",
-  { message: S.optional(S.String) },
-  T.HttpError(403),
-).pipe(C.withAuthError) {}
-export class BadRequestException extends S.TaggedErrorClass<BadRequestException>()(
-  "BadRequestException",
-  { message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class ConflictException extends S.TaggedErrorClass<ConflictException>()(
-  "ConflictException",
-  { message: S.optional(S.String) },
-  T.HttpError(409),
-).pipe(C.withConflictError) {}
-export class ForbiddenException extends S.TaggedErrorClass<ForbiddenException>()(
-  "ForbiddenException",
-  { message: S.optional(S.String) },
-  T.HttpError(403),
-).pipe(C.withAuthError) {}
-export class InternalServerErrorException extends S.TaggedErrorClass<InternalServerErrorException>()(
-  "InternalServerErrorException",
-  { message: S.optional(S.String) },
-  T.HttpError(500),
-).pipe(C.withServerError) {}
-export class MethodNotAllowedException extends S.TaggedErrorClass<MethodNotAllowedException>()(
-  "MethodNotAllowedException",
-  { message: S.optional(S.String) },
-  T.HttpError(405),
-).pipe(C.withBadRequestError) {}
-export class NotFoundException extends S.TaggedErrorClass<NotFoundException>()(
-  "NotFoundException",
-  { message: S.optional(S.String) },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class TooManyRequestsException extends S.TaggedErrorClass<TooManyRequestsException>()(
-  "TooManyRequestsException",
-  { message: S.optional(S.String) },
-  T.HttpError(429),
-).pipe(C.withThrottlingError) {}
+export class AccessDeniedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
+    "AccessDeniedException",
+    { message: S.optional(S.String) },
+    T.HttpError(403),
+  ).pipe(C.withAuthError) {}
+export class BadRequestException
+  extends /*@__PURE__*/ S.TaggedErrorClass<BadRequestException>()(
+    "BadRequestException",
+    { message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class ConflictException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
+    "ConflictException",
+    { message: S.optional(S.String) },
+    T.HttpError(409),
+  ).pipe(C.withConflictError) {}
+export class ForbiddenException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ForbiddenException>()(
+    "ForbiddenException",
+    { message: S.optional(S.String) },
+    T.HttpError(403),
+  ).pipe(C.withAuthError) {}
+export class InternalServerErrorException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerErrorException>()(
+    "InternalServerErrorException",
+    { message: S.optional(S.String) },
+    T.HttpError(500),
+  ).pipe(C.withServerError) {}
+export class MethodNotAllowedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<MethodNotAllowedException>()(
+    "MethodNotAllowedException",
+    { message: S.optional(S.String) },
+    T.HttpError(405),
+  ).pipe(C.withBadRequestError) {}
+export class NotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<NotFoundException>()(
+    "NotFoundException",
+    { message: S.optional(S.String) },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class TooManyRequestsException
+  extends /*@__PURE__*/ S.TaggedErrorClass<TooManyRequestsException>()(
+    "TooManyRequestsException",
+    { message: S.optional(S.String) },
+    T.HttpError(429),
+  ).pipe(C.withThrottlingError) {}
 export type TableBucketARN = string;
 export type NamespaceName = string;
 export type NamespaceList = string[];
@@ -3544,7 +3552,27 @@ export const listNamespaces: API.OperationMethod<
     items: "namespaces",
     pageSize: "maxNamespaces",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListNamespacesRequest,
+  ListNamespacesResponse,
+  ListNamespacesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListNamespacesRequest,
+  ) => stream.Stream<
+    ListNamespacesResponse,
+    ListNamespacesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListNamespacesRequest,
+  ) => stream.Stream<
+    NamespaceSummary,
+    ListNamespacesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListTableBucketsError =
   | AccessDeniedException
@@ -3603,7 +3631,27 @@ export const listTableBuckets: API.OperationMethod<
     items: "tableBuckets",
     pageSize: "maxBuckets",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListTableBucketsRequest,
+  ListTableBucketsResponse,
+  ListTableBucketsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListTableBucketsRequest,
+  ) => stream.Stream<
+    ListTableBucketsResponse,
+    ListTableBucketsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListTableBucketsRequest,
+  ) => stream.Stream<
+    TableBucketSummary,
+    ListTableBucketsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListTablesError =
   | BadRequestException
@@ -3660,7 +3708,27 @@ export const listTables: API.OperationMethod<
     items: "tables",
     pageSize: "maxTables",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListTablesRequest,
+  ListTablesResponse,
+  ListTablesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListTablesRequest,
+  ) => stream.Stream<
+    ListTablesResponse,
+    ListTablesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListTablesRequest,
+  ) => stream.Stream<
+    TableSummary,
+    ListTablesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListTagsForResourceError =
   | BadRequestException

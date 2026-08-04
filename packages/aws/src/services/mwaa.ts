@@ -84,47 +84,54 @@ const rules = T.EndpointResolver((p, _) => {
   return err("Invalid Configuration: Missing Region");
 });
 
-export class AccessDeniedException extends S.TaggedErrorClass<AccessDeniedException>()(
-  "AccessDeniedException",
-  { Message: S.optional(S.String) },
-  T.HttpError(403),
-).pipe(C.withAuthError) {}
-export class InternalServerException extends S.TaggedErrorClass<InternalServerException>()(
-  "InternalServerException",
-  { message: S.optional(S.String) },
-  T.HttpError(500),
-).pipe(C.withServerError) {}
-export class ResourceNotFoundException extends S.TaggedErrorClass<ResourceNotFoundException>()(
-  "ResourceNotFoundException",
-  { message: S.optional(S.String) },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class RestApiClientException extends S.TaggedErrorClass<RestApiClientException>()(
-  "RestApiClientException",
-  {
-    RestApiStatusCode: S.optional(S.Number),
-    RestApiResponse: S.optional(S.Any),
-  },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class RestApiServerException extends S.TaggedErrorClass<RestApiServerException>()(
-  "RestApiServerException",
-  {
-    RestApiStatusCode: S.optional(S.Number),
-    RestApiResponse: S.optional(S.Any),
-  },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class ServiceUnavailableException extends S.TaggedErrorClass<ServiceUnavailableException>()(
-  "ServiceUnavailableException",
-  { message: S.optional(S.String) },
-  T.HttpError(503),
-).pipe(C.withServerError) {}
-export class ValidationException extends S.TaggedErrorClass<ValidationException>()(
-  "ValidationException",
-  { message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
+export class AccessDeniedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
+    "AccessDeniedException",
+    { Message: S.optional(S.String) },
+    T.HttpError(403),
+  ).pipe(C.withAuthError) {}
+export class InternalServerException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
+    "InternalServerException",
+    { message: S.optional(S.String) },
+    T.HttpError(500),
+  ).pipe(C.withServerError) {}
+export class ResourceNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
+    "ResourceNotFoundException",
+    { message: S.optional(S.String) },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class RestApiClientException
+  extends /*@__PURE__*/ S.TaggedErrorClass<RestApiClientException>()(
+    "RestApiClientException",
+    {
+      RestApiStatusCode: S.optional(S.Number),
+      RestApiResponse: S.optional(S.Any),
+    },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class RestApiServerException
+  extends /*@__PURE__*/ S.TaggedErrorClass<RestApiServerException>()(
+    "RestApiServerException",
+    {
+      RestApiStatusCode: S.optional(S.Number),
+      RestApiResponse: S.optional(S.Any),
+    },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class ServiceUnavailableException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ServiceUnavailableException>()(
+    "ServiceUnavailableException",
+    { message: S.optional(S.String) },
+    T.HttpError(503),
+  ).pipe(C.withServerError) {}
+export class ValidationException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
+    "ValidationException",
+    { message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
 export type EnvironmentName = string;
 export interface CreateCliTokenRequest {
   Name: string;
@@ -1059,7 +1066,27 @@ export const listEnvironments: API.OperationMethod<
     items: "Environments",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListEnvironmentsInput,
+  ListEnvironmentsOutput,
+  ListEnvironmentsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListEnvironmentsInput,
+  ) => stream.Stream<
+    ListEnvironmentsOutput,
+    ListEnvironmentsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListEnvironmentsInput,
+  ) => stream.Stream<
+    EnvironmentName,
+    ListEnvironmentsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListTagsForResourceError =
   | InternalServerException

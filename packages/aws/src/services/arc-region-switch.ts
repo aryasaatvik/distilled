@@ -129,31 +129,36 @@ const rules = T.EndpointResolver((p, _) => {
   return err("Invalid Configuration: Missing Region");
 });
 
-export class AccessDeniedException extends S.TaggedErrorClass<AccessDeniedException>()(
-  "AccessDeniedException",
-  { message: S.String },
-  T.HttpError(403),
-).pipe(C.withAuthError) {}
-export class IllegalArgumentException extends S.TaggedErrorClass<IllegalArgumentException>()(
-  "IllegalArgumentException",
-  { message: S.String },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class IllegalStateException extends S.TaggedErrorClass<IllegalStateException>()(
-  "IllegalStateException",
-  { message: S.String },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class InternalServerException extends S.TaggedErrorClass<InternalServerException>()(
-  "InternalServerException",
-  { message: S.String },
-  T.HttpError(500),
-).pipe(C.withServerError) {}
-export class ResourceNotFoundException extends S.TaggedErrorClass<ResourceNotFoundException>()(
-  "ResourceNotFoundException",
-  { message: S.String },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
+export class AccessDeniedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
+    "AccessDeniedException",
+    { message: S.String },
+    T.HttpError(403),
+  ).pipe(C.withAuthError) {}
+export class IllegalArgumentException
+  extends /*@__PURE__*/ S.TaggedErrorClass<IllegalArgumentException>()(
+    "IllegalArgumentException",
+    { message: S.String },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class IllegalStateException
+  extends /*@__PURE__*/ S.TaggedErrorClass<IllegalStateException>()(
+    "IllegalStateException",
+    { message: S.String },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class InternalServerException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
+    "InternalServerException",
+    { message: S.String },
+    T.HttpError(500),
+  ).pipe(C.withServerError) {}
+export class ResourceNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
+    "ResourceNotFoundException",
+    { message: S.String },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
 export type PlanArn = string;
 export type ExecutionId = string;
 export type StepName = string;
@@ -2497,7 +2502,27 @@ export const getPlanEvaluationStatus: API.OperationMethod<
     items: "warnings",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  GetPlanEvaluationStatusRequest,
+  GetPlanEvaluationStatusResponse,
+  GetPlanEvaluationStatusError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: GetPlanEvaluationStatusRequest,
+  ) => stream.Stream<
+    GetPlanEvaluationStatusResponse,
+    GetPlanEvaluationStatusError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: GetPlanEvaluationStatusRequest,
+  ) => stream.Stream<
+    ResourceWarning,
+    GetPlanEvaluationStatusError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type GetPlanExecutionError =
   | AccessDeniedException
@@ -2539,7 +2564,27 @@ export const getPlanExecution: API.OperationMethod<
     items: "stepStates",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  GetPlanExecutionRequest,
+  GetPlanExecutionResponse,
+  GetPlanExecutionError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: GetPlanExecutionRequest,
+  ) => stream.Stream<
+    GetPlanExecutionResponse,
+    GetPlanExecutionError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: GetPlanExecutionRequest,
+  ) => stream.Stream<
+    StepState,
+    GetPlanExecutionError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type GetPlanInRegionError =
   | AccessDeniedException
@@ -2602,7 +2647,27 @@ export const listPlanExecutionEvents: API.OperationMethod<
     items: "items",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListPlanExecutionEventsRequest,
+  ListPlanExecutionEventsResponse,
+  ListPlanExecutionEventsError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListPlanExecutionEventsRequest,
+  ) => stream.Stream<
+    ListPlanExecutionEventsResponse,
+    ListPlanExecutionEventsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListPlanExecutionEventsRequest,
+  ) => stream.Stream<
+    ExecutionEvent,
+    ListPlanExecutionEventsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type ListPlanExecutionsError =
   | AccessDeniedException
@@ -2644,7 +2709,27 @@ export const listPlanExecutions: API.OperationMethod<
     items: "items",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListPlanExecutionsRequest,
+  ListPlanExecutionsResponse,
+  ListPlanExecutionsError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListPlanExecutionsRequest,
+  ) => stream.Stream<
+    ListPlanExecutionsResponse,
+    ListPlanExecutionsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListPlanExecutionsRequest,
+  ) => stream.Stream<
+    AbbreviatedExecution,
+    ListPlanExecutionsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type ListPlansError = CommonErrors;
 /**
@@ -2683,7 +2768,27 @@ export const listPlans: API.OperationMethod<
     items: "plans",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListPlansRequest,
+  ListPlansResponse,
+  ListPlansError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListPlansRequest,
+  ) => stream.Stream<
+    ListPlansResponse,
+    ListPlansError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListPlansRequest,
+  ) => stream.Stream<
+    AbbreviatedPlan,
+    ListPlansError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type ListPlansInRegionError = AccessDeniedException | CommonErrors;
 /**
@@ -2722,7 +2827,27 @@ export const listPlansInRegion: API.OperationMethod<
     items: "plans",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListPlansInRegionRequest,
+  ListPlansInRegionResponse,
+  ListPlansInRegionError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListPlansInRegionRequest,
+  ) => stream.Stream<
+    ListPlansInRegionResponse,
+    ListPlansInRegionError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListPlansInRegionRequest,
+  ) => stream.Stream<
+    AbbreviatedPlan,
+    ListPlansInRegionError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type ListRoute53HealthChecksError =
   | AccessDeniedException
@@ -2771,7 +2896,27 @@ export const listRoute53HealthChecks: API.OperationMethod<
     items: "healthChecks",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListRoute53HealthChecksRequest,
+  ListRoute53HealthChecksResponse,
+  ListRoute53HealthChecksError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListRoute53HealthChecksRequest,
+  ) => stream.Stream<
+    ListRoute53HealthChecksResponse,
+    ListRoute53HealthChecksError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListRoute53HealthChecksRequest,
+  ) => stream.Stream<
+    Route53HealthCheck,
+    ListRoute53HealthChecksError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type ListRoute53HealthChecksInRegionError =
   | AccessDeniedException
@@ -2820,7 +2965,27 @@ export const listRoute53HealthChecksInRegion: API.OperationMethod<
     items: "healthChecks",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListRoute53HealthChecksInRegionRequest,
+  ListRoute53HealthChecksInRegionResponse,
+  ListRoute53HealthChecksInRegionError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListRoute53HealthChecksInRegionRequest,
+  ) => stream.Stream<
+    ListRoute53HealthChecksInRegionResponse,
+    ListRoute53HealthChecksInRegionError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListRoute53HealthChecksInRegionRequest,
+  ) => stream.Stream<
+    Route53HealthCheck,
+    ListRoute53HealthChecksInRegionError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type ListTagsForResourceError =
   | InternalServerException

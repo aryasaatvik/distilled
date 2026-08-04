@@ -88,132 +88,162 @@ const rules = T.EndpointResolver((p, _) => {
   return err("Invalid Configuration: Missing Region");
 });
 
-export class AccessDeniedException extends S.TaggedErrorClass<AccessDeniedException>()(
-  "AccessDeniedException",
-  { message: S.optional(S.String) },
-  T.HttpError(403),
-).pipe(C.withAuthError) {}
-export class AttributeLimitExceededException extends S.TaggedErrorClass<AttributeLimitExceededException>()(
-  "AttributeLimitExceededException",
-  { message: S.optional(S.String) },
-).pipe(C.withQuotaError) {}
-export class BlockedException extends S.TaggedErrorClass<BlockedException>()(
-  "BlockedException",
-  { message: S.optional(S.String) },
-).pipe(C.withBadRequestError) {}
-export class ClientException extends S.TaggedErrorClass<ClientException>()(
-  "ClientException",
-  { message: S.optional(S.String) },
-).pipe(C.withBadRequestError) {}
-export class ClusterContainsCapacityProviderException extends S.TaggedErrorClass<ClusterContainsCapacityProviderException>()(
-  "ClusterContainsCapacityProviderException",
-  { message: S.optional(S.String) },
-).pipe(C.withDependencyViolationError) {}
-export class ClusterContainsContainerInstancesException extends S.TaggedErrorClass<ClusterContainsContainerInstancesException>()(
-  "ClusterContainsContainerInstancesException",
-  { message: S.optional(S.String) },
-).pipe(C.withDependencyViolationError) {}
-export class ClusterContainsServicesException extends S.TaggedErrorClass<ClusterContainsServicesException>()(
-  "ClusterContainsServicesException",
-  { message: S.optional(S.String) },
-).pipe(C.withDependencyViolationError) {}
-export class ClusterContainsTasksException extends S.TaggedErrorClass<ClusterContainsTasksException>()(
-  "ClusterContainsTasksException",
-  { message: S.optional(S.String) },
-).pipe(C.withDependencyViolationError) {}
-export class ClusterNotFoundException extends S.TaggedErrorClass<ClusterNotFoundException>()(
-  "ClusterNotFoundException",
-  { message: S.optional(S.String) },
-).pipe(C.withNotFoundError) {}
-export class ConflictException extends S.TaggedErrorClass<ConflictException>()(
-  "ConflictException",
-  {
-    resourceIds: S.optional(
-      S.suspend(() => ResourceIds).annotate({ identifier: "ResourceIds" }),
-    ),
-    message: S.optional(S.String),
-  },
-).pipe(C.withConflictError) {}
-export class DaemonNotActiveException extends S.TaggedErrorClass<DaemonNotActiveException>()(
-  "DaemonNotActiveException",
-  { message: S.optional(S.String) },
-).pipe(C.withConflictError) {}
-export class DaemonNotFoundException extends S.TaggedErrorClass<DaemonNotFoundException>()(
-  "DaemonNotFoundException",
-  { message: S.optional(S.String) },
-).pipe(C.withNotFoundError) {}
-export class InvalidParameterException extends S.TaggedErrorClass<InvalidParameterException>()(
-  "InvalidParameterException",
-  { message: S.optional(S.String) },
-).pipe(C.withBadRequestError) {}
-export class LimitExceededException extends S.TaggedErrorClass<LimitExceededException>()(
-  "LimitExceededException",
-  { message: S.optional(S.String) },
-).pipe(C.withQuotaError) {}
-export class MissingVersionException extends S.TaggedErrorClass<MissingVersionException>()(
-  "MissingVersionException",
-  { message: S.optional(S.String) },
-).pipe(C.withBadRequestError) {}
-export class NamespaceNotFoundException extends S.TaggedErrorClass<NamespaceNotFoundException>()(
-  "NamespaceNotFoundException",
-  { message: S.optional(S.String) },
-).pipe(C.withNotFoundError) {}
-export class NoUpdateAvailableException extends S.TaggedErrorClass<NoUpdateAvailableException>()(
-  "NoUpdateAvailableException",
-  { message: S.optional(S.String) },
-) {}
-export class PlatformTaskDefinitionIncompatibilityException extends S.TaggedErrorClass<PlatformTaskDefinitionIncompatibilityException>()(
-  "PlatformTaskDefinitionIncompatibilityException",
-  { message: S.optional(S.String) },
-).pipe(C.withBadRequestError) {}
-export class PlatformUnknownException extends S.TaggedErrorClass<PlatformUnknownException>()(
-  "PlatformUnknownException",
-  { message: S.optional(S.String) },
-).pipe(C.withBadRequestError) {}
-export class ResourceInUseException extends S.TaggedErrorClass<ResourceInUseException>()(
-  "ResourceInUseException",
-  { message: S.optional(S.String) },
-).pipe(C.withConflictError, C.withRetryableError) {}
-export class ResourceNotFoundException extends S.TaggedErrorClass<ResourceNotFoundException>()(
-  "ResourceNotFoundException",
-  { message: S.optional(S.String) },
-).pipe(C.withNotFoundError) {}
-export class ServerException extends S.TaggedErrorClass<ServerException>()(
-  "ServerException",
-  { message: S.optional(S.String) },
-).pipe(C.withServerError, C.withRetryableError) {}
-export class ServiceDeploymentNotFoundException extends S.TaggedErrorClass<ServiceDeploymentNotFoundException>()(
-  "ServiceDeploymentNotFoundException",
-  { message: S.optional(S.String) },
-).pipe(C.withNotFoundError) {}
-export class ServiceNotActiveException extends S.TaggedErrorClass<ServiceNotActiveException>()(
-  "ServiceNotActiveException",
-  { message: S.optional(S.String) },
-).pipe(C.withConflictError) {}
-export class ServiceNotFoundException extends S.TaggedErrorClass<ServiceNotFoundException>()(
-  "ServiceNotFoundException",
-  { message: S.optional(S.String) },
-).pipe(C.withNotFoundError) {}
-export class TargetNotConnectedException extends S.TaggedErrorClass<TargetNotConnectedException>()(
-  "TargetNotConnectedException",
-  { message: S.optional(S.String) },
-).pipe(C.withConflictError) {}
-export class TargetNotFoundException extends S.TaggedErrorClass<TargetNotFoundException>()(
-  "TargetNotFoundException",
-  { message: S.optional(S.String) },
-).pipe(C.withNotFoundError) {}
-export class TaskSetNotFoundException extends S.TaggedErrorClass<TaskSetNotFoundException>()(
-  "TaskSetNotFoundException",
-  { message: S.optional(S.String) },
-).pipe(C.withNotFoundError) {}
-export class UnsupportedFeatureException extends S.TaggedErrorClass<UnsupportedFeatureException>()(
-  "UnsupportedFeatureException",
-  { message: S.optional(S.String) },
-).pipe(C.withBadRequestError) {}
-export class UpdateInProgressException extends S.TaggedErrorClass<UpdateInProgressException>()(
-  "UpdateInProgressException",
-  { message: S.optional(S.String) },
-).pipe(C.withConflictError, C.withRetryableError) {}
+export class AccessDeniedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
+    "AccessDeniedException",
+    { message: S.optional(S.String) },
+    T.HttpError(403),
+  ).pipe(C.withAuthError) {}
+export class AttributeLimitExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<AttributeLimitExceededException>()(
+    "AttributeLimitExceededException",
+    { message: S.optional(S.String) },
+  ).pipe(C.withQuotaError) {}
+export class BlockedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<BlockedException>()(
+    "BlockedException",
+    { message: S.optional(S.String) },
+  ).pipe(C.withBadRequestError) {}
+export class ClientException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ClientException>()(
+    "ClientException",
+    { message: S.optional(S.String) },
+  ).pipe(C.withBadRequestError) {}
+export class ClusterContainsCapacityProviderException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ClusterContainsCapacityProviderException>()(
+    "ClusterContainsCapacityProviderException",
+    { message: S.optional(S.String) },
+  ).pipe(C.withDependencyViolationError) {}
+export class ClusterContainsContainerInstancesException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ClusterContainsContainerInstancesException>()(
+    "ClusterContainsContainerInstancesException",
+    { message: S.optional(S.String) },
+  ).pipe(C.withDependencyViolationError) {}
+export class ClusterContainsServicesException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ClusterContainsServicesException>()(
+    "ClusterContainsServicesException",
+    { message: S.optional(S.String) },
+  ).pipe(C.withDependencyViolationError) {}
+export class ClusterContainsTasksException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ClusterContainsTasksException>()(
+    "ClusterContainsTasksException",
+    { message: S.optional(S.String) },
+  ).pipe(C.withDependencyViolationError) {}
+export class ClusterNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ClusterNotFoundException>()(
+    "ClusterNotFoundException",
+    { message: S.optional(S.String) },
+  ).pipe(C.withNotFoundError) {}
+export class ConflictException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
+    "ConflictException",
+    {
+      resourceIds: S.optional(
+        S.suspend(() => ResourceIds).annotate({ identifier: "ResourceIds" }),
+      ),
+      message: S.optional(S.String),
+    },
+  ).pipe(C.withConflictError) {}
+export class DaemonNotActiveException
+  extends /*@__PURE__*/ S.TaggedErrorClass<DaemonNotActiveException>()(
+    "DaemonNotActiveException",
+    { message: S.optional(S.String) },
+  ).pipe(C.withConflictError) {}
+export class DaemonNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<DaemonNotFoundException>()(
+    "DaemonNotFoundException",
+    { message: S.optional(S.String) },
+  ).pipe(C.withNotFoundError) {}
+export class InvalidParameterException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidParameterException>()(
+    "InvalidParameterException",
+    { message: S.optional(S.String) },
+  ).pipe(C.withBadRequestError) {}
+export class LimitExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<LimitExceededException>()(
+    "LimitExceededException",
+    { message: S.optional(S.String) },
+  ).pipe(C.withQuotaError) {}
+export class MissingVersionException
+  extends /*@__PURE__*/ S.TaggedErrorClass<MissingVersionException>()(
+    "MissingVersionException",
+    { message: S.optional(S.String) },
+  ).pipe(C.withBadRequestError) {}
+export class NamespaceNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<NamespaceNotFoundException>()(
+    "NamespaceNotFoundException",
+    { message: S.optional(S.String) },
+  ).pipe(C.withNotFoundError) {}
+export class NoUpdateAvailableException
+  extends /*@__PURE__*/ S.TaggedErrorClass<NoUpdateAvailableException>()(
+    "NoUpdateAvailableException",
+    { message: S.optional(S.String) },
+  ) {}
+export class PlatformTaskDefinitionIncompatibilityException
+  extends /*@__PURE__*/ S.TaggedErrorClass<PlatformTaskDefinitionIncompatibilityException>()(
+    "PlatformTaskDefinitionIncompatibilityException",
+    { message: S.optional(S.String) },
+  ).pipe(C.withBadRequestError) {}
+export class PlatformUnknownException
+  extends /*@__PURE__*/ S.TaggedErrorClass<PlatformUnknownException>()(
+    "PlatformUnknownException",
+    { message: S.optional(S.String) },
+  ).pipe(C.withBadRequestError) {}
+export class ResourceInUseException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceInUseException>()(
+    "ResourceInUseException",
+    { message: S.optional(S.String) },
+  ).pipe(C.withConflictError, C.withRetryableError) {}
+export class ResourceNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
+    "ResourceNotFoundException",
+    { message: S.optional(S.String) },
+  ).pipe(C.withNotFoundError) {}
+export class ServerException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ServerException>()(
+    "ServerException",
+    { message: S.optional(S.String) },
+  ).pipe(C.withServerError, C.withRetryableError) {}
+export class ServiceDeploymentNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ServiceDeploymentNotFoundException>()(
+    "ServiceDeploymentNotFoundException",
+    { message: S.optional(S.String) },
+  ).pipe(C.withNotFoundError) {}
+export class ServiceNotActiveException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ServiceNotActiveException>()(
+    "ServiceNotActiveException",
+    { message: S.optional(S.String) },
+  ).pipe(C.withConflictError) {}
+export class ServiceNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ServiceNotFoundException>()(
+    "ServiceNotFoundException",
+    { message: S.optional(S.String) },
+  ).pipe(C.withNotFoundError) {}
+export class TargetNotConnectedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<TargetNotConnectedException>()(
+    "TargetNotConnectedException",
+    { message: S.optional(S.String) },
+  ).pipe(C.withConflictError) {}
+export class TargetNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<TargetNotFoundException>()(
+    "TargetNotFoundException",
+    { message: S.optional(S.String) },
+  ).pipe(C.withNotFoundError) {}
+export class TaskSetNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<TaskSetNotFoundException>()(
+    "TaskSetNotFoundException",
+    { message: S.optional(S.String) },
+  ).pipe(C.withNotFoundError) {}
+export class UnsupportedFeatureException
+  extends /*@__PURE__*/ S.TaggedErrorClass<UnsupportedFeatureException>()(
+    "UnsupportedFeatureException",
+    { message: S.optional(S.String) },
+  ).pipe(C.withBadRequestError) {}
+export class UpdateInProgressException
+  extends /*@__PURE__*/ S.TaggedErrorClass<UpdateInProgressException>()(
+    "UpdateInProgressException",
+    { message: S.optional(S.String) },
+  ).pipe(C.withConflictError, C.withRetryableError) {}
 export type DeploymentLifecycleHookAction =
   | "ROLLBACK"
   | "CONTINUE"
@@ -8856,7 +8886,27 @@ export const listAccountSettings: API.OperationMethod<
     items: "settings",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListAccountSettingsRequest,
+  ListAccountSettingsResponse,
+  ListAccountSettingsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListAccountSettingsRequest,
+  ) => stream.Stream<
+    ListAccountSettingsResponse,
+    ListAccountSettingsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListAccountSettingsRequest,
+  ) => stream.Stream<
+    Setting,
+    ListAccountSettingsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListAttributesError =
   | AccessDeniedException
@@ -8907,7 +8957,27 @@ export const listAttributes: API.OperationMethod<
     items: "attributes",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListAttributesRequest,
+  ListAttributesResponse,
+  ListAttributesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListAttributesRequest,
+  ) => stream.Stream<
+    ListAttributesResponse,
+    ListAttributesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListAttributesRequest,
+  ) => stream.Stream<
+    Attribute,
+    ListAttributesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListClustersError =
   | AccessDeniedException
@@ -8956,7 +9026,27 @@ export const listClusters: API.OperationMethod<
     items: "clusterArns",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListClustersRequest,
+  ListClustersResponse,
+  ListClustersError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListClustersRequest,
+  ) => stream.Stream<
+    ListClustersResponse,
+    ListClustersError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListClustersRequest,
+  ) => stream.Stream<
+    string,
+    ListClustersError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListContainerInstancesError =
   | AccessDeniedException
@@ -9007,7 +9097,27 @@ export const listContainerInstances: API.OperationMethod<
     items: "containerInstanceArns",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListContainerInstancesRequest,
+  ListContainerInstancesResponse,
+  ListContainerInstancesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListContainerInstancesRequest,
+  ) => stream.Stream<
+    ListContainerInstancesResponse,
+    ListContainerInstancesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListContainerInstancesRequest,
+  ) => stream.Stream<
+    string,
+    ListContainerInstancesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListDaemonDeploymentsError =
   | AccessDeniedException
@@ -9188,7 +9298,27 @@ export const listServices: API.OperationMethod<
     items: "serviceArns",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListServicesRequest,
+  ListServicesResponse,
+  ListServicesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListServicesRequest,
+  ) => stream.Stream<
+    ListServicesResponse,
+    ListServicesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListServicesRequest,
+  ) => stream.Stream<
+    string,
+    ListServicesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListServicesByNamespaceError =
   | AccessDeniedException
@@ -9239,7 +9369,27 @@ export const listServicesByNamespace: API.OperationMethod<
     items: "serviceArns",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListServicesByNamespaceRequest,
+  ListServicesByNamespaceResponse,
+  ListServicesByNamespaceError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListServicesByNamespaceRequest,
+  ) => stream.Stream<
+    ListServicesByNamespaceResponse,
+    ListServicesByNamespaceError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListServicesByNamespaceRequest,
+  ) => stream.Stream<
+    string,
+    ListServicesByNamespaceError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListTagsForResourceError =
   | AccessDeniedException
@@ -9320,7 +9470,27 @@ export const listTaskDefinitionFamilies: API.OperationMethod<
     items: "families",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListTaskDefinitionFamiliesRequest,
+  ListTaskDefinitionFamiliesResponse,
+  ListTaskDefinitionFamiliesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListTaskDefinitionFamiliesRequest,
+  ) => stream.Stream<
+    ListTaskDefinitionFamiliesResponse,
+    ListTaskDefinitionFamiliesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListTaskDefinitionFamiliesRequest,
+  ) => stream.Stream<
+    string,
+    ListTaskDefinitionFamiliesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListTaskDefinitionsError =
   | AccessDeniedException
@@ -9369,7 +9539,27 @@ export const listTaskDefinitions: API.OperationMethod<
     items: "taskDefinitionArns",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListTaskDefinitionsRequest,
+  ListTaskDefinitionsResponse,
+  ListTaskDefinitionsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListTaskDefinitionsRequest,
+  ) => stream.Stream<
+    ListTaskDefinitionsResponse,
+    ListTaskDefinitionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListTaskDefinitionsRequest,
+  ) => stream.Stream<
+    string,
+    ListTaskDefinitionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListTasksError =
   | AccessDeniedException
@@ -9424,7 +9614,27 @@ export const listTasks: API.OperationMethod<
     items: "taskArns",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListTasksRequest,
+  ListTasksResponse,
+  ListTasksError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListTasksRequest,
+  ) => stream.Stream<
+    ListTasksResponse,
+    ListTasksError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListTasksRequest,
+  ) => stream.Stream<
+    string,
+    ListTasksError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type PutAccountSettingError =
   | AccessDeniedException

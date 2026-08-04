@@ -87,49 +87,56 @@ const rules = T.EndpointResolver((p, _) => {
   return err("Invalid Configuration: Missing Region");
 });
 
-export class AccessDeniedException extends S.TaggedErrorClass<AccessDeniedException>()(
-  "AccessDeniedException",
-  { message: S.String },
-  T.HttpError(403),
-).pipe(C.withAuthError) {}
-export class ConflictException extends S.TaggedErrorClass<ConflictException>()(
-  "ConflictException",
-  { message: S.String, resourceId: S.String, resourceType: S.String },
-  T.HttpError(409),
-).pipe(C.withConflictError) {}
-export class InternalServerException extends S.TaggedErrorClass<InternalServerException>()(
-  "InternalServerException",
-  { message: S.String },
-  T.all(T.HttpError(500), T.Retryable()),
-).pipe(C.withServerError, C.withRetryableError) {}
-export class ResourceNotFoundException extends S.TaggedErrorClass<ResourceNotFoundException>()(
-  "ResourceNotFoundException",
-  { message: S.String, resourceId: S.String, resourceType: S.String },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class ServiceQuotaExceededException extends S.TaggedErrorClass<ServiceQuotaExceededException>()(
-  "ServiceQuotaExceededException",
-  { message: S.String },
-  T.HttpError(402),
-).pipe(C.withQuotaError) {}
-export class ThrottlingException extends S.TaggedErrorClass<ThrottlingException>()(
-  "ThrottlingException",
-  {
-    message: S.String,
-    retryAfterSeconds: S.optional(S.Number).pipe(T.HttpHeader("Retry-After")),
-  },
-  T.all(T.HttpError(429), T.Retryable()),
-).pipe(C.withThrottlingError, C.withRetryableError) {}
-export class ValidationException extends S.TaggedErrorClass<ValidationException>()(
-  "ValidationException",
-  {
-    message: S.String,
-    reason: S.suspend(() => ValidationExceptionReason).annotate({
-      identifier: "ValidationExceptionReason",
-    }),
-  },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
+export class AccessDeniedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
+    "AccessDeniedException",
+    { message: S.String },
+    T.HttpError(403),
+  ).pipe(C.withAuthError) {}
+export class ConflictException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
+    "ConflictException",
+    { message: S.String, resourceId: S.String, resourceType: S.String },
+    T.HttpError(409),
+  ).pipe(C.withConflictError) {}
+export class InternalServerException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
+    "InternalServerException",
+    { message: S.String },
+    T.all(T.HttpError(500), T.Retryable()),
+  ).pipe(C.withServerError, C.withRetryableError) {}
+export class ResourceNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
+    "ResourceNotFoundException",
+    { message: S.String, resourceId: S.String, resourceType: S.String },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class ServiceQuotaExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
+    "ServiceQuotaExceededException",
+    { message: S.String },
+    T.HttpError(402),
+  ).pipe(C.withQuotaError) {}
+export class ThrottlingException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
+    "ThrottlingException",
+    {
+      message: S.String,
+      retryAfterSeconds: S.optional(S.Number).pipe(T.HttpHeader("Retry-After")),
+    },
+    T.all(T.HttpError(429), T.Retryable()),
+  ).pipe(C.withThrottlingError, C.withRetryableError) {}
+export class ValidationException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
+    "ValidationException",
+    {
+      message: S.String,
+      reason: S.suspend(() => ValidationExceptionReason).annotate({
+        identifier: "ValidationExceptionReason",
+      }),
+    },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
 export type DbClusterName = string;
 export type Username = string | redacted.Redacted<string>;
 export type Password = string | redacted.Redacted<string>;
@@ -1902,7 +1909,27 @@ export const listDbClusters: API.OperationMethod<
     items: "items",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListDbClustersInput,
+  ListDbClustersOutput,
+  ListDbClustersError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListDbClustersInput,
+  ) => stream.Stream<
+    ListDbClustersOutput,
+    ListDbClustersError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListDbClustersInput,
+  ) => stream.Stream<
+    DbClusterSummary,
+    ListDbClustersError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListDbInstancesError =
   | AccessDeniedException
@@ -1953,7 +1980,27 @@ export const listDbInstances: API.OperationMethod<
     items: "items",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListDbInstancesInput,
+  ListDbInstancesOutput,
+  ListDbInstancesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListDbInstancesInput,
+  ) => stream.Stream<
+    ListDbInstancesOutput,
+    ListDbInstancesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListDbInstancesInput,
+  ) => stream.Stream<
+    DbInstanceSummary,
+    ListDbInstancesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListDbInstancesForClusterError =
   | AccessDeniedException
@@ -2004,7 +2051,27 @@ export const listDbInstancesForCluster: API.OperationMethod<
     items: "items",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListDbInstancesForClusterInput,
+  ListDbInstancesForClusterOutput,
+  ListDbInstancesForClusterError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListDbInstancesForClusterInput,
+  ) => stream.Stream<
+    ListDbInstancesForClusterOutput,
+    ListDbInstancesForClusterError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListDbInstancesForClusterInput,
+  ) => stream.Stream<
+    DbInstanceForClusterSummary,
+    ListDbInstancesForClusterError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListDbParameterGroupsError =
   | AccessDeniedException
@@ -2055,7 +2122,27 @@ export const listDbParameterGroups: API.OperationMethod<
     items: "items",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListDbParameterGroupsInput,
+  ListDbParameterGroupsOutput,
+  ListDbParameterGroupsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListDbParameterGroupsInput,
+  ) => stream.Stream<
+    ListDbParameterGroupsOutput,
+    ListDbParameterGroupsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListDbParameterGroupsInput,
+  ) => stream.Stream<
+    DbParameterGroupSummary,
+    ListDbParameterGroupsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListTagsForResourceError = ResourceNotFoundException | CommonErrors;
 /**

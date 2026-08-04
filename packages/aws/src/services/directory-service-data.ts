@@ -90,65 +90,72 @@ const rules = T.EndpointResolver((p, _) => {
   return err("Invalid Configuration: Missing Region");
 });
 
-export class AccessDeniedException extends S.TaggedErrorClass<AccessDeniedException>()(
-  "AccessDeniedException",
-  {
-    Message: S.optional(S.String),
-    Reason: S.optional(
-      S.suspend(() => AccessDeniedReason).annotate({
-        identifier: "AccessDeniedReason",
-      }),
-    ),
-  },
-  T.HttpError(403),
-).pipe(C.withAuthError) {}
-export class ConflictException extends S.TaggedErrorClass<ConflictException>()(
-  "ConflictException",
-  { Message: S.optional(S.String) },
-  T.HttpError(409),
-).pipe(C.withConflictError) {}
-export class DirectoryUnavailableException extends S.TaggedErrorClass<DirectoryUnavailableException>()(
-  "DirectoryUnavailableException",
-  {
-    Message: S.optional(S.String),
-    Reason: S.optional(
-      S.suspend(() => DirectoryUnavailableReason).annotate({
-        identifier: "DirectoryUnavailableReason",
-      }),
-    ),
-  },
-  T.all(T.HttpError(400), T.Retryable()),
-).pipe(C.withBadRequestError, C.withRetryableError) {}
-export class InternalServerException extends S.TaggedErrorClass<InternalServerException>()(
-  "InternalServerException",
-  { Message: S.optional(S.String) },
-  T.all(T.HttpError(500), T.Retryable()),
-).pipe(C.withServerError, C.withRetryableError) {}
-export class ResourceNotFoundException extends S.TaggedErrorClass<ResourceNotFoundException>()(
-  "ResourceNotFoundException",
-  { Message: S.optional(S.String) },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class ThrottlingException extends S.TaggedErrorClass<ThrottlingException>()(
-  "ThrottlingException",
-  {
-    Message: S.String,
-    RetryAfterSeconds: S.optional(S.Number).pipe(T.HttpHeader("Retry-After")),
-  },
-  T.all(T.HttpError(429), T.Retryable({ throttling: true })),
-).pipe(C.withThrottlingError, C.withRetryableError) {}
-export class ValidationException extends S.TaggedErrorClass<ValidationException>()(
-  "ValidationException",
-  {
-    Message: S.optional(S.String),
-    Reason: S.optional(
-      S.suspend(() => ValidationExceptionReason).annotate({
-        identifier: "ValidationExceptionReason",
-      }),
-    ),
-  },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
+export class AccessDeniedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
+    "AccessDeniedException",
+    {
+      Message: S.optional(S.String),
+      Reason: S.optional(
+        S.suspend(() => AccessDeniedReason).annotate({
+          identifier: "AccessDeniedReason",
+        }),
+      ),
+    },
+    T.HttpError(403),
+  ).pipe(C.withAuthError) {}
+export class ConflictException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
+    "ConflictException",
+    { Message: S.optional(S.String) },
+    T.HttpError(409),
+  ).pipe(C.withConflictError) {}
+export class DirectoryUnavailableException
+  extends /*@__PURE__*/ S.TaggedErrorClass<DirectoryUnavailableException>()(
+    "DirectoryUnavailableException",
+    {
+      Message: S.optional(S.String),
+      Reason: S.optional(
+        S.suspend(() => DirectoryUnavailableReason).annotate({
+          identifier: "DirectoryUnavailableReason",
+        }),
+      ),
+    },
+    T.all(T.HttpError(400), T.Retryable()),
+  ).pipe(C.withBadRequestError, C.withRetryableError) {}
+export class InternalServerException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
+    "InternalServerException",
+    { Message: S.optional(S.String) },
+    T.all(T.HttpError(500), T.Retryable()),
+  ).pipe(C.withServerError, C.withRetryableError) {}
+export class ResourceNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
+    "ResourceNotFoundException",
+    { Message: S.optional(S.String) },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class ThrottlingException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
+    "ThrottlingException",
+    {
+      Message: S.String,
+      RetryAfterSeconds: S.optional(S.Number).pipe(T.HttpHeader("Retry-After")),
+    },
+    T.all(T.HttpError(429), T.Retryable({ throttling: true })),
+  ).pipe(C.withThrottlingError, C.withRetryableError) {}
+export class ValidationException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
+    "ValidationException",
+    {
+      Message: S.optional(S.String),
+      Reason: S.optional(
+        S.suspend(() => ValidationExceptionReason).annotate({
+          identifier: "ValidationExceptionReason",
+        }),
+      ),
+    },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
 export type DirectoryId = string;
 export type GroupName = string;
 export type MemberName = string;
@@ -1370,7 +1377,27 @@ export const listGroupMembers: API.OperationMethod<
     items: "Members",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListGroupMembersRequest,
+  ListGroupMembersResult,
+  ListGroupMembersError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListGroupMembersRequest,
+  ) => stream.Stream<
+    ListGroupMembersResult,
+    ListGroupMembersError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListGroupMembersRequest,
+  ) => stream.Stream<
+    Member,
+    ListGroupMembersError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListGroupsError =
   | AccessDeniedException
@@ -1429,7 +1456,27 @@ export const listGroups: API.OperationMethod<
     items: "Groups",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListGroupsRequest,
+  ListGroupsResult,
+  ListGroupsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListGroupsRequest,
+  ) => stream.Stream<
+    ListGroupsResult,
+    ListGroupsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListGroupsRequest,
+  ) => stream.Stream<
+    GroupSummary,
+    ListGroupsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListGroupsForMemberError =
   | AccessDeniedException
@@ -1490,7 +1537,27 @@ export const listGroupsForMember: API.OperationMethod<
     items: "Groups",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListGroupsForMemberRequest,
+  ListGroupsForMemberResult,
+  ListGroupsForMemberError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListGroupsForMemberRequest,
+  ) => stream.Stream<
+    ListGroupsForMemberResult,
+    ListGroupsForMemberError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListGroupsForMemberRequest,
+  ) => stream.Stream<
+    GroupSummary,
+    ListGroupsForMemberError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListUsersError =
   | AccessDeniedException
@@ -1549,7 +1616,27 @@ export const listUsers: API.OperationMethod<
     items: "Users",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListUsersRequest,
+  ListUsersResult,
+  ListUsersError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListUsersRequest,
+  ) => stream.Stream<
+    ListUsersResult,
+    ListUsersError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListUsersRequest,
+  ) => stream.Stream<
+    UserSummary,
+    ListUsersError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type RemoveGroupMemberError =
   | AccessDeniedException
@@ -1644,7 +1731,27 @@ export const searchGroups: API.OperationMethod<
     items: "Groups",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  SearchGroupsRequest,
+  SearchGroupsResult,
+  SearchGroupsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: SearchGroupsRequest,
+  ) => stream.Stream<
+    SearchGroupsResult,
+    SearchGroupsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: SearchGroupsRequest,
+  ) => stream.Stream<
+    Group,
+    SearchGroupsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type SearchUsersError =
   | AccessDeniedException
@@ -1705,7 +1812,27 @@ export const searchUsers: API.OperationMethod<
     items: "Users",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  SearchUsersRequest,
+  SearchUsersResult,
+  SearchUsersError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: SearchUsersRequest,
+  ) => stream.Stream<
+    SearchUsersResult,
+    SearchUsersError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: SearchUsersRequest,
+  ) => stream.Stream<
+    User,
+    SearchUsersError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type UpdateGroupError =
   | AccessDeniedException

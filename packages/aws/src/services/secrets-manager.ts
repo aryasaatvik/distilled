@@ -102,54 +102,66 @@ const rules = T.EndpointResolver((p, _) => {
   return err("Invalid Configuration: Missing Region");
 });
 
-export class DecryptionFailure extends S.TaggedErrorClass<DecryptionFailure>()(
-  "DecryptionFailure",
-  { Message: S.optional(S.String) },
-).pipe(C.withServerError) {}
-export class EncryptionFailure extends S.TaggedErrorClass<EncryptionFailure>()(
-  "EncryptionFailure",
-  { Message: S.optional(S.String) },
-).pipe(C.withServerError) {}
-export class InternalServiceError extends S.TaggedErrorClass<InternalServiceError>()(
-  "InternalServiceError",
-  { Message: S.optional(S.String) },
-).pipe(C.withServerError, C.withRetryableError) {}
-export class InvalidNextTokenException extends S.TaggedErrorClass<InvalidNextTokenException>()(
-  "InvalidNextTokenException",
-  { Message: S.optional(S.String) },
-).pipe(C.withBadRequestError) {}
-export class InvalidParameterException extends S.TaggedErrorClass<InvalidParameterException>()(
-  "InvalidParameterException",
-  { Message: S.optional(S.String) },
-).pipe(C.withBadRequestError) {}
-export class InvalidRequestException extends S.TaggedErrorClass<InvalidRequestException>()(
-  "InvalidRequestException",
-  { Message: S.optional(S.String) },
-).pipe(C.withBadRequestError) {}
-export class LimitExceededException extends S.TaggedErrorClass<LimitExceededException>()(
-  "LimitExceededException",
-  { Message: S.optional(S.String) },
-).pipe(C.withQuotaError) {}
-export class MalformedPolicyDocumentException extends S.TaggedErrorClass<MalformedPolicyDocumentException>()(
-  "MalformedPolicyDocumentException",
-  { Message: S.optional(S.String) },
-).pipe(C.withBadRequestError) {}
-export class PreconditionNotMetException extends S.TaggedErrorClass<PreconditionNotMetException>()(
-  "PreconditionNotMetException",
-  { Message: S.optional(S.String) },
-).pipe(C.withConflictError) {}
-export class PublicPolicyException extends S.TaggedErrorClass<PublicPolicyException>()(
-  "PublicPolicyException",
-  { Message: S.optional(S.String) },
-).pipe(C.withBadRequestError) {}
-export class ResourceExistsException extends S.TaggedErrorClass<ResourceExistsException>()(
-  "ResourceExistsException",
-  { Message: S.optional(S.String) },
-).pipe(C.withConflictError, C.withAlreadyExistsError) {}
-export class ResourceNotFoundException extends S.TaggedErrorClass<ResourceNotFoundException>()(
-  "ResourceNotFoundException",
-  { Message: S.optional(S.String) },
-).pipe(C.withNotFoundError) {}
+export class DecryptionFailure
+  extends /*@__PURE__*/ S.TaggedErrorClass<DecryptionFailure>()(
+    "DecryptionFailure",
+    { Message: S.optional(S.String) },
+  ).pipe(C.withServerError) {}
+export class EncryptionFailure
+  extends /*@__PURE__*/ S.TaggedErrorClass<EncryptionFailure>()(
+    "EncryptionFailure",
+    { Message: S.optional(S.String) },
+  ).pipe(C.withServerError) {}
+export class InternalServiceError
+  extends /*@__PURE__*/ S.TaggedErrorClass<InternalServiceError>()(
+    "InternalServiceError",
+    { Message: S.optional(S.String) },
+  ).pipe(C.withServerError, C.withRetryableError) {}
+export class InvalidNextTokenException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidNextTokenException>()(
+    "InvalidNextTokenException",
+    { Message: S.optional(S.String) },
+  ).pipe(C.withBadRequestError) {}
+export class InvalidParameterException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidParameterException>()(
+    "InvalidParameterException",
+    { Message: S.optional(S.String) },
+  ).pipe(C.withBadRequestError) {}
+export class InvalidRequestException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidRequestException>()(
+    "InvalidRequestException",
+    { Message: S.optional(S.String) },
+  ).pipe(C.withBadRequestError) {}
+export class LimitExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<LimitExceededException>()(
+    "LimitExceededException",
+    { Message: S.optional(S.String) },
+  ).pipe(C.withQuotaError) {}
+export class MalformedPolicyDocumentException
+  extends /*@__PURE__*/ S.TaggedErrorClass<MalformedPolicyDocumentException>()(
+    "MalformedPolicyDocumentException",
+    { Message: S.optional(S.String) },
+  ).pipe(C.withBadRequestError) {}
+export class PreconditionNotMetException
+  extends /*@__PURE__*/ S.TaggedErrorClass<PreconditionNotMetException>()(
+    "PreconditionNotMetException",
+    { Message: S.optional(S.String) },
+  ).pipe(C.withConflictError) {}
+export class PublicPolicyException
+  extends /*@__PURE__*/ S.TaggedErrorClass<PublicPolicyException>()(
+    "PublicPolicyException",
+    { Message: S.optional(S.String) },
+  ).pipe(C.withBadRequestError) {}
+export class ResourceExistsException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceExistsException>()(
+    "ResourceExistsException",
+    { Message: S.optional(S.String) },
+  ).pipe(C.withConflictError, C.withAlreadyExistsError) {}
+export class ResourceNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
+    "ResourceNotFoundException",
+    { Message: S.optional(S.String) },
+  ).pipe(C.withNotFoundError) {}
 export type SecretIdType = string;
 export type SecretIdListType = string[];
 export const SecretIdListType = /*@__PURE__*/ S.Array(S.String);
@@ -1241,7 +1253,27 @@ export const batchGetSecretValue: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  BatchGetSecretValueRequest,
+  BatchGetSecretValueResponse,
+  BatchGetSecretValueError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: BatchGetSecretValueRequest,
+  ) => stream.Stream<
+    BatchGetSecretValueResponse,
+    BatchGetSecretValueError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: BatchGetSecretValueRequest,
+  ) => stream.Stream<
+    unknown,
+    BatchGetSecretValueError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type CancelRotateSecretError =
   | InternalServiceError
@@ -1716,7 +1748,27 @@ export const listSecrets: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListSecretsRequest,
+  ListSecretsResponse,
+  ListSecretsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListSecretsRequest,
+  ) => stream.Stream<
+    ListSecretsResponse,
+    ListSecretsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListSecretsRequest,
+  ) => stream.Stream<
+    unknown,
+    ListSecretsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListSecretVersionIdsError =
   | InternalServiceError
@@ -1776,7 +1828,27 @@ export const listSecretVersionIds: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListSecretVersionIdsRequest,
+  ListSecretVersionIdsResponse,
+  ListSecretVersionIdsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListSecretVersionIdsRequest,
+  ) => stream.Stream<
+    ListSecretVersionIdsResponse,
+    ListSecretVersionIdsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListSecretVersionIdsRequest,
+  ) => stream.Stream<
+    unknown,
+    ListSecretVersionIdsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type PutResourcePolicyError =
   | InternalServiceError

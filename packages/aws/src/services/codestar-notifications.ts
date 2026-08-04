@@ -87,46 +87,54 @@ const rules = T.EndpointResolver((p, _) => {
   return err("Invalid Configuration: Missing Region");
 });
 
-export class AccessDeniedException extends S.TaggedErrorClass<AccessDeniedException>()(
-  "AccessDeniedException",
-  { Message: S.optional(S.String) },
-  T.HttpError(403),
-).pipe(C.withAuthError) {}
-export class ConcurrentModificationException extends S.TaggedErrorClass<ConcurrentModificationException>()(
-  "ConcurrentModificationException",
-  { Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class ConfigurationException extends S.TaggedErrorClass<ConfigurationException>()(
-  "ConfigurationException",
-  { Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class InvalidNextTokenException extends S.TaggedErrorClass<InvalidNextTokenException>()(
-  "InvalidNextTokenException",
-  { Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class LimitExceededException extends S.TaggedErrorClass<LimitExceededException>()(
-  "LimitExceededException",
-  { Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class ResourceAlreadyExistsException extends S.TaggedErrorClass<ResourceAlreadyExistsException>()(
-  "ResourceAlreadyExistsException",
-  { Message: S.optional(S.String) },
-  T.HttpError(409),
-).pipe(C.withConflictError, C.withAlreadyExistsError) {}
-export class ResourceNotFoundException extends S.TaggedErrorClass<ResourceNotFoundException>()(
-  "ResourceNotFoundException",
-  { Message: S.optional(S.String) },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class ValidationException extends S.TaggedErrorClass<ValidationException>()(
-  "ValidationException",
-  { Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
+export class AccessDeniedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
+    "AccessDeniedException",
+    { Message: S.optional(S.String) },
+    T.HttpError(403),
+  ).pipe(C.withAuthError) {}
+export class ConcurrentModificationException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ConcurrentModificationException>()(
+    "ConcurrentModificationException",
+    { Message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class ConfigurationException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ConfigurationException>()(
+    "ConfigurationException",
+    { Message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class InvalidNextTokenException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidNextTokenException>()(
+    "InvalidNextTokenException",
+    { Message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class LimitExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<LimitExceededException>()(
+    "LimitExceededException",
+    { Message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class ResourceAlreadyExistsException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceAlreadyExistsException>()(
+    "ResourceAlreadyExistsException",
+    { Message: S.optional(S.String) },
+    T.HttpError(409),
+  ).pipe(C.withConflictError, C.withAlreadyExistsError) {}
+export class ResourceNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
+    "ResourceNotFoundException",
+    { Message: S.optional(S.String) },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class ValidationException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
+    "ValidationException",
+    { Message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
 export type NotificationRuleName = string | redacted.Redacted<string>;
 export type EventTypeId = string;
 export type EventTypeIds = string[];
@@ -843,7 +851,27 @@ export const listEventTypes: API.OperationMethod<
     items: "EventTypes",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListEventTypesRequest,
+  ListEventTypesResult,
+  ListEventTypesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListEventTypesRequest,
+  ) => stream.Stream<
+    ListEventTypesResult,
+    ListEventTypesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListEventTypesRequest,
+  ) => stream.Stream<
+    EventTypeSummary,
+    ListEventTypesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListNotificationRulesError =
   | InvalidNextTokenException
@@ -885,7 +913,27 @@ export const listNotificationRules: API.OperationMethod<
     items: "NotificationRules",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListNotificationRulesRequest,
+  ListNotificationRulesResult,
+  ListNotificationRulesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListNotificationRulesRequest,
+  ) => stream.Stream<
+    ListNotificationRulesResult,
+    ListNotificationRulesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListNotificationRulesRequest,
+  ) => stream.Stream<
+    NotificationRuleSummary,
+    ListNotificationRulesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListTagsForResourceError =
   | ResourceNotFoundException
@@ -948,7 +996,27 @@ export const listTargets: API.OperationMethod<
     items: "Targets",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListTargetsRequest,
+  ListTargetsResult,
+  ListTargetsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListTargetsRequest,
+  ) => stream.Stream<
+    ListTargetsResult,
+    ListTargetsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListTargetsRequest,
+  ) => stream.Stream<
+    TargetSummary,
+    ListTargetsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type SubscribeError =
   | ConfigurationException

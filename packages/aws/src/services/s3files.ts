@@ -50,36 +50,41 @@ const rules = T.EndpointResolver((p, _) => {
   return err("Invalid Configuration: Missing Region");
 });
 
-export class ConflictException extends S.TaggedErrorClass<ConflictException>()(
-  "ConflictException",
-  {
-    errorCode: S.String,
-    message: S.optional(S.String),
-    resourceId: S.optional(S.String),
-    resourceType: S.optional(S.String),
-  },
-  T.HttpError(409),
-).pipe(C.withConflictError) {}
-export class InternalServerException extends S.TaggedErrorClass<InternalServerException>()(
-  "InternalServerException",
-  { errorCode: S.String, message: S.optional(S.String) },
-  T.HttpError(500),
-).pipe(C.withServerError) {}
-export class ResourceNotFoundException extends S.TaggedErrorClass<ResourceNotFoundException>()(
-  "ResourceNotFoundException",
-  { errorCode: S.String, message: S.optional(S.String) },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class ServiceQuotaExceededException extends S.TaggedErrorClass<ServiceQuotaExceededException>()(
-  "ServiceQuotaExceededException",
-  { errorCode: S.String, message: S.optional(S.String) },
-  T.HttpError(402),
-).pipe(C.withQuotaError) {}
-export class ValidationException extends S.TaggedErrorClass<ValidationException>()(
-  "ValidationException",
-  { errorCode: S.String, message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
+export class ConflictException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
+    "ConflictException",
+    {
+      errorCode: S.String,
+      message: S.optional(S.String),
+      resourceId: S.optional(S.String),
+      resourceType: S.optional(S.String),
+    },
+    T.HttpError(409),
+  ).pipe(C.withConflictError) {}
+export class InternalServerException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
+    "InternalServerException",
+    { errorCode: S.String, message: S.optional(S.String) },
+    T.HttpError(500),
+  ).pipe(C.withServerError) {}
+export class ResourceNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
+    "ResourceNotFoundException",
+    { errorCode: S.String, message: S.optional(S.String) },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class ServiceQuotaExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
+    "ServiceQuotaExceededException",
+    { errorCode: S.String, message: S.optional(S.String) },
+    T.HttpError(402),
+  ).pipe(C.withQuotaError) {}
+export class ValidationException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
+    "ValidationException",
+    { errorCode: S.String, message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
 export type ClientToken = string;
 export type TagKey = string;
 export type TagValue = string;
@@ -1478,7 +1483,27 @@ export const listAccessPoints: API.OperationMethod<
     items: "accessPoints",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListAccessPointsRequest,
+  ListAccessPointsResponse,
+  ListAccessPointsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListAccessPointsRequest,
+  ) => stream.Stream<
+    ListAccessPointsResponse,
+    ListAccessPointsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListAccessPointsRequest,
+  ) => stream.Stream<
+    ListAccessPointsDescription,
+    ListAccessPointsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListFileSystemsError =
   | InternalServerException
@@ -1520,7 +1545,27 @@ export const listFileSystems: API.OperationMethod<
     items: "fileSystems",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListFileSystemsRequest,
+  ListFileSystemsResponse,
+  ListFileSystemsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListFileSystemsRequest,
+  ) => stream.Stream<
+    ListFileSystemsResponse,
+    ListFileSystemsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListFileSystemsRequest,
+  ) => stream.Stream<
+    ListFileSystemsDescription,
+    ListFileSystemsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListMountTargetsError =
   | InternalServerException
@@ -1567,7 +1612,27 @@ export const listMountTargets: API.OperationMethod<
     items: "mountTargets",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListMountTargetsRequest,
+  ListMountTargetsResponse,
+  ListMountTargetsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListMountTargetsRequest,
+  ) => stream.Stream<
+    ListMountTargetsResponse,
+    ListMountTargetsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListMountTargetsRequest,
+  ) => stream.Stream<
+    ListMountTargetsDescription,
+    ListMountTargetsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListTagsForResourceError =
   | InternalServerException
@@ -1614,7 +1679,27 @@ export const listTagsForResource: API.OperationMethod<
     items: "tags",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListTagsForResourceRequest,
+  ListTagsForResourceResponse,
+  ListTagsForResourceError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListTagsForResourceRequest,
+  ) => stream.Stream<
+    ListTagsForResourceResponse,
+    ListTagsForResourceError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListTagsForResourceRequest,
+  ) => stream.Stream<
+    Tag,
+    ListTagsForResourceError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type PutFileSystemPolicyError =
   | InternalServerException

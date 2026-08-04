@@ -94,90 +94,108 @@ const rules = T.EndpointResolver((p, _) => {
   return err("Invalid Configuration: Missing Region");
 });
 
-export class CustomHealthNotFound extends S.TaggedErrorClass<CustomHealthNotFound>()(
-  "CustomHealthNotFound",
-  { Message: S.optional(S.String) },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class DuplicateRequest extends S.TaggedErrorClass<DuplicateRequest>()(
-  "DuplicateRequest",
-  { Message: S.optional(S.String), DuplicateOperationId: S.optional(S.String) },
-  T.HttpError(409),
-).pipe(C.withConflictError) {}
-export class InstanceNotFound extends S.TaggedErrorClass<InstanceNotFound>()(
-  "InstanceNotFound",
-  { Message: S.optional(S.String) },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class InvalidInput extends S.TaggedErrorClass<InvalidInput>()(
-  "InvalidInput",
-  { Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class NamespaceAlreadyExists extends S.TaggedErrorClass<NamespaceAlreadyExists>()(
-  "NamespaceAlreadyExists",
-  {
-    Message: S.optional(S.String),
-    CreatorRequestId: S.optional(S.String),
-    NamespaceId: S.optional(S.String),
-  },
-  T.HttpError(400),
-).pipe(C.withBadRequestError, C.withAlreadyExistsError) {}
-export class NamespaceNotFound extends S.TaggedErrorClass<NamespaceNotFound>()(
-  "NamespaceNotFound",
-  { Message: S.optional(S.String) },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class OperationNotFound extends S.TaggedErrorClass<OperationNotFound>()(
-  "OperationNotFound",
-  { Message: S.optional(S.String) },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class RequestLimitExceeded extends S.TaggedErrorClass<RequestLimitExceeded>()(
-  "RequestLimitExceeded",
-  { Message: S.optional(S.String) },
-  T.HttpError(429),
-).pipe(C.withThrottlingError) {}
-export class ResourceInUse extends S.TaggedErrorClass<ResourceInUse>()(
-  "ResourceInUse",
-  { Message: S.optional(S.String) },
-  T.HttpError(409),
-).pipe(C.withConflictError, C.withDependencyViolationError) {}
-export class ResourceLimitExceeded extends S.TaggedErrorClass<ResourceLimitExceeded>()(
-  "ResourceLimitExceeded",
-  { Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError, C.withThrottlingError) {}
-export class ResourceNotFoundException extends S.TaggedErrorClass<ResourceNotFoundException>()(
-  "ResourceNotFoundException",
-  { Message: S.optional(S.String) },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class ServiceAlreadyExists extends S.TaggedErrorClass<ServiceAlreadyExists>()(
-  "ServiceAlreadyExists",
-  {
-    Message: S.optional(S.String),
-    CreatorRequestId: S.optional(S.String),
-    ServiceId: S.optional(S.String),
-    ServiceArn: S.optional(S.String),
-  },
-  T.HttpError(400),
-).pipe(C.withBadRequestError, C.withAlreadyExistsError) {}
-export class ServiceAttributesLimitExceededException extends S.TaggedErrorClass<ServiceAttributesLimitExceededException>()(
-  "ServiceAttributesLimitExceededException",
-  { Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class ServiceNotFound extends S.TaggedErrorClass<ServiceNotFound>()(
-  "ServiceNotFound",
-  { Message: S.optional(S.String) },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class TooManyTagsException extends S.TaggedErrorClass<TooManyTagsException>()(
-  "TooManyTagsException",
-  { Message: S.optional(S.String), ResourceName: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
+export class CustomHealthNotFound
+  extends /*@__PURE__*/ S.TaggedErrorClass<CustomHealthNotFound>()(
+    "CustomHealthNotFound",
+    { Message: S.optional(S.String) },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class DuplicateRequest
+  extends /*@__PURE__*/ S.TaggedErrorClass<DuplicateRequest>()(
+    "DuplicateRequest",
+    {
+      Message: S.optional(S.String),
+      DuplicateOperationId: S.optional(S.String),
+    },
+    T.HttpError(409),
+  ).pipe(C.withConflictError) {}
+export class InstanceNotFound
+  extends /*@__PURE__*/ S.TaggedErrorClass<InstanceNotFound>()(
+    "InstanceNotFound",
+    { Message: S.optional(S.String) },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class InvalidInput
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidInput>()(
+    "InvalidInput",
+    { Message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class NamespaceAlreadyExists
+  extends /*@__PURE__*/ S.TaggedErrorClass<NamespaceAlreadyExists>()(
+    "NamespaceAlreadyExists",
+    {
+      Message: S.optional(S.String),
+      CreatorRequestId: S.optional(S.String),
+      NamespaceId: S.optional(S.String),
+    },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError, C.withAlreadyExistsError) {}
+export class NamespaceNotFound
+  extends /*@__PURE__*/ S.TaggedErrorClass<NamespaceNotFound>()(
+    "NamespaceNotFound",
+    { Message: S.optional(S.String) },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class OperationNotFound
+  extends /*@__PURE__*/ S.TaggedErrorClass<OperationNotFound>()(
+    "OperationNotFound",
+    { Message: S.optional(S.String) },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class RequestLimitExceeded
+  extends /*@__PURE__*/ S.TaggedErrorClass<RequestLimitExceeded>()(
+    "RequestLimitExceeded",
+    { Message: S.optional(S.String) },
+    T.HttpError(429),
+  ).pipe(C.withThrottlingError) {}
+export class ResourceInUse
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceInUse>()(
+    "ResourceInUse",
+    { Message: S.optional(S.String) },
+    T.HttpError(409),
+  ).pipe(C.withConflictError, C.withDependencyViolationError) {}
+export class ResourceLimitExceeded
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceLimitExceeded>()(
+    "ResourceLimitExceeded",
+    { Message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError, C.withThrottlingError) {}
+export class ResourceNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
+    "ResourceNotFoundException",
+    { Message: S.optional(S.String) },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class ServiceAlreadyExists
+  extends /*@__PURE__*/ S.TaggedErrorClass<ServiceAlreadyExists>()(
+    "ServiceAlreadyExists",
+    {
+      Message: S.optional(S.String),
+      CreatorRequestId: S.optional(S.String),
+      ServiceId: S.optional(S.String),
+      ServiceArn: S.optional(S.String),
+    },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError, C.withAlreadyExistsError) {}
+export class ServiceAttributesLimitExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ServiceAttributesLimitExceededException>()(
+    "ServiceAttributesLimitExceededException",
+    { Message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class ServiceNotFound
+  extends /*@__PURE__*/ S.TaggedErrorClass<ServiceNotFound>()(
+    "ServiceNotFound",
+    { Message: S.optional(S.String) },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class TooManyTagsException
+  extends /*@__PURE__*/ S.TaggedErrorClass<TooManyTagsException>()(
+    "TooManyTagsException",
+    { Message: S.optional(S.String), ResourceName: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
 export type NamespaceNameHttp = string;
 export type ResourceId = string;
 export type ResourceDescription = string;
@@ -1914,7 +1932,27 @@ export const getInstancesHealthStatus: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  GetInstancesHealthStatusRequest,
+  GetInstancesHealthStatusResponse,
+  GetInstancesHealthStatusError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: GetInstancesHealthStatusRequest,
+  ) => stream.Stream<
+    GetInstancesHealthStatusResponse,
+    GetInstancesHealthStatusError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: GetInstancesHealthStatusRequest,
+  ) => stream.Stream<
+    unknown,
+    GetInstancesHealthStatusError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type GetNamespaceError = InvalidInput | NamespaceNotFound | CommonErrors;
 /**
@@ -2031,7 +2069,27 @@ export const listInstances: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListInstancesRequest,
+  ListInstancesResponse,
+  ListInstancesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListInstancesRequest,
+  ) => stream.Stream<
+    ListInstancesResponse,
+    ListInstancesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListInstancesRequest,
+  ) => stream.Stream<
+    unknown,
+    ListInstancesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListNamespacesError = InvalidInput | CommonErrors;
 /**
@@ -2069,7 +2127,27 @@ export const listNamespaces: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListNamespacesRequest,
+  ListNamespacesResponse,
+  ListNamespacesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListNamespacesRequest,
+  ) => stream.Stream<
+    ListNamespacesResponse,
+    ListNamespacesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListNamespacesRequest,
+  ) => stream.Stream<
+    unknown,
+    ListNamespacesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListOperationsError = InvalidInput | CommonErrors;
 /**
@@ -2107,7 +2185,27 @@ export const listOperations: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListOperationsRequest,
+  ListOperationsResponse,
+  ListOperationsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListOperationsRequest,
+  ) => stream.Stream<
+    ListOperationsResponse,
+    ListOperationsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListOperationsRequest,
+  ) => stream.Stream<
+    unknown,
+    ListOperationsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListServicesError = InvalidInput | CommonErrors;
 /**
@@ -2146,7 +2244,27 @@ export const listServices: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListServicesRequest,
+  ListServicesResponse,
+  ListServicesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListServicesRequest,
+  ) => stream.Stream<
+    ListServicesResponse,
+    ListServicesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListServicesRequest,
+  ) => stream.Stream<
+    unknown,
+    ListServicesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListTagsForResourceError =
   | InvalidInput

@@ -91,108 +91,132 @@ const rules = T.EndpointResolver((p, _) => {
   return err("Invalid Configuration: Missing Region");
 });
 
-export class EmptyUploadException extends S.TaggedErrorClass<EmptyUploadException>()(
-  "EmptyUploadException",
-  { message: S.optional(S.String) },
-) {}
-export class ImageAlreadyExistsException extends S.TaggedErrorClass<ImageAlreadyExistsException>()(
-  "ImageAlreadyExistsException",
-  { message: S.optional(S.String) },
-).pipe(C.withAlreadyExistsError) {}
-export class ImageDigestDoesNotMatchException extends S.TaggedErrorClass<ImageDigestDoesNotMatchException>()(
-  "ImageDigestDoesNotMatchException",
-  { message: S.optional(S.String) },
-) {}
-export class ImageNotFoundException extends S.TaggedErrorClass<ImageNotFoundException>()(
-  "ImageNotFoundException",
-  { message: S.optional(S.String) },
-) {}
-export class ImageTagAlreadyExistsException extends S.TaggedErrorClass<ImageTagAlreadyExistsException>()(
-  "ImageTagAlreadyExistsException",
-  { message: S.optional(S.String) },
-).pipe(C.withAlreadyExistsError) {}
-export class InvalidLayerException extends S.TaggedErrorClass<InvalidLayerException>()(
-  "InvalidLayerException",
-  { message: S.optional(S.String) },
-) {}
-export class InvalidLayerPartException extends S.TaggedErrorClass<InvalidLayerPartException>()(
-  "InvalidLayerPartException",
-  {
-    registryId: S.optional(S.String),
-    repositoryName: S.optional(S.String),
-    uploadId: S.optional(S.String),
-    lastValidByteReceived: S.optional(S.Number),
-    message: S.optional(S.String),
-  },
-) {}
-export class InvalidParameterException extends S.TaggedErrorClass<InvalidParameterException>()(
-  "InvalidParameterException",
-  { message: S.optional(S.String) },
-) {}
-export class InvalidTagParameterException extends S.TaggedErrorClass<InvalidTagParameterException>()(
-  "InvalidTagParameterException",
-  { message: S.optional(S.String) },
-) {}
-export class LayerAlreadyExistsException extends S.TaggedErrorClass<LayerAlreadyExistsException>()(
-  "LayerAlreadyExistsException",
-  { message: S.optional(S.String) },
-).pipe(C.withAlreadyExistsError) {}
-export class LayerPartTooSmallException extends S.TaggedErrorClass<LayerPartTooSmallException>()(
-  "LayerPartTooSmallException",
-  { message: S.optional(S.String) },
-) {}
-export class LayersNotFoundException extends S.TaggedErrorClass<LayersNotFoundException>()(
-  "LayersNotFoundException",
-  { message: S.optional(S.String) },
-) {}
-export class LimitExceededException extends S.TaggedErrorClass<LimitExceededException>()(
-  "LimitExceededException",
-  { message: S.optional(S.String) },
-) {}
-export class ReferencedImagesNotFoundException extends S.TaggedErrorClass<ReferencedImagesNotFoundException>()(
-  "ReferencedImagesNotFoundException",
-  { message: S.optional(S.String) },
-) {}
-export class RegistryNotFoundException extends S.TaggedErrorClass<RegistryNotFoundException>()(
-  "RegistryNotFoundException",
-  { message: S.optional(S.String) },
-) {}
-export class RepositoryAlreadyExistsException extends S.TaggedErrorClass<RepositoryAlreadyExistsException>()(
-  "RepositoryAlreadyExistsException",
-  { message: S.optional(S.String) },
-).pipe(C.withAlreadyExistsError) {}
-export class RepositoryCatalogDataNotFoundException extends S.TaggedErrorClass<RepositoryCatalogDataNotFoundException>()(
-  "RepositoryCatalogDataNotFoundException",
-  { message: S.optional(S.String) },
-) {}
-export class RepositoryNotEmptyException extends S.TaggedErrorClass<RepositoryNotEmptyException>()(
-  "RepositoryNotEmptyException",
-  { message: S.optional(S.String) },
-) {}
-export class RepositoryNotFoundException extends S.TaggedErrorClass<RepositoryNotFoundException>()(
-  "RepositoryNotFoundException",
-  { message: S.optional(S.String) },
-) {}
-export class RepositoryPolicyNotFoundException extends S.TaggedErrorClass<RepositoryPolicyNotFoundException>()(
-  "RepositoryPolicyNotFoundException",
-  { message: S.optional(S.String) },
-) {}
-export class ServerException extends S.TaggedErrorClass<ServerException>()(
-  "ServerException",
-  { message: S.optional(S.String) },
-) {}
-export class TooManyTagsException extends S.TaggedErrorClass<TooManyTagsException>()(
-  "TooManyTagsException",
-  { message: S.optional(S.String) },
-) {}
-export class UnsupportedCommandException extends S.TaggedErrorClass<UnsupportedCommandException>()(
-  "UnsupportedCommandException",
-  { message: S.optional(S.String) },
-) {}
-export class UploadNotFoundException extends S.TaggedErrorClass<UploadNotFoundException>()(
-  "UploadNotFoundException",
-  { message: S.optional(S.String) },
-) {}
+export class EmptyUploadException
+  extends /*@__PURE__*/ S.TaggedErrorClass<EmptyUploadException>()(
+    "EmptyUploadException",
+    { message: S.optional(S.String) },
+  ) {}
+export class ImageAlreadyExistsException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ImageAlreadyExistsException>()(
+    "ImageAlreadyExistsException",
+    { message: S.optional(S.String) },
+  ).pipe(C.withAlreadyExistsError) {}
+export class ImageDigestDoesNotMatchException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ImageDigestDoesNotMatchException>()(
+    "ImageDigestDoesNotMatchException",
+    { message: S.optional(S.String) },
+  ) {}
+export class ImageNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ImageNotFoundException>()(
+    "ImageNotFoundException",
+    { message: S.optional(S.String) },
+  ) {}
+export class ImageTagAlreadyExistsException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ImageTagAlreadyExistsException>()(
+    "ImageTagAlreadyExistsException",
+    { message: S.optional(S.String) },
+  ).pipe(C.withAlreadyExistsError) {}
+export class InvalidLayerException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidLayerException>()(
+    "InvalidLayerException",
+    { message: S.optional(S.String) },
+  ) {}
+export class InvalidLayerPartException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidLayerPartException>()(
+    "InvalidLayerPartException",
+    {
+      registryId: S.optional(S.String),
+      repositoryName: S.optional(S.String),
+      uploadId: S.optional(S.String),
+      lastValidByteReceived: S.optional(S.Number),
+      message: S.optional(S.String),
+    },
+  ) {}
+export class InvalidParameterException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidParameterException>()(
+    "InvalidParameterException",
+    { message: S.optional(S.String) },
+  ) {}
+export class InvalidTagParameterException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidTagParameterException>()(
+    "InvalidTagParameterException",
+    { message: S.optional(S.String) },
+  ) {}
+export class LayerAlreadyExistsException
+  extends /*@__PURE__*/ S.TaggedErrorClass<LayerAlreadyExistsException>()(
+    "LayerAlreadyExistsException",
+    { message: S.optional(S.String) },
+  ).pipe(C.withAlreadyExistsError) {}
+export class LayerPartTooSmallException
+  extends /*@__PURE__*/ S.TaggedErrorClass<LayerPartTooSmallException>()(
+    "LayerPartTooSmallException",
+    { message: S.optional(S.String) },
+  ) {}
+export class LayersNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<LayersNotFoundException>()(
+    "LayersNotFoundException",
+    { message: S.optional(S.String) },
+  ) {}
+export class LimitExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<LimitExceededException>()(
+    "LimitExceededException",
+    { message: S.optional(S.String) },
+  ) {}
+export class ReferencedImagesNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ReferencedImagesNotFoundException>()(
+    "ReferencedImagesNotFoundException",
+    { message: S.optional(S.String) },
+  ) {}
+export class RegistryNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<RegistryNotFoundException>()(
+    "RegistryNotFoundException",
+    { message: S.optional(S.String) },
+  ) {}
+export class RepositoryAlreadyExistsException
+  extends /*@__PURE__*/ S.TaggedErrorClass<RepositoryAlreadyExistsException>()(
+    "RepositoryAlreadyExistsException",
+    { message: S.optional(S.String) },
+  ).pipe(C.withAlreadyExistsError) {}
+export class RepositoryCatalogDataNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<RepositoryCatalogDataNotFoundException>()(
+    "RepositoryCatalogDataNotFoundException",
+    { message: S.optional(S.String) },
+  ) {}
+export class RepositoryNotEmptyException
+  extends /*@__PURE__*/ S.TaggedErrorClass<RepositoryNotEmptyException>()(
+    "RepositoryNotEmptyException",
+    { message: S.optional(S.String) },
+  ) {}
+export class RepositoryNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<RepositoryNotFoundException>()(
+    "RepositoryNotFoundException",
+    { message: S.optional(S.String) },
+  ) {}
+export class RepositoryPolicyNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<RepositoryPolicyNotFoundException>()(
+    "RepositoryPolicyNotFoundException",
+    { message: S.optional(S.String) },
+  ) {}
+export class ServerException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ServerException>()(
+    "ServerException",
+    { message: S.optional(S.String) },
+  ) {}
+export class TooManyTagsException
+  extends /*@__PURE__*/ S.TaggedErrorClass<TooManyTagsException>()(
+    "TooManyTagsException",
+    { message: S.optional(S.String) },
+  ) {}
+export class UnsupportedCommandException
+  extends /*@__PURE__*/ S.TaggedErrorClass<UnsupportedCommandException>()(
+    "UnsupportedCommandException",
+    { message: S.optional(S.String) },
+  ) {}
+export class UploadNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<UploadNotFoundException>()(
+    "UploadNotFoundException",
+    { message: S.optional(S.String) },
+  ) {}
 export type RegistryIdOrAlias = string;
 export type RepositoryName = string;
 export type BatchedOperationLayerDigest = string;
@@ -1560,7 +1584,27 @@ export const describeImages: API.OperationMethod<
     items: "imageDetails",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  DescribeImagesRequest,
+  DescribeImagesResponse,
+  DescribeImagesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: DescribeImagesRequest,
+  ) => stream.Stream<
+    DescribeImagesResponse,
+    DescribeImagesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: DescribeImagesRequest,
+  ) => stream.Stream<
+    ImageDetail,
+    DescribeImagesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type DescribeImageTagsError =
   | InvalidParameterException
@@ -1609,7 +1653,27 @@ export const describeImageTags: API.OperationMethod<
     items: "imageTagDetails",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  DescribeImageTagsRequest,
+  DescribeImageTagsResponse,
+  DescribeImageTagsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: DescribeImageTagsRequest,
+  ) => stream.Stream<
+    DescribeImageTagsResponse,
+    DescribeImageTagsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: DescribeImageTagsRequest,
+  ) => stream.Stream<
+    ImageTagDetail,
+    DescribeImageTagsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type DescribeRegistriesError =
   | InvalidParameterException
@@ -1656,7 +1720,27 @@ export const describeRegistries: API.OperationMethod<
     items: "registries",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  DescribeRegistriesRequest,
+  DescribeRegistriesResponse,
+  DescribeRegistriesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: DescribeRegistriesRequest,
+  ) => stream.Stream<
+    DescribeRegistriesResponse,
+    DescribeRegistriesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: DescribeRegistriesRequest,
+  ) => stream.Stream<
+    Registry,
+    DescribeRegistriesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type DescribeRepositoriesError =
   | InvalidParameterException
@@ -1705,7 +1789,27 @@ export const describeRepositories: API.OperationMethod<
     items: "repositories",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  DescribeRepositoriesRequest,
+  DescribeRepositoriesResponse,
+  DescribeRepositoriesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: DescribeRepositoriesRequest,
+  ) => stream.Stream<
+    DescribeRepositoriesResponse,
+    DescribeRepositoriesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: DescribeRepositoriesRequest,
+  ) => stream.Stream<
+    Repository,
+    DescribeRepositoriesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type GetAuthorizationTokenError =
   | InvalidParameterException

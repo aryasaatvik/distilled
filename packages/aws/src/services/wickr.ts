@@ -87,48 +87,55 @@ const rules = T.EndpointResolver((p, _) => {
   return err("Invalid Configuration: Missing Region");
 });
 
-export class BadRequestError extends S.TaggedErrorClass<BadRequestError>()(
-  "BadRequestError",
-  { message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class ForbiddenError extends S.TaggedErrorClass<ForbiddenError>()(
-  "ForbiddenError",
-  { message: S.optional(S.String) },
-  T.HttpError(403),
-).pipe(C.withAuthError) {}
-export class InternalServerError extends S.TaggedErrorClass<InternalServerError>()(
-  "InternalServerError",
-  { message: S.String },
-  T.HttpError(500),
-).pipe(C.withServerError) {}
-export class RateLimitError extends S.TaggedErrorClass<RateLimitError>()(
-  "RateLimitError",
-  { message: S.optional(S.String) },
-  T.HttpError(429),
-).pipe(C.withThrottlingError) {}
-export class ResourceNotFoundError extends S.TaggedErrorClass<ResourceNotFoundError>()(
-  "ResourceNotFoundError",
-  { message: S.optional(S.String) },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class UnauthorizedError extends S.TaggedErrorClass<UnauthorizedError>()(
-  "UnauthorizedError",
-  { message: S.optional(S.String) },
-  T.HttpError(401),
-).pipe(C.withAuthError) {}
-export class ValidationError extends S.TaggedErrorClass<ValidationError>()(
-  "ValidationError",
-  {
-    reasons: S.optional(
-      S.suspend(() => ErrorDetailList).annotate({
-        identifier: "ErrorDetailList",
-      }),
-    ),
-    message: S.optional(S.String),
-  },
-  T.HttpError(422),
-).pipe(C.withBadRequestError) {}
+export class BadRequestError
+  extends /*@__PURE__*/ S.TaggedErrorClass<BadRequestError>()(
+    "BadRequestError",
+    { message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class ForbiddenError
+  extends /*@__PURE__*/ S.TaggedErrorClass<ForbiddenError>()(
+    "ForbiddenError",
+    { message: S.optional(S.String) },
+    T.HttpError(403),
+  ).pipe(C.withAuthError) {}
+export class InternalServerError
+  extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerError>()(
+    "InternalServerError",
+    { message: S.String },
+    T.HttpError(500),
+  ).pipe(C.withServerError) {}
+export class RateLimitError
+  extends /*@__PURE__*/ S.TaggedErrorClass<RateLimitError>()(
+    "RateLimitError",
+    { message: S.optional(S.String) },
+    T.HttpError(429),
+  ).pipe(C.withThrottlingError) {}
+export class ResourceNotFoundError
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundError>()(
+    "ResourceNotFoundError",
+    { message: S.optional(S.String) },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class UnauthorizedError
+  extends /*@__PURE__*/ S.TaggedErrorClass<UnauthorizedError>()(
+    "UnauthorizedError",
+    { message: S.optional(S.String) },
+    T.HttpError(401),
+  ).pipe(C.withAuthError) {}
+export class ValidationError
+  extends /*@__PURE__*/ S.TaggedErrorClass<ValidationError>()(
+    "ValidationError",
+    {
+      reasons: S.optional(
+        S.suspend(() => ErrorDetailList).annotate({
+          identifier: "ErrorDetailList",
+        }),
+      ),
+      message: S.optional(S.String),
+    },
+    T.HttpError(422),
+  ).pipe(C.withBadRequestError) {}
 export type NetworkId = string;
 export type SensitiveString = string | redacted.Redacted<string>;
 export type SecurityGroupId = string;
@@ -3466,7 +3473,27 @@ export const listBlockedGuestUsers: API.OperationMethod<
     items: "blocklist",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListBlockedGuestUsersRequest,
+  ListBlockedGuestUsersResponse,
+  ListBlockedGuestUsersError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListBlockedGuestUsersRequest,
+  ) => stream.Stream<
+    ListBlockedGuestUsersResponse,
+    ListBlockedGuestUsersError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListBlockedGuestUsersRequest,
+  ) => stream.Stream<
+    BlockedGuestUser,
+    ListBlockedGuestUsersError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListBotsError =
   | BadRequestError
@@ -3521,7 +3548,27 @@ export const listBots: API.OperationMethod<
     items: "bots",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListBotsRequest,
+  ListBotsResponse,
+  ListBotsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListBotsRequest,
+  ) => stream.Stream<
+    ListBotsResponse,
+    ListBotsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListBotsRequest,
+  ) => stream.Stream<
+    Bot,
+    ListBotsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListDevicesForUserError =
   | BadRequestError
@@ -3576,7 +3623,27 @@ export const listDevicesForUser: API.OperationMethod<
     items: "devices",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListDevicesForUserRequest,
+  ListDevicesForUserResponse,
+  ListDevicesForUserError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListDevicesForUserRequest,
+  ) => stream.Stream<
+    ListDevicesForUserResponse,
+    ListDevicesForUserError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListDevicesForUserRequest,
+  ) => stream.Stream<
+    BasicDeviceObject,
+    ListDevicesForUserError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListGuestUsersError =
   | BadRequestError
@@ -3631,7 +3698,27 @@ export const listGuestUsers: API.OperationMethod<
     items: "guestlist",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListGuestUsersRequest,
+  ListGuestUsersResponse,
+  ListGuestUsersError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListGuestUsersRequest,
+  ) => stream.Stream<
+    ListGuestUsersResponse,
+    ListGuestUsersError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListGuestUsersRequest,
+  ) => stream.Stream<
+    GuestUser,
+    ListGuestUsersError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListNetworksError =
   | BadRequestError
@@ -3684,7 +3771,27 @@ export const listNetworks: API.OperationMethod<
     items: "networks",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListNetworksRequest,
+  ListNetworksResponse,
+  ListNetworksError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListNetworksRequest,
+  ) => stream.Stream<
+    ListNetworksResponse,
+    ListNetworksError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListNetworksRequest,
+  ) => stream.Stream<
+    Network,
+    ListNetworksError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListSecurityGroupsError =
   | BadRequestError
@@ -3739,7 +3846,27 @@ export const listSecurityGroups: API.OperationMethod<
     items: "securityGroups",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListSecurityGroupsRequest,
+  ListSecurityGroupsResponse,
+  ListSecurityGroupsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListSecurityGroupsRequest,
+  ) => stream.Stream<
+    ListSecurityGroupsResponse,
+    ListSecurityGroupsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListSecurityGroupsRequest,
+  ) => stream.Stream<
+    SecurityGroup,
+    ListSecurityGroupsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListSecurityGroupUsersError =
   | BadRequestError
@@ -3794,7 +3921,27 @@ export const listSecurityGroupUsers: API.OperationMethod<
     items: "users",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListSecurityGroupUsersRequest,
+  ListSecurityGroupUsersResponse,
+  ListSecurityGroupUsersError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListSecurityGroupUsersRequest,
+  ) => stream.Stream<
+    ListSecurityGroupUsersResponse,
+    ListSecurityGroupUsersError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListSecurityGroupUsersRequest,
+  ) => stream.Stream<
+    User,
+    ListSecurityGroupUsersError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListUsersError =
   | BadRequestError
@@ -3849,7 +3996,27 @@ export const listUsers: API.OperationMethod<
     items: "users",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListUsersRequest,
+  ListUsersResponse,
+  ListUsersError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListUsersRequest,
+  ) => stream.Stream<
+    ListUsersResponse,
+    ListUsersError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListUsersRequest,
+  ) => stream.Stream<
+    User,
+    ListUsersError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type RegisterOidcConfigError =
   | BadRequestError

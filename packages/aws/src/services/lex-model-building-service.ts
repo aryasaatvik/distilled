@@ -97,58 +97,68 @@ const rules = T.EndpointResolver((p, _) => {
   return err("Invalid Configuration: Missing Region");
 });
 
-export class AccessDeniedException extends S.TaggedErrorClass<AccessDeniedException>()(
-  "AccessDeniedException",
-  { message: S.optional(S.String) },
-  T.HttpError(403),
-).pipe(C.withAuthError) {}
-export class BadRequestException extends S.TaggedErrorClass<BadRequestException>()(
-  "BadRequestException",
-  { message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class ConflictException extends S.TaggedErrorClass<ConflictException>()(
-  "ConflictException",
-  { message: S.optional(S.String) },
-  T.HttpError(409),
-).pipe(C.withConflictError) {}
-export class InternalFailureException extends S.TaggedErrorClass<InternalFailureException>()(
-  "InternalFailureException",
-  { message: S.optional(S.String) },
-  T.HttpError(500),
-).pipe(C.withServerError) {}
-export class LimitExceededException extends S.TaggedErrorClass<LimitExceededException>()(
-  "LimitExceededException",
-  {
-    retryAfterSeconds: S.optional(S.String).pipe(T.HttpHeader("Retry-After")),
-    message: S.optional(S.String),
-  },
-  T.HttpError(429),
-).pipe(C.withThrottlingError) {}
-export class NotFoundException extends S.TaggedErrorClass<NotFoundException>()(
-  "NotFoundException",
-  { message: S.optional(S.String) },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class PreconditionFailedException extends S.TaggedErrorClass<PreconditionFailedException>()(
-  "PreconditionFailedException",
-  { message: S.optional(S.String) },
-  T.HttpError(412),
-) {}
-export class ResourceInUseException extends S.TaggedErrorClass<ResourceInUseException>()(
-  "ResourceInUseException",
-  {
-    referenceType: S.optional(
-      S.suspend(() => ReferenceType).annotate({ identifier: "ReferenceType" }),
-    ),
-    exampleReference: S.optional(
-      S.suspend(() => ResourceReference).annotate({
-        identifier: "ResourceReference",
-      }),
-    ),
-  },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
+export class AccessDeniedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
+    "AccessDeniedException",
+    { message: S.optional(S.String) },
+    T.HttpError(403),
+  ).pipe(C.withAuthError) {}
+export class BadRequestException
+  extends /*@__PURE__*/ S.TaggedErrorClass<BadRequestException>()(
+    "BadRequestException",
+    { message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class ConflictException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
+    "ConflictException",
+    { message: S.optional(S.String) },
+    T.HttpError(409),
+  ).pipe(C.withConflictError) {}
+export class InternalFailureException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InternalFailureException>()(
+    "InternalFailureException",
+    { message: S.optional(S.String) },
+    T.HttpError(500),
+  ).pipe(C.withServerError) {}
+export class LimitExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<LimitExceededException>()(
+    "LimitExceededException",
+    {
+      retryAfterSeconds: S.optional(S.String).pipe(T.HttpHeader("Retry-After")),
+      message: S.optional(S.String),
+    },
+    T.HttpError(429),
+  ).pipe(C.withThrottlingError) {}
+export class NotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<NotFoundException>()(
+    "NotFoundException",
+    { message: S.optional(S.String) },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class PreconditionFailedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<PreconditionFailedException>()(
+    "PreconditionFailedException",
+    { message: S.optional(S.String) },
+    T.HttpError(412),
+  ) {}
+export class ResourceInUseException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceInUseException>()(
+    "ResourceInUseException",
+    {
+      referenceType: S.optional(
+        S.suspend(() => ReferenceType).annotate({
+          identifier: "ReferenceType",
+        }),
+      ),
+      exampleReference: S.optional(
+        S.suspend(() => ResourceReference).annotate({
+          identifier: "ResourceReference",
+        }),
+      ),
+    },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
 export type BotName = string;
 export interface CreateBotVersionRequest {
   name: string;
@@ -3288,7 +3298,27 @@ export const getBotAliases: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  GetBotAliasesRequest,
+  GetBotAliasesResponse,
+  GetBotAliasesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: GetBotAliasesRequest,
+  ) => stream.Stream<
+    GetBotAliasesResponse,
+    GetBotAliasesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: GetBotAliasesRequest,
+  ) => stream.Stream<
+    unknown,
+    GetBotAliasesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type GetBotChannelAssociationError =
   | BadRequestException
@@ -3371,7 +3401,27 @@ export const getBotChannelAssociations: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  GetBotChannelAssociationsRequest,
+  GetBotChannelAssociationsResponse,
+  GetBotChannelAssociationsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: GetBotChannelAssociationsRequest,
+  ) => stream.Stream<
+    GetBotChannelAssociationsResponse,
+    GetBotChannelAssociationsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: GetBotChannelAssociationsRequest,
+  ) => stream.Stream<
+    unknown,
+    GetBotChannelAssociationsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type GetBotsError =
   | BadRequestException
@@ -3430,7 +3480,27 @@ export const getBots: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  GetBotsRequest,
+  GetBotsResponse,
+  GetBotsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: GetBotsRequest,
+  ) => stream.Stream<
+    GetBotsResponse,
+    GetBotsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: GetBotsRequest,
+  ) => stream.Stream<
+    unknown,
+    GetBotsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type GetBotVersionsError =
   | BadRequestException
@@ -3491,7 +3561,27 @@ export const getBotVersions: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  GetBotVersionsRequest,
+  GetBotVersionsResponse,
+  GetBotVersionsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: GetBotVersionsRequest,
+  ) => stream.Stream<
+    GetBotVersionsResponse,
+    GetBotVersionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: GetBotVersionsRequest,
+  ) => stream.Stream<
+    unknown,
+    GetBotVersionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type GetBuiltinIntentError =
   | BadRequestException
@@ -3572,7 +3662,27 @@ export const getBuiltinIntents: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  GetBuiltinIntentsRequest,
+  GetBuiltinIntentsResponse,
+  GetBuiltinIntentsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: GetBuiltinIntentsRequest,
+  ) => stream.Stream<
+    GetBuiltinIntentsResponse,
+    GetBuiltinIntentsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: GetBuiltinIntentsRequest,
+  ) => stream.Stream<
+    unknown,
+    GetBuiltinIntentsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type GetBuiltinSlotTypesError =
   | BadRequestException
@@ -3625,7 +3735,27 @@ export const getBuiltinSlotTypes: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  GetBuiltinSlotTypesRequest,
+  GetBuiltinSlotTypesResponse,
+  GetBuiltinSlotTypesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: GetBuiltinSlotTypesRequest,
+  ) => stream.Stream<
+    GetBuiltinSlotTypesResponse,
+    GetBuiltinSlotTypesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: GetBuiltinSlotTypesRequest,
+  ) => stream.Stream<
+    unknown,
+    GetBuiltinSlotTypesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type GetExportError =
   | BadRequestException
@@ -3773,7 +3903,27 @@ export const getIntents: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  GetIntentsRequest,
+  GetIntentsResponse,
+  GetIntentsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: GetIntentsRequest,
+  ) => stream.Stream<
+    GetIntentsResponse,
+    GetIntentsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: GetIntentsRequest,
+  ) => stream.Stream<
+    unknown,
+    GetIntentsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type GetIntentVersionsError =
   | BadRequestException
@@ -3834,7 +3984,27 @@ export const getIntentVersions: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  GetIntentVersionsRequest,
+  GetIntentVersionsResponse,
+  GetIntentVersionsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: GetIntentVersionsRequest,
+  ) => stream.Stream<
+    GetIntentVersionsResponse,
+    GetIntentVersionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: GetIntentVersionsRequest,
+  ) => stream.Stream<
+    unknown,
+    GetIntentVersionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type GetMigrationError =
   | BadRequestException
@@ -3910,7 +4080,27 @@ export const getMigrations: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  GetMigrationsRequest,
+  GetMigrationsResponse,
+  GetMigrationsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: GetMigrationsRequest,
+  ) => stream.Stream<
+    GetMigrationsResponse,
+    GetMigrationsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: GetMigrationsRequest,
+  ) => stream.Stream<
+    unknown,
+    GetMigrationsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type GetSlotTypeError =
   | BadRequestException
@@ -4002,7 +4192,27 @@ export const getSlotTypes: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  GetSlotTypesRequest,
+  GetSlotTypesResponse,
+  GetSlotTypesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: GetSlotTypesRequest,
+  ) => stream.Stream<
+    GetSlotTypesResponse,
+    GetSlotTypesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: GetSlotTypesRequest,
+  ) => stream.Stream<
+    unknown,
+    GetSlotTypesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type GetSlotTypeVersionsError =
   | BadRequestException
@@ -4063,7 +4273,27 @@ export const getSlotTypeVersions: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  GetSlotTypeVersionsRequest,
+  GetSlotTypeVersionsResponse,
+  GetSlotTypeVersionsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: GetSlotTypeVersionsRequest,
+  ) => stream.Stream<
+    GetSlotTypeVersionsResponse,
+    GetSlotTypeVersionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: GetSlotTypeVersionsRequest,
+  ) => stream.Stream<
+    unknown,
+    GetSlotTypeVersionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type GetUtterancesViewError =
   | BadRequestException

@@ -87,219 +87,260 @@ const rules = T.EndpointResolver((p, _) => {
   return err("Invalid Configuration: Missing Region");
 });
 
-export class AccessPointAlreadyOwnedByYou extends S.TaggedErrorClass<AccessPointAlreadyOwnedByYou>()(
-  "AccessPointAlreadyOwnedByYou",
-  { ErrorCode: S.optional(S.String), Message: S.optional(S.String) },
-  T.HttpError(409),
-).pipe(C.withConflictError) {}
-export class ActiveDirectoryError extends S.TaggedErrorClass<ActiveDirectoryError>()(
-  "ActiveDirectoryError",
-  {
-    ActiveDirectoryId: S.optional(S.String),
-    Type: S.optional(
-      S.suspend(() => ActiveDirectoryErrorType).annotate({
-        identifier: "ActiveDirectoryErrorType",
-      }),
-    ),
+export class AccessPointAlreadyOwnedByYou
+  extends /*@__PURE__*/ S.TaggedErrorClass<AccessPointAlreadyOwnedByYou>()(
+    "AccessPointAlreadyOwnedByYou",
+    { ErrorCode: S.optional(S.String), Message: S.optional(S.String) },
+    T.HttpError(409),
+  ).pipe(C.withConflictError) {}
+export class ActiveDirectoryError
+  extends /*@__PURE__*/ S.TaggedErrorClass<ActiveDirectoryError>()(
+    "ActiveDirectoryError",
+    {
+      ActiveDirectoryId: S.optional(S.String),
+      Type: S.optional(
+        S.suspend(() => ActiveDirectoryErrorType).annotate({
+          identifier: "ActiveDirectoryErrorType",
+        }),
+      ),
+      Message: S.optional(S.String),
+    },
+  ) {}
+export class BackupBeingCopied
+  extends /*@__PURE__*/ S.TaggedErrorClass<BackupBeingCopied>()(
+    "BackupBeingCopied",
+    { Message: S.optional(S.String), BackupId: S.optional(S.String) },
+  ) {}
+export class BackupInProgress
+  extends /*@__PURE__*/ S.TaggedErrorClass<BackupInProgress>()(
+    "BackupInProgress",
+    { Message: S.optional(S.String) },
+  ) {}
+export class BackupNotFound
+  extends /*@__PURE__*/ S.TaggedErrorClass<BackupNotFound>()("BackupNotFound", {
     Message: S.optional(S.String),
-  },
-) {}
-export class BackupBeingCopied extends S.TaggedErrorClass<BackupBeingCopied>()(
-  "BackupBeingCopied",
-  { Message: S.optional(S.String), BackupId: S.optional(S.String) },
-) {}
-export class BackupInProgress extends S.TaggedErrorClass<BackupInProgress>()(
-  "BackupInProgress",
-  { Message: S.optional(S.String) },
-) {}
-export class BackupNotFound extends S.TaggedErrorClass<BackupNotFound>()(
-  "BackupNotFound",
-  { Message: S.optional(S.String) },
-) {}
-export class BackupRestoring extends S.TaggedErrorClass<BackupRestoring>()(
-  "BackupRestoring",
-  { Message: S.optional(S.String), FileSystemId: S.optional(S.String) },
-) {}
-export class BadRequest extends S.TaggedErrorClass<BadRequest>()("BadRequest", {
-  Message: S.optional(S.String),
-}) {}
-export class DataRepositoryAssociationNotFound extends S.TaggedErrorClass<DataRepositoryAssociationNotFound>()(
-  "DataRepositoryAssociationNotFound",
-  { Message: S.optional(S.String) },
-) {}
-export class DataRepositoryTaskEnded extends S.TaggedErrorClass<DataRepositoryTaskEnded>()(
-  "DataRepositoryTaskEnded",
-  { Message: S.optional(S.String) },
-) {}
-export class DataRepositoryTaskExecuting extends S.TaggedErrorClass<DataRepositoryTaskExecuting>()(
-  "DataRepositoryTaskExecuting",
-  { Message: S.optional(S.String) },
-) {}
-export class DataRepositoryTaskNotFound extends S.TaggedErrorClass<DataRepositoryTaskNotFound>()(
-  "DataRepositoryTaskNotFound",
-  { Message: S.optional(S.String) },
-) {}
-export class FileCacheNotFound extends S.TaggedErrorClass<FileCacheNotFound>()(
-  "FileCacheNotFound",
-  { Message: S.optional(S.String) },
-) {}
-export class FileSystemNotFound extends S.TaggedErrorClass<FileSystemNotFound>()(
-  "FileSystemNotFound",
-  { Message: S.optional(S.String) },
-) {}
-export class IncompatibleParameterError extends S.TaggedErrorClass<IncompatibleParameterError>()(
-  "IncompatibleParameterError",
-  { Parameter: S.optional(S.String), Message: S.optional(S.String) },
-) {}
-export class IncompatibleRegionForMultiAZ extends S.TaggedErrorClass<IncompatibleRegionForMultiAZ>()(
-  "IncompatibleRegionForMultiAZ",
-  { Message: S.optional(S.String) },
-) {}
-export class InternalServerError extends S.TaggedErrorClass<InternalServerError>()(
-  "InternalServerError",
-  { Message: S.optional(S.String) },
-) {}
-export class InvalidAccessPoint extends S.TaggedErrorClass<InvalidAccessPoint>()(
-  "InvalidAccessPoint",
-  { ErrorCode: S.optional(S.String), Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class InvalidDataRepositoryType extends S.TaggedErrorClass<InvalidDataRepositoryType>()(
-  "InvalidDataRepositoryType",
-  { Message: S.optional(S.String) },
-) {}
-export class InvalidDestinationKmsKey extends S.TaggedErrorClass<InvalidDestinationKmsKey>()(
-  "InvalidDestinationKmsKey",
-  { Message: S.optional(S.String) },
-) {}
-export class InvalidExportPath extends S.TaggedErrorClass<InvalidExportPath>()(
-  "InvalidExportPath",
-  { Message: S.optional(S.String) },
-) {}
-export class InvalidImportPath extends S.TaggedErrorClass<InvalidImportPath>()(
-  "InvalidImportPath",
-  { Message: S.optional(S.String) },
-) {}
-export class InvalidNetworkSettings extends S.TaggedErrorClass<InvalidNetworkSettings>()(
-  "InvalidNetworkSettings",
-  {
+  }) {}
+export class BackupRestoring
+  extends /*@__PURE__*/ S.TaggedErrorClass<BackupRestoring>()(
+    "BackupRestoring",
+    { Message: S.optional(S.String), FileSystemId: S.optional(S.String) },
+  ) {}
+export class BadRequest
+  extends /*@__PURE__*/ S.TaggedErrorClass<BadRequest>()("BadRequest", {
     Message: S.optional(S.String),
-    InvalidSubnetId: S.optional(S.String),
-    InvalidSecurityGroupId: S.optional(S.String),
-    InvalidRouteTableId: S.optional(S.String),
-  },
-) {}
-export class InvalidPerUnitStorageThroughput extends S.TaggedErrorClass<InvalidPerUnitStorageThroughput>()(
-  "InvalidPerUnitStorageThroughput",
-  { Message: S.optional(S.String) },
-) {}
-export class InvalidRegion extends S.TaggedErrorClass<InvalidRegion>()(
-  "InvalidRegion",
-  { Message: S.optional(S.String) },
-) {}
-export class InvalidRequest extends S.TaggedErrorClass<InvalidRequest>()(
-  "InvalidRequest",
-  { ErrorCode: S.optional(S.String), Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class InvalidSourceKmsKey extends S.TaggedErrorClass<InvalidSourceKmsKey>()(
-  "InvalidSourceKmsKey",
-  { Message: S.optional(S.String) },
-) {}
-export class MissingFileCacheConfiguration extends S.TaggedErrorClass<MissingFileCacheConfiguration>()(
-  "MissingFileCacheConfiguration",
-  { Message: S.optional(S.String) },
-) {}
-export class MissingFileSystemConfiguration extends S.TaggedErrorClass<MissingFileSystemConfiguration>()(
-  "MissingFileSystemConfiguration",
-  { Message: S.optional(S.String) },
-) {}
-export class MissingVolumeConfiguration extends S.TaggedErrorClass<MissingVolumeConfiguration>()(
-  "MissingVolumeConfiguration",
-  { Message: S.optional(S.String) },
-) {}
-export class NotServiceResourceError extends S.TaggedErrorClass<NotServiceResourceError>()(
-  "NotServiceResourceError",
-  { ResourceARN: S.optional(S.String), Message: S.optional(S.String) },
-) {}
-export class ResourceDoesNotSupportTagging extends S.TaggedErrorClass<ResourceDoesNotSupportTagging>()(
-  "ResourceDoesNotSupportTagging",
-  { ResourceARN: S.optional(S.String), Message: S.optional(S.String) },
-) {}
-export class ResourceNotFound extends S.TaggedErrorClass<ResourceNotFound>()(
-  "ResourceNotFound",
-  { ResourceARN: S.optional(S.String), Message: S.optional(S.String) },
-) {}
-export class RestoreSnapshotNotFound extends S.TaggedErrorClass<RestoreSnapshotNotFound>()(
-  "RestoreSnapshotNotFound",
-  { Message: S.optional(S.String) },
-  T.SyntheticError({
-    from: "BadRequest",
-    message: { includes: "snapshot cannot be found" },
-  }),
-).pipe(C.withNotFoundError) {}
-export class S3AccessPointAttachmentNotFound extends S.TaggedErrorClass<S3AccessPointAttachmentNotFound>()(
-  "S3AccessPointAttachmentNotFound",
-  { Message: S.optional(S.String) },
-) {}
-export class ServiceLimitExceeded extends S.TaggedErrorClass<ServiceLimitExceeded>()(
-  "ServiceLimitExceeded",
-  {
-    Limit: S.optional(
-      S.suspend(() => ServiceLimit).annotate({ identifier: "ServiceLimit" }),
-    ),
+  }) {}
+export class DataRepositoryAssociationNotFound
+  extends /*@__PURE__*/ S.TaggedErrorClass<DataRepositoryAssociationNotFound>()(
+    "DataRepositoryAssociationNotFound",
+    { Message: S.optional(S.String) },
+  ) {}
+export class DataRepositoryTaskEnded
+  extends /*@__PURE__*/ S.TaggedErrorClass<DataRepositoryTaskEnded>()(
+    "DataRepositoryTaskEnded",
+    { Message: S.optional(S.String) },
+  ) {}
+export class DataRepositoryTaskExecuting
+  extends /*@__PURE__*/ S.TaggedErrorClass<DataRepositoryTaskExecuting>()(
+    "DataRepositoryTaskExecuting",
+    { Message: S.optional(S.String) },
+  ) {}
+export class DataRepositoryTaskNotFound
+  extends /*@__PURE__*/ S.TaggedErrorClass<DataRepositoryTaskNotFound>()(
+    "DataRepositoryTaskNotFound",
+    { Message: S.optional(S.String) },
+  ) {}
+export class FileCacheNotFound
+  extends /*@__PURE__*/ S.TaggedErrorClass<FileCacheNotFound>()(
+    "FileCacheNotFound",
+    { Message: S.optional(S.String) },
+  ) {}
+export class FileSystemNotFound
+  extends /*@__PURE__*/ S.TaggedErrorClass<FileSystemNotFound>()(
+    "FileSystemNotFound",
+    { Message: S.optional(S.String) },
+  ) {}
+export class IncompatibleParameterError
+  extends /*@__PURE__*/ S.TaggedErrorClass<IncompatibleParameterError>()(
+    "IncompatibleParameterError",
+    { Parameter: S.optional(S.String), Message: S.optional(S.String) },
+  ) {}
+export class IncompatibleRegionForMultiAZ
+  extends /*@__PURE__*/ S.TaggedErrorClass<IncompatibleRegionForMultiAZ>()(
+    "IncompatibleRegionForMultiAZ",
+    { Message: S.optional(S.String) },
+  ) {}
+export class InternalServerError
+  extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerError>()(
+    "InternalServerError",
+    { Message: S.optional(S.String) },
+  ) {}
+export class InvalidAccessPoint
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidAccessPoint>()(
+    "InvalidAccessPoint",
+    { ErrorCode: S.optional(S.String), Message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class InvalidDataRepositoryType
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidDataRepositoryType>()(
+    "InvalidDataRepositoryType",
+    { Message: S.optional(S.String) },
+  ) {}
+export class InvalidDestinationKmsKey
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidDestinationKmsKey>()(
+    "InvalidDestinationKmsKey",
+    { Message: S.optional(S.String) },
+  ) {}
+export class InvalidExportPath
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidExportPath>()(
+    "InvalidExportPath",
+    { Message: S.optional(S.String) },
+  ) {}
+export class InvalidImportPath
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidImportPath>()(
+    "InvalidImportPath",
+    { Message: S.optional(S.String) },
+  ) {}
+export class InvalidNetworkSettings
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidNetworkSettings>()(
+    "InvalidNetworkSettings",
+    {
+      Message: S.optional(S.String),
+      InvalidSubnetId: S.optional(S.String),
+      InvalidSecurityGroupId: S.optional(S.String),
+      InvalidRouteTableId: S.optional(S.String),
+    },
+  ) {}
+export class InvalidPerUnitStorageThroughput
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidPerUnitStorageThroughput>()(
+    "InvalidPerUnitStorageThroughput",
+    { Message: S.optional(S.String) },
+  ) {}
+export class InvalidRegion
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidRegion>()("InvalidRegion", {
     Message: S.optional(S.String),
-  },
-).pipe(C.withThrottlingError) {}
-export class SnapshotNotFound extends S.TaggedErrorClass<SnapshotNotFound>()(
-  "SnapshotNotFound",
-  { Message: S.optional(S.String) },
-) {}
-export class SnapshotVolumeNotFound extends S.TaggedErrorClass<SnapshotVolumeNotFound>()(
-  "SnapshotVolumeNotFound",
-  { Message: S.optional(S.String) },
-  T.SyntheticError({
-    from: "BadRequest",
-    message: { includes: "volume was not found" },
-  }),
-).pipe(C.withNotFoundError) {}
-export class SourceBackupUnavailable extends S.TaggedErrorClass<SourceBackupUnavailable>()(
-  "SourceBackupUnavailable",
-  { Message: S.optional(S.String), BackupId: S.optional(S.String) },
-) {}
-export class SourceSnapshotNotFound extends S.TaggedErrorClass<SourceSnapshotNotFound>()(
-  "SourceSnapshotNotFound",
-  { Message: S.optional(S.String) },
-  T.SyntheticError({
-    from: "BadRequest",
-    message: { includes: "SourceSnapshotARN provided is not a valid ARN" },
-  }),
-).pipe(C.withNotFoundError) {}
-export class StorageVirtualMachineNotFound extends S.TaggedErrorClass<StorageVirtualMachineNotFound>()(
-  "StorageVirtualMachineNotFound",
-  { Message: S.optional(S.String) },
-) {}
-export class TooManyAccessPoints extends S.TaggedErrorClass<TooManyAccessPoints>()(
-  "TooManyAccessPoints",
-  { ErrorCode: S.optional(S.String), Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class UnsupportedOperation extends S.TaggedErrorClass<UnsupportedOperation>()(
-  "UnsupportedOperation",
-  { Message: S.optional(S.String) },
-) {}
-export class UpdateSnapshotNotFound extends S.TaggedErrorClass<UpdateSnapshotNotFound>()(
-  "UpdateSnapshotNotFound",
-  { Message: S.optional(S.String) },
-  T.SyntheticError({
-    from: "BadRequest",
-    message: { includes: "the snapshot is not found" },
-  }),
-).pipe(C.withNotFoundError) {}
-export class VolumeNotFound extends S.TaggedErrorClass<VolumeNotFound>()(
-  "VolumeNotFound",
-  { Message: S.optional(S.String) },
-) {}
+  }) {}
+export class InvalidRequest
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidRequest>()(
+    "InvalidRequest",
+    { ErrorCode: S.optional(S.String), Message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class InvalidSourceKmsKey
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidSourceKmsKey>()(
+    "InvalidSourceKmsKey",
+    { Message: S.optional(S.String) },
+  ) {}
+export class MissingFileCacheConfiguration
+  extends /*@__PURE__*/ S.TaggedErrorClass<MissingFileCacheConfiguration>()(
+    "MissingFileCacheConfiguration",
+    { Message: S.optional(S.String) },
+  ) {}
+export class MissingFileSystemConfiguration
+  extends /*@__PURE__*/ S.TaggedErrorClass<MissingFileSystemConfiguration>()(
+    "MissingFileSystemConfiguration",
+    { Message: S.optional(S.String) },
+  ) {}
+export class MissingVolumeConfiguration
+  extends /*@__PURE__*/ S.TaggedErrorClass<MissingVolumeConfiguration>()(
+    "MissingVolumeConfiguration",
+    { Message: S.optional(S.String) },
+  ) {}
+export class NotServiceResourceError
+  extends /*@__PURE__*/ S.TaggedErrorClass<NotServiceResourceError>()(
+    "NotServiceResourceError",
+    { ResourceARN: S.optional(S.String), Message: S.optional(S.String) },
+  ) {}
+export class ResourceDoesNotSupportTagging
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceDoesNotSupportTagging>()(
+    "ResourceDoesNotSupportTagging",
+    { ResourceARN: S.optional(S.String), Message: S.optional(S.String) },
+  ) {}
+export class ResourceNotFound
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFound>()(
+    "ResourceNotFound",
+    { ResourceARN: S.optional(S.String), Message: S.optional(S.String) },
+  ) {}
+export class RestoreSnapshotNotFound
+  extends /*@__PURE__*/ S.TaggedErrorClass<RestoreSnapshotNotFound>()(
+    "RestoreSnapshotNotFound",
+    { Message: S.optional(S.String) },
+    T.SyntheticError({
+      from: "BadRequest",
+      message: { includes: "snapshot cannot be found" },
+    }),
+  ).pipe(C.withNotFoundError) {}
+export class S3AccessPointAttachmentNotFound
+  extends /*@__PURE__*/ S.TaggedErrorClass<S3AccessPointAttachmentNotFound>()(
+    "S3AccessPointAttachmentNotFound",
+    { Message: S.optional(S.String) },
+  ) {}
+export class ServiceLimitExceeded
+  extends /*@__PURE__*/ S.TaggedErrorClass<ServiceLimitExceeded>()(
+    "ServiceLimitExceeded",
+    {
+      Limit: S.optional(
+        S.suspend(() => ServiceLimit).annotate({ identifier: "ServiceLimit" }),
+      ),
+      Message: S.optional(S.String),
+    },
+  ).pipe(C.withThrottlingError) {}
+export class SnapshotNotFound
+  extends /*@__PURE__*/ S.TaggedErrorClass<SnapshotNotFound>()(
+    "SnapshotNotFound",
+    { Message: S.optional(S.String) },
+  ) {}
+export class SnapshotVolumeNotFound
+  extends /*@__PURE__*/ S.TaggedErrorClass<SnapshotVolumeNotFound>()(
+    "SnapshotVolumeNotFound",
+    { Message: S.optional(S.String) },
+    T.SyntheticError({
+      from: "BadRequest",
+      message: { includes: "volume was not found" },
+    }),
+  ).pipe(C.withNotFoundError) {}
+export class SourceBackupUnavailable
+  extends /*@__PURE__*/ S.TaggedErrorClass<SourceBackupUnavailable>()(
+    "SourceBackupUnavailable",
+    { Message: S.optional(S.String), BackupId: S.optional(S.String) },
+  ) {}
+export class SourceSnapshotNotFound
+  extends /*@__PURE__*/ S.TaggedErrorClass<SourceSnapshotNotFound>()(
+    "SourceSnapshotNotFound",
+    { Message: S.optional(S.String) },
+    T.SyntheticError({
+      from: "BadRequest",
+      message: { includes: "SourceSnapshotARN provided is not a valid ARN" },
+    }),
+  ).pipe(C.withNotFoundError) {}
+export class StorageVirtualMachineNotFound
+  extends /*@__PURE__*/ S.TaggedErrorClass<StorageVirtualMachineNotFound>()(
+    "StorageVirtualMachineNotFound",
+    { Message: S.optional(S.String) },
+  ) {}
+export class TooManyAccessPoints
+  extends /*@__PURE__*/ S.TaggedErrorClass<TooManyAccessPoints>()(
+    "TooManyAccessPoints",
+    { ErrorCode: S.optional(S.String), Message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class UnsupportedOperation
+  extends /*@__PURE__*/ S.TaggedErrorClass<UnsupportedOperation>()(
+    "UnsupportedOperation",
+    { Message: S.optional(S.String) },
+  ) {}
+export class UpdateSnapshotNotFound
+  extends /*@__PURE__*/ S.TaggedErrorClass<UpdateSnapshotNotFound>()(
+    "UpdateSnapshotNotFound",
+    { Message: S.optional(S.String) },
+    T.SyntheticError({
+      from: "BadRequest",
+      message: { includes: "the snapshot is not found" },
+    }),
+  ).pipe(C.withNotFoundError) {}
+export class VolumeNotFound
+  extends /*@__PURE__*/ S.TaggedErrorClass<VolumeNotFound>()("VolumeNotFound", {
+    Message: S.optional(S.String),
+  }) {}
 export type ClientRequestToken = string;
 export type FileSystemId = string;
 export type AlternateDNSName = string;
@@ -6930,7 +6971,27 @@ export const describeBackups: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  DescribeBackupsRequest,
+  DescribeBackupsResponse,
+  DescribeBackupsError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: DescribeBackupsRequest,
+  ) => stream.Stream<
+    DescribeBackupsResponse,
+    DescribeBackupsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: DescribeBackupsRequest,
+  ) => stream.Stream<
+    unknown,
+    DescribeBackupsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type DescribeDataRepositoryAssociationsError =
   | BadRequest
@@ -7000,7 +7061,27 @@ export const describeDataRepositoryAssociations: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  DescribeDataRepositoryAssociationsRequest,
+  DescribeDataRepositoryAssociationsResponse,
+  DescribeDataRepositoryAssociationsError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: DescribeDataRepositoryAssociationsRequest,
+  ) => stream.Stream<
+    DescribeDataRepositoryAssociationsResponse,
+    DescribeDataRepositoryAssociationsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: DescribeDataRepositoryAssociationsRequest,
+  ) => stream.Stream<
+    unknown,
+    DescribeDataRepositoryAssociationsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type DescribeDataRepositoryTasksError =
   | BadRequest
@@ -7058,7 +7139,27 @@ export const describeDataRepositoryTasks: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  DescribeDataRepositoryTasksRequest,
+  DescribeDataRepositoryTasksResponse,
+  DescribeDataRepositoryTasksError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: DescribeDataRepositoryTasksRequest,
+  ) => stream.Stream<
+    DescribeDataRepositoryTasksResponse,
+    DescribeDataRepositoryTasksError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: DescribeDataRepositoryTasksRequest,
+  ) => stream.Stream<
+    unknown,
+    DescribeDataRepositoryTasksError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type DescribeFileCachesError =
   | BadRequest
@@ -7126,7 +7227,27 @@ export const describeFileCaches: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  DescribeFileCachesRequest,
+  DescribeFileCachesResponse,
+  DescribeFileCachesError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: DescribeFileCachesRequest,
+  ) => stream.Stream<
+    DescribeFileCachesResponse,
+    DescribeFileCachesError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: DescribeFileCachesRequest,
+  ) => stream.Stream<
+    unknown,
+    DescribeFileCachesError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type DescribeFileSystemAliasesError =
   | BadRequest
@@ -7170,7 +7291,27 @@ export const describeFileSystemAliases: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  DescribeFileSystemAliasesRequest,
+  DescribeFileSystemAliasesResponse,
+  DescribeFileSystemAliasesError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: DescribeFileSystemAliasesRequest,
+  ) => stream.Stream<
+    DescribeFileSystemAliasesResponse,
+    DescribeFileSystemAliasesError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: DescribeFileSystemAliasesRequest,
+  ) => stream.Stream<
+    unknown,
+    DescribeFileSystemAliasesError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type DescribeFileSystemsError =
   | BadRequest
@@ -7238,7 +7379,27 @@ export const describeFileSystems: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  DescribeFileSystemsRequest,
+  DescribeFileSystemsResponse,
+  DescribeFileSystemsError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: DescribeFileSystemsRequest,
+  ) => stream.Stream<
+    DescribeFileSystemsResponse,
+    DescribeFileSystemsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: DescribeFileSystemsRequest,
+  ) => stream.Stream<
+    unknown,
+    DescribeFileSystemsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type DescribeS3AccessPointAttachmentsError =
   | BadRequest
@@ -7291,7 +7452,27 @@ export const describeS3AccessPointAttachments: API.OperationMethod<
     items: "S3AccessPointAttachments",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  DescribeS3AccessPointAttachmentsRequest,
+  DescribeS3AccessPointAttachmentsResponse,
+  DescribeS3AccessPointAttachmentsError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: DescribeS3AccessPointAttachmentsRequest,
+  ) => stream.Stream<
+    DescribeS3AccessPointAttachmentsResponse,
+    DescribeS3AccessPointAttachmentsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: DescribeS3AccessPointAttachmentsRequest,
+  ) => stream.Stream<
+    S3AccessPointAttachment,
+    DescribeS3AccessPointAttachmentsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type DescribeSharedVpcConfigurationError =
   | BadRequest
@@ -7381,7 +7562,27 @@ export const describeSnapshots: API.OperationMethod<
     items: "Snapshots",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  DescribeSnapshotsRequest,
+  DescribeSnapshotsResponse,
+  DescribeSnapshotsError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: DescribeSnapshotsRequest,
+  ) => stream.Stream<
+    DescribeSnapshotsResponse,
+    DescribeSnapshotsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: DescribeSnapshotsRequest,
+  ) => stream.Stream<
+    Snapshot,
+    DescribeSnapshotsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type DescribeStorageVirtualMachinesError =
   | BadRequest
@@ -7424,7 +7625,27 @@ export const describeStorageVirtualMachines: API.OperationMethod<
     items: "StorageVirtualMachines",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  DescribeStorageVirtualMachinesRequest,
+  DescribeStorageVirtualMachinesResponse,
+  DescribeStorageVirtualMachinesError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: DescribeStorageVirtualMachinesRequest,
+  ) => stream.Stream<
+    DescribeStorageVirtualMachinesResponse,
+    DescribeStorageVirtualMachinesError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: DescribeStorageVirtualMachinesRequest,
+  ) => stream.Stream<
+    StorageVirtualMachine,
+    DescribeStorageVirtualMachinesError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type DescribeVolumesError =
   | BadRequest
@@ -7468,7 +7689,27 @@ export const describeVolumes: API.OperationMethod<
     items: "Volumes",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  DescribeVolumesRequest,
+  DescribeVolumesResponse,
+  DescribeVolumesError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: DescribeVolumesRequest,
+  ) => stream.Stream<
+    DescribeVolumesResponse,
+    DescribeVolumesError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: DescribeVolumesRequest,
+  ) => stream.Stream<
+    Volume,
+    DescribeVolumesError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type DetachAndDeleteS3AccessPointError =
   | BadRequest
@@ -7607,7 +7848,27 @@ export const listTagsForResource: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListTagsForResourceRequest,
+  ListTagsForResourceResponse,
+  ListTagsForResourceError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListTagsForResourceRequest,
+  ) => stream.Stream<
+    ListTagsForResourceResponse,
+    ListTagsForResourceError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListTagsForResourceRequest,
+  ) => stream.Stream<
+    unknown,
+    ListTagsForResourceError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type ReleaseFileSystemNfsV3LocksError =
   | BadRequest

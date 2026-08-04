@@ -88,46 +88,54 @@ const rules = T.EndpointResolver((p, _) => {
   return err("Invalid Configuration: Missing Region");
 });
 
-export class AccessDeniedException extends S.TaggedErrorClass<AccessDeniedException>()(
-  "AccessDeniedException",
-  { Message: S.optional(S.String) },
-  T.HttpError(401),
-).pipe(C.withAuthError) {}
-export class ExpiredNextTokenException extends S.TaggedErrorClass<ExpiredNextTokenException>()(
-  "ExpiredNextTokenException",
-  { Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class InternalErrorException extends S.TaggedErrorClass<InternalErrorException>()(
-  "InternalErrorException",
-  { Message: S.optional(S.String) },
-  T.all(T.HttpError(500), T.Retryable()),
-).pipe(C.withServerError, C.withRetryableError) {}
-export class InvalidNextTokenException extends S.TaggedErrorClass<InvalidNextTokenException>()(
-  "InvalidNextTokenException",
-  { Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class InvalidParameterException extends S.TaggedErrorClass<InvalidParameterException>()(
-  "InvalidParameterException",
-  { Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class NotFoundException extends S.TaggedErrorClass<NotFoundException>()(
-  "NotFoundException",
-  { Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class ResourceNotFoundException extends S.TaggedErrorClass<ResourceNotFoundException>()(
-  "ResourceNotFoundException",
-  { Message: S.optional(S.String) },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class ThrottlingException extends S.TaggedErrorClass<ThrottlingException>()(
-  "ThrottlingException",
-  { Message: S.optional(S.String) },
-  T.all(T.HttpError(429), T.Retryable({ throttling: true })),
-).pipe(C.withThrottlingError, C.withRetryableError) {}
+export class AccessDeniedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
+    "AccessDeniedException",
+    { Message: S.optional(S.String) },
+    T.HttpError(401),
+  ).pipe(C.withAuthError) {}
+export class ExpiredNextTokenException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ExpiredNextTokenException>()(
+    "ExpiredNextTokenException",
+    { Message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class InternalErrorException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InternalErrorException>()(
+    "InternalErrorException",
+    { Message: S.optional(S.String) },
+    T.all(T.HttpError(500), T.Retryable()),
+  ).pipe(C.withServerError, C.withRetryableError) {}
+export class InvalidNextTokenException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidNextTokenException>()(
+    "InvalidNextTokenException",
+    { Message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class InvalidParameterException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidParameterException>()(
+    "InvalidParameterException",
+    { Message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class NotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<NotFoundException>()(
+    "NotFoundException",
+    { Message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class ResourceNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
+    "ResourceNotFoundException",
+    { Message: S.optional(S.String) },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class ThrottlingException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
+    "ThrottlingException",
+    { Message: S.optional(S.String) },
+    T.all(T.HttpError(429), T.Retryable({ throttling: true })),
+  ).pipe(C.withThrottlingError, C.withRetryableError) {}
 export type FormatVersion = string;
 export type DescribeServicesMaxResults = number;
 export interface DescribeServicesRequest {
@@ -406,7 +414,27 @@ export const describeServices: API.OperationMethod<
     items: "Services",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  DescribeServicesRequest,
+  DescribeServicesResponse,
+  DescribeServicesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: DescribeServicesRequest,
+  ) => stream.Stream<
+    DescribeServicesResponse,
+    DescribeServicesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: DescribeServicesRequest,
+  ) => stream.Stream<
+    Service,
+    DescribeServicesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type GetAttributeValuesError =
   | AccessDeniedException
@@ -461,7 +489,27 @@ export const getAttributeValues: API.OperationMethod<
     items: "AttributeValues",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  GetAttributeValuesRequest,
+  GetAttributeValuesResponse,
+  GetAttributeValuesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: GetAttributeValuesRequest,
+  ) => stream.Stream<
+    GetAttributeValuesResponse,
+    GetAttributeValuesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: GetAttributeValuesRequest,
+  ) => stream.Stream<
+    AttributeValue,
+    GetAttributeValuesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type GetPriceListFileUrlError =
   | AccessDeniedException
@@ -550,7 +598,27 @@ export const getProducts: API.OperationMethod<
     items: "PriceList",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  GetProductsRequest,
+  GetProductsResponse,
+  GetProductsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: GetProductsRequest,
+  ) => stream.Stream<
+    GetProductsResponse,
+    GetProductsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: GetProductsRequest,
+  ) => stream.Stream<
+    SynthesizedJsonPriceListJsonItem,
+    GetProductsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListPriceListsError =
   | AccessDeniedException
@@ -609,4 +677,24 @@ export const listPriceLists: API.OperationMethod<
     items: "PriceLists",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListPriceListsRequest,
+  ListPriceListsResponse,
+  ListPriceListsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListPriceListsRequest,
+  ) => stream.Stream<
+    ListPriceListsResponse,
+    ListPriceListsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListPriceListsRequest,
+  ) => stream.Stream<
+    PriceList,
+    ListPriceListsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};

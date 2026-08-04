@@ -88,91 +88,108 @@ const rules = T.EndpointResolver((p, _) => {
   return err("Invalid Configuration: Missing Region");
 });
 
-export class AccessDeniedException extends S.TaggedErrorClass<AccessDeniedException>()(
-  "AccessDeniedException",
-  { Message: S.optional(S.String) },
-  T.HttpError(403),
-).pipe(C.withAuthError) {}
-export class AWSServiceAccessNotEnabledException extends S.TaggedErrorClass<AWSServiceAccessNotEnabledException>()(
-  "AWSServiceAccessNotEnabledException",
-  { Message: S.optional(S.String) },
-  T.HttpError(403),
-).pipe(C.withAuthError) {}
-export class DependencyAccessDeniedException extends S.TaggedErrorClass<DependencyAccessDeniedException>()(
-  "DependencyAccessDeniedException",
-  { Message: S.optional(S.String) },
-  T.HttpError(403),
-).pipe(C.withAuthError) {}
-export class IllegalArgumentException extends S.TaggedErrorClass<IllegalArgumentException>()(
-  "IllegalArgumentException",
-  { Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class InvalidPaginationTokenException extends S.TaggedErrorClass<InvalidPaginationTokenException>()(
-  "InvalidPaginationTokenException",
-  { Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class InvalidResourceStateException extends S.TaggedErrorClass<InvalidResourceStateException>()(
-  "InvalidResourceStateException",
-  { Message: S.optional(S.String) },
-  T.HttpError(405),
-).pipe(C.withBadRequestError) {}
-export class NoAvailableOrganizationException extends S.TaggedErrorClass<NoAvailableOrganizationException>()(
-  "NoAvailableOrganizationException",
-  { Message: S.optional(S.String) },
-  T.HttpError(403),
-).pipe(C.withAuthError) {}
-export class NoSuchResourceException extends S.TaggedErrorClass<NoSuchResourceException>()(
-  "NoSuchResourceException",
-  { Message: S.optional(S.String) },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class OrganizationNotInAllFeaturesModeException extends S.TaggedErrorClass<OrganizationNotInAllFeaturesModeException>()(
-  "OrganizationNotInAllFeaturesModeException",
-  { Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class QuotaExceededException extends S.TaggedErrorClass<QuotaExceededException>()(
-  "QuotaExceededException",
-  { Message: S.optional(S.String) },
-  T.HttpError(409),
-).pipe(C.withConflictError) {}
-export class ResourceAlreadyExistsException extends S.TaggedErrorClass<ResourceAlreadyExistsException>()(
-  "ResourceAlreadyExistsException",
-  { Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError, C.withAlreadyExistsError) {}
-export class ServiceException extends S.TaggedErrorClass<ServiceException>()(
-  "ServiceException",
-  { Message: S.optional(S.String) },
-  T.HttpError(500),
-).pipe(C.withServerError) {}
-export class ServiceQuotaTemplateNotInUseException extends S.TaggedErrorClass<ServiceQuotaTemplateNotInUseException>()(
-  "ServiceQuotaTemplateNotInUseException",
-  { Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class TagPolicyViolationException extends S.TaggedErrorClass<TagPolicyViolationException>()(
-  "TagPolicyViolationException",
-  { Message: S.optional(S.String) },
-  T.HttpError(401),
-).pipe(C.withAuthError) {}
-export class TemplatesNotAvailableInRegionException extends S.TaggedErrorClass<TemplatesNotAvailableInRegionException>()(
-  "TemplatesNotAvailableInRegionException",
-  { Message: S.optional(S.String) },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class TooManyRequestsException extends S.TaggedErrorClass<TooManyRequestsException>()(
-  "TooManyRequestsException",
-  { Message: S.optional(S.String) },
-  T.HttpError(429),
-).pipe(C.withThrottlingError) {}
-export class TooManyTagsException extends S.TaggedErrorClass<TooManyTagsException>()(
-  "TooManyTagsException",
-  { Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
+export class AccessDeniedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
+    "AccessDeniedException",
+    { Message: S.optional(S.String) },
+    T.HttpError(403),
+  ).pipe(C.withAuthError) {}
+export class AWSServiceAccessNotEnabledException
+  extends /*@__PURE__*/ S.TaggedErrorClass<AWSServiceAccessNotEnabledException>()(
+    "AWSServiceAccessNotEnabledException",
+    { Message: S.optional(S.String) },
+    T.HttpError(403),
+  ).pipe(C.withAuthError) {}
+export class DependencyAccessDeniedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<DependencyAccessDeniedException>()(
+    "DependencyAccessDeniedException",
+    { Message: S.optional(S.String) },
+    T.HttpError(403),
+  ).pipe(C.withAuthError) {}
+export class IllegalArgumentException
+  extends /*@__PURE__*/ S.TaggedErrorClass<IllegalArgumentException>()(
+    "IllegalArgumentException",
+    { Message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class InvalidPaginationTokenException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidPaginationTokenException>()(
+    "InvalidPaginationTokenException",
+    { Message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class InvalidResourceStateException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidResourceStateException>()(
+    "InvalidResourceStateException",
+    { Message: S.optional(S.String) },
+    T.HttpError(405),
+  ).pipe(C.withBadRequestError) {}
+export class NoAvailableOrganizationException
+  extends /*@__PURE__*/ S.TaggedErrorClass<NoAvailableOrganizationException>()(
+    "NoAvailableOrganizationException",
+    { Message: S.optional(S.String) },
+    T.HttpError(403),
+  ).pipe(C.withAuthError) {}
+export class NoSuchResourceException
+  extends /*@__PURE__*/ S.TaggedErrorClass<NoSuchResourceException>()(
+    "NoSuchResourceException",
+    { Message: S.optional(S.String) },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class OrganizationNotInAllFeaturesModeException
+  extends /*@__PURE__*/ S.TaggedErrorClass<OrganizationNotInAllFeaturesModeException>()(
+    "OrganizationNotInAllFeaturesModeException",
+    { Message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class QuotaExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<QuotaExceededException>()(
+    "QuotaExceededException",
+    { Message: S.optional(S.String) },
+    T.HttpError(409),
+  ).pipe(C.withConflictError) {}
+export class ResourceAlreadyExistsException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceAlreadyExistsException>()(
+    "ResourceAlreadyExistsException",
+    { Message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError, C.withAlreadyExistsError) {}
+export class ServiceException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ServiceException>()(
+    "ServiceException",
+    { Message: S.optional(S.String) },
+    T.HttpError(500),
+  ).pipe(C.withServerError) {}
+export class ServiceQuotaTemplateNotInUseException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaTemplateNotInUseException>()(
+    "ServiceQuotaTemplateNotInUseException",
+    { Message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class TagPolicyViolationException
+  extends /*@__PURE__*/ S.TaggedErrorClass<TagPolicyViolationException>()(
+    "TagPolicyViolationException",
+    { Message: S.optional(S.String) },
+    T.HttpError(401),
+  ).pipe(C.withAuthError) {}
+export class TemplatesNotAvailableInRegionException
+  extends /*@__PURE__*/ S.TaggedErrorClass<TemplatesNotAvailableInRegionException>()(
+    "TemplatesNotAvailableInRegionException",
+    { Message: S.optional(S.String) },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class TooManyRequestsException
+  extends /*@__PURE__*/ S.TaggedErrorClass<TooManyRequestsException>()(
+    "TooManyRequestsException",
+    { Message: S.optional(S.String) },
+    T.HttpError(429),
+  ).pipe(C.withThrottlingError) {}
+export class TooManyTagsException
+  extends /*@__PURE__*/ S.TaggedErrorClass<TooManyTagsException>()(
+    "TooManyTagsException",
+    { Message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
 export interface AssociateServiceQuotaTemplateRequest {}
 export const AssociateServiceQuotaTemplateRequest = /*@__PURE__*/ S.suspend(
   () =>
@@ -1606,7 +1623,27 @@ export const listAWSDefaultServiceQuotas: API.OperationMethod<
     items: "Quotas",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListAWSDefaultServiceQuotasRequest,
+  ListAWSDefaultServiceQuotasResponse,
+  ListAWSDefaultServiceQuotasError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListAWSDefaultServiceQuotasRequest,
+  ) => stream.Stream<
+    ListAWSDefaultServiceQuotasResponse,
+    ListAWSDefaultServiceQuotasError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListAWSDefaultServiceQuotasRequest,
+  ) => stream.Stream<
+    ServiceQuota,
+    ListAWSDefaultServiceQuotasError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListRequestedServiceQuotaChangeHistoryError =
   | AccessDeniedException
@@ -1661,7 +1698,27 @@ export const listRequestedServiceQuotaChangeHistory: API.OperationMethod<
     items: "RequestedQuotas",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListRequestedServiceQuotaChangeHistoryRequest,
+  ListRequestedServiceQuotaChangeHistoryResponse,
+  ListRequestedServiceQuotaChangeHistoryError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListRequestedServiceQuotaChangeHistoryRequest,
+  ) => stream.Stream<
+    ListRequestedServiceQuotaChangeHistoryResponse,
+    ListRequestedServiceQuotaChangeHistoryError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListRequestedServiceQuotaChangeHistoryRequest,
+  ) => stream.Stream<
+    RequestedServiceQuotaChange,
+    ListRequestedServiceQuotaChangeHistoryError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListRequestedServiceQuotaChangeHistoryByQuotaError =
   | AccessDeniedException
@@ -1715,7 +1772,27 @@ export const listRequestedServiceQuotaChangeHistoryByQuota: API.OperationMethod<
     items: "RequestedQuotas",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListRequestedServiceQuotaChangeHistoryByQuotaRequest,
+  ListRequestedServiceQuotaChangeHistoryByQuotaResponse,
+  ListRequestedServiceQuotaChangeHistoryByQuotaError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListRequestedServiceQuotaChangeHistoryByQuotaRequest,
+  ) => stream.Stream<
+    ListRequestedServiceQuotaChangeHistoryByQuotaResponse,
+    ListRequestedServiceQuotaChangeHistoryByQuotaError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListRequestedServiceQuotaChangeHistoryByQuotaRequest,
+  ) => stream.Stream<
+    RequestedServiceQuotaChange,
+    ListRequestedServiceQuotaChangeHistoryByQuotaError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListServiceQuotaIncreaseRequestsInTemplateError =
   | AccessDeniedException
@@ -1772,7 +1849,27 @@ export const listServiceQuotaIncreaseRequestsInTemplate: API.OperationMethod<
     items: "ServiceQuotaIncreaseRequestInTemplateList",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListServiceQuotaIncreaseRequestsInTemplateRequest,
+  ListServiceQuotaIncreaseRequestsInTemplateResponse,
+  ListServiceQuotaIncreaseRequestsInTemplateError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListServiceQuotaIncreaseRequestsInTemplateRequest,
+  ) => stream.Stream<
+    ListServiceQuotaIncreaseRequestsInTemplateResponse,
+    ListServiceQuotaIncreaseRequestsInTemplateError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListServiceQuotaIncreaseRequestsInTemplateRequest,
+  ) => stream.Stream<
+    ServiceQuotaIncreaseRequestInTemplate,
+    ListServiceQuotaIncreaseRequestsInTemplateError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListServiceQuotasError =
   | AccessDeniedException
@@ -1828,7 +1925,27 @@ export const listServiceQuotas: API.OperationMethod<
     items: "Quotas",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListServiceQuotasRequest,
+  ListServiceQuotasResponse,
+  ListServiceQuotasError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListServiceQuotasRequest,
+  ) => stream.Stream<
+    ListServiceQuotasResponse,
+    ListServiceQuotasError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListServiceQuotasRequest,
+  ) => stream.Stream<
+    ServiceQuota,
+    ListServiceQuotasError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListServicesError =
   | AccessDeniedException
@@ -1879,7 +1996,27 @@ export const listServices: API.OperationMethod<
     items: "Services",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListServicesRequest,
+  ListServicesResponse,
+  ListServicesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListServicesRequest,
+  ) => stream.Stream<
+    ListServicesResponse,
+    ListServicesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListServicesRequest,
+  ) => stream.Stream<
+    ServiceInfo,
+    ListServicesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListTagsForResourceError =
   | AccessDeniedException

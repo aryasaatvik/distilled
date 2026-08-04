@@ -84,54 +84,66 @@ const rules = T.EndpointResolver((p, _) => {
   return err("Invalid Configuration: Missing Region");
 });
 
-export class InsufficientCapacityException extends S.TaggedErrorClass<InsufficientCapacityException>()(
-  "InsufficientCapacityException",
-  { Message: S.optional(S.String) },
-) {}
-export class InternalServerError extends S.TaggedErrorClass<InternalServerError>()(
-  "InternalServerError",
-  { Message: S.optional(S.String) },
-) {}
-export class InvalidOperationException extends S.TaggedErrorClass<InvalidOperationException>()(
-  "InvalidOperationException",
-  { Message: S.optional(S.String) },
-) {}
-export class InvalidRequestException extends S.TaggedErrorClass<InvalidRequestException>()(
-  "InvalidRequestException",
-  { Message: S.optional(S.String) },
-) {}
-export class InvalidResourcePolicyException extends S.TaggedErrorClass<InvalidResourcePolicyException>()(
-  "InvalidResourcePolicyException",
-  { Message: S.optional(S.String) },
-) {}
-export class InvalidTokenException extends S.TaggedErrorClass<InvalidTokenException>()(
-  "InvalidTokenException",
-  { Message: S.optional(S.String) },
-) {}
-export class LimitExceededException extends S.TaggedErrorClass<LimitExceededException>()(
-  "LimitExceededException",
-  { Message: S.optional(S.String) },
-) {}
-export class LogDestinationPermissionException extends S.TaggedErrorClass<LogDestinationPermissionException>()(
-  "LogDestinationPermissionException",
-  { Message: S.optional(S.String) },
-) {}
-export class ResourceNotFoundException extends S.TaggedErrorClass<ResourceNotFoundException>()(
-  "ResourceNotFoundException",
-  { Message: S.optional(S.String) },
-) {}
-export class ResourceOwnerCheckException extends S.TaggedErrorClass<ResourceOwnerCheckException>()(
-  "ResourceOwnerCheckException",
-  { Message: S.optional(S.String) },
-) {}
-export class ThrottlingException extends S.TaggedErrorClass<ThrottlingException>()(
-  "ThrottlingException",
-  { Message: S.optional(S.String) },
-) {}
-export class UnsupportedOperationException extends S.TaggedErrorClass<UnsupportedOperationException>()(
-  "UnsupportedOperationException",
-  { Message: S.optional(S.String) },
-) {}
+export class InsufficientCapacityException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InsufficientCapacityException>()(
+    "InsufficientCapacityException",
+    { Message: S.optional(S.String) },
+  ) {}
+export class InternalServerError
+  extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerError>()(
+    "InternalServerError",
+    { Message: S.optional(S.String) },
+  ) {}
+export class InvalidOperationException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidOperationException>()(
+    "InvalidOperationException",
+    { Message: S.optional(S.String) },
+  ) {}
+export class InvalidRequestException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidRequestException>()(
+    "InvalidRequestException",
+    { Message: S.optional(S.String) },
+  ) {}
+export class InvalidResourcePolicyException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidResourcePolicyException>()(
+    "InvalidResourcePolicyException",
+    { Message: S.optional(S.String) },
+  ) {}
+export class InvalidTokenException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidTokenException>()(
+    "InvalidTokenException",
+    { Message: S.optional(S.String) },
+  ) {}
+export class LimitExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<LimitExceededException>()(
+    "LimitExceededException",
+    { Message: S.optional(S.String) },
+  ) {}
+export class LogDestinationPermissionException
+  extends /*@__PURE__*/ S.TaggedErrorClass<LogDestinationPermissionException>()(
+    "LogDestinationPermissionException",
+    { Message: S.optional(S.String) },
+  ) {}
+export class ResourceNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
+    "ResourceNotFoundException",
+    { Message: S.optional(S.String) },
+  ) {}
+export class ResourceOwnerCheckException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceOwnerCheckException>()(
+    "ResourceOwnerCheckException",
+    { Message: S.optional(S.String) },
+  ) {}
+export class ThrottlingException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
+    "ThrottlingException",
+    { Message: S.optional(S.String) },
+  ) {}
+export class UnsupportedOperationException
+  extends /*@__PURE__*/ S.TaggedErrorClass<UnsupportedOperationException>()(
+    "UnsupportedOperationException",
+    { Message: S.optional(S.String) },
+  ) {}
 export type TransitGatewayAttachmentId = string;
 export interface AcceptNetworkFirewallTransitGatewayAttachmentRequest {
   TransitGatewayAttachmentId: string;
@@ -5805,7 +5817,27 @@ export const getAnalysisReportResults: API.OperationMethod<
     items: "AnalysisReportResults",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  GetAnalysisReportResultsRequest,
+  GetAnalysisReportResultsResponse,
+  GetAnalysisReportResultsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: GetAnalysisReportResultsRequest,
+  ) => stream.Stream<
+    GetAnalysisReportResultsResponse,
+    GetAnalysisReportResultsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: GetAnalysisReportResultsRequest,
+  ) => stream.Stream<
+    AnalysisTypeReportResult,
+    GetAnalysisReportResultsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListAnalysisReportsError =
   | InternalServerError
@@ -5854,7 +5886,27 @@ export const listAnalysisReports: API.OperationMethod<
     items: "AnalysisReports",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListAnalysisReportsRequest,
+  ListAnalysisReportsResponse,
+  ListAnalysisReportsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListAnalysisReportsRequest,
+  ) => stream.Stream<
+    ListAnalysisReportsResponse,
+    ListAnalysisReportsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListAnalysisReportsRequest,
+  ) => stream.Stream<
+    AnalysisReport,
+    ListAnalysisReportsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListFirewallPoliciesError =
   | InternalServerError
@@ -5899,7 +5951,27 @@ export const listFirewallPolicies: API.OperationMethod<
     items: "FirewallPolicies",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListFirewallPoliciesRequest,
+  ListFirewallPoliciesResponse,
+  ListFirewallPoliciesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListFirewallPoliciesRequest,
+  ) => stream.Stream<
+    ListFirewallPoliciesResponse,
+    ListFirewallPoliciesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListFirewallPoliciesRequest,
+  ) => stream.Stream<
+    FirewallPolicyMetadata,
+    ListFirewallPoliciesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListFirewallsError =
   | InternalServerError
@@ -5946,7 +6018,27 @@ export const listFirewalls: API.OperationMethod<
     items: "Firewalls",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListFirewallsRequest,
+  ListFirewallsResponse,
+  ListFirewallsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListFirewallsRequest,
+  ) => stream.Stream<
+    ListFirewallsResponse,
+    ListFirewallsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListFirewallsRequest,
+  ) => stream.Stream<
+    FirewallMetadata,
+    ListFirewallsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListFlowOperationResultsError =
   | InternalServerError
@@ -6000,7 +6092,27 @@ export const listFlowOperationResults: API.OperationMethod<
     items: "Flows",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListFlowOperationResultsRequest,
+  ListFlowOperationResultsResponse,
+  ListFlowOperationResultsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListFlowOperationResultsRequest,
+  ) => stream.Stream<
+    ListFlowOperationResultsResponse,
+    ListFlowOperationResultsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListFlowOperationResultsRequest,
+  ) => stream.Stream<
+    Flow,
+    ListFlowOperationResultsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListFlowOperationsError =
   | InternalServerError
@@ -6055,7 +6167,27 @@ export const listFlowOperations: API.OperationMethod<
     items: "FlowOperations",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListFlowOperationsRequest,
+  ListFlowOperationsResponse,
+  ListFlowOperationsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListFlowOperationsRequest,
+  ) => stream.Stream<
+    ListFlowOperationsResponse,
+    ListFlowOperationsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListFlowOperationsRequest,
+  ) => stream.Stream<
+    FlowOperationMetadata,
+    ListFlowOperationsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListProxiesError =
   | InternalServerError
@@ -6100,7 +6232,27 @@ export const listProxies: API.OperationMethod<
     items: "Proxies",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListProxiesRequest,
+  ListProxiesResponse,
+  ListProxiesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListProxiesRequest,
+  ) => stream.Stream<
+    ListProxiesResponse,
+    ListProxiesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListProxiesRequest,
+  ) => stream.Stream<
+    ProxyMetadata,
+    ListProxiesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListProxyConfigurationsError =
   | InternalServerError
@@ -6151,7 +6303,27 @@ export const listProxyConfigurations: API.OperationMethod<
     items: "ProxyConfigurations",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListProxyConfigurationsRequest,
+  ListProxyConfigurationsResponse,
+  ListProxyConfigurationsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListProxyConfigurationsRequest,
+  ) => stream.Stream<
+    ListProxyConfigurationsResponse,
+    ListProxyConfigurationsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListProxyConfigurationsRequest,
+  ) => stream.Stream<
+    ProxyConfigurationMetadata,
+    ListProxyConfigurationsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListProxyRuleGroupsError =
   | InternalServerError
@@ -6202,7 +6374,27 @@ export const listProxyRuleGroups: API.OperationMethod<
     items: "ProxyRuleGroups",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListProxyRuleGroupsRequest,
+  ListProxyRuleGroupsResponse,
+  ListProxyRuleGroupsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListProxyRuleGroupsRequest,
+  ) => stream.Stream<
+    ListProxyRuleGroupsResponse,
+    ListProxyRuleGroupsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListProxyRuleGroupsRequest,
+  ) => stream.Stream<
+    ProxyRuleGroupMetadata,
+    ListProxyRuleGroupsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListRuleGroupsError =
   | InternalServerError
@@ -6247,7 +6439,27 @@ export const listRuleGroups: API.OperationMethod<
     items: "RuleGroups",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListRuleGroupsRequest,
+  ListRuleGroupsResponse,
+  ListRuleGroupsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListRuleGroupsRequest,
+  ) => stream.Stream<
+    ListRuleGroupsResponse,
+    ListRuleGroupsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListRuleGroupsRequest,
+  ) => stream.Stream<
+    RuleGroupMetadata,
+    ListRuleGroupsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListTagsForResourceError =
   | InternalServerError
@@ -6303,7 +6515,27 @@ export const listTagsForResource: API.OperationMethod<
     items: "Tags",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListTagsForResourceRequest,
+  ListTagsForResourceResponse,
+  ListTagsForResourceError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListTagsForResourceRequest,
+  ) => stream.Stream<
+    ListTagsForResourceResponse,
+    ListTagsForResourceError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListTagsForResourceRequest,
+  ) => stream.Stream<
+    Tag,
+    ListTagsForResourceError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListTLSInspectionConfigurationsError =
   | InternalServerError
@@ -6346,7 +6578,27 @@ export const listTLSInspectionConfigurations: API.OperationMethod<
     items: "TLSInspectionConfigurations",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListTLSInspectionConfigurationsRequest,
+  ListTLSInspectionConfigurationsResponse,
+  ListTLSInspectionConfigurationsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListTLSInspectionConfigurationsRequest,
+  ) => stream.Stream<
+    ListTLSInspectionConfigurationsResponse,
+    ListTLSInspectionConfigurationsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListTLSInspectionConfigurationsRequest,
+  ) => stream.Stream<
+    TLSInspectionConfigurationMetadata,
+    ListTLSInspectionConfigurationsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListVpcEndpointAssociationsError =
   | InternalServerError
@@ -6393,7 +6645,27 @@ export const listVpcEndpointAssociations: API.OperationMethod<
     items: "VpcEndpointAssociations",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListVpcEndpointAssociationsRequest,
+  ListVpcEndpointAssociationsResponse,
+  ListVpcEndpointAssociationsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListVpcEndpointAssociationsRequest,
+  ) => stream.Stream<
+    ListVpcEndpointAssociationsResponse,
+    ListVpcEndpointAssociationsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListVpcEndpointAssociationsRequest,
+  ) => stream.Stream<
+    VpcEndpointAssociationMetadata,
+    ListVpcEndpointAssociationsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type PutResourcePolicyError =
   | InternalServerError

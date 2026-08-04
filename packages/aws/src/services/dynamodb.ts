@@ -341,185 +341,220 @@ const rules = T.EndpointResolver((p, _) => {
   return err("Invalid Configuration: Missing Region");
 });
 
-export class BackupInUseException extends S.TaggedErrorClass<BackupInUseException>()(
-  "BackupInUseException",
-  { message: S.optional(S.String) },
-).pipe(C.withConflictError) {}
-export class BackupNotFoundException extends S.TaggedErrorClass<BackupNotFoundException>()(
-  "BackupNotFoundException",
-  { message: S.optional(S.String) },
-).pipe(C.withNotFoundError) {}
-export class ConditionalCheckFailedException extends S.TaggedErrorClass<ConditionalCheckFailedException>()(
-  "ConditionalCheckFailedException",
-  {
-    message: S.optional(S.String),
-    Item: S.optional(
-      S.suspend(() => AttributeMap).annotate({ identifier: "AttributeMap" }),
+export class BackupInUseException
+  extends /*@__PURE__*/ S.TaggedErrorClass<BackupInUseException>()(
+    "BackupInUseException",
+    { message: S.optional(S.String) },
+  ).pipe(C.withConflictError) {}
+export class BackupNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<BackupNotFoundException>()(
+    "BackupNotFoundException",
+    { message: S.optional(S.String) },
+  ).pipe(C.withNotFoundError) {}
+export class ConditionalCheckFailedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ConditionalCheckFailedException>()(
+    "ConditionalCheckFailedException",
+    {
+      message: S.optional(S.String),
+      Item: S.optional(
+        S.suspend(() => AttributeMap).annotate({ identifier: "AttributeMap" }),
+      ),
+    },
+  ).pipe(C.withConflictError) {}
+export class ContinuousBackupsUnavailableException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ContinuousBackupsUnavailableException>()(
+    "ContinuousBackupsUnavailableException",
+    { message: S.optional(S.String) },
+  ).pipe(C.withConflictError, C.withRetryableError) {}
+export class DuplicateItemException
+  extends /*@__PURE__*/ S.TaggedErrorClass<DuplicateItemException>()(
+    "DuplicateItemException",
+    { message: S.optional(S.String) },
+  ).pipe(C.withConflictError) {}
+export class ExportConflictException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ExportConflictException>()(
+    "ExportConflictException",
+    { message: S.optional(S.String) },
+  ).pipe(C.withConflictError) {}
+export class ExportNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ExportNotFoundException>()(
+    "ExportNotFoundException",
+    { message: S.optional(S.String) },
+  ).pipe(C.withNotFoundError) {}
+export class GlobalTableAlreadyExistsException
+  extends /*@__PURE__*/ S.TaggedErrorClass<GlobalTableAlreadyExistsException>()(
+    "GlobalTableAlreadyExistsException",
+    { message: S.optional(S.String) },
+  ).pipe(C.withConflictError, C.withAlreadyExistsError) {}
+export class GlobalTableNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<GlobalTableNotFoundException>()(
+    "GlobalTableNotFoundException",
+    { message: S.optional(S.String) },
+  ).pipe(C.withNotFoundError) {}
+export class IdempotentParameterMismatchException
+  extends /*@__PURE__*/ S.TaggedErrorClass<IdempotentParameterMismatchException>()(
+    "IdempotentParameterMismatchException",
+    { Message: S.optional(S.String) },
+  ).pipe(C.withBadRequestError) {}
+export class ImportConflictException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ImportConflictException>()(
+    "ImportConflictException",
+    { message: S.optional(S.String) },
+  ).pipe(C.withConflictError) {}
+export class ImportNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ImportNotFoundException>()(
+    "ImportNotFoundException",
+    { message: S.optional(S.String) },
+  ).pipe(C.withNotFoundError) {}
+export class IndexNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<IndexNotFoundException>()(
+    "IndexNotFoundException",
+    { message: S.optional(S.String) },
+  ).pipe(C.withNotFoundError) {}
+export class InternalServerError
+  extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerError>()(
+    "InternalServerError",
+    { message: S.optional(S.String) },
+  ).pipe(C.withServerError, C.withRetryableError) {}
+export class InvalidEndpointException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidEndpointException>()(
+    "InvalidEndpointException",
+    { Message: S.optional(S.String) },
+    T.HttpError(421),
+  ).pipe(C.withBadRequestError) {}
+export class InvalidExportTimeException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidExportTimeException>()(
+    "InvalidExportTimeException",
+    { message: S.optional(S.String) },
+  ).pipe(C.withBadRequestError) {}
+export class InvalidRestoreTimeException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidRestoreTimeException>()(
+    "InvalidRestoreTimeException",
+    { message: S.optional(S.String) },
+  ).pipe(C.withBadRequestError) {}
+export class ItemCollectionSizeLimitExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ItemCollectionSizeLimitExceededException>()(
+    "ItemCollectionSizeLimitExceededException",
+    { message: S.optional(S.String) },
+  ).pipe(C.withQuotaError) {}
+export class LimitExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<LimitExceededException>()(
+    "LimitExceededException",
+    { message: S.optional(S.String) },
+  ).pipe(C.withQuotaError, C.withRetryableError) {}
+export class PointInTimeRecoveryUnavailableException
+  extends /*@__PURE__*/ S.TaggedErrorClass<PointInTimeRecoveryUnavailableException>()(
+    "PointInTimeRecoveryUnavailableException",
+    { message: S.optional(S.String) },
+  ).pipe(C.withBadRequestError) {}
+export class PolicyNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<PolicyNotFoundException>()(
+    "PolicyNotFoundException",
+    { message: S.optional(S.String) },
+  ).pipe(C.withNotFoundError) {}
+export class ProvisionedThroughputExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ProvisionedThroughputExceededException>()(
+    "ProvisionedThroughputExceededException",
+    {
+      message: S.optional(S.String),
+      ThrottlingReasons: S.optional(
+        S.suspend(() => ThrottlingReasonList).annotate({
+          identifier: "ThrottlingReasonList",
+        }),
+      ),
+    },
+  ).pipe(C.withThrottlingError, C.withRetryableError) {}
+export class ReplicaAlreadyExistsException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ReplicaAlreadyExistsException>()(
+    "ReplicaAlreadyExistsException",
+    { message: S.optional(S.String) },
+  ).pipe(C.withConflictError, C.withAlreadyExistsError) {}
+export class ReplicaNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ReplicaNotFoundException>()(
+    "ReplicaNotFoundException",
+    { message: S.optional(S.String) },
+  ).pipe(C.withNotFoundError) {}
+export class ReplicatedWriteConflictException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ReplicatedWriteConflictException>()(
+    "ReplicatedWriteConflictException",
+    { message: S.optional(S.String) },
+    T.Retryable(),
+  ).pipe(C.withRetryableError) {}
+export class RequestLimitExceeded
+  extends /*@__PURE__*/ S.TaggedErrorClass<RequestLimitExceeded>()(
+    "RequestLimitExceeded",
+    {
+      message: S.optional(S.String),
+      ThrottlingReasons: S.optional(
+        S.suspend(() => ThrottlingReasonList).annotate({
+          identifier: "ThrottlingReasonList",
+        }),
+      ),
+    },
+  ).pipe(C.withThrottlingError, C.withRetryableError) {}
+export class ResourceInUseException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceInUseException>()(
+    "ResourceInUseException",
+    { message: S.optional(S.String) },
+  ).pipe(C.withConflictError, C.withRetryableError) {}
+export class ResourceNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
+    "ResourceNotFoundException",
+    { message: S.optional(S.String) },
+  ).pipe(C.withNotFoundError) {}
+export class TableAlreadyExistsException
+  extends /*@__PURE__*/ S.TaggedErrorClass<TableAlreadyExistsException>()(
+    "TableAlreadyExistsException",
+    { message: S.optional(S.String) },
+  ).pipe(C.withConflictError, C.withAlreadyExistsError) {}
+export class TableInUseException
+  extends /*@__PURE__*/ S.TaggedErrorClass<TableInUseException>()(
+    "TableInUseException",
+    { message: S.optional(S.String) },
+  ).pipe(C.withConflictError, C.withRetryableError) {}
+export class TableNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<TableNotFoundException>()(
+    "TableNotFoundException",
+    { message: S.optional(S.String) },
+  ).pipe(C.withNotFoundError) {}
+export class ThrottlingException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
+    "ThrottlingException",
+    {
+      message: S.optional(S.String),
+      throttlingReasons: S.optional(
+        S.suspend(() => ThrottlingReasonList).annotate({
+          identifier: "ThrottlingReasonList",
+        }),
+      ),
+    },
+    T.all(
+      T.AwsQueryError({ code: "Throttling", httpResponseCode: 400 }),
+      T.HttpError(400),
     ),
-  },
-).pipe(C.withConflictError) {}
-export class ContinuousBackupsUnavailableException extends S.TaggedErrorClass<ContinuousBackupsUnavailableException>()(
-  "ContinuousBackupsUnavailableException",
-  { message: S.optional(S.String) },
-).pipe(C.withConflictError, C.withRetryableError) {}
-export class DuplicateItemException extends S.TaggedErrorClass<DuplicateItemException>()(
-  "DuplicateItemException",
-  { message: S.optional(S.String) },
-).pipe(C.withConflictError) {}
-export class ExportConflictException extends S.TaggedErrorClass<ExportConflictException>()(
-  "ExportConflictException",
-  { message: S.optional(S.String) },
-).pipe(C.withConflictError) {}
-export class ExportNotFoundException extends S.TaggedErrorClass<ExportNotFoundException>()(
-  "ExportNotFoundException",
-  { message: S.optional(S.String) },
-).pipe(C.withNotFoundError) {}
-export class GlobalTableAlreadyExistsException extends S.TaggedErrorClass<GlobalTableAlreadyExistsException>()(
-  "GlobalTableAlreadyExistsException",
-  { message: S.optional(S.String) },
-).pipe(C.withConflictError, C.withAlreadyExistsError) {}
-export class GlobalTableNotFoundException extends S.TaggedErrorClass<GlobalTableNotFoundException>()(
-  "GlobalTableNotFoundException",
-  { message: S.optional(S.String) },
-).pipe(C.withNotFoundError) {}
-export class IdempotentParameterMismatchException extends S.TaggedErrorClass<IdempotentParameterMismatchException>()(
-  "IdempotentParameterMismatchException",
-  { Message: S.optional(S.String) },
-).pipe(C.withBadRequestError) {}
-export class ImportConflictException extends S.TaggedErrorClass<ImportConflictException>()(
-  "ImportConflictException",
-  { message: S.optional(S.String) },
-).pipe(C.withConflictError) {}
-export class ImportNotFoundException extends S.TaggedErrorClass<ImportNotFoundException>()(
-  "ImportNotFoundException",
-  { message: S.optional(S.String) },
-).pipe(C.withNotFoundError) {}
-export class IndexNotFoundException extends S.TaggedErrorClass<IndexNotFoundException>()(
-  "IndexNotFoundException",
-  { message: S.optional(S.String) },
-).pipe(C.withNotFoundError) {}
-export class InternalServerError extends S.TaggedErrorClass<InternalServerError>()(
-  "InternalServerError",
-  { message: S.optional(S.String) },
-).pipe(C.withServerError, C.withRetryableError) {}
-export class InvalidEndpointException extends S.TaggedErrorClass<InvalidEndpointException>()(
-  "InvalidEndpointException",
-  { Message: S.optional(S.String) },
-  T.HttpError(421),
-).pipe(C.withBadRequestError) {}
-export class InvalidExportTimeException extends S.TaggedErrorClass<InvalidExportTimeException>()(
-  "InvalidExportTimeException",
-  { message: S.optional(S.String) },
-).pipe(C.withBadRequestError) {}
-export class InvalidRestoreTimeException extends S.TaggedErrorClass<InvalidRestoreTimeException>()(
-  "InvalidRestoreTimeException",
-  { message: S.optional(S.String) },
-).pipe(C.withBadRequestError) {}
-export class ItemCollectionSizeLimitExceededException extends S.TaggedErrorClass<ItemCollectionSizeLimitExceededException>()(
-  "ItemCollectionSizeLimitExceededException",
-  { message: S.optional(S.String) },
-).pipe(C.withQuotaError) {}
-export class LimitExceededException extends S.TaggedErrorClass<LimitExceededException>()(
-  "LimitExceededException",
-  { message: S.optional(S.String) },
-).pipe(C.withQuotaError, C.withRetryableError) {}
-export class PointInTimeRecoveryUnavailableException extends S.TaggedErrorClass<PointInTimeRecoveryUnavailableException>()(
-  "PointInTimeRecoveryUnavailableException",
-  { message: S.optional(S.String) },
-).pipe(C.withBadRequestError) {}
-export class PolicyNotFoundException extends S.TaggedErrorClass<PolicyNotFoundException>()(
-  "PolicyNotFoundException",
-  { message: S.optional(S.String) },
-).pipe(C.withNotFoundError) {}
-export class ProvisionedThroughputExceededException extends S.TaggedErrorClass<ProvisionedThroughputExceededException>()(
-  "ProvisionedThroughputExceededException",
-  {
-    message: S.optional(S.String),
-    ThrottlingReasons: S.optional(
-      S.suspend(() => ThrottlingReasonList).annotate({
-        identifier: "ThrottlingReasonList",
-      }),
-    ),
-  },
-).pipe(C.withThrottlingError, C.withRetryableError) {}
-export class ReplicaAlreadyExistsException extends S.TaggedErrorClass<ReplicaAlreadyExistsException>()(
-  "ReplicaAlreadyExistsException",
-  { message: S.optional(S.String) },
-).pipe(C.withConflictError, C.withAlreadyExistsError) {}
-export class ReplicaNotFoundException extends S.TaggedErrorClass<ReplicaNotFoundException>()(
-  "ReplicaNotFoundException",
-  { message: S.optional(S.String) },
-).pipe(C.withNotFoundError) {}
-export class ReplicatedWriteConflictException extends S.TaggedErrorClass<ReplicatedWriteConflictException>()(
-  "ReplicatedWriteConflictException",
-  { message: S.optional(S.String) },
-  T.Retryable(),
-).pipe(C.withRetryableError) {}
-export class RequestLimitExceeded extends S.TaggedErrorClass<RequestLimitExceeded>()(
-  "RequestLimitExceeded",
-  {
-    message: S.optional(S.String),
-    ThrottlingReasons: S.optional(
-      S.suspend(() => ThrottlingReasonList).annotate({
-        identifier: "ThrottlingReasonList",
-      }),
-    ),
-  },
-).pipe(C.withThrottlingError, C.withRetryableError) {}
-export class ResourceInUseException extends S.TaggedErrorClass<ResourceInUseException>()(
-  "ResourceInUseException",
-  { message: S.optional(S.String) },
-).pipe(C.withConflictError, C.withRetryableError) {}
-export class ResourceNotFoundException extends S.TaggedErrorClass<ResourceNotFoundException>()(
-  "ResourceNotFoundException",
-  { message: S.optional(S.String) },
-).pipe(C.withNotFoundError) {}
-export class TableAlreadyExistsException extends S.TaggedErrorClass<TableAlreadyExistsException>()(
-  "TableAlreadyExistsException",
-  { message: S.optional(S.String) },
-).pipe(C.withConflictError, C.withAlreadyExistsError) {}
-export class TableInUseException extends S.TaggedErrorClass<TableInUseException>()(
-  "TableInUseException",
-  { message: S.optional(S.String) },
-).pipe(C.withConflictError, C.withRetryableError) {}
-export class TableNotFoundException extends S.TaggedErrorClass<TableNotFoundException>()(
-  "TableNotFoundException",
-  { message: S.optional(S.String) },
-).pipe(C.withNotFoundError) {}
-export class ThrottlingException extends S.TaggedErrorClass<ThrottlingException>()(
-  "ThrottlingException",
-  {
-    message: S.optional(S.String),
-    throttlingReasons: S.optional(
-      S.suspend(() => ThrottlingReasonList).annotate({
-        identifier: "ThrottlingReasonList",
-      }),
-    ),
-  },
-  T.all(
-    T.AwsQueryError({ code: "Throttling", httpResponseCode: 400 }),
-    T.HttpError(400),
-  ),
-).pipe(C.withBadRequestError, C.withThrottlingError, C.withRetryableError) {}
-export class TransactionCanceledException extends S.TaggedErrorClass<TransactionCanceledException>()(
-  "TransactionCanceledException",
-  {
-    Message: S.optional(S.String),
-    CancellationReasons: S.optional(
-      S.suspend(() => CancellationReasonList).annotate({
-        identifier: "CancellationReasonList",
-      }),
-    ),
-  },
-) {}
-export class TransactionConflictException extends S.TaggedErrorClass<TransactionConflictException>()(
-  "TransactionConflictException",
-  { message: S.optional(S.String) },
-).pipe(C.withConflictError, C.withRetryableError) {}
-export class TransactionInProgressException extends S.TaggedErrorClass<TransactionInProgressException>()(
-  "TransactionInProgressException",
-  { Message: S.optional(S.String) },
-).pipe(C.withConflictError, C.withRetryableError) {}
+  ).pipe(C.withBadRequestError, C.withThrottlingError, C.withRetryableError) {}
+export class TransactionCanceledException
+  extends /*@__PURE__*/ S.TaggedErrorClass<TransactionCanceledException>()(
+    "TransactionCanceledException",
+    {
+      Message: S.optional(S.String),
+      CancellationReasons: S.optional(
+        S.suspend(() => CancellationReasonList).annotate({
+          identifier: "CancellationReasonList",
+        }),
+      ),
+    },
+  ) {}
+export class TransactionConflictException
+  extends /*@__PURE__*/ S.TaggedErrorClass<TransactionConflictException>()(
+    "TransactionConflictException",
+    { message: S.optional(S.String) },
+  ).pipe(C.withConflictError, C.withRetryableError) {}
+export class TransactionInProgressException
+  extends /*@__PURE__*/ S.TaggedErrorClass<TransactionInProgressException>()(
+    "TransactionInProgressException",
+    { Message: S.optional(S.String) },
+  ).pipe(C.withConflictError, C.withRetryableError) {}
 export type PartiQLStatement = string;
 export type StringAttributeValue = string;
 export type NumberAttributeValue = string;
@@ -6667,7 +6702,27 @@ export const listContributorInsights: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListContributorInsightsInput,
+  ListContributorInsightsOutput,
+  ListContributorInsightsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListContributorInsightsInput,
+  ) => stream.Stream<
+    ListContributorInsightsOutput,
+    ListContributorInsightsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListContributorInsightsInput,
+  ) => stream.Stream<
+    unknown,
+    ListContributorInsightsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListExportsError =
   | InternalServerError
@@ -6708,7 +6763,27 @@ export const listExports: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListExportsInput,
+  ListExportsOutput,
+  ListExportsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListExportsInput,
+  ) => stream.Stream<
+    ListExportsOutput,
+    ListExportsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListExportsInput,
+  ) => stream.Stream<
+    unknown,
+    ListExportsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListGlobalTablesError =
   | InternalServerError
@@ -6771,7 +6846,27 @@ export const listImports: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "PageSize",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListImportsInput,
+  ListImportsOutput,
+  ListImportsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListImportsInput,
+  ) => stream.Stream<
+    ListImportsOutput,
+    ListImportsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListImportsInput,
+  ) => stream.Stream<
+    unknown,
+    ListImportsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListTablesError =
   | InternalServerError
@@ -6815,7 +6910,27 @@ export const listTables: API.OperationMethod<
     items: "TableNames",
     pageSize: "Limit",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListTablesInput,
+  ListTablesOutput,
+  ListTablesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListTablesInput,
+  ) => stream.Stream<
+    ListTablesOutput,
+    ListTablesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListTablesInput,
+  ) => stream.Stream<
+    TableName,
+    ListTablesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListTagsOfResourceError =
   | InternalServerError
@@ -7067,7 +7182,27 @@ export const query: API.OperationMethod<
     items: "Items",
     pageSize: "Limit",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  QueryInput,
+  QueryOutput,
+  QueryError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: QueryInput,
+  ) => stream.Stream<
+    QueryOutput,
+    QueryError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: QueryInput,
+  ) => stream.Stream<
+    { [key: string]: AttributeValue | undefined },
+    QueryError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type RestoreTableFromBackupError =
   | BackupInUseException
@@ -7287,7 +7422,27 @@ export const scan: API.OperationMethod<
     items: "Items",
     pageSize: "Limit",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ScanInput,
+  ScanOutput,
+  ScanError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ScanInput,
+  ) => stream.Stream<
+    ScanOutput,
+    ScanError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ScanInput,
+  ) => stream.Stream<
+    { [key: string]: AttributeValue | undefined },
+    ScanError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type TagResourceError =
   | InternalServerError

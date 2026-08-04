@@ -88,72 +88,85 @@ const rules = T.EndpointResolver((p, _) => {
   return err("Invalid Configuration: Missing Region");
 });
 
-export class CodeValidationException extends S.TaggedErrorClass<CodeValidationException>()(
-  "CodeValidationException",
-  { Message: S.optional(S.String) },
-) {}
-export class ConcurrentModificationException extends S.TaggedErrorClass<ConcurrentModificationException>()(
-  "ConcurrentModificationException",
-  { Message: S.optional(S.String) },
-  T.HttpError(409),
-).pipe(C.withConflictError) {}
-export class InvalidApplicationConfigurationException extends S.TaggedErrorClass<InvalidApplicationConfigurationException>()(
-  "InvalidApplicationConfigurationException",
-  { Message: S.optional(S.String) },
-) {}
-export class InvalidArgumentException extends S.TaggedErrorClass<InvalidArgumentException>()(
-  "InvalidArgumentException",
-  { Message: S.optional(S.String) },
-) {}
-export class InvalidRequestException extends S.TaggedErrorClass<InvalidRequestException>()(
-  "InvalidRequestException",
-  { Message: S.optional(S.String) },
-) {}
-export class LimitExceededException extends S.TaggedErrorClass<LimitExceededException>()(
-  "LimitExceededException",
-  { Message: S.optional(S.String) },
-) {}
-export class ResourceInUseException extends S.TaggedErrorClass<ResourceInUseException>()(
-  "ResourceInUseException",
-  { Message: S.optional(S.String) },
-) {}
-export class ResourceNotFoundException extends S.TaggedErrorClass<ResourceNotFoundException>()(
-  "ResourceNotFoundException",
-  { Message: S.optional(S.String) },
-) {}
-export class ResourceProvisionedThroughputExceededException extends S.TaggedErrorClass<ResourceProvisionedThroughputExceededException>()(
-  "ResourceProvisionedThroughputExceededException",
-  { Message: S.optional(S.String) },
-) {}
-export class ServiceUnavailableException extends S.TaggedErrorClass<ServiceUnavailableException>()(
-  "ServiceUnavailableException",
-  { Message: S.optional(S.String) },
-  T.HttpError(503),
-).pipe(C.withServerError) {}
-export class TooManyTagsException extends S.TaggedErrorClass<TooManyTagsException>()(
-  "TooManyTagsException",
-  { message: S.optional(S.String) },
-) {}
-export class UnableToDetectSchemaException extends S.TaggedErrorClass<UnableToDetectSchemaException>()(
-  "UnableToDetectSchemaException",
-  {
-    Message: S.optional(S.String),
-    RawInputRecords: S.optional(
-      S.suspend(() => RawInputRecords).annotate({
-        identifier: "RawInputRecords",
-      }),
-    ),
-    ProcessedInputRecords: S.optional(
-      S.suspend(() => ProcessedInputRecords).annotate({
-        identifier: "ProcessedInputRecords",
-      }),
-    ),
-  },
-) {}
-export class UnsupportedOperationException extends S.TaggedErrorClass<UnsupportedOperationException>()(
-  "UnsupportedOperationException",
-  { Message: S.optional(S.String) },
-) {}
+export class CodeValidationException
+  extends /*@__PURE__*/ S.TaggedErrorClass<CodeValidationException>()(
+    "CodeValidationException",
+    { Message: S.optional(S.String) },
+  ) {}
+export class ConcurrentModificationException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ConcurrentModificationException>()(
+    "ConcurrentModificationException",
+    { Message: S.optional(S.String) },
+    T.HttpError(409),
+  ).pipe(C.withConflictError) {}
+export class InvalidApplicationConfigurationException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidApplicationConfigurationException>()(
+    "InvalidApplicationConfigurationException",
+    { Message: S.optional(S.String) },
+  ) {}
+export class InvalidArgumentException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidArgumentException>()(
+    "InvalidArgumentException",
+    { Message: S.optional(S.String) },
+  ) {}
+export class InvalidRequestException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidRequestException>()(
+    "InvalidRequestException",
+    { Message: S.optional(S.String) },
+  ) {}
+export class LimitExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<LimitExceededException>()(
+    "LimitExceededException",
+    { Message: S.optional(S.String) },
+  ) {}
+export class ResourceInUseException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceInUseException>()(
+    "ResourceInUseException",
+    { Message: S.optional(S.String) },
+  ) {}
+export class ResourceNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
+    "ResourceNotFoundException",
+    { Message: S.optional(S.String) },
+  ) {}
+export class ResourceProvisionedThroughputExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceProvisionedThroughputExceededException>()(
+    "ResourceProvisionedThroughputExceededException",
+    { Message: S.optional(S.String) },
+  ) {}
+export class ServiceUnavailableException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ServiceUnavailableException>()(
+    "ServiceUnavailableException",
+    { Message: S.optional(S.String) },
+    T.HttpError(503),
+  ).pipe(C.withServerError) {}
+export class TooManyTagsException
+  extends /*@__PURE__*/ S.TaggedErrorClass<TooManyTagsException>()(
+    "TooManyTagsException",
+    { message: S.optional(S.String) },
+  ) {}
+export class UnableToDetectSchemaException
+  extends /*@__PURE__*/ S.TaggedErrorClass<UnableToDetectSchemaException>()(
+    "UnableToDetectSchemaException",
+    {
+      Message: S.optional(S.String),
+      RawInputRecords: S.optional(
+        S.suspend(() => RawInputRecords).annotate({
+          identifier: "RawInputRecords",
+        }),
+      ),
+      ProcessedInputRecords: S.optional(
+        S.suspend(() => ProcessedInputRecords).annotate({
+          identifier: "ProcessedInputRecords",
+        }),
+      ),
+    },
+  ) {}
+export class UnsupportedOperationException
+  extends /*@__PURE__*/ S.TaggedErrorClass<UnsupportedOperationException>()(
+    "UnsupportedOperationException",
+    { Message: S.optional(S.String) },
+  ) {}
 export type ApplicationName = string;
 export type ApplicationVersionId = number;
 export type LogStreamARN = string;
@@ -4026,7 +4039,27 @@ export const listApplicationOperations: API.OperationMethod<
     items: "ApplicationOperationInfoList",
     pageSize: "Limit",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListApplicationOperationsRequest,
+  ListApplicationOperationsResponse,
+  ListApplicationOperationsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListApplicationOperationsRequest,
+  ) => stream.Stream<
+    ListApplicationOperationsResponse,
+    ListApplicationOperationsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListApplicationOperationsRequest,
+  ) => stream.Stream<
+    ApplicationOperationInfo,
+    ListApplicationOperationsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListApplicationsError = InvalidRequestException | CommonErrors;
 /**
@@ -4070,7 +4103,27 @@ export const listApplications: API.OperationMethod<
     items: "ApplicationSummaries",
     pageSize: "Limit",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListApplicationsRequest,
+  ListApplicationsResponse,
+  ListApplicationsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListApplicationsRequest,
+  ) => stream.Stream<
+    ListApplicationsResponse,
+    ListApplicationsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListApplicationsRequest,
+  ) => stream.Stream<
+    ApplicationSummary,
+    ListApplicationsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListApplicationSnapshotsError =
   | InvalidArgumentException
@@ -4112,7 +4165,27 @@ export const listApplicationSnapshots: API.OperationMethod<
     items: "SnapshotSummaries",
     pageSize: "Limit",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListApplicationSnapshotsRequest,
+  ListApplicationSnapshotsResponse,
+  ListApplicationSnapshotsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListApplicationSnapshotsRequest,
+  ) => stream.Stream<
+    ListApplicationSnapshotsResponse,
+    ListApplicationSnapshotsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListApplicationSnapshotsRequest,
+  ) => stream.Stream<
+    SnapshotDetails,
+    ListApplicationSnapshotsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListApplicationVersionsError =
   | InvalidArgumentException
@@ -4164,7 +4237,27 @@ export const listApplicationVersions: API.OperationMethod<
     items: "ApplicationVersionSummaries",
     pageSize: "Limit",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListApplicationVersionsRequest,
+  ListApplicationVersionsResponse,
+  ListApplicationVersionsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListApplicationVersionsRequest,
+  ) => stream.Stream<
+    ListApplicationVersionsResponse,
+    ListApplicationVersionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListApplicationVersionsRequest,
+  ) => stream.Stream<
+    ApplicationVersionSummary,
+    ListApplicationVersionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListTagsForResourceError =
   | ConcurrentModificationException

@@ -85,60 +85,68 @@ const rules = T.EndpointResolver((p, _) => {
   return err("Invalid Configuration: Missing Region");
 });
 
-export class AccessDeniedException extends S.TaggedErrorClass<AccessDeniedException>()(
-  "AccessDeniedException",
-  { message: S.String },
-  T.HttpError(403),
-).pipe(C.withAuthError) {}
-export class ConflictException extends S.TaggedErrorClass<ConflictException>()(
-  "ConflictException",
-  {
-    message: S.String,
-    resourceIdentifier: S.optional(S.String),
-    resourceType: S.optional(S.String),
-    retryAfter: S.optional(S.Date.pipe(T.TimestampFormat("epoch-seconds"))),
-  },
-  T.HttpError(409),
-).pipe(C.withConflictError) {}
-export class InternalServerException extends S.TaggedErrorClass<InternalServerException>()(
-  "InternalServerException",
-  { message: S.String },
-  T.HttpError(500),
-).pipe(C.withServerError) {}
-export class ResourceNotFoundException extends S.TaggedErrorClass<ResourceNotFoundException>()(
-  "ResourceNotFoundException",
-  {
-    message: S.String,
-    resourceIdentifier: S.optional(S.String),
-    resourceType: S.optional(S.String),
-  },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class ServiceQuotaExceededException extends S.TaggedErrorClass<ServiceQuotaExceededException>()(
-  "ServiceQuotaExceededException",
-  {
-    message: S.String,
-    resourceIdentifier: S.optional(S.String),
-    resourceType: S.optional(S.String),
-    serviceCode: S.String,
-    quotaCode: S.String,
-  },
-  T.HttpError(402),
-).pipe(C.withQuotaError) {}
-export class ThrottlingException extends S.TaggedErrorClass<ThrottlingException>()(
-  "ThrottlingException",
-  { message: S.String, serviceCode: S.String, quotaCode: S.String },
-  T.HttpError(429),
-).pipe(C.withThrottlingError) {}
-export class UnsupportedOperationException extends S.TaggedErrorClass<UnsupportedOperationException>()(
-  "UnsupportedOperationException",
-  {},
-).pipe(C.withBadRequestError) {}
-export class ValidationException extends S.TaggedErrorClass<ValidationException>()(
-  "ValidationException",
-  { message: S.String },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
+export class AccessDeniedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
+    "AccessDeniedException",
+    { message: S.String },
+    T.HttpError(403),
+  ).pipe(C.withAuthError) {}
+export class ConflictException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
+    "ConflictException",
+    {
+      message: S.String,
+      resourceIdentifier: S.optional(S.String),
+      resourceType: S.optional(S.String),
+      retryAfter: S.optional(S.Date.pipe(T.TimestampFormat("epoch-seconds"))),
+    },
+    T.HttpError(409),
+  ).pipe(C.withConflictError) {}
+export class InternalServerException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
+    "InternalServerException",
+    { message: S.String },
+    T.HttpError(500),
+  ).pipe(C.withServerError) {}
+export class ResourceNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
+    "ResourceNotFoundException",
+    {
+      message: S.String,
+      resourceIdentifier: S.optional(S.String),
+      resourceType: S.optional(S.String),
+    },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class ServiceQuotaExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
+    "ServiceQuotaExceededException",
+    {
+      message: S.String,
+      resourceIdentifier: S.optional(S.String),
+      resourceType: S.optional(S.String),
+      serviceCode: S.String,
+      quotaCode: S.String,
+    },
+    T.HttpError(402),
+  ).pipe(C.withQuotaError) {}
+export class ThrottlingException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
+    "ThrottlingException",
+    { message: S.String, serviceCode: S.String, quotaCode: S.String },
+    T.HttpError(429),
+  ).pipe(C.withThrottlingError) {}
+export class UnsupportedOperationException
+  extends /*@__PURE__*/ S.TaggedErrorClass<UnsupportedOperationException>()(
+    "UnsupportedOperationException",
+    {},
+  ).pipe(C.withBadRequestError) {}
+export class ValidationException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
+    "ValidationException",
+    { message: S.String },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
 export type Arn = string;
 export type FindingId = string;
 export type FindingIdList = string[];
@@ -2124,7 +2132,27 @@ export const getResourcePolicies: API.OperationMethod<
     items: "resourcePolicies",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  GetResourcePoliciesInput,
+  GetResourcePoliciesOutput,
+  GetResourcePoliciesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: GetResourcePoliciesInput,
+  ) => stream.Stream<
+    GetResourcePoliciesOutput,
+    GetResourcePoliciesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: GetResourcePoliciesInput,
+  ) => stream.Stream<
+    ResourcePolicy,
+    GetResourcePoliciesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type GetResponsePlanError =
   | AccessDeniedException
@@ -2238,7 +2266,27 @@ export const listIncidentFindings: API.OperationMethod<
     items: "findings",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListIncidentFindingsInput,
+  ListIncidentFindingsOutput,
+  ListIncidentFindingsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListIncidentFindingsInput,
+  ) => stream.Stream<
+    ListIncidentFindingsOutput,
+    ListIncidentFindingsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListIncidentFindingsInput,
+  ) => stream.Stream<
+    FindingSummary,
+    ListIncidentFindingsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListIncidentRecordsError =
   | AccessDeniedException
@@ -2288,7 +2336,27 @@ export const listIncidentRecords: API.OperationMethod<
     items: "incidentRecordSummaries",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListIncidentRecordsInput,
+  ListIncidentRecordsOutput,
+  ListIncidentRecordsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListIncidentRecordsInput,
+  ) => stream.Stream<
+    ListIncidentRecordsOutput,
+    ListIncidentRecordsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListIncidentRecordsInput,
+  ) => stream.Stream<
+    IncidentRecordSummary,
+    ListIncidentRecordsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListRelatedItemsError =
   | AccessDeniedException
@@ -2337,7 +2405,27 @@ export const listRelatedItems: API.OperationMethod<
     items: "relatedItems",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListRelatedItemsInput,
+  ListRelatedItemsOutput,
+  ListRelatedItemsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListRelatedItemsInput,
+  ) => stream.Stream<
+    ListRelatedItemsOutput,
+    ListRelatedItemsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListRelatedItemsInput,
+  ) => stream.Stream<
+    RelatedItem,
+    ListRelatedItemsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListReplicationSetsError =
   | AccessDeniedException
@@ -2386,7 +2474,27 @@ export const listReplicationSets: API.OperationMethod<
     items: "replicationSetArns",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListReplicationSetsInput,
+  ListReplicationSetsOutput,
+  ListReplicationSetsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListReplicationSetsInput,
+  ) => stream.Stream<
+    ListReplicationSetsOutput,
+    ListReplicationSetsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListReplicationSetsInput,
+  ) => stream.Stream<
+    Arn,
+    ListReplicationSetsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListResponsePlansError =
   | AccessDeniedException
@@ -2435,7 +2543,27 @@ export const listResponsePlans: API.OperationMethod<
     items: "responsePlanSummaries",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListResponsePlansInput,
+  ListResponsePlansOutput,
+  ListResponsePlansError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListResponsePlansInput,
+  ) => stream.Stream<
+    ListResponsePlansOutput,
+    ListResponsePlansError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListResponsePlansInput,
+  ) => stream.Stream<
+    ResponsePlanSummary,
+    ListResponsePlansError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListTagsForResourceError =
   | AccessDeniedException
@@ -2514,7 +2642,27 @@ export const listTimelineEvents: API.OperationMethod<
     items: "eventSummaries",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListTimelineEventsInput,
+  ListTimelineEventsOutput,
+  ListTimelineEventsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListTimelineEventsInput,
+  ) => stream.Stream<
+    ListTimelineEventsOutput,
+    ListTimelineEventsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListTimelineEventsInput,
+  ) => stream.Stream<
+    EventSummary,
+    ListTimelineEventsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type PutResourcePolicyError =
   | AccessDeniedException

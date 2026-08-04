@@ -87,56 +87,66 @@ const rules = T.EndpointResolver((p, _) => {
   return err("Invalid Configuration: Missing Region");
 });
 
-export class AccessDeniedException extends S.TaggedErrorClass<AccessDeniedException>()(
-  "AccessDeniedException",
-  { message: S.optional(S.String) },
-  T.HttpError(403),
-).pipe(C.withAuthError) {}
-export class ConflictException extends S.TaggedErrorClass<ConflictException>()(
-  "ConflictException",
-  { message: S.optional(S.String), reason: S.optional(S.String) },
-  T.HttpError(409),
-).pipe(C.withConflictError) {}
-export class InternalServerException extends S.TaggedErrorClass<InternalServerException>()(
-  "InternalServerException",
-  { message: S.optional(S.String) },
-  T.HttpError(500),
-).pipe(C.withServerError) {}
-export class InvalidRequestException extends S.TaggedErrorClass<InvalidRequestException>()(
-  "InvalidRequestException",
-  { message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class LimitExceededException extends S.TaggedErrorClass<LimitExceededException>()(
-  "LimitExceededException",
-  { message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class ResourceAlreadyExistsException extends S.TaggedErrorClass<ResourceAlreadyExistsException>()(
-  "ResourceAlreadyExistsException",
-  { message: S.optional(S.String) },
-  T.HttpError(409),
-).pipe(C.withConflictError, C.withAlreadyExistsError) {}
-export class ResourceNotFoundException extends S.TaggedErrorClass<ResourceNotFoundException>()(
-  "ResourceNotFoundException",
-  { message: S.optional(S.String) },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class ServiceQuotaExceededException extends S.TaggedErrorClass<ServiceQuotaExceededException>()(
-  "ServiceQuotaExceededException",
-  { message: S.optional(S.String) },
-  T.HttpError(402),
-).pipe(C.withQuotaError) {}
-export class ThrottlingException extends S.TaggedErrorClass<ThrottlingException>()(
-  "ThrottlingException",
-  { message: S.optional(S.String) },
-  T.HttpError(429),
-).pipe(C.withThrottlingError) {}
-export class ValidationException extends S.TaggedErrorClass<ValidationException>()(
-  "ValidationException",
-  { message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
+export class AccessDeniedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
+    "AccessDeniedException",
+    { message: S.optional(S.String) },
+    T.HttpError(403),
+  ).pipe(C.withAuthError) {}
+export class ConflictException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
+    "ConflictException",
+    { message: S.optional(S.String), reason: S.optional(S.String) },
+    T.HttpError(409),
+  ).pipe(C.withConflictError) {}
+export class InternalServerException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
+    "InternalServerException",
+    { message: S.optional(S.String) },
+    T.HttpError(500),
+  ).pipe(C.withServerError) {}
+export class InvalidRequestException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidRequestException>()(
+    "InvalidRequestException",
+    { message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class LimitExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<LimitExceededException>()(
+    "LimitExceededException",
+    { message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class ResourceAlreadyExistsException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceAlreadyExistsException>()(
+    "ResourceAlreadyExistsException",
+    { message: S.optional(S.String) },
+    T.HttpError(409),
+  ).pipe(C.withConflictError, C.withAlreadyExistsError) {}
+export class ResourceNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
+    "ResourceNotFoundException",
+    { message: S.optional(S.String) },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class ServiceQuotaExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
+    "ServiceQuotaExceededException",
+    { message: S.optional(S.String) },
+    T.HttpError(402),
+  ).pipe(C.withQuotaError) {}
+export class ThrottlingException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
+    "ThrottlingException",
+    { message: S.optional(S.String) },
+    T.HttpError(429),
+  ).pipe(C.withThrottlingError) {}
+export class ValidationException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
+    "ValidationException",
+    { message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
 export type EnvironmentName = string;
 export type Description = string;
 export type KmsKeyId = string;
@@ -4448,7 +4458,27 @@ export const listKxChangesets: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListKxChangesetsRequest,
+  ListKxChangesetsResponse,
+  ListKxChangesetsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListKxChangesetsRequest,
+  ) => stream.Stream<
+    ListKxChangesetsResponse,
+    ListKxChangesetsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListKxChangesetsRequest,
+  ) => stream.Stream<
+    unknown,
+    ListKxChangesetsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListKxClusterNodesError =
   | AccessDeniedException
@@ -4500,7 +4530,27 @@ export const listKxClusterNodes: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListKxClusterNodesRequest,
+  ListKxClusterNodesResponse,
+  ListKxClusterNodesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListKxClusterNodesRequest,
+  ) => stream.Stream<
+    ListKxClusterNodesResponse,
+    ListKxClusterNodesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListKxClusterNodesRequest,
+  ) => stream.Stream<
+    unknown,
+    ListKxClusterNodesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListKxClustersError =
   | AccessDeniedException
@@ -4584,7 +4634,27 @@ export const listKxDatabases: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListKxDatabasesRequest,
+  ListKxDatabasesResponse,
+  ListKxDatabasesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListKxDatabasesRequest,
+  ) => stream.Stream<
+    ListKxDatabasesResponse,
+    ListKxDatabasesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListKxDatabasesRequest,
+  ) => stream.Stream<
+    unknown,
+    ListKxDatabasesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListKxDataviewsError =
   | AccessDeniedException
@@ -4634,7 +4704,27 @@ export const listKxDataviews: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListKxDataviewsRequest,
+  ListKxDataviewsResponse,
+  ListKxDataviewsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListKxDataviewsRequest,
+  ) => stream.Stream<
+    ListKxDataviewsResponse,
+    ListKxDataviewsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListKxDataviewsRequest,
+  ) => stream.Stream<
+    unknown,
+    ListKxDataviewsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListKxEnvironmentsError =
   | AccessDeniedException
@@ -4677,7 +4767,27 @@ export const listKxEnvironments: API.OperationMethod<
     items: "environments",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListKxEnvironmentsRequest,
+  ListKxEnvironmentsResponse,
+  ListKxEnvironmentsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListKxEnvironmentsRequest,
+  ) => stream.Stream<
+    ListKxEnvironmentsResponse,
+    ListKxEnvironmentsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListKxEnvironmentsRequest,
+  ) => stream.Stream<
+    KxEnvironment,
+    ListKxEnvironmentsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListKxScalingGroupsError =
   | AccessDeniedException
@@ -4731,7 +4841,27 @@ export const listKxScalingGroups: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListKxScalingGroupsRequest,
+  ListKxScalingGroupsResponse,
+  ListKxScalingGroupsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListKxScalingGroupsRequest,
+  ) => stream.Stream<
+    ListKxScalingGroupsResponse,
+    ListKxScalingGroupsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListKxScalingGroupsRequest,
+  ) => stream.Stream<
+    unknown,
+    ListKxScalingGroupsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListKxUsersError =
   | AccessDeniedException

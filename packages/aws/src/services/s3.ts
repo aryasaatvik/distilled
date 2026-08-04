@@ -3019,235 +3019,281 @@ const rules = T.EndpointResolver((p, _) => {
   return err("A region must be set when sending requests to S3.");
 });
 
-export class AccessDenied extends S.TaggedErrorClass<AccessDenied>()(
-  "AccessDenied",
-  {},
-  T.HttpError(403),
-).pipe(C.withAuthError) {}
-export class AnnotationLimitExceeded extends S.TaggedErrorClass<AnnotationLimitExceeded>()(
-  "AnnotationLimitExceeded",
-  {},
-  T.HttpError(400),
-).pipe(C.withBadRequestError, C.withThrottlingError) {}
-export class AnnotationNameTooLong extends S.TaggedErrorClass<AnnotationNameTooLong>()(
-  "AnnotationNameTooLong",
-  {},
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class BucketAlreadyExists extends S.TaggedErrorClass<BucketAlreadyExists>()(
-  "BucketAlreadyExists",
-  {},
-  T.HttpError(409),
-).pipe(C.withConflictError, C.withAlreadyExistsError) {}
-export class BucketAlreadyOwnedByYou extends S.TaggedErrorClass<BucketAlreadyOwnedByYou>()(
-  "BucketAlreadyOwnedByYou",
-  {},
-  T.HttpError(409),
-).pipe(C.withConflictError, C.withAlreadyExistsError) {}
-export class BucketHasAccessPointsAttached extends S.TaggedErrorClass<BucketHasAccessPointsAttached>()(
-  "BucketHasAccessPointsAttached",
-  {},
-).pipe(C.withConflictError) {}
-export class BucketNotEmpty extends S.TaggedErrorClass<BucketNotEmpty>()(
-  "BucketNotEmpty",
-  {},
-).pipe(C.withConflictError) {}
-export class ConditionalRequestConflict extends S.TaggedErrorClass<ConditionalRequestConflict>()(
-  "ConditionalRequestConflict",
-  {},
-).pipe(C.withConflictError, C.withRetryableError) {}
-export class EncryptionTypeMismatch extends S.TaggedErrorClass<EncryptionTypeMismatch>()(
-  "EncryptionTypeMismatch",
-  {},
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class IdempotencyParameterMismatch extends S.TaggedErrorClass<IdempotencyParameterMismatch>()(
-  "IdempotencyParameterMismatch",
-  {},
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class IllegalLocationConstraintException extends S.TaggedErrorClass<IllegalLocationConstraintException>()(
-  "IllegalLocationConstraintException",
-  {},
-).pipe(C.withBadRequestError) {}
-export class InvalidAnnotationName extends S.TaggedErrorClass<InvalidAnnotationName>()(
-  "InvalidAnnotationName",
-  {},
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class InvalidArgument extends S.TaggedErrorClass<InvalidArgument>()(
-  "InvalidArgument",
-  {},
-).pipe(C.withBadRequestError) {}
-export class InvalidBucketName extends S.TaggedErrorClass<InvalidBucketName>()(
-  "InvalidBucketName",
-  {},
-).pipe(C.withBadRequestError) {}
-export class InvalidBucketState extends S.TaggedErrorClass<InvalidBucketState>()(
-  "InvalidBucketState",
-  {},
-).pipe(C.withConflictError) {}
-export class InvalidDigest extends S.TaggedErrorClass<InvalidDigest>()(
-  "InvalidDigest",
-  {},
-).pipe(C.withBadRequestError) {}
-export class InvalidLocationConstraint extends S.TaggedErrorClass<InvalidLocationConstraint>()(
-  "InvalidLocationConstraint",
-  {},
-).pipe(C.withBadRequestError) {}
-export class InvalidObjectState extends S.TaggedErrorClass<InvalidObjectState>()(
-  "InvalidObjectState",
-  {
-    StorageClass: S.optional(
-      S.suspend(() => StorageClass).annotate({ identifier: "StorageClass" }),
-    ),
-    AccessTier: S.optional(
-      S.suspend(() => IntelligentTieringAccessTier).annotate({
-        identifier: "IntelligentTieringAccessTier",
-      }),
-    ),
-  },
-  T.HttpError(403),
-).pipe(C.withAuthError) {}
-export class InvalidPrefix extends S.TaggedErrorClass<InvalidPrefix>()(
-  "InvalidPrefix",
-  {},
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class InvalidRequest extends S.TaggedErrorClass<InvalidRequest>()(
-  "InvalidRequest",
-  {},
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class InvalidWriteOffset extends S.TaggedErrorClass<InvalidWriteOffset>()(
-  "InvalidWriteOffset",
-  {},
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class MalformedPolicy extends S.TaggedErrorClass<MalformedPolicy>()(
-  "MalformedPolicy",
-  {},
-).pipe(C.withBadRequestError) {}
-export class MalformedXML extends S.TaggedErrorClass<MalformedXML>()(
-  "MalformedXML",
-  {},
-).pipe(C.withBadRequestError) {}
-export class NoSuchAnnotation extends S.TaggedErrorClass<NoSuchAnnotation>()(
-  "NoSuchAnnotation",
-  {},
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class NoSuchBucket extends S.TaggedErrorClass<NoSuchBucket>()(
-  "NoSuchBucket",
-  { Message: S.optional(S.String), BucketName: S.optional(S.String) },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class NoSuchBucketPolicy extends S.TaggedErrorClass<NoSuchBucketPolicy>()(
-  "NoSuchBucketPolicy",
-  {},
-) {}
-export class NoSuchConfiguration extends S.TaggedErrorClass<NoSuchConfiguration>()(
-  "NoSuchConfiguration",
-  {},
-) {}
-export class NoSuchCORSConfiguration extends S.TaggedErrorClass<NoSuchCORSConfiguration>()(
-  "NoSuchCORSConfiguration",
-  {},
-) {}
-export class NoSuchKey extends S.TaggedErrorClass<NoSuchKey>()(
-  "NoSuchKey",
-  {},
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class NoSuchLifecycleConfiguration extends S.TaggedErrorClass<NoSuchLifecycleConfiguration>()(
-  "NoSuchLifecycleConfiguration",
-  {},
-) {}
-export class NoSuchPublicAccessBlockConfiguration extends S.TaggedErrorClass<NoSuchPublicAccessBlockConfiguration>()(
-  "NoSuchPublicAccessBlockConfiguration",
-  {},
-) {}
-export class NoSuchTagSet extends S.TaggedErrorClass<NoSuchTagSet>()(
-  "NoSuchTagSet",
-  {},
-) {}
-export class NoSuchUpload extends S.TaggedErrorClass<NoSuchUpload>()(
-  "NoSuchUpload",
-  {},
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class NoSuchWebsiteConfiguration extends S.TaggedErrorClass<NoSuchWebsiteConfiguration>()(
-  "NoSuchWebsiteConfiguration",
-  {},
-) {}
-export class NotFound extends S.TaggedErrorClass<NotFound>()("NotFound", {}) {}
-export class ObjectAlreadyInActiveTierError extends S.TaggedErrorClass<ObjectAlreadyInActiveTierError>()(
-  "ObjectAlreadyInActiveTierError",
-  {},
-  T.HttpError(403),
-).pipe(C.withAuthError) {}
-export class ObjectLockConfigurationNotFoundError extends S.TaggedErrorClass<ObjectLockConfigurationNotFoundError>()(
-  "ObjectLockConfigurationNotFoundError",
-  {},
-) {}
-export class ObjectNotInActiveTierError extends S.TaggedErrorClass<ObjectNotInActiveTierError>()(
-  "ObjectNotInActiveTierError",
-  {},
-  T.HttpError(403),
-).pipe(C.withAuthError) {}
-export class OwnershipControlsNotFoundError extends S.TaggedErrorClass<OwnershipControlsNotFoundError>()(
-  "OwnershipControlsNotFoundError",
-  {},
-) {}
-export class ParseError extends S.TaggedErrorClass<ParseError>()(
-  "ParseError",
-  {},
-) {}
-export class PermanentRedirect extends S.TaggedErrorClass<PermanentRedirect>()(
-  "PermanentRedirect",
-  {
-    BucketRegion: S.optional(S.String).pipe(
-      T.HttpHeader("x-amz-bucket-region"),
-    ),
-    Endpoint: S.optional(S.String),
-    Bucket: S.optional(S.String),
-    Message: S.optional(S.String),
-  },
-) {}
-export class PreconditionFailed extends S.TaggedErrorClass<PreconditionFailed>()(
-  "PreconditionFailed",
-  {},
-).pipe(C.withConflictError) {}
-export class ReplicationConfigurationNotFoundError extends S.TaggedErrorClass<ReplicationConfigurationNotFoundError>()(
-  "ReplicationConfigurationNotFoundError",
-  {},
-) {}
-export class RequestError extends S.TaggedErrorClass<RequestError>()(
-  "RequestError",
-  {},
-) {}
-export class RequestLimitExceeded extends S.TaggedErrorClass<RequestLimitExceeded>()(
-  "RequestLimitExceeded",
-  {},
-).pipe(C.withThrottlingError) {}
-export class SignatureDoesNotMatch extends S.TaggedErrorClass<SignatureDoesNotMatch>()(
-  "SignatureDoesNotMatch",
-  {},
-).pipe(C.withAuthError) {}
-export class SlowDown extends S.TaggedErrorClass<SlowDown>()(
-  "SlowDown",
-  {},
-).pipe(C.withThrottlingError, C.withRetryableError) {}
-export class TooManyParts extends S.TaggedErrorClass<TooManyParts>()(
-  "TooManyParts",
-  {},
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class UnsupportedMediaType extends S.TaggedErrorClass<UnsupportedMediaType>()(
-  "UnsupportedMediaType",
-  {},
-  T.HttpError(415),
-).pipe(C.withBadRequestError) {}
+export class AccessDenied
+  extends /*@__PURE__*/ S.TaggedErrorClass<AccessDenied>()(
+    "AccessDenied",
+    {},
+    T.HttpError(403),
+  ).pipe(C.withAuthError) {}
+export class AnnotationLimitExceeded
+  extends /*@__PURE__*/ S.TaggedErrorClass<AnnotationLimitExceeded>()(
+    "AnnotationLimitExceeded",
+    {},
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError, C.withThrottlingError) {}
+export class AnnotationNameTooLong
+  extends /*@__PURE__*/ S.TaggedErrorClass<AnnotationNameTooLong>()(
+    "AnnotationNameTooLong",
+    {},
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class BucketAlreadyExists
+  extends /*@__PURE__*/ S.TaggedErrorClass<BucketAlreadyExists>()(
+    "BucketAlreadyExists",
+    {},
+    T.HttpError(409),
+  ).pipe(C.withConflictError, C.withAlreadyExistsError) {}
+export class BucketAlreadyOwnedByYou
+  extends /*@__PURE__*/ S.TaggedErrorClass<BucketAlreadyOwnedByYou>()(
+    "BucketAlreadyOwnedByYou",
+    {},
+    T.HttpError(409),
+  ).pipe(C.withConflictError, C.withAlreadyExistsError) {}
+export class BucketHasAccessPointsAttached
+  extends /*@__PURE__*/ S.TaggedErrorClass<BucketHasAccessPointsAttached>()(
+    "BucketHasAccessPointsAttached",
+    {},
+  ).pipe(C.withConflictError) {}
+export class BucketNotEmpty
+  extends /*@__PURE__*/ S.TaggedErrorClass<BucketNotEmpty>()(
+    "BucketNotEmpty",
+    {},
+  ).pipe(C.withConflictError) {}
+export class ConditionalRequestConflict
+  extends /*@__PURE__*/ S.TaggedErrorClass<ConditionalRequestConflict>()(
+    "ConditionalRequestConflict",
+    {},
+  ).pipe(C.withConflictError, C.withRetryableError) {}
+export class EncryptionTypeMismatch
+  extends /*@__PURE__*/ S.TaggedErrorClass<EncryptionTypeMismatch>()(
+    "EncryptionTypeMismatch",
+    {},
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class IdempotencyParameterMismatch
+  extends /*@__PURE__*/ S.TaggedErrorClass<IdempotencyParameterMismatch>()(
+    "IdempotencyParameterMismatch",
+    {},
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class IllegalLocationConstraintException
+  extends /*@__PURE__*/ S.TaggedErrorClass<IllegalLocationConstraintException>()(
+    "IllegalLocationConstraintException",
+    {},
+  ).pipe(C.withBadRequestError) {}
+export class InvalidAnnotationName
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidAnnotationName>()(
+    "InvalidAnnotationName",
+    {},
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class InvalidArgument
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidArgument>()(
+    "InvalidArgument",
+    {},
+  ).pipe(C.withBadRequestError) {}
+export class InvalidBucketName
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidBucketName>()(
+    "InvalidBucketName",
+    {},
+  ).pipe(C.withBadRequestError) {}
+export class InvalidBucketState
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidBucketState>()(
+    "InvalidBucketState",
+    {},
+  ).pipe(C.withConflictError) {}
+export class InvalidDigest
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidDigest>()(
+    "InvalidDigest",
+    {},
+  ).pipe(C.withBadRequestError) {}
+export class InvalidLocationConstraint
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidLocationConstraint>()(
+    "InvalidLocationConstraint",
+    {},
+  ).pipe(C.withBadRequestError) {}
+export class InvalidObjectState
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidObjectState>()(
+    "InvalidObjectState",
+    {
+      StorageClass: S.optional(
+        S.suspend(() => StorageClass).annotate({ identifier: "StorageClass" }),
+      ),
+      AccessTier: S.optional(
+        S.suspend(() => IntelligentTieringAccessTier).annotate({
+          identifier: "IntelligentTieringAccessTier",
+        }),
+      ),
+    },
+    T.HttpError(403),
+  ).pipe(C.withAuthError) {}
+export class InvalidPrefix
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidPrefix>()(
+    "InvalidPrefix",
+    {},
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class InvalidRequest
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidRequest>()(
+    "InvalidRequest",
+    {},
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class InvalidWriteOffset
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidWriteOffset>()(
+    "InvalidWriteOffset",
+    {},
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class MalformedPolicy
+  extends /*@__PURE__*/ S.TaggedErrorClass<MalformedPolicy>()(
+    "MalformedPolicy",
+    {},
+  ).pipe(C.withBadRequestError) {}
+export class MalformedXML
+  extends /*@__PURE__*/ S.TaggedErrorClass<MalformedXML>()(
+    "MalformedXML",
+    {},
+  ).pipe(C.withBadRequestError) {}
+export class NoSuchAnnotation
+  extends /*@__PURE__*/ S.TaggedErrorClass<NoSuchAnnotation>()(
+    "NoSuchAnnotation",
+    {},
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class NoSuchBucket
+  extends /*@__PURE__*/ S.TaggedErrorClass<NoSuchBucket>()(
+    "NoSuchBucket",
+    { Message: S.optional(S.String), BucketName: S.optional(S.String) },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class NoSuchBucketPolicy
+  extends /*@__PURE__*/ S.TaggedErrorClass<NoSuchBucketPolicy>()(
+    "NoSuchBucketPolicy",
+    {},
+  ) {}
+export class NoSuchConfiguration
+  extends /*@__PURE__*/ S.TaggedErrorClass<NoSuchConfiguration>()(
+    "NoSuchConfiguration",
+    {},
+  ) {}
+export class NoSuchCORSConfiguration
+  extends /*@__PURE__*/ S.TaggedErrorClass<NoSuchCORSConfiguration>()(
+    "NoSuchCORSConfiguration",
+    {},
+  ) {}
+export class NoSuchKey
+  extends /*@__PURE__*/ S.TaggedErrorClass<NoSuchKey>()(
+    "NoSuchKey",
+    {},
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class NoSuchLifecycleConfiguration
+  extends /*@__PURE__*/ S.TaggedErrorClass<NoSuchLifecycleConfiguration>()(
+    "NoSuchLifecycleConfiguration",
+    {},
+  ) {}
+export class NoSuchPublicAccessBlockConfiguration
+  extends /*@__PURE__*/ S.TaggedErrorClass<NoSuchPublicAccessBlockConfiguration>()(
+    "NoSuchPublicAccessBlockConfiguration",
+    {},
+  ) {}
+export class NoSuchTagSet
+  extends /*@__PURE__*/ S.TaggedErrorClass<NoSuchTagSet>()(
+    "NoSuchTagSet",
+    {},
+  ) {}
+export class NoSuchUpload
+  extends /*@__PURE__*/ S.TaggedErrorClass<NoSuchUpload>()(
+    "NoSuchUpload",
+    {},
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class NoSuchWebsiteConfiguration
+  extends /*@__PURE__*/ S.TaggedErrorClass<NoSuchWebsiteConfiguration>()(
+    "NoSuchWebsiteConfiguration",
+    {},
+  ) {}
+export class NotFound
+  extends /*@__PURE__*/ S.TaggedErrorClass<NotFound>()("NotFound", {}) {}
+export class ObjectAlreadyInActiveTierError
+  extends /*@__PURE__*/ S.TaggedErrorClass<ObjectAlreadyInActiveTierError>()(
+    "ObjectAlreadyInActiveTierError",
+    {},
+    T.HttpError(403),
+  ).pipe(C.withAuthError) {}
+export class ObjectLockConfigurationNotFoundError
+  extends /*@__PURE__*/ S.TaggedErrorClass<ObjectLockConfigurationNotFoundError>()(
+    "ObjectLockConfigurationNotFoundError",
+    {},
+  ) {}
+export class ObjectNotInActiveTierError
+  extends /*@__PURE__*/ S.TaggedErrorClass<ObjectNotInActiveTierError>()(
+    "ObjectNotInActiveTierError",
+    {},
+    T.HttpError(403),
+  ).pipe(C.withAuthError) {}
+export class OwnershipControlsNotFoundError
+  extends /*@__PURE__*/ S.TaggedErrorClass<OwnershipControlsNotFoundError>()(
+    "OwnershipControlsNotFoundError",
+    {},
+  ) {}
+export class ParseError
+  extends /*@__PURE__*/ S.TaggedErrorClass<ParseError>()("ParseError", {}) {}
+export class PermanentRedirect
+  extends /*@__PURE__*/ S.TaggedErrorClass<PermanentRedirect>()(
+    "PermanentRedirect",
+    {
+      BucketRegion: S.optional(S.String).pipe(
+        T.HttpHeader("x-amz-bucket-region"),
+      ),
+      Endpoint: S.optional(S.String),
+      Bucket: S.optional(S.String),
+      Message: S.optional(S.String),
+    },
+  ) {}
+export class PreconditionFailed
+  extends /*@__PURE__*/ S.TaggedErrorClass<PreconditionFailed>()(
+    "PreconditionFailed",
+    {},
+  ).pipe(C.withConflictError) {}
+export class ReplicationConfigurationNotFoundError
+  extends /*@__PURE__*/ S.TaggedErrorClass<ReplicationConfigurationNotFoundError>()(
+    "ReplicationConfigurationNotFoundError",
+    {},
+  ) {}
+export class RequestError
+  extends /*@__PURE__*/ S.TaggedErrorClass<RequestError>()(
+    "RequestError",
+    {},
+  ) {}
+export class RequestLimitExceeded
+  extends /*@__PURE__*/ S.TaggedErrorClass<RequestLimitExceeded>()(
+    "RequestLimitExceeded",
+    {},
+  ).pipe(C.withThrottlingError) {}
+export class SignatureDoesNotMatch
+  extends /*@__PURE__*/ S.TaggedErrorClass<SignatureDoesNotMatch>()(
+    "SignatureDoesNotMatch",
+    {},
+  ).pipe(C.withAuthError) {}
+export class SlowDown
+  extends /*@__PURE__*/ S.TaggedErrorClass<SlowDown>()("SlowDown", {}).pipe(
+    C.withThrottlingError,
+    C.withRetryableError,
+  ) {}
+export class TooManyParts
+  extends /*@__PURE__*/ S.TaggedErrorClass<TooManyParts>()(
+    "TooManyParts",
+    {},
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class UnsupportedMediaType
+  extends /*@__PURE__*/ S.TaggedErrorClass<UnsupportedMediaType>()(
+    "UnsupportedMediaType",
+    {},
+    T.HttpError(415),
+  ).pipe(C.withBadRequestError) {}
 export type BucketName = string;
 export type ObjectKey = string;
 export type MultipartUploadId = string;
@@ -17473,7 +17519,27 @@ export const listBuckets: API.OperationMethod<
     items: "Buckets",
     pageSize: "MaxBuckets",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListBucketsRequest,
+  ListBucketsOutput,
+  ListBucketsError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListBucketsRequest,
+  ) => stream.Stream<
+    ListBucketsOutput,
+    ListBucketsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListBucketsRequest,
+  ) => stream.Stream<
+    Bucket,
+    ListBucketsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type ListDirectoryBucketsError = CommonErrors;
 /**
@@ -17536,7 +17602,27 @@ export const listDirectoryBuckets: API.OperationMethod<
     items: "Buckets",
     pageSize: "MaxDirectoryBuckets",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListDirectoryBucketsRequest,
+  ListDirectoryBucketsOutput,
+  ListDirectoryBucketsError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListDirectoryBucketsRequest,
+  ) => stream.Stream<
+    ListDirectoryBucketsOutput,
+    ListDirectoryBucketsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListDirectoryBucketsRequest,
+  ) => stream.Stream<
+    Bucket,
+    ListDirectoryBucketsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type ListMultipartUploadsError =
   | RequestLimitExceeded
@@ -17702,7 +17788,27 @@ export const listObjectAnnotations: API.OperationMethod<
     items: "Annotations",
     pageSize: "MaxAnnotationResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListObjectAnnotationsRequest,
+  ListObjectAnnotationsOutput,
+  ListObjectAnnotationsError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListObjectAnnotationsRequest,
+  ) => stream.Stream<
+    ListObjectAnnotationsOutput,
+    ListObjectAnnotationsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListObjectAnnotationsRequest,
+  ) => stream.Stream<
+    AnnotationEntry,
+    ListObjectAnnotationsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type ListObjectsError =
   | NoSuchBucket
@@ -17854,7 +17960,27 @@ export const listObjectsV2: API.OperationMethod<
     outputToken: "NextContinuationToken",
     pageSize: "MaxKeys",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListObjectsV2Request,
+  ListObjectsV2Output,
+  ListObjectsV2Error,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListObjectsV2Request,
+  ) => stream.Stream<
+    ListObjectsV2Output,
+    ListObjectsV2Error,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListObjectsV2Request,
+  ) => stream.Stream<
+    unknown,
+    ListObjectsV2Error,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type ListObjectVersionsError =
   | RequestLimitExceeded
@@ -18002,7 +18128,27 @@ export const listParts: API.OperationMethod<
     items: "Parts",
     pageSize: "MaxParts",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListPartsRequest,
+  ListPartsOutput,
+  ListPartsError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListPartsRequest,
+  ) => stream.Stream<
+    ListPartsOutput,
+    ListPartsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListPartsRequest,
+  ) => stream.Stream<
+    Part,
+    ListPartsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type PutBucketAbacError = CommonErrors;
 /**

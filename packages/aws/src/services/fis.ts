@@ -88,44 +88,48 @@ const rules = T.EndpointResolver((p, _) => {
   return err("Invalid Configuration: Missing Region");
 });
 
-export class ConflictException extends S.TaggedErrorClass<ConflictException>()(
-  "ConflictException",
-  { message: S.optional(S.String) },
-  T.all(
-    T.AwsQueryError({ code: "ConflictException", httpResponseCode: 409 }),
-    T.HttpError(409),
-  ),
-).pipe(C.withConflictError) {}
-export class ResourceNotFoundException extends S.TaggedErrorClass<ResourceNotFoundException>()(
-  "ResourceNotFoundException",
-  { message: S.optional(S.String) },
-  T.all(
-    T.AwsQueryError({
-      code: "ResourceNotFoundException",
-      httpResponseCode: 404,
-    }),
-    T.HttpError(404),
-  ),
-).pipe(C.withBadRequestError) {}
-export class ServiceQuotaExceededException extends S.TaggedErrorClass<ServiceQuotaExceededException>()(
-  "ServiceQuotaExceededException",
-  { message: S.optional(S.String) },
-  T.all(
-    T.AwsQueryError({
-      code: "ServiceQuotaExceededException",
-      httpResponseCode: 402,
-    }),
-    T.HttpError(402),
-  ),
-).pipe(C.withQuotaError) {}
-export class ValidationException extends S.TaggedErrorClass<ValidationException>()(
-  "ValidationException",
-  { message: S.optional(S.String) },
-  T.all(
-    T.AwsQueryError({ code: "ValidationException", httpResponseCode: 400 }),
-    T.HttpError(400),
-  ),
-).pipe(C.withBadRequestError) {}
+export class ConflictException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
+    "ConflictException",
+    { message: S.optional(S.String) },
+    T.all(
+      T.AwsQueryError({ code: "ConflictException", httpResponseCode: 409 }),
+      T.HttpError(409),
+    ),
+  ).pipe(C.withConflictError) {}
+export class ResourceNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
+    "ResourceNotFoundException",
+    { message: S.optional(S.String) },
+    T.all(
+      T.AwsQueryError({
+        code: "ResourceNotFoundException",
+        httpResponseCode: 404,
+      }),
+      T.HttpError(404),
+    ),
+  ).pipe(C.withBadRequestError) {}
+export class ServiceQuotaExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
+    "ServiceQuotaExceededException",
+    { message: S.optional(S.String) },
+    T.all(
+      T.AwsQueryError({
+        code: "ServiceQuotaExceededException",
+        httpResponseCode: 402,
+      }),
+      T.HttpError(402),
+    ),
+  ).pipe(C.withQuotaError) {}
+export class ValidationException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
+    "ValidationException",
+    { message: S.optional(S.String) },
+    T.all(
+      T.AwsQueryError({ code: "ValidationException", httpResponseCode: 400 }),
+      T.HttpError(400),
+    ),
+  ).pipe(C.withBadRequestError) {}
 export type ClientToken = string;
 export type ExperimentTemplateDescription = string;
 export type StopConditionSource = string;
@@ -2644,7 +2648,27 @@ export const listActions: API.OperationMethod<
     items: "actions",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListActionsRequest,
+  ListActionsResponse,
+  ListActionsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListActionsRequest,
+  ) => stream.Stream<
+    ListActionsResponse,
+    ListActionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListActionsRequest,
+  ) => stream.Stream<
+    ActionSummary,
+    ListActionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListExperimentResolvedTargetsError =
   | ResourceNotFoundException
@@ -2686,7 +2710,27 @@ export const listExperimentResolvedTargets: API.OperationMethod<
     items: "resolvedTargets",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListExperimentResolvedTargetsRequest,
+  ListExperimentResolvedTargetsResponse,
+  ListExperimentResolvedTargetsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListExperimentResolvedTargetsRequest,
+  ) => stream.Stream<
+    ListExperimentResolvedTargetsResponse,
+    ListExperimentResolvedTargetsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListExperimentResolvedTargetsRequest,
+  ) => stream.Stream<
+    ResolvedTarget,
+    ListExperimentResolvedTargetsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListExperimentsError = ValidationException | CommonErrors;
 /**
@@ -2725,7 +2769,27 @@ export const listExperiments: API.OperationMethod<
     items: "experiments",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListExperimentsRequest,
+  ListExperimentsResponse,
+  ListExperimentsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListExperimentsRequest,
+  ) => stream.Stream<
+    ListExperimentsResponse,
+    ListExperimentsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListExperimentsRequest,
+  ) => stream.Stream<
+    ExperimentSummary,
+    ListExperimentsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListExperimentTargetAccountConfigurationsError =
   | ResourceNotFoundException
@@ -2785,7 +2849,27 @@ export const listExperimentTemplates: API.OperationMethod<
     items: "experimentTemplates",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListExperimentTemplatesRequest,
+  ListExperimentTemplatesResponse,
+  ListExperimentTemplatesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListExperimentTemplatesRequest,
+  ) => stream.Stream<
+    ListExperimentTemplatesResponse,
+    ListExperimentTemplatesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListExperimentTemplatesRequest,
+  ) => stream.Stream<
+    ExperimentTemplateSummary,
+    ListExperimentTemplatesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListTagsForResourceError = CommonErrors;
 /**
@@ -2845,7 +2929,27 @@ export const listTargetAccountConfigurations: API.OperationMethod<
     items: "targetAccountConfigurations",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListTargetAccountConfigurationsRequest,
+  ListTargetAccountConfigurationsResponse,
+  ListTargetAccountConfigurationsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListTargetAccountConfigurationsRequest,
+  ) => stream.Stream<
+    ListTargetAccountConfigurationsResponse,
+    ListTargetAccountConfigurationsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListTargetAccountConfigurationsRequest,
+  ) => stream.Stream<
+    TargetAccountConfigurationSummary,
+    ListTargetAccountConfigurationsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListTargetResourceTypesError = ValidationException | CommonErrors;
 /**
@@ -2884,7 +2988,27 @@ export const listTargetResourceTypes: API.OperationMethod<
     items: "targetResourceTypes",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListTargetResourceTypesRequest,
+  ListTargetResourceTypesResponse,
+  ListTargetResourceTypesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListTargetResourceTypesRequest,
+  ) => stream.Stream<
+    ListTargetResourceTypesResponse,
+    ListTargetResourceTypesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListTargetResourceTypesRequest,
+  ) => stream.Stream<
+    TargetResourceTypeSummary,
+    ListTargetResourceTypesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type StartExperimentError =
   | ConflictException

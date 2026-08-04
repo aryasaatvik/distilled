@@ -52,51 +52,60 @@ const rules = T.EndpointResolver((p, _) => {
   return err("Invalid Configuration: Missing Region");
 });
 
-export class AccessDeniedException extends S.TaggedErrorClass<AccessDeniedException>()(
-  "AccessDeniedException",
-  { message: S.String },
-  T.HttpError(403),
-).pipe(C.withAuthError) {}
-export class ConflictException extends S.TaggedErrorClass<ConflictException>()(
-  "ConflictException",
-  { message: S.String },
-  T.HttpError(409),
-).pipe(C.withConflictError) {}
-export class KmsDisabledException extends S.TaggedErrorClass<KmsDisabledException>()(
-  "KmsDisabledException",
-  { message: S.String },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class KmsInvalidKeyUsageException extends S.TaggedErrorClass<KmsInvalidKeyUsageException>()(
-  "KmsInvalidKeyUsageException",
-  { message: S.String },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class KmsInvalidStateException extends S.TaggedErrorClass<KmsInvalidStateException>()(
-  "KmsInvalidStateException",
-  { message: S.String },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class KmsNotFoundException extends S.TaggedErrorClass<KmsNotFoundException>()(
-  "KmsNotFoundException",
-  { message: S.String },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class NotFoundException extends S.TaggedErrorClass<NotFoundException>()(
-  "NotFoundException",
-  { message: S.String },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class ServiceQuotaExceededException extends S.TaggedErrorClass<ServiceQuotaExceededException>()(
-  "ServiceQuotaExceededException",
-  { message: S.String },
-  T.HttpError(402),
-).pipe(C.withQuotaError) {}
-export class ServiceUnavailableException extends S.TaggedErrorClass<ServiceUnavailableException>()(
-  "ServiceUnavailableException",
-  { message: S.String },
-  T.all(T.HttpError(503), T.Retryable()),
-).pipe(C.withServerError, C.withRetryableError) {}
+export class AccessDeniedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
+    "AccessDeniedException",
+    { message: S.String },
+    T.HttpError(403),
+  ).pipe(C.withAuthError) {}
+export class ConflictException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
+    "ConflictException",
+    { message: S.String },
+    T.HttpError(409),
+  ).pipe(C.withConflictError) {}
+export class KmsDisabledException
+  extends /*@__PURE__*/ S.TaggedErrorClass<KmsDisabledException>()(
+    "KmsDisabledException",
+    { message: S.String },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class KmsInvalidKeyUsageException
+  extends /*@__PURE__*/ S.TaggedErrorClass<KmsInvalidKeyUsageException>()(
+    "KmsInvalidKeyUsageException",
+    { message: S.String },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class KmsInvalidStateException
+  extends /*@__PURE__*/ S.TaggedErrorClass<KmsInvalidStateException>()(
+    "KmsInvalidStateException",
+    { message: S.String },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class KmsNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<KmsNotFoundException>()(
+    "KmsNotFoundException",
+    { message: S.String },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class NotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<NotFoundException>()(
+    "NotFoundException",
+    { message: S.String },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class ServiceQuotaExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
+    "ServiceQuotaExceededException",
+    { message: S.String },
+    T.HttpError(402),
+  ).pipe(C.withQuotaError) {}
+export class ServiceUnavailableException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ServiceUnavailableException>()(
+    "ServiceUnavailableException",
+    { message: S.String },
+    T.all(T.HttpError(503), T.Retryable()),
+  ).pipe(C.withServerError, C.withRetryableError) {}
 export type VectorBucketName = string;
 export type VectorBucketArn = string;
 export type IndexName = string;
@@ -1245,7 +1254,27 @@ export const listIndexes: API.OperationMethod<
     items: "indexes",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListIndexesInput,
+  ListIndexesOutput,
+  ListIndexesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListIndexesInput,
+  ) => stream.Stream<
+    ListIndexesOutput,
+    ListIndexesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListIndexesInput,
+  ) => stream.Stream<
+    IndexSummary,
+    ListIndexesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListTagsForResourceError =
   | NotFoundException
@@ -1315,7 +1344,27 @@ export const listVectorBuckets: API.OperationMethod<
     items: "vectorBuckets",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListVectorBucketsInput,
+  ListVectorBucketsOutput,
+  ListVectorBucketsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListVectorBucketsInput,
+  ) => stream.Stream<
+    ListVectorBucketsOutput,
+    ListVectorBucketsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListVectorBucketsInput,
+  ) => stream.Stream<
+    VectorBucketSummary,
+    ListVectorBucketsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListVectorsError =
   | AccessDeniedException
@@ -1372,7 +1421,27 @@ export const listVectors: API.OperationMethod<
     items: "vectors",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListVectorsInput,
+  ListVectorsOutput,
+  ListVectorsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListVectorsInput,
+  ) => stream.Stream<
+    ListVectorsOutput,
+    ListVectorsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListVectorsInput,
+  ) => stream.Stream<
+    ListOutputVector,
+    ListVectorsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type PutVectorBucketPolicyError =
   | NotFoundException
@@ -1503,7 +1572,27 @@ export const queryVectors: API.OperationMethod<
     outputToken: "nextToken",
     items: "vectors",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  QueryVectorsInput,
+  QueryVectorsOutput,
+  QueryVectorsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: QueryVectorsInput,
+  ) => stream.Stream<
+    QueryVectorsOutput,
+    QueryVectorsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: QueryVectorsInput,
+  ) => stream.Stream<
+    QueryOutputVector,
+    QueryVectorsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type TagResourceError =
   | ConflictException

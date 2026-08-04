@@ -864,6 +864,12 @@ export const awsSpec = (
   const sdkId: string = serviceShape.traits["aws.api#service"].sdkId;
   const sigV4ServiceName: string =
     serviceShape.traits?.["aws.auth#sigv4"]?.name ?? serviceShapeName;
+  // Signature Version 2. AWS never defined a Smithy trait for it (SigV2 was
+  // dead before Smithy existed), so this is provider-defined — but the
+  // runtime trait already exists, and SimpleDB's endpoint rejects SigV4
+  // outright, so a model has to be able to say so.
+  const sigV2ServiceName: string | undefined =
+    serviceShape.traits?.["aws.auth#sigv2"]?.name;
   const version: string = serviceShape.version ?? "";
   const patchFileBase = sdkId.toLowerCase().replaceAll(" ", "-");
 
@@ -2243,8 +2249,12 @@ export const awsSpec = (
         const categoryPipe =
           categories.length > 0 ? `.pipe(${categories.join(", ")})` : "";
 
+        // PURE marker: without it the heritage call is an unanalyzable side
+        // effect and the class can never be tree-shaken, so importing one
+        // operation retains every error class in the service (distilled
+        // #191). Same reason the schema consts carry one.
         return [
-          `export class ${name} extends S.TaggedErrorClass<${name}>()("${tag}", ${fields}${annotationsArg})${categoryPipe} {}`,
+          `export class ${name} extends ${PURE}S.TaggedErrorClass<${name}>()("${tag}", ${fields}${annotationsArg})${categoryPipe} {}`,
         ];
       },
     },
@@ -2377,6 +2387,9 @@ export const awsSpec = (
         factory: paginatedTrait ? "API.makePaginated" : "API.make",
         config: metaObject,
         pure: PURE,
+        // The items-stream element type comes from the pagination trait
+        // path and can only be inferred as `unknown` by makePaginated.
+        castToAnnotation: paginatedTrait !== undefined,
       });
 
       return [...pre, errorTypeAlias + operationComment + opConst].join("\n");
@@ -2427,7 +2440,9 @@ export const awsSpec = (
         `const svc = T.AwsApiService({ sdkId: "${sdkId}", serviceShapeName: "${serviceShapeName}" });`,
       );
       serviceConstants.push(
-        `const auth = T.AwsAuthSigv4({ name: "${sigV4ServiceName}" });`,
+        sigV2ServiceName !== undefined
+          ? `const auth = T.AwsAuthSigv2({ name: "${sigV2ServiceName}" });`
+          : `const auth = T.AwsAuthSigv4({ name: "${sigV4ServiceName}" });`,
       );
       serviceConstants.push(`const ver = T.ServiceVersion("${version}");`);
 

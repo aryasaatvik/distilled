@@ -109,25 +109,30 @@ const rules = T.EndpointResolver((p, _) => {
   return err("Invalid Configuration: Missing Region");
 });
 
-export class LimitExceededException extends S.TaggedErrorClass<LimitExceededException>()(
-  "LimitExceededException",
-  { message: S.optional(S.String) },
-  T.all(
-    T.AwsQueryError({ code: "LimitExceededException", httpResponseCode: 403 }),
-    T.HttpError(403),
-  ),
-).pipe(C.withAuthError) {}
-export class ResourceNotFoundException extends S.TaggedErrorClass<ResourceNotFoundException>()(
-  "ResourceNotFoundException",
-  { message: S.optional(S.String) },
-  T.all(
-    T.AwsQueryError({
-      code: "ResourceNotFoundException",
-      httpResponseCode: 404,
-    }),
-    T.HttpError(404),
-  ),
-).pipe(C.withBadRequestError) {}
+export class LimitExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<LimitExceededException>()(
+    "LimitExceededException",
+    { message: S.optional(S.String) },
+    T.all(
+      T.AwsQueryError({
+        code: "LimitExceededException",
+        httpResponseCode: 403,
+      }),
+      T.HttpError(403),
+    ),
+  ).pipe(C.withAuthError) {}
+export class ResourceNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
+    "ResourceNotFoundException",
+    { message: S.optional(S.String) },
+    T.all(
+      T.AwsQueryError({
+        code: "ResourceNotFoundException",
+        httpResponseCode: 404,
+      }),
+      T.HttpError(404),
+    ),
+  ).pipe(C.withBadRequestError) {}
 export type TunnelId = string;
 export type DeleteFlag = boolean;
 export interface CloseTunnelRequest {
@@ -576,7 +581,27 @@ export const listTunnels: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListTunnelsRequest,
+  ListTunnelsResponse,
+  ListTunnelsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListTunnelsRequest,
+  ) => stream.Stream<
+    ListTunnelsResponse,
+    ListTunnelsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListTunnelsRequest,
+  ) => stream.Stream<
+    unknown,
+    ListTunnelsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type OpenTunnelError = LimitExceededException | CommonErrors;
 /**

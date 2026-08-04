@@ -87,56 +87,66 @@ const rules = T.EndpointResolver((p, _) => {
   return err("Invalid Configuration: Missing Region");
 });
 
-export class AccessDeniedException extends S.TaggedErrorClass<AccessDeniedException>()(
-  "AccessDeniedException",
-  { Message: S.optional(S.String) },
-  T.HttpError(403),
-).pipe(C.withAuthError) {}
-export class IllegalActionException extends S.TaggedErrorClass<IllegalActionException>()(
-  "IllegalActionException",
-  { Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class InternalServiceErrorException extends S.TaggedErrorClass<InternalServiceErrorException>()(
-  "InternalServiceErrorException",
-  {},
-  T.HttpError(500),
-).pipe(C.withServerError) {}
-export class InvalidRequestException extends S.TaggedErrorClass<InvalidRequestException>()(
-  "InvalidRequestException",
-  { Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class ResourceAlreadyExistsException extends S.TaggedErrorClass<ResourceAlreadyExistsException>()(
-  "ResourceAlreadyExistsException",
-  { Message: S.optional(S.String) },
-  T.HttpError(409),
-).pipe(C.withConflictError, C.withAlreadyExistsError) {}
-export class ResourceLimitExceededException extends S.TaggedErrorClass<ResourceLimitExceededException>()(
-  "ResourceLimitExceededException",
-  { Message: S.optional(S.String) },
-  T.HttpError(429),
-).pipe(C.withThrottlingError) {}
-export class ResourceNotFoundException extends S.TaggedErrorClass<ResourceNotFoundException>()(
-  "ResourceNotFoundException",
-  { Message: S.optional(S.String), ResourceName: S.optional(S.String) },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class ResourceNotReadyException extends S.TaggedErrorClass<ResourceNotReadyException>()(
-  "ResourceNotReadyException",
-  { Message: S.optional(S.String) },
-  T.HttpError(409),
-).pipe(C.withConflictError) {}
-export class ThrottlingException extends S.TaggedErrorClass<ThrottlingException>()(
-  "ThrottlingException",
-  {},
-  T.HttpError(429),
-).pipe(C.withThrottlingError) {}
-export class TooManyTagsException extends S.TaggedErrorClass<TooManyTagsException>()(
-  "TooManyTagsException",
-  { Message: S.optional(S.String), ResourceName: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
+export class AccessDeniedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
+    "AccessDeniedException",
+    { Message: S.optional(S.String) },
+    T.HttpError(403),
+  ).pipe(C.withAuthError) {}
+export class IllegalActionException
+  extends /*@__PURE__*/ S.TaggedErrorClass<IllegalActionException>()(
+    "IllegalActionException",
+    { Message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class InternalServiceErrorException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InternalServiceErrorException>()(
+    "InternalServiceErrorException",
+    {},
+    T.HttpError(500),
+  ).pipe(C.withServerError) {}
+export class InvalidRequestException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidRequestException>()(
+    "InvalidRequestException",
+    { Message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class ResourceAlreadyExistsException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceAlreadyExistsException>()(
+    "ResourceAlreadyExistsException",
+    { Message: S.optional(S.String) },
+    T.HttpError(409),
+  ).pipe(C.withConflictError, C.withAlreadyExistsError) {}
+export class ResourceLimitExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceLimitExceededException>()(
+    "ResourceLimitExceededException",
+    { Message: S.optional(S.String) },
+    T.HttpError(429),
+  ).pipe(C.withThrottlingError) {}
+export class ResourceNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
+    "ResourceNotFoundException",
+    { Message: S.optional(S.String), ResourceName: S.optional(S.String) },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class ResourceNotReadyException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotReadyException>()(
+    "ResourceNotReadyException",
+    { Message: S.optional(S.String) },
+    T.HttpError(409),
+  ).pipe(C.withConflictError) {}
+export class ThrottlingException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
+    "ThrottlingException",
+    {},
+    T.HttpError(429),
+  ).pipe(C.withThrottlingError) {}
+export class TooManyTagsException
+  extends /*@__PURE__*/ S.TaggedErrorClass<TooManyTagsException>()(
+    "TooManyTagsException",
+    { Message: S.optional(S.String), ResourceName: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
 export type ClientRequestTokenString = string;
 export type AccessorType = "BILLING_TOKEN" | (string & {});
 export const AccessorType = /*@__PURE__*/ S.String;
@@ -2212,7 +2222,27 @@ export const listAccessors: API.OperationMethod<
     items: "Accessors",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListAccessorsInput,
+  ListAccessorsOutput,
+  ListAccessorsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListAccessorsInput,
+  ) => stream.Stream<
+    ListAccessorsOutput,
+    ListAccessorsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListAccessorsInput,
+  ) => stream.Stream<
+    AccessorSummary,
+    ListAccessorsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListInvitationsError =
   | AccessDeniedException
@@ -2266,7 +2296,27 @@ export const listInvitations: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListInvitationsInput,
+  ListInvitationsOutput,
+  ListInvitationsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListInvitationsInput,
+  ) => stream.Stream<
+    ListInvitationsOutput,
+    ListInvitationsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListInvitationsInput,
+  ) => stream.Stream<
+    unknown,
+    ListInvitationsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListMembersError =
   | AccessDeniedException
@@ -2316,7 +2366,27 @@ export const listMembers: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListMembersInput,
+  ListMembersOutput,
+  ListMembersError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListMembersInput,
+  ) => stream.Stream<
+    ListMembersOutput,
+    ListMembersError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListMembersInput,
+  ) => stream.Stream<
+    unknown,
+    ListMembersError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListNetworksError =
   | AccessDeniedException
@@ -2366,7 +2436,27 @@ export const listNetworks: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListNetworksInput,
+  ListNetworksOutput,
+  ListNetworksError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListNetworksInput,
+  ) => stream.Stream<
+    ListNetworksOutput,
+    ListNetworksError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListNetworksInput,
+  ) => stream.Stream<
+    unknown,
+    ListNetworksError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListNodesError =
   | AccessDeniedException
@@ -2416,7 +2506,27 @@ export const listNodes: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListNodesInput,
+  ListNodesOutput,
+  ListNodesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListNodesInput,
+  ) => stream.Stream<
+    ListNodesOutput,
+    ListNodesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListNodesInput,
+  ) => stream.Stream<
+    unknown,
+    ListNodesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListProposalsError =
   | AccessDeniedException
@@ -2468,7 +2578,27 @@ export const listProposals: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListProposalsInput,
+  ListProposalsOutput,
+  ListProposalsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListProposalsInput,
+  ) => stream.Stream<
+    ListProposalsOutput,
+    ListProposalsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListProposalsInput,
+  ) => stream.Stream<
+    unknown,
+    ListProposalsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListProposalVotesError =
   | AccessDeniedException
@@ -2518,7 +2648,27 @@ export const listProposalVotes: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListProposalVotesInput,
+  ListProposalVotesOutput,
+  ListProposalVotesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListProposalVotesInput,
+  ) => stream.Stream<
+    ListProposalVotesOutput,
+    ListProposalVotesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListProposalVotesInput,
+  ) => stream.Stream<
+    unknown,
+    ListProposalVotesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListTagsForResourceError =
   | InternalServiceErrorException

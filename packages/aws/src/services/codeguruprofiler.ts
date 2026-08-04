@@ -85,36 +85,42 @@ const rules = T.EndpointResolver((p, _) => {
   return err("Invalid Configuration: Missing Region");
 });
 
-export class ConflictException extends S.TaggedErrorClass<ConflictException>()(
-  "ConflictException",
-  { message: S.String },
-  T.HttpError(409),
-).pipe(C.withConflictError) {}
-export class InternalServerException extends S.TaggedErrorClass<InternalServerException>()(
-  "InternalServerException",
-  { message: S.String },
-  T.all(T.HttpError(500), T.Retryable()),
-).pipe(C.withServerError, C.withRetryableError) {}
-export class ResourceNotFoundException extends S.TaggedErrorClass<ResourceNotFoundException>()(
-  "ResourceNotFoundException",
-  { message: S.String },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class ServiceQuotaExceededException extends S.TaggedErrorClass<ServiceQuotaExceededException>()(
-  "ServiceQuotaExceededException",
-  { message: S.String },
-  T.all(T.HttpError(402), T.Retryable()),
-).pipe(C.withQuotaError, C.withRetryableError) {}
-export class ThrottlingException extends S.TaggedErrorClass<ThrottlingException>()(
-  "ThrottlingException",
-  { message: S.String },
-  T.all(T.HttpError(429), T.Retryable()),
-).pipe(C.withThrottlingError, C.withRetryableError) {}
-export class ValidationException extends S.TaggedErrorClass<ValidationException>()(
-  "ValidationException",
-  { message: S.String },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
+export class ConflictException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
+    "ConflictException",
+    { message: S.String },
+    T.HttpError(409),
+  ).pipe(C.withConflictError) {}
+export class InternalServerException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
+    "InternalServerException",
+    { message: S.String },
+    T.all(T.HttpError(500), T.Retryable()),
+  ).pipe(C.withServerError, C.withRetryableError) {}
+export class ResourceNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
+    "ResourceNotFoundException",
+    { message: S.String },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class ServiceQuotaExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
+    "ServiceQuotaExceededException",
+    { message: S.String },
+    T.all(T.HttpError(402), T.Retryable()),
+  ).pipe(C.withQuotaError, C.withRetryableError) {}
+export class ThrottlingException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
+    "ThrottlingException",
+    { message: S.String },
+    T.all(T.HttpError(429), T.Retryable()),
+  ).pipe(C.withThrottlingError, C.withRetryableError) {}
+export class ValidationException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
+    "ValidationException",
+    { message: S.String },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
 export type ProfilingGroupName = string;
 export type ChannelId = string;
 export type ChannelUri = string;
@@ -1534,7 +1540,27 @@ export const getFindingsReportAccountSummary: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  GetFindingsReportAccountSummaryRequest,
+  GetFindingsReportAccountSummaryResponse,
+  GetFindingsReportAccountSummaryError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: GetFindingsReportAccountSummaryRequest,
+  ) => stream.Stream<
+    GetFindingsReportAccountSummaryResponse,
+    GetFindingsReportAccountSummaryError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: GetFindingsReportAccountSummaryRequest,
+  ) => stream.Stream<
+    unknown,
+    GetFindingsReportAccountSummaryError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type GetNotificationConfigurationError =
   | InternalServerException
@@ -1740,7 +1766,27 @@ export const listFindingsReports: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListFindingsReportsRequest,
+  ListFindingsReportsResponse,
+  ListFindingsReportsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListFindingsReportsRequest,
+  ) => stream.Stream<
+    ListFindingsReportsResponse,
+    ListFindingsReportsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListFindingsReportsRequest,
+  ) => stream.Stream<
+    unknown,
+    ListFindingsReportsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListProfileTimesError =
   | InternalServerException
@@ -1790,7 +1836,27 @@ export const listProfileTimes: API.OperationMethod<
     items: "profileTimes",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListProfileTimesRequest,
+  ListProfileTimesResponse,
+  ListProfileTimesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListProfileTimesRequest,
+  ) => stream.Stream<
+    ListProfileTimesResponse,
+    ListProfileTimesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListProfileTimesRequest,
+  ) => stream.Stream<
+    ProfileTime,
+    ListProfileTimesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListProfilingGroupsError =
   | InternalServerException
@@ -1835,7 +1901,27 @@ export const listProfilingGroups: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListProfilingGroupsRequest,
+  ListProfilingGroupsResponse,
+  ListProfilingGroupsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListProfilingGroupsRequest,
+  ) => stream.Stream<
+    ListProfilingGroupsResponse,
+    ListProfilingGroupsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListProfilingGroupsRequest,
+  ) => stream.Stream<
+    unknown,
+    ListProfilingGroupsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListTagsForResourceError =
   | InternalServerException

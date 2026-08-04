@@ -87,66 +87,78 @@ const rules = T.EndpointResolver((p, _) => {
   return err("Invalid Configuration: Missing Region");
 });
 
-export class AccessDeniedException extends S.TaggedErrorClass<AccessDeniedException>()(
-  "AccessDeniedException",
-  { code: S.optional(S.String), message: S.optional(S.String) },
-  T.HttpError(403),
-).pipe(C.withAuthError) {}
-export class ConflictException extends S.TaggedErrorClass<ConflictException>()(
-  "ConflictException",
-  { message: S.String },
-  T.HttpError(409),
-).pipe(C.withConflictError) {}
-export class DryRunException extends S.TaggedErrorClass<DryRunException>()(
-  "DryRunException",
-  { message: S.String },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class InsufficientCapacityException extends S.TaggedErrorClass<InsufficientCapacityException>()(
-  "InsufficientCapacityException",
-  { message: S.String },
-  T.all(T.HttpError(400), T.Retryable()),
-).pipe(C.withBadRequestError, C.withRetryableError) {}
-export class InternalServerException extends S.TaggedErrorClass<InternalServerException>()(
-  "InternalServerException",
-  { message: S.String },
-  T.all(T.HttpError(500), T.Retryable()),
-).pipe(C.withServerError, C.withRetryableError) {}
-export class InvalidPaginationException extends S.TaggedErrorClass<InvalidPaginationException>()(
-  "InvalidPaginationException",
-  { message: S.String },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class Ipv6CidrBlockNotFoundException extends S.TaggedErrorClass<Ipv6CidrBlockNotFoundException>()(
-  "Ipv6CidrBlockNotFoundException",
-  { message: S.String },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class ResourceNotFoundException extends S.TaggedErrorClass<ResourceNotFoundException>()(
-  "ResourceNotFoundException",
-  { message: S.String, resourceName: S.optional(S.String) },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class ServiceQuotaExceededException extends S.TaggedErrorClass<ServiceQuotaExceededException>()(
-  "ServiceQuotaExceededException",
-  { message: S.String },
-  T.HttpError(402),
-).pipe(C.withQuotaError) {}
-export class ThrottlingException extends S.TaggedErrorClass<ThrottlingException>()(
-  "ThrottlingException",
-  { code: S.optional(S.String), message: S.optional(S.String) },
-  T.all(T.HttpError(429), T.Retryable()),
-).pipe(C.withThrottlingError, C.withRetryableError) {}
-export class TooManyTagsException extends S.TaggedErrorClass<TooManyTagsException>()(
-  "TooManyTagsException",
-  { message: S.optional(S.String), resourceName: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class ValidationException extends S.TaggedErrorClass<ValidationException>()(
-  "ValidationException",
-  { message: S.String },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
+export class AccessDeniedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
+    "AccessDeniedException",
+    { code: S.optional(S.String), message: S.optional(S.String) },
+    T.HttpError(403),
+  ).pipe(C.withAuthError) {}
+export class ConflictException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
+    "ConflictException",
+    { message: S.String },
+    T.HttpError(409),
+  ).pipe(C.withConflictError) {}
+export class DryRunException
+  extends /*@__PURE__*/ S.TaggedErrorClass<DryRunException>()(
+    "DryRunException",
+    { message: S.String },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class InsufficientCapacityException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InsufficientCapacityException>()(
+    "InsufficientCapacityException",
+    { message: S.String },
+    T.all(T.HttpError(400), T.Retryable()),
+  ).pipe(C.withBadRequestError, C.withRetryableError) {}
+export class InternalServerException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
+    "InternalServerException",
+    { message: S.String },
+    T.all(T.HttpError(500), T.Retryable()),
+  ).pipe(C.withServerError, C.withRetryableError) {}
+export class InvalidPaginationException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidPaginationException>()(
+    "InvalidPaginationException",
+    { message: S.String },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class Ipv6CidrBlockNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<Ipv6CidrBlockNotFoundException>()(
+    "Ipv6CidrBlockNotFoundException",
+    { message: S.String },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class ResourceNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
+    "ResourceNotFoundException",
+    { message: S.String, resourceName: S.optional(S.String) },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class ServiceQuotaExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
+    "ServiceQuotaExceededException",
+    { message: S.String },
+    T.HttpError(402),
+  ).pipe(C.withQuotaError) {}
+export class ThrottlingException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
+    "ThrottlingException",
+    { code: S.optional(S.String), message: S.optional(S.String) },
+    T.all(T.HttpError(429), T.Retryable()),
+  ).pipe(C.withThrottlingError, C.withRetryableError) {}
+export class TooManyTagsException
+  extends /*@__PURE__*/ S.TaggedErrorClass<TooManyTagsException>()(
+    "TooManyTagsException",
+    { message: S.optional(S.String), resourceName: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class ValidationException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
+    "ValidationException",
+    { message: S.String },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
 export type TagKey = string;
 export type TagValue = string;
 export interface Tag {
@@ -3566,7 +3578,27 @@ export const listCustomDomainAssociations: API.OperationMethod<
     items: "associations",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListCustomDomainAssociationsRequest,
+  ListCustomDomainAssociationsResponse,
+  ListCustomDomainAssociationsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListCustomDomainAssociationsRequest,
+  ) => stream.Stream<
+    ListCustomDomainAssociationsResponse,
+    ListCustomDomainAssociationsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListCustomDomainAssociationsRequest,
+  ) => stream.Stream<
+    Association,
+    ListCustomDomainAssociationsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListEndpointAccessError =
   | ConflictException
@@ -3615,7 +3647,27 @@ export const listEndpointAccess: API.OperationMethod<
     items: "endpoints",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListEndpointAccessRequest,
+  ListEndpointAccessResponse,
+  ListEndpointAccessError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListEndpointAccessRequest,
+  ) => stream.Stream<
+    ListEndpointAccessResponse,
+    ListEndpointAccessError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListEndpointAccessRequest,
+  ) => stream.Stream<
+    EndpointAccess,
+    ListEndpointAccessError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListManagedWorkgroupsError =
   | AccessDeniedException
@@ -3657,7 +3709,27 @@ export const listManagedWorkgroups: API.OperationMethod<
     items: "managedWorkgroups",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListManagedWorkgroupsRequest,
+  ListManagedWorkgroupsResponse,
+  ListManagedWorkgroupsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListManagedWorkgroupsRequest,
+  ) => stream.Stream<
+    ListManagedWorkgroupsResponse,
+    ListManagedWorkgroupsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListManagedWorkgroupsRequest,
+  ) => stream.Stream<
+    ManagedWorkgroupListItem,
+    ListManagedWorkgroupsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListNamespacesError =
   | InternalServerException
@@ -3699,7 +3771,27 @@ export const listNamespaces: API.OperationMethod<
     items: "namespaces",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListNamespacesRequest,
+  ListNamespacesResponse,
+  ListNamespacesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListNamespacesRequest,
+  ) => stream.Stream<
+    ListNamespacesResponse,
+    ListNamespacesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListNamespacesRequest,
+  ) => stream.Stream<
+    Namespace,
+    ListNamespacesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListRecoveryPointsError =
   | InternalServerException
@@ -3741,7 +3833,27 @@ export const listRecoveryPoints: API.OperationMethod<
     items: "recoveryPoints",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListRecoveryPointsRequest,
+  ListRecoveryPointsResponse,
+  ListRecoveryPointsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListRecoveryPointsRequest,
+  ) => stream.Stream<
+    ListRecoveryPointsResponse,
+    ListRecoveryPointsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListRecoveryPointsRequest,
+  ) => stream.Stream<
+    RecoveryPoint,
+    ListRecoveryPointsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListReservationOfferingsError =
   | InternalServerException
@@ -3784,7 +3896,27 @@ export const listReservationOfferings: API.OperationMethod<
     items: "reservationOfferingsList",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListReservationOfferingsRequest,
+  ListReservationOfferingsResponse,
+  ListReservationOfferingsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListReservationOfferingsRequest,
+  ) => stream.Stream<
+    ListReservationOfferingsResponse,
+    ListReservationOfferingsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListReservationOfferingsRequest,
+  ) => stream.Stream<
+    ReservationOffering,
+    ListReservationOfferingsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListReservationsError =
   | InternalServerException
@@ -3827,7 +3959,27 @@ export const listReservations: API.OperationMethod<
     items: "reservationsList",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListReservationsRequest,
+  ListReservationsResponse,
+  ListReservationsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListReservationsRequest,
+  ) => stream.Stream<
+    ListReservationsResponse,
+    ListReservationsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListReservationsRequest,
+  ) => stream.Stream<
+    Reservation,
+    ListReservationsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListScheduledActionsError =
   | InternalServerException
@@ -3876,7 +4028,27 @@ export const listScheduledActions: API.OperationMethod<
     items: "scheduledActions",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListScheduledActionsRequest,
+  ListScheduledActionsResponse,
+  ListScheduledActionsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListScheduledActionsRequest,
+  ) => stream.Stream<
+    ListScheduledActionsResponse,
+    ListScheduledActionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListScheduledActionsRequest,
+  ) => stream.Stream<
+    ScheduledActionAssociation,
+    ListScheduledActionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListSnapshotCopyConfigurationsError =
   | ConflictException
@@ -3927,7 +4099,27 @@ export const listSnapshotCopyConfigurations: API.OperationMethod<
     items: "snapshotCopyConfigurations",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListSnapshotCopyConfigurationsRequest,
+  ListSnapshotCopyConfigurationsResponse,
+  ListSnapshotCopyConfigurationsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListSnapshotCopyConfigurationsRequest,
+  ) => stream.Stream<
+    ListSnapshotCopyConfigurationsResponse,
+    ListSnapshotCopyConfigurationsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListSnapshotCopyConfigurationsRequest,
+  ) => stream.Stream<
+    SnapshotCopyConfiguration,
+    ListSnapshotCopyConfigurationsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListSnapshotsError =
   | InternalServerException
@@ -3974,7 +4166,27 @@ export const listSnapshots: API.OperationMethod<
     items: "snapshots",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListSnapshotsRequest,
+  ListSnapshotsResponse,
+  ListSnapshotsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListSnapshotsRequest,
+  ) => stream.Stream<
+    ListSnapshotsResponse,
+    ListSnapshotsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListSnapshotsRequest,
+  ) => stream.Stream<
+    Snapshot,
+    ListSnapshotsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListTableRestoreStatusError =
   | InvalidPaginationException
@@ -4021,7 +4233,27 @@ export const listTableRestoreStatus: API.OperationMethod<
     items: "tableRestoreStatuses",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListTableRestoreStatusRequest,
+  ListTableRestoreStatusResponse,
+  ListTableRestoreStatusError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListTableRestoreStatusRequest,
+  ) => stream.Stream<
+    ListTableRestoreStatusResponse,
+    ListTableRestoreStatusError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListTableRestoreStatusRequest,
+  ) => stream.Stream<
+    TableRestoreStatus,
+    ListTableRestoreStatusError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListTagsForResourceError =
   | InternalServerException
@@ -4100,7 +4332,27 @@ export const listTracks: API.OperationMethod<
     items: "tracks",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListTracksRequest,
+  ListTracksResponse,
+  ListTracksError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListTracksRequest,
+  ) => stream.Stream<
+    ListTracksResponse,
+    ListTracksError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListTracksRequest,
+  ) => stream.Stream<
+    ServerlessTrack,
+    ListTracksError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListUsageLimitsError =
   | ConflictException
@@ -4151,7 +4403,27 @@ export const listUsageLimits: API.OperationMethod<
     items: "usageLimits",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListUsageLimitsRequest,
+  ListUsageLimitsResponse,
+  ListUsageLimitsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListUsageLimitsRequest,
+  ) => stream.Stream<
+    ListUsageLimitsResponse,
+    ListUsageLimitsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListUsageLimitsRequest,
+  ) => stream.Stream<
+    UsageLimit,
+    ListUsageLimitsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListWorkgroupsError =
   | InternalServerException
@@ -4193,7 +4465,27 @@ export const listWorkgroups: API.OperationMethod<
     items: "workgroups",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListWorkgroupsRequest,
+  ListWorkgroupsResponse,
+  ListWorkgroupsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListWorkgroupsRequest,
+  ) => stream.Stream<
+    ListWorkgroupsResponse,
+    ListWorkgroupsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListWorkgroupsRequest,
+  ) => stream.Stream<
+    Workgroup,
+    ListWorkgroupsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type PutResourcePolicyError =
   | ConflictException

@@ -104,51 +104,62 @@ const rules = T.EndpointResolver((p, _) => {
   return err("Invalid Configuration: Missing Region");
 });
 
-export class DefaultUndefinedFault extends S.TaggedErrorClass<DefaultUndefinedFault>()(
-  "DefaultUndefinedFault",
-  { message: S.optional(S.String) },
-) {}
-export class DomainAlreadyExistsFault extends S.TaggedErrorClass<DomainAlreadyExistsFault>()(
-  "DomainAlreadyExistsFault",
-  { message: S.optional(S.String) },
-).pipe(C.withAlreadyExistsError) {}
-export class DomainDeprecatedFault extends S.TaggedErrorClass<DomainDeprecatedFault>()(
-  "DomainDeprecatedFault",
-  { message: S.optional(S.String) },
-) {}
-export class LimitExceededFault extends S.TaggedErrorClass<LimitExceededFault>()(
-  "LimitExceededFault",
-  { message: S.optional(S.String) },
-) {}
-export class OperationNotPermittedFault extends S.TaggedErrorClass<OperationNotPermittedFault>()(
-  "OperationNotPermittedFault",
-  { message: S.optional(S.String) },
-) {}
-export class TooManyTagsFault extends S.TaggedErrorClass<TooManyTagsFault>()(
-  "TooManyTagsFault",
-  { message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class TypeAlreadyExistsFault extends S.TaggedErrorClass<TypeAlreadyExistsFault>()(
-  "TypeAlreadyExistsFault",
-  { message: S.optional(S.String) },
-).pipe(C.withAlreadyExistsError) {}
-export class TypeDeprecatedFault extends S.TaggedErrorClass<TypeDeprecatedFault>()(
-  "TypeDeprecatedFault",
-  { message: S.optional(S.String) },
-) {}
-export class TypeNotDeprecatedFault extends S.TaggedErrorClass<TypeNotDeprecatedFault>()(
-  "TypeNotDeprecatedFault",
-  { message: S.optional(S.String) },
-) {}
-export class UnknownResourceFault extends S.TaggedErrorClass<UnknownResourceFault>()(
-  "UnknownResourceFault",
-  { message: S.optional(S.String) },
-) {}
-export class WorkflowExecutionAlreadyStartedFault extends S.TaggedErrorClass<WorkflowExecutionAlreadyStartedFault>()(
-  "WorkflowExecutionAlreadyStartedFault",
-  { message: S.optional(S.String) },
-) {}
+export class DefaultUndefinedFault
+  extends /*@__PURE__*/ S.TaggedErrorClass<DefaultUndefinedFault>()(
+    "DefaultUndefinedFault",
+    { message: S.optional(S.String) },
+  ) {}
+export class DomainAlreadyExistsFault
+  extends /*@__PURE__*/ S.TaggedErrorClass<DomainAlreadyExistsFault>()(
+    "DomainAlreadyExistsFault",
+    { message: S.optional(S.String) },
+  ).pipe(C.withAlreadyExistsError) {}
+export class DomainDeprecatedFault
+  extends /*@__PURE__*/ S.TaggedErrorClass<DomainDeprecatedFault>()(
+    "DomainDeprecatedFault",
+    { message: S.optional(S.String) },
+  ) {}
+export class LimitExceededFault
+  extends /*@__PURE__*/ S.TaggedErrorClass<LimitExceededFault>()(
+    "LimitExceededFault",
+    { message: S.optional(S.String) },
+  ) {}
+export class OperationNotPermittedFault
+  extends /*@__PURE__*/ S.TaggedErrorClass<OperationNotPermittedFault>()(
+    "OperationNotPermittedFault",
+    { message: S.optional(S.String) },
+  ) {}
+export class TooManyTagsFault
+  extends /*@__PURE__*/ S.TaggedErrorClass<TooManyTagsFault>()(
+    "TooManyTagsFault",
+    { message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class TypeAlreadyExistsFault
+  extends /*@__PURE__*/ S.TaggedErrorClass<TypeAlreadyExistsFault>()(
+    "TypeAlreadyExistsFault",
+    { message: S.optional(S.String) },
+  ).pipe(C.withAlreadyExistsError) {}
+export class TypeDeprecatedFault
+  extends /*@__PURE__*/ S.TaggedErrorClass<TypeDeprecatedFault>()(
+    "TypeDeprecatedFault",
+    { message: S.optional(S.String) },
+  ) {}
+export class TypeNotDeprecatedFault
+  extends /*@__PURE__*/ S.TaggedErrorClass<TypeNotDeprecatedFault>()(
+    "TypeNotDeprecatedFault",
+    { message: S.optional(S.String) },
+  ) {}
+export class UnknownResourceFault
+  extends /*@__PURE__*/ S.TaggedErrorClass<UnknownResourceFault>()(
+    "UnknownResourceFault",
+    { message: S.optional(S.String) },
+  ) {}
+export class WorkflowExecutionAlreadyStartedFault
+  extends /*@__PURE__*/ S.TaggedErrorClass<WorkflowExecutionAlreadyStartedFault>()(
+    "WorkflowExecutionAlreadyStartedFault",
+    { message: S.optional(S.String) },
+  ) {}
 export type DomainName = string;
 export interface ExecutionTimeFilter {
   oldestDate: Date;
@@ -4052,7 +4063,27 @@ export const getWorkflowExecutionHistory: API.OperationMethod<
     items: "events",
     pageSize: "maximumPageSize",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  GetWorkflowExecutionHistoryInput,
+  History,
+  GetWorkflowExecutionHistoryError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: GetWorkflowExecutionHistoryInput,
+  ) => stream.Stream<
+    History,
+    GetWorkflowExecutionHistoryError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: GetWorkflowExecutionHistoryInput,
+  ) => stream.Stream<
+    HistoryEvent,
+    GetWorkflowExecutionHistoryError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListActivityTypesError =
   | OperationNotPermittedFault
@@ -4117,7 +4148,27 @@ export const listActivityTypes: API.OperationMethod<
     items: "typeInfos",
     pageSize: "maximumPageSize",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListActivityTypesInput,
+  ActivityTypeInfos,
+  ListActivityTypesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListActivityTypesInput,
+  ) => stream.Stream<
+    ActivityTypeInfos,
+    ListActivityTypesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListActivityTypesInput,
+  ) => stream.Stream<
+    ActivityTypeInfo,
+    ListActivityTypesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListClosedWorkflowExecutionsError =
   | OperationNotPermittedFault
@@ -4193,7 +4244,27 @@ export const listClosedWorkflowExecutions: API.OperationMethod<
     items: "executionInfos",
     pageSize: "maximumPageSize",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListClosedWorkflowExecutionsInput,
+  WorkflowExecutionInfos,
+  ListClosedWorkflowExecutionsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListClosedWorkflowExecutionsInput,
+  ) => stream.Stream<
+    WorkflowExecutionInfos,
+    ListClosedWorkflowExecutionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListClosedWorkflowExecutionsInput,
+  ) => stream.Stream<
+    WorkflowExecutionInfo,
+    ListClosedWorkflowExecutionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListDomainsError = OperationNotPermittedFault | CommonErrors;
 /**
@@ -4258,7 +4329,27 @@ export const listDomains: API.OperationMethod<
     items: "domainInfos",
     pageSize: "maximumPageSize",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListDomainsInput,
+  DomainInfos,
+  ListDomainsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListDomainsInput,
+  ) => stream.Stream<
+    DomainInfos,
+    ListDomainsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListDomainsInput,
+  ) => stream.Stream<
+    DomainInfo,
+    ListDomainsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListOpenWorkflowExecutionsError =
   | OperationNotPermittedFault
@@ -4334,7 +4425,27 @@ export const listOpenWorkflowExecutions: API.OperationMethod<
     items: "executionInfos",
     pageSize: "maximumPageSize",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListOpenWorkflowExecutionsInput,
+  WorkflowExecutionInfos,
+  ListOpenWorkflowExecutionsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListOpenWorkflowExecutionsInput,
+  ) => stream.Stream<
+    WorkflowExecutionInfos,
+    ListOpenWorkflowExecutionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListOpenWorkflowExecutionsInput,
+  ) => stream.Stream<
+    WorkflowExecutionInfo,
+    ListOpenWorkflowExecutionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListTagsForResourceError =
   | LimitExceededFault
@@ -4422,7 +4533,27 @@ export const listWorkflowTypes: API.OperationMethod<
     items: "typeInfos",
     pageSize: "maximumPageSize",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListWorkflowTypesInput,
+  WorkflowTypeInfos,
+  ListWorkflowTypesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListWorkflowTypesInput,
+  ) => stream.Stream<
+    WorkflowTypeInfos,
+    ListWorkflowTypesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListWorkflowTypesInput,
+  ) => stream.Stream<
+    WorkflowTypeInfo,
+    ListWorkflowTypesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type PollForActivityTaskError =
   | LimitExceededFault
@@ -4567,7 +4698,27 @@ export const pollForDecisionTask: API.OperationMethod<
     items: "events",
     pageSize: "maximumPageSize",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  PollForDecisionTaskInput,
+  DecisionTask,
+  PollForDecisionTaskError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: PollForDecisionTaskInput,
+  ) => stream.Stream<
+    DecisionTask,
+    PollForDecisionTaskError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: PollForDecisionTaskInput,
+  ) => stream.Stream<
+    HistoryEvent,
+    PollForDecisionTaskError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type RecordActivityTaskHeartbeatError =
   | OperationNotPermittedFault

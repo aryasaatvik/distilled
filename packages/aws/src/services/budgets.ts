@@ -180,66 +180,78 @@ const rules = T.EndpointResolver((p, _) => {
   return err("Invalid Configuration: Missing Region");
 });
 
-export class AccessDeniedException extends S.TaggedErrorClass<AccessDeniedException>()(
-  "AccessDeniedException",
-  { Message: S.optional(S.String) },
-  T.HttpError(403),
-).pipe(C.withAuthError) {}
-export class BillingViewHealthStatusException extends S.TaggedErrorClass<BillingViewHealthStatusException>()(
-  "BillingViewHealthStatusException",
-  { Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class CreationLimitExceededException extends S.TaggedErrorClass<CreationLimitExceededException>()(
-  "CreationLimitExceededException",
-  { Message: S.optional(S.String) },
-  T.HttpError(405),
-).pipe(C.withBadRequestError) {}
-export class DuplicateRecordException extends S.TaggedErrorClass<DuplicateRecordException>()(
-  "DuplicateRecordException",
-  { Message: S.optional(S.String) },
-  T.HttpError(409),
-).pipe(C.withConflictError) {}
-export class ExpiredNextTokenException extends S.TaggedErrorClass<ExpiredNextTokenException>()(
-  "ExpiredNextTokenException",
-  { Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class InternalErrorException extends S.TaggedErrorClass<InternalErrorException>()(
-  "InternalErrorException",
-  { Message: S.optional(S.String) },
-  T.HttpError(500),
-).pipe(C.withServerError) {}
-export class InvalidNextTokenException extends S.TaggedErrorClass<InvalidNextTokenException>()(
-  "InvalidNextTokenException",
-  { Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class InvalidParameterException extends S.TaggedErrorClass<InvalidParameterException>()(
-  "InvalidParameterException",
-  { Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class NotFoundException extends S.TaggedErrorClass<NotFoundException>()(
-  "NotFoundException",
-  { Message: S.optional(S.String) },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class ResourceLockedException extends S.TaggedErrorClass<ResourceLockedException>()(
-  "ResourceLockedException",
-  { Message: S.optional(S.String) },
-  T.HttpError(423),
-) {}
-export class ServiceQuotaExceededException extends S.TaggedErrorClass<ServiceQuotaExceededException>()(
-  "ServiceQuotaExceededException",
-  { Message: S.optional(S.String) },
-  T.HttpError(402),
-).pipe(C.withQuotaError) {}
-export class ThrottlingException extends S.TaggedErrorClass<ThrottlingException>()(
-  "ThrottlingException",
-  { Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
+export class AccessDeniedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
+    "AccessDeniedException",
+    { Message: S.optional(S.String) },
+    T.HttpError(403),
+  ).pipe(C.withAuthError) {}
+export class BillingViewHealthStatusException
+  extends /*@__PURE__*/ S.TaggedErrorClass<BillingViewHealthStatusException>()(
+    "BillingViewHealthStatusException",
+    { Message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class CreationLimitExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<CreationLimitExceededException>()(
+    "CreationLimitExceededException",
+    { Message: S.optional(S.String) },
+    T.HttpError(405),
+  ).pipe(C.withBadRequestError) {}
+export class DuplicateRecordException
+  extends /*@__PURE__*/ S.TaggedErrorClass<DuplicateRecordException>()(
+    "DuplicateRecordException",
+    { Message: S.optional(S.String) },
+    T.HttpError(409),
+  ).pipe(C.withConflictError) {}
+export class ExpiredNextTokenException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ExpiredNextTokenException>()(
+    "ExpiredNextTokenException",
+    { Message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class InternalErrorException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InternalErrorException>()(
+    "InternalErrorException",
+    { Message: S.optional(S.String) },
+    T.HttpError(500),
+  ).pipe(C.withServerError) {}
+export class InvalidNextTokenException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidNextTokenException>()(
+    "InvalidNextTokenException",
+    { Message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class InvalidParameterException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidParameterException>()(
+    "InvalidParameterException",
+    { Message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class NotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<NotFoundException>()(
+    "NotFoundException",
+    { Message: S.optional(S.String) },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class ResourceLockedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceLockedException>()(
+    "ResourceLockedException",
+    { Message: S.optional(S.String) },
+    T.HttpError(423),
+  ) {}
+export class ServiceQuotaExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
+    "ServiceQuotaExceededException",
+    { Message: S.optional(S.String) },
+    T.HttpError(402),
+  ).pipe(C.withQuotaError) {}
+export class ThrottlingException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
+    "ThrottlingException",
+    { Message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
 export type AccountId = string;
 export type BudgetName = string;
 export type NumericValue = string;
@@ -1983,7 +1995,27 @@ export const describeBudgetActionHistories: API.OperationMethod<
     items: "ActionHistories",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  DescribeBudgetActionHistoriesRequest,
+  DescribeBudgetActionHistoriesResponse,
+  DescribeBudgetActionHistoriesError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: DescribeBudgetActionHistoriesRequest,
+  ) => stream.Stream<
+    DescribeBudgetActionHistoriesResponse,
+    DescribeBudgetActionHistoriesError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: DescribeBudgetActionHistoriesRequest,
+  ) => stream.Stream<
+    ActionHistory,
+    DescribeBudgetActionHistoriesError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type DescribeBudgetActionsForAccountError =
   | AccessDeniedException
@@ -2034,7 +2066,27 @@ export const describeBudgetActionsForAccount: API.OperationMethod<
     items: "Actions",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  DescribeBudgetActionsForAccountRequest,
+  DescribeBudgetActionsForAccountResponse,
+  DescribeBudgetActionsForAccountError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: DescribeBudgetActionsForAccountRequest,
+  ) => stream.Stream<
+    DescribeBudgetActionsForAccountResponse,
+    DescribeBudgetActionsForAccountError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: DescribeBudgetActionsForAccountRequest,
+  ) => stream.Stream<
+    Action,
+    DescribeBudgetActionsForAccountError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type DescribeBudgetActionsForBudgetError =
   | AccessDeniedException
@@ -2087,7 +2139,27 @@ export const describeBudgetActionsForBudget: API.OperationMethod<
     items: "Actions",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  DescribeBudgetActionsForBudgetRequest,
+  DescribeBudgetActionsForBudgetResponse,
+  DescribeBudgetActionsForBudgetError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: DescribeBudgetActionsForBudgetRequest,
+  ) => stream.Stream<
+    DescribeBudgetActionsForBudgetResponse,
+    DescribeBudgetActionsForBudgetError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: DescribeBudgetActionsForBudgetRequest,
+  ) => stream.Stream<
+    Action,
+    DescribeBudgetActionsForBudgetError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type DescribeBudgetNotificationsForAccountError =
   | AccessDeniedException
@@ -2142,7 +2214,27 @@ export const describeBudgetNotificationsForAccount: API.OperationMethod<
     items: "BudgetNotificationsForAccount",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  DescribeBudgetNotificationsForAccountRequest,
+  DescribeBudgetNotificationsForAccountResponse,
+  DescribeBudgetNotificationsForAccountError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: DescribeBudgetNotificationsForAccountRequest,
+  ) => stream.Stream<
+    DescribeBudgetNotificationsForAccountResponse,
+    DescribeBudgetNotificationsForAccountError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: DescribeBudgetNotificationsForAccountRequest,
+  ) => stream.Stream<
+    BudgetNotificationsForAccount,
+    DescribeBudgetNotificationsForAccountError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type DescribeBudgetPerformanceHistoryError =
   | AccessDeniedException
@@ -2198,7 +2290,27 @@ export const describeBudgetPerformanceHistory: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  DescribeBudgetPerformanceHistoryRequest,
+  DescribeBudgetPerformanceHistoryResponse,
+  DescribeBudgetPerformanceHistoryError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: DescribeBudgetPerformanceHistoryRequest,
+  ) => stream.Stream<
+    DescribeBudgetPerformanceHistoryResponse,
+    DescribeBudgetPerformanceHistoryError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: DescribeBudgetPerformanceHistoryRequest,
+  ) => stream.Stream<
+    unknown,
+    DescribeBudgetPerformanceHistoryError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type DescribeBudgetsError =
   | AccessDeniedException
@@ -2256,7 +2368,27 @@ export const describeBudgets: API.OperationMethod<
     items: "Budgets",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  DescribeBudgetsRequest,
+  DescribeBudgetsResponse,
+  DescribeBudgetsError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: DescribeBudgetsRequest,
+  ) => stream.Stream<
+    DescribeBudgetsResponse,
+    DescribeBudgetsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: DescribeBudgetsRequest,
+  ) => stream.Stream<
+    Budget,
+    DescribeBudgetsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type DescribeNotificationsForBudgetError =
   | AccessDeniedException
@@ -2311,7 +2443,27 @@ export const describeNotificationsForBudget: API.OperationMethod<
     items: "Notifications",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  DescribeNotificationsForBudgetRequest,
+  DescribeNotificationsForBudgetResponse,
+  DescribeNotificationsForBudgetError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: DescribeNotificationsForBudgetRequest,
+  ) => stream.Stream<
+    DescribeNotificationsForBudgetResponse,
+    DescribeNotificationsForBudgetError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: DescribeNotificationsForBudgetRequest,
+  ) => stream.Stream<
+    Notification,
+    DescribeNotificationsForBudgetError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type DescribeSubscribersForNotificationError =
   | AccessDeniedException
@@ -2366,7 +2518,27 @@ export const describeSubscribersForNotification: API.OperationMethod<
     items: "Subscribers",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  DescribeSubscribersForNotificationRequest,
+  DescribeSubscribersForNotificationResponse,
+  DescribeSubscribersForNotificationError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: DescribeSubscribersForNotificationRequest,
+  ) => stream.Stream<
+    DescribeSubscribersForNotificationResponse,
+    DescribeSubscribersForNotificationError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: DescribeSubscribersForNotificationRequest,
+  ) => stream.Stream<
+    Subscriber,
+    DescribeSubscribersForNotificationError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type ExecuteBudgetActionError =
   | AccessDeniedException

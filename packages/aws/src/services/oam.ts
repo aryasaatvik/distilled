@@ -82,68 +82,89 @@ const rules = T.EndpointResolver((p, _) => {
   return err("Invalid Configuration: Missing Region");
 });
 
-export class ConflictException extends S.TaggedErrorClass<ConflictException>()(
-  "ConflictException",
-  {
-    Message: S.optional(S.String),
-    amznErrorType: S.optional(S.String).pipe(T.HttpHeader("x-amzn-ErrorType")),
-  },
-  T.HttpError(409),
-).pipe(C.withConflictError) {}
-export class InternalServiceFault extends S.TaggedErrorClass<InternalServiceFault>()(
-  "InternalServiceFault",
-  {
-    Message: S.optional(S.String),
-    amznErrorType: S.optional(S.String).pipe(T.HttpHeader("x-amzn-ErrorType")),
-  },
-  T.HttpError(500),
-).pipe(C.withServerError) {}
-export class InvalidParameterException extends S.TaggedErrorClass<InvalidParameterException>()(
-  "InvalidParameterException",
-  {
-    message: S.optional(S.String),
-    amznErrorType: S.optional(S.String).pipe(T.HttpHeader("x-amzn-ErrorType")),
-  },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class MissingRequiredParameterException extends S.TaggedErrorClass<MissingRequiredParameterException>()(
-  "MissingRequiredParameterException",
-  {
-    message: S.optional(S.String),
-    amznErrorType: S.optional(S.String).pipe(T.HttpHeader("x-amzn-ErrorType")),
-  },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class ResourceNotFoundException extends S.TaggedErrorClass<ResourceNotFoundException>()(
-  "ResourceNotFoundException",
-  {
-    Message: S.optional(S.String),
-    amznErrorType: S.optional(S.String).pipe(T.HttpHeader("x-amzn-ErrorType")),
-  },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class ServiceQuotaExceededException extends S.TaggedErrorClass<ServiceQuotaExceededException>()(
-  "ServiceQuotaExceededException",
-  {
-    Message: S.optional(S.String),
-    amznErrorType: S.optional(S.String).pipe(T.HttpHeader("x-amzn-ErrorType")),
-  },
-  T.HttpError(429),
-).pipe(C.withThrottlingError) {}
-export class TooManyRequestsException extends S.TaggedErrorClass<TooManyRequestsException>()(
-  "TooManyRequestsException",
-  {},
-).pipe(C.withThrottlingError, C.withRetryableError) {}
-export class TooManyTagsException extends S.TaggedErrorClass<TooManyTagsException>()(
-  "TooManyTagsException",
-  { Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class ValidationException extends S.TaggedErrorClass<ValidationException>()(
-  "ValidationException",
-  { Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
+export class ConflictException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
+    "ConflictException",
+    {
+      Message: S.optional(S.String),
+      amznErrorType: S.optional(S.String).pipe(
+        T.HttpHeader("x-amzn-ErrorType"),
+      ),
+    },
+    T.HttpError(409),
+  ).pipe(C.withConflictError) {}
+export class InternalServiceFault
+  extends /*@__PURE__*/ S.TaggedErrorClass<InternalServiceFault>()(
+    "InternalServiceFault",
+    {
+      Message: S.optional(S.String),
+      amznErrorType: S.optional(S.String).pipe(
+        T.HttpHeader("x-amzn-ErrorType"),
+      ),
+    },
+    T.HttpError(500),
+  ).pipe(C.withServerError) {}
+export class InvalidParameterException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidParameterException>()(
+    "InvalidParameterException",
+    {
+      message: S.optional(S.String),
+      amznErrorType: S.optional(S.String).pipe(
+        T.HttpHeader("x-amzn-ErrorType"),
+      ),
+    },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class MissingRequiredParameterException
+  extends /*@__PURE__*/ S.TaggedErrorClass<MissingRequiredParameterException>()(
+    "MissingRequiredParameterException",
+    {
+      message: S.optional(S.String),
+      amznErrorType: S.optional(S.String).pipe(
+        T.HttpHeader("x-amzn-ErrorType"),
+      ),
+    },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class ResourceNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
+    "ResourceNotFoundException",
+    {
+      Message: S.optional(S.String),
+      amznErrorType: S.optional(S.String).pipe(
+        T.HttpHeader("x-amzn-ErrorType"),
+      ),
+    },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class ServiceQuotaExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
+    "ServiceQuotaExceededException",
+    {
+      Message: S.optional(S.String),
+      amznErrorType: S.optional(S.String).pipe(
+        T.HttpHeader("x-amzn-ErrorType"),
+      ),
+    },
+    T.HttpError(429),
+  ).pipe(C.withThrottlingError) {}
+export class TooManyRequestsException
+  extends /*@__PURE__*/ S.TaggedErrorClass<TooManyRequestsException>()(
+    "TooManyRequestsException",
+    {},
+  ).pipe(C.withThrottlingError, C.withRetryableError) {}
+export class TooManyTagsException
+  extends /*@__PURE__*/ S.TaggedErrorClass<TooManyTagsException>()(
+    "TooManyTagsException",
+    { Message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class ValidationException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
+    "ValidationException",
+    { Message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
 export type LabelTemplate = string;
 export type ResourceType =
   | "AWS::CloudWatch::Metric"
@@ -1026,7 +1047,27 @@ export const listAttachedLinks: API.OperationMethod<
     items: "Items",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListAttachedLinksInput,
+  ListAttachedLinksOutput,
+  ListAttachedLinksError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListAttachedLinksInput,
+  ) => stream.Stream<
+    ListAttachedLinksOutput,
+    ListAttachedLinksError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListAttachedLinksInput,
+  ) => stream.Stream<
+    ListAttachedLinksItem,
+    ListAttachedLinksError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListLinksError =
   | InternalServiceFault
@@ -1077,7 +1118,27 @@ export const listLinks: API.OperationMethod<
     items: "Items",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListLinksInput,
+  ListLinksOutput,
+  ListLinksError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListLinksInput,
+  ) => stream.Stream<
+    ListLinksOutput,
+    ListLinksError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListLinksInput,
+  ) => stream.Stream<
+    ListLinksItem,
+    ListLinksError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListSinksError =
   | InternalServiceFault
@@ -1126,7 +1187,27 @@ export const listSinks: API.OperationMethod<
     items: "Items",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListSinksInput,
+  ListSinksOutput,
+  ListSinksError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListSinksInput,
+  ) => stream.Stream<
+    ListSinksOutput,
+    ListSinksError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListSinksInput,
+  ) => stream.Stream<
+    ListSinksItem,
+    ListSinksError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListTagsForResourceError =
   | ResourceNotFoundException

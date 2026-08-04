@@ -85,75 +85,89 @@ const rules = T.EndpointResolver((p, _) => {
   return err("Invalid Configuration: Missing Region");
 });
 
-export class AccessDeniedException extends S.TaggedErrorClass<AccessDeniedException>()(
-  "AccessDeniedException",
-  {
-    Message: S.optional(S.String),
-    amznErrorType: S.optional(S.String).pipe(T.HttpHeader("x-amzn-ErrorType")),
-  },
-  T.HttpError(400),
-).pipe(C.withBadRequestError, C.withAuthError) {}
-export class ConflictException extends S.TaggedErrorClass<ConflictException>()(
-  "ConflictException",
-  {
-    Message: S.optional(S.String),
-    ResourceId: S.optional(S.String),
-    ResourceType: S.optional(S.String),
-  },
-  T.HttpError(409),
-).pipe(C.withConflictError) {}
-export class InternalServerException extends S.TaggedErrorClass<InternalServerException>()(
-  "InternalServerException",
-  {
-    Message: S.optional(S.String),
-    amznErrorType: S.optional(S.String).pipe(T.HttpHeader("x-amzn-ErrorType")),
-    retryAfterSeconds: S.optional(S.Number).pipe(T.HttpHeader("Retry-After")),
-  },
-  T.HttpError(500),
-).pipe(C.withServerError) {}
-export class InvalidStateException extends S.TaggedErrorClass<InvalidStateException>()(
-  "InvalidStateException",
-  { Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class ResourceNotFoundException extends S.TaggedErrorClass<ResourceNotFoundException>()(
-  "ResourceNotFoundException",
-  {
-    Message: S.optional(S.String),
-    ResourceId: S.optional(S.String),
-    ResourceType: S.optional(S.String),
-  },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class ServiceQuotaExceededException extends S.TaggedErrorClass<ServiceQuotaExceededException>()(
-  "ServiceQuotaExceededException",
-  {
-    Message: S.optional(S.String),
-    ResourceId: S.optional(S.String),
-    ResourceType: S.optional(S.String),
-    ServiceCode: S.optional(S.String),
-    QuotaCode: S.optional(S.String),
-    amznErrorType: S.optional(S.String).pipe(T.HttpHeader("x-amzn-ErrorType")),
-  },
-  T.HttpError(402),
-).pipe(C.withQuotaError) {}
-export class TooManyRequestsException extends S.TaggedErrorClass<TooManyRequestsException>()(
-  "TooManyRequestsException",
-  { Message: S.optional(S.String) },
-  T.HttpError(429),
-).pipe(C.withThrottlingError) {}
-export class ValidationException extends S.TaggedErrorClass<ValidationException>()(
-  "ValidationException",
-  {
-    Message: S.optional(S.String),
-    Errors: S.optional(
-      S.suspend(() => ValidationErrors).annotate({
-        identifier: "ValidationErrors",
-      }),
-    ),
-  },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
+export class AccessDeniedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
+    "AccessDeniedException",
+    {
+      Message: S.optional(S.String),
+      amznErrorType: S.optional(S.String).pipe(
+        T.HttpHeader("x-amzn-ErrorType"),
+      ),
+    },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError, C.withAuthError) {}
+export class ConflictException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
+    "ConflictException",
+    {
+      Message: S.optional(S.String),
+      ResourceId: S.optional(S.String),
+      ResourceType: S.optional(S.String),
+    },
+    T.HttpError(409),
+  ).pipe(C.withConflictError) {}
+export class InternalServerException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
+    "InternalServerException",
+    {
+      Message: S.optional(S.String),
+      amznErrorType: S.optional(S.String).pipe(
+        T.HttpHeader("x-amzn-ErrorType"),
+      ),
+      retryAfterSeconds: S.optional(S.Number).pipe(T.HttpHeader("Retry-After")),
+    },
+    T.HttpError(500),
+  ).pipe(C.withServerError) {}
+export class InvalidStateException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidStateException>()(
+    "InvalidStateException",
+    { Message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class ResourceNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
+    "ResourceNotFoundException",
+    {
+      Message: S.optional(S.String),
+      ResourceId: S.optional(S.String),
+      ResourceType: S.optional(S.String),
+    },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class ServiceQuotaExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
+    "ServiceQuotaExceededException",
+    {
+      Message: S.optional(S.String),
+      ResourceId: S.optional(S.String),
+      ResourceType: S.optional(S.String),
+      ServiceCode: S.optional(S.String),
+      QuotaCode: S.optional(S.String),
+      amznErrorType: S.optional(S.String).pipe(
+        T.HttpHeader("x-amzn-ErrorType"),
+      ),
+    },
+    T.HttpError(402),
+  ).pipe(C.withQuotaError) {}
+export class TooManyRequestsException
+  extends /*@__PURE__*/ S.TaggedErrorClass<TooManyRequestsException>()(
+    "TooManyRequestsException",
+    { Message: S.optional(S.String) },
+    T.HttpError(429),
+  ).pipe(C.withThrottlingError) {}
+export class ValidationException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
+    "ValidationException",
+    {
+      Message: S.optional(S.String),
+      Errors: S.optional(
+        S.suspend(() => ValidationErrors).annotate({
+          identifier: "ValidationErrors",
+        }),
+      ),
+    },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
 export type RuleName = string;
 export type Region = string;
 export type Regions = string[];
@@ -2831,7 +2845,27 @@ export const listCentralizationRulesForOrganization: API.OperationMethod<
     items: "CentralizationRuleSummaries",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListCentralizationRulesForOrganizationInput,
+  ListCentralizationRulesForOrganizationOutput,
+  ListCentralizationRulesForOrganizationError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListCentralizationRulesForOrganizationInput,
+  ) => stream.Stream<
+    ListCentralizationRulesForOrganizationOutput,
+    ListCentralizationRulesForOrganizationError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListCentralizationRulesForOrganizationInput,
+  ) => stream.Stream<
+    CentralizationRuleSummary,
+    ListCentralizationRulesForOrganizationError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type ListResourceTelemetryError =
   | AccessDeniedException
@@ -2880,7 +2914,27 @@ export const listResourceTelemetry: API.OperationMethod<
     items: "TelemetryConfigurations",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListResourceTelemetryInput,
+  ListResourceTelemetryOutput,
+  ListResourceTelemetryError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListResourceTelemetryInput,
+  ) => stream.Stream<
+    ListResourceTelemetryOutput,
+    ListResourceTelemetryError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListResourceTelemetryInput,
+  ) => stream.Stream<
+    TelemetryConfiguration,
+    ListResourceTelemetryError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type ListResourceTelemetryForOrganizationError =
   | AccessDeniedException
@@ -2929,7 +2983,27 @@ export const listResourceTelemetryForOrganization: API.OperationMethod<
     items: "TelemetryConfigurations",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListResourceTelemetryForOrganizationInput,
+  ListResourceTelemetryForOrganizationOutput,
+  ListResourceTelemetryForOrganizationError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListResourceTelemetryForOrganizationInput,
+  ) => stream.Stream<
+    ListResourceTelemetryForOrganizationOutput,
+    ListResourceTelemetryForOrganizationError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListResourceTelemetryForOrganizationInput,
+  ) => stream.Stream<
+    TelemetryConfiguration,
+    ListResourceTelemetryForOrganizationError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type ListS3TableIntegrationsError =
   | AccessDeniedException
@@ -2978,7 +3052,27 @@ export const listS3TableIntegrations: API.OperationMethod<
     items: "IntegrationSummaries",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListS3TableIntegrationsInput,
+  ListS3TableIntegrationsOutput,
+  ListS3TableIntegrationsError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListS3TableIntegrationsInput,
+  ) => stream.Stream<
+    ListS3TableIntegrationsOutput,
+    ListS3TableIntegrationsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListS3TableIntegrationsInput,
+  ) => stream.Stream<
+    IntegrationSummary,
+    ListS3TableIntegrationsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type ListTagsForResourceError =
   | AccessDeniedException
@@ -3057,7 +3151,27 @@ export const listTelemetryPipelines: API.OperationMethod<
     items: "PipelineSummaries",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListTelemetryPipelinesInput,
+  ListTelemetryPipelinesOutput,
+  ListTelemetryPipelinesError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListTelemetryPipelinesInput,
+  ) => stream.Stream<
+    ListTelemetryPipelinesOutput,
+    ListTelemetryPipelinesError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListTelemetryPipelinesInput,
+  ) => stream.Stream<
+    TelemetryPipelineSummary,
+    ListTelemetryPipelinesError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type ListTelemetryRulesError =
   | AccessDeniedException
@@ -3106,7 +3220,27 @@ export const listTelemetryRules: API.OperationMethod<
     items: "TelemetryRuleSummaries",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListTelemetryRulesInput,
+  ListTelemetryRulesOutput,
+  ListTelemetryRulesError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListTelemetryRulesInput,
+  ) => stream.Stream<
+    ListTelemetryRulesOutput,
+    ListTelemetryRulesError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListTelemetryRulesInput,
+  ) => stream.Stream<
+    TelemetryRuleSummary,
+    ListTelemetryRulesError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type ListTelemetryRulesForOrganizationError =
   | AccessDeniedException
@@ -3155,7 +3289,27 @@ export const listTelemetryRulesForOrganization: API.OperationMethod<
     items: "TelemetryRuleSummaries",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListTelemetryRulesForOrganizationInput,
+  ListTelemetryRulesForOrganizationOutput,
+  ListTelemetryRulesForOrganizationError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListTelemetryRulesForOrganizationInput,
+  ) => stream.Stream<
+    ListTelemetryRulesForOrganizationOutput,
+    ListTelemetryRulesForOrganizationError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListTelemetryRulesForOrganizationInput,
+  ) => stream.Stream<
+    TelemetryRuleSummary,
+    ListTelemetryRulesForOrganizationError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type StartTelemetryEnrichmentError =
   | AccessDeniedException

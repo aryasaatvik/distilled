@@ -85,36 +85,42 @@ const rules = T.EndpointResolver((p, _) => {
   return err("Invalid Configuration: Missing Region");
 });
 
-export class AccessDeniedException extends S.TaggedErrorClass<AccessDeniedException>()(
-  "AccessDeniedException",
-  { message: S.String },
-  T.all(T.HttpError(403), T.Retryable()),
-).pipe(C.withAuthError, C.withRetryableError) {}
-export class ConflictException extends S.TaggedErrorClass<ConflictException>()(
-  "ConflictException",
-  { message: S.String },
-  T.all(T.HttpError(409), T.Retryable()),
-).pipe(C.withConflictError, C.withRetryableError) {}
-export class InternalServerException extends S.TaggedErrorClass<InternalServerException>()(
-  "InternalServerException",
-  { message: S.String },
-  T.HttpError(500),
-).pipe(C.withServerError) {}
-export class ResourceNotFoundException extends S.TaggedErrorClass<ResourceNotFoundException>()(
-  "ResourceNotFoundException",
-  { message: S.String },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class ThrottlingException extends S.TaggedErrorClass<ThrottlingException>()(
-  "ThrottlingException",
-  { message: S.String },
-  T.HttpError(429),
-).pipe(C.withThrottlingError) {}
-export class ValidationException extends S.TaggedErrorClass<ValidationException>()(
-  "ValidationException",
-  { message: S.String },
-  T.all(T.HttpError(400), T.Retryable()),
-).pipe(C.withBadRequestError, C.withRetryableError) {}
+export class AccessDeniedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
+    "AccessDeniedException",
+    { message: S.String },
+    T.all(T.HttpError(403), T.Retryable()),
+  ).pipe(C.withAuthError, C.withRetryableError) {}
+export class ConflictException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
+    "ConflictException",
+    { message: S.String },
+    T.all(T.HttpError(409), T.Retryable()),
+  ).pipe(C.withConflictError, C.withRetryableError) {}
+export class InternalServerException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
+    "InternalServerException",
+    { message: S.String },
+    T.HttpError(500),
+  ).pipe(C.withServerError) {}
+export class ResourceNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
+    "ResourceNotFoundException",
+    { message: S.String },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class ThrottlingException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
+    "ThrottlingException",
+    { message: S.String },
+    T.HttpError(429),
+  ).pipe(C.withThrottlingError) {}
+export class ValidationException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
+    "ValidationException",
+    { message: S.String },
+    T.all(T.HttpError(400), T.Retryable()),
+  ).pipe(C.withBadRequestError, C.withRetryableError) {}
 export type MigrationWorkflowId = string;
 export type TemplateSource = { workflowId: string };
 export const TemplateSource = /*@__PURE__*/ S.Union([
@@ -2294,7 +2300,27 @@ export const listPlugins: API.OperationMethod<
     items: "plugins",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListPluginsRequest,
+  ListPluginsResponse,
+  ListPluginsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListPluginsRequest,
+  ) => stream.Stream<
+    ListPluginsResponse,
+    ListPluginsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListPluginsRequest,
+  ) => stream.Stream<
+    PluginSummary,
+    ListPluginsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListTagsForResourceError =
   | ResourceNotFoundException
@@ -2358,7 +2384,27 @@ export const listTemplates: API.OperationMethod<
     items: "templateSummary",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListMigrationWorkflowTemplatesRequest,
+  ListMigrationWorkflowTemplatesResponse,
+  ListTemplatesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListMigrationWorkflowTemplatesRequest,
+  ) => stream.Stream<
+    ListMigrationWorkflowTemplatesResponse,
+    ListTemplatesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListMigrationWorkflowTemplatesRequest,
+  ) => stream.Stream<
+    TemplateSummary,
+    ListTemplatesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListTemplateStepGroupsError =
   | AccessDeniedException
@@ -2407,7 +2453,27 @@ export const listTemplateStepGroups: API.OperationMethod<
     items: "templateStepGroupSummary",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListTemplateStepGroupsRequest,
+  ListTemplateStepGroupsResponse,
+  ListTemplateStepGroupsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListTemplateStepGroupsRequest,
+  ) => stream.Stream<
+    ListTemplateStepGroupsResponse,
+    ListTemplateStepGroupsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListTemplateStepGroupsRequest,
+  ) => stream.Stream<
+    TemplateStepGroupSummary,
+    ListTemplateStepGroupsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListTemplateStepsError =
   | AccessDeniedException
@@ -2458,7 +2524,27 @@ export const listTemplateSteps: API.OperationMethod<
     items: "templateStepSummaryList",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListTemplateStepsRequest,
+  ListTemplateStepsResponse,
+  ListTemplateStepsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListTemplateStepsRequest,
+  ) => stream.Stream<
+    ListTemplateStepsResponse,
+    ListTemplateStepsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListTemplateStepsRequest,
+  ) => stream.Stream<
+    TemplateStepSummary,
+    ListTemplateStepsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListWorkflowsError =
   | AccessDeniedException
@@ -2509,7 +2595,27 @@ export const listWorkflows: API.OperationMethod<
     items: "migrationWorkflowSummary",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListMigrationWorkflowsRequest,
+  ListMigrationWorkflowsResponse,
+  ListWorkflowsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListMigrationWorkflowsRequest,
+  ) => stream.Stream<
+    ListMigrationWorkflowsResponse,
+    ListWorkflowsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListMigrationWorkflowsRequest,
+  ) => stream.Stream<
+    MigrationWorkflowSummary,
+    ListWorkflowsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListWorkflowStepGroupsError =
   | AccessDeniedException
@@ -2560,7 +2666,27 @@ export const listWorkflowStepGroups: API.OperationMethod<
     items: "workflowStepGroupsSummary",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListWorkflowStepGroupsRequest,
+  ListWorkflowStepGroupsResponse,
+  ListWorkflowStepGroupsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListWorkflowStepGroupsRequest,
+  ) => stream.Stream<
+    ListWorkflowStepGroupsResponse,
+    ListWorkflowStepGroupsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListWorkflowStepGroupsRequest,
+  ) => stream.Stream<
+    WorkflowStepGroupSummary,
+    ListWorkflowStepGroupsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListWorkflowStepsError =
   | AccessDeniedException
@@ -2609,7 +2735,27 @@ export const listWorkflowSteps: API.OperationMethod<
     items: "workflowStepsSummary",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListWorkflowStepsRequest,
+  ListWorkflowStepsResponse,
+  ListWorkflowStepsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListWorkflowStepsRequest,
+  ) => stream.Stream<
+    ListWorkflowStepsResponse,
+    ListWorkflowStepsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListWorkflowStepsRequest,
+  ) => stream.Stream<
+    WorkflowStepSummary,
+    ListWorkflowStepsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type RetryWorkflowStepError =
   | AccessDeniedException

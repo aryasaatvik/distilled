@@ -85,51 +85,60 @@ const rules = T.EndpointResolver((p, _) => {
   return err("Invalid Configuration: Missing Region");
 });
 
-export class ActiveSessionsExceededException extends S.TaggedErrorClass<ActiveSessionsExceededException>()(
-  "ActiveSessionsExceededException",
-  { Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class ActiveStatementsExceededException extends S.TaggedErrorClass<ActiveStatementsExceededException>()(
-  "ActiveStatementsExceededException",
-  { Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class BatchExecuteStatementException extends S.TaggedErrorClass<BatchExecuteStatementException>()(
-  "BatchExecuteStatementException",
-  { Message: S.String, StatementId: S.String },
-  T.HttpError(500),
-).pipe(C.withServerError) {}
-export class DatabaseConnectionException extends S.TaggedErrorClass<DatabaseConnectionException>()(
-  "DatabaseConnectionException",
-  { Message: S.String },
-  T.HttpError(500),
-).pipe(C.withServerError) {}
-export class ExecuteStatementException extends S.TaggedErrorClass<ExecuteStatementException>()(
-  "ExecuteStatementException",
-  { Message: S.String, StatementId: S.String },
-  T.HttpError(500),
-).pipe(C.withServerError) {}
-export class InternalServerException extends S.TaggedErrorClass<InternalServerException>()(
-  "InternalServerException",
-  { Message: S.String },
-  T.HttpError(500),
-).pipe(C.withServerError) {}
-export class QueryTimeoutException extends S.TaggedErrorClass<QueryTimeoutException>()(
-  "QueryTimeoutException",
-  { Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class ResourceNotFoundException extends S.TaggedErrorClass<ResourceNotFoundException>()(
-  "ResourceNotFoundException",
-  { Message: S.String, ResourceId: S.String },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class ValidationException extends S.TaggedErrorClass<ValidationException>()(
-  "ValidationException",
-  { Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
+export class ActiveSessionsExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ActiveSessionsExceededException>()(
+    "ActiveSessionsExceededException",
+    { Message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class ActiveStatementsExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ActiveStatementsExceededException>()(
+    "ActiveStatementsExceededException",
+    { Message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class BatchExecuteStatementException
+  extends /*@__PURE__*/ S.TaggedErrorClass<BatchExecuteStatementException>()(
+    "BatchExecuteStatementException",
+    { Message: S.String, StatementId: S.String },
+    T.HttpError(500),
+  ).pipe(C.withServerError) {}
+export class DatabaseConnectionException
+  extends /*@__PURE__*/ S.TaggedErrorClass<DatabaseConnectionException>()(
+    "DatabaseConnectionException",
+    { Message: S.String },
+    T.HttpError(500),
+  ).pipe(C.withServerError) {}
+export class ExecuteStatementException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ExecuteStatementException>()(
+    "ExecuteStatementException",
+    { Message: S.String, StatementId: S.String },
+    T.HttpError(500),
+  ).pipe(C.withServerError) {}
+export class InternalServerException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
+    "InternalServerException",
+    { Message: S.String },
+    T.HttpError(500),
+  ).pipe(C.withServerError) {}
+export class QueryTimeoutException
+  extends /*@__PURE__*/ S.TaggedErrorClass<QueryTimeoutException>()(
+    "QueryTimeoutException",
+    { Message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class ResourceNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
+    "ResourceNotFoundException",
+    { Message: S.String, ResourceId: S.String },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class ValidationException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
+    "ValidationException",
+    { Message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
 export type StatementString = string;
 export type SqlList = string[];
 export const SqlList = /*@__PURE__*/ S.Array(S.String);
@@ -965,7 +974,27 @@ export const describeTable: API.OperationMethod<
     items: "ColumnList",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  DescribeTableRequest,
+  DescribeTableResponse,
+  DescribeTableError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: DescribeTableRequest,
+  ) => stream.Stream<
+    DescribeTableResponse,
+    DescribeTableError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: DescribeTableRequest,
+  ) => stream.Stream<
+    ColumnMetadata,
+    DescribeTableError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ExecuteStatementError =
   | ActiveSessionsExceededException
@@ -1057,7 +1086,27 @@ export const getStatementResult: API.OperationMethod<
     outputToken: "NextToken",
     items: "Records",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  GetStatementResultRequest,
+  GetStatementResultResponse,
+  GetStatementResultError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: GetStatementResultRequest,
+  ) => stream.Stream<
+    GetStatementResultResponse,
+    GetStatementResultError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: GetStatementResultRequest,
+  ) => stream.Stream<
+    Field[],
+    GetStatementResultError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type GetStatementResultV2Error =
   | InternalServerException
@@ -1105,7 +1154,27 @@ export const getStatementResultV2: API.OperationMethod<
     outputToken: "NextToken",
     items: "Records",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  GetStatementResultV2Request,
+  GetStatementResultV2Response,
+  GetStatementResultV2Error,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: GetStatementResultV2Request,
+  ) => stream.Stream<
+    GetStatementResultV2Response,
+    GetStatementResultV2Error,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: GetStatementResultV2Request,
+  ) => stream.Stream<
+    QueryRecords,
+    GetStatementResultV2Error,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListDatabasesError =
   | DatabaseConnectionException
@@ -1168,7 +1237,27 @@ export const listDatabases: API.OperationMethod<
     items: "Databases",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListDatabasesRequest,
+  ListDatabasesResponse,
+  ListDatabasesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListDatabasesRequest,
+  ) => stream.Stream<
+    ListDatabasesResponse,
+    ListDatabasesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListDatabasesRequest,
+  ) => stream.Stream<
+    string,
+    ListDatabasesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListSchemasError =
   | DatabaseConnectionException
@@ -1231,7 +1320,27 @@ export const listSchemas: API.OperationMethod<
     items: "Schemas",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListSchemasRequest,
+  ListSchemasResponse,
+  ListSchemasError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListSchemasRequest,
+  ) => stream.Stream<
+    ListSchemasResponse,
+    ListSchemasError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListSchemasRequest,
+  ) => stream.Stream<
+    string,
+    ListSchemasError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListStatementsError =
   | InternalServerException
@@ -1282,7 +1391,27 @@ export const listStatements: API.OperationMethod<
     items: "Statements",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListStatementsRequest,
+  ListStatementsResponse,
+  ListStatementsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListStatementsRequest,
+  ) => stream.Stream<
+    ListStatementsResponse,
+    ListStatementsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListStatementsRequest,
+  ) => stream.Stream<
+    StatementData,
+    ListStatementsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListTablesError =
   | DatabaseConnectionException
@@ -1345,4 +1474,24 @@ export const listTables: API.OperationMethod<
     items: "Tables",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListTablesRequest,
+  ListTablesResponse,
+  ListTablesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListTablesRequest,
+  ) => stream.Stream<
+    ListTablesResponse,
+    ListTablesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListTablesRequest,
+  ) => stream.Stream<
+    TableMember,
+    ListTablesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};

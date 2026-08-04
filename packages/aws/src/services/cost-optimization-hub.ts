@@ -85,43 +85,48 @@ const rules = T.EndpointResolver((p, _) => {
   return err("Invalid Configuration: Missing Region");
 });
 
-export class AccessDeniedException extends S.TaggedErrorClass<AccessDeniedException>()(
-  "AccessDeniedException",
-  { message: S.String },
-  T.HttpError(403),
-).pipe(C.withAuthError) {}
-export class InternalServerException extends S.TaggedErrorClass<InternalServerException>()(
-  "InternalServerException",
-  { message: S.String },
-  T.HttpError(500),
-).pipe(C.withServerError) {}
-export class ResourceNotFoundException extends S.TaggedErrorClass<ResourceNotFoundException>()(
-  "ResourceNotFoundException",
-  { message: S.String, resourceId: S.String },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class ThrottlingException extends S.TaggedErrorClass<ThrottlingException>()(
-  "ThrottlingException",
-  { message: S.optional(S.String) },
-  T.HttpError(429),
-).pipe(C.withThrottlingError) {}
-export class ValidationException extends S.TaggedErrorClass<ValidationException>()(
-  "ValidationException",
-  {
-    message: S.String,
-    reason: S.optional(
-      S.suspend(() => ValidationExceptionReason).annotate({
-        identifier: "ValidationExceptionReason",
-      }),
-    ),
-    fields: S.optional(
-      S.suspend(() => ValidationExceptionDetails).annotate({
-        identifier: "ValidationExceptionDetails",
-      }),
-    ),
-  },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
+export class AccessDeniedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
+    "AccessDeniedException",
+    { message: S.String },
+    T.HttpError(403),
+  ).pipe(C.withAuthError) {}
+export class InternalServerException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
+    "InternalServerException",
+    { message: S.String },
+    T.HttpError(500),
+  ).pipe(C.withServerError) {}
+export class ResourceNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
+    "ResourceNotFoundException",
+    { message: S.String, resourceId: S.String },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class ThrottlingException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
+    "ThrottlingException",
+    { message: S.optional(S.String) },
+    T.HttpError(429),
+  ).pipe(C.withThrottlingError) {}
+export class ValidationException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
+    "ValidationException",
+    {
+      message: S.String,
+      reason: S.optional(
+        S.suspend(() => ValidationExceptionReason).annotate({
+          identifier: "ValidationExceptionReason",
+        }),
+      ),
+      fields: S.optional(
+        S.suspend(() => ValidationExceptionDetails).annotate({
+          identifier: "ValidationExceptionDetails",
+        }),
+      ),
+    },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
 export interface GetPreferencesRequest {}
 export const GetPreferencesRequest = /*@__PURE__*/ S.suspend(() =>
   S.Struct({}).pipe(
@@ -2382,7 +2387,27 @@ export const listEfficiencyMetrics: API.OperationMethod<
     items: "efficiencyMetricsByGroup",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListEfficiencyMetricsRequest,
+  ListEfficiencyMetricsResponse,
+  ListEfficiencyMetricsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListEfficiencyMetricsRequest,
+  ) => stream.Stream<
+    ListEfficiencyMetricsResponse,
+    ListEfficiencyMetricsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListEfficiencyMetricsRequest,
+  ) => stream.Stream<
+    EfficiencyMetricsByGroup,
+    ListEfficiencyMetricsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListEnrollmentStatusesError =
   | AccessDeniedException
@@ -2431,7 +2456,27 @@ export const listEnrollmentStatuses: API.OperationMethod<
     items: "items",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListEnrollmentStatusesRequest,
+  ListEnrollmentStatusesResponse,
+  ListEnrollmentStatusesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListEnrollmentStatusesRequest,
+  ) => stream.Stream<
+    ListEnrollmentStatusesResponse,
+    ListEnrollmentStatusesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListEnrollmentStatusesRequest,
+  ) => stream.Stream<
+    AccountEnrollmentStatus,
+    ListEnrollmentStatusesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListRecommendationsError =
   | AccessDeniedException
@@ -2480,7 +2525,27 @@ export const listRecommendations: API.OperationMethod<
     items: "items",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListRecommendationsRequest,
+  ListRecommendationsResponse,
+  ListRecommendationsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListRecommendationsRequest,
+  ) => stream.Stream<
+    ListRecommendationsResponse,
+    ListRecommendationsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListRecommendationsRequest,
+  ) => stream.Stream<
+    Recommendation,
+    ListRecommendationsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListRecommendationSummariesError =
   | AccessDeniedException
@@ -2531,7 +2596,27 @@ export const listRecommendationSummaries: API.OperationMethod<
     items: "items",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListRecommendationSummariesRequest,
+  ListRecommendationSummariesResponse,
+  ListRecommendationSummariesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListRecommendationSummariesRequest,
+  ) => stream.Stream<
+    ListRecommendationSummariesResponse,
+    ListRecommendationSummariesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListRecommendationSummariesRequest,
+  ) => stream.Stream<
+    RecommendationSummary,
+    ListRecommendationSummariesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type UpdateEnrollmentStatusError =
   | AccessDeniedException

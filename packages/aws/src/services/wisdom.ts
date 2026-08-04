@@ -87,46 +87,54 @@ const rules = T.EndpointResolver((p, _) => {
   return err("Invalid Configuration: Missing Region");
 });
 
-export class AccessDeniedException extends S.TaggedErrorClass<AccessDeniedException>()(
-  "AccessDeniedException",
-  { message: S.optional(S.String) },
-  T.HttpError(403),
-).pipe(C.withAuthError) {}
-export class ConflictException extends S.TaggedErrorClass<ConflictException>()(
-  "ConflictException",
-  { message: S.optional(S.String) },
-  T.HttpError(409),
-).pipe(C.withConflictError) {}
-export class PreconditionFailedException extends S.TaggedErrorClass<PreconditionFailedException>()(
-  "PreconditionFailedException",
-  { message: S.optional(S.String) },
-  T.HttpError(412),
-) {}
-export class RequestTimeoutException extends S.TaggedErrorClass<RequestTimeoutException>()(
-  "RequestTimeoutException",
-  { message: S.optional(S.String) },
-  T.all(T.HttpError(408), T.Retryable()),
-).pipe(C.withTimeoutError, C.withRetryableError) {}
-export class ResourceNotFoundException extends S.TaggedErrorClass<ResourceNotFoundException>()(
-  "ResourceNotFoundException",
-  { message: S.optional(S.String), resourceName: S.optional(S.String) },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class ServiceQuotaExceededException extends S.TaggedErrorClass<ServiceQuotaExceededException>()(
-  "ServiceQuotaExceededException",
-  { message: S.optional(S.String) },
-  T.HttpError(402),
-).pipe(C.withQuotaError) {}
-export class TooManyTagsException extends S.TaggedErrorClass<TooManyTagsException>()(
-  "TooManyTagsException",
-  { message: S.optional(S.String), resourceName: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class ValidationException extends S.TaggedErrorClass<ValidationException>()(
-  "ValidationException",
-  { message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
+export class AccessDeniedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
+    "AccessDeniedException",
+    { message: S.optional(S.String) },
+    T.HttpError(403),
+  ).pipe(C.withAuthError) {}
+export class ConflictException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
+    "ConflictException",
+    { message: S.optional(S.String) },
+    T.HttpError(409),
+  ).pipe(C.withConflictError) {}
+export class PreconditionFailedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<PreconditionFailedException>()(
+    "PreconditionFailedException",
+    { message: S.optional(S.String) },
+    T.HttpError(412),
+  ) {}
+export class RequestTimeoutException
+  extends /*@__PURE__*/ S.TaggedErrorClass<RequestTimeoutException>()(
+    "RequestTimeoutException",
+    { message: S.optional(S.String) },
+    T.all(T.HttpError(408), T.Retryable()),
+  ).pipe(C.withTimeoutError, C.withRetryableError) {}
+export class ResourceNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
+    "ResourceNotFoundException",
+    { message: S.optional(S.String), resourceName: S.optional(S.String) },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class ServiceQuotaExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
+    "ServiceQuotaExceededException",
+    { message: S.optional(S.String) },
+    T.HttpError(402),
+  ).pipe(C.withQuotaError) {}
+export class TooManyTagsException
+  extends /*@__PURE__*/ S.TaggedErrorClass<TooManyTagsException>()(
+    "TooManyTagsException",
+    { message: S.optional(S.String), resourceName: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class ValidationException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
+    "ValidationException",
+    { message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
 export type ClientToken = string;
 export type Name = string;
 export type AssistantType = string;
@@ -3108,7 +3116,27 @@ export const listAssistantAssociations: API.OperationMethod<
     items: "assistantAssociationSummaries",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListAssistantAssociationsRequest,
+  ListAssistantAssociationsResponse,
+  ListAssistantAssociationsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListAssistantAssociationsRequest,
+  ) => stream.Stream<
+    ListAssistantAssociationsResponse,
+    ListAssistantAssociationsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListAssistantAssociationsRequest,
+  ) => stream.Stream<
+    AssistantAssociationSummary,
+    ListAssistantAssociationsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListAssistantsError =
   | AccessDeniedException
@@ -3150,7 +3178,27 @@ export const listAssistants: API.OperationMethod<
     items: "assistantSummaries",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListAssistantsRequest,
+  ListAssistantsResponse,
+  ListAssistantsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListAssistantsRequest,
+  ) => stream.Stream<
+    ListAssistantsResponse,
+    ListAssistantsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListAssistantsRequest,
+  ) => stream.Stream<
+    AssistantSummary,
+    ListAssistantsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListContentsError =
   | AccessDeniedException
@@ -3197,7 +3245,27 @@ export const listContents: API.OperationMethod<
     items: "contentSummaries",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListContentsRequest,
+  ListContentsResponse,
+  ListContentsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListContentsRequest,
+  ) => stream.Stream<
+    ListContentsResponse,
+    ListContentsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListContentsRequest,
+  ) => stream.Stream<
+    ContentSummary,
+    ListContentsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListImportJobsError =
   | AccessDeniedException
@@ -3239,7 +3307,27 @@ export const listImportJobs: API.OperationMethod<
     items: "importJobSummaries",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListImportJobsRequest,
+  ListImportJobsResponse,
+  ListImportJobsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListImportJobsRequest,
+  ) => stream.Stream<
+    ListImportJobsResponse,
+    ListImportJobsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListImportJobsRequest,
+  ) => stream.Stream<
+    ImportJobSummary,
+    ListImportJobsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListKnowledgeBasesError =
   | AccessDeniedException
@@ -3281,7 +3369,27 @@ export const listKnowledgeBases: API.OperationMethod<
     items: "knowledgeBaseSummaries",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListKnowledgeBasesRequest,
+  ListKnowledgeBasesResponse,
+  ListKnowledgeBasesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListKnowledgeBasesRequest,
+  ) => stream.Stream<
+    ListKnowledgeBasesResponse,
+    ListKnowledgeBasesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListKnowledgeBasesRequest,
+  ) => stream.Stream<
+    KnowledgeBaseSummary,
+    ListKnowledgeBasesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListQuickResponsesError =
   | AccessDeniedException
@@ -3328,7 +3436,27 @@ export const listQuickResponses: API.OperationMethod<
     items: "quickResponseSummaries",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListQuickResponsesRequest,
+  ListQuickResponsesResponse,
+  ListQuickResponsesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListQuickResponsesRequest,
+  ) => stream.Stream<
+    ListQuickResponsesResponse,
+    ListQuickResponsesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListQuickResponsesRequest,
+  ) => stream.Stream<
+    QuickResponseSummary,
+    ListQuickResponsesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListTagsForResourceError = ResourceNotFoundException | CommonErrors;
 /**
@@ -3424,7 +3552,27 @@ export const queryAssistant: API.OperationMethod<
     items: "results",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  QueryAssistantRequest,
+  QueryAssistantResponse,
+  QueryAssistantError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: QueryAssistantRequest,
+  ) => stream.Stream<
+    QueryAssistantResponse,
+    QueryAssistantError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: QueryAssistantRequest,
+  ) => stream.Stream<
+    ResultData,
+    QueryAssistantError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type RemoveKnowledgeBaseTemplateUriError =
   | AccessDeniedException
@@ -3498,7 +3646,27 @@ export const searchContent: API.OperationMethod<
     items: "contentSummaries",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  SearchContentRequest,
+  SearchContentResponse,
+  SearchContentError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: SearchContentRequest,
+  ) => stream.Stream<
+    SearchContentResponse,
+    SearchContentError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: SearchContentRequest,
+  ) => stream.Stream<
+    ContentSummary,
+    SearchContentError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type SearchQuickResponsesError =
   | AccessDeniedException
@@ -3547,7 +3715,27 @@ export const searchQuickResponses: API.OperationMethod<
     items: "results",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  SearchQuickResponsesRequest,
+  SearchQuickResponsesResponse,
+  SearchQuickResponsesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: SearchQuickResponsesRequest,
+  ) => stream.Stream<
+    SearchQuickResponsesResponse,
+    SearchQuickResponsesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: SearchQuickResponsesRequest,
+  ) => stream.Stream<
+    QuickResponseSearchResultData,
+    SearchQuickResponsesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type SearchSessionsError =
   | AccessDeniedException
@@ -3594,7 +3782,27 @@ export const searchSessions: API.OperationMethod<
     items: "sessionSummaries",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  SearchSessionsRequest,
+  SearchSessionsResponse,
+  SearchSessionsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: SearchSessionsRequest,
+  ) => stream.Stream<
+    SearchSessionsResponse,
+    SearchSessionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: SearchSessionsRequest,
+  ) => stream.Stream<
+    SessionSummary,
+    SearchSessionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type StartContentUploadError =
   | AccessDeniedException

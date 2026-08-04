@@ -87,48 +87,55 @@ const rules = T.EndpointResolver((p, _) => {
   return err("Invalid Configuration: Missing Region");
 });
 
-export class AccessDeniedException extends S.TaggedErrorClass<AccessDeniedException>()(
-  "AccessDeniedException",
-  { message: S.optional(S.String) },
-  T.HttpError(403),
-).pipe(C.withAuthError) {}
-export class ConflictException extends S.TaggedErrorClass<ConflictException>()(
-  "ConflictException",
-  { message: S.optional(S.String) },
-  T.HttpError(409),
-).pipe(C.withConflictError) {}
-export class InternalServerException extends S.TaggedErrorClass<InternalServerException>()(
-  "InternalServerException",
-  { message: S.optional(S.String) },
-  T.HttpError(500),
-).pipe(C.withServerError) {}
-export class ResourceNotFoundException extends S.TaggedErrorClass<ResourceNotFoundException>()(
-  "ResourceNotFoundException",
-  { message: S.optional(S.String) },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class ServiceQuotaExceededException extends S.TaggedErrorClass<ServiceQuotaExceededException>()(
-  "ServiceQuotaExceededException",
-  { message: S.optional(S.String) },
-  T.HttpError(402),
-).pipe(C.withQuotaError) {}
-export class ThrottlingException extends S.TaggedErrorClass<ThrottlingException>()(
-  "ThrottlingException",
-  { message: S.optional(S.String) },
-  T.HttpError(429),
-).pipe(C.withThrottlingError) {}
-export class ValidationException extends S.TaggedErrorClass<ValidationException>()(
-  "ValidationException",
-  {
-    message: S.optional(S.String),
-    fieldList: S.optional(
-      S.suspend(() => ValidationExceptionFieldList).annotate({
-        identifier: "ValidationExceptionFieldList",
-      }),
-    ),
-  },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
+export class AccessDeniedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
+    "AccessDeniedException",
+    { message: S.optional(S.String) },
+    T.HttpError(403),
+  ).pipe(C.withAuthError) {}
+export class ConflictException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
+    "ConflictException",
+    { message: S.optional(S.String) },
+    T.HttpError(409),
+  ).pipe(C.withConflictError) {}
+export class InternalServerException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
+    "InternalServerException",
+    { message: S.optional(S.String) },
+    T.HttpError(500),
+  ).pipe(C.withServerError) {}
+export class ResourceNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
+    "ResourceNotFoundException",
+    { message: S.optional(S.String) },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class ServiceQuotaExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
+    "ServiceQuotaExceededException",
+    { message: S.optional(S.String) },
+    T.HttpError(402),
+  ).pipe(C.withQuotaError) {}
+export class ThrottlingException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
+    "ThrottlingException",
+    { message: S.optional(S.String) },
+    T.HttpError(429),
+  ).pipe(C.withThrottlingError) {}
+export class ValidationException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
+    "ValidationException",
+    {
+      message: S.optional(S.String),
+      fieldList: S.optional(
+        S.suspend(() => ValidationExceptionFieldList).annotate({
+          identifier: "ValidationExceptionFieldList",
+        }),
+      ),
+    },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
 export type BlueprintArn = string;
 export type BlueprintStage = "DEVELOPMENT" | "LIVE" | (string & {});
 export const BlueprintStage = /*@__PURE__*/ S.String;
@@ -2872,7 +2879,27 @@ export const listBlueprints: API.OperationMethod<
     items: "blueprints",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListBlueprintsRequest,
+  ListBlueprintsResponse,
+  ListBlueprintsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListBlueprintsRequest,
+  ) => stream.Stream<
+    ListBlueprintsResponse,
+    ListBlueprintsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListBlueprintsRequest,
+  ) => stream.Stream<
+    BlueprintSummary,
+    ListBlueprintsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListDataAutomationLibrariesError =
   | AccessDeniedException
@@ -2921,7 +2948,27 @@ export const listDataAutomationLibraries: API.OperationMethod<
     items: "libraries",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListDataAutomationLibrariesRequest,
+  ListDataAutomationLibrariesResponse,
+  ListDataAutomationLibrariesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListDataAutomationLibrariesRequest,
+  ) => stream.Stream<
+    ListDataAutomationLibrariesResponse,
+    ListDataAutomationLibrariesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListDataAutomationLibrariesRequest,
+  ) => stream.Stream<
+    DataAutomationLibrarySummary,
+    ListDataAutomationLibrariesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListDataAutomationLibraryEntitiesError =
   | AccessDeniedException
@@ -2972,7 +3019,27 @@ export const listDataAutomationLibraryEntities: API.OperationMethod<
     items: "entities",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListDataAutomationLibraryEntitiesRequest,
+  ListDataAutomationLibraryEntitiesResponse,
+  ListDataAutomationLibraryEntitiesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListDataAutomationLibraryEntitiesRequest,
+  ) => stream.Stream<
+    ListDataAutomationLibraryEntitiesResponse,
+    ListDataAutomationLibraryEntitiesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListDataAutomationLibraryEntitiesRequest,
+  ) => stream.Stream<
+    DataAutomationLibraryEntitySummary,
+    ListDataAutomationLibraryEntitiesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListDataAutomationLibraryIngestionJobsError =
   | AccessDeniedException
@@ -3023,7 +3090,27 @@ export const listDataAutomationLibraryIngestionJobs: API.OperationMethod<
     items: "jobs",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListDataAutomationLibraryIngestionJobsRequest,
+  ListDataAutomationLibraryIngestionJobsResponse,
+  ListDataAutomationLibraryIngestionJobsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListDataAutomationLibraryIngestionJobsRequest,
+  ) => stream.Stream<
+    ListDataAutomationLibraryIngestionJobsResponse,
+    ListDataAutomationLibraryIngestionJobsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListDataAutomationLibraryIngestionJobsRequest,
+  ) => stream.Stream<
+    DataAutomationLibraryIngestionJobSummary,
+    ListDataAutomationLibraryIngestionJobsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListDataAutomationProjectsError =
   | AccessDeniedException
@@ -3074,7 +3161,27 @@ export const listDataAutomationProjects: API.OperationMethod<
     items: "projects",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListDataAutomationProjectsRequest,
+  ListDataAutomationProjectsResponse,
+  ListDataAutomationProjectsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListDataAutomationProjectsRequest,
+  ) => stream.Stream<
+    ListDataAutomationProjectsResponse,
+    ListDataAutomationProjectsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListDataAutomationProjectsRequest,
+  ) => stream.Stream<
+    DataAutomationProjectSummary,
+    ListDataAutomationProjectsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListTagsForResourceError =
   | AccessDeniedException

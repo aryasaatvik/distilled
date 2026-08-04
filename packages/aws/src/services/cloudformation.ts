@@ -91,302 +91,354 @@ const rules = T.EndpointResolver((p, _) => {
   return err("Invalid Configuration: Missing Region");
 });
 
-export class AlreadyExistsException extends S.TaggedErrorClass<AlreadyExistsException>()(
-  "AlreadyExistsException",
-  { Message: S.optional(S.String) },
-  T.all(
-    T.AwsQueryError({ code: "AlreadyExistsException", httpResponseCode: 400 }),
-    T.HttpError(400),
-  ),
-).pipe(C.withBadRequestError, C.withAlreadyExistsError) {}
-export class CFNRegistryException extends S.TaggedErrorClass<CFNRegistryException>()(
-  "CFNRegistryException",
-  { Message: S.optional(S.String) },
-  T.all(
-    T.AwsQueryError({ code: "CFNRegistryException", httpResponseCode: 400 }),
-    T.HttpError(400),
-  ),
-).pipe(C.withBadRequestError) {}
-export class ChangeSetNotFoundException extends S.TaggedErrorClass<ChangeSetNotFoundException>()(
-  "ChangeSetNotFoundException",
-  { Message: S.optional(S.String) },
-  T.all(
-    T.AwsQueryError({ code: "ChangeSetNotFound", httpResponseCode: 404 }),
-    T.HttpError(404),
-  ),
-).pipe(C.withBadRequestError) {}
-export class ConcurrentResourcesLimitExceededException extends S.TaggedErrorClass<ConcurrentResourcesLimitExceededException>()(
-  "ConcurrentResourcesLimitExceededException",
-  { Message: S.optional(S.String) },
-  T.all(
-    T.AwsQueryError({
-      code: "ConcurrentResourcesLimitExceeded",
-      httpResponseCode: 429,
+export class AlreadyExistsException
+  extends /*@__PURE__*/ S.TaggedErrorClass<AlreadyExistsException>()(
+    "AlreadyExistsException",
+    { Message: S.optional(S.String) },
+    T.all(
+      T.AwsQueryError({
+        code: "AlreadyExistsException",
+        httpResponseCode: 400,
+      }),
+      T.HttpError(400),
+    ),
+  ).pipe(C.withBadRequestError, C.withAlreadyExistsError) {}
+export class CFNRegistryException
+  extends /*@__PURE__*/ S.TaggedErrorClass<CFNRegistryException>()(
+    "CFNRegistryException",
+    { Message: S.optional(S.String) },
+    T.all(
+      T.AwsQueryError({ code: "CFNRegistryException", httpResponseCode: 400 }),
+      T.HttpError(400),
+    ),
+  ).pipe(C.withBadRequestError) {}
+export class ChangeSetNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ChangeSetNotFoundException>()(
+    "ChangeSetNotFoundException",
+    { Message: S.optional(S.String) },
+    T.all(
+      T.AwsQueryError({ code: "ChangeSetNotFound", httpResponseCode: 404 }),
+      T.HttpError(404),
+    ),
+  ).pipe(C.withBadRequestError) {}
+export class ConcurrentResourcesLimitExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ConcurrentResourcesLimitExceededException>()(
+    "ConcurrentResourcesLimitExceededException",
+    { Message: S.optional(S.String) },
+    T.all(
+      T.AwsQueryError({
+        code: "ConcurrentResourcesLimitExceeded",
+        httpResponseCode: 429,
+      }),
+      T.HttpError(429),
+    ),
+  ).pipe(C.withThrottlingError) {}
+export class CreatedButModifiedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<CreatedButModifiedException>()(
+    "CreatedButModifiedException",
+    { Message: S.optional(S.String) },
+    T.all(
+      T.AwsQueryError({
+        code: "CreatedButModifiedException",
+        httpResponseCode: 409,
+      }),
+      T.HttpError(409),
+    ),
+  ).pipe(C.withConflictError) {}
+export class GeneratedTemplateNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<GeneratedTemplateNotFoundException>()(
+    "GeneratedTemplateNotFoundException",
+    { Message: S.optional(S.String) },
+    T.all(
+      T.AwsQueryError({
+        code: "GeneratedTemplateNotFound",
+        httpResponseCode: 404,
+      }),
+      T.HttpError(404),
+    ),
+  ).pipe(C.withBadRequestError) {}
+export class HookResultNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<HookResultNotFoundException>()(
+    "HookResultNotFoundException",
+    { Message: S.optional(S.String) },
+    T.all(
+      T.AwsQueryError({ code: "HookResultNotFound", httpResponseCode: 404 }),
+      T.HttpError(404),
+    ),
+  ).pipe(C.withBadRequestError) {}
+export class InsufficientCapabilitiesException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InsufficientCapabilitiesException>()(
+    "InsufficientCapabilitiesException",
+    { Message: S.optional(S.String) },
+    T.all(
+      T.AwsQueryError({
+        code: "InsufficientCapabilitiesException",
+        httpResponseCode: 400,
+      }),
+      T.HttpError(400),
+    ),
+  ).pipe(C.withBadRequestError) {}
+export class InvalidChangeSetStatusException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidChangeSetStatusException>()(
+    "InvalidChangeSetStatusException",
+    { Message: S.optional(S.String) },
+    T.all(
+      T.AwsQueryError({
+        code: "InvalidChangeSetStatus",
+        httpResponseCode: 400,
+      }),
+      T.HttpError(400),
+    ),
+  ).pipe(C.withBadRequestError) {}
+export class InvalidOperationException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidOperationException>()(
+    "InvalidOperationException",
+    { Message: S.optional(S.String) },
+    T.all(
+      T.AwsQueryError({
+        code: "InvalidOperationException",
+        httpResponseCode: 400,
+      }),
+      T.HttpError(400),
+    ),
+  ).pipe(C.withBadRequestError) {}
+export class InvalidStateTransitionException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidStateTransitionException>()(
+    "InvalidStateTransitionException",
+    { Message: S.optional(S.String) },
+    T.all(
+      T.AwsQueryError({
+        code: "InvalidStateTransition",
+        httpResponseCode: 400,
+      }),
+      T.HttpError(400),
+    ),
+  ).pipe(C.withBadRequestError) {}
+export class LimitExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<LimitExceededException>()(
+    "LimitExceededException",
+    { Message: S.optional(S.String) },
+    T.all(
+      T.AwsQueryError({
+        code: "LimitExceededException",
+        httpResponseCode: 400,
+      }),
+      T.HttpError(400),
+    ),
+  ).pipe(C.withBadRequestError) {}
+export class NameAlreadyExistsException
+  extends /*@__PURE__*/ S.TaggedErrorClass<NameAlreadyExistsException>()(
+    "NameAlreadyExistsException",
+    { Message: S.optional(S.String) },
+    T.all(
+      T.AwsQueryError({
+        code: "NameAlreadyExistsException",
+        httpResponseCode: 409,
+      }),
+      T.HttpError(409),
+    ),
+  ).pipe(C.withConflictError, C.withAlreadyExistsError) {}
+export class NoUpdateToPerform
+  extends /*@__PURE__*/ S.TaggedErrorClass<NoUpdateToPerform>()(
+    "NoUpdateToPerform",
+    {},
+    T.SyntheticError({
+      from: "ValidationError",
+      message: { includes: "No updates are to be performed" },
     }),
-    T.HttpError(429),
-  ),
-).pipe(C.withThrottlingError) {}
-export class CreatedButModifiedException extends S.TaggedErrorClass<CreatedButModifiedException>()(
-  "CreatedButModifiedException",
-  { Message: S.optional(S.String) },
-  T.all(
-    T.AwsQueryError({
-      code: "CreatedButModifiedException",
-      httpResponseCode: 409,
+  ) {}
+export class OperationIdAlreadyExistsException
+  extends /*@__PURE__*/ S.TaggedErrorClass<OperationIdAlreadyExistsException>()(
+    "OperationIdAlreadyExistsException",
+    { Message: S.optional(S.String) },
+    T.all(
+      T.AwsQueryError({
+        code: "OperationIdAlreadyExistsException",
+        httpResponseCode: 409,
+      }),
+      T.HttpError(409),
+    ),
+  ).pipe(C.withConflictError, C.withAlreadyExistsError) {}
+export class OperationInProgressException
+  extends /*@__PURE__*/ S.TaggedErrorClass<OperationInProgressException>()(
+    "OperationInProgressException",
+    { Message: S.optional(S.String) },
+    T.all(
+      T.AwsQueryError({
+        code: "OperationInProgressException",
+        httpResponseCode: 409,
+      }),
+      T.HttpError(409),
+    ),
+  ).pipe(C.withConflictError) {}
+export class OperationNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<OperationNotFoundException>()(
+    "OperationNotFoundException",
+    { Message: S.optional(S.String) },
+    T.all(
+      T.AwsQueryError({
+        code: "OperationNotFoundException",
+        httpResponseCode: 404,
+      }),
+      T.HttpError(404),
+    ),
+  ).pipe(C.withBadRequestError) {}
+export class OperationStatusCheckFailedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<OperationStatusCheckFailedException>()(
+    "OperationStatusCheckFailedException",
+    { Message: S.optional(S.String) },
+    T.all(
+      T.AwsQueryError({
+        code: "ConditionalCheckFailed",
+        httpResponseCode: 400,
+      }),
+      T.HttpError(400),
+    ),
+  ).pipe(C.withBadRequestError) {}
+export class ResourceScanInProgressException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceScanInProgressException>()(
+    "ResourceScanInProgressException",
+    { Message: S.optional(S.String) },
+    T.all(
+      T.AwsQueryError({
+        code: "ResourceScanInProgress",
+        httpResponseCode: 400,
+      }),
+      T.HttpError(400),
+    ),
+  ).pipe(C.withBadRequestError) {}
+export class ResourceScanLimitExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceScanLimitExceededException>()(
+    "ResourceScanLimitExceededException",
+    { Message: S.optional(S.String) },
+    T.all(
+      T.AwsQueryError({
+        code: "ResourceScanLimitExceeded",
+        httpResponseCode: 400,
+      }),
+      T.HttpError(400),
+    ),
+  ).pipe(C.withBadRequestError) {}
+export class ResourceScanNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceScanNotFoundException>()(
+    "ResourceScanNotFoundException",
+    { Message: S.optional(S.String) },
+    T.all(
+      T.AwsQueryError({ code: "ResourceScanNotFound", httpResponseCode: 400 }),
+      T.HttpError(400),
+    ),
+  ).pipe(C.withBadRequestError) {}
+export class StackInstanceNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<StackInstanceNotFoundException>()(
+    "StackInstanceNotFoundException",
+    { Message: S.optional(S.String) },
+    T.all(
+      T.AwsQueryError({
+        code: "StackInstanceNotFoundException",
+        httpResponseCode: 404,
+      }),
+      T.HttpError(404),
+    ),
+  ).pipe(C.withBadRequestError) {}
+export class StackNotFound
+  extends /*@__PURE__*/ S.TaggedErrorClass<StackNotFound>()(
+    "StackNotFound",
+    {},
+    T.SyntheticError({
+      from: "ValidationError",
+      message: { includes: "does not exist" },
     }),
-    T.HttpError(409),
-  ),
-).pipe(C.withConflictError) {}
-export class GeneratedTemplateNotFoundException extends S.TaggedErrorClass<GeneratedTemplateNotFoundException>()(
-  "GeneratedTemplateNotFoundException",
-  { Message: S.optional(S.String) },
-  T.all(
-    T.AwsQueryError({
-      code: "GeneratedTemplateNotFound",
-      httpResponseCode: 404,
-    }),
-    T.HttpError(404),
-  ),
-).pipe(C.withBadRequestError) {}
-export class HookResultNotFoundException extends S.TaggedErrorClass<HookResultNotFoundException>()(
-  "HookResultNotFoundException",
-  { Message: S.optional(S.String) },
-  T.all(
-    T.AwsQueryError({ code: "HookResultNotFound", httpResponseCode: 404 }),
-    T.HttpError(404),
-  ),
-).pipe(C.withBadRequestError) {}
-export class InsufficientCapabilitiesException extends S.TaggedErrorClass<InsufficientCapabilitiesException>()(
-  "InsufficientCapabilitiesException",
-  { Message: S.optional(S.String) },
-  T.all(
-    T.AwsQueryError({
-      code: "InsufficientCapabilitiesException",
-      httpResponseCode: 400,
-    }),
-    T.HttpError(400),
-  ),
-).pipe(C.withBadRequestError) {}
-export class InvalidChangeSetStatusException extends S.TaggedErrorClass<InvalidChangeSetStatusException>()(
-  "InvalidChangeSetStatusException",
-  { Message: S.optional(S.String) },
-  T.all(
-    T.AwsQueryError({ code: "InvalidChangeSetStatus", httpResponseCode: 400 }),
-    T.HttpError(400),
-  ),
-).pipe(C.withBadRequestError) {}
-export class InvalidOperationException extends S.TaggedErrorClass<InvalidOperationException>()(
-  "InvalidOperationException",
-  { Message: S.optional(S.String) },
-  T.all(
-    T.AwsQueryError({
-      code: "InvalidOperationException",
-      httpResponseCode: 400,
-    }),
-    T.HttpError(400),
-  ),
-).pipe(C.withBadRequestError) {}
-export class InvalidStateTransitionException extends S.TaggedErrorClass<InvalidStateTransitionException>()(
-  "InvalidStateTransitionException",
-  { Message: S.optional(S.String) },
-  T.all(
-    T.AwsQueryError({ code: "InvalidStateTransition", httpResponseCode: 400 }),
-    T.HttpError(400),
-  ),
-).pipe(C.withBadRequestError) {}
-export class LimitExceededException extends S.TaggedErrorClass<LimitExceededException>()(
-  "LimitExceededException",
-  { Message: S.optional(S.String) },
-  T.all(
-    T.AwsQueryError({ code: "LimitExceededException", httpResponseCode: 400 }),
-    T.HttpError(400),
-  ),
-).pipe(C.withBadRequestError) {}
-export class NameAlreadyExistsException extends S.TaggedErrorClass<NameAlreadyExistsException>()(
-  "NameAlreadyExistsException",
-  { Message: S.optional(S.String) },
-  T.all(
-    T.AwsQueryError({
-      code: "NameAlreadyExistsException",
-      httpResponseCode: 409,
-    }),
-    T.HttpError(409),
-  ),
-).pipe(C.withConflictError, C.withAlreadyExistsError) {}
-export class NoUpdateToPerform extends S.TaggedErrorClass<NoUpdateToPerform>()(
-  "NoUpdateToPerform",
-  {},
-  T.SyntheticError({
-    from: "ValidationError",
-    message: { includes: "No updates are to be performed" },
-  }),
-) {}
-export class OperationIdAlreadyExistsException extends S.TaggedErrorClass<OperationIdAlreadyExistsException>()(
-  "OperationIdAlreadyExistsException",
-  { Message: S.optional(S.String) },
-  T.all(
-    T.AwsQueryError({
-      code: "OperationIdAlreadyExistsException",
-      httpResponseCode: 409,
-    }),
-    T.HttpError(409),
-  ),
-).pipe(C.withConflictError, C.withAlreadyExistsError) {}
-export class OperationInProgressException extends S.TaggedErrorClass<OperationInProgressException>()(
-  "OperationInProgressException",
-  { Message: S.optional(S.String) },
-  T.all(
-    T.AwsQueryError({
-      code: "OperationInProgressException",
-      httpResponseCode: 409,
-    }),
-    T.HttpError(409),
-  ),
-).pipe(C.withConflictError) {}
-export class OperationNotFoundException extends S.TaggedErrorClass<OperationNotFoundException>()(
-  "OperationNotFoundException",
-  { Message: S.optional(S.String) },
-  T.all(
-    T.AwsQueryError({
-      code: "OperationNotFoundException",
-      httpResponseCode: 404,
-    }),
-    T.HttpError(404),
-  ),
-).pipe(C.withBadRequestError) {}
-export class OperationStatusCheckFailedException extends S.TaggedErrorClass<OperationStatusCheckFailedException>()(
-  "OperationStatusCheckFailedException",
-  { Message: S.optional(S.String) },
-  T.all(
-    T.AwsQueryError({ code: "ConditionalCheckFailed", httpResponseCode: 400 }),
-    T.HttpError(400),
-  ),
-).pipe(C.withBadRequestError) {}
-export class ResourceScanInProgressException extends S.TaggedErrorClass<ResourceScanInProgressException>()(
-  "ResourceScanInProgressException",
-  { Message: S.optional(S.String) },
-  T.all(
-    T.AwsQueryError({ code: "ResourceScanInProgress", httpResponseCode: 400 }),
-    T.HttpError(400),
-  ),
-).pipe(C.withBadRequestError) {}
-export class ResourceScanLimitExceededException extends S.TaggedErrorClass<ResourceScanLimitExceededException>()(
-  "ResourceScanLimitExceededException",
-  { Message: S.optional(S.String) },
-  T.all(
-    T.AwsQueryError({
-      code: "ResourceScanLimitExceeded",
-      httpResponseCode: 400,
-    }),
-    T.HttpError(400),
-  ),
-).pipe(C.withBadRequestError) {}
-export class ResourceScanNotFoundException extends S.TaggedErrorClass<ResourceScanNotFoundException>()(
-  "ResourceScanNotFoundException",
-  { Message: S.optional(S.String) },
-  T.all(
-    T.AwsQueryError({ code: "ResourceScanNotFound", httpResponseCode: 400 }),
-    T.HttpError(400),
-  ),
-).pipe(C.withBadRequestError) {}
-export class StackInstanceNotFoundException extends S.TaggedErrorClass<StackInstanceNotFoundException>()(
-  "StackInstanceNotFoundException",
-  { Message: S.optional(S.String) },
-  T.all(
-    T.AwsQueryError({
-      code: "StackInstanceNotFoundException",
-      httpResponseCode: 404,
-    }),
-    T.HttpError(404),
-  ),
-).pipe(C.withBadRequestError) {}
-export class StackNotFound extends S.TaggedErrorClass<StackNotFound>()(
-  "StackNotFound",
-  {},
-  T.SyntheticError({
-    from: "ValidationError",
-    message: { includes: "does not exist" },
-  }),
-).pipe(C.withNotFoundError) {}
-export class StackNotFoundException extends S.TaggedErrorClass<StackNotFoundException>()(
-  "StackNotFoundException",
-  { Message: S.optional(S.String) },
-  T.all(
-    T.AwsQueryError({ code: "StackNotFoundException", httpResponseCode: 404 }),
-    T.HttpError(404),
-  ),
-).pipe(C.withBadRequestError) {}
-export class StackRefactorNotFoundException extends S.TaggedErrorClass<StackRefactorNotFoundException>()(
-  "StackRefactorNotFoundException",
-  { Message: S.optional(S.String) },
-  T.all(
-    T.AwsQueryError({
-      code: "StackRefactorNotFoundException",
-      httpResponseCode: 404,
-    }),
-    T.HttpError(404),
-  ),
-).pipe(C.withBadRequestError) {}
-export class StackSetNotEmptyException extends S.TaggedErrorClass<StackSetNotEmptyException>()(
-  "StackSetNotEmptyException",
-  { Message: S.optional(S.String) },
-  T.all(
-    T.AwsQueryError({
-      code: "StackSetNotEmptyException",
-      httpResponseCode: 409,
-    }),
-    T.HttpError(409),
-  ),
-).pipe(C.withConflictError) {}
-export class StackSetNotFoundException extends S.TaggedErrorClass<StackSetNotFoundException>()(
-  "StackSetNotFoundException",
-  { Message: S.optional(S.String) },
-  T.all(
-    T.AwsQueryError({
-      code: "StackSetNotFoundException",
-      httpResponseCode: 404,
-    }),
-    T.HttpError(404),
-  ),
-).pipe(C.withBadRequestError) {}
-export class StaleRequestException extends S.TaggedErrorClass<StaleRequestException>()(
-  "StaleRequestException",
-  { Message: S.optional(S.String) },
-  T.all(
-    T.AwsQueryError({ code: "StaleRequestException", httpResponseCode: 409 }),
-    T.HttpError(409),
-  ),
-).pipe(C.withConflictError) {}
-export class TokenAlreadyExistsException extends S.TaggedErrorClass<TokenAlreadyExistsException>()(
-  "TokenAlreadyExistsException",
-  { Message: S.optional(S.String) },
-  T.all(
-    T.AwsQueryError({
-      code: "TokenAlreadyExistsException",
-      httpResponseCode: 400,
-    }),
-    T.HttpError(400),
-  ),
-).pipe(C.withBadRequestError, C.withAlreadyExistsError) {}
-export class TypeConfigurationNotFoundException extends S.TaggedErrorClass<TypeConfigurationNotFoundException>()(
-  "TypeConfigurationNotFoundException",
-  { Message: S.optional(S.String) },
-  T.all(
-    T.AwsQueryError({
-      code: "TypeConfigurationNotFoundException",
-      httpResponseCode: 404,
-    }),
-    T.HttpError(404),
-  ),
-).pipe(C.withBadRequestError) {}
-export class TypeNotFoundException extends S.TaggedErrorClass<TypeNotFoundException>()(
-  "TypeNotFoundException",
-  { Message: S.optional(S.String) },
-  T.all(
-    T.AwsQueryError({ code: "TypeNotFoundException", httpResponseCode: 404 }),
-    T.HttpError(404),
-  ),
-).pipe(C.withBadRequestError) {}
+  ).pipe(C.withNotFoundError) {}
+export class StackNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<StackNotFoundException>()(
+    "StackNotFoundException",
+    { Message: S.optional(S.String) },
+    T.all(
+      T.AwsQueryError({
+        code: "StackNotFoundException",
+        httpResponseCode: 404,
+      }),
+      T.HttpError(404),
+    ),
+  ).pipe(C.withBadRequestError) {}
+export class StackRefactorNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<StackRefactorNotFoundException>()(
+    "StackRefactorNotFoundException",
+    { Message: S.optional(S.String) },
+    T.all(
+      T.AwsQueryError({
+        code: "StackRefactorNotFoundException",
+        httpResponseCode: 404,
+      }),
+      T.HttpError(404),
+    ),
+  ).pipe(C.withBadRequestError) {}
+export class StackSetNotEmptyException
+  extends /*@__PURE__*/ S.TaggedErrorClass<StackSetNotEmptyException>()(
+    "StackSetNotEmptyException",
+    { Message: S.optional(S.String) },
+    T.all(
+      T.AwsQueryError({
+        code: "StackSetNotEmptyException",
+        httpResponseCode: 409,
+      }),
+      T.HttpError(409),
+    ),
+  ).pipe(C.withConflictError) {}
+export class StackSetNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<StackSetNotFoundException>()(
+    "StackSetNotFoundException",
+    { Message: S.optional(S.String) },
+    T.all(
+      T.AwsQueryError({
+        code: "StackSetNotFoundException",
+        httpResponseCode: 404,
+      }),
+      T.HttpError(404),
+    ),
+  ).pipe(C.withBadRequestError) {}
+export class StaleRequestException
+  extends /*@__PURE__*/ S.TaggedErrorClass<StaleRequestException>()(
+    "StaleRequestException",
+    { Message: S.optional(S.String) },
+    T.all(
+      T.AwsQueryError({ code: "StaleRequestException", httpResponseCode: 409 }),
+      T.HttpError(409),
+    ),
+  ).pipe(C.withConflictError) {}
+export class TokenAlreadyExistsException
+  extends /*@__PURE__*/ S.TaggedErrorClass<TokenAlreadyExistsException>()(
+    "TokenAlreadyExistsException",
+    { Message: S.optional(S.String) },
+    T.all(
+      T.AwsQueryError({
+        code: "TokenAlreadyExistsException",
+        httpResponseCode: 400,
+      }),
+      T.HttpError(400),
+    ),
+  ).pipe(C.withBadRequestError, C.withAlreadyExistsError) {}
+export class TypeConfigurationNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<TypeConfigurationNotFoundException>()(
+    "TypeConfigurationNotFoundException",
+    { Message: S.optional(S.String) },
+    T.all(
+      T.AwsQueryError({
+        code: "TypeConfigurationNotFoundException",
+        httpResponseCode: 404,
+      }),
+      T.HttpError(404),
+    ),
+  ).pipe(C.withBadRequestError) {}
+export class TypeNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<TypeNotFoundException>()(
+    "TypeNotFoundException",
+    { Message: S.optional(S.String) },
+    T.all(
+      T.AwsQueryError({ code: "TypeNotFoundException", httpResponseCode: 404 }),
+      T.HttpError(404),
+    ),
+  ).pipe(C.withBadRequestError) {}
 export interface ActivateOrganizationsAccessInput {}
 export const ActivateOrganizationsAccessInput = /*@__PURE__*/ S.suspend(() =>
   S.Struct({}).pipe(
@@ -7275,7 +7327,27 @@ export const describeAccountLimits: API.OperationMethod<
     outputToken: "NextToken",
     items: "AccountLimits",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  DescribeAccountLimitsInput,
+  DescribeAccountLimitsOutput,
+  DescribeAccountLimitsError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: DescribeAccountLimitsInput,
+  ) => stream.Stream<
+    DescribeAccountLimitsOutput,
+    DescribeAccountLimitsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: DescribeAccountLimitsInput,
+  ) => stream.Stream<
+    AccountLimit,
+    DescribeAccountLimitsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type DescribeChangeSetError = ChangeSetNotFoundException | CommonErrors;
 /**
@@ -7316,7 +7388,27 @@ export const describeChangeSet: API.OperationMethod<
     outputToken: "NextToken",
     items: "Changes",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  DescribeChangeSetInput,
+  DescribeChangeSetOutput,
+  DescribeChangeSetError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: DescribeChangeSetInput,
+  ) => stream.Stream<
+    DescribeChangeSetOutput,
+    DescribeChangeSetError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: DescribeChangeSetInput,
+  ) => stream.Stream<
+    Change,
+    DescribeChangeSetError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type DescribeChangeSetHooksError =
   | ChangeSetNotFoundException
@@ -7398,7 +7490,27 @@ export const describeEvents: API.OperationMethod<
     outputToken: "NextToken",
     items: "OperationEvents",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  DescribeEventsInput,
+  DescribeEventsOutput,
+  DescribeEventsError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: DescribeEventsInput,
+  ) => stream.Stream<
+    DescribeEventsOutput,
+    DescribeEventsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: DescribeEventsInput,
+  ) => stream.Stream<
+    OperationEvent,
+    DescribeEventsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type DescribeGeneratedTemplateError =
   | GeneratedTemplateNotFoundException
@@ -7568,7 +7680,27 @@ export const describeStackEvents: API.OperationMethod<
     outputToken: "NextToken",
     items: "StackEvents",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  DescribeStackEventsInput,
+  DescribeStackEventsOutput,
+  DescribeStackEventsError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: DescribeStackEventsInput,
+  ) => stream.Stream<
+    DescribeStackEventsOutput,
+    DescribeStackEventsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: DescribeStackEventsInput,
+  ) => stream.Stream<
+    StackEvent,
+    DescribeStackEventsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type DescribeStackInstanceError =
   | StackInstanceNotFoundException
@@ -7683,7 +7815,27 @@ export const describeStackResourceDrifts: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  DescribeStackResourceDriftsInput,
+  DescribeStackResourceDriftsOutput,
+  DescribeStackResourceDriftsError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: DescribeStackResourceDriftsInput,
+  ) => stream.Stream<
+    DescribeStackResourceDriftsOutput,
+    DescribeStackResourceDriftsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: DescribeStackResourceDriftsInput,
+  ) => stream.Stream<
+    unknown,
+    DescribeStackResourceDriftsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type DescribeStackResourcesError = CommonErrors;
 /**
@@ -7761,7 +7913,27 @@ export const describeStacks: API.OperationMethod<
     outputToken: "NextToken",
     items: "Stacks",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  DescribeStacksInput,
+  DescribeStacksOutput,
+  DescribeStacksError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: DescribeStacksInput,
+  ) => stream.Stream<
+    DescribeStacksOutput,
+    DescribeStacksError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: DescribeStacksInput,
+  ) => stream.Stream<
+    Stack,
+    DescribeStacksError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type DescribeStackSetError = StackSetNotFoundException | CommonErrors;
 /**
@@ -8263,7 +8435,27 @@ export const listChangeSets: API.OperationMethod<
     outputToken: "NextToken",
     items: "Summaries",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListChangeSetsInput,
+  ListChangeSetsOutput,
+  ListChangeSetsError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListChangeSetsInput,
+  ) => stream.Stream<
+    ListChangeSetsOutput,
+    ListChangeSetsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListChangeSetsInput,
+  ) => stream.Stream<
+    ChangeSetSummary,
+    ListChangeSetsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type ListExportsError = CommonErrors;
 /**
@@ -8306,7 +8498,27 @@ export const listExports: API.OperationMethod<
     outputToken: "NextToken",
     items: "Exports",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListExportsInput,
+  ListExportsOutput,
+  ListExportsError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListExportsInput,
+  ) => stream.Stream<
+    ListExportsOutput,
+    ListExportsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListExportsInput,
+  ) => stream.Stream<
+    Export,
+    ListExportsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type ListGeneratedTemplatesError = CommonErrors;
 /**
@@ -8345,7 +8557,27 @@ export const listGeneratedTemplates: API.OperationMethod<
     items: "Summaries",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListGeneratedTemplatesInput,
+  ListGeneratedTemplatesOutput,
+  ListGeneratedTemplatesError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListGeneratedTemplatesInput,
+  ) => stream.Stream<
+    ListGeneratedTemplatesOutput,
+    ListGeneratedTemplatesError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListGeneratedTemplatesInput,
+  ) => stream.Stream<
+    TemplateSummary,
+    ListGeneratedTemplatesError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type ListHookResultsError = HookResultNotFoundException | CommonErrors;
 /**
@@ -8418,7 +8650,27 @@ export const listImports: API.OperationMethod<
     outputToken: "NextToken",
     items: "Imports",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListImportsInput,
+  ListImportsOutput,
+  ListImportsError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListImportsInput,
+  ) => stream.Stream<
+    ListImportsOutput,
+    ListImportsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListImportsInput,
+  ) => stream.Stream<
+    StackName,
+    ListImportsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type ListResourceScanRelatedResourcesError =
   | ResourceScanInProgressException
@@ -8461,7 +8713,27 @@ export const listResourceScanRelatedResources: API.OperationMethod<
     items: "RelatedResources",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListResourceScanRelatedResourcesInput,
+  ListResourceScanRelatedResourcesOutput,
+  ListResourceScanRelatedResourcesError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListResourceScanRelatedResourcesInput,
+  ) => stream.Stream<
+    ListResourceScanRelatedResourcesOutput,
+    ListResourceScanRelatedResourcesError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListResourceScanRelatedResourcesInput,
+  ) => stream.Stream<
+    ScannedResource,
+    ListResourceScanRelatedResourcesError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type ListResourceScanResourcesError =
   | ResourceScanInProgressException
@@ -8506,7 +8778,27 @@ export const listResourceScanResources: API.OperationMethod<
     items: "Resources",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListResourceScanResourcesInput,
+  ListResourceScanResourcesOutput,
+  ListResourceScanResourcesError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListResourceScanResourcesInput,
+  ) => stream.Stream<
+    ListResourceScanResourcesOutput,
+    ListResourceScanResourcesError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListResourceScanResourcesInput,
+  ) => stream.Stream<
+    ScannedResource,
+    ListResourceScanResourcesError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type ListResourceScansError = CommonErrors;
 /**
@@ -8546,7 +8838,27 @@ export const listResourceScans: API.OperationMethod<
     items: "ResourceScanSummaries",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListResourceScansInput,
+  ListResourceScansOutput,
+  ListResourceScansError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListResourceScansInput,
+  ) => stream.Stream<
+    ListResourceScansOutput,
+    ListResourceScansError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListResourceScansInput,
+  ) => stream.Stream<
+    ResourceScanSummary,
+    ListResourceScansError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type ListStackInstanceResourceDriftsError =
   | OperationNotFoundException
@@ -8617,7 +8929,27 @@ export const listStackInstances: API.OperationMethod<
     items: "Summaries",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListStackInstancesInput,
+  ListStackInstancesOutput,
+  ListStackInstancesError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListStackInstancesInput,
+  ) => stream.Stream<
+    ListStackInstancesOutput,
+    ListStackInstancesError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListStackInstancesInput,
+  ) => stream.Stream<
+    StackInstanceSummary,
+    ListStackInstancesError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type ListStackRefactorActionsError = CommonErrors;
 /**
@@ -8656,7 +8988,27 @@ export const listStackRefactorActions: API.OperationMethod<
     items: "StackRefactorActions",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListStackRefactorActionsInput,
+  ListStackRefactorActionsOutput,
+  ListStackRefactorActionsError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListStackRefactorActionsInput,
+  ) => stream.Stream<
+    ListStackRefactorActionsOutput,
+    ListStackRefactorActionsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListStackRefactorActionsInput,
+  ) => stream.Stream<
+    StackRefactorAction,
+    ListStackRefactorActionsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type ListStackRefactorsError = CommonErrors;
 /**
@@ -8695,7 +9047,27 @@ export const listStackRefactors: API.OperationMethod<
     items: "StackRefactorSummaries",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListStackRefactorsInput,
+  ListStackRefactorsOutput,
+  ListStackRefactorsError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListStackRefactorsInput,
+  ) => stream.Stream<
+    ListStackRefactorsOutput,
+    ListStackRefactorsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListStackRefactorsInput,
+  ) => stream.Stream<
+    StackRefactorSummary,
+    ListStackRefactorsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type ListStackResourcesError = CommonErrors;
 /**
@@ -8736,7 +9108,27 @@ export const listStackResources: API.OperationMethod<
     outputToken: "NextToken",
     items: "StackResourceSummaries",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListStackResourcesInput,
+  ListStackResourcesOutput,
+  ListStackResourcesError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListStackResourcesInput,
+  ) => stream.Stream<
+    ListStackResourcesOutput,
+    ListStackResourcesError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListStackResourcesInput,
+  ) => stream.Stream<
+    StackResourceSummary,
+    ListStackResourcesError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type ListStacksError = CommonErrors;
 /**
@@ -8778,7 +9170,27 @@ export const listStacks: API.OperationMethod<
     outputToken: "NextToken",
     items: "StackSummaries",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListStacksInput,
+  ListStacksOutput,
+  ListStacksError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListStacksInput,
+  ) => stream.Stream<
+    ListStacksOutput,
+    ListStacksError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListStacksInput,
+  ) => stream.Stream<
+    StackSummary,
+    ListStacksError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type ListStackSetAutoDeploymentTargetsError =
   | StackSetNotFoundException
@@ -8843,7 +9255,27 @@ export const listStackSetOperationResults: API.OperationMethod<
     items: "Summaries",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListStackSetOperationResultsInput,
+  ListStackSetOperationResultsOutput,
+  ListStackSetOperationResultsError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListStackSetOperationResultsInput,
+  ) => stream.Stream<
+    ListStackSetOperationResultsOutput,
+    ListStackSetOperationResultsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListStackSetOperationResultsInput,
+  ) => stream.Stream<
+    StackSetOperationResultSummary,
+    ListStackSetOperationResultsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type ListStackSetOperationsError =
   | StackSetNotFoundException
@@ -8887,7 +9319,27 @@ export const listStackSetOperations: API.OperationMethod<
     items: "Summaries",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListStackSetOperationsInput,
+  ListStackSetOperationsOutput,
+  ListStackSetOperationsError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListStackSetOperationsInput,
+  ) => stream.Stream<
+    ListStackSetOperationsOutput,
+    ListStackSetOperationsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListStackSetOperationsInput,
+  ) => stream.Stream<
+    StackSetOperationSummary,
+    ListStackSetOperationsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type ListStackSetsError = CommonErrors;
 /**
@@ -8942,7 +9394,27 @@ export const listStackSets: API.OperationMethod<
     items: "Summaries",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListStackSetsInput,
+  ListStackSetsOutput,
+  ListStackSetsError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListStackSetsInput,
+  ) => stream.Stream<
+    ListStackSetsOutput,
+    ListStackSetsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListStackSetsInput,
+  ) => stream.Stream<
+    StackSetSummary,
+    ListStackSetsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type ListTypeRegistrationsError = CFNRegistryException | CommonErrors;
 /**
@@ -8980,7 +9452,27 @@ export const listTypeRegistrations: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListTypeRegistrationsInput,
+  ListTypeRegistrationsOutput,
+  ListTypeRegistrationsError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListTypeRegistrationsInput,
+  ) => stream.Stream<
+    ListTypeRegistrationsOutput,
+    ListTypeRegistrationsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListTypeRegistrationsInput,
+  ) => stream.Stream<
+    unknown,
+    ListTypeRegistrationsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type ListTypesError = CFNRegistryException | CommonErrors;
 /**
@@ -9021,7 +9513,27 @@ export const listTypes: API.OperationMethod<
     items: "TypeSummaries",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListTypesInput,
+  ListTypesOutput,
+  ListTypesError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListTypesInput,
+  ) => stream.Stream<
+    ListTypesOutput,
+    ListTypesError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListTypesInput,
+  ) => stream.Stream<
+    TypeSummary,
+    ListTypesError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type ListTypeVersionsError = CFNRegistryException | CommonErrors;
 /**
@@ -9059,7 +9571,27 @@ export const listTypeVersions: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListTypeVersionsInput,
+  ListTypeVersionsOutput,
+  ListTypeVersionsError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListTypeVersionsInput,
+  ) => stream.Stream<
+    ListTypeVersionsOutput,
+    ListTypeVersionsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListTypeVersionsInput,
+  ) => stream.Stream<
+    unknown,
+    ListTypeVersionsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type PublishTypeError =
   | CFNRegistryException

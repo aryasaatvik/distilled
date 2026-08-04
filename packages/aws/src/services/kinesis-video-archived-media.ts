@@ -85,51 +85,60 @@ const rules = T.EndpointResolver((p, _) => {
   return err("Invalid Configuration: Missing Region");
 });
 
-export class ClientLimitExceededException extends S.TaggedErrorClass<ClientLimitExceededException>()(
-  "ClientLimitExceededException",
-  { Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class InvalidArgumentException extends S.TaggedErrorClass<InvalidArgumentException>()(
-  "InvalidArgumentException",
-  { Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class InvalidCodecPrivateDataException extends S.TaggedErrorClass<InvalidCodecPrivateDataException>()(
-  "InvalidCodecPrivateDataException",
-  { Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class InvalidMediaFrameException extends S.TaggedErrorClass<InvalidMediaFrameException>()(
-  "InvalidMediaFrameException",
-  { Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class MissingCodecPrivateDataException extends S.TaggedErrorClass<MissingCodecPrivateDataException>()(
-  "MissingCodecPrivateDataException",
-  { Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class NoDataRetentionException extends S.TaggedErrorClass<NoDataRetentionException>()(
-  "NoDataRetentionException",
-  { Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class NotAuthorizedException extends S.TaggedErrorClass<NotAuthorizedException>()(
-  "NotAuthorizedException",
-  { Message: S.optional(S.String) },
-  T.HttpError(401),
-).pipe(C.withAuthError) {}
-export class ResourceNotFoundException extends S.TaggedErrorClass<ResourceNotFoundException>()(
-  "ResourceNotFoundException",
-  { Message: S.optional(S.String) },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class UnsupportedStreamMediaTypeException extends S.TaggedErrorClass<UnsupportedStreamMediaTypeException>()(
-  "UnsupportedStreamMediaTypeException",
-  { Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
+export class ClientLimitExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ClientLimitExceededException>()(
+    "ClientLimitExceededException",
+    { Message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class InvalidArgumentException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidArgumentException>()(
+    "InvalidArgumentException",
+    { Message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class InvalidCodecPrivateDataException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidCodecPrivateDataException>()(
+    "InvalidCodecPrivateDataException",
+    { Message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class InvalidMediaFrameException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidMediaFrameException>()(
+    "InvalidMediaFrameException",
+    { Message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class MissingCodecPrivateDataException
+  extends /*@__PURE__*/ S.TaggedErrorClass<MissingCodecPrivateDataException>()(
+    "MissingCodecPrivateDataException",
+    { Message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class NoDataRetentionException
+  extends /*@__PURE__*/ S.TaggedErrorClass<NoDataRetentionException>()(
+    "NoDataRetentionException",
+    { Message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class NotAuthorizedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<NotAuthorizedException>()(
+    "NotAuthorizedException",
+    { Message: S.optional(S.String) },
+    T.HttpError(401),
+  ).pipe(C.withAuthError) {}
+export class ResourceNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
+    "ResourceNotFoundException",
+    { Message: S.optional(S.String) },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class UnsupportedStreamMediaTypeException
+  extends /*@__PURE__*/ S.TaggedErrorClass<UnsupportedStreamMediaTypeException>()(
+    "UnsupportedStreamMediaTypeException",
+    { Message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
 export type StreamName = string;
 export type ResourceARN = string;
 export type ClipFragmentSelectorType =
@@ -1074,7 +1083,27 @@ export const getImages: API.OperationMethod<
     items: "Images",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  GetImagesInput,
+  GetImagesOutput,
+  GetImagesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: GetImagesInput,
+  ) => stream.Stream<
+    GetImagesOutput,
+    GetImagesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: GetImagesInput,
+  ) => stream.Stream<
+    Image,
+    GetImagesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type GetMediaForFragmentListError =
   | ClientLimitExceededException
@@ -1207,4 +1236,24 @@ export const listFragments: API.OperationMethod<
     items: "Fragments",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListFragmentsInput,
+  ListFragmentsOutput,
+  ListFragmentsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListFragmentsInput,
+  ) => stream.Stream<
+    ListFragmentsOutput,
+    ListFragmentsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListFragmentsInput,
+  ) => stream.Stream<
+    Fragment,
+    ListFragmentsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};

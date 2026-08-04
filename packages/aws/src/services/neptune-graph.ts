@@ -121,71 +121,79 @@ const rules = T.EndpointResolver((p, _) => {
   return err("Invalid Configuration: Missing Region");
 });
 
-export class AccessDeniedException extends S.TaggedErrorClass<AccessDeniedException>()(
-  "AccessDeniedException",
-  { message: S.String },
-  T.HttpError(403),
-).pipe(C.withAuthError) {}
-export class ConflictException extends S.TaggedErrorClass<ConflictException>()(
-  "ConflictException",
-  {
-    message: S.String,
-    reason: S.optional(
-      S.suspend(() => ConflictExceptionReason).annotate({
-        identifier: "ConflictExceptionReason",
+export class AccessDeniedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
+    "AccessDeniedException",
+    { message: S.String },
+    T.HttpError(403),
+  ).pipe(C.withAuthError) {}
+export class ConflictException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
+    "ConflictException",
+    {
+      message: S.String,
+      reason: S.optional(
+        S.suspend(() => ConflictExceptionReason).annotate({
+          identifier: "ConflictExceptionReason",
+        }),
+      ),
+    },
+    T.HttpError(409),
+  ).pipe(C.withConflictError) {}
+export class InternalServerException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
+    "InternalServerException",
+    { message: S.String },
+    T.all(T.HttpError(500), T.Retryable()),
+  ).pipe(C.withServerError, C.withRetryableError) {}
+export class ResourceNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
+    "ResourceNotFoundException",
+    { message: S.String },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class ServiceQuotaExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
+    "ServiceQuotaExceededException",
+    {
+      message: S.String,
+      resourceId: S.optional(S.String),
+      resourceType: S.optional(S.String),
+      serviceCode: S.optional(S.String),
+      quotaCode: S.optional(S.String),
+    },
+    T.HttpError(402),
+  ).pipe(C.withQuotaError) {}
+export class ThrottlingException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
+    "ThrottlingException",
+    { message: S.String },
+    T.all(T.HttpError(429), T.Retryable({ throttling: true })),
+  ).pipe(C.withThrottlingError, C.withRetryableError) {}
+export class UnprocessableException
+  extends /*@__PURE__*/ S.TaggedErrorClass<UnprocessableException>()(
+    "UnprocessableException",
+    {
+      message: S.String,
+      reason: S.suspend(() => UnprocessableExceptionReason).annotate({
+        identifier: "UnprocessableExceptionReason",
       }),
-    ),
-  },
-  T.HttpError(409),
-).pipe(C.withConflictError) {}
-export class InternalServerException extends S.TaggedErrorClass<InternalServerException>()(
-  "InternalServerException",
-  { message: S.String },
-  T.all(T.HttpError(500), T.Retryable()),
-).pipe(C.withServerError, C.withRetryableError) {}
-export class ResourceNotFoundException extends S.TaggedErrorClass<ResourceNotFoundException>()(
-  "ResourceNotFoundException",
-  { message: S.String },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class ServiceQuotaExceededException extends S.TaggedErrorClass<ServiceQuotaExceededException>()(
-  "ServiceQuotaExceededException",
-  {
-    message: S.String,
-    resourceId: S.optional(S.String),
-    resourceType: S.optional(S.String),
-    serviceCode: S.optional(S.String),
-    quotaCode: S.optional(S.String),
-  },
-  T.HttpError(402),
-).pipe(C.withQuotaError) {}
-export class ThrottlingException extends S.TaggedErrorClass<ThrottlingException>()(
-  "ThrottlingException",
-  { message: S.String },
-  T.all(T.HttpError(429), T.Retryable({ throttling: true })),
-).pipe(C.withThrottlingError, C.withRetryableError) {}
-export class UnprocessableException extends S.TaggedErrorClass<UnprocessableException>()(
-  "UnprocessableException",
-  {
-    message: S.String,
-    reason: S.suspend(() => UnprocessableExceptionReason).annotate({
-      identifier: "UnprocessableExceptionReason",
-    }),
-  },
-  T.HttpError(422),
-).pipe(C.withBadRequestError) {}
-export class ValidationException extends S.TaggedErrorClass<ValidationException>()(
-  "ValidationException",
-  {
-    message: S.String,
-    reason: S.optional(
-      S.suspend(() => ValidationExceptionReason).annotate({
-        identifier: "ValidationExceptionReason",
-      }),
-    ),
-  },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
+    },
+    T.HttpError(422),
+  ).pipe(C.withBadRequestError) {}
+export class ValidationException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
+    "ValidationException",
+    {
+      message: S.String,
+      reason: S.optional(
+        S.suspend(() => ValidationExceptionReason).annotate({
+          identifier: "ValidationExceptionReason",
+        }),
+      ),
+    },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
 export type ExportTaskId = string;
 export interface CancelExportTaskInput {
   taskIdentifier: string;
@@ -2871,7 +2879,27 @@ export const listExportTasks: API.OperationMethod<
     items: "tasks",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListExportTasksInput,
+  ListExportTasksOutput,
+  ListExportTasksError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListExportTasksInput,
+  ) => stream.Stream<
+    ListExportTasksOutput,
+    ListExportTasksError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListExportTasksInput,
+  ) => stream.Stream<
+    ExportTaskSummary,
+    ListExportTasksError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListGraphsError =
   | InternalServerException
@@ -2918,7 +2946,27 @@ export const listGraphs: API.OperationMethod<
     items: "graphs",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListGraphsInput,
+  ListGraphsOutput,
+  ListGraphsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListGraphsInput,
+  ) => stream.Stream<
+    ListGraphsOutput,
+    ListGraphsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListGraphsInput,
+  ) => stream.Stream<
+    GraphSummary,
+    ListGraphsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListGraphSnapshotsError =
   | InternalServerException
@@ -2967,7 +3015,27 @@ export const listGraphSnapshots: API.OperationMethod<
     items: "graphSnapshots",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListGraphSnapshotsInput,
+  ListGraphSnapshotsOutput,
+  ListGraphSnapshotsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListGraphSnapshotsInput,
+  ) => stream.Stream<
+    ListGraphSnapshotsOutput,
+    ListGraphSnapshotsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListGraphSnapshotsInput,
+  ) => stream.Stream<
+    GraphSnapshotSummary,
+    ListGraphSnapshotsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListImportTasksError =
   | InternalServerException
@@ -3016,7 +3084,27 @@ export const listImportTasks: API.OperationMethod<
     items: "tasks",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListImportTasksInput,
+  ListImportTasksOutput,
+  ListImportTasksError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListImportTasksInput,
+  ) => stream.Stream<
+    ListImportTasksOutput,
+    ListImportTasksError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListImportTasksInput,
+  ) => stream.Stream<
+    ImportTaskSummary,
+    ListImportTasksError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListPrivateGraphEndpointsError =
   | InternalServerException
@@ -3065,7 +3153,27 @@ export const listPrivateGraphEndpoints: API.OperationMethod<
     items: "privateGraphEndpoints",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListPrivateGraphEndpointsInput,
+  ListPrivateGraphEndpointsOutput,
+  ListPrivateGraphEndpointsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListPrivateGraphEndpointsInput,
+  ) => stream.Stream<
+    ListPrivateGraphEndpointsOutput,
+    ListPrivateGraphEndpointsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListPrivateGraphEndpointsInput,
+  ) => stream.Stream<
+    PrivateGraphEndpointSummary,
+    ListPrivateGraphEndpointsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListQueriesError =
   | AccessDeniedException

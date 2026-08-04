@@ -90,54 +90,63 @@ const rules = T.EndpointResolver((p, _) => {
   return err("Invalid Configuration: Missing Region");
 });
 
-export class DnssecLimitExceeded extends S.TaggedErrorClass<DnssecLimitExceeded>()(
-  "DnssecLimitExceeded",
-  { message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError, C.withThrottlingError) {}
-export class DomainLimitExceeded extends S.TaggedErrorClass<DomainLimitExceeded>()(
-  "DomainLimitExceeded",
-  { message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError, C.withThrottlingError) {}
-export class DomainNotFound extends S.TaggedErrorClass<DomainNotFound>()(
-  "DomainNotFound",
-  { message: S.optional(S.String) },
-  T.SyntheticError({
-    from: "InvalidInput",
-    message: { includes: "not found in account" },
-  }),
-).pipe(C.withNotFoundError) {}
-export class DuplicateRequest extends S.TaggedErrorClass<DuplicateRequest>()(
-  "DuplicateRequest",
-  { requestId: S.optional(S.String), message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class InvalidInput extends S.TaggedErrorClass<InvalidInput>()(
-  "InvalidInput",
-  { message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class OperationLimitExceeded extends S.TaggedErrorClass<OperationLimitExceeded>()(
-  "OperationLimitExceeded",
-  { message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError, C.withThrottlingError) {}
-export class TLDInMaintenance extends S.TaggedErrorClass<TLDInMaintenance>()(
-  "TLDInMaintenance",
-  { message: S.optional(S.String), tld: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class TLDRulesViolation extends S.TaggedErrorClass<TLDRulesViolation>()(
-  "TLDRulesViolation",
-  { message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class UnsupportedTLD extends S.TaggedErrorClass<UnsupportedTLD>()(
-  "UnsupportedTLD",
-  { message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
+export class DnssecLimitExceeded
+  extends /*@__PURE__*/ S.TaggedErrorClass<DnssecLimitExceeded>()(
+    "DnssecLimitExceeded",
+    { message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError, C.withThrottlingError) {}
+export class DomainLimitExceeded
+  extends /*@__PURE__*/ S.TaggedErrorClass<DomainLimitExceeded>()(
+    "DomainLimitExceeded",
+    { message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError, C.withThrottlingError) {}
+export class DomainNotFound
+  extends /*@__PURE__*/ S.TaggedErrorClass<DomainNotFound>()(
+    "DomainNotFound",
+    { message: S.optional(S.String) },
+    T.SyntheticError({
+      from: "InvalidInput",
+      message: { includes: "not found in account" },
+    }),
+  ).pipe(C.withNotFoundError) {}
+export class DuplicateRequest
+  extends /*@__PURE__*/ S.TaggedErrorClass<DuplicateRequest>()(
+    "DuplicateRequest",
+    { requestId: S.optional(S.String), message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class InvalidInput
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidInput>()(
+    "InvalidInput",
+    { message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class OperationLimitExceeded
+  extends /*@__PURE__*/ S.TaggedErrorClass<OperationLimitExceeded>()(
+    "OperationLimitExceeded",
+    { message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError, C.withThrottlingError) {}
+export class TLDInMaintenance
+  extends /*@__PURE__*/ S.TaggedErrorClass<TLDInMaintenance>()(
+    "TLDInMaintenance",
+    { message: S.optional(S.String), tld: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class TLDRulesViolation
+  extends /*@__PURE__*/ S.TaggedErrorClass<TLDRulesViolation>()(
+    "TLDRulesViolation",
+    { message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class UnsupportedTLD
+  extends /*@__PURE__*/ S.TaggedErrorClass<UnsupportedTLD>()(
+    "UnsupportedTLD",
+    { message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
 export type DomainName = string;
 export type Password = string | redacted.Redacted<string>;
 export interface AcceptDomainTransferFromAnotherAwsAccountRequest {
@@ -2444,7 +2453,27 @@ export const listDomains: API.OperationMethod<
     items: "Domains",
     pageSize: "MaxItems",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListDomainsRequest,
+  ListDomainsResponse,
+  ListDomainsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListDomainsRequest,
+  ) => stream.Stream<
+    ListDomainsResponse,
+    ListDomainsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListDomainsRequest,
+  ) => stream.Stream<
+    DomainSummary,
+    ListDomainsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListOperationsError = InvalidInput | CommonErrors;
 /**
@@ -2486,7 +2515,27 @@ export const listOperations: API.OperationMethod<
     items: "Operations",
     pageSize: "MaxItems",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListOperationsRequest,
+  ListOperationsResponse,
+  ListOperationsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListOperationsRequest,
+  ) => stream.Stream<
+    ListOperationsResponse,
+    ListOperationsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListOperationsRequest,
+  ) => stream.Stream<
+    OperationSummary,
+    ListOperationsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListPricesError = InvalidInput | UnsupportedTLD | CommonErrors;
 /**
@@ -2536,7 +2585,27 @@ export const listPrices: API.OperationMethod<
     items: "Prices",
     pageSize: "MaxItems",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListPricesRequest,
+  ListPricesResponse,
+  ListPricesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListPricesRequest,
+  ) => stream.Stream<
+    ListPricesResponse,
+    ListPricesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListPricesRequest,
+  ) => stream.Stream<
+    DomainPrice,
+    ListPricesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListTagsForDomainError =
   | InvalidInput
@@ -3094,4 +3163,24 @@ export const viewBilling: API.OperationMethod<
     items: "BillingRecords",
     pageSize: "MaxItems",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ViewBillingRequest,
+  ViewBillingResponse,
+  ViewBillingError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ViewBillingRequest,
+  ) => stream.Stream<
+    ViewBillingResponse,
+    ViewBillingError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ViewBillingRequest,
+  ) => stream.Stream<
+    BillingRecord,
+    ViewBillingError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};

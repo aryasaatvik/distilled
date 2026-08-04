@@ -87,169 +87,193 @@ const rules = T.EndpointResolver((p, _) => {
   return err("Invalid Configuration: Missing Region");
 });
 
-export class AccessDeniedException extends S.TaggedErrorClass<AccessDeniedException>()(
-  "AccessDeniedException",
-  { Message: S.optional(S.String), RequestId: S.optional(S.String) },
-  T.HttpError(401),
-).pipe(C.withAuthError) {}
-export class ConcurrentUpdatingException extends S.TaggedErrorClass<ConcurrentUpdatingException>()(
-  "ConcurrentUpdatingException",
-  { Message: S.optional(S.String), RequestId: S.optional(S.String) },
-  T.HttpError(500),
-).pipe(C.withServerError) {}
-export class ConflictException extends S.TaggedErrorClass<ConflictException>()(
-  "ConflictException",
-  { Message: S.optional(S.String), RequestId: S.optional(S.String) },
-  T.HttpError(409),
-).pipe(C.withConflictError) {}
-export class CustomerManagedKeyUnavailableException extends S.TaggedErrorClass<CustomerManagedKeyUnavailableException>()(
-  "CustomerManagedKeyUnavailableException",
-  { Message: S.optional(S.String), RequestId: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class DomainNotWhitelistedException extends S.TaggedErrorClass<DomainNotWhitelistedException>()(
-  "DomainNotWhitelistedException",
-  { Message: S.optional(S.String), RequestId: S.optional(S.String) },
-  T.HttpError(403),
-).pipe(C.withAuthError) {}
-export class IdentityTypeNotSupportedException extends S.TaggedErrorClass<IdentityTypeNotSupportedException>()(
-  "IdentityTypeNotSupportedException",
-  { Message: S.optional(S.String), RequestId: S.optional(S.String) },
-  T.HttpError(403),
-).pipe(C.withAuthError) {}
-export class InternalFailureException extends S.TaggedErrorClass<InternalFailureException>()(
-  "InternalFailureException",
-  { Message: S.optional(S.String), RequestId: S.optional(S.String) },
-  T.HttpError(500),
-).pipe(C.withServerError) {}
-export class InternalServerException extends S.TaggedErrorClass<InternalServerException>()(
-  "InternalServerException",
-  { Message: S.String },
-  T.HttpError(500),
-).pipe(C.withServerError) {}
-export class InvalidDataSetParameterValueException extends S.TaggedErrorClass<InvalidDataSetParameterValueException>()(
-  "InvalidDataSetParameterValueException",
-  { Message: S.optional(S.String), RequestId: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class InvalidNextTokenException extends S.TaggedErrorClass<InvalidNextTokenException>()(
-  "InvalidNextTokenException",
-  { Message: S.optional(S.String), RequestId: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class InvalidParameterException extends S.TaggedErrorClass<InvalidParameterException>()(
-  "InvalidParameterException",
-  { Message: S.optional(S.String), RequestId: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class InvalidParameterValueException extends S.TaggedErrorClass<InvalidParameterValueException>()(
-  "InvalidParameterValueException",
-  { Message: S.optional(S.String), RequestId: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class InvalidRequestException extends S.TaggedErrorClass<InvalidRequestException>()(
-  "InvalidRequestException",
-  { Message: S.optional(S.String), RequestId: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class LimitExceededException extends S.TaggedErrorClass<LimitExceededException>()(
-  "LimitExceededException",
-  {
-    Message: S.optional(S.String),
-    ResourceType: S.optional(
-      S.suspend(() => ExceptionResourceType).annotate({
-        identifier: "ExceptionResourceType",
-      }),
-    ),
-    RequestId: S.optional(S.String),
-  },
-  T.HttpError(409),
-).pipe(C.withConflictError) {}
-export class PreconditionNotMetException extends S.TaggedErrorClass<PreconditionNotMetException>()(
-  "PreconditionNotMetException",
-  { Message: S.optional(S.String), RequestId: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class QuickSightSubscriptionRequired extends S.TaggedErrorClass<QuickSightSubscriptionRequired>()(
-  "QuickSightSubscriptionRequired",
-  {
-    Message: S.optional(S.String),
-    ResourceType: S.optional(
-      S.suspend(() => ExceptionResourceType).annotate({
-        identifier: "ExceptionResourceType",
-      }),
-    ),
-    RequestId: S.optional(S.String),
-  },
-  T.SyntheticError({
-    from: "ResourceNotFoundException",
-    message: { includes: "Directory information" },
-  }),
-).pipe(C.withNotFoundError) {}
-export class QuickSightUserNotFoundException extends S.TaggedErrorClass<QuickSightUserNotFoundException>()(
-  "QuickSightUserNotFoundException",
-  { Message: S.optional(S.String), RequestId: S.optional(S.String) },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class ResourceExistsException extends S.TaggedErrorClass<ResourceExistsException>()(
-  "ResourceExistsException",
-  {
-    Message: S.optional(S.String),
-    ResourceType: S.optional(
-      S.suspend(() => ExceptionResourceType).annotate({
-        identifier: "ExceptionResourceType",
-      }),
-    ),
-    RequestId: S.optional(S.String),
-  },
-  T.HttpError(409),
-).pipe(C.withConflictError) {}
-export class ResourceNotFoundException extends S.TaggedErrorClass<ResourceNotFoundException>()(
-  "ResourceNotFoundException",
-  {
-    Message: S.optional(S.String),
-    ResourceType: S.optional(
-      S.suspend(() => ExceptionResourceType).annotate({
-        identifier: "ExceptionResourceType",
-      }),
-    ),
-    RequestId: S.optional(S.String),
-  },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class ResourceUnavailableException extends S.TaggedErrorClass<ResourceUnavailableException>()(
-  "ResourceUnavailableException",
-  {
-    Message: S.optional(S.String),
-    ResourceType: S.optional(
-      S.suspend(() => ExceptionResourceType).annotate({
-        identifier: "ExceptionResourceType",
-      }),
-    ),
-    RequestId: S.optional(S.String),
-  },
-  T.HttpError(503),
-).pipe(C.withServerError) {}
-export class SessionLifetimeInMinutesInvalidException extends S.TaggedErrorClass<SessionLifetimeInMinutesInvalidException>()(
-  "SessionLifetimeInMinutesInvalidException",
-  { Message: S.optional(S.String), RequestId: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class ThrottlingException extends S.TaggedErrorClass<ThrottlingException>()(
-  "ThrottlingException",
-  { Message: S.optional(S.String), RequestId: S.optional(S.String) },
-  T.HttpError(429),
-).pipe(C.withThrottlingError) {}
-export class UnsupportedPricingPlanException extends S.TaggedErrorClass<UnsupportedPricingPlanException>()(
-  "UnsupportedPricingPlanException",
-  { Message: S.optional(S.String), RequestId: S.optional(S.String) },
-  T.HttpError(403),
-).pipe(C.withAuthError) {}
-export class UnsupportedUserEditionException extends S.TaggedErrorClass<UnsupportedUserEditionException>()(
-  "UnsupportedUserEditionException",
-  { Message: S.optional(S.String), RequestId: S.optional(S.String) },
-  T.HttpError(403),
-).pipe(C.withAuthError) {}
+export class AccessDeniedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
+    "AccessDeniedException",
+    { Message: S.optional(S.String), RequestId: S.optional(S.String) },
+    T.HttpError(401),
+  ).pipe(C.withAuthError) {}
+export class ConcurrentUpdatingException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ConcurrentUpdatingException>()(
+    "ConcurrentUpdatingException",
+    { Message: S.optional(S.String), RequestId: S.optional(S.String) },
+    T.HttpError(500),
+  ).pipe(C.withServerError) {}
+export class ConflictException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
+    "ConflictException",
+    { Message: S.optional(S.String), RequestId: S.optional(S.String) },
+    T.HttpError(409),
+  ).pipe(C.withConflictError) {}
+export class CustomerManagedKeyUnavailableException
+  extends /*@__PURE__*/ S.TaggedErrorClass<CustomerManagedKeyUnavailableException>()(
+    "CustomerManagedKeyUnavailableException",
+    { Message: S.optional(S.String), RequestId: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class DomainNotWhitelistedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<DomainNotWhitelistedException>()(
+    "DomainNotWhitelistedException",
+    { Message: S.optional(S.String), RequestId: S.optional(S.String) },
+    T.HttpError(403),
+  ).pipe(C.withAuthError) {}
+export class IdentityTypeNotSupportedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<IdentityTypeNotSupportedException>()(
+    "IdentityTypeNotSupportedException",
+    { Message: S.optional(S.String), RequestId: S.optional(S.String) },
+    T.HttpError(403),
+  ).pipe(C.withAuthError) {}
+export class InternalFailureException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InternalFailureException>()(
+    "InternalFailureException",
+    { Message: S.optional(S.String), RequestId: S.optional(S.String) },
+    T.HttpError(500),
+  ).pipe(C.withServerError) {}
+export class InternalServerException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
+    "InternalServerException",
+    { Message: S.String },
+    T.HttpError(500),
+  ).pipe(C.withServerError) {}
+export class InvalidDataSetParameterValueException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidDataSetParameterValueException>()(
+    "InvalidDataSetParameterValueException",
+    { Message: S.optional(S.String), RequestId: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class InvalidNextTokenException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidNextTokenException>()(
+    "InvalidNextTokenException",
+    { Message: S.optional(S.String), RequestId: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class InvalidParameterException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidParameterException>()(
+    "InvalidParameterException",
+    { Message: S.optional(S.String), RequestId: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class InvalidParameterValueException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidParameterValueException>()(
+    "InvalidParameterValueException",
+    { Message: S.optional(S.String), RequestId: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class InvalidRequestException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidRequestException>()(
+    "InvalidRequestException",
+    { Message: S.optional(S.String), RequestId: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class LimitExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<LimitExceededException>()(
+    "LimitExceededException",
+    {
+      Message: S.optional(S.String),
+      ResourceType: S.optional(
+        S.suspend(() => ExceptionResourceType).annotate({
+          identifier: "ExceptionResourceType",
+        }),
+      ),
+      RequestId: S.optional(S.String),
+    },
+    T.HttpError(409),
+  ).pipe(C.withConflictError) {}
+export class PreconditionNotMetException
+  extends /*@__PURE__*/ S.TaggedErrorClass<PreconditionNotMetException>()(
+    "PreconditionNotMetException",
+    { Message: S.optional(S.String), RequestId: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class QuickSightSubscriptionRequired
+  extends /*@__PURE__*/ S.TaggedErrorClass<QuickSightSubscriptionRequired>()(
+    "QuickSightSubscriptionRequired",
+    {
+      Message: S.optional(S.String),
+      ResourceType: S.optional(
+        S.suspend(() => ExceptionResourceType).annotate({
+          identifier: "ExceptionResourceType",
+        }),
+      ),
+      RequestId: S.optional(S.String),
+    },
+    T.SyntheticError({
+      from: "ResourceNotFoundException",
+      message: { includes: "Directory information" },
+    }),
+  ).pipe(C.withNotFoundError) {}
+export class QuickSightUserNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<QuickSightUserNotFoundException>()(
+    "QuickSightUserNotFoundException",
+    { Message: S.optional(S.String), RequestId: S.optional(S.String) },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class ResourceExistsException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceExistsException>()(
+    "ResourceExistsException",
+    {
+      Message: S.optional(S.String),
+      ResourceType: S.optional(
+        S.suspend(() => ExceptionResourceType).annotate({
+          identifier: "ExceptionResourceType",
+        }),
+      ),
+      RequestId: S.optional(S.String),
+    },
+    T.HttpError(409),
+  ).pipe(C.withConflictError) {}
+export class ResourceNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
+    "ResourceNotFoundException",
+    {
+      Message: S.optional(S.String),
+      ResourceType: S.optional(
+        S.suspend(() => ExceptionResourceType).annotate({
+          identifier: "ExceptionResourceType",
+        }),
+      ),
+      RequestId: S.optional(S.String),
+    },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class ResourceUnavailableException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceUnavailableException>()(
+    "ResourceUnavailableException",
+    {
+      Message: S.optional(S.String),
+      ResourceType: S.optional(
+        S.suspend(() => ExceptionResourceType).annotate({
+          identifier: "ExceptionResourceType",
+        }),
+      ),
+      RequestId: S.optional(S.String),
+    },
+    T.HttpError(503),
+  ).pipe(C.withServerError) {}
+export class SessionLifetimeInMinutesInvalidException
+  extends /*@__PURE__*/ S.TaggedErrorClass<SessionLifetimeInMinutesInvalidException>()(
+    "SessionLifetimeInMinutesInvalidException",
+    { Message: S.optional(S.String), RequestId: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class ThrottlingException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
+    "ThrottlingException",
+    { Message: S.optional(S.String), RequestId: S.optional(S.String) },
+    T.HttpError(429),
+  ).pipe(C.withThrottlingError) {}
+export class UnsupportedPricingPlanException
+  extends /*@__PURE__*/ S.TaggedErrorClass<UnsupportedPricingPlanException>()(
+    "UnsupportedPricingPlanException",
+    { Message: S.optional(S.String), RequestId: S.optional(S.String) },
+    T.HttpError(403),
+  ).pipe(C.withAuthError) {}
+export class UnsupportedUserEditionException
+  extends /*@__PURE__*/ S.TaggedErrorClass<UnsupportedUserEditionException>()(
+    "UnsupportedUserEditionException",
+    { Message: S.optional(S.String), RequestId: S.optional(S.String) },
+    T.HttpError(403),
+  ).pipe(C.withAuthError) {}
 export type AwsAccountId = string;
 export type TopicId = string;
 export type AnswerId = string;
@@ -36436,7 +36460,27 @@ export const describeFolderPermissions: API.OperationMethod<
     items: "Permissions",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  DescribeFolderPermissionsRequest,
+  DescribeFolderPermissionsResponse,
+  DescribeFolderPermissionsError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: DescribeFolderPermissionsRequest,
+  ) => stream.Stream<
+    DescribeFolderPermissionsResponse,
+    DescribeFolderPermissionsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: DescribeFolderPermissionsRequest,
+  ) => stream.Stream<
+    ResourcePermission,
+    DescribeFolderPermissionsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type DescribeFolderResolvedPermissionsError =
   | AccessDeniedException
@@ -36491,7 +36535,27 @@ export const describeFolderResolvedPermissions: API.OperationMethod<
     items: "Permissions",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  DescribeFolderResolvedPermissionsRequest,
+  DescribeFolderResolvedPermissionsResponse,
+  DescribeFolderResolvedPermissionsError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: DescribeFolderResolvedPermissionsRequest,
+  ) => stream.Stream<
+    DescribeFolderResolvedPermissionsResponse,
+    DescribeFolderResolvedPermissionsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: DescribeFolderResolvedPermissionsRequest,
+  ) => stream.Stream<
+    ResourcePermission,
+    DescribeFolderResolvedPermissionsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type DescribeGroupError =
   | AccessDeniedException
@@ -37944,7 +38008,27 @@ export const listActionConnectors: API.OperationMethod<
     items: "ActionConnectorSummaries",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListActionConnectorsRequest,
+  ListActionConnectorsResponse,
+  ListActionConnectorsError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListActionConnectorsRequest,
+  ) => stream.Stream<
+    ListActionConnectorsResponse,
+    ListActionConnectorsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListActionConnectorsRequest,
+  ) => stream.Stream<
+    ActionConnectorSummary,
+    ListActionConnectorsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type ListAgentsError =
   | AccessDeniedException
@@ -38027,7 +38111,27 @@ export const listAnalyses: API.OperationMethod<
     items: "AnalysisSummaryList",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListAnalysesRequest,
+  ListAnalysesResponse,
+  ListAnalysesError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListAnalysesRequest,
+  ) => stream.Stream<
+    ListAnalysesResponse,
+    ListAnalysesError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListAnalysesRequest,
+  ) => stream.Stream<
+    AnalysisSummary,
+    ListAnalysesError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type ListAssetBundleExportJobsError =
   | AccessDeniedException
@@ -38081,7 +38185,27 @@ export const listAssetBundleExportJobs: API.OperationMethod<
     items: "AssetBundleExportJobSummaryList",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListAssetBundleExportJobsRequest,
+  ListAssetBundleExportJobsResponse,
+  ListAssetBundleExportJobsError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListAssetBundleExportJobsRequest,
+  ) => stream.Stream<
+    ListAssetBundleExportJobsResponse,
+    ListAssetBundleExportJobsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListAssetBundleExportJobsRequest,
+  ) => stream.Stream<
+    AssetBundleExportJobSummary,
+    ListAssetBundleExportJobsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type ListAssetBundleImportJobsError =
   | AccessDeniedException
@@ -38135,7 +38259,27 @@ export const listAssetBundleImportJobs: API.OperationMethod<
     items: "AssetBundleImportJobSummaryList",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListAssetBundleImportJobsRequest,
+  ListAssetBundleImportJobsResponse,
+  ListAssetBundleImportJobsError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListAssetBundleImportJobsRequest,
+  ) => stream.Stream<
+    ListAssetBundleImportJobsResponse,
+    ListAssetBundleImportJobsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListAssetBundleImportJobsRequest,
+  ) => stream.Stream<
+    AssetBundleImportJobSummary,
+    ListAssetBundleImportJobsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type ListBrandsError =
   | AccessDeniedException
@@ -38184,7 +38328,27 @@ export const listBrands: API.OperationMethod<
     items: "Brands",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListBrandsRequest,
+  ListBrandsResponse,
+  ListBrandsError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListBrandsRequest,
+  ) => stream.Stream<
+    ListBrandsResponse,
+    ListBrandsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListBrandsRequest,
+  ) => stream.Stream<
+    BrandSummary,
+    ListBrandsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type ListCustomPermissionsError =
   | AccessDeniedException
@@ -38239,7 +38403,27 @@ export const listCustomPermissions: API.OperationMethod<
     items: "CustomPermissionsList",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListCustomPermissionsRequest,
+  ListCustomPermissionsResponse,
+  ListCustomPermissionsError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListCustomPermissionsRequest,
+  ) => stream.Stream<
+    ListCustomPermissionsResponse,
+    ListCustomPermissionsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListCustomPermissionsRequest,
+  ) => stream.Stream<
+    CustomPermissions,
+    ListCustomPermissionsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type ListDashboardsError =
   | InternalFailureException
@@ -38288,7 +38472,27 @@ export const listDashboards: API.OperationMethod<
     items: "DashboardSummaryList",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListDashboardsRequest,
+  ListDashboardsResponse,
+  ListDashboardsError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListDashboardsRequest,
+  ) => stream.Stream<
+    ListDashboardsResponse,
+    ListDashboardsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListDashboardsRequest,
+  ) => stream.Stream<
+    DashboardSummary,
+    ListDashboardsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type ListDashboardVersionsError =
   | InternalFailureException
@@ -38341,7 +38545,27 @@ export const listDashboardVersions: API.OperationMethod<
     items: "DashboardVersionSummaryList",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListDashboardVersionsRequest,
+  ListDashboardVersionsResponse,
+  ListDashboardVersionsError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListDashboardVersionsRequest,
+  ) => stream.Stream<
+    ListDashboardVersionsResponse,
+    ListDashboardVersionsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListDashboardVersionsRequest,
+  ) => stream.Stream<
+    DashboardVersionSummary,
+    ListDashboardVersionsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type ListDataSetsError =
   | AccessDeniedException
@@ -38396,7 +38620,27 @@ export const listDataSets: API.OperationMethod<
     items: "DataSetSummaries",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListDataSetsRequest,
+  ListDataSetsResponse,
+  ListDataSetsError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListDataSetsRequest,
+  ) => stream.Stream<
+    ListDataSetsResponse,
+    ListDataSetsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListDataSetsRequest,
+  ) => stream.Stream<
+    DataSetSummary,
+    ListDataSetsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type ListDataSourcesError =
   | AccessDeniedException
@@ -38447,7 +38691,27 @@ export const listDataSources: API.OperationMethod<
     items: "DataSources",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListDataSourcesRequest,
+  ListDataSourcesResponse,
+  ListDataSourcesError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListDataSourcesRequest,
+  ) => stream.Stream<
+    ListDataSourcesResponse,
+    ListDataSourcesError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListDataSourcesRequest,
+  ) => stream.Stream<
+    DataSource,
+    ListDataSourcesError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type ListFlowsError =
   | AccessDeniedException
@@ -38496,7 +38760,27 @@ export const listFlows: API.OperationMethod<
     items: "FlowSummaryList",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListFlowsInput,
+  ListFlowsOutput,
+  ListFlowsError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListFlowsInput,
+  ) => stream.Stream<
+    ListFlowsOutput,
+    ListFlowsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListFlowsInput,
+  ) => stream.Stream<
+    FlowSummary,
+    ListFlowsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type ListFolderMembersError =
   | AccessDeniedException
@@ -38551,7 +38835,27 @@ export const listFolderMembers: API.OperationMethod<
     items: "FolderMemberList",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListFolderMembersRequest,
+  ListFolderMembersResponse,
+  ListFolderMembersError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListFolderMembersRequest,
+  ) => stream.Stream<
+    ListFolderMembersResponse,
+    ListFolderMembersError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListFolderMembersRequest,
+  ) => stream.Stream<
+    MemberIdArnPair,
+    ListFolderMembersError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type ListFoldersError =
   | AccessDeniedException
@@ -38606,7 +38910,27 @@ export const listFolders: API.OperationMethod<
     items: "FolderSummaryList",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListFoldersRequest,
+  ListFoldersResponse,
+  ListFoldersError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListFoldersRequest,
+  ) => stream.Stream<
+    ListFoldersResponse,
+    ListFoldersError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListFoldersRequest,
+  ) => stream.Stream<
+    FolderSummary,
+    ListFoldersError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type ListFoldersForResourceError =
   | AccessDeniedException
@@ -38661,7 +38985,27 @@ export const listFoldersForResource: API.OperationMethod<
     items: "Folders",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListFoldersForResourceRequest,
+  ListFoldersForResourceResponse,
+  ListFoldersForResourceError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListFoldersForResourceRequest,
+  ) => stream.Stream<
+    ListFoldersForResourceResponse,
+    ListFoldersForResourceError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListFoldersForResourceRequest,
+  ) => stream.Stream<
+    Arn,
+    ListFoldersForResourceError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type ListGroupMembershipsError =
   | AccessDeniedException
@@ -38718,7 +39062,27 @@ export const listGroupMemberships: API.OperationMethod<
     items: "GroupMemberList",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListGroupMembershipsRequest,
+  ListGroupMembershipsResponse,
+  ListGroupMembershipsError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListGroupMembershipsRequest,
+  ) => stream.Stream<
+    ListGroupMembershipsResponse,
+    ListGroupMembershipsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListGroupMembershipsRequest,
+  ) => stream.Stream<
+    GroupMember,
+    ListGroupMembershipsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type ListGroupsError =
   | AccessDeniedException
@@ -38775,7 +39139,27 @@ export const listGroups: API.OperationMethod<
     items: "GroupList",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListGroupsRequest,
+  ListGroupsResponse,
+  ListGroupsError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListGroupsRequest,
+  ) => stream.Stream<
+    ListGroupsResponse,
+    ListGroupsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListGroupsRequest,
+  ) => stream.Stream<
+    Group,
+    ListGroupsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type ListIAMPolicyAssignmentsError =
   | AccessDeniedException
@@ -38830,7 +39214,27 @@ export const listIAMPolicyAssignments: API.OperationMethod<
     items: "IAMPolicyAssignments",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListIAMPolicyAssignmentsRequest,
+  ListIAMPolicyAssignmentsResponse,
+  ListIAMPolicyAssignmentsError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListIAMPolicyAssignmentsRequest,
+  ) => stream.Stream<
+    ListIAMPolicyAssignmentsResponse,
+    ListIAMPolicyAssignmentsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListIAMPolicyAssignmentsRequest,
+  ) => stream.Stream<
+    IAMPolicyAssignmentSummary,
+    ListIAMPolicyAssignmentsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type ListIAMPolicyAssignmentsForUserError =
   | AccessDeniedException
@@ -38891,7 +39295,27 @@ export const listIAMPolicyAssignmentsForUser: API.OperationMethod<
     items: "ActiveAssignments",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListIAMPolicyAssignmentsForUserRequest,
+  ListIAMPolicyAssignmentsForUserResponse,
+  ListIAMPolicyAssignmentsForUserError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListIAMPolicyAssignmentsForUserRequest,
+  ) => stream.Stream<
+    ListIAMPolicyAssignmentsForUserResponse,
+    ListIAMPolicyAssignmentsForUserError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListIAMPolicyAssignmentsForUserRequest,
+  ) => stream.Stream<
+    ActiveIAMPolicyAssignment,
+    ListIAMPolicyAssignmentsForUserError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type ListIdentityPropagationConfigsError =
   | AccessDeniedException
@@ -38978,7 +39402,27 @@ export const listIngestions: API.OperationMethod<
     items: "Ingestions",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListIngestionsRequest,
+  ListIngestionsResponse,
+  ListIngestionsError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListIngestionsRequest,
+  ) => stream.Stream<
+    ListIngestionsResponse,
+    ListIngestionsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListIngestionsRequest,
+  ) => stream.Stream<
+    Ingestion,
+    ListIngestionsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type ListKnowledgeBasesError =
   | AccessDeniedException
@@ -39031,7 +39475,27 @@ export const listKnowledgeBases: API.OperationMethod<
     items: "KnowledgeBaseSummaries",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListKnowledgeBasesRequest,
+  ListKnowledgeBasesResponse,
+  ListKnowledgeBasesError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListKnowledgeBasesRequest,
+  ) => stream.Stream<
+    ListKnowledgeBasesResponse,
+    ListKnowledgeBasesError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListKnowledgeBasesRequest,
+  ) => stream.Stream<
+    KnowledgeBaseSummary,
+    ListKnowledgeBasesError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type ListNamespacesError =
   | AccessDeniedException
@@ -39088,7 +39552,27 @@ export const listNamespaces: API.OperationMethod<
     items: "Namespaces",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListNamespacesRequest,
+  ListNamespacesResponse,
+  ListNamespacesError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListNamespacesRequest,
+  ) => stream.Stream<
+    ListNamespacesResponse,
+    ListNamespacesError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListNamespacesRequest,
+  ) => stream.Stream<
+    NamespaceInfoV2,
+    ListNamespacesError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type ListOAuthClientApplicationsError =
   | AccessDeniedException
@@ -39141,7 +39625,27 @@ export const listOAuthClientApplications: API.OperationMethod<
     items: "OAuthClientApplications",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListOAuthClientApplicationsRequest,
+  ListOAuthClientApplicationsResponse,
+  ListOAuthClientApplicationsError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListOAuthClientApplicationsRequest,
+  ) => stream.Stream<
+    ListOAuthClientApplicationsResponse,
+    ListOAuthClientApplicationsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListOAuthClientApplicationsRequest,
+  ) => stream.Stream<
+    OAuthClientApplicationSummary,
+    ListOAuthClientApplicationsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type ListRefreshSchedulesError =
   | AccessDeniedException
@@ -39232,7 +39736,27 @@ export const listRoleMemberships: API.OperationMethod<
     items: "MembersList",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListRoleMembershipsRequest,
+  ListRoleMembershipsResponse,
+  ListRoleMembershipsError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListRoleMembershipsRequest,
+  ) => stream.Stream<
+    ListRoleMembershipsResponse,
+    ListRoleMembershipsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListRoleMembershipsRequest,
+  ) => stream.Stream<
+    string,
+    ListRoleMembershipsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type ListSelfUpgradesError =
   | AccessDeniedException
@@ -39411,7 +39935,27 @@ export const listTemplateAliases: API.OperationMethod<
     items: "TemplateAliasList",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListTemplateAliasesRequest,
+  ListTemplateAliasesResponse,
+  ListTemplateAliasesError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListTemplateAliasesRequest,
+  ) => stream.Stream<
+    ListTemplateAliasesResponse,
+    ListTemplateAliasesError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListTemplateAliasesRequest,
+  ) => stream.Stream<
+    TemplateAlias,
+    ListTemplateAliasesError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type ListTemplatesError =
   | InternalFailureException
@@ -39464,7 +40008,27 @@ export const listTemplates: API.OperationMethod<
     items: "TemplateSummaryList",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListTemplatesRequest,
+  ListTemplatesResponse,
+  ListTemplatesError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListTemplatesRequest,
+  ) => stream.Stream<
+    ListTemplatesResponse,
+    ListTemplatesError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListTemplatesRequest,
+  ) => stream.Stream<
+    TemplateSummary,
+    ListTemplatesError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type ListTemplateVersionsError =
   | InternalFailureException
@@ -39517,7 +40081,27 @@ export const listTemplateVersions: API.OperationMethod<
     items: "TemplateVersionSummaryList",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListTemplateVersionsRequest,
+  ListTemplateVersionsResponse,
+  ListTemplateVersionsError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListTemplateVersionsRequest,
+  ) => stream.Stream<
+    ListTemplateVersionsResponse,
+    ListTemplateVersionsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListTemplateVersionsRequest,
+  ) => stream.Stream<
+    TemplateVersionSummary,
+    ListTemplateVersionsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type ListThemeAliasesError =
   | ConflictException
@@ -39606,7 +40190,27 @@ export const listThemes: API.OperationMethod<
     items: "ThemeSummaryList",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListThemesRequest,
+  ListThemesResponse,
+  ListThemesError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListThemesRequest,
+  ) => stream.Stream<
+    ListThemesResponse,
+    ListThemesError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListThemesRequest,
+  ) => stream.Stream<
+    ThemeSummary,
+    ListThemesError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type ListThemeVersionsError =
   | AccessDeniedException
@@ -39661,7 +40265,27 @@ export const listThemeVersions: API.OperationMethod<
     items: "ThemeVersionSummaryList",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListThemeVersionsRequest,
+  ListThemeVersionsResponse,
+  ListThemeVersionsError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListThemeVersionsRequest,
+  ) => stream.Stream<
+    ListThemeVersionsResponse,
+    ListThemeVersionsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListThemeVersionsRequest,
+  ) => stream.Stream<
+    ThemeVersionSummary,
+    ListThemeVersionsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type ListTopicRefreshSchedulesError =
   | AccessDeniedException
@@ -39777,7 +40401,27 @@ export const listTopics: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListTopicsRequest,
+  ListTopicsResponse,
+  ListTopicsError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListTopicsRequest,
+  ) => stream.Stream<
+    ListTopicsResponse,
+    ListTopicsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListTopicsRequest,
+  ) => stream.Stream<
+    unknown,
+    ListTopicsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type ListUserGroupsError =
   | AccessDeniedException
@@ -39832,7 +40476,27 @@ export const listUserGroups: API.OperationMethod<
     items: "GroupList",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListUserGroupsRequest,
+  ListUserGroupsResponse,
+  ListUserGroupsError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListUserGroupsRequest,
+  ) => stream.Stream<
+    ListUserGroupsResponse,
+    ListUserGroupsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListUserGroupsRequest,
+  ) => stream.Stream<
+    Group,
+    ListUserGroupsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type ListUsersError =
   | AccessDeniedException
@@ -39889,7 +40553,27 @@ export const listUsers: API.OperationMethod<
     items: "UserList",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListUsersRequest,
+  ListUsersResponse,
+  ListUsersError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListUsersRequest,
+  ) => stream.Stream<
+    ListUsersResponse,
+    ListUsersError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListUsersRequest,
+  ) => stream.Stream<
+    User,
+    ListUsersError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type ListUsersIndexCapacityError =
   | AccessDeniedException
@@ -39974,7 +40658,27 @@ export const listVPCConnections: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListVPCConnectionsRequest,
+  ListVPCConnectionsResponse,
+  ListVPCConnectionsError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListVPCConnectionsRequest,
+  ) => stream.Stream<
+    ListVPCConnectionsResponse,
+    ListVPCConnectionsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListVPCConnectionsRequest,
+  ) => stream.Stream<
+    unknown,
+    ListVPCConnectionsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type PredictQAResultsError =
   | AccessDeniedException
@@ -40165,7 +40869,27 @@ export const searchActionConnectors: API.OperationMethod<
     items: "ActionConnectorSummaries",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  SearchActionConnectorsRequest,
+  SearchActionConnectorsResponse,
+  SearchActionConnectorsError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: SearchActionConnectorsRequest,
+  ) => stream.Stream<
+    SearchActionConnectorsResponse,
+    SearchActionConnectorsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: SearchActionConnectorsRequest,
+  ) => stream.Stream<
+    ActionConnectorSummary,
+    SearchActionConnectorsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type SearchAgentsError =
   | AccessDeniedException
@@ -40252,7 +40976,27 @@ export const searchAnalyses: API.OperationMethod<
     items: "AnalysisSummaryList",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  SearchAnalysesRequest,
+  SearchAnalysesResponse,
+  SearchAnalysesError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: SearchAnalysesRequest,
+  ) => stream.Stream<
+    SearchAnalysesResponse,
+    SearchAnalysesError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: SearchAnalysesRequest,
+  ) => stream.Stream<
+    AnalysisSummary,
+    SearchAnalysesError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type SearchDashboardsError =
   | InternalFailureException
@@ -40308,7 +41052,27 @@ export const searchDashboards: API.OperationMethod<
     items: "DashboardSummaryList",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  SearchDashboardsRequest,
+  SearchDashboardsResponse,
+  SearchDashboardsError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: SearchDashboardsRequest,
+  ) => stream.Stream<
+    SearchDashboardsResponse,
+    SearchDashboardsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: SearchDashboardsRequest,
+  ) => stream.Stream<
+    DashboardSummary,
+    SearchDashboardsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type SearchDataSetsError =
   | AccessDeniedException
@@ -40362,7 +41126,27 @@ export const searchDataSets: API.OperationMethod<
     items: "DataSetSummaries",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  SearchDataSetsRequest,
+  SearchDataSetsResponse,
+  SearchDataSetsError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: SearchDataSetsRequest,
+  ) => stream.Stream<
+    SearchDataSetsResponse,
+    SearchDataSetsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: SearchDataSetsRequest,
+  ) => stream.Stream<
+    DataSetSummary,
+    SearchDataSetsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type SearchDataSourcesError =
   | AccessDeniedException
@@ -40416,7 +41200,27 @@ export const searchDataSources: API.OperationMethod<
     items: "DataSourceSummaries",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  SearchDataSourcesRequest,
+  SearchDataSourcesResponse,
+  SearchDataSourcesError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: SearchDataSourcesRequest,
+  ) => stream.Stream<
+    SearchDataSourcesResponse,
+    SearchDataSourcesError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: SearchDataSourcesRequest,
+  ) => stream.Stream<
+    DataSourceSummary,
+    SearchDataSourcesError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type SearchFlowsError =
   | AccessDeniedException
@@ -40465,7 +41269,27 @@ export const searchFlows: API.OperationMethod<
     items: "FlowSummaryList",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  SearchFlowsInput,
+  SearchFlowsOutput,
+  SearchFlowsError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: SearchFlowsInput,
+  ) => stream.Stream<
+    SearchFlowsOutput,
+    SearchFlowsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: SearchFlowsInput,
+  ) => stream.Stream<
+    FlowSummary,
+    SearchFlowsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type SearchFoldersError =
   | AccessDeniedException
@@ -40522,7 +41346,27 @@ export const searchFolders: API.OperationMethod<
     items: "FolderSummaryList",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  SearchFoldersRequest,
+  SearchFoldersResponse,
+  SearchFoldersError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: SearchFoldersRequest,
+  ) => stream.Stream<
+    SearchFoldersResponse,
+    SearchFoldersError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: SearchFoldersRequest,
+  ) => stream.Stream<
+    FolderSummary,
+    SearchFoldersError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type SearchGroupsError =
   | AccessDeniedException
@@ -40579,7 +41423,27 @@ export const searchGroups: API.OperationMethod<
     items: "GroupList",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  SearchGroupsRequest,
+  SearchGroupsResponse,
+  SearchGroupsError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: SearchGroupsRequest,
+  ) => stream.Stream<
+    SearchGroupsResponse,
+    SearchGroupsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: SearchGroupsRequest,
+  ) => stream.Stream<
+    Group,
+    SearchGroupsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type SearchKnowledgeBasesError =
   | AccessDeniedException
@@ -40634,7 +41498,27 @@ export const searchKnowledgeBases: API.OperationMethod<
     items: "KnowledgeBaseSummaries",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  SearchKnowledgeBasesRequest,
+  SearchKnowledgeBasesResponse,
+  SearchKnowledgeBasesError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: SearchKnowledgeBasesRequest,
+  ) => stream.Stream<
+    SearchKnowledgeBasesResponse,
+    SearchKnowledgeBasesError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: SearchKnowledgeBasesRequest,
+  ) => stream.Stream<
+    KnowledgeBaseSummary,
+    SearchKnowledgeBasesError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type SearchSpacesError =
   | AccessDeniedException
@@ -40717,7 +41601,27 @@ export const searchTopics: API.OperationMethod<
     items: "TopicSummaryList",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  SearchTopicsRequest,
+  SearchTopicsResponse,
+  SearchTopicsError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: SearchTopicsRequest,
+  ) => stream.Stream<
+    SearchTopicsResponse,
+    SearchTopicsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: SearchTopicsRequest,
+  ) => stream.Stream<
+    TopicSummary,
+    SearchTopicsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type StartAssetBundleExportJobError =
   | AccessDeniedException

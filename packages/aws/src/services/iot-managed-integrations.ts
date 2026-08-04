@@ -54,70 +54,82 @@ const rules = T.EndpointResolver((p, _) => {
   return err("Invalid Configuration: Missing Region");
 });
 
-export class AccessDeniedException extends S.TaggedErrorClass<AccessDeniedException>()(
-  "AccessDeniedException",
-  { Message: S.optional(S.String) },
-  T.HttpError(403),
-).pipe(C.withAuthError) {}
-export class ConflictException extends S.TaggedErrorClass<ConflictException>()(
-  "ConflictException",
-  { Message: S.optional(S.String) },
-  T.HttpError(409),
-).pipe(C.withConflictError) {}
-export class InternalFailureException extends S.TaggedErrorClass<InternalFailureException>()(
-  "InternalFailureException",
-  { Message: S.optional(S.String) },
-  T.HttpError(500),
-).pipe(C.withServerError) {}
-export class InternalServerException extends S.TaggedErrorClass<InternalServerException>()(
-  "InternalServerException",
-  { Message: S.optional(S.String) },
-  T.HttpError(500),
-).pipe(C.withServerError) {}
-export class InvalidRequestException extends S.TaggedErrorClass<InvalidRequestException>()(
-  "InvalidRequestException",
-  { Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class LimitExceededException extends S.TaggedErrorClass<LimitExceededException>()(
-  "LimitExceededException",
-  { Message: S.optional(S.String) },
-  T.HttpError(410),
-).pipe(C.withBadRequestError) {}
-export class ResourceNotFoundException extends S.TaggedErrorClass<ResourceNotFoundException>()(
-  "ResourceNotFoundException",
-  {
-    Message: S.optional(S.String),
-    ResourceId: S.optional(S.String),
-    ResourceType: S.optional(S.String),
-  },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class ServiceQuotaExceededException extends S.TaggedErrorClass<ServiceQuotaExceededException>()(
-  "ServiceQuotaExceededException",
-  { Message: S.optional(S.String) },
-  T.HttpError(402),
-).pipe(C.withQuotaError) {}
-export class ServiceUnavailableException extends S.TaggedErrorClass<ServiceUnavailableException>()(
-  "ServiceUnavailableException",
-  { Message: S.optional(S.String) },
-  T.HttpError(503),
-).pipe(C.withServerError) {}
-export class ThrottlingException extends S.TaggedErrorClass<ThrottlingException>()(
-  "ThrottlingException",
-  { Message: S.optional(S.String) },
-  T.HttpError(429),
-).pipe(C.withThrottlingError) {}
-export class UnauthorizedException extends S.TaggedErrorClass<UnauthorizedException>()(
-  "UnauthorizedException",
-  { Message: S.optional(S.String) },
-  T.HttpError(401),
-).pipe(C.withAuthError) {}
-export class ValidationException extends S.TaggedErrorClass<ValidationException>()(
-  "ValidationException",
-  { Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
+export class AccessDeniedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
+    "AccessDeniedException",
+    { Message: S.optional(S.String) },
+    T.HttpError(403),
+  ).pipe(C.withAuthError) {}
+export class ConflictException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
+    "ConflictException",
+    { Message: S.optional(S.String) },
+    T.HttpError(409),
+  ).pipe(C.withConflictError) {}
+export class InternalFailureException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InternalFailureException>()(
+    "InternalFailureException",
+    { Message: S.optional(S.String) },
+    T.HttpError(500),
+  ).pipe(C.withServerError) {}
+export class InternalServerException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
+    "InternalServerException",
+    { Message: S.optional(S.String) },
+    T.HttpError(500),
+  ).pipe(C.withServerError) {}
+export class InvalidRequestException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidRequestException>()(
+    "InvalidRequestException",
+    { Message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class LimitExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<LimitExceededException>()(
+    "LimitExceededException",
+    { Message: S.optional(S.String) },
+    T.HttpError(410),
+  ).pipe(C.withBadRequestError) {}
+export class ResourceNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
+    "ResourceNotFoundException",
+    {
+      Message: S.optional(S.String),
+      ResourceId: S.optional(S.String),
+      ResourceType: S.optional(S.String),
+    },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class ServiceQuotaExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
+    "ServiceQuotaExceededException",
+    { Message: S.optional(S.String) },
+    T.HttpError(402),
+  ).pipe(C.withQuotaError) {}
+export class ServiceUnavailableException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ServiceUnavailableException>()(
+    "ServiceUnavailableException",
+    { Message: S.optional(S.String) },
+    T.HttpError(503),
+  ).pipe(C.withServerError) {}
+export class ThrottlingException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
+    "ThrottlingException",
+    { Message: S.optional(S.String) },
+    T.HttpError(429),
+  ).pipe(C.withThrottlingError) {}
+export class UnauthorizedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<UnauthorizedException>()(
+    "UnauthorizedException",
+    { Message: S.optional(S.String) },
+    T.HttpError(401),
+  ).pipe(C.withAuthError) {}
+export class ValidationException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
+    "ValidationException",
+    { Message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
 export type ClientToken = string;
 export type ConnectorDestinationId = string;
 export type AccountAssociationName = string;
@@ -6061,7 +6073,27 @@ export const listAccountAssociations: API.OperationMethod<
     items: "Items",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListAccountAssociationsRequest,
+  ListAccountAssociationsResponse,
+  ListAccountAssociationsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListAccountAssociationsRequest,
+  ) => stream.Stream<
+    ListAccountAssociationsResponse,
+    ListAccountAssociationsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListAccountAssociationsRequest,
+  ) => stream.Stream<
+    AccountAssociationItem,
+    ListAccountAssociationsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListCloudConnectorsError =
   | AccessDeniedException
@@ -6110,7 +6142,27 @@ export const listCloudConnectors: API.OperationMethod<
     items: "Items",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListCloudConnectorsRequest,
+  ListCloudConnectorsResponse,
+  ListCloudConnectorsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListCloudConnectorsRequest,
+  ) => stream.Stream<
+    ListCloudConnectorsResponse,
+    ListCloudConnectorsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListCloudConnectorsRequest,
+  ) => stream.Stream<
+    ConnectorItem,
+    ListCloudConnectorsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListConnectorDestinationsError =
   | AccessDeniedException
@@ -6159,7 +6211,27 @@ export const listConnectorDestinations: API.OperationMethod<
     items: "ConnectorDestinationList",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListConnectorDestinationsRequest,
+  ListConnectorDestinationsResponse,
+  ListConnectorDestinationsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListConnectorDestinationsRequest,
+  ) => stream.Stream<
+    ListConnectorDestinationsResponse,
+    ListConnectorDestinationsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListConnectorDestinationsRequest,
+  ) => stream.Stream<
+    ConnectorDestinationSummary,
+    ListConnectorDestinationsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListCredentialLockersError =
   | AccessDeniedException
@@ -6210,7 +6282,27 @@ export const listCredentialLockers: API.OperationMethod<
     items: "Items",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListCredentialLockersRequest,
+  ListCredentialLockersResponse,
+  ListCredentialLockersError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListCredentialLockersRequest,
+  ) => stream.Stream<
+    ListCredentialLockersResponse,
+    ListCredentialLockersError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListCredentialLockersRequest,
+  ) => stream.Stream<
+    CredentialLockerSummary,
+    ListCredentialLockersError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListDestinationsError =
   | AccessDeniedException
@@ -6259,7 +6351,27 @@ export const listDestinations: API.OperationMethod<
     items: "DestinationList",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListDestinationsRequest,
+  ListDestinationsResponse,
+  ListDestinationsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListDestinationsRequest,
+  ) => stream.Stream<
+    ListDestinationsResponse,
+    ListDestinationsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListDestinationsRequest,
+  ) => stream.Stream<
+    DestinationSummary,
+    ListDestinationsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListDeviceDiscoveriesError =
   | AccessDeniedException
@@ -6312,7 +6424,27 @@ export const listDeviceDiscoveries: API.OperationMethod<
     items: "Items",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListDeviceDiscoveriesRequest,
+  ListDeviceDiscoveriesResponse,
+  ListDeviceDiscoveriesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListDeviceDiscoveriesRequest,
+  ) => stream.Stream<
+    ListDeviceDiscoveriesResponse,
+    ListDeviceDiscoveriesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListDeviceDiscoveriesRequest,
+  ) => stream.Stream<
+    DeviceDiscoverySummary,
+    ListDeviceDiscoveriesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListDiscoveredDevicesError =
   | AccessDeniedException
@@ -6367,7 +6499,27 @@ export const listDiscoveredDevices: API.OperationMethod<
     items: "Items",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListDiscoveredDevicesRequest,
+  ListDiscoveredDevicesResponse,
+  ListDiscoveredDevicesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListDiscoveredDevicesRequest,
+  ) => stream.Stream<
+    ListDiscoveredDevicesResponse,
+    ListDiscoveredDevicesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListDiscoveredDevicesRequest,
+  ) => stream.Stream<
+    DiscoveredDeviceSummary,
+    ListDiscoveredDevicesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListEventLogConfigurationsError =
   | AccessDeniedException
@@ -6416,7 +6568,27 @@ export const listEventLogConfigurations: API.OperationMethod<
     items: "EventLogConfigurationList",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListEventLogConfigurationsRequest,
+  ListEventLogConfigurationsResponse,
+  ListEventLogConfigurationsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListEventLogConfigurationsRequest,
+  ) => stream.Stream<
+    ListEventLogConfigurationsResponse,
+    ListEventLogConfigurationsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListEventLogConfigurationsRequest,
+  ) => stream.Stream<
+    EventLogConfigurationSummary,
+    ListEventLogConfigurationsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListManagedThingAccountAssociationsError =
   | AccessDeniedException
@@ -6465,7 +6637,27 @@ export const listManagedThingAccountAssociations: API.OperationMethod<
     items: "Items",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListManagedThingAccountAssociationsRequest,
+  ListManagedThingAccountAssociationsResponse,
+  ListManagedThingAccountAssociationsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListManagedThingAccountAssociationsRequest,
+  ) => stream.Stream<
+    ListManagedThingAccountAssociationsResponse,
+    ListManagedThingAccountAssociationsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListManagedThingAccountAssociationsRequest,
+  ) => stream.Stream<
+    ManagedThingAssociation,
+    ListManagedThingAccountAssociationsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListManagedThingsError =
   | AccessDeniedException
@@ -6518,7 +6710,27 @@ export const listManagedThings: API.OperationMethod<
     items: "Items",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListManagedThingsRequest,
+  ListManagedThingsResponse,
+  ListManagedThingsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListManagedThingsRequest,
+  ) => stream.Stream<
+    ListManagedThingsResponse,
+    ListManagedThingsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListManagedThingsRequest,
+  ) => stream.Stream<
+    ManagedThingSummary,
+    ListManagedThingsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListManagedThingSchemasError =
   | AccessDeniedException
@@ -6573,7 +6785,27 @@ export const listManagedThingSchemas: API.OperationMethod<
     items: "Items",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListManagedThingSchemasRequest,
+  ListManagedThingSchemasResponse,
+  ListManagedThingSchemasError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListManagedThingSchemasRequest,
+  ) => stream.Stream<
+    ListManagedThingSchemasResponse,
+    ListManagedThingSchemasError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListManagedThingSchemasRequest,
+  ) => stream.Stream<
+    ManagedThingSchemaListItem,
+    ListManagedThingSchemasError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListNotificationConfigurationsError =
   | AccessDeniedException
@@ -6622,7 +6854,27 @@ export const listNotificationConfigurations: API.OperationMethod<
     items: "NotificationConfigurationList",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListNotificationConfigurationsRequest,
+  ListNotificationConfigurationsResponse,
+  ListNotificationConfigurationsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListNotificationConfigurationsRequest,
+  ) => stream.Stream<
+    ListNotificationConfigurationsResponse,
+    ListNotificationConfigurationsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListNotificationConfigurationsRequest,
+  ) => stream.Stream<
+    NotificationConfigurationSummary,
+    ListNotificationConfigurationsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListOtaTaskConfigurationsError =
   | AccessDeniedException
@@ -6671,7 +6923,27 @@ export const listOtaTaskConfigurations: API.OperationMethod<
     items: "Items",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListOtaTaskConfigurationsRequest,
+  ListOtaTaskConfigurationsResponse,
+  ListOtaTaskConfigurationsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListOtaTaskConfigurationsRequest,
+  ) => stream.Stream<
+    ListOtaTaskConfigurationsResponse,
+    ListOtaTaskConfigurationsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListOtaTaskConfigurationsRequest,
+  ) => stream.Stream<
+    OtaTaskConfigurationSummary,
+    ListOtaTaskConfigurationsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListOtaTaskExecutionsError =
   | AccessDeniedException
@@ -6722,7 +6994,27 @@ export const listOtaTaskExecutions: API.OperationMethod<
     items: "ExecutionSummaries",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListOtaTaskExecutionsRequest,
+  ListOtaTaskExecutionsResponse,
+  ListOtaTaskExecutionsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListOtaTaskExecutionsRequest,
+  ) => stream.Stream<
+    ListOtaTaskExecutionsResponse,
+    ListOtaTaskExecutionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListOtaTaskExecutionsRequest,
+  ) => stream.Stream<
+    OtaTaskExecutionSummaries,
+    ListOtaTaskExecutionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListOtaTasksError =
   | AccessDeniedException
@@ -6773,7 +7065,27 @@ export const listOtaTasks: API.OperationMethod<
     items: "Tasks",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListOtaTasksRequest,
+  ListOtaTasksResponse,
+  ListOtaTasksError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListOtaTasksRequest,
+  ) => stream.Stream<
+    ListOtaTasksResponse,
+    ListOtaTasksError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListOtaTasksRequest,
+  ) => stream.Stream<
+    OtaTaskSummary,
+    ListOtaTasksError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListProvisioningProfilesError =
   | AccessDeniedException
@@ -6826,7 +7138,27 @@ export const listProvisioningProfiles: API.OperationMethod<
     items: "Items",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListProvisioningProfilesRequest,
+  ListProvisioningProfilesResponse,
+  ListProvisioningProfilesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListProvisioningProfilesRequest,
+  ) => stream.Stream<
+    ListProvisioningProfilesResponse,
+    ListProvisioningProfilesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListProvisioningProfilesRequest,
+  ) => stream.Stream<
+    ProvisioningProfileSummary,
+    ListProvisioningProfilesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListSchemaVersionsError =
   | AccessDeniedException
@@ -6879,7 +7211,27 @@ export const listSchemaVersions: API.OperationMethod<
     items: "Items",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListSchemaVersionsRequest,
+  ListSchemaVersionsResponse,
+  ListSchemaVersionsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListSchemaVersionsRequest,
+  ) => stream.Stream<
+    ListSchemaVersionsResponse,
+    ListSchemaVersionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListSchemaVersionsRequest,
+  ) => stream.Stream<
+    SchemaVersionListItem,
+    ListSchemaVersionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListTagsForResourceError =
   | InvalidRequestException

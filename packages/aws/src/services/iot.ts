@@ -96,183 +96,217 @@ const rules = T.EndpointResolver((p, _) => {
   return err("Invalid Configuration: Missing Region");
 });
 
-export class CertificateConflictException extends S.TaggedErrorClass<CertificateConflictException>()(
-  "CertificateConflictException",
-  { message: S.optional(S.String) },
-  T.HttpError(409),
-).pipe(C.withConflictError) {}
-export class CertificateStateException extends S.TaggedErrorClass<CertificateStateException>()(
-  "CertificateStateException",
-  { message: S.optional(S.String) },
-  T.HttpError(406),
-).pipe(C.withBadRequestError) {}
-export class CertificateValidationException extends S.TaggedErrorClass<CertificateValidationException>()(
-  "CertificateValidationException",
-  { message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class ConflictException extends S.TaggedErrorClass<ConflictException>()(
-  "ConflictException",
-  { message: S.optional(S.String), resourceId: S.optional(S.String) },
-  T.HttpError(409),
-).pipe(C.withConflictError) {}
-export class ConflictingResourceUpdateException extends S.TaggedErrorClass<ConflictingResourceUpdateException>()(
-  "ConflictingResourceUpdateException",
-  { message: S.optional(S.String) },
-  T.HttpError(409),
-).pipe(C.withConflictError) {}
-export class DeleteConflictException extends S.TaggedErrorClass<DeleteConflictException>()(
-  "DeleteConflictException",
-  { message: S.optional(S.String) },
-  T.HttpError(409),
-).pipe(C.withConflictError) {}
-export class IndexNotReadyException extends S.TaggedErrorClass<IndexNotReadyException>()(
-  "IndexNotReadyException",
-  { message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class InternalException extends S.TaggedErrorClass<InternalException>()(
-  "InternalException",
-  { message: S.optional(S.String) },
-  T.HttpError(500),
-).pipe(C.withServerError) {}
-export class InternalFailureException extends S.TaggedErrorClass<InternalFailureException>()(
-  "InternalFailureException",
-  { message: S.optional(S.String) },
-  T.HttpError(500),
-).pipe(C.withServerError) {}
-export class InternalServerException extends S.TaggedErrorClass<InternalServerException>()(
-  "InternalServerException",
-  { message: S.optional(S.String) },
-  T.HttpError(500),
-).pipe(C.withServerError) {}
-export class InvalidAggregationException extends S.TaggedErrorClass<InvalidAggregationException>()(
-  "InvalidAggregationException",
-  { message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class InvalidQueryException extends S.TaggedErrorClass<InvalidQueryException>()(
-  "InvalidQueryException",
-  { message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class InvalidRequestException extends S.TaggedErrorClass<InvalidRequestException>()(
-  "InvalidRequestException",
-  { message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class InvalidResponseException extends S.TaggedErrorClass<InvalidResponseException>()(
-  "InvalidResponseException",
-  { message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class InvalidStateTransitionException extends S.TaggedErrorClass<InvalidStateTransitionException>()(
-  "InvalidStateTransitionException",
-  { message: S.optional(S.String) },
-  T.HttpError(409),
-).pipe(C.withConflictError) {}
-export class LimitExceededException extends S.TaggedErrorClass<LimitExceededException>()(
-  "LimitExceededException",
-  { message: S.optional(S.String) },
-  T.HttpError(410),
-).pipe(C.withBadRequestError) {}
-export class MalformedPolicyException extends S.TaggedErrorClass<MalformedPolicyException>()(
-  "MalformedPolicyException",
-  { message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class NotConfiguredException extends S.TaggedErrorClass<NotConfiguredException>()(
-  "NotConfiguredException",
-  { message: S.optional(S.String) },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class RegistrationCodeValidationException extends S.TaggedErrorClass<RegistrationCodeValidationException>()(
-  "RegistrationCodeValidationException",
-  { message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class ResourceAlreadyExistsException extends S.TaggedErrorClass<ResourceAlreadyExistsException>()(
-  "ResourceAlreadyExistsException",
-  {
-    message: S.optional(S.String),
-    resourceId: S.optional(S.String),
-    resourceArn: S.optional(S.String),
-  },
-  T.HttpError(409),
-).pipe(C.withConflictError, C.withAlreadyExistsError) {}
-export class ResourceNotFoundException extends S.TaggedErrorClass<ResourceNotFoundException>()(
-  "ResourceNotFoundException",
-  { message: S.optional(S.String) },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class ResourceRegistrationFailureException extends S.TaggedErrorClass<ResourceRegistrationFailureException>()(
-  "ResourceRegistrationFailureException",
-  { message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class ServiceQuotaExceededException extends S.TaggedErrorClass<ServiceQuotaExceededException>()(
-  "ServiceQuotaExceededException",
-  { message: S.optional(S.String) },
-  T.HttpError(402),
-).pipe(C.withQuotaError) {}
-export class ServiceUnavailableException extends S.TaggedErrorClass<ServiceUnavailableException>()(
-  "ServiceUnavailableException",
-  { message: S.optional(S.String) },
-  T.HttpError(503),
-).pipe(C.withServerError) {}
-export class SqlParseException extends S.TaggedErrorClass<SqlParseException>()(
-  "SqlParseException",
-  { message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class TaskAlreadyExistsException extends S.TaggedErrorClass<TaskAlreadyExistsException>()(
-  "TaskAlreadyExistsException",
-  { message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError, C.withAlreadyExistsError) {}
-export class ThrottlingException extends S.TaggedErrorClass<ThrottlingException>()(
-  "ThrottlingException",
-  { message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class TopicRuleNotFound extends S.TaggedErrorClass<TopicRuleNotFound>()(
-  "TopicRuleNotFound",
-  { message: S.optional(S.String) },
-  T.SyntheticError({
-    from: "UnauthorizedException",
-    message: { includes: "Access to topic rule" },
-  }),
-).pipe(C.withNotFoundError) {}
-export class TransferAlreadyCompletedException extends S.TaggedErrorClass<TransferAlreadyCompletedException>()(
-  "TransferAlreadyCompletedException",
-  { message: S.optional(S.String) },
-  T.HttpError(410),
-).pipe(C.withBadRequestError) {}
-export class TransferConflictException extends S.TaggedErrorClass<TransferConflictException>()(
-  "TransferConflictException",
-  { message: S.optional(S.String) },
-  T.HttpError(409),
-).pipe(C.withConflictError) {}
-export class UnauthorizedException extends S.TaggedErrorClass<UnauthorizedException>()(
-  "UnauthorizedException",
-  { message: S.optional(S.String) },
-  T.HttpError(401),
-).pipe(C.withAuthError) {}
-export class ValidationException extends S.TaggedErrorClass<ValidationException>()(
-  "ValidationException",
-  { message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class VersionConflictException extends S.TaggedErrorClass<VersionConflictException>()(
-  "VersionConflictException",
-  { message: S.optional(S.String) },
-  T.HttpError(409),
-).pipe(C.withConflictError) {}
-export class VersionsLimitExceededException extends S.TaggedErrorClass<VersionsLimitExceededException>()(
-  "VersionsLimitExceededException",
-  { message: S.optional(S.String) },
-  T.HttpError(409),
-).pipe(C.withConflictError) {}
+export class CertificateConflictException
+  extends /*@__PURE__*/ S.TaggedErrorClass<CertificateConflictException>()(
+    "CertificateConflictException",
+    { message: S.optional(S.String) },
+    T.HttpError(409),
+  ).pipe(C.withConflictError) {}
+export class CertificateStateException
+  extends /*@__PURE__*/ S.TaggedErrorClass<CertificateStateException>()(
+    "CertificateStateException",
+    { message: S.optional(S.String) },
+    T.HttpError(406),
+  ).pipe(C.withBadRequestError) {}
+export class CertificateValidationException
+  extends /*@__PURE__*/ S.TaggedErrorClass<CertificateValidationException>()(
+    "CertificateValidationException",
+    { message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class ConflictException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
+    "ConflictException",
+    { message: S.optional(S.String), resourceId: S.optional(S.String) },
+    T.HttpError(409),
+  ).pipe(C.withConflictError) {}
+export class ConflictingResourceUpdateException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ConflictingResourceUpdateException>()(
+    "ConflictingResourceUpdateException",
+    { message: S.optional(S.String) },
+    T.HttpError(409),
+  ).pipe(C.withConflictError) {}
+export class DeleteConflictException
+  extends /*@__PURE__*/ S.TaggedErrorClass<DeleteConflictException>()(
+    "DeleteConflictException",
+    { message: S.optional(S.String) },
+    T.HttpError(409),
+  ).pipe(C.withConflictError) {}
+export class IndexNotReadyException
+  extends /*@__PURE__*/ S.TaggedErrorClass<IndexNotReadyException>()(
+    "IndexNotReadyException",
+    { message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class InternalException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InternalException>()(
+    "InternalException",
+    { message: S.optional(S.String) },
+    T.HttpError(500),
+  ).pipe(C.withServerError) {}
+export class InternalFailureException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InternalFailureException>()(
+    "InternalFailureException",
+    { message: S.optional(S.String) },
+    T.HttpError(500),
+  ).pipe(C.withServerError) {}
+export class InternalServerException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
+    "InternalServerException",
+    { message: S.optional(S.String) },
+    T.HttpError(500),
+  ).pipe(C.withServerError) {}
+export class InvalidAggregationException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidAggregationException>()(
+    "InvalidAggregationException",
+    { message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class InvalidQueryException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidQueryException>()(
+    "InvalidQueryException",
+    { message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class InvalidRequestException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidRequestException>()(
+    "InvalidRequestException",
+    { message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class InvalidResponseException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidResponseException>()(
+    "InvalidResponseException",
+    { message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class InvalidStateTransitionException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidStateTransitionException>()(
+    "InvalidStateTransitionException",
+    { message: S.optional(S.String) },
+    T.HttpError(409),
+  ).pipe(C.withConflictError) {}
+export class LimitExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<LimitExceededException>()(
+    "LimitExceededException",
+    { message: S.optional(S.String) },
+    T.HttpError(410),
+  ).pipe(C.withBadRequestError) {}
+export class MalformedPolicyException
+  extends /*@__PURE__*/ S.TaggedErrorClass<MalformedPolicyException>()(
+    "MalformedPolicyException",
+    { message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class NotConfiguredException
+  extends /*@__PURE__*/ S.TaggedErrorClass<NotConfiguredException>()(
+    "NotConfiguredException",
+    { message: S.optional(S.String) },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class RegistrationCodeValidationException
+  extends /*@__PURE__*/ S.TaggedErrorClass<RegistrationCodeValidationException>()(
+    "RegistrationCodeValidationException",
+    { message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class ResourceAlreadyExistsException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceAlreadyExistsException>()(
+    "ResourceAlreadyExistsException",
+    {
+      message: S.optional(S.String),
+      resourceId: S.optional(S.String),
+      resourceArn: S.optional(S.String),
+    },
+    T.HttpError(409),
+  ).pipe(C.withConflictError, C.withAlreadyExistsError) {}
+export class ResourceNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
+    "ResourceNotFoundException",
+    { message: S.optional(S.String) },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class ResourceRegistrationFailureException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceRegistrationFailureException>()(
+    "ResourceRegistrationFailureException",
+    { message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class ServiceQuotaExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
+    "ServiceQuotaExceededException",
+    { message: S.optional(S.String) },
+    T.HttpError(402),
+  ).pipe(C.withQuotaError) {}
+export class ServiceUnavailableException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ServiceUnavailableException>()(
+    "ServiceUnavailableException",
+    { message: S.optional(S.String) },
+    T.HttpError(503),
+  ).pipe(C.withServerError) {}
+export class SqlParseException
+  extends /*@__PURE__*/ S.TaggedErrorClass<SqlParseException>()(
+    "SqlParseException",
+    { message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class TaskAlreadyExistsException
+  extends /*@__PURE__*/ S.TaggedErrorClass<TaskAlreadyExistsException>()(
+    "TaskAlreadyExistsException",
+    { message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError, C.withAlreadyExistsError) {}
+export class ThrottlingException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
+    "ThrottlingException",
+    { message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class TopicRuleNotFound
+  extends /*@__PURE__*/ S.TaggedErrorClass<TopicRuleNotFound>()(
+    "TopicRuleNotFound",
+    { message: S.optional(S.String) },
+    T.SyntheticError({
+      from: "UnauthorizedException",
+      message: { includes: "Access to topic rule" },
+    }),
+  ).pipe(C.withNotFoundError) {}
+export class TransferAlreadyCompletedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<TransferAlreadyCompletedException>()(
+    "TransferAlreadyCompletedException",
+    { message: S.optional(S.String) },
+    T.HttpError(410),
+  ).pipe(C.withBadRequestError) {}
+export class TransferConflictException
+  extends /*@__PURE__*/ S.TaggedErrorClass<TransferConflictException>()(
+    "TransferConflictException",
+    { message: S.optional(S.String) },
+    T.HttpError(409),
+  ).pipe(C.withConflictError) {}
+export class UnauthorizedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<UnauthorizedException>()(
+    "UnauthorizedException",
+    { message: S.optional(S.String) },
+    T.HttpError(401),
+  ).pipe(C.withAuthError) {}
+export class ValidationException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
+    "ValidationException",
+    { message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class VersionConflictException
+  extends /*@__PURE__*/ S.TaggedErrorClass<VersionConflictException>()(
+    "VersionConflictException",
+    { message: S.optional(S.String) },
+    T.HttpError(409),
+  ).pipe(C.withConflictError) {}
+export class VersionsLimitExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<VersionsLimitExceededException>()(
+    "VersionsLimitExceededException",
+    { message: S.optional(S.String) },
+    T.HttpError(409),
+  ).pipe(C.withConflictError) {}
 export type CertificateId = string;
 export type SetAsActive = boolean;
 export interface AcceptCertificateTransferRequest {
@@ -19319,7 +19353,27 @@ export const getBehaviorModelTrainingSummaries: API.OperationMethod<
     items: "summaries",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  GetBehaviorModelTrainingSummariesRequest,
+  GetBehaviorModelTrainingSummariesResponse,
+  GetBehaviorModelTrainingSummariesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: GetBehaviorModelTrainingSummariesRequest,
+  ) => stream.Stream<
+    GetBehaviorModelTrainingSummariesResponse,
+    GetBehaviorModelTrainingSummariesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: GetBehaviorModelTrainingSummariesRequest,
+  ) => stream.Stream<
+    BehaviorModelTrainingSummary,
+    GetBehaviorModelTrainingSummariesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type GetBucketsAggregationError =
   | IndexNotReadyException
@@ -20072,7 +20126,27 @@ export const listActiveViolations: API.OperationMethod<
     items: "activeViolations",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListActiveViolationsRequest,
+  ListActiveViolationsResponse,
+  ListActiveViolationsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListActiveViolationsRequest,
+  ) => stream.Stream<
+    ListActiveViolationsResponse,
+    ListActiveViolationsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListActiveViolationsRequest,
+  ) => stream.Stream<
+    ActiveViolation,
+    ListActiveViolationsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListAttachedPoliciesError =
   | InternalFailureException
@@ -20129,7 +20203,27 @@ export const listAttachedPolicies: API.OperationMethod<
     items: "policies",
     pageSize: "pageSize",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListAttachedPoliciesRequest,
+  ListAttachedPoliciesResponse,
+  ListAttachedPoliciesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListAttachedPoliciesRequest,
+  ) => stream.Stream<
+    ListAttachedPoliciesResponse,
+    ListAttachedPoliciesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListAttachedPoliciesRequest,
+  ) => stream.Stream<
+    Policy,
+    ListAttachedPoliciesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListAuditFindingsError =
   | InternalFailureException
@@ -20179,7 +20273,27 @@ export const listAuditFindings: API.OperationMethod<
     items: "findings",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListAuditFindingsRequest,
+  ListAuditFindingsResponse,
+  ListAuditFindingsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListAuditFindingsRequest,
+  ) => stream.Stream<
+    ListAuditFindingsResponse,
+    ListAuditFindingsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListAuditFindingsRequest,
+  ) => stream.Stream<
+    AuditFinding,
+    ListAuditFindingsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListAuditMitigationActionsExecutionsError =
   | InternalFailureException
@@ -20229,7 +20343,27 @@ export const listAuditMitigationActionsExecutions: API.OperationMethod<
     items: "actionsExecutions",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListAuditMitigationActionsExecutionsRequest,
+  ListAuditMitigationActionsExecutionsResponse,
+  ListAuditMitigationActionsExecutionsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListAuditMitigationActionsExecutionsRequest,
+  ) => stream.Stream<
+    ListAuditMitigationActionsExecutionsResponse,
+    ListAuditMitigationActionsExecutionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListAuditMitigationActionsExecutionsRequest,
+  ) => stream.Stream<
+    AuditMitigationActionExecutionMetadata,
+    ListAuditMitigationActionsExecutionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListAuditMitigationActionsTasksError =
   | InternalFailureException
@@ -20278,7 +20412,27 @@ export const listAuditMitigationActionsTasks: API.OperationMethod<
     items: "tasks",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListAuditMitigationActionsTasksRequest,
+  ListAuditMitigationActionsTasksResponse,
+  ListAuditMitigationActionsTasksError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListAuditMitigationActionsTasksRequest,
+  ) => stream.Stream<
+    ListAuditMitigationActionsTasksResponse,
+    ListAuditMitigationActionsTasksError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListAuditMitigationActionsTasksRequest,
+  ) => stream.Stream<
+    AuditMitigationActionsTaskMetadata,
+    ListAuditMitigationActionsTasksError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListAuditSuppressionsError =
   | InternalFailureException
@@ -20327,7 +20481,27 @@ export const listAuditSuppressions: API.OperationMethod<
     items: "suppressions",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListAuditSuppressionsRequest,
+  ListAuditSuppressionsResponse,
+  ListAuditSuppressionsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListAuditSuppressionsRequest,
+  ) => stream.Stream<
+    ListAuditSuppressionsResponse,
+    ListAuditSuppressionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListAuditSuppressionsRequest,
+  ) => stream.Stream<
+    AuditSuppression,
+    ListAuditSuppressionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListAuditTasksError =
   | InternalFailureException
@@ -20377,7 +20551,27 @@ export const listAuditTasks: API.OperationMethod<
     items: "tasks",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListAuditTasksRequest,
+  ListAuditTasksResponse,
+  ListAuditTasksError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListAuditTasksRequest,
+  ) => stream.Stream<
+    ListAuditTasksResponse,
+    ListAuditTasksError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListAuditTasksRequest,
+  ) => stream.Stream<
+    AuditTaskMetadata,
+    ListAuditTasksError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListAuthorizersError =
   | InternalFailureException
@@ -20430,7 +20624,27 @@ export const listAuthorizers: API.OperationMethod<
     items: "authorizers",
     pageSize: "pageSize",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListAuthorizersRequest,
+  ListAuthorizersResponse,
+  ListAuthorizersError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListAuthorizersRequest,
+  ) => stream.Stream<
+    ListAuthorizersResponse,
+    ListAuthorizersError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListAuthorizersRequest,
+  ) => stream.Stream<
+    AuthorizerSummary,
+    ListAuthorizersError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListBillingGroupsError =
   | InternalFailureException
@@ -20481,7 +20695,27 @@ export const listBillingGroups: API.OperationMethod<
     items: "billingGroups",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListBillingGroupsRequest,
+  ListBillingGroupsResponse,
+  ListBillingGroupsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListBillingGroupsRequest,
+  ) => stream.Stream<
+    ListBillingGroupsResponse,
+    ListBillingGroupsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListBillingGroupsRequest,
+  ) => stream.Stream<
+    GroupNameAndArn,
+    ListBillingGroupsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListCACertificatesError =
   | InternalFailureException
@@ -20537,7 +20771,27 @@ export const listCACertificates: API.OperationMethod<
     items: "certificates",
     pageSize: "pageSize",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListCACertificatesRequest,
+  ListCACertificatesResponse,
+  ListCACertificatesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListCACertificatesRequest,
+  ) => stream.Stream<
+    ListCACertificatesResponse,
+    ListCACertificatesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListCACertificatesRequest,
+  ) => stream.Stream<
+    CACertificate,
+    ListCACertificatesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListCertificateProvidersError =
   | InternalFailureException
@@ -20625,7 +20879,27 @@ export const listCertificates: API.OperationMethod<
     items: "certificates",
     pageSize: "pageSize",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListCertificatesRequest,
+  ListCertificatesResponse,
+  ListCertificatesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListCertificatesRequest,
+  ) => stream.Stream<
+    ListCertificatesResponse,
+    ListCertificatesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListCertificatesRequest,
+  ) => stream.Stream<
+    Certificate,
+    ListCertificatesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListCertificatesByCAError =
   | InternalFailureException
@@ -20678,7 +20952,27 @@ export const listCertificatesByCA: API.OperationMethod<
     items: "certificates",
     pageSize: "pageSize",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListCertificatesByCARequest,
+  ListCertificatesByCAResponse,
+  ListCertificatesByCAError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListCertificatesByCARequest,
+  ) => stream.Stream<
+    ListCertificatesByCAResponse,
+    ListCertificatesByCAError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListCertificatesByCARequest,
+  ) => stream.Stream<
+    Certificate,
+    ListCertificatesByCAError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListCommandExecutionsError =
   | InternalServerException
@@ -20742,7 +21036,27 @@ export const listCommandExecutions: API.OperationMethod<
     items: "commandExecutions",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListCommandExecutionsRequest,
+  ListCommandExecutionsResponse,
+  ListCommandExecutionsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListCommandExecutionsRequest,
+  ) => stream.Stream<
+    ListCommandExecutionsResponse,
+    ListCommandExecutionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListCommandExecutionsRequest,
+  ) => stream.Stream<
+    CommandExecutionSummary,
+    ListCommandExecutionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListCommandsError =
   | InternalServerException
@@ -20785,7 +21099,27 @@ export const listCommands: API.OperationMethod<
     items: "commands",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListCommandsRequest,
+  ListCommandsResponse,
+  ListCommandsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListCommandsRequest,
+  ) => stream.Stream<
+    ListCommandsResponse,
+    ListCommandsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListCommandsRequest,
+  ) => stream.Stream<
+    CommandSummary,
+    ListCommandsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListCustomMetricsError =
   | InternalFailureException
@@ -20834,7 +21168,27 @@ export const listCustomMetrics: API.OperationMethod<
     items: "metricNames",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListCustomMetricsRequest,
+  ListCustomMetricsResponse,
+  ListCustomMetricsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListCustomMetricsRequest,
+  ) => stream.Stream<
+    ListCustomMetricsResponse,
+    ListCustomMetricsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListCustomMetricsRequest,
+  ) => stream.Stream<
+    MetricName,
+    ListCustomMetricsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListDetectMitigationActionsExecutionsError =
   | InternalFailureException
@@ -20883,7 +21237,27 @@ export const listDetectMitigationActionsExecutions: API.OperationMethod<
     items: "actionsExecutions",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListDetectMitigationActionsExecutionsRequest,
+  ListDetectMitigationActionsExecutionsResponse,
+  ListDetectMitigationActionsExecutionsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListDetectMitigationActionsExecutionsRequest,
+  ) => stream.Stream<
+    ListDetectMitigationActionsExecutionsResponse,
+    ListDetectMitigationActionsExecutionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListDetectMitigationActionsExecutionsRequest,
+  ) => stream.Stream<
+    DetectMitigationActionExecution,
+    ListDetectMitigationActionsExecutionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListDetectMitigationActionsTasksError =
   | InternalFailureException
@@ -20932,7 +21306,27 @@ export const listDetectMitigationActionsTasks: API.OperationMethod<
     items: "tasks",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListDetectMitigationActionsTasksRequest,
+  ListDetectMitigationActionsTasksResponse,
+  ListDetectMitigationActionsTasksError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListDetectMitigationActionsTasksRequest,
+  ) => stream.Stream<
+    ListDetectMitigationActionsTasksResponse,
+    ListDetectMitigationActionsTasksError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListDetectMitigationActionsTasksRequest,
+  ) => stream.Stream<
+    DetectMitigationActionsTaskSummary,
+    ListDetectMitigationActionsTasksError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListDimensionsError =
   | InternalFailureException
@@ -20981,7 +21375,27 @@ export const listDimensions: API.OperationMethod<
     items: "dimensionNames",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListDimensionsRequest,
+  ListDimensionsResponse,
+  ListDimensionsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListDimensionsRequest,
+  ) => stream.Stream<
+    ListDimensionsResponse,
+    ListDimensionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListDimensionsRequest,
+  ) => stream.Stream<
+    DimensionName,
+    ListDimensionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListDomainConfigurationsError =
   | InternalFailureException
@@ -21035,7 +21449,27 @@ export const listDomainConfigurations: API.OperationMethod<
     items: "domainConfigurations",
     pageSize: "pageSize",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListDomainConfigurationsRequest,
+  ListDomainConfigurationsResponse,
+  ListDomainConfigurationsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListDomainConfigurationsRequest,
+  ) => stream.Stream<
+    ListDomainConfigurationsResponse,
+    ListDomainConfigurationsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListDomainConfigurationsRequest,
+  ) => stream.Stream<
+    DomainConfigurationSummary,
+    ListDomainConfigurationsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListFleetMetricsError =
   | InternalFailureException
@@ -21088,7 +21522,27 @@ export const listFleetMetrics: API.OperationMethod<
     items: "fleetMetrics",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListFleetMetricsRequest,
+  ListFleetMetricsResponse,
+  ListFleetMetricsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListFleetMetricsRequest,
+  ) => stream.Stream<
+    ListFleetMetricsResponse,
+    ListFleetMetricsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListFleetMetricsRequest,
+  ) => stream.Stream<
+    FleetMetricNameAndArn,
+    ListFleetMetricsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListIndicesError =
   | InternalFailureException
@@ -21141,7 +21595,27 @@ export const listIndices: API.OperationMethod<
     items: "indexNames",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListIndicesRequest,
+  ListIndicesResponse,
+  ListIndicesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListIndicesRequest,
+  ) => stream.Stream<
+    ListIndicesResponse,
+    ListIndicesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListIndicesRequest,
+  ) => stream.Stream<
+    IndexName,
+    ListIndicesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListJobExecutionsForJobError =
   | InvalidRequestException
@@ -21192,7 +21666,27 @@ export const listJobExecutionsForJob: API.OperationMethod<
     items: "executionSummaries",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListJobExecutionsForJobRequest,
+  ListJobExecutionsForJobResponse,
+  ListJobExecutionsForJobError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListJobExecutionsForJobRequest,
+  ) => stream.Stream<
+    ListJobExecutionsForJobResponse,
+    ListJobExecutionsForJobError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListJobExecutionsForJobRequest,
+  ) => stream.Stream<
+    JobExecutionSummaryForJob,
+    ListJobExecutionsForJobError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListJobExecutionsForThingError =
   | InvalidRequestException
@@ -21243,7 +21737,27 @@ export const listJobExecutionsForThing: API.OperationMethod<
     items: "executionSummaries",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListJobExecutionsForThingRequest,
+  ListJobExecutionsForThingResponse,
+  ListJobExecutionsForThingError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListJobExecutionsForThingRequest,
+  ) => stream.Stream<
+    ListJobExecutionsForThingResponse,
+    ListJobExecutionsForThingError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListJobExecutionsForThingRequest,
+  ) => stream.Stream<
+    JobExecutionSummaryForThing,
+    ListJobExecutionsForThingError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListJobsError =
   | InvalidRequestException
@@ -21294,7 +21808,27 @@ export const listJobs: API.OperationMethod<
     items: "jobs",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListJobsRequest,
+  ListJobsResponse,
+  ListJobsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListJobsRequest,
+  ) => stream.Stream<
+    ListJobsResponse,
+    ListJobsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListJobsRequest,
+  ) => stream.Stream<
+    JobSummary,
+    ListJobsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListJobTemplatesError =
   | InternalFailureException
@@ -21343,7 +21877,27 @@ export const listJobTemplates: API.OperationMethod<
     items: "jobTemplates",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListJobTemplatesRequest,
+  ListJobTemplatesResponse,
+  ListJobTemplatesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListJobTemplatesRequest,
+  ) => stream.Stream<
+    ListJobTemplatesResponse,
+    ListJobTemplatesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListJobTemplatesRequest,
+  ) => stream.Stream<
+    JobTemplateSummary,
+    ListJobTemplatesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListManagedJobTemplatesError =
   | InternalServerException
@@ -21392,7 +21946,27 @@ export const listManagedJobTemplates: API.OperationMethod<
     items: "managedJobTemplates",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListManagedJobTemplatesRequest,
+  ListManagedJobTemplatesResponse,
+  ListManagedJobTemplatesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListManagedJobTemplatesRequest,
+  ) => stream.Stream<
+    ListManagedJobTemplatesResponse,
+    ListManagedJobTemplatesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListManagedJobTemplatesRequest,
+  ) => stream.Stream<
+    ManagedJobTemplateSummary,
+    ListManagedJobTemplatesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListMetricValuesError =
   | InternalFailureException
@@ -21442,7 +22016,27 @@ export const listMetricValues: API.OperationMethod<
     items: "metricDatumList",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListMetricValuesRequest,
+  ListMetricValuesResponse,
+  ListMetricValuesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListMetricValuesRequest,
+  ) => stream.Stream<
+    ListMetricValuesResponse,
+    ListMetricValuesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListMetricValuesRequest,
+  ) => stream.Stream<
+    MetricDatum,
+    ListMetricValuesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListMitigationActionsError =
   | InternalFailureException
@@ -21491,7 +22085,27 @@ export const listMitigationActions: API.OperationMethod<
     items: "actionIdentifiers",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListMitigationActionsRequest,
+  ListMitigationActionsResponse,
+  ListMitigationActionsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListMitigationActionsRequest,
+  ) => stream.Stream<
+    ListMitigationActionsResponse,
+    ListMitigationActionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListMitigationActionsRequest,
+  ) => stream.Stream<
+    MitigationActionIdentifier,
+    ListMitigationActionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListOTAUpdatesError =
   | InternalFailureException
@@ -21544,7 +22158,27 @@ export const listOTAUpdates: API.OperationMethod<
     items: "otaUpdates",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListOTAUpdatesRequest,
+  ListOTAUpdatesResponse,
+  ListOTAUpdatesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListOTAUpdatesRequest,
+  ) => stream.Stream<
+    ListOTAUpdatesResponse,
+    ListOTAUpdatesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListOTAUpdatesRequest,
+  ) => stream.Stream<
+    OTAUpdateSummary,
+    ListOTAUpdatesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListOutgoingCertificatesError =
   | InternalFailureException
@@ -21597,7 +22231,27 @@ export const listOutgoingCertificates: API.OperationMethod<
     items: "outgoingCertificates",
     pageSize: "pageSize",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListOutgoingCertificatesRequest,
+  ListOutgoingCertificatesResponse,
+  ListOutgoingCertificatesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListOutgoingCertificatesRequest,
+  ) => stream.Stream<
+    ListOutgoingCertificatesResponse,
+    ListOutgoingCertificatesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListOutgoingCertificatesRequest,
+  ) => stream.Stream<
+    OutgoingCertificate,
+    ListOutgoingCertificatesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListPackagesError =
   | InternalServerException
@@ -21642,7 +22296,27 @@ export const listPackages: API.OperationMethod<
     items: "packageSummaries",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListPackagesRequest,
+  ListPackagesResponse,
+  ListPackagesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListPackagesRequest,
+  ) => stream.Stream<
+    ListPackagesResponse,
+    ListPackagesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListPackagesRequest,
+  ) => stream.Stream<
+    PackageSummary,
+    ListPackagesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListPackageVersionsError =
   | InternalServerException
@@ -21687,7 +22361,27 @@ export const listPackageVersions: API.OperationMethod<
     items: "packageVersionSummaries",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListPackageVersionsRequest,
+  ListPackageVersionsResponse,
+  ListPackageVersionsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListPackageVersionsRequest,
+  ) => stream.Stream<
+    ListPackageVersionsResponse,
+    ListPackageVersionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListPackageVersionsRequest,
+  ) => stream.Stream<
+    PackageVersionSummary,
+    ListPackageVersionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListPoliciesError =
   | InternalFailureException
@@ -21740,7 +22434,27 @@ export const listPolicies: API.OperationMethod<
     items: "policies",
     pageSize: "pageSize",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListPoliciesRequest,
+  ListPoliciesResponse,
+  ListPoliciesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListPoliciesRequest,
+  ) => stream.Stream<
+    ListPoliciesResponse,
+    ListPoliciesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListPoliciesRequest,
+  ) => stream.Stream<
+    Policy,
+    ListPoliciesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListPolicyPrincipalsError =
   | InternalFailureException
@@ -21798,7 +22512,27 @@ export const listPolicyPrincipals: API.OperationMethod<
     items: "principals",
     pageSize: "pageSize",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListPolicyPrincipalsRequest,
+  ListPolicyPrincipalsResponse,
+  ListPolicyPrincipalsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListPolicyPrincipalsRequest,
+  ) => stream.Stream<
+    ListPolicyPrincipalsResponse,
+    ListPolicyPrincipalsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListPolicyPrincipalsRequest,
+  ) => stream.Stream<
+    PrincipalArn,
+    ListPolicyPrincipalsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListPolicyVersionsError =
   | InternalFailureException
@@ -21892,7 +22626,27 @@ export const listPrincipalPolicies: API.OperationMethod<
     items: "policies",
     pageSize: "pageSize",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListPrincipalPoliciesRequest,
+  ListPrincipalPoliciesResponse,
+  ListPrincipalPoliciesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListPrincipalPoliciesRequest,
+  ) => stream.Stream<
+    ListPrincipalPoliciesResponse,
+    ListPrincipalPoliciesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListPrincipalPoliciesRequest,
+  ) => stream.Stream<
+    Policy,
+    ListPrincipalPoliciesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListPrincipalThingsError =
   | InternalFailureException
@@ -21949,7 +22703,27 @@ export const listPrincipalThings: API.OperationMethod<
     items: "things",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListPrincipalThingsRequest,
+  ListPrincipalThingsResponse,
+  ListPrincipalThingsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListPrincipalThingsRequest,
+  ) => stream.Stream<
+    ListPrincipalThingsResponse,
+    ListPrincipalThingsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListPrincipalThingsRequest,
+  ) => stream.Stream<
+    ThingName,
+    ListPrincipalThingsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListPrincipalThingsV2Error =
   | InternalFailureException
@@ -22005,7 +22779,27 @@ export const listPrincipalThingsV2: API.OperationMethod<
     items: "principalThingObjects",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListPrincipalThingsV2Request,
+  ListPrincipalThingsV2Response,
+  ListPrincipalThingsV2Error,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListPrincipalThingsV2Request,
+  ) => stream.Stream<
+    ListPrincipalThingsV2Response,
+    ListPrincipalThingsV2Error,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListPrincipalThingsV2Request,
+  ) => stream.Stream<
+    PrincipalThingObject,
+    ListPrincipalThingsV2Error,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListProvisioningTemplatesError =
   | InternalFailureException
@@ -22056,7 +22850,27 @@ export const listProvisioningTemplates: API.OperationMethod<
     items: "templates",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListProvisioningTemplatesRequest,
+  ListProvisioningTemplatesResponse,
+  ListProvisioningTemplatesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListProvisioningTemplatesRequest,
+  ) => stream.Stream<
+    ListProvisioningTemplatesResponse,
+    ListProvisioningTemplatesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListProvisioningTemplatesRequest,
+  ) => stream.Stream<
+    ProvisioningTemplateSummary,
+    ListProvisioningTemplatesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListProvisioningTemplateVersionsError =
   | InternalFailureException
@@ -22109,7 +22923,27 @@ export const listProvisioningTemplateVersions: API.OperationMethod<
     items: "versions",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListProvisioningTemplateVersionsRequest,
+  ListProvisioningTemplateVersionsResponse,
+  ListProvisioningTemplateVersionsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListProvisioningTemplateVersionsRequest,
+  ) => stream.Stream<
+    ListProvisioningTemplateVersionsResponse,
+    ListProvisioningTemplateVersionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListProvisioningTemplateVersionsRequest,
+  ) => stream.Stream<
+    ProvisioningTemplateVersionSummary,
+    ListProvisioningTemplateVersionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListRelatedResourcesForAuditFindingError =
   | InternalFailureException
@@ -22182,7 +23016,27 @@ export const listRelatedResourcesForAuditFinding: API.OperationMethod<
     items: "relatedResources",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListRelatedResourcesForAuditFindingRequest,
+  ListRelatedResourcesForAuditFindingResponse,
+  ListRelatedResourcesForAuditFindingError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListRelatedResourcesForAuditFindingRequest,
+  ) => stream.Stream<
+    ListRelatedResourcesForAuditFindingResponse,
+    ListRelatedResourcesForAuditFindingError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListRelatedResourcesForAuditFindingRequest,
+  ) => stream.Stream<
+    RelatedResource,
+    ListRelatedResourcesForAuditFindingError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListRoleAliasesError =
   | InternalFailureException
@@ -22235,7 +23089,27 @@ export const listRoleAliases: API.OperationMethod<
     items: "roleAliases",
     pageSize: "pageSize",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListRoleAliasesRequest,
+  ListRoleAliasesResponse,
+  ListRoleAliasesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListRoleAliasesRequest,
+  ) => stream.Stream<
+    ListRoleAliasesResponse,
+    ListRoleAliasesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListRoleAliasesRequest,
+  ) => stream.Stream<
+    RoleAlias,
+    ListRoleAliasesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListSbomValidationResultsError =
   | InternalServerException
@@ -22286,7 +23160,27 @@ export const listSbomValidationResults: API.OperationMethod<
     items: "validationResultSummaries",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListSbomValidationResultsRequest,
+  ListSbomValidationResultsResponse,
+  ListSbomValidationResultsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListSbomValidationResultsRequest,
+  ) => stream.Stream<
+    ListSbomValidationResultsResponse,
+    ListSbomValidationResultsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListSbomValidationResultsRequest,
+  ) => stream.Stream<
+    SbomValidationResultSummary,
+    ListSbomValidationResultsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListScheduledAuditsError =
   | InternalFailureException
@@ -22335,7 +23229,27 @@ export const listScheduledAudits: API.OperationMethod<
     items: "scheduledAudits",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListScheduledAuditsRequest,
+  ListScheduledAuditsResponse,
+  ListScheduledAuditsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListScheduledAuditsRequest,
+  ) => stream.Stream<
+    ListScheduledAuditsResponse,
+    ListScheduledAuditsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListScheduledAuditsRequest,
+  ) => stream.Stream<
+    ScheduledAuditMetadata,
+    ListScheduledAuditsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListSecurityProfilesError =
   | InternalFailureException
@@ -22390,7 +23304,27 @@ export const listSecurityProfiles: API.OperationMethod<
     items: "securityProfileIdentifiers",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListSecurityProfilesRequest,
+  ListSecurityProfilesResponse,
+  ListSecurityProfilesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListSecurityProfilesRequest,
+  ) => stream.Stream<
+    ListSecurityProfilesResponse,
+    ListSecurityProfilesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListSecurityProfilesRequest,
+  ) => stream.Stream<
+    SecurityProfileIdentifier,
+    ListSecurityProfilesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListSecurityProfilesForTargetError =
   | InternalFailureException
@@ -22441,7 +23375,27 @@ export const listSecurityProfilesForTarget: API.OperationMethod<
     items: "securityProfileTargetMappings",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListSecurityProfilesForTargetRequest,
+  ListSecurityProfilesForTargetResponse,
+  ListSecurityProfilesForTargetError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListSecurityProfilesForTargetRequest,
+  ) => stream.Stream<
+    ListSecurityProfilesForTargetResponse,
+    ListSecurityProfilesForTargetError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListSecurityProfilesForTargetRequest,
+  ) => stream.Stream<
+    SecurityProfileTargetMapping,
+    ListSecurityProfilesForTargetError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListStreamsError =
   | InternalFailureException
@@ -22494,7 +23448,27 @@ export const listStreams: API.OperationMethod<
     items: "streams",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListStreamsRequest,
+  ListStreamsResponse,
+  ListStreamsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListStreamsRequest,
+  ) => stream.Stream<
+    ListStreamsResponse,
+    ListStreamsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListStreamsRequest,
+  ) => stream.Stream<
+    StreamSummary,
+    ListStreamsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListTagsForResourceError =
   | InternalFailureException
@@ -22544,7 +23518,27 @@ export const listTagsForResource: API.OperationMethod<
     outputToken: "nextToken",
     items: "tags",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListTagsForResourceRequest,
+  ListTagsForResourceResponse,
+  ListTagsForResourceError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListTagsForResourceRequest,
+  ) => stream.Stream<
+    ListTagsForResourceResponse,
+    ListTagsForResourceError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListTagsForResourceRequest,
+  ) => stream.Stream<
+    Tag,
+    ListTagsForResourceError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListTargetsForPolicyError =
   | InternalFailureException
@@ -22601,7 +23595,27 @@ export const listTargetsForPolicy: API.OperationMethod<
     items: "targets",
     pageSize: "pageSize",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListTargetsForPolicyRequest,
+  ListTargetsForPolicyResponse,
+  ListTargetsForPolicyError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListTargetsForPolicyRequest,
+  ) => stream.Stream<
+    ListTargetsForPolicyResponse,
+    ListTargetsForPolicyError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListTargetsForPolicyRequest,
+  ) => stream.Stream<
+    PolicyTarget,
+    ListTargetsForPolicyError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListTargetsForSecurityProfileError =
   | InternalFailureException
@@ -22652,7 +23666,27 @@ export const listTargetsForSecurityProfile: API.OperationMethod<
     items: "securityProfileTargets",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListTargetsForSecurityProfileRequest,
+  ListTargetsForSecurityProfileResponse,
+  ListTargetsForSecurityProfileError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListTargetsForSecurityProfileRequest,
+  ) => stream.Stream<
+    ListTargetsForSecurityProfileResponse,
+    ListTargetsForSecurityProfileError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListTargetsForSecurityProfileRequest,
+  ) => stream.Stream<
+    SecurityProfileTarget,
+    ListTargetsForSecurityProfileError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListThingGroupsError =
   | InternalFailureException
@@ -22703,7 +23737,27 @@ export const listThingGroups: API.OperationMethod<
     items: "thingGroups",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListThingGroupsRequest,
+  ListThingGroupsResponse,
+  ListThingGroupsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListThingGroupsRequest,
+  ) => stream.Stream<
+    ListThingGroupsResponse,
+    ListThingGroupsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListThingGroupsRequest,
+  ) => stream.Stream<
+    GroupNameAndArn,
+    ListThingGroupsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListThingGroupsForThingError =
   | InternalFailureException
@@ -22754,7 +23808,27 @@ export const listThingGroupsForThing: API.OperationMethod<
     items: "thingGroups",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListThingGroupsForThingRequest,
+  ListThingGroupsForThingResponse,
+  ListThingGroupsForThingError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListThingGroupsForThingRequest,
+  ) => stream.Stream<
+    ListThingGroupsForThingResponse,
+    ListThingGroupsForThingError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListThingGroupsForThingRequest,
+  ) => stream.Stream<
+    GroupNameAndArn,
+    ListThingGroupsForThingError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListThingPrincipalsError =
   | InternalFailureException
@@ -22811,7 +23885,27 @@ export const listThingPrincipals: API.OperationMethod<
     items: "principals",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListThingPrincipalsRequest,
+  ListThingPrincipalsResponse,
+  ListThingPrincipalsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListThingPrincipalsRequest,
+  ) => stream.Stream<
+    ListThingPrincipalsResponse,
+    ListThingPrincipalsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListThingPrincipalsRequest,
+  ) => stream.Stream<
+    PrincipalArn,
+    ListThingPrincipalsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListThingPrincipalsV2Error =
   | InternalFailureException
@@ -22867,7 +23961,27 @@ export const listThingPrincipalsV2: API.OperationMethod<
     items: "thingPrincipalObjects",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListThingPrincipalsV2Request,
+  ListThingPrincipalsV2Response,
+  ListThingPrincipalsV2Error,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListThingPrincipalsV2Request,
+  ) => stream.Stream<
+    ListThingPrincipalsV2Response,
+    ListThingPrincipalsV2Error,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListThingPrincipalsV2Request,
+  ) => stream.Stream<
+    ThingPrincipalObject,
+    ListThingPrincipalsV2Error,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListThingRegistrationTaskReportsError =
   | InternalFailureException
@@ -22916,7 +24030,27 @@ export const listThingRegistrationTaskReports: API.OperationMethod<
     items: "resourceLinks",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListThingRegistrationTaskReportsRequest,
+  ListThingRegistrationTaskReportsResponse,
+  ListThingRegistrationTaskReportsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListThingRegistrationTaskReportsRequest,
+  ) => stream.Stream<
+    ListThingRegistrationTaskReportsResponse,
+    ListThingRegistrationTaskReportsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListThingRegistrationTaskReportsRequest,
+  ) => stream.Stream<
+    S3FileUrl,
+    ListThingRegistrationTaskReportsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListThingRegistrationTasksError =
   | InternalFailureException
@@ -22967,7 +24101,27 @@ export const listThingRegistrationTasks: API.OperationMethod<
     items: "taskIds",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListThingRegistrationTasksRequest,
+  ListThingRegistrationTasksResponse,
+  ListThingRegistrationTasksError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListThingRegistrationTasksRequest,
+  ) => stream.Stream<
+    ListThingRegistrationTasksResponse,
+    ListThingRegistrationTasksError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListThingRegistrationTasksRequest,
+  ) => stream.Stream<
+    TaskId,
+    ListThingRegistrationTasksError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListThingsError =
   | InternalFailureException
@@ -23026,7 +24180,27 @@ export const listThings: API.OperationMethod<
     items: "things",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListThingsRequest,
+  ListThingsResponse,
+  ListThingsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListThingsRequest,
+  ) => stream.Stream<
+    ListThingsResponse,
+    ListThingsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListThingsRequest,
+  ) => stream.Stream<
+    ThingAttribute,
+    ListThingsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListThingsInBillingGroupError =
   | InternalFailureException
@@ -23077,7 +24251,27 @@ export const listThingsInBillingGroup: API.OperationMethod<
     items: "things",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListThingsInBillingGroupRequest,
+  ListThingsInBillingGroupResponse,
+  ListThingsInBillingGroupError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListThingsInBillingGroupRequest,
+  ) => stream.Stream<
+    ListThingsInBillingGroupResponse,
+    ListThingsInBillingGroupError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListThingsInBillingGroupRequest,
+  ) => stream.Stream<
+    ThingName,
+    ListThingsInBillingGroupError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListThingsInThingGroupError =
   | InternalFailureException
@@ -23128,7 +24322,27 @@ export const listThingsInThingGroup: API.OperationMethod<
     items: "things",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListThingsInThingGroupRequest,
+  ListThingsInThingGroupResponse,
+  ListThingsInThingGroupError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListThingsInThingGroupRequest,
+  ) => stream.Stream<
+    ListThingsInThingGroupResponse,
+    ListThingsInThingGroupError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListThingsInThingGroupRequest,
+  ) => stream.Stream<
+    ThingName,
+    ListThingsInThingGroupError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListThingTypesError =
   | InternalFailureException
@@ -23181,7 +24395,27 @@ export const listThingTypes: API.OperationMethod<
     items: "thingTypes",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListThingTypesRequest,
+  ListThingTypesResponse,
+  ListThingTypesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListThingTypesRequest,
+  ) => stream.Stream<
+    ListThingTypesResponse,
+    ListThingTypesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListThingTypesRequest,
+  ) => stream.Stream<
+    ThingTypeDefinition,
+    ListThingTypesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListTopicRuleDestinationsError =
   | InternalException
@@ -23232,7 +24466,27 @@ export const listTopicRuleDestinations: API.OperationMethod<
     items: "destinationSummaries",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListTopicRuleDestinationsRequest,
+  ListTopicRuleDestinationsResponse,
+  ListTopicRuleDestinationsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListTopicRuleDestinationsRequest,
+  ) => stream.Stream<
+    ListTopicRuleDestinationsResponse,
+    ListTopicRuleDestinationsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListTopicRuleDestinationsRequest,
+  ) => stream.Stream<
+    TopicRuleDestinationSummary,
+    ListTopicRuleDestinationsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListTopicRulesError =
   | InternalException
@@ -23283,7 +24537,27 @@ export const listTopicRules: API.OperationMethod<
     items: "rules",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListTopicRulesRequest,
+  ListTopicRulesResponse,
+  ListTopicRulesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListTopicRulesRequest,
+  ) => stream.Stream<
+    ListTopicRulesResponse,
+    ListTopicRulesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListTopicRulesRequest,
+  ) => stream.Stream<
+    TopicRuleListItem,
+    ListTopicRulesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListV2LoggingLevelsError =
   | InternalException
@@ -23334,7 +24608,27 @@ export const listV2LoggingLevels: API.OperationMethod<
     items: "logTargetConfigurations",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListV2LoggingLevelsRequest,
+  ListV2LoggingLevelsResponse,
+  ListV2LoggingLevelsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListV2LoggingLevelsRequest,
+  ) => stream.Stream<
+    ListV2LoggingLevelsResponse,
+    ListV2LoggingLevelsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListV2LoggingLevelsRequest,
+  ) => stream.Stream<
+    LogTargetConfiguration,
+    ListV2LoggingLevelsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListViolationEventsError =
   | InternalFailureException
@@ -23385,7 +24679,27 @@ export const listViolationEvents: API.OperationMethod<
     items: "violationEvents",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListViolationEventsRequest,
+  ListViolationEventsResponse,
+  ListViolationEventsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListViolationEventsRequest,
+  ) => stream.Stream<
+    ListViolationEventsResponse,
+    ListViolationEventsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListViolationEventsRequest,
+  ) => stream.Stream<
+    ViolationEvent,
+    ListViolationEventsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type PutVerificationStateOnViolationError =
   | InternalFailureException

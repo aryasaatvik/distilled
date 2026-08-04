@@ -88,89 +88,105 @@ const rules = T.EndpointResolver((p, _) => {
   return err("Invalid Configuration: Missing Region");
 });
 
-export class AccessDeniedException extends S.TaggedErrorClass<AccessDeniedException>()(
-  "AccessDeniedException",
-  { Message: S.optional(S.String) },
-  T.HttpError(401),
-).pipe(C.withAuthError) {}
-export class AccountChannelLimitExceededException extends S.TaggedErrorClass<AccountChannelLimitExceededException>()(
-  "AccountChannelLimitExceededException",
-  { Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class AccountStreamLimitExceededException extends S.TaggedErrorClass<AccountStreamLimitExceededException>()(
-  "AccountStreamLimitExceededException",
-  { Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class ClientLimitExceededException extends S.TaggedErrorClass<ClientLimitExceededException>()(
-  "ClientLimitExceededException",
-  { Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class DeviceStreamLimitExceededException extends S.TaggedErrorClass<DeviceStreamLimitExceededException>()(
-  "DeviceStreamLimitExceededException",
-  { Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class InvalidArgumentException extends S.TaggedErrorClass<InvalidArgumentException>()(
-  "InvalidArgumentException",
-  { Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class InvalidDeviceException extends S.TaggedErrorClass<InvalidDeviceException>()(
-  "InvalidDeviceException",
-  { Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class InvalidResourceFormatException extends S.TaggedErrorClass<InvalidResourceFormatException>()(
-  "InvalidResourceFormatException",
-  { Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class NoDataRetentionException extends S.TaggedErrorClass<NoDataRetentionException>()(
-  "NoDataRetentionException",
-  { Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class NotAuthorizedException extends S.TaggedErrorClass<NotAuthorizedException>()(
-  "NotAuthorizedException",
-  { Message: S.optional(S.String) },
-  T.HttpError(401),
-).pipe(C.withAuthError) {}
-export class ResourceInUseException extends S.TaggedErrorClass<ResourceInUseException>()(
-  "ResourceInUseException",
-  { Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class ResourceNotFoundException extends S.TaggedErrorClass<ResourceNotFoundException>()(
-  "ResourceNotFoundException",
-  { Message: S.optional(S.String) },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class StreamEdgeConfigurationNotFoundException extends S.TaggedErrorClass<StreamEdgeConfigurationNotFoundException>()(
-  "StreamEdgeConfigurationNotFoundException",
-  { Message: S.optional(S.String) },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class StreamNotActive extends S.TaggedErrorClass<StreamNotActive>()(
-  "StreamNotActive",
-  { Message: S.optional(S.String) },
-  T.SyntheticError({
-    from: "ResourceNotFoundException",
-    message: { includes: "not active" },
-  }),
-).pipe(C.withConflictError, C.withRetryableError) {}
-export class TagsPerResourceExceededLimitException extends S.TaggedErrorClass<TagsPerResourceExceededLimitException>()(
-  "TagsPerResourceExceededLimitException",
-  { Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class VersionMismatchException extends S.TaggedErrorClass<VersionMismatchException>()(
-  "VersionMismatchException",
-  { Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
+export class AccessDeniedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
+    "AccessDeniedException",
+    { Message: S.optional(S.String) },
+    T.HttpError(401),
+  ).pipe(C.withAuthError) {}
+export class AccountChannelLimitExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<AccountChannelLimitExceededException>()(
+    "AccountChannelLimitExceededException",
+    { Message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class AccountStreamLimitExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<AccountStreamLimitExceededException>()(
+    "AccountStreamLimitExceededException",
+    { Message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class ClientLimitExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ClientLimitExceededException>()(
+    "ClientLimitExceededException",
+    { Message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class DeviceStreamLimitExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<DeviceStreamLimitExceededException>()(
+    "DeviceStreamLimitExceededException",
+    { Message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class InvalidArgumentException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidArgumentException>()(
+    "InvalidArgumentException",
+    { Message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class InvalidDeviceException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidDeviceException>()(
+    "InvalidDeviceException",
+    { Message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class InvalidResourceFormatException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidResourceFormatException>()(
+    "InvalidResourceFormatException",
+    { Message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class NoDataRetentionException
+  extends /*@__PURE__*/ S.TaggedErrorClass<NoDataRetentionException>()(
+    "NoDataRetentionException",
+    { Message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class NotAuthorizedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<NotAuthorizedException>()(
+    "NotAuthorizedException",
+    { Message: S.optional(S.String) },
+    T.HttpError(401),
+  ).pipe(C.withAuthError) {}
+export class ResourceInUseException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceInUseException>()(
+    "ResourceInUseException",
+    { Message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class ResourceNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
+    "ResourceNotFoundException",
+    { Message: S.optional(S.String) },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class StreamEdgeConfigurationNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<StreamEdgeConfigurationNotFoundException>()(
+    "StreamEdgeConfigurationNotFoundException",
+    { Message: S.optional(S.String) },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class StreamNotActive
+  extends /*@__PURE__*/ S.TaggedErrorClass<StreamNotActive>()(
+    "StreamNotActive",
+    { Message: S.optional(S.String) },
+    T.SyntheticError({
+      from: "ResourceNotFoundException",
+      message: { includes: "not active" },
+    }),
+  ).pipe(C.withConflictError, C.withRetryableError) {}
+export class TagsPerResourceExceededLimitException
+  extends /*@__PURE__*/ S.TaggedErrorClass<TagsPerResourceExceededLimitException>()(
+    "TagsPerResourceExceededLimitException",
+    { Message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class VersionMismatchException
+  extends /*@__PURE__*/ S.TaggedErrorClass<VersionMismatchException>()(
+    "VersionMismatchException",
+    { Message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
 export type ChannelName = string;
 export type ChannelType = "SINGLE_MASTER" | "FULL_MESH" | (string & {});
 export const ChannelType = /*@__PURE__*/ S.String;
@@ -2036,7 +2052,27 @@ export const describeMappedResourceConfiguration: API.OperationMethod<
     items: "MappedResourceConfigurationList",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  DescribeMappedResourceConfigurationInput,
+  DescribeMappedResourceConfigurationOutput,
+  DescribeMappedResourceConfigurationError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: DescribeMappedResourceConfigurationInput,
+  ) => stream.Stream<
+    DescribeMappedResourceConfigurationOutput,
+    DescribeMappedResourceConfigurationError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: DescribeMappedResourceConfigurationInput,
+  ) => stream.Stream<
+    MappedResourceConfigurationListItem,
+    DescribeMappedResourceConfigurationError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type DescribeMediaStorageConfigurationError =
   | AccessDeniedException
@@ -2314,7 +2350,27 @@ export const listEdgeAgentConfigurations: API.OperationMethod<
     items: "EdgeConfigs",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListEdgeAgentConfigurationsInput,
+  ListEdgeAgentConfigurationsOutput,
+  ListEdgeAgentConfigurationsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListEdgeAgentConfigurationsInput,
+  ) => stream.Stream<
+    ListEdgeAgentConfigurationsOutput,
+    ListEdgeAgentConfigurationsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListEdgeAgentConfigurationsInput,
+  ) => stream.Stream<
+    ListEdgeAgentConfigurationsEdgeConfig,
+    ListEdgeAgentConfigurationsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListSignalingChannelsError =
   | AccessDeniedException
@@ -2363,7 +2419,27 @@ export const listSignalingChannels: API.OperationMethod<
     items: "ChannelInfoList",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListSignalingChannelsInput,
+  ListSignalingChannelsOutput,
+  ListSignalingChannelsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListSignalingChannelsInput,
+  ) => stream.Stream<
+    ListSignalingChannelsOutput,
+    ListSignalingChannelsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListSignalingChannelsInput,
+  ) => stream.Stream<
+    ChannelInfo,
+    ListSignalingChannelsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListStreamsError =
   | ClientLimitExceededException
@@ -2407,7 +2483,27 @@ export const listStreams: API.OperationMethod<
     items: "StreamInfoList",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListStreamsInput,
+  ListStreamsOutput,
+  ListStreamsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListStreamsInput,
+  ) => stream.Stream<
+    ListStreamsOutput,
+    ListStreamsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListStreamsInput,
+  ) => stream.Stream<
+    StreamInfo,
+    ListStreamsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListTagsForResourceError =
   | AccessDeniedException

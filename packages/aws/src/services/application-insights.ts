@@ -85,67 +85,81 @@ const rules = T.EndpointResolver((p, _) => {
   return err("Invalid Configuration: Missing Region");
 });
 
-export class AccessDeniedException extends S.TaggedErrorClass<AccessDeniedException>()(
-  "AccessDeniedException",
-  { Message: S.optional(S.String) },
-  T.all(
-    T.AwsQueryError({ code: "AccessDeniedException", httpResponseCode: 403 }),
-    T.HttpError(403),
-  ),
-).pipe(C.withAuthError) {}
-export class BadRequestException extends S.TaggedErrorClass<BadRequestException>()(
-  "BadRequestException",
-  { Message: S.optional(S.String) },
-  T.all(
-    T.AwsQueryError({ code: "BadRequestException", httpResponseCode: 400 }),
+export class AccessDeniedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
+    "AccessDeniedException",
+    { Message: S.optional(S.String) },
+    T.all(
+      T.AwsQueryError({ code: "AccessDeniedException", httpResponseCode: 403 }),
+      T.HttpError(403),
+    ),
+  ).pipe(C.withAuthError) {}
+export class BadRequestException
+  extends /*@__PURE__*/ S.TaggedErrorClass<BadRequestException>()(
+    "BadRequestException",
+    { Message: S.optional(S.String) },
+    T.all(
+      T.AwsQueryError({ code: "BadRequestException", httpResponseCode: 400 }),
+      T.HttpError(400),
+    ),
+  ).pipe(C.withBadRequestError) {}
+export class InternalServerException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
+    "InternalServerException",
+    { Message: S.optional(S.String) },
+    T.all(
+      T.AwsQueryError({
+        code: "InternalServerException",
+        httpResponseCode: 500,
+      }),
+      T.HttpError(500),
+    ),
+  ).pipe(C.withServerError) {}
+export class ResourceInUseException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceInUseException>()(
+    "ResourceInUseException",
+    { Message: S.optional(S.String) },
+    T.all(
+      T.AwsQueryError({
+        code: "ResourceInUseException",
+        httpResponseCode: 400,
+      }),
+      T.HttpError(400),
+    ),
+  ).pipe(C.withBadRequestError) {}
+export class ResourceNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
+    "ResourceNotFoundException",
+    { Message: S.optional(S.String) },
+    T.all(
+      T.AwsQueryError({
+        code: "ResourceNotFoundException",
+        httpResponseCode: 404,
+      }),
+      T.HttpError(404),
+    ),
+  ).pipe(C.withBadRequestError) {}
+export class TagsAlreadyExistException
+  extends /*@__PURE__*/ S.TaggedErrorClass<TagsAlreadyExistException>()(
+    "TagsAlreadyExistException",
+    { Message: S.optional(S.String) },
     T.HttpError(400),
-  ),
-).pipe(C.withBadRequestError) {}
-export class InternalServerException extends S.TaggedErrorClass<InternalServerException>()(
-  "InternalServerException",
-  { Message: S.optional(S.String) },
-  T.all(
-    T.AwsQueryError({ code: "InternalServerException", httpResponseCode: 500 }),
-    T.HttpError(500),
-  ),
-).pipe(C.withServerError) {}
-export class ResourceInUseException extends S.TaggedErrorClass<ResourceInUseException>()(
-  "ResourceInUseException",
-  { Message: S.optional(S.String) },
-  T.all(
-    T.AwsQueryError({ code: "ResourceInUseException", httpResponseCode: 400 }),
+  ).pipe(C.withBadRequestError) {}
+export class TooManyTagsException
+  extends /*@__PURE__*/ S.TaggedErrorClass<TooManyTagsException>()(
+    "TooManyTagsException",
+    { Message: S.optional(S.String), ResourceName: S.optional(S.String) },
     T.HttpError(400),
-  ),
-).pipe(C.withBadRequestError) {}
-export class ResourceNotFoundException extends S.TaggedErrorClass<ResourceNotFoundException>()(
-  "ResourceNotFoundException",
-  { Message: S.optional(S.String) },
-  T.all(
-    T.AwsQueryError({
-      code: "ResourceNotFoundException",
-      httpResponseCode: 404,
-    }),
-    T.HttpError(404),
-  ),
-).pipe(C.withBadRequestError) {}
-export class TagsAlreadyExistException extends S.TaggedErrorClass<TagsAlreadyExistException>()(
-  "TagsAlreadyExistException",
-  { Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class TooManyTagsException extends S.TaggedErrorClass<TooManyTagsException>()(
-  "TooManyTagsException",
-  { Message: S.optional(S.String), ResourceName: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class ValidationException extends S.TaggedErrorClass<ValidationException>()(
-  "ValidationException",
-  { Message: S.optional(S.String) },
-  T.all(
-    T.AwsQueryError({ code: "ValidationException", httpResponseCode: 400 }),
-    T.HttpError(400),
-  ),
-).pipe(C.withBadRequestError) {}
+  ).pipe(C.withBadRequestError) {}
+export class ValidationException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
+    "ValidationException",
+    { Message: S.optional(S.String) },
+    T.all(
+      T.AwsQueryError({ code: "ValidationException", httpResponseCode: 400 }),
+      T.HttpError(400),
+    ),
+  ).pipe(C.withBadRequestError) {}
 export type ResourceGroupName = string;
 export type ComponentName = string;
 export type WorkloadName = string;
@@ -2030,7 +2044,27 @@ export const listApplications: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListApplicationsRequest,
+  ListApplicationsResponse,
+  ListApplicationsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListApplicationsRequest,
+  ) => stream.Stream<
+    ListApplicationsResponse,
+    ListApplicationsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListApplicationsRequest,
+  ) => stream.Stream<
+    unknown,
+    ListApplicationsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListComponentsError =
   | InternalServerException
@@ -2076,7 +2110,27 @@ export const listComponents: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListComponentsRequest,
+  ListComponentsResponse,
+  ListComponentsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListComponentsRequest,
+  ) => stream.Stream<
+    ListComponentsResponse,
+    ListComponentsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListComponentsRequest,
+  ) => stream.Stream<
+    unknown,
+    ListComponentsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListConfigurationHistoryError =
   | InternalServerException
@@ -2130,7 +2184,27 @@ export const listConfigurationHistory: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListConfigurationHistoryRequest,
+  ListConfigurationHistoryResponse,
+  ListConfigurationHistoryError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListConfigurationHistoryRequest,
+  ) => stream.Stream<
+    ListConfigurationHistoryResponse,
+    ListConfigurationHistoryError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListConfigurationHistoryRequest,
+  ) => stream.Stream<
+    unknown,
+    ListConfigurationHistoryError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListLogPatternsError =
   | InternalServerException
@@ -2176,7 +2250,27 @@ export const listLogPatterns: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListLogPatternsRequest,
+  ListLogPatternsResponse,
+  ListLogPatternsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListLogPatternsRequest,
+  ) => stream.Stream<
+    ListLogPatternsResponse,
+    ListLogPatternsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListLogPatternsRequest,
+  ) => stream.Stream<
+    unknown,
+    ListLogPatternsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListLogPatternSetsError =
   | InternalServerException
@@ -2222,7 +2316,27 @@ export const listLogPatternSets: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListLogPatternSetsRequest,
+  ListLogPatternSetsResponse,
+  ListLogPatternSetsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListLogPatternSetsRequest,
+  ) => stream.Stream<
+    ListLogPatternSetsResponse,
+    ListLogPatternSetsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListLogPatternSetsRequest,
+  ) => stream.Stream<
+    unknown,
+    ListLogPatternSetsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListProblemsError =
   | InternalServerException
@@ -2268,7 +2382,27 @@ export const listProblems: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListProblemsRequest,
+  ListProblemsResponse,
+  ListProblemsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListProblemsRequest,
+  ) => stream.Stream<
+    ListProblemsResponse,
+    ListProblemsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListProblemsRequest,
+  ) => stream.Stream<
+    unknown,
+    ListProblemsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListTagsForResourceError =
   | ResourceNotFoundException
@@ -2340,7 +2474,27 @@ export const listWorkloads: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListWorkloadsRequest,
+  ListWorkloadsResponse,
+  ListWorkloadsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListWorkloadsRequest,
+  ) => stream.Stream<
+    ListWorkloadsResponse,
+    ListWorkloadsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListWorkloadsRequest,
+  ) => stream.Stream<
+    unknown,
+    ListWorkloadsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type RemoveWorkloadError =
   | InternalServerException

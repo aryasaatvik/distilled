@@ -87,67 +87,73 @@ const rules = T.EndpointResolver((p, _) => {
   return err("Invalid Configuration: Missing Region");
 });
 
-export class AccessDeniedException extends S.TaggedErrorClass<AccessDeniedException>()(
-  "AccessDeniedException",
-  {
-    errorCode: S.String,
-    message: S.String,
-    resourceId: S.optional(S.String),
-    resourceType: S.optional(S.String),
-  },
-  T.HttpError(403),
-).pipe(C.withAuthError) {}
-export class ConflictException extends S.TaggedErrorClass<ConflictException>()(
-  "ConflictException",
-  {
-    errorCode: S.String,
-    message: S.String,
-    resourceId: S.String,
-    resourceType: S.String,
-  },
-  T.HttpError(409),
-).pipe(C.withConflictError) {}
-export class InternalServerException extends S.TaggedErrorClass<InternalServerException>()(
-  "InternalServerException",
-  { error: S.optional(S.String), message: S.optional(S.String) },
-  T.all(T.HttpError(500), T.Retryable()),
-).pipe(C.withServerError, C.withRetryableError) {}
-export class ResourceNotFoundException extends S.TaggedErrorClass<ResourceNotFoundException>()(
-  "ResourceNotFoundException",
-  {
-    errorCode: S.String,
-    message: S.String,
-    resourceId: S.String,
-    resourceType: S.String,
-  },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class ThrottlingException extends S.TaggedErrorClass<ThrottlingException>()(
-  "ThrottlingException",
-  {
-    errorCode: S.String,
-    message: S.String,
-    serviceCode: S.optional(S.String),
-    quotaCode: S.optional(S.String),
-  },
-  T.all(T.HttpError(429), T.Retryable({ throttling: true })),
-).pipe(C.withThrottlingError, C.withRetryableError) {}
-export class ValidationException extends S.TaggedErrorClass<ValidationException>()(
-  "ValidationException",
-  {
-    errorCode: S.String,
-    message: S.String,
-    reason: S.suspend(() => ValidationExceptionReason).annotate({
-      identifier: "ValidationExceptionReason",
-    }),
-    fieldList: S.optional(
-      S.suspend(() => ValidationExceptionFieldList).annotate({
-        identifier: "ValidationExceptionFieldList",
+export class AccessDeniedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
+    "AccessDeniedException",
+    {
+      errorCode: S.String,
+      message: S.String,
+      resourceId: S.optional(S.String),
+      resourceType: S.optional(S.String),
+    },
+    T.HttpError(403),
+  ).pipe(C.withAuthError) {}
+export class ConflictException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
+    "ConflictException",
+    {
+      errorCode: S.String,
+      message: S.String,
+      resourceId: S.String,
+      resourceType: S.String,
+    },
+    T.HttpError(409),
+  ).pipe(C.withConflictError) {}
+export class InternalServerException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
+    "InternalServerException",
+    { error: S.optional(S.String), message: S.optional(S.String) },
+    T.all(T.HttpError(500), T.Retryable()),
+  ).pipe(C.withServerError, C.withRetryableError) {}
+export class ResourceNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
+    "ResourceNotFoundException",
+    {
+      errorCode: S.String,
+      message: S.String,
+      resourceId: S.String,
+      resourceType: S.String,
+    },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class ThrottlingException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
+    "ThrottlingException",
+    {
+      errorCode: S.String,
+      message: S.String,
+      serviceCode: S.optional(S.String),
+      quotaCode: S.optional(S.String),
+    },
+    T.all(T.HttpError(429), T.Retryable({ throttling: true })),
+  ).pipe(C.withThrottlingError, C.withRetryableError) {}
+export class ValidationException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
+    "ValidationException",
+    {
+      errorCode: S.String,
+      message: S.String,
+      reason: S.suspend(() => ValidationExceptionReason).annotate({
+        identifier: "ValidationExceptionReason",
       }),
-    ),
-  },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
+      fieldList: S.optional(
+        S.suspend(() => ValidationExceptionFieldList).annotate({
+          identifier: "ValidationExceptionFieldList",
+        }),
+      ),
+    },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
 export interface FindingIdentifier {
   scanName: string;
   findingId: string;
@@ -1081,7 +1087,27 @@ export const getFindings: API.OperationMethod<
     items: "findings",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  GetFindingsRequest,
+  GetFindingsResponse,
+  GetFindingsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: GetFindingsRequest,
+  ) => stream.Stream<
+    GetFindingsResponse,
+    GetFindingsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: GetFindingsRequest,
+  ) => stream.Stream<
+    Finding,
+    GetFindingsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type GetMetricsSummaryError =
   | AccessDeniedException
@@ -1188,7 +1214,27 @@ export const listFindingsMetrics: API.OperationMethod<
     items: "findingsMetrics",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListFindingsMetricsRequest,
+  ListFindingsMetricsResponse,
+  ListFindingsMetricsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListFindingsMetricsRequest,
+  ) => stream.Stream<
+    ListFindingsMetricsResponse,
+    ListFindingsMetricsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListFindingsMetricsRequest,
+  ) => stream.Stream<
+    AccountFindingsMetric,
+    ListFindingsMetricsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListScansError =
   | AccessDeniedException
@@ -1237,7 +1283,27 @@ export const listScans: API.OperationMethod<
     items: "summaries",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListScansRequest,
+  ListScansResponse,
+  ListScansError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListScansRequest,
+  ) => stream.Stream<
+    ListScansResponse,
+    ListScansError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListScansRequest,
+  ) => stream.Stream<
+    ScanSummary,
+    ListScansError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListTagsForResourceError =
   | AccessDeniedException

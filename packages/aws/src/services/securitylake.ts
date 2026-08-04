@@ -87,53 +87,60 @@ const rules = T.EndpointResolver((p, _) => {
   return err("Invalid Configuration: Missing Region");
 });
 
-export class AccessDeniedException extends S.TaggedErrorClass<AccessDeniedException>()(
-  "AccessDeniedException",
-  { message: S.optional(S.String), errorCode: S.optional(S.String) },
-  T.HttpError(403),
-).pipe(C.withAuthError) {}
-export class BadRequestException extends S.TaggedErrorClass<BadRequestException>()(
-  "BadRequestException",
-  { message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class ConflictException extends S.TaggedErrorClass<ConflictException>()(
-  "ConflictException",
-  {
-    message: S.optional(S.String),
-    resourceName: S.optional(S.String),
-    resourceType: S.optional(S.String),
-  },
-  T.HttpError(409),
-).pipe(C.withConflictError) {}
-export class InternalServerException extends S.TaggedErrorClass<InternalServerException>()(
-  "InternalServerException",
-  { message: S.optional(S.String) },
-  T.all(T.HttpError(500), T.Retryable()),
-).pipe(C.withServerError, C.withRetryableError) {}
-export class ResourceNotFoundException extends S.TaggedErrorClass<ResourceNotFoundException>()(
-  "ResourceNotFoundException",
-  {
-    message: S.optional(S.String),
-    resourceName: S.optional(S.String),
-    resourceType: S.optional(S.String),
-  },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class ThrottlingException extends S.TaggedErrorClass<ThrottlingException>()(
-  "ThrottlingException",
-  {
-    message: S.optional(S.String),
-    serviceCode: S.optional(S.String),
-    quotaCode: S.optional(S.String),
-    retryAfterSeconds: S.optional(S.Number).pipe(T.HttpHeader("Retry-After")),
-  },
-  T.all(T.HttpError(429), T.Retryable({ throttling: true })),
-).pipe(C.withThrottlingError, C.withRetryableError) {}
-export class UnauthorizedException extends S.TaggedErrorClass<UnauthorizedException>()(
-  "UnauthorizedException",
-  {},
-).pipe(C.withAuthError) {}
+export class AccessDeniedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
+    "AccessDeniedException",
+    { message: S.optional(S.String), errorCode: S.optional(S.String) },
+    T.HttpError(403),
+  ).pipe(C.withAuthError) {}
+export class BadRequestException
+  extends /*@__PURE__*/ S.TaggedErrorClass<BadRequestException>()(
+    "BadRequestException",
+    { message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class ConflictException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
+    "ConflictException",
+    {
+      message: S.optional(S.String),
+      resourceName: S.optional(S.String),
+      resourceType: S.optional(S.String),
+    },
+    T.HttpError(409),
+  ).pipe(C.withConflictError) {}
+export class InternalServerException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
+    "InternalServerException",
+    { message: S.optional(S.String) },
+    T.all(T.HttpError(500), T.Retryable()),
+  ).pipe(C.withServerError, C.withRetryableError) {}
+export class ResourceNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
+    "ResourceNotFoundException",
+    {
+      message: S.optional(S.String),
+      resourceName: S.optional(S.String),
+      resourceType: S.optional(S.String),
+    },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class ThrottlingException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
+    "ThrottlingException",
+    {
+      message: S.optional(S.String),
+      serviceCode: S.optional(S.String),
+      quotaCode: S.optional(S.String),
+      retryAfterSeconds: S.optional(S.Number).pipe(T.HttpHeader("Retry-After")),
+    },
+    T.all(T.HttpError(429), T.Retryable({ throttling: true })),
+  ).pipe(C.withThrottlingError, C.withRetryableError) {}
+export class UnauthorizedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<UnauthorizedException>()(
+    "UnauthorizedException",
+    {},
+  ).pipe(C.withAuthError) {}
 export type AwsAccountId = string;
 export type AccountList = string[];
 export const AccountList = /*@__PURE__*/ S.Array(S.String);
@@ -2197,7 +2204,27 @@ export const getDataLakeSources: API.OperationMethod<
     items: "dataLakeSources",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  GetDataLakeSourcesRequest,
+  GetDataLakeSourcesResponse,
+  GetDataLakeSourcesError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: GetDataLakeSourcesRequest,
+  ) => stream.Stream<
+    GetDataLakeSourcesResponse,
+    GetDataLakeSourcesError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: GetDataLakeSourcesRequest,
+  ) => stream.Stream<
+    DataLakeSource,
+    GetDataLakeSourcesError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type GetSubscriberError =
   | AccessDeniedException
@@ -2288,7 +2315,27 @@ export const listDataLakeExceptions: API.OperationMethod<
     items: "exceptions",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListDataLakeExceptionsRequest,
+  ListDataLakeExceptionsResponse,
+  ListDataLakeExceptionsError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListDataLakeExceptionsRequest,
+  ) => stream.Stream<
+    ListDataLakeExceptionsResponse,
+    ListDataLakeExceptionsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListDataLakeExceptionsRequest,
+  ) => stream.Stream<
+    DataLakeException,
+    ListDataLakeExceptionsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type ListDataLakesError =
   | AccessDeniedException
@@ -2378,7 +2425,27 @@ export const listLogSources: API.OperationMethod<
     items: "sources",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListLogSourcesRequest,
+  ListLogSourcesResponse,
+  ListLogSourcesError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListLogSourcesRequest,
+  ) => stream.Stream<
+    ListLogSourcesResponse,
+    ListLogSourcesError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListLogSourcesRequest,
+  ) => stream.Stream<
+    LogSource,
+    ListLogSourcesError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type ListSubscribersError =
   | AccessDeniedException
@@ -2434,7 +2501,27 @@ export const listSubscribers: API.OperationMethod<
     items: "subscribers",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListSubscribersRequest,
+  ListSubscribersResponse,
+  ListSubscribersError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListSubscribersRequest,
+  ) => stream.Stream<
+    ListSubscribersResponse,
+    ListSubscribersError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListSubscribersRequest,
+  ) => stream.Stream<
+    SubscriberResource,
+    ListSubscribersError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type ListTagsForResourceError =
   | AccessDeniedException

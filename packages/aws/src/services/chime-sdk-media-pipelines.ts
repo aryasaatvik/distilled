@@ -87,105 +87,114 @@ const rules = T.EndpointResolver((p, _) => {
   return err("Invalid Configuration: Missing Region");
 });
 
-export class BadRequestException extends S.TaggedErrorClass<BadRequestException>()(
-  "BadRequestException",
-  {
-    Code: S.optional(
-      S.suspend(() => ErrorCode).annotate({ identifier: "ErrorCode" }),
-    ),
-    Message: S.optional(S.String),
-    RequestId: S.optional(S.String),
-  },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class ConflictException extends S.TaggedErrorClass<ConflictException>()(
-  "ConflictException",
-  {
-    Code: S.optional(
-      S.suspend(() => ErrorCode).annotate({ identifier: "ErrorCode" }),
-    ),
-    Message: S.optional(S.String),
-    RequestId: S.optional(S.String),
-  },
-  T.HttpError(409),
-).pipe(C.withConflictError) {}
-export class ForbiddenException extends S.TaggedErrorClass<ForbiddenException>()(
-  "ForbiddenException",
-  {
-    Code: S.optional(
-      S.suspend(() => ErrorCode).annotate({ identifier: "ErrorCode" }),
-    ),
-    Message: S.optional(S.String),
-    RequestId: S.optional(S.String),
-  },
-  T.HttpError(403),
-).pipe(C.withAuthError) {}
-export class NotFoundException extends S.TaggedErrorClass<NotFoundException>()(
-  "NotFoundException",
-  {
-    Code: S.optional(
-      S.suspend(() => ErrorCode).annotate({ identifier: "ErrorCode" }),
-    ),
-    Message: S.optional(S.String),
-    RequestId: S.optional(S.String),
-  },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class ResourceLimitExceededException extends S.TaggedErrorClass<ResourceLimitExceededException>()(
-  "ResourceLimitExceededException",
-  {
-    Code: S.optional(
-      S.suspend(() => ErrorCode).annotate({ identifier: "ErrorCode" }),
-    ),
-    Message: S.optional(S.String),
-    RequestId: S.optional(S.String),
-  },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class ServiceFailureException extends S.TaggedErrorClass<ServiceFailureException>()(
-  "ServiceFailureException",
-  {
-    Code: S.optional(
-      S.suspend(() => ErrorCode).annotate({ identifier: "ErrorCode" }),
-    ),
-    Message: S.optional(S.String),
-    RequestId: S.optional(S.String),
-  },
-  T.HttpError(500),
-).pipe(C.withServerError) {}
-export class ServiceUnavailableException extends S.TaggedErrorClass<ServiceUnavailableException>()(
-  "ServiceUnavailableException",
-  {
-    Code: S.optional(
-      S.suspend(() => ErrorCode).annotate({ identifier: "ErrorCode" }),
-    ),
-    Message: S.optional(S.String),
-    RequestId: S.optional(S.String),
-  },
-  T.HttpError(503),
-).pipe(C.withServerError) {}
-export class ThrottledClientException extends S.TaggedErrorClass<ThrottledClientException>()(
-  "ThrottledClientException",
-  {
-    Code: S.optional(
-      S.suspend(() => ErrorCode).annotate({ identifier: "ErrorCode" }),
-    ),
-    Message: S.optional(S.String),
-    RequestId: S.optional(S.String),
-  },
-  T.HttpError(429),
-).pipe(C.withThrottlingError) {}
-export class UnauthorizedClientException extends S.TaggedErrorClass<UnauthorizedClientException>()(
-  "UnauthorizedClientException",
-  {
-    Code: S.optional(
-      S.suspend(() => ErrorCode).annotate({ identifier: "ErrorCode" }),
-    ),
-    Message: S.optional(S.String),
-    RequestId: S.optional(S.String),
-  },
-  T.HttpError(401),
-).pipe(C.withAuthError) {}
+export class BadRequestException
+  extends /*@__PURE__*/ S.TaggedErrorClass<BadRequestException>()(
+    "BadRequestException",
+    {
+      Code: S.optional(
+        S.suspend(() => ErrorCode).annotate({ identifier: "ErrorCode" }),
+      ),
+      Message: S.optional(S.String),
+      RequestId: S.optional(S.String),
+    },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class ConflictException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
+    "ConflictException",
+    {
+      Code: S.optional(
+        S.suspend(() => ErrorCode).annotate({ identifier: "ErrorCode" }),
+      ),
+      Message: S.optional(S.String),
+      RequestId: S.optional(S.String),
+    },
+    T.HttpError(409),
+  ).pipe(C.withConflictError) {}
+export class ForbiddenException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ForbiddenException>()(
+    "ForbiddenException",
+    {
+      Code: S.optional(
+        S.suspend(() => ErrorCode).annotate({ identifier: "ErrorCode" }),
+      ),
+      Message: S.optional(S.String),
+      RequestId: S.optional(S.String),
+    },
+    T.HttpError(403),
+  ).pipe(C.withAuthError) {}
+export class NotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<NotFoundException>()(
+    "NotFoundException",
+    {
+      Code: S.optional(
+        S.suspend(() => ErrorCode).annotate({ identifier: "ErrorCode" }),
+      ),
+      Message: S.optional(S.String),
+      RequestId: S.optional(S.String),
+    },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class ResourceLimitExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceLimitExceededException>()(
+    "ResourceLimitExceededException",
+    {
+      Code: S.optional(
+        S.suspend(() => ErrorCode).annotate({ identifier: "ErrorCode" }),
+      ),
+      Message: S.optional(S.String),
+      RequestId: S.optional(S.String),
+    },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class ServiceFailureException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ServiceFailureException>()(
+    "ServiceFailureException",
+    {
+      Code: S.optional(
+        S.suspend(() => ErrorCode).annotate({ identifier: "ErrorCode" }),
+      ),
+      Message: S.optional(S.String),
+      RequestId: S.optional(S.String),
+    },
+    T.HttpError(500),
+  ).pipe(C.withServerError) {}
+export class ServiceUnavailableException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ServiceUnavailableException>()(
+    "ServiceUnavailableException",
+    {
+      Code: S.optional(
+        S.suspend(() => ErrorCode).annotate({ identifier: "ErrorCode" }),
+      ),
+      Message: S.optional(S.String),
+      RequestId: S.optional(S.String),
+    },
+    T.HttpError(503),
+  ).pipe(C.withServerError) {}
+export class ThrottledClientException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ThrottledClientException>()(
+    "ThrottledClientException",
+    {
+      Code: S.optional(
+        S.suspend(() => ErrorCode).annotate({ identifier: "ErrorCode" }),
+      ),
+      Message: S.optional(S.String),
+      RequestId: S.optional(S.String),
+    },
+    T.HttpError(429),
+  ).pipe(C.withThrottlingError) {}
+export class UnauthorizedClientException
+  extends /*@__PURE__*/ S.TaggedErrorClass<UnauthorizedClientException>()(
+    "UnauthorizedClientException",
+    {
+      Code: S.optional(
+        S.suspend(() => ErrorCode).annotate({ identifier: "ErrorCode" }),
+      ),
+      Message: S.optional(S.String),
+      RequestId: S.optional(S.String),
+    },
+    T.HttpError(401),
+  ).pipe(C.withAuthError) {}
 export type MediaPipelineSourceType = "ChimeSdkMeeting" | (string & {});
 export const MediaPipelineSourceType = /*@__PURE__*/ S.String;
 
@@ -3407,7 +3416,27 @@ export const listMediaCapturePipelines: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListMediaCapturePipelinesRequest,
+  ListMediaCapturePipelinesResponse,
+  ListMediaCapturePipelinesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListMediaCapturePipelinesRequest,
+  ) => stream.Stream<
+    ListMediaCapturePipelinesResponse,
+    ListMediaCapturePipelinesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListMediaCapturePipelinesRequest,
+  ) => stream.Stream<
+    unknown,
+    ListMediaCapturePipelinesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListMediaInsightsPipelineConfigurationsError =
   | BadRequestException
@@ -3461,7 +3490,27 @@ export const listMediaInsightsPipelineConfigurations: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListMediaInsightsPipelineConfigurationsRequest,
+  ListMediaInsightsPipelineConfigurationsResponse,
+  ListMediaInsightsPipelineConfigurationsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListMediaInsightsPipelineConfigurationsRequest,
+  ) => stream.Stream<
+    ListMediaInsightsPipelineConfigurationsResponse,
+    ListMediaInsightsPipelineConfigurationsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListMediaInsightsPipelineConfigurationsRequest,
+  ) => stream.Stream<
+    unknown,
+    ListMediaInsightsPipelineConfigurationsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListMediaPipelineKinesisVideoStreamPoolsError =
   | BadRequestException
@@ -3515,7 +3564,27 @@ export const listMediaPipelineKinesisVideoStreamPools: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListMediaPipelineKinesisVideoStreamPoolsRequest,
+  ListMediaPipelineKinesisVideoStreamPoolsResponse,
+  ListMediaPipelineKinesisVideoStreamPoolsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListMediaPipelineKinesisVideoStreamPoolsRequest,
+  ) => stream.Stream<
+    ListMediaPipelineKinesisVideoStreamPoolsResponse,
+    ListMediaPipelineKinesisVideoStreamPoolsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListMediaPipelineKinesisVideoStreamPoolsRequest,
+  ) => stream.Stream<
+    unknown,
+    ListMediaPipelineKinesisVideoStreamPoolsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListMediaPipelinesError =
   | BadRequestException
@@ -3569,7 +3638,27 @@ export const listMediaPipelines: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListMediaPipelinesRequest,
+  ListMediaPipelinesResponse,
+  ListMediaPipelinesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListMediaPipelinesRequest,
+  ) => stream.Stream<
+    ListMediaPipelinesResponse,
+    ListMediaPipelinesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListMediaPipelinesRequest,
+  ) => stream.Stream<
+    unknown,
+    ListMediaPipelinesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListTagsForResourceError =
   | BadRequestException

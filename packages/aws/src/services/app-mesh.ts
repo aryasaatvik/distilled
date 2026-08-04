@@ -82,56 +82,66 @@ const rules = T.EndpointResolver((p, _) => {
   return err("Invalid Configuration: Missing Region");
 });
 
-export class BadRequestException extends S.TaggedErrorClass<BadRequestException>()(
-  "BadRequestException",
-  { message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class ConflictException extends S.TaggedErrorClass<ConflictException>()(
-  "ConflictException",
-  { message: S.optional(S.String) },
-  T.HttpError(409),
-).pipe(C.withConflictError) {}
-export class ForbiddenException extends S.TaggedErrorClass<ForbiddenException>()(
-  "ForbiddenException",
-  { message: S.optional(S.String) },
-  T.HttpError(403),
-).pipe(C.withAuthError) {}
-export class InternalServerErrorException extends S.TaggedErrorClass<InternalServerErrorException>()(
-  "InternalServerErrorException",
-  { message: S.optional(S.String) },
-  T.all(T.HttpError(500), T.Retryable()),
-).pipe(C.withServerError, C.withRetryableError) {}
-export class LimitExceededException extends S.TaggedErrorClass<LimitExceededException>()(
-  "LimitExceededException",
-  { message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class NotFoundException extends S.TaggedErrorClass<NotFoundException>()(
-  "NotFoundException",
-  { message: S.optional(S.String) },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class ResourceInUseException extends S.TaggedErrorClass<ResourceInUseException>()(
-  "ResourceInUseException",
-  { message: S.optional(S.String) },
-  T.HttpError(409),
-).pipe(C.withConflictError) {}
-export class ServiceUnavailableException extends S.TaggedErrorClass<ServiceUnavailableException>()(
-  "ServiceUnavailableException",
-  { message: S.optional(S.String) },
-  T.all(T.HttpError(503), T.Retryable()),
-).pipe(C.withServerError, C.withRetryableError) {}
-export class TooManyRequestsException extends S.TaggedErrorClass<TooManyRequestsException>()(
-  "TooManyRequestsException",
-  { message: S.optional(S.String) },
-  T.all(T.HttpError(429), T.Retryable({ throttling: true })),
-).pipe(C.withThrottlingError, C.withRetryableError) {}
-export class TooManyTagsException extends S.TaggedErrorClass<TooManyTagsException>()(
-  "TooManyTagsException",
-  { message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
+export class BadRequestException
+  extends /*@__PURE__*/ S.TaggedErrorClass<BadRequestException>()(
+    "BadRequestException",
+    { message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class ConflictException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
+    "ConflictException",
+    { message: S.optional(S.String) },
+    T.HttpError(409),
+  ).pipe(C.withConflictError) {}
+export class ForbiddenException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ForbiddenException>()(
+    "ForbiddenException",
+    { message: S.optional(S.String) },
+    T.HttpError(403),
+  ).pipe(C.withAuthError) {}
+export class InternalServerErrorException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerErrorException>()(
+    "InternalServerErrorException",
+    { message: S.optional(S.String) },
+    T.all(T.HttpError(500), T.Retryable()),
+  ).pipe(C.withServerError, C.withRetryableError) {}
+export class LimitExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<LimitExceededException>()(
+    "LimitExceededException",
+    { message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class NotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<NotFoundException>()(
+    "NotFoundException",
+    { message: S.optional(S.String) },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class ResourceInUseException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceInUseException>()(
+    "ResourceInUseException",
+    { message: S.optional(S.String) },
+    T.HttpError(409),
+  ).pipe(C.withConflictError) {}
+export class ServiceUnavailableException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ServiceUnavailableException>()(
+    "ServiceUnavailableException",
+    { message: S.optional(S.String) },
+    T.all(T.HttpError(503), T.Retryable()),
+  ).pipe(C.withServerError, C.withRetryableError) {}
+export class TooManyRequestsException
+  extends /*@__PURE__*/ S.TaggedErrorClass<TooManyRequestsException>()(
+    "TooManyRequestsException",
+    { message: S.optional(S.String) },
+    T.all(T.HttpError(429), T.Retryable({ throttling: true })),
+  ).pipe(C.withThrottlingError, C.withRetryableError) {}
+export class TooManyTagsException
+  extends /*@__PURE__*/ S.TaggedErrorClass<TooManyTagsException>()(
+    "TooManyTagsException",
+    { message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
 export type ResourceName = string;
 export type GatewayRoutePriority = number;
 export type HttpPathExact = string;
@@ -4308,7 +4318,27 @@ export const listGatewayRoutes: API.OperationMethod<
     items: "gatewayRoutes",
     pageSize: "limit",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListGatewayRoutesInput,
+  ListGatewayRoutesOutput,
+  ListGatewayRoutesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListGatewayRoutesInput,
+  ) => stream.Stream<
+    ListGatewayRoutesOutput,
+    ListGatewayRoutesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListGatewayRoutesInput,
+  ) => stream.Stream<
+    GatewayRouteRef,
+    ListGatewayRoutesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListMeshesError =
   | BadRequestException
@@ -4361,7 +4391,27 @@ export const listMeshes: API.OperationMethod<
     items: "meshes",
     pageSize: "limit",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListMeshesInput,
+  ListMeshesOutput,
+  ListMeshesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListMeshesInput,
+  ) => stream.Stream<
+    ListMeshesOutput,
+    ListMeshesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListMeshesInput,
+  ) => stream.Stream<
+    MeshRef,
+    ListMeshesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListRoutesError =
   | BadRequestException
@@ -4414,7 +4464,27 @@ export const listRoutes: API.OperationMethod<
     items: "routes",
     pageSize: "limit",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListRoutesInput,
+  ListRoutesOutput,
+  ListRoutesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListRoutesInput,
+  ) => stream.Stream<
+    ListRoutesOutput,
+    ListRoutesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListRoutesInput,
+  ) => stream.Stream<
+    RouteRef,
+    ListRoutesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListTagsForResourceError =
   | BadRequestException
@@ -4467,7 +4537,27 @@ export const listTagsForResource: API.OperationMethod<
     items: "tags",
     pageSize: "limit",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListTagsForResourceInput,
+  ListTagsForResourceOutput,
+  ListTagsForResourceError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListTagsForResourceInput,
+  ) => stream.Stream<
+    ListTagsForResourceOutput,
+    ListTagsForResourceError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListTagsForResourceInput,
+  ) => stream.Stream<
+    TagRef,
+    ListTagsForResourceError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListVirtualGatewaysError =
   | BadRequestException
@@ -4520,7 +4610,27 @@ export const listVirtualGateways: API.OperationMethod<
     items: "virtualGateways",
     pageSize: "limit",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListVirtualGatewaysInput,
+  ListVirtualGatewaysOutput,
+  ListVirtualGatewaysError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListVirtualGatewaysInput,
+  ) => stream.Stream<
+    ListVirtualGatewaysOutput,
+    ListVirtualGatewaysError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListVirtualGatewaysInput,
+  ) => stream.Stream<
+    VirtualGatewayRef,
+    ListVirtualGatewaysError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListVirtualNodesError =
   | BadRequestException
@@ -4573,7 +4683,27 @@ export const listVirtualNodes: API.OperationMethod<
     items: "virtualNodes",
     pageSize: "limit",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListVirtualNodesInput,
+  ListVirtualNodesOutput,
+  ListVirtualNodesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListVirtualNodesInput,
+  ) => stream.Stream<
+    ListVirtualNodesOutput,
+    ListVirtualNodesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListVirtualNodesInput,
+  ) => stream.Stream<
+    VirtualNodeRef,
+    ListVirtualNodesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListVirtualRoutersError =
   | BadRequestException
@@ -4626,7 +4756,27 @@ export const listVirtualRouters: API.OperationMethod<
     items: "virtualRouters",
     pageSize: "limit",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListVirtualRoutersInput,
+  ListVirtualRoutersOutput,
+  ListVirtualRoutersError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListVirtualRoutersInput,
+  ) => stream.Stream<
+    ListVirtualRoutersOutput,
+    ListVirtualRoutersError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListVirtualRoutersInput,
+  ) => stream.Stream<
+    VirtualRouterRef,
+    ListVirtualRoutersError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListVirtualServicesError =
   | BadRequestException
@@ -4679,7 +4829,27 @@ export const listVirtualServices: API.OperationMethod<
     items: "virtualServices",
     pageSize: "limit",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListVirtualServicesInput,
+  ListVirtualServicesOutput,
+  ListVirtualServicesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListVirtualServicesInput,
+  ) => stream.Stream<
+    ListVirtualServicesOutput,
+    ListVirtualServicesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListVirtualServicesInput,
+  ) => stream.Stream<
+    VirtualServiceRef,
+    ListVirtualServicesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type TagResourceError =
   | BadRequestException

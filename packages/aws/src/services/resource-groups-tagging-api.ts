@@ -84,30 +84,36 @@ const rules = T.EndpointResolver((p, _) => {
   return err("Invalid Configuration: Missing Region");
 });
 
-export class ConcurrentModificationException extends S.TaggedErrorClass<ConcurrentModificationException>()(
-  "ConcurrentModificationException",
-  { Message: S.optional(S.String) },
-) {}
-export class ConstraintViolationException extends S.TaggedErrorClass<ConstraintViolationException>()(
-  "ConstraintViolationException",
-  { Message: S.optional(S.String) },
-) {}
-export class InternalServiceException extends S.TaggedErrorClass<InternalServiceException>()(
-  "InternalServiceException",
-  { Message: S.optional(S.String) },
-) {}
-export class InvalidParameterException extends S.TaggedErrorClass<InvalidParameterException>()(
-  "InvalidParameterException",
-  { Message: S.optional(S.String) },
-) {}
-export class PaginationTokenExpiredException extends S.TaggedErrorClass<PaginationTokenExpiredException>()(
-  "PaginationTokenExpiredException",
-  { Message: S.optional(S.String) },
-) {}
-export class ThrottledException extends S.TaggedErrorClass<ThrottledException>()(
-  "ThrottledException",
-  { Message: S.optional(S.String) },
-) {}
+export class ConcurrentModificationException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ConcurrentModificationException>()(
+    "ConcurrentModificationException",
+    { Message: S.optional(S.String) },
+  ) {}
+export class ConstraintViolationException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ConstraintViolationException>()(
+    "ConstraintViolationException",
+    { Message: S.optional(S.String) },
+  ) {}
+export class InternalServiceException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InternalServiceException>()(
+    "InternalServiceException",
+    { Message: S.optional(S.String) },
+  ) {}
+export class InvalidParameterException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidParameterException>()(
+    "InvalidParameterException",
+    { Message: S.optional(S.String) },
+  ) {}
+export class PaginationTokenExpiredException
+  extends /*@__PURE__*/ S.TaggedErrorClass<PaginationTokenExpiredException>()(
+    "PaginationTokenExpiredException",
+    { Message: S.optional(S.String) },
+  ) {}
+export class ThrottledException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ThrottledException>()(
+    "ThrottledException",
+    { Message: S.optional(S.String) },
+  ) {}
 export interface DescribeReportCreationInput {}
 export const DescribeReportCreationInput = /*@__PURE__*/ S.suspend(() =>
   S.Struct({}).pipe(
@@ -663,7 +669,27 @@ export const getComplianceSummary: API.OperationMethod<
     items: "SummaryList",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  GetComplianceSummaryInput,
+  GetComplianceSummaryOutput,
+  GetComplianceSummaryError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: GetComplianceSummaryInput,
+  ) => stream.Stream<
+    GetComplianceSummaryOutput,
+    GetComplianceSummaryError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: GetComplianceSummaryInput,
+  ) => stream.Stream<
+    Summary,
+    GetComplianceSummaryError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type GetResourcesError =
   | InternalServiceException
@@ -736,7 +762,27 @@ export const getResources: API.OperationMethod<
     items: "ResourceTagMappingList",
     pageSize: "ResourcesPerPage",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  GetResourcesInput,
+  GetResourcesOutput,
+  GetResourcesError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: GetResourcesInput,
+  ) => stream.Stream<
+    GetResourcesOutput,
+    GetResourcesError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: GetResourcesInput,
+  ) => stream.Stream<
+    ResourceTagMapping,
+    GetResourcesError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type GetTagKeysError =
   | InternalServiceException
@@ -792,7 +838,27 @@ export const getTagKeys: API.OperationMethod<
     outputToken: "PaginationToken",
     items: "TagKeys",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  GetTagKeysInput,
+  GetTagKeysOutput,
+  GetTagKeysError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: GetTagKeysInput,
+  ) => stream.Stream<
+    GetTagKeysOutput,
+    GetTagKeysError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: GetTagKeysInput,
+  ) => stream.Stream<
+    TagKey,
+    GetTagKeysError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type GetTagValuesError =
   | InternalServiceException
@@ -848,7 +914,27 @@ export const getTagValues: API.OperationMethod<
     outputToken: "PaginationToken",
     items: "TagValues",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  GetTagValuesInput,
+  GetTagValuesOutput,
+  GetTagValuesError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: GetTagValuesInput,
+  ) => stream.Stream<
+    GetTagValuesOutput,
+    GetTagValuesError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: GetTagValuesInput,
+  ) => stream.Stream<
+    TagValue,
+    GetTagValuesError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type ListRequiredTagsError =
   | InternalServiceException
@@ -897,7 +983,27 @@ export const listRequiredTags: API.OperationMethod<
     items: "RequiredTags",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListRequiredTagsInput,
+  ListRequiredTagsOutput,
+  ListRequiredTagsError,
+  Credentials | Rgn | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListRequiredTagsInput,
+  ) => stream.Stream<
+    ListRequiredTagsOutput,
+    ListRequiredTagsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListRequiredTagsInput,
+  ) => stream.Stream<
+    RequiredTag,
+    ListRequiredTagsError,
+    Credentials | Rgn | HttpClient.HttpClient
+  >;
+};
 
 export type StartReportCreationError =
   | ConcurrentModificationException

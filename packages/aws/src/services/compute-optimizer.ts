@@ -85,51 +85,60 @@ const rules = T.EndpointResolver((p, _) => {
   return err("Invalid Configuration: Missing Region");
 });
 
-export class AccessDeniedException extends S.TaggedErrorClass<AccessDeniedException>()(
-  "AccessDeniedException",
-  { message: S.optional(S.String) },
-  T.HttpError(403),
-).pipe(C.withAuthError) {}
-export class InternalServerException extends S.TaggedErrorClass<InternalServerException>()(
-  "InternalServerException",
-  { message: S.optional(S.String) },
-  T.HttpError(500),
-).pipe(C.withServerError) {}
-export class InvalidParameterValueException extends S.TaggedErrorClass<InvalidParameterValueException>()(
-  "InvalidParameterValueException",
-  { message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class LimitExceededException extends S.TaggedErrorClass<LimitExceededException>()(
-  "LimitExceededException",
-  { message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class MissingAuthenticationToken extends S.TaggedErrorClass<MissingAuthenticationToken>()(
-  "MissingAuthenticationToken",
-  { message: S.optional(S.String) },
-  T.HttpError(403),
-).pipe(C.withAuthError) {}
-export class OptInRequiredException extends S.TaggedErrorClass<OptInRequiredException>()(
-  "OptInRequiredException",
-  { message: S.optional(S.String) },
-  T.HttpError(403),
-).pipe(C.withAuthError) {}
-export class ResourceNotFoundException extends S.TaggedErrorClass<ResourceNotFoundException>()(
-  "ResourceNotFoundException",
-  { message: S.optional(S.String) },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class ServiceUnavailableException extends S.TaggedErrorClass<ServiceUnavailableException>()(
-  "ServiceUnavailableException",
-  { message: S.optional(S.String) },
-  T.HttpError(503),
-).pipe(C.withServerError) {}
-export class ThrottlingException extends S.TaggedErrorClass<ThrottlingException>()(
-  "ThrottlingException",
-  { message: S.String },
-  T.HttpError(429),
-).pipe(C.withThrottlingError) {}
+export class AccessDeniedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
+    "AccessDeniedException",
+    { message: S.optional(S.String) },
+    T.HttpError(403),
+  ).pipe(C.withAuthError) {}
+export class InternalServerException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
+    "InternalServerException",
+    { message: S.optional(S.String) },
+    T.HttpError(500),
+  ).pipe(C.withServerError) {}
+export class InvalidParameterValueException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidParameterValueException>()(
+    "InvalidParameterValueException",
+    { message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class LimitExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<LimitExceededException>()(
+    "LimitExceededException",
+    { message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class MissingAuthenticationToken
+  extends /*@__PURE__*/ S.TaggedErrorClass<MissingAuthenticationToken>()(
+    "MissingAuthenticationToken",
+    { message: S.optional(S.String) },
+    T.HttpError(403),
+  ).pipe(C.withAuthError) {}
+export class OptInRequiredException
+  extends /*@__PURE__*/ S.TaggedErrorClass<OptInRequiredException>()(
+    "OptInRequiredException",
+    { message: S.optional(S.String) },
+    T.HttpError(403),
+  ).pipe(C.withAuthError) {}
+export class ResourceNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
+    "ResourceNotFoundException",
+    { message: S.optional(S.String) },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class ServiceUnavailableException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ServiceUnavailableException>()(
+    "ServiceUnavailableException",
+    { message: S.optional(S.String) },
+    T.HttpError(503),
+  ).pipe(C.withServerError) {}
+export class ThrottlingException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
+    "ThrottlingException",
+    { message: S.String },
+    T.HttpError(429),
+  ).pipe(C.withThrottlingError) {}
 export type ResourceType =
   | "Ec2Instance"
   | "AutoScalingGroup"
@@ -4289,7 +4298,27 @@ export const describeRecommendationExportJobs: API.OperationMethod<
     items: "recommendationExportJobs",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  DescribeRecommendationExportJobsRequest,
+  DescribeRecommendationExportJobsResponse,
+  DescribeRecommendationExportJobsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: DescribeRecommendationExportJobsRequest,
+  ) => stream.Stream<
+    DescribeRecommendationExportJobsResponse,
+    DescribeRecommendationExportJobsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: DescribeRecommendationExportJobsRequest,
+  ) => stream.Stream<
+    RecommendationExportJob,
+    DescribeRecommendationExportJobsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ExportAutoScalingGroupRecommendationsError =
   | AccessDeniedException
@@ -5011,7 +5040,27 @@ export const getEnrollmentStatusesForOrganization: API.OperationMethod<
     items: "accountEnrollmentStatuses",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  GetEnrollmentStatusesForOrganizationRequest,
+  GetEnrollmentStatusesForOrganizationResponse,
+  GetEnrollmentStatusesForOrganizationError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: GetEnrollmentStatusesForOrganizationRequest,
+  ) => stream.Stream<
+    GetEnrollmentStatusesForOrganizationResponse,
+    GetEnrollmentStatusesForOrganizationError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: GetEnrollmentStatusesForOrganizationRequest,
+  ) => stream.Stream<
+    AccountEnrollmentStatus,
+    GetEnrollmentStatusesForOrganizationError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type GetIdleRecommendationsError =
   | AccessDeniedException
@@ -5112,7 +5161,27 @@ export const getLambdaFunctionRecommendations: API.OperationMethod<
     items: "lambdaFunctionRecommendations",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  GetLambdaFunctionRecommendationsRequest,
+  GetLambdaFunctionRecommendationsResponse,
+  GetLambdaFunctionRecommendationsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: GetLambdaFunctionRecommendationsRequest,
+  ) => stream.Stream<
+    GetLambdaFunctionRecommendationsResponse,
+    GetLambdaFunctionRecommendationsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: GetLambdaFunctionRecommendationsRequest,
+  ) => stream.Stream<
+    LambdaFunctionRecommendation,
+    GetLambdaFunctionRecommendationsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type GetLicenseRecommendationsError =
   | AccessDeniedException
@@ -5297,7 +5366,27 @@ export const getRecommendationPreferences: API.OperationMethod<
     items: "recommendationPreferencesDetails",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  GetRecommendationPreferencesRequest,
+  GetRecommendationPreferencesResponse,
+  GetRecommendationPreferencesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: GetRecommendationPreferencesRequest,
+  ) => stream.Stream<
+    GetRecommendationPreferencesResponse,
+    GetRecommendationPreferencesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: GetRecommendationPreferencesRequest,
+  ) => stream.Stream<
+    RecommendationPreferencesDetail,
+    GetRecommendationPreferencesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type GetRecommendationSummariesError =
   | AccessDeniedException
@@ -5376,7 +5465,27 @@ export const getRecommendationSummaries: API.OperationMethod<
     items: "recommendationSummaries",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  GetRecommendationSummariesRequest,
+  GetRecommendationSummariesResponse,
+  GetRecommendationSummariesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: GetRecommendationSummariesRequest,
+  ) => stream.Stream<
+    GetRecommendationSummariesResponse,
+    GetRecommendationSummariesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: GetRecommendationSummariesRequest,
+  ) => stream.Stream<
+    RecommendationSummary,
+    GetRecommendationSummariesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type PutRecommendationPreferencesError =
   | AccessDeniedException

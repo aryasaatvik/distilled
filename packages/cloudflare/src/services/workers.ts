@@ -123,321 +123,426 @@ const KEY_DICTIONARY: Record<string, string | ReadonlyArray<string>> = {
   zoneName: "zone_name",
 };
 
-export class ContentTypeRequired extends T.applyErrorMatchers(
-  S.TaggedErrorClass<ContentTypeRequired>()("ContentTypeRequired", {
-    code: S.Number,
-    message: S.String,
-  }),
-  [{ code: 10001 }],
-) {}
+export class ContentTypeRequired
+  extends /*@__PURE__*/ T.applyErrorMatchers(
+    /*@__PURE__*/ S.TaggedErrorClass<ContentTypeRequired>()(
+      "ContentTypeRequired",
+      {
+        code: S.Number,
+        message: S.String,
+      },
+    ),
+    [{ code: 10001 }],
+  ) {}
 
-export class D1DatabaseNotFound extends T.applyErrorMatchers(
-  S.TaggedErrorClass<D1DatabaseNotFound>()("D1DatabaseNotFound", {
-    code: S.Number,
-    message: S.String,
-  }),
-  [{ code: 10181 }],
-) {}
+export class D1DatabaseNotFound
+  extends /*@__PURE__*/ T.applyErrorMatchers(
+    /*@__PURE__*/ S.TaggedErrorClass<D1DatabaseNotFound>()(
+      "D1DatabaseNotFound",
+      {
+        code: S.Number,
+        message: S.String,
+      },
+    ),
+    [{ code: 10181 }],
+  ) {}
 
-export class DeploymentNotFound extends T.applyErrorMatchers(
-  S.TaggedErrorClass<DeploymentNotFound>()("DeploymentNotFound", {
-    code: S.Number,
-    message: S.String,
-  }),
-  [{ code: 10336 }],
-) {}
+export class DeploymentNotFound
+  extends /*@__PURE__*/ T.applyErrorMatchers(
+    /*@__PURE__*/ S.TaggedErrorClass<DeploymentNotFound>()(
+      "DeploymentNotFound",
+      {
+        code: S.Number,
+        message: S.String,
+      },
+    ),
+    [{ code: 10336 }],
+  ) {}
 
-export class DispatchNamespaceNotFound extends T.applyErrorMatchers(
-  S.TaggedErrorClass<DispatchNamespaceNotFound>()("DispatchNamespaceNotFound", {
-    code: S.Number,
-    message: S.String,
-  }),
-  [{ code: 100119 }],
-) {}
+export class DispatchNamespaceNotFound
+  extends /*@__PURE__*/ T.applyErrorMatchers(
+    /*@__PURE__*/ S.TaggedErrorClass<DispatchNamespaceNotFound>()(
+      "DispatchNamespaceNotFound",
+      {
+        code: S.Number,
+        message: S.String,
+      },
+    ),
+    [{ code: 100119 }],
+  ) {}
 
-export class DomainNotFound extends T.applyErrorMatchers(
-  S.TaggedErrorClass<DomainNotFound>()("DomainNotFound", {
-    code: S.Number,
-    message: S.String,
-  }),
-  [{ code: 100114 }],
-) {}
-
-export class DuplicateMigrationTarget extends T.applyErrorMatchers(
-  S.TaggedErrorClass<DuplicateMigrationTarget>()("DuplicateMigrationTarget", {
-    code: S.Number,
-    message: S.String,
-  }),
-  [
-    {
-      code: 10074,
-      message: { includes: "cannot be the target of more than one migration" },
-    },
-  ],
-) {}
-
-export class DurableObjectClassNotFound extends T.applyErrorMatchers(
-  S.TaggedErrorClass<DurableObjectClassNotFound>()(
-    "DurableObjectClassNotFound",
-    {
+export class DomainNotFound
+  extends /*@__PURE__*/ T.applyErrorMatchers(
+    /*@__PURE__*/ S.TaggedErrorClass<DomainNotFound>()("DomainNotFound", {
       code: S.Number,
       message: S.String,
-    },
-  ),
-  [{ code: 10061 }],
-) {}
+    }),
+    [{ code: 100114 }],
+  ) {}
 
-export class DurableObjectMustBeSqlite extends T.applyErrorMatchers(
-  S.TaggedErrorClass<DurableObjectMustBeSqlite>()("DurableObjectMustBeSqlite", {
-    code: S.Number,
-    message: S.String,
-  }),
-  [{ code: 10074, message: { includes: "not a SQLite Durable Object" } }],
-) {}
+export class DuplicateMigrationTarget
+  extends /*@__PURE__*/ T.applyErrorMatchers(
+    /*@__PURE__*/ S.TaggedErrorClass<DuplicateMigrationTarget>()(
+      "DuplicateMigrationTarget",
+      {
+        code: S.Number,
+        message: S.String,
+      },
+    ),
+    [
+      {
+        code: 10074,
+        message: {
+          includes: "cannot be the target of more than one migration",
+        },
+      },
+    ],
+  ) {}
 
-export class Forbidden extends T.applyErrorMatchers(
-  S.TaggedErrorClass<Forbidden>()("Forbidden", {
-    code: S.Number,
-    message: S.String,
-  }),
-  [{ status: 403 }],
-) {}
+export class DurableObjectClassNotFound
+  extends /*@__PURE__*/ T.applyErrorMatchers(
+    /*@__PURE__*/ S.TaggedErrorClass<DurableObjectClassNotFound>()(
+      "DurableObjectClassNotFound",
+      {
+        code: S.Number,
+        message: S.String,
+      },
+    ),
+    [{ code: 10061 }],
+  ) {}
 
-export class HostnameAlreadyInUse extends T.applyErrorMatchers(
-  S.TaggedErrorClass<HostnameAlreadyInUse>()("HostnameAlreadyInUse", {
-    code: S.Number,
-    message: S.String,
-  }),
-  [{ code: 100116 }],
-) {}
+export class DurableObjectMustBeSqlite
+  extends /*@__PURE__*/ T.applyErrorMatchers(
+    /*@__PURE__*/ S.TaggedErrorClass<DurableObjectMustBeSqlite>()(
+      "DurableObjectMustBeSqlite",
+      {
+        code: S.Number,
+        message: S.String,
+      },
+    ),
+    [{ code: 10074, message: { includes: "not a SQLite Durable Object" } }],
+  ) {}
 
-export class HyperdriveConfigNotFound extends T.applyErrorMatchers(
-  S.TaggedErrorClass<HyperdriveConfigNotFound>()("HyperdriveConfigNotFound", {
-    code: S.Number,
-    message: S.String,
-  }),
-  [{ code: 10157 }],
-) {}
-
-export class InvalidRoute extends T.applyErrorMatchers(
-  S.TaggedErrorClass<InvalidRoute>()("InvalidRoute", {
-    code: S.Number,
-    message: S.String,
-  }),
-  [{ code: 7003 }, { code: 7003, message: { includes: "Could not route" } }],
-) {}
-
-export class InvalidRoutePattern extends T.applyErrorMatchers(
-  S.TaggedErrorClass<InvalidRoutePattern>()("InvalidRoutePattern", {
-    code: S.Number,
-    message: S.String,
-  }),
-  [{ code: 10022 }],
-) {}
-
-export class InvalidWorkerScript extends T.applyErrorMatchers(
-  S.TaggedErrorClass<InvalidWorkerScript>()("InvalidWorkerScript", {
-    code: S.Number,
-    message: S.String,
-  }),
-  [{ code: 10068 }],
-) {}
-
-export class KVNamespaceNotFound extends T.applyErrorMatchers(
-  S.TaggedErrorClass<KVNamespaceNotFound>()("KVNamespaceNotFound", {
-    code: S.Number,
-    message: S.String,
-  }),
-  [{ code: 10041 }],
-) {}
-
-export class MtlsCertificateNotFound extends T.applyErrorMatchers(
-  S.TaggedErrorClass<MtlsCertificateNotFound>()("MtlsCertificateNotFound", {
-    code: S.Number,
-    message: S.String,
-  }),
-  [{ code: 100143 }],
-) {}
-
-export class ObservabilityDestinationCreateFailed extends T.applyErrorMatchers(
-  S.TaggedErrorClass<ObservabilityDestinationCreateFailed>()(
-    "ObservabilityDestinationCreateFailed",
-    {
+export class Forbidden
+  extends /*@__PURE__*/ T.applyErrorMatchers(
+    /*@__PURE__*/ S.TaggedErrorClass<Forbidden>()("Forbidden", {
       code: S.Number,
       message: S.String,
-    },
-  ),
-  [{ status: 400, message: "Bad Request" }],
-) {}
+    }),
+    [{ status: 403 }],
+  ) {}
 
-export class ObservabilityDestinationNotFound extends T.applyErrorMatchers(
-  S.TaggedErrorClass<ObservabilityDestinationNotFound>()(
-    "ObservabilityDestinationNotFound",
-    {
+export class HostnameAlreadyInUse
+  extends /*@__PURE__*/ T.applyErrorMatchers(
+    /*@__PURE__*/ S.TaggedErrorClass<HostnameAlreadyInUse>()(
+      "HostnameAlreadyInUse",
+      {
+        code: S.Number,
+        message: S.String,
+      },
+    ),
+    [{ code: 100116 }],
+  ) {}
+
+export class HyperdriveConfigNotFound
+  extends /*@__PURE__*/ T.applyErrorMatchers(
+    /*@__PURE__*/ S.TaggedErrorClass<HyperdriveConfigNotFound>()(
+      "HyperdriveConfigNotFound",
+      {
+        code: S.Number,
+        message: S.String,
+      },
+    ),
+    [{ code: 10157 }],
+  ) {}
+
+export class InvalidRoute
+  extends /*@__PURE__*/ T.applyErrorMatchers(
+    /*@__PURE__*/ S.TaggedErrorClass<InvalidRoute>()("InvalidRoute", {
       code: S.Number,
       message: S.String,
-    },
-  ),
-  [{ status: 404 }],
-) {}
+    }),
+    [{ code: 7003 }, { code: 7003, message: { includes: "Could not route" } }],
+  ) {}
 
-export class ObservabilityDestinationPreflightFailed extends T.applyErrorMatchers(
-  S.TaggedErrorClass<ObservabilityDestinationPreflightFailed>()(
-    "ObservabilityDestinationPreflightFailed",
-    {
+export class InvalidRoutePattern
+  extends /*@__PURE__*/ T.applyErrorMatchers(
+    /*@__PURE__*/ S.TaggedErrorClass<InvalidRoutePattern>()(
+      "InvalidRoutePattern",
+      {
+        code: S.Number,
+        message: S.String,
+      },
+    ),
+    [{ code: 10022 }],
+  ) {}
+
+export class InvalidWorkerScript
+  extends /*@__PURE__*/ T.applyErrorMatchers(
+    /*@__PURE__*/ S.TaggedErrorClass<InvalidWorkerScript>()(
+      "InvalidWorkerScript",
+      {
+        code: S.Number,
+        message: S.String,
+      },
+    ),
+    [{ code: 10068 }],
+  ) {}
+
+export class KVNamespaceNotFound
+  extends /*@__PURE__*/ T.applyErrorMatchers(
+    /*@__PURE__*/ S.TaggedErrorClass<KVNamespaceNotFound>()(
+      "KVNamespaceNotFound",
+      {
+        code: S.Number,
+        message: S.String,
+      },
+    ),
+    [{ code: 10041 }],
+  ) {}
+
+export class MtlsCertificateNotFound
+  extends /*@__PURE__*/ T.applyErrorMatchers(
+    /*@__PURE__*/ S.TaggedErrorClass<MtlsCertificateNotFound>()(
+      "MtlsCertificateNotFound",
+      {
+        code: S.Number,
+        message: S.String,
+      },
+    ),
+    [{ code: 100143 }],
+  ) {}
+
+export class ObservabilityDestinationCreateFailed
+  extends /*@__PURE__*/ T.applyErrorMatchers(
+    /*@__PURE__*/ S.TaggedErrorClass<ObservabilityDestinationCreateFailed>()(
+      "ObservabilityDestinationCreateFailed",
+      {
+        code: S.Number,
+        message: S.String,
+      },
+    ),
+    [{ status: 400, message: "Bad Request" }],
+  ) {}
+
+export class ObservabilityDestinationNotFound
+  extends /*@__PURE__*/ T.applyErrorMatchers(
+    /*@__PURE__*/ S.TaggedErrorClass<ObservabilityDestinationNotFound>()(
+      "ObservabilityDestinationNotFound",
+      {
+        code: S.Number,
+        message: S.String,
+      },
+    ),
+    [{ status: 404 }],
+  ) {}
+
+export class ObservabilityDestinationPreflightFailed
+  extends /*@__PURE__*/ T.applyErrorMatchers(
+    /*@__PURE__*/ S.TaggedErrorClass<ObservabilityDestinationPreflightFailed>()(
+      "ObservabilityDestinationPreflightFailed",
+      {
+        code: S.Number,
+        message: S.String,
+      },
+    ),
+    [{ status: 400, message: "Bad Request" }],
+  ) {}
+
+export class QueueConsumerConflict
+  extends /*@__PURE__*/ T.applyErrorMatchers(
+    /*@__PURE__*/ S.TaggedErrorClass<QueueConsumerConflict>()(
+      "QueueConsumerConflict",
+      {
+        code: S.Number,
+        message: S.String,
+      },
+    ),
+    [{ code: 10064 }],
+  ) {}
+
+export class QueueNotFound
+  extends /*@__PURE__*/ T.applyErrorMatchers(
+    /*@__PURE__*/ S.TaggedErrorClass<QueueNotFound>()("QueueNotFound", {
       code: S.Number,
       message: S.String,
-    },
-  ),
-  [{ status: 400, message: "Bad Request" }],
-) {}
+    }),
+    [{ code: 11000 }],
+  ) {}
 
-export class QueueConsumerConflict extends T.applyErrorMatchers(
-  S.TaggedErrorClass<QueueConsumerConflict>()("QueueConsumerConflict", {
-    code: S.Number,
-    message: S.String,
-  }),
-  [{ code: 10064 }],
-) {}
-
-export class QueueNotFound extends T.applyErrorMatchers(
-  S.TaggedErrorClass<QueueNotFound>()("QueueNotFound", {
-    code: S.Number,
-    message: S.String,
-  }),
-  [{ code: 11000 }],
-) {}
-
-export class R2BucketNotFound extends T.applyErrorMatchers(
-  S.TaggedErrorClass<R2BucketNotFound>()("R2BucketNotFound", {
-    code: S.Number,
-    message: S.String,
-  }),
-  [{ code: 10085 }],
-) {}
-
-export class RouteNotFound extends T.applyErrorMatchers(
-  S.TaggedErrorClass<RouteNotFound>()("RouteNotFound", {
-    code: S.Number,
-    message: S.String,
-  }),
-  [{ code: 10009 }, { status: 404 }],
-) {}
-
-export class RouteScriptNotFound extends T.applyErrorMatchers(
-  S.TaggedErrorClass<RouteScriptNotFound>()("RouteScriptNotFound", {
-    code: S.Number,
-    message: S.String,
-  }),
-  [{ code: 10019 }],
-) {}
-
-export class ScriptModuleNotFound extends T.applyErrorMatchers(
-  S.TaggedErrorClass<ScriptModuleNotFound>()("ScriptModuleNotFound", {
-    code: S.Number,
-    message: S.String,
-  }),
-  [{ code: 10021, message: { includes: "No such module" } }],
-) {}
-
-export class ScriptStartupError extends T.applyErrorMatchers(
-  S.TaggedErrorClass<ScriptStartupError>()("ScriptStartupError", {
-    code: S.Number,
-    message: S.String,
-  }),
-  [{ code: 10021 }],
-) {}
-
-export class SecretNotFound extends T.applyErrorMatchers(
-  S.TaggedErrorClass<SecretNotFound>()("SecretNotFound", {
-    code: S.Number,
-    message: S.String,
-  }),
-  [{ code: 10056 }],
-) {}
-
-export class SecretsStoreBindingNotFound extends T.applyErrorMatchers(
-  S.TaggedErrorClass<SecretsStoreBindingNotFound>()(
-    "SecretsStoreBindingNotFound",
-    {
+export class R2BucketNotFound
+  extends /*@__PURE__*/ T.applyErrorMatchers(
+    /*@__PURE__*/ S.TaggedErrorClass<R2BucketNotFound>()("R2BucketNotFound", {
       code: S.Number,
       message: S.String,
-    },
-  ),
-  [{ code: 10182 }],
-) {}
+    }),
+    [{ code: 10085 }],
+  ) {}
 
-export class ServiceBindingConflict extends T.applyErrorMatchers(
-  S.TaggedErrorClass<ServiceBindingConflict>()("ServiceBindingConflict", {
-    code: S.Number,
-    message: S.String,
-  }),
-  [{ code: 10142 }],
-) {}
+export class RouteNotFound
+  extends /*@__PURE__*/ T.applyErrorMatchers(
+    /*@__PURE__*/ S.TaggedErrorClass<RouteNotFound>()("RouteNotFound", {
+      code: S.Number,
+      message: S.String,
+    }),
+    [{ code: 10009 }, { status: 404 }],
+  ) {}
 
-export class ServiceBindingNotFound extends T.applyErrorMatchers(
-  S.TaggedErrorClass<ServiceBindingNotFound>()("ServiceBindingNotFound", {
-    code: S.Number,
-    message: S.String,
-  }),
-  [{ code: 10144 }],
-) {}
+export class RouteScriptNotFound
+  extends /*@__PURE__*/ T.applyErrorMatchers(
+    /*@__PURE__*/ S.TaggedErrorClass<RouteScriptNotFound>()(
+      "RouteScriptNotFound",
+      {
+        code: S.Number,
+        message: S.String,
+      },
+    ),
+    [{ code: 10019 }],
+  ) {}
 
-export class SubdomainAlreadyExists extends T.applyErrorMatchers(
-  S.TaggedErrorClass<SubdomainAlreadyExists>()("SubdomainAlreadyExists", {
-    code: S.Number,
-    message: S.String,
-  }),
-  [{ code: 10036 }],
-) {}
+export class ScriptModuleNotFound
+  extends /*@__PURE__*/ T.applyErrorMatchers(
+    /*@__PURE__*/ S.TaggedErrorClass<ScriptModuleNotFound>()(
+      "ScriptModuleNotFound",
+      {
+        code: S.Number,
+        message: S.String,
+      },
+    ),
+    [{ code: 10021, message: { includes: "No such module" } }],
+  ) {}
 
-export class SubdomainNotFound extends T.applyErrorMatchers(
-  S.TaggedErrorClass<SubdomainNotFound>()("SubdomainNotFound", {
-    code: S.Number,
-    message: S.String,
-  }),
-  [{ status: 404 }],
-) {}
+export class ScriptStartupError
+  extends /*@__PURE__*/ T.applyErrorMatchers(
+    /*@__PURE__*/ S.TaggedErrorClass<ScriptStartupError>()(
+      "ScriptStartupError",
+      {
+        code: S.Number,
+        message: S.String,
+      },
+    ),
+    [{ code: 10021 }],
+  ) {}
 
-export class VectorizeIndexNotFound extends T.applyErrorMatchers(
-  S.TaggedErrorClass<VectorizeIndexNotFound>()("VectorizeIndexNotFound", {
-    code: S.Number,
-    message: S.String,
-  }),
-  [{ code: 10159 }],
-) {}
+export class SecretNotFound
+  extends /*@__PURE__*/ T.applyErrorMatchers(
+    /*@__PURE__*/ S.TaggedErrorClass<SecretNotFound>()("SecretNotFound", {
+      code: S.Number,
+      message: S.String,
+    }),
+    [{ code: 10056 }],
+  ) {}
 
-export class VersionNotFound extends T.applyErrorMatchers(
-  S.TaggedErrorClass<VersionNotFound>()("VersionNotFound", {
-    code: S.Number,
-    message: S.String,
-  }),
-  [{ code: 100146 }],
-) {}
+export class SecretsStoreBindingNotFound
+  extends /*@__PURE__*/ T.applyErrorMatchers(
+    /*@__PURE__*/ S.TaggedErrorClass<SecretsStoreBindingNotFound>()(
+      "SecretsStoreBindingNotFound",
+      {
+        code: S.Number,
+        message: S.String,
+      },
+    ),
+    [{ code: 10182 }],
+  ) {}
 
-export class WorkerHasNoVersions extends T.applyErrorMatchers(
-  S.TaggedErrorClass<WorkerHasNoVersions>()("WorkerHasNoVersions", {
-    code: S.Number,
-    message: S.String,
-  }),
-  [{ status: 404, message: { includes: "has no versions" } }],
-) {}
+export class ServiceBindingConflict
+  extends /*@__PURE__*/ T.applyErrorMatchers(
+    /*@__PURE__*/ S.TaggedErrorClass<ServiceBindingConflict>()(
+      "ServiceBindingConflict",
+      {
+        code: S.Number,
+        message: S.String,
+      },
+    ),
+    [{ code: 10142 }],
+  ) {}
 
-export class WorkerNotFound extends T.applyErrorMatchers(
-  S.TaggedErrorClass<WorkerNotFound>()("WorkerNotFound", {
-    code: S.Number,
-    message: S.String,
-  }),
-  [{ code: 10007 }],
-) {}
+export class ServiceBindingNotFound
+  extends /*@__PURE__*/ T.applyErrorMatchers(
+    /*@__PURE__*/ S.TaggedErrorClass<ServiceBindingNotFound>()(
+      "ServiceBindingNotFound",
+      {
+        code: S.Number,
+        message: S.String,
+      },
+    ),
+    [{ code: 10144 }],
+  ) {}
 
-export class WorkerVersionNotFound extends T.applyErrorMatchers(
-  S.TaggedErrorClass<WorkerVersionNotFound>()("WorkerVersionNotFound", {
-    code: S.Number,
-    message: S.String,
-  }),
-  [{ code: 10071 }],
-) {}
+export class SubdomainAlreadyExists
+  extends /*@__PURE__*/ T.applyErrorMatchers(
+    /*@__PURE__*/ S.TaggedErrorClass<SubdomainAlreadyExists>()(
+      "SubdomainAlreadyExists",
+      {
+        code: S.Number,
+        message: S.String,
+      },
+    ),
+    [{ code: 10036 }],
+  ) {}
+
+export class SubdomainNotFound
+  extends /*@__PURE__*/ T.applyErrorMatchers(
+    /*@__PURE__*/ S.TaggedErrorClass<SubdomainNotFound>()("SubdomainNotFound", {
+      code: S.Number,
+      message: S.String,
+    }),
+    [{ status: 404 }],
+  ) {}
+
+export class VectorizeIndexNotFound
+  extends /*@__PURE__*/ T.applyErrorMatchers(
+    /*@__PURE__*/ S.TaggedErrorClass<VectorizeIndexNotFound>()(
+      "VectorizeIndexNotFound",
+      {
+        code: S.Number,
+        message: S.String,
+      },
+    ),
+    [{ code: 10159 }],
+  ) {}
+
+export class VersionNotFound
+  extends /*@__PURE__*/ T.applyErrorMatchers(
+    /*@__PURE__*/ S.TaggedErrorClass<VersionNotFound>()("VersionNotFound", {
+      code: S.Number,
+      message: S.String,
+    }),
+    [{ code: 100146 }],
+  ) {}
+
+export class WorkerHasNoVersions
+  extends /*@__PURE__*/ T.applyErrorMatchers(
+    /*@__PURE__*/ S.TaggedErrorClass<WorkerHasNoVersions>()(
+      "WorkerHasNoVersions",
+      {
+        code: S.Number,
+        message: S.String,
+      },
+    ),
+    [{ status: 404, message: { includes: "has no versions" } }],
+  ) {}
+
+export class WorkerNotFound
+  extends /*@__PURE__*/ T.applyErrorMatchers(
+    /*@__PURE__*/ S.TaggedErrorClass<WorkerNotFound>()("WorkerNotFound", {
+      code: S.Number,
+      message: S.String,
+    }),
+    [{ code: 10007 }],
+  ) {}
+
+export class WorkerVersionNotFound
+  extends /*@__PURE__*/ T.applyErrorMatchers(
+    /*@__PURE__*/ S.TaggedErrorClass<WorkerVersionNotFound>()(
+      "WorkerVersionNotFound",
+      {
+        code: S.Number,
+        message: S.String,
+      },
+    ),
+    [{ code: 10071 }],
+  ) {}
 
 export type ScriptsSecretsBulkUpdateRequestSecretsSecretTextType =
   "secret_text";
@@ -8572,10 +8677,13 @@ export const CreateScriptEdgePreviewRequest = /*@__PURE__*/ S.suspend(() =>
 export interface CreateScriptEdgePreviewResponse {
   /** Token to send as cf-workers-preview-token header when making requests to the preview host. */
   previewToken: string;
+  /** URL for tailing live logs from the preview worker. */
+  tailUrl?: string | null;
 }
 export const CreateScriptEdgePreviewResponse = /*@__PURE__*/ S.suspend(() =>
   S.Struct({
     previewToken: S.String.pipe(T.Body("preview_token")),
+    tailUrl: S.optional(S.NullOr(S.String).pipe(T.Body("tail_url"))),
   }).pipe(T.KeyDictionary(KEY_DICTIONARY)),
 ).annotate({
   identifier: "CreateScriptEdgePreviewResponse",
@@ -9557,6 +9665,22 @@ export const PutScriptBindingArtifacts = /*@__PURE__*/ S.suspend(() =>
   identifier: "PutScriptBindingArtifacts",
 }) as any as S.Schema<PutScriptBindingArtifacts>;
 
+export type PutScriptBindingStreamType = "stream";
+export const PutScriptBindingStreamType = /*@__PURE__*/ S.String;
+
+export interface PutScriptBindingStream {
+  name: string;
+  type: PutScriptBindingStreamType;
+}
+export const PutScriptBindingStream = /*@__PURE__*/ S.suspend(() =>
+  S.Struct({
+    name: S.String,
+    type: PutScriptBindingStreamType,
+  }),
+).annotate({
+  identifier: "PutScriptBindingStream",
+}) as any as S.Schema<PutScriptBindingStream>;
+
 export type PutScriptBinding =
   | PutScriptBindingAi
   | PutScriptBindingAiSearch
@@ -9594,7 +9718,8 @@ export type PutScriptBinding =
   | PutScriptBindingVpcService
   | PutScriptBindingVpcNetwork
   | PutScriptBindingWorkerLoader
-  | PutScriptBindingArtifacts;
+  | PutScriptBindingArtifacts
+  | PutScriptBindingStream;
 export const PutScriptBinding = /*@__PURE__*/ S.Unknown.pipe(
   T.UnionCases([
     ["name", "type"],
@@ -9648,6 +9773,7 @@ export const PutScriptBinding = /*@__PURE__*/ S.Unknown.pipe(
     ["name", "networkId", "tunnelId", "type"],
     ["name", "type"],
     ["name", "namespace", "type"],
+    ["name", "type"],
   ]),
 );
 
@@ -10110,6 +10236,13 @@ export const PutScriptMetadataCache = /*@__PURE__*/ S.suspend(() =>
   identifier: "PutScriptMetadataCache",
 }) as any as S.Schema<PutScriptMetadataCache>;
 
+export type PutScriptMetadataStreamingTailConsumersList =
+  Array<PutScriptTailConsumer>;
+export const PutScriptMetadataStreamingTailConsumersList =
+  /*@__PURE__*/ S.Array(
+    PutScriptTailConsumer,
+  ) as any as S.Schema<PutScriptMetadataStreamingTailConsumersList>;
+
 export interface PutScriptMetadata {
   annotations?: PutScriptMetadataAnnotations;
   assets?: PutScriptMetadataAssets;
@@ -10130,6 +10263,7 @@ export interface PutScriptMetadata {
   tailConsumers?: PutScriptMetadataTailConsumersList | null;
   usageModel?: PutScriptMetadataUsageModel | (string & {});
   cacheOptions?: PutScriptMetadataCache;
+  streamingTailConsumers?: PutScriptMetadataStreamingTailConsumersList | null;
 }
 export const PutScriptMetadata = /*@__PURE__*/ S.suspend(() =>
   S.Struct({
@@ -10163,6 +10297,11 @@ export const PutScriptMetadata = /*@__PURE__*/ S.suspend(() =>
     ),
     cacheOptions: S.optional(
       PutScriptMetadataCache.pipe(T.Body("cache_options")),
+    ),
+    streamingTailConsumers: S.optional(
+      S.NullOr(PutScriptMetadataStreamingTailConsumersList).pipe(
+        T.Body("streaming_tail_consumers"),
+      ),
     ),
   }),
 ).annotate({
@@ -11684,6 +11823,66 @@ export const CreateScriptVersionResponse = /*@__PURE__*/ S.suspend(() =>
   identifier: "CreateScriptVersionResponse",
 }) as any as S.Schema<CreateScriptVersionResponse>;
 
+export interface CreateServiceEdgePreviewRequest {
+  /** Identifier. */
+  accountId: string;
+  /** Name of the Worker service. */
+  serviceName: string;
+  /** Name of the environment within the service. */
+  environmentName: string;
+  /** The session token returned by createSubdomainEdgePreviewSession. */
+  cfPreviewUploadConfigToken: string;
+  /** JSON-encoded multipart `metadata` part: the preview worker's modules, bindings and settings. */
+  metadata?: CreateScriptEdgePreviewMetadata;
+  /** Module files comprising the worker script, appended under their own filenames. */
+  files?: File | Blob | (File | Blob)[];
+  /** JSON-encoded multipart part selecting how the preview is routed (workers.dev or explicit routes); without it edge previews cannot opt into workers.dev routing. */
+  wranglerSessionConfig?: CreateScriptEdgePreviewWranglerSessionConfig;
+}
+export const CreateServiceEdgePreviewRequest = /*@__PURE__*/ S.suspend(() =>
+  S.Struct({
+    accountId: S.String.pipe(T.Label("account_id")),
+    serviceName: S.String.pipe(T.Label("service_name")),
+    environmentName: S.String.pipe(T.Label("environment_name")),
+    cfPreviewUploadConfigToken: S.String.pipe(
+      T.Header("cf-preview-upload-config-token"),
+    ),
+    metadata: S.optional(CreateScriptEdgePreviewMetadata),
+    files: S.optional(S.Unknown.pipe(T.FormDataFile())),
+    wranglerSessionConfig: S.optional(
+      CreateScriptEdgePreviewWranglerSessionConfig.pipe(
+        T.Body("wrangler-session-config"),
+      ),
+    ),
+  })
+    .pipe(
+      T.Http({
+        method: "POST",
+        uri: "/accounts/{account_id}/workers/services/{service_name}/environments/{environment_name}/edge-preview",
+        code: 200,
+        contentType: "multipart",
+      }),
+    )
+    .pipe(T.KeyDictionary(KEY_DICTIONARY)),
+).annotate({
+  identifier: "CreateServiceEdgePreviewRequest",
+}) as any as S.Schema<CreateServiceEdgePreviewRequest>;
+
+export interface CreateServiceEdgePreviewResponse {
+  /** Token to send as cf-workers-preview-token header when making requests to the preview host. */
+  previewToken: string;
+  /** URL for tailing live logs from the preview worker. */
+  tailUrl?: string | null;
+}
+export const CreateServiceEdgePreviewResponse = /*@__PURE__*/ S.suspend(() =>
+  S.Struct({
+    previewToken: S.String.pipe(T.Body("preview_token")),
+    tailUrl: S.optional(S.NullOr(S.String).pipe(T.Body("tail_url"))),
+  }).pipe(T.KeyDictionary(KEY_DICTIONARY)),
+).annotate({
+  identifier: "CreateServiceEdgePreviewResponse",
+}) as any as S.Schema<CreateServiceEdgePreviewResponse>;
+
 export interface CreateSubdomainEdgePreviewSessionRequest {
   /** Identifier. */
   accountId: string;
@@ -11720,6 +11919,42 @@ export const CreateSubdomainEdgePreviewSessionResponse =
   ).annotate({
     identifier: "CreateSubdomainEdgePreviewSessionResponse",
   }) as any as S.Schema<CreateSubdomainEdgePreviewSessionResponse>;
+
+export interface CreateZoneEdgePreviewSessionRequest {
+  /** Identifier. */
+  zoneId: string;
+}
+export const CreateZoneEdgePreviewSessionRequest = /*@__PURE__*/ S.suspend(() =>
+  S.Struct({
+    zoneId: S.String.pipe(T.Label("zone_id")),
+  })
+    .pipe(
+      T.Http({
+        method: "GET",
+        uri: "/zones/{zone_id}/workers/edge-preview",
+        code: 200,
+      }),
+    )
+    .pipe(T.KeyDictionary(KEY_DICTIONARY)),
+).annotate({
+  identifier: "CreateZoneEdgePreviewSessionRequest",
+}) as any as S.Schema<CreateZoneEdgePreviewSessionRequest>;
+
+export interface CreateZoneEdgePreviewSessionResponse {
+  /** Session token used as cf-preview-upload-config-token when uploading a preview worker. */
+  token: string;
+  /** Optional URL to exchange the token for a re-encoded version. */
+  exchangeUrl?: string | null;
+}
+export const CreateZoneEdgePreviewSessionResponse = /*@__PURE__*/ S.suspend(
+  () =>
+    S.Struct({
+      token: S.String,
+      exchangeUrl: S.optional(S.NullOr(S.String).pipe(T.Body("exchange_url"))),
+    }).pipe(T.KeyDictionary(KEY_DICTIONARY)),
+).annotate({
+  identifier: "CreateZoneEdgePreviewSessionResponse",
+}) as any as S.Schema<CreateZoneEdgePreviewSessionResponse>;
 
 export interface DeleteBetaWorkerRequest {
   /** Identifier. */
@@ -34936,6 +35171,21 @@ export const createScriptVersion: API.OperationMethod<
   retry: Retry.Retry,
 }));
 
+export type CreateServiceEdgePreviewError = InvalidRoute | CloudflareOpError;
+/** Upload a preview worker for one environment of a service under an edge-preview session (undocumented endpoint). */
+export const createServiceEdgePreview: API.OperationMethod<
+  CreateServiceEdgePreviewRequest,
+  CreateServiceEdgePreviewResponse,
+  CreateServiceEdgePreviewError,
+  CloudflareOpContext
+> = /*@__PURE__*/ API.make(() => ({
+  input: CreateServiceEdgePreviewRequest,
+  output: CreateServiceEdgePreviewResponse,
+  errors: [InvalidRoute, CloudflareRateLimited, CloudflareError],
+  protocol: CloudflareProtocol,
+  retry: Retry.Retry,
+}));
+
 export type CreateSubdomainEdgePreviewSessionError =
   | InvalidRoute
   | CloudflareOpError;
@@ -34948,6 +35198,23 @@ export const createSubdomainEdgePreviewSession: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateSubdomainEdgePreviewSessionRequest,
   output: CreateSubdomainEdgePreviewSessionResponse,
+  errors: [InvalidRoute, CloudflareRateLimited, CloudflareError],
+  protocol: CloudflareProtocol,
+  retry: Retry.Retry,
+}));
+
+export type CreateZoneEdgePreviewSessionError =
+  | InvalidRoute
+  | CloudflareOpError;
+/** Create an edge-preview session scoped to a zone (undocumented endpoint). */
+export const createZoneEdgePreviewSession: API.OperationMethod<
+  CreateZoneEdgePreviewSessionRequest,
+  CreateZoneEdgePreviewSessionResponse,
+  CreateZoneEdgePreviewSessionError,
+  CloudflareOpContext
+> = /*@__PURE__*/ API.make(() => ({
+  input: CreateZoneEdgePreviewSessionRequest,
+  output: CreateZoneEdgePreviewSessionResponse,
   errors: [InvalidRoute, CloudflareRateLimited, CloudflareError],
   protocol: CloudflareProtocol,
   retry: Retry.Retry,

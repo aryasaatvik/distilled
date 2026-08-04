@@ -120,86 +120,97 @@ const rules = T.EndpointResolver((p, _) => {
   return err("Invalid Configuration: Missing Region");
 });
 
-export class AccessDeniedException extends S.TaggedErrorClass<AccessDeniedException>()(
-  "AccessDeniedException",
-  { message: S.String },
-  T.all(
-    T.AwsQueryError({ code: "BillingAccessDenied", httpResponseCode: 403 }),
-    T.HttpError(403),
-  ),
-).pipe(C.withAuthError) {}
-export class BillingViewHealthStatusException extends S.TaggedErrorClass<BillingViewHealthStatusException>()(
-  "BillingViewHealthStatusException",
-  { message: S.String },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class ConflictException extends S.TaggedErrorClass<ConflictException>()(
-  "ConflictException",
-  { message: S.String, resourceId: S.String, resourceType: S.String },
-  T.all(
-    T.AwsQueryError({ code: "BillingConflict", httpResponseCode: 409 }),
-    T.HttpError(409),
-  ),
-).pipe(C.withConflictError) {}
-export class InternalServerException extends S.TaggedErrorClass<InternalServerException>()(
-  "InternalServerException",
-  { message: S.String },
-  T.all(
-    T.AwsQueryError({ code: "BillingInternalServer", httpResponseCode: 500 }),
-    T.HttpError(500),
-  ),
-).pipe(C.withServerError) {}
-export class ResourceNotFoundException extends S.TaggedErrorClass<ResourceNotFoundException>()(
-  "ResourceNotFoundException",
-  { message: S.String, resourceId: S.String, resourceType: S.String },
-  T.all(
-    T.AwsQueryError({ code: "BillingResourceNotFound", httpResponseCode: 404 }),
-    T.HttpError(404),
-  ),
-).pipe(C.withBadRequestError) {}
-export class ServiceQuotaExceededException extends S.TaggedErrorClass<ServiceQuotaExceededException>()(
-  "ServiceQuotaExceededException",
-  {
-    message: S.String,
-    resourceId: S.String,
-    resourceType: S.String,
-    serviceCode: S.String,
-    quotaCode: S.String,
-  },
-  T.all(
-    T.AwsQueryError({
-      code: "BillingServiceQuotaExceeded",
-      httpResponseCode: 402,
-    }),
-    T.HttpError(402),
-  ),
-).pipe(C.withQuotaError) {}
-export class ThrottlingException extends S.TaggedErrorClass<ThrottlingException>()(
-  "ThrottlingException",
-  { message: S.String },
-  T.all(
-    T.AwsQueryError({ code: "BillingThrottling", httpResponseCode: 429 }),
-    T.HttpError(429),
-  ),
-).pipe(C.withThrottlingError) {}
-export class ValidationException extends S.TaggedErrorClass<ValidationException>()(
-  "ValidationException",
-  {
-    message: S.String,
-    reason: S.suspend(() => ValidationExceptionReason).annotate({
-      identifier: "ValidationExceptionReason",
-    }),
-    fieldList: S.optional(
-      S.suspend(() => ValidationExceptionFieldList).annotate({
-        identifier: "ValidationExceptionFieldList",
-      }),
+export class AccessDeniedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
+    "AccessDeniedException",
+    { message: S.String },
+    T.all(
+      T.AwsQueryError({ code: "BillingAccessDenied", httpResponseCode: 403 }),
+      T.HttpError(403),
     ),
-  },
-  T.all(
-    T.AwsQueryError({ code: "BillingValidation", httpResponseCode: 400 }),
+  ).pipe(C.withAuthError) {}
+export class BillingViewHealthStatusException
+  extends /*@__PURE__*/ S.TaggedErrorClass<BillingViewHealthStatusException>()(
+    "BillingViewHealthStatusException",
+    { message: S.String },
     T.HttpError(400),
-  ),
-).pipe(C.withBadRequestError) {}
+  ).pipe(C.withBadRequestError) {}
+export class ConflictException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
+    "ConflictException",
+    { message: S.String, resourceId: S.String, resourceType: S.String },
+    T.all(
+      T.AwsQueryError({ code: "BillingConflict", httpResponseCode: 409 }),
+      T.HttpError(409),
+    ),
+  ).pipe(C.withConflictError) {}
+export class InternalServerException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
+    "InternalServerException",
+    { message: S.String },
+    T.all(
+      T.AwsQueryError({ code: "BillingInternalServer", httpResponseCode: 500 }),
+      T.HttpError(500),
+    ),
+  ).pipe(C.withServerError) {}
+export class ResourceNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
+    "ResourceNotFoundException",
+    { message: S.String, resourceId: S.String, resourceType: S.String },
+    T.all(
+      T.AwsQueryError({
+        code: "BillingResourceNotFound",
+        httpResponseCode: 404,
+      }),
+      T.HttpError(404),
+    ),
+  ).pipe(C.withBadRequestError) {}
+export class ServiceQuotaExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
+    "ServiceQuotaExceededException",
+    {
+      message: S.String,
+      resourceId: S.String,
+      resourceType: S.String,
+      serviceCode: S.String,
+      quotaCode: S.String,
+    },
+    T.all(
+      T.AwsQueryError({
+        code: "BillingServiceQuotaExceeded",
+        httpResponseCode: 402,
+      }),
+      T.HttpError(402),
+    ),
+  ).pipe(C.withQuotaError) {}
+export class ThrottlingException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
+    "ThrottlingException",
+    { message: S.String },
+    T.all(
+      T.AwsQueryError({ code: "BillingThrottling", httpResponseCode: 429 }),
+      T.HttpError(429),
+    ),
+  ).pipe(C.withThrottlingError) {}
+export class ValidationException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
+    "ValidationException",
+    {
+      message: S.String,
+      reason: S.suspend(() => ValidationExceptionReason).annotate({
+        identifier: "ValidationExceptionReason",
+      }),
+      fieldList: S.optional(
+        S.suspend(() => ValidationExceptionFieldList).annotate({
+          identifier: "ValidationExceptionFieldList",
+        }),
+      ),
+    },
+    T.all(
+      T.AwsQueryError({ code: "BillingValidation", httpResponseCode: 400 }),
+      T.HttpError(400),
+    ),
+  ).pipe(C.withBadRequestError) {}
 export type BillingViewArn = string;
 export type BillingViewSourceViewsList = string[];
 export const BillingViewSourceViewsList = /*@__PURE__*/ S.Array(S.String);
@@ -969,7 +980,27 @@ export const listBillingViews: API.OperationMethod<
     items: "billingViews",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListBillingViewsRequest,
+  ListBillingViewsResponse,
+  ListBillingViewsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListBillingViewsRequest,
+  ) => stream.Stream<
+    ListBillingViewsResponse,
+    ListBillingViewsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListBillingViewsRequest,
+  ) => stream.Stream<
+    BillingViewListElement,
+    ListBillingViewsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListSourceViewsForBillingViewError =
   | AccessDeniedException
@@ -1020,7 +1051,27 @@ export const listSourceViewsForBillingView: API.OperationMethod<
     items: "sourceViews",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListSourceViewsForBillingViewRequest,
+  ListSourceViewsForBillingViewResponse,
+  ListSourceViewsForBillingViewError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListSourceViewsForBillingViewRequest,
+  ) => stream.Stream<
+    ListSourceViewsForBillingViewResponse,
+    ListSourceViewsForBillingViewError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListSourceViewsForBillingViewRequest,
+  ) => stream.Stream<
+    BillingViewArn,
+    ListSourceViewsForBillingViewError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListTagsForResourceError =
   | AccessDeniedException

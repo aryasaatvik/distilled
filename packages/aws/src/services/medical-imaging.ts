@@ -87,51 +87,60 @@ const rules = T.EndpointResolver((p, _) => {
   return err("Invalid Configuration: Missing Region");
 });
 
-export class AccessDeniedException extends S.TaggedErrorClass<AccessDeniedException>()(
-  "AccessDeniedException",
-  { message: S.String },
-  T.HttpError(403),
-).pipe(C.withAuthError) {}
-export class BadRequestException extends S.TaggedErrorClass<BadRequestException>()(
-  "BadRequestException",
-  { message: S.String },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class ConflictException extends S.TaggedErrorClass<ConflictException>()(
-  "ConflictException",
-  { message: S.String },
-  T.HttpError(409),
-).pipe(C.withConflictError) {}
-export class InternalServerException extends S.TaggedErrorClass<InternalServerException>()(
-  "InternalServerException",
-  { message: S.String },
-  T.HttpError(500),
-).pipe(C.withServerError) {}
-export class NotAcceptableException extends S.TaggedErrorClass<NotAcceptableException>()(
-  "NotAcceptableException",
-  { message: S.String },
-  T.HttpError(406),
-).pipe(C.withBadRequestError) {}
-export class ResourceNotFoundException extends S.TaggedErrorClass<ResourceNotFoundException>()(
-  "ResourceNotFoundException",
-  { message: S.String },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class ServiceQuotaExceededException extends S.TaggedErrorClass<ServiceQuotaExceededException>()(
-  "ServiceQuotaExceededException",
-  { message: S.String },
-  T.HttpError(402),
-).pipe(C.withQuotaError) {}
-export class ThrottlingException extends S.TaggedErrorClass<ThrottlingException>()(
-  "ThrottlingException",
-  { message: S.String },
-  T.HttpError(429),
-).pipe(C.withThrottlingError) {}
-export class ValidationException extends S.TaggedErrorClass<ValidationException>()(
-  "ValidationException",
-  { message: S.String },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
+export class AccessDeniedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
+    "AccessDeniedException",
+    { message: S.String },
+    T.HttpError(403),
+  ).pipe(C.withAuthError) {}
+export class BadRequestException
+  extends /*@__PURE__*/ S.TaggedErrorClass<BadRequestException>()(
+    "BadRequestException",
+    { message: S.String },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class ConflictException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
+    "ConflictException",
+    { message: S.String },
+    T.HttpError(409),
+  ).pipe(C.withConflictError) {}
+export class InternalServerException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
+    "InternalServerException",
+    { message: S.String },
+    T.HttpError(500),
+  ).pipe(C.withServerError) {}
+export class NotAcceptableException
+  extends /*@__PURE__*/ S.TaggedErrorClass<NotAcceptableException>()(
+    "NotAcceptableException",
+    { message: S.String },
+    T.HttpError(406),
+  ).pipe(C.withBadRequestError) {}
+export class ResourceNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
+    "ResourceNotFoundException",
+    { message: S.String },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class ServiceQuotaExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
+    "ServiceQuotaExceededException",
+    { message: S.String },
+    T.HttpError(402),
+  ).pipe(C.withQuotaError) {}
+export class ThrottlingException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
+    "ThrottlingException",
+    { message: S.String },
+    T.HttpError(429),
+  ).pipe(C.withThrottlingError) {}
+export class ValidationException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
+    "ValidationException",
+    { message: S.String },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
 export type DatastoreId = string;
 export type ImageSetId = string;
 export type ImageSetExternalVersionId = string;
@@ -1791,7 +1800,27 @@ export const listDatastores: API.OperationMethod<
     items: "datastoreSummaries",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListDatastoresRequest,
+  ListDatastoresResponse,
+  ListDatastoresError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListDatastoresRequest,
+  ) => stream.Stream<
+    ListDatastoresResponse,
+    ListDatastoresError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListDatastoresRequest,
+  ) => stream.Stream<
+    DatastoreSummary,
+    ListDatastoresError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListDICOMImportJobsError =
   | AccessDeniedException
@@ -1844,7 +1873,27 @@ export const listDICOMImportJobs: API.OperationMethod<
     items: "jobSummaries",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListDICOMImportJobsRequest,
+  ListDICOMImportJobsResponse,
+  ListDICOMImportJobsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListDICOMImportJobsRequest,
+  ) => stream.Stream<
+    ListDICOMImportJobsResponse,
+    ListDICOMImportJobsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListDICOMImportJobsRequest,
+  ) => stream.Stream<
+    DICOMImportJobSummary,
+    ListDICOMImportJobsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListImageSetVersionsError =
   | AccessDeniedException
@@ -1898,7 +1947,27 @@ export const listImageSetVersions: API.OperationMethod<
     items: "imageSetPropertiesList",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListImageSetVersionsRequest,
+  ListImageSetVersionsResponse,
+  ListImageSetVersionsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListImageSetVersionsRequest,
+  ) => stream.Stream<
+    ListImageSetVersionsResponse,
+    ListImageSetVersionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListImageSetVersionsRequest,
+  ) => stream.Stream<
+    ImageSetProperties,
+    ListImageSetVersionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListTagsForResourceError =
   | AccessDeniedException
@@ -1986,7 +2055,27 @@ export const searchImageSets: API.OperationMethod<
     items: "imageSetsMetadataSummaries",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  SearchImageSetsRequest,
+  SearchImageSetsResponse,
+  SearchImageSetsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: SearchImageSetsRequest,
+  ) => stream.Stream<
+    SearchImageSetsResponse,
+    SearchImageSetsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: SearchImageSetsRequest,
+  ) => stream.Stream<
+    ImageSetsMetadataSummary,
+    SearchImageSetsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type StartDICOMImportJobError =
   | AccessDeniedException

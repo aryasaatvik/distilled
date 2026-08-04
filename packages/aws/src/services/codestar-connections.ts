@@ -85,91 +85,108 @@ const rules = T.EndpointResolver((p, _) => {
   return err("Invalid Configuration: Missing Region");
 });
 
-export class AccessDeniedException extends S.TaggedErrorClass<AccessDeniedException>()(
-  "AccessDeniedException",
-  { Message: S.optional(S.String) },
-  T.HttpError(403),
-).pipe(C.withAuthError) {}
-export class ConcurrentModificationException extends S.TaggedErrorClass<ConcurrentModificationException>()(
-  "ConcurrentModificationException",
-  { Message: S.optional(S.String) },
-  T.HttpError(409),
-).pipe(C.withConflictError) {}
-export class ConditionalCheckFailedException extends S.TaggedErrorClass<ConditionalCheckFailedException>()(
-  "ConditionalCheckFailedException",
-  { Message: S.optional(S.String) },
-  T.HttpError(409),
-).pipe(C.withConflictError) {}
-export class ConflictException extends S.TaggedErrorClass<ConflictException>()(
-  "ConflictException",
-  { Message: S.optional(S.String) },
-  T.HttpError(409),
-).pipe(C.withConflictError) {}
-export class InternalServerException extends S.TaggedErrorClass<InternalServerException>()(
-  "InternalServerException",
-  { Message: S.optional(S.String) },
-  T.HttpError(503),
-).pipe(C.withServerError) {}
-export class InvalidInputException extends S.TaggedErrorClass<InvalidInputException>()(
-  "InvalidInputException",
-  { Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class LimitExceededException extends S.TaggedErrorClass<LimitExceededException>()(
-  "LimitExceededException",
-  { Message: S.optional(S.String) },
-  T.HttpError(429),
-).pipe(C.withThrottlingError) {}
-export class ResourceAlreadyExistsException extends S.TaggedErrorClass<ResourceAlreadyExistsException>()(
-  "ResourceAlreadyExistsException",
-  { Message: S.optional(S.String) },
-  T.HttpError(409),
-).pipe(C.withConflictError, C.withAlreadyExistsError) {}
-export class ResourceNotFoundException extends S.TaggedErrorClass<ResourceNotFoundException>()(
-  "ResourceNotFoundException",
-  { Message: S.optional(S.String) },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class ResourceUnavailableException extends S.TaggedErrorClass<ResourceUnavailableException>()(
-  "ResourceUnavailableException",
-  { Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class RetryLatestCommitFailedException extends S.TaggedErrorClass<RetryLatestCommitFailedException>()(
-  "RetryLatestCommitFailedException",
-  { Message: S.optional(S.String) },
-  T.HttpError(503),
-).pipe(C.withServerError) {}
-export class SyncBlockerDoesNotExistException extends S.TaggedErrorClass<SyncBlockerDoesNotExistException>()(
-  "SyncBlockerDoesNotExistException",
-  { Message: S.optional(S.String) },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class SyncConfigurationStillExistsException extends S.TaggedErrorClass<SyncConfigurationStillExistsException>()(
-  "SyncConfigurationStillExistsException",
-  { Message: S.optional(S.String) },
-  T.HttpError(409),
-).pipe(C.withConflictError) {}
-export class ThrottlingException extends S.TaggedErrorClass<ThrottlingException>()(
-  "ThrottlingException",
-  { Message: S.optional(S.String) },
-  T.HttpError(429),
-).pipe(C.withThrottlingError) {}
-export class UnsupportedOperationException extends S.TaggedErrorClass<UnsupportedOperationException>()(
-  "UnsupportedOperationException",
-  { Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class UnsupportedProviderTypeException extends S.TaggedErrorClass<UnsupportedProviderTypeException>()(
-  "UnsupportedProviderTypeException",
-  { Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class UpdateOutOfSyncException extends S.TaggedErrorClass<UpdateOutOfSyncException>()(
-  "UpdateOutOfSyncException",
-  { Message: S.optional(S.String) },
-  T.HttpError(409),
-).pipe(C.withConflictError) {}
+export class AccessDeniedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
+    "AccessDeniedException",
+    { Message: S.optional(S.String) },
+    T.HttpError(403),
+  ).pipe(C.withAuthError) {}
+export class ConcurrentModificationException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ConcurrentModificationException>()(
+    "ConcurrentModificationException",
+    { Message: S.optional(S.String) },
+    T.HttpError(409),
+  ).pipe(C.withConflictError) {}
+export class ConditionalCheckFailedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ConditionalCheckFailedException>()(
+    "ConditionalCheckFailedException",
+    { Message: S.optional(S.String) },
+    T.HttpError(409),
+  ).pipe(C.withConflictError) {}
+export class ConflictException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
+    "ConflictException",
+    { Message: S.optional(S.String) },
+    T.HttpError(409),
+  ).pipe(C.withConflictError) {}
+export class InternalServerException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
+    "InternalServerException",
+    { Message: S.optional(S.String) },
+    T.HttpError(503),
+  ).pipe(C.withServerError) {}
+export class InvalidInputException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidInputException>()(
+    "InvalidInputException",
+    { Message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class LimitExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<LimitExceededException>()(
+    "LimitExceededException",
+    { Message: S.optional(S.String) },
+    T.HttpError(429),
+  ).pipe(C.withThrottlingError) {}
+export class ResourceAlreadyExistsException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceAlreadyExistsException>()(
+    "ResourceAlreadyExistsException",
+    { Message: S.optional(S.String) },
+    T.HttpError(409),
+  ).pipe(C.withConflictError, C.withAlreadyExistsError) {}
+export class ResourceNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
+    "ResourceNotFoundException",
+    { Message: S.optional(S.String) },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class ResourceUnavailableException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceUnavailableException>()(
+    "ResourceUnavailableException",
+    { Message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class RetryLatestCommitFailedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<RetryLatestCommitFailedException>()(
+    "RetryLatestCommitFailedException",
+    { Message: S.optional(S.String) },
+    T.HttpError(503),
+  ).pipe(C.withServerError) {}
+export class SyncBlockerDoesNotExistException
+  extends /*@__PURE__*/ S.TaggedErrorClass<SyncBlockerDoesNotExistException>()(
+    "SyncBlockerDoesNotExistException",
+    { Message: S.optional(S.String) },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class SyncConfigurationStillExistsException
+  extends /*@__PURE__*/ S.TaggedErrorClass<SyncConfigurationStillExistsException>()(
+    "SyncConfigurationStillExistsException",
+    { Message: S.optional(S.String) },
+    T.HttpError(409),
+  ).pipe(C.withConflictError) {}
+export class ThrottlingException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
+    "ThrottlingException",
+    { Message: S.optional(S.String) },
+    T.HttpError(429),
+  ).pipe(C.withThrottlingError) {}
+export class UnsupportedOperationException
+  extends /*@__PURE__*/ S.TaggedErrorClass<UnsupportedOperationException>()(
+    "UnsupportedOperationException",
+    { Message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class UnsupportedProviderTypeException
+  extends /*@__PURE__*/ S.TaggedErrorClass<UnsupportedProviderTypeException>()(
+    "UnsupportedProviderTypeException",
+    { Message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class UpdateOutOfSyncException
+  extends /*@__PURE__*/ S.TaggedErrorClass<UpdateOutOfSyncException>()(
+    "UpdateOutOfSyncException",
+    { Message: S.optional(S.String) },
+    T.HttpError(409),
+  ).pipe(C.withConflictError) {}
 export type ProviderType =
   | "Bitbucket"
   | "GitHub"
@@ -1640,7 +1657,27 @@ export const listConnections: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListConnectionsInput,
+  ListConnectionsOutput,
+  ListConnectionsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListConnectionsInput,
+  ) => stream.Stream<
+    ListConnectionsOutput,
+    ListConnectionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListConnectionsInput,
+  ) => stream.Stream<
+    unknown,
+    ListConnectionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListHostsError = CommonErrors;
 /**
@@ -1678,7 +1715,27 @@ export const listHosts: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListHostsInput,
+  ListHostsOutput,
+  ListHostsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListHostsInput,
+  ) => stream.Stream<
+    ListHostsOutput,
+    ListHostsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListHostsInput,
+  ) => stream.Stream<
+    unknown,
+    ListHostsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListRepositoryLinksError =
   | AccessDeniedException
@@ -1730,7 +1787,27 @@ export const listRepositoryLinks: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListRepositoryLinksInput,
+  ListRepositoryLinksOutput,
+  ListRepositoryLinksError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListRepositoryLinksInput,
+  ) => stream.Stream<
+    ListRepositoryLinksOutput,
+    ListRepositoryLinksError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListRepositoryLinksInput,
+  ) => stream.Stream<
+    unknown,
+    ListRepositoryLinksError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListRepositorySyncDefinitionsError =
   | AccessDeniedException
@@ -1810,7 +1887,27 @@ export const listSyncConfigurations: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListSyncConfigurationsInput,
+  ListSyncConfigurationsOutput,
+  ListSyncConfigurationsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListSyncConfigurationsInput,
+  ) => stream.Stream<
+    ListSyncConfigurationsOutput,
+    ListSyncConfigurationsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListSyncConfigurationsInput,
+  ) => stream.Stream<
+    unknown,
+    ListSyncConfigurationsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListTagsForResourceError = ResourceNotFoundException | CommonErrors;
 /**

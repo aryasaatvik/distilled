@@ -87,54 +87,61 @@ const rules = T.EndpointResolver((p, _) => {
   return err("Invalid Configuration: Missing Region");
 });
 
-export class InternalServerException extends S.TaggedErrorClass<InternalServerException>()(
-  "InternalServerException",
-  { message: S.String },
-  T.all(T.HttpError(500), T.Retryable()),
-).pipe(C.withServerError, C.withRetryableError) {}
-export class ResourceNotFoundException extends S.TaggedErrorClass<ResourceNotFoundException>()(
-  "ResourceNotFoundException",
-  { message: S.String, resourceId: S.String, resourceType: S.String },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class ServiceQuotaExceededException extends S.TaggedErrorClass<ServiceQuotaExceededException>()(
-  "ServiceQuotaExceededException",
-  { message: S.String },
-  T.HttpError(402),
-).pipe(C.withQuotaError) {}
-export class TagPolicyException extends S.TaggedErrorClass<TagPolicyException>()(
-  "TagPolicyException",
-  { message: S.String },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class ThrottlingException extends S.TaggedErrorClass<ThrottlingException>()(
-  "ThrottlingException",
-  {
-    message: S.String,
-    retryAfterSeconds: S.optional(S.Number).pipe(T.HttpHeader("Retry-After")),
-  },
-  T.all(T.HttpError(429), T.Retryable()),
-).pipe(C.withThrottlingError, C.withRetryableError) {}
-export class TooManyTagsException extends S.TaggedErrorClass<TooManyTagsException>()(
-  "TooManyTagsException",
-  { message: S.String },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class ValidationException extends S.TaggedErrorClass<ValidationException>()(
-  "ValidationException",
-  {
-    message: S.String,
-    reason: S.suspend(() => ValidationExceptionReason).annotate({
-      identifier: "ValidationExceptionReason",
-    }),
-    fieldList: S.optional(
-      S.suspend(() => ValidationExceptionFieldList).annotate({
-        identifier: "ValidationExceptionFieldList",
+export class InternalServerException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
+    "InternalServerException",
+    { message: S.String },
+    T.all(T.HttpError(500), T.Retryable()),
+  ).pipe(C.withServerError, C.withRetryableError) {}
+export class ResourceNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
+    "ResourceNotFoundException",
+    { message: S.String, resourceId: S.String, resourceType: S.String },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class ServiceQuotaExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
+    "ServiceQuotaExceededException",
+    { message: S.String },
+    T.HttpError(402),
+  ).pipe(C.withQuotaError) {}
+export class TagPolicyException
+  extends /*@__PURE__*/ S.TaggedErrorClass<TagPolicyException>()(
+    "TagPolicyException",
+    { message: S.String },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class ThrottlingException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
+    "ThrottlingException",
+    {
+      message: S.String,
+      retryAfterSeconds: S.optional(S.Number).pipe(T.HttpHeader("Retry-After")),
+    },
+    T.all(T.HttpError(429), T.Retryable()),
+  ).pipe(C.withThrottlingError, C.withRetryableError) {}
+export class TooManyTagsException
+  extends /*@__PURE__*/ S.TaggedErrorClass<TooManyTagsException>()(
+    "TooManyTagsException",
+    { message: S.String },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class ValidationException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
+    "ValidationException",
+    {
+      message: S.String,
+      reason: S.suspend(() => ValidationExceptionReason).annotate({
+        identifier: "ValidationExceptionReason",
       }),
-    ),
-  },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
+      fieldList: S.optional(
+        S.suspend(() => ValidationExceptionFieldList).annotate({
+          identifier: "ValidationExceptionFieldList",
+        }),
+      ),
+    },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
 export type ClientToken = string;
 export type EnvironmentId = string;
 export type AllocationId = string;
@@ -1631,7 +1638,27 @@ export const listEnvironmentConnectors: API.OperationMethod<
     items: "connectors",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListEnvironmentConnectorsRequest,
+  ListEnvironmentConnectorsResponse,
+  ListEnvironmentConnectorsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListEnvironmentConnectorsRequest,
+  ) => stream.Stream<
+    ListEnvironmentConnectorsResponse,
+    ListEnvironmentConnectorsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListEnvironmentConnectorsRequest,
+  ) => stream.Stream<
+    Connector,
+    ListEnvironmentConnectorsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListEnvironmentHostsError =
   | ResourceNotFoundException
@@ -1673,7 +1700,27 @@ export const listEnvironmentHosts: API.OperationMethod<
     items: "environmentHosts",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListEnvironmentHostsRequest,
+  ListEnvironmentHostsResponse,
+  ListEnvironmentHostsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListEnvironmentHostsRequest,
+  ) => stream.Stream<
+    ListEnvironmentHostsResponse,
+    ListEnvironmentHostsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListEnvironmentHostsRequest,
+  ) => stream.Stream<
+    Host,
+    ListEnvironmentHostsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListEnvironmentsError = ValidationException | CommonErrors;
 /**
@@ -1712,7 +1759,27 @@ export const listEnvironments: API.OperationMethod<
     items: "environmentSummaries",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListEnvironmentsRequest,
+  ListEnvironmentsResponse,
+  ListEnvironmentsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListEnvironmentsRequest,
+  ) => stream.Stream<
+    ListEnvironmentsResponse,
+    ListEnvironmentsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListEnvironmentsRequest,
+  ) => stream.Stream<
+    EnvironmentSummary,
+    ListEnvironmentsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListEnvironmentVlansError =
   | ResourceNotFoundException
@@ -1754,7 +1821,27 @@ export const listEnvironmentVlans: API.OperationMethod<
     items: "environmentVlans",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListEnvironmentVlansRequest,
+  ListEnvironmentVlansResponse,
+  ListEnvironmentVlansError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListEnvironmentVlansRequest,
+  ) => stream.Stream<
+    ListEnvironmentVlansResponse,
+    ListEnvironmentVlansError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListEnvironmentVlansRequest,
+  ) => stream.Stream<
+    Vlan,
+    ListEnvironmentVlansError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListTagsForResourceError = ResourceNotFoundException | CommonErrors;
 /**
@@ -1814,7 +1901,27 @@ export const listVmEntitlements: API.OperationMethod<
     items: "entitlements",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListVmEntitlementsRequest,
+  ListVmEntitlementsResponse,
+  ListVmEntitlementsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListVmEntitlementsRequest,
+  ) => stream.Stream<
+    ListVmEntitlementsResponse,
+    ListVmEntitlementsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListVmEntitlementsRequest,
+  ) => stream.Stream<
+    VmEntitlement,
+    ListVmEntitlementsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type TagResourceError =
   | ResourceNotFoundException

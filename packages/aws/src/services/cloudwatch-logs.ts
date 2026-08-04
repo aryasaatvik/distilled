@@ -92,93 +92,111 @@ const rules = T.EndpointResolver((p, _) => {
   return err("Invalid Configuration: Missing Region");
 });
 
-export class AccessDeniedException extends S.TaggedErrorClass<AccessDeniedException>()(
-  "AccessDeniedException",
-  { message: S.optional(S.String) },
-).pipe(C.withAuthError) {}
-export class ConflictException extends S.TaggedErrorClass<ConflictException>()(
-  "ConflictException",
-  { message: S.optional(S.String) },
-).pipe(C.withConflictError) {}
-export class DataAlreadyAcceptedException extends S.TaggedErrorClass<DataAlreadyAcceptedException>()(
-  "DataAlreadyAcceptedException",
-  {
-    expectedSequenceToken: S.optional(S.String),
-    message: S.optional(S.String),
-  },
-).pipe(C.withConflictError) {}
-export class InternalServerException extends S.TaggedErrorClass<InternalServerException>()(
-  "InternalServerException",
-  { message: S.optional(S.String) },
-  T.HttpError(500),
-).pipe(C.withServerError) {}
-export class InvalidOperationException extends S.TaggedErrorClass<InvalidOperationException>()(
-  "InvalidOperationException",
-  { message: S.optional(S.String) },
-).pipe(C.withBadRequestError) {}
-export class InvalidParameterException extends S.TaggedErrorClass<InvalidParameterException>()(
-  "InvalidParameterException",
-  { message: S.optional(S.String) },
-).pipe(C.withBadRequestError) {}
-export class InvalidSequenceTokenException extends S.TaggedErrorClass<InvalidSequenceTokenException>()(
-  "InvalidSequenceTokenException",
-  {
-    expectedSequenceToken: S.optional(S.String),
-    message: S.optional(S.String),
-  },
-).pipe(C.withBadRequestError) {}
-export class LimitExceededException extends S.TaggedErrorClass<LimitExceededException>()(
-  "LimitExceededException",
-  { message: S.optional(S.String) },
-).pipe(C.withQuotaError) {}
-export class MalformedQueryException extends S.TaggedErrorClass<MalformedQueryException>()(
-  "MalformedQueryException",
-  {
-    queryCompileError: S.optional(
-      S.suspend(() => QueryCompileError).annotate({
-        identifier: "QueryCompileError",
-      }),
-    ),
-    message: S.optional(S.String),
-  },
-).pipe(C.withBadRequestError) {}
-export class OperationAbortedException extends S.TaggedErrorClass<OperationAbortedException>()(
-  "OperationAbortedException",
-  { message: S.optional(S.String) },
-).pipe(C.withConflictError, C.withRetryableError) {}
-export class ResourceAlreadyExistsException extends S.TaggedErrorClass<ResourceAlreadyExistsException>()(
-  "ResourceAlreadyExistsException",
-  { message: S.optional(S.String) },
-).pipe(C.withAlreadyExistsError) {}
-export class ResourceNotFoundException extends S.TaggedErrorClass<ResourceNotFoundException>()(
-  "ResourceNotFoundException",
-  { message: S.optional(S.String) },
-).pipe(C.withNotFoundError) {}
-export class ServiceQuotaExceededException extends S.TaggedErrorClass<ServiceQuotaExceededException>()(
-  "ServiceQuotaExceededException",
-  { message: S.optional(S.String) },
-).pipe(C.withQuotaError) {}
-export class ServiceUnavailableException extends S.TaggedErrorClass<ServiceUnavailableException>()(
-  "ServiceUnavailableException",
-  { message: S.optional(S.String) },
-).pipe(C.withServerError) {}
-export class ThrottlingException extends S.TaggedErrorClass<ThrottlingException>()(
-  "ThrottlingException",
-  { message: S.optional(S.String) },
-).pipe(C.withThrottlingError, C.withRetryableError) {}
-export class TooManyTagsException extends S.TaggedErrorClass<TooManyTagsException>()(
-  "TooManyTagsException",
-  { message: S.optional(S.String), resourceName: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class UnrecognizedClientException extends S.TaggedErrorClass<UnrecognizedClientException>()(
-  "UnrecognizedClientException",
-  { message: S.optional(S.String) },
-).pipe(C.withAuthError) {}
-export class ValidationException extends S.TaggedErrorClass<ValidationException>()(
-  "ValidationException",
-  { message: S.optional(S.String) },
-).pipe(C.withBadRequestError) {}
+export class AccessDeniedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
+    "AccessDeniedException",
+    { message: S.optional(S.String) },
+  ).pipe(C.withAuthError) {}
+export class ConflictException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
+    "ConflictException",
+    { message: S.optional(S.String) },
+  ).pipe(C.withConflictError) {}
+export class DataAlreadyAcceptedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<DataAlreadyAcceptedException>()(
+    "DataAlreadyAcceptedException",
+    {
+      expectedSequenceToken: S.optional(S.String),
+      message: S.optional(S.String),
+    },
+  ).pipe(C.withConflictError) {}
+export class InternalServerException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
+    "InternalServerException",
+    { message: S.optional(S.String) },
+    T.HttpError(500),
+  ).pipe(C.withServerError) {}
+export class InvalidOperationException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidOperationException>()(
+    "InvalidOperationException",
+    { message: S.optional(S.String) },
+  ).pipe(C.withBadRequestError) {}
+export class InvalidParameterException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidParameterException>()(
+    "InvalidParameterException",
+    { message: S.optional(S.String) },
+  ).pipe(C.withBadRequestError) {}
+export class InvalidSequenceTokenException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidSequenceTokenException>()(
+    "InvalidSequenceTokenException",
+    {
+      expectedSequenceToken: S.optional(S.String),
+      message: S.optional(S.String),
+    },
+  ).pipe(C.withBadRequestError) {}
+export class LimitExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<LimitExceededException>()(
+    "LimitExceededException",
+    { message: S.optional(S.String) },
+  ).pipe(C.withQuotaError) {}
+export class MalformedQueryException
+  extends /*@__PURE__*/ S.TaggedErrorClass<MalformedQueryException>()(
+    "MalformedQueryException",
+    {
+      queryCompileError: S.optional(
+        S.suspend(() => QueryCompileError).annotate({
+          identifier: "QueryCompileError",
+        }),
+      ),
+      message: S.optional(S.String),
+    },
+  ).pipe(C.withBadRequestError) {}
+export class OperationAbortedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<OperationAbortedException>()(
+    "OperationAbortedException",
+    { message: S.optional(S.String) },
+  ).pipe(C.withConflictError, C.withRetryableError) {}
+export class ResourceAlreadyExistsException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceAlreadyExistsException>()(
+    "ResourceAlreadyExistsException",
+    { message: S.optional(S.String) },
+  ).pipe(C.withAlreadyExistsError) {}
+export class ResourceNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
+    "ResourceNotFoundException",
+    { message: S.optional(S.String) },
+  ).pipe(C.withNotFoundError) {}
+export class ServiceQuotaExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
+    "ServiceQuotaExceededException",
+    { message: S.optional(S.String) },
+  ).pipe(C.withQuotaError) {}
+export class ServiceUnavailableException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ServiceUnavailableException>()(
+    "ServiceUnavailableException",
+    { message: S.optional(S.String) },
+  ).pipe(C.withServerError) {}
+export class ThrottlingException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
+    "ThrottlingException",
+    { message: S.optional(S.String) },
+  ).pipe(C.withThrottlingError, C.withRetryableError) {}
+export class TooManyTagsException
+  extends /*@__PURE__*/ S.TaggedErrorClass<TooManyTagsException>()(
+    "TooManyTagsException",
+    { message: S.optional(S.String), resourceName: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class UnrecognizedClientException
+  extends /*@__PURE__*/ S.TaggedErrorClass<UnrecognizedClientException>()(
+    "UnrecognizedClientException",
+    { message: S.optional(S.String) },
+  ).pipe(C.withAuthError) {}
+export class ValidationException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
+    "ValidationException",
+    { message: S.optional(S.String) },
+  ).pipe(C.withBadRequestError) {}
 export type LogGroupName = string;
 export type KmsKeyId = string;
 export type ResourceIdentifier = string;
@@ -7964,7 +7982,27 @@ export const describeConfigurationTemplates: API.OperationMethod<
     items: "configurationTemplates",
     pageSize: "limit",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  DescribeConfigurationTemplatesRequest,
+  DescribeConfigurationTemplatesResponse,
+  DescribeConfigurationTemplatesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: DescribeConfigurationTemplatesRequest,
+  ) => stream.Stream<
+    DescribeConfigurationTemplatesResponse,
+    DescribeConfigurationTemplatesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: DescribeConfigurationTemplatesRequest,
+  ) => stream.Stream<
+    ConfigurationTemplate,
+    DescribeConfigurationTemplatesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type DescribeDeliveriesError =
   | ServiceQuotaExceededException
@@ -8025,7 +8063,27 @@ export const describeDeliveries: API.OperationMethod<
     items: "deliveries",
     pageSize: "limit",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  DescribeDeliveriesRequest,
+  DescribeDeliveriesResponse,
+  DescribeDeliveriesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: DescribeDeliveriesRequest,
+  ) => stream.Stream<
+    DescribeDeliveriesResponse,
+    DescribeDeliveriesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: DescribeDeliveriesRequest,
+  ) => stream.Stream<
+    Delivery,
+    DescribeDeliveriesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type DescribeDeliveryDestinationsError =
   | ServiceQuotaExceededException
@@ -8075,7 +8133,27 @@ export const describeDeliveryDestinations: API.OperationMethod<
     items: "deliveryDestinations",
     pageSize: "limit",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  DescribeDeliveryDestinationsRequest,
+  DescribeDeliveryDestinationsResponse,
+  DescribeDeliveryDestinationsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: DescribeDeliveryDestinationsRequest,
+  ) => stream.Stream<
+    DescribeDeliveryDestinationsResponse,
+    DescribeDeliveryDestinationsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: DescribeDeliveryDestinationsRequest,
+  ) => stream.Stream<
+    DeliveryDestination,
+    DescribeDeliveryDestinationsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type DescribeDeliverySourcesError =
   | ServiceQuotaExceededException
@@ -8124,7 +8202,27 @@ export const describeDeliverySources: API.OperationMethod<
     items: "deliverySources",
     pageSize: "limit",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  DescribeDeliverySourcesRequest,
+  DescribeDeliverySourcesResponse,
+  DescribeDeliverySourcesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: DescribeDeliverySourcesRequest,
+  ) => stream.Stream<
+    DescribeDeliverySourcesResponse,
+    DescribeDeliverySourcesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: DescribeDeliverySourcesRequest,
+  ) => stream.Stream<
+    DeliverySource,
+    DescribeDeliverySourcesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type DescribeDestinationsError =
   | InvalidParameterException
@@ -8167,7 +8265,27 @@ export const describeDestinations: API.OperationMethod<
     items: "destinations",
     pageSize: "limit",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  DescribeDestinationsRequest,
+  DescribeDestinationsResponse,
+  DescribeDestinationsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: DescribeDestinationsRequest,
+  ) => stream.Stream<
+    DescribeDestinationsResponse,
+    DescribeDestinationsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: DescribeDestinationsRequest,
+  ) => stream.Stream<
+    Destination,
+    DescribeDestinationsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type DescribeExportTasksError =
   | InvalidParameterException
@@ -8378,7 +8496,27 @@ export const describeLogGroups: API.OperationMethod<
     items: "logGroups",
     pageSize: "limit",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  DescribeLogGroupsRequest,
+  DescribeLogGroupsResponse,
+  DescribeLogGroupsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: DescribeLogGroupsRequest,
+  ) => stream.Stream<
+    DescribeLogGroupsResponse,
+    DescribeLogGroupsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: DescribeLogGroupsRequest,
+  ) => stream.Stream<
+    LogGroup,
+    DescribeLogGroupsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type DescribeLogStreamsError =
   | InvalidParameterException
@@ -8437,7 +8575,27 @@ export const describeLogStreams: API.OperationMethod<
     items: "logStreams",
     pageSize: "limit",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  DescribeLogStreamsRequest,
+  DescribeLogStreamsResponse,
+  DescribeLogStreamsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: DescribeLogStreamsRequest,
+  ) => stream.Stream<
+    DescribeLogStreamsResponse,
+    DescribeLogStreamsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: DescribeLogStreamsRequest,
+  ) => stream.Stream<
+    LogStream,
+    DescribeLogStreamsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type DescribeLookupTablesError =
   | AccessDeniedException
@@ -8515,7 +8673,27 @@ export const describeMetricFilters: API.OperationMethod<
     items: "metricFilters",
     pageSize: "limit",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  DescribeMetricFiltersRequest,
+  DescribeMetricFiltersResponse,
+  DescribeMetricFiltersError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: DescribeMetricFiltersRequest,
+  ) => stream.Stream<
+    DescribeMetricFiltersResponse,
+    DescribeMetricFiltersError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: DescribeMetricFiltersRequest,
+  ) => stream.Stream<
+    MetricFilter,
+    DescribeMetricFiltersError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type DescribeQueriesError =
   | InvalidParameterException
@@ -8644,7 +8822,27 @@ export const describeSubscriptionFilters: API.OperationMethod<
     items: "subscriptionFilters",
     pageSize: "limit",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  DescribeSubscriptionFiltersRequest,
+  DescribeSubscriptionFiltersResponse,
+  DescribeSubscriptionFiltersError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: DescribeSubscriptionFiltersRequest,
+  ) => stream.Stream<
+    DescribeSubscriptionFiltersResponse,
+    DescribeSubscriptionFiltersError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: DescribeSubscriptionFiltersRequest,
+  ) => stream.Stream<
+    SubscriptionFilter,
+    DescribeSubscriptionFiltersError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type DisassociateKmsKeyError =
   | InvalidParameterException
@@ -8815,7 +9013,27 @@ export const filterLogEvents: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "limit",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  FilterLogEventsRequest,
+  FilterLogEventsResponse,
+  FilterLogEventsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: FilterLogEventsRequest,
+  ) => stream.Stream<
+    FilterLogEventsResponse,
+    FilterLogEventsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: FilterLogEventsRequest,
+  ) => stream.Stream<
+    unknown,
+    FilterLogEventsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type GetDataProtectionPolicyError =
   | InvalidParameterException
@@ -9107,7 +9325,27 @@ export const getLogEvents: API.OperationMethod<
     items: "events",
     pageSize: "limit",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  GetLogEventsRequest,
+  GetLogEventsResponse,
+  GetLogEventsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: GetLogEventsRequest,
+  ) => stream.Stream<
+    GetLogEventsResponse,
+    GetLogEventsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: GetLogEventsRequest,
+  ) => stream.Stream<
+    OutputLogEvent,
+    GetLogEventsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type GetLogFieldsError =
   | InvalidParameterException
@@ -9427,7 +9665,27 @@ export const getScheduledQueryHistory: API.OperationMethod<
     items: "triggerHistory",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  GetScheduledQueryHistoryRequest,
+  GetScheduledQueryHistoryResponse,
+  GetScheduledQueryHistoryError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: GetScheduledQueryHistoryRequest,
+  ) => stream.Stream<
+    GetScheduledQueryHistoryResponse,
+    GetScheduledQueryHistoryError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: GetScheduledQueryHistoryRequest,
+  ) => stream.Stream<
+    TriggerHistoryRecord,
+    GetScheduledQueryHistoryError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type GetTransformerError =
   | InvalidOperationException
@@ -9516,7 +9774,27 @@ export const listAggregateLogGroupSummaries: API.OperationMethod<
     items: "aggregateLogGroupSummaries",
     pageSize: "limit",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListAggregateLogGroupSummariesRequest,
+  ListAggregateLogGroupSummariesResponse,
+  ListAggregateLogGroupSummariesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListAggregateLogGroupSummariesRequest,
+  ) => stream.Stream<
+    ListAggregateLogGroupSummariesResponse,
+    ListAggregateLogGroupSummariesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListAggregateLogGroupSummariesRequest,
+  ) => stream.Stream<
+    AggregateLogGroupSummary,
+    ListAggregateLogGroupSummariesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListAnomaliesError =
   | InvalidParameterException
@@ -9567,7 +9845,27 @@ export const listAnomalies: API.OperationMethod<
     items: "anomalies",
     pageSize: "limit",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListAnomaliesRequest,
+  ListAnomaliesResponse,
+  ListAnomaliesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListAnomaliesRequest,
+  ) => stream.Stream<
+    ListAnomaliesResponse,
+    ListAnomaliesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListAnomaliesRequest,
+  ) => stream.Stream<
+    Anomaly,
+    ListAnomaliesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListIntegrationsError =
   | InvalidParameterException
@@ -9639,7 +9937,27 @@ export const listLogAnomalyDetectors: API.OperationMethod<
     items: "anomalyDetectors",
     pageSize: "limit",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListLogAnomalyDetectorsRequest,
+  ListLogAnomalyDetectorsResponse,
+  ListLogAnomalyDetectorsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListLogAnomalyDetectorsRequest,
+  ) => stream.Stream<
+    ListLogAnomalyDetectorsResponse,
+    ListLogAnomalyDetectorsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListLogAnomalyDetectorsRequest,
+  ) => stream.Stream<
+    AnomalyDetector,
+    ListLogAnomalyDetectorsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListLogGroupsError =
   | InvalidParameterException
@@ -9726,7 +10044,27 @@ export const listLogGroupsForQuery: API.OperationMethod<
     items: "logGroupIdentifiers",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListLogGroupsForQueryRequest,
+  ListLogGroupsForQueryResponse,
+  ListLogGroupsForQueryError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListLogGroupsForQueryRequest,
+  ) => stream.Stream<
+    ListLogGroupsForQueryResponse,
+    ListLogGroupsForQueryError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListLogGroupsForQueryRequest,
+  ) => stream.Stream<
+    LogGroupIdentifier,
+    ListLogGroupsForQueryError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListScheduledQueriesError =
   | AccessDeniedException
@@ -9776,7 +10114,27 @@ export const listScheduledQueries: API.OperationMethod<
     items: "scheduledQueries",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListScheduledQueriesRequest,
+  ListScheduledQueriesResponse,
+  ListScheduledQueriesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListScheduledQueriesRequest,
+  ) => stream.Stream<
+    ListScheduledQueriesResponse,
+    ListScheduledQueriesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListScheduledQueriesRequest,
+  ) => stream.Stream<
+    ScheduledQuerySummary,
+    ListScheduledQueriesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListSourcesForS3TableIntegrationError =
   | AccessDeniedException
@@ -9828,7 +10186,27 @@ export const listSourcesForS3TableIntegration: API.OperationMethod<
     items: "sources",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListSourcesForS3TableIntegrationRequest,
+  ListSourcesForS3TableIntegrationResponse,
+  ListSourcesForS3TableIntegrationError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListSourcesForS3TableIntegrationRequest,
+  ) => stream.Stream<
+    ListSourcesForS3TableIntegrationResponse,
+    ListSourcesForS3TableIntegrationError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListSourcesForS3TableIntegrationRequest,
+  ) => stream.Stream<
+    S3TableIntegrationSource,
+    ListSourcesForS3TableIntegrationError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListSyslogConfigurationsError =
   | AccessDeniedException

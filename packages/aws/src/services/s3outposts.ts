@@ -85,41 +85,48 @@ const rules = T.EndpointResolver((p, _) => {
   return err("Invalid Configuration: Missing Region");
 });
 
-export class AccessDeniedException extends S.TaggedErrorClass<AccessDeniedException>()(
-  "AccessDeniedException",
-  { Message: S.optional(S.String) },
-  T.HttpError(403),
-).pipe(C.withAuthError) {}
-export class ConflictException extends S.TaggedErrorClass<ConflictException>()(
-  "ConflictException",
-  { Message: S.optional(S.String) },
-  T.HttpError(409),
-).pipe(C.withConflictError) {}
-export class InternalServerException extends S.TaggedErrorClass<InternalServerException>()(
-  "InternalServerException",
-  { Message: S.optional(S.String) },
-  T.HttpError(500),
-).pipe(C.withServerError) {}
-export class OutpostOfflineException extends S.TaggedErrorClass<OutpostOfflineException>()(
-  "OutpostOfflineException",
-  { Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class ResourceNotFoundException extends S.TaggedErrorClass<ResourceNotFoundException>()(
-  "ResourceNotFoundException",
-  { Message: S.optional(S.String) },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class ThrottlingException extends S.TaggedErrorClass<ThrottlingException>()(
-  "ThrottlingException",
-  { Message: S.optional(S.String) },
-  T.HttpError(429),
-).pipe(C.withThrottlingError) {}
-export class ValidationException extends S.TaggedErrorClass<ValidationException>()(
-  "ValidationException",
-  { Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
+export class AccessDeniedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
+    "AccessDeniedException",
+    { Message: S.optional(S.String) },
+    T.HttpError(403),
+  ).pipe(C.withAuthError) {}
+export class ConflictException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
+    "ConflictException",
+    { Message: S.optional(S.String) },
+    T.HttpError(409),
+  ).pipe(C.withConflictError) {}
+export class InternalServerException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
+    "InternalServerException",
+    { Message: S.optional(S.String) },
+    T.HttpError(500),
+  ).pipe(C.withServerError) {}
+export class OutpostOfflineException
+  extends /*@__PURE__*/ S.TaggedErrorClass<OutpostOfflineException>()(
+    "OutpostOfflineException",
+    { Message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class ResourceNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
+    "ResourceNotFoundException",
+    { Message: S.optional(S.String) },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class ThrottlingException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
+    "ThrottlingException",
+    { Message: S.optional(S.String) },
+    T.HttpError(429),
+  ).pipe(C.withThrottlingError) {}
+export class ValidationException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
+    "ValidationException",
+    { Message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
 export type OutpostId = string;
 export type SubnetId = string;
 export type SecurityGroupId = string;
@@ -515,7 +522,27 @@ export const listEndpoints: API.OperationMethod<
     items: "Endpoints",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListEndpointsRequest,
+  ListEndpointsResult,
+  ListEndpointsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListEndpointsRequest,
+  ) => stream.Stream<
+    ListEndpointsResult,
+    ListEndpointsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListEndpointsRequest,
+  ) => stream.Stream<
+    Endpoint,
+    ListEndpointsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListOutpostsWithS3Error =
   | AccessDeniedException
@@ -566,7 +593,27 @@ export const listOutpostsWithS3: API.OperationMethod<
     items: "Outposts",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListOutpostsWithS3Request,
+  ListOutpostsWithS3Result,
+  ListOutpostsWithS3Error,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListOutpostsWithS3Request,
+  ) => stream.Stream<
+    ListOutpostsWithS3Result,
+    ListOutpostsWithS3Error,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListOutpostsWithS3Request,
+  ) => stream.Stream<
+    Outpost,
+    ListOutpostsWithS3Error,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListSharedEndpointsError =
   | AccessDeniedException
@@ -623,4 +670,24 @@ export const listSharedEndpoints: API.OperationMethod<
     items: "Endpoints",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListSharedEndpointsRequest,
+  ListSharedEndpointsResult,
+  ListSharedEndpointsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListSharedEndpointsRequest,
+  ) => stream.Stream<
+    ListSharedEndpointsResult,
+    ListSharedEndpointsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListSharedEndpointsRequest,
+  ) => stream.Stream<
+    Endpoint,
+    ListSharedEndpointsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};

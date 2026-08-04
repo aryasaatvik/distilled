@@ -85,121 +85,131 @@ const rules = T.EndpointResolver((p, _) => {
   return err("Invalid Configuration: Missing Region");
 });
 
-export class AccessDeniedException extends S.TaggedErrorClass<AccessDeniedException>()(
-  "AccessDeniedException",
-  { Message: S.String },
-  T.HttpError(403),
-).pipe(C.withAuthError) {}
-export class ConflictException extends S.TaggedErrorClass<ConflictException>()(
-  "ConflictException",
-  {
-    Message: S.String,
-    ResourceId: S.String,
-    ResourceType: S.String,
-    DependentEntities: S.optional(
-      S.suspend(() => DependentEntityList).annotate({
-        identifier: "DependentEntityList",
-      }),
-    ),
-  },
-  T.HttpError(409),
-).pipe(C.withConflictError) {}
-export class DataEncryptionException extends S.TaggedErrorClass<DataEncryptionException>()(
-  "DataEncryptionException",
-  { Message: S.String },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class IncidentManagerNotOnboarded extends S.TaggedErrorClass<IncidentManagerNotOnboarded>()(
-  "IncidentManagerNotOnboarded",
-  {
-    Message: S.String,
-    Reason: S.optional(
-      S.suspend(() => ValidationExceptionReason).annotate({
-        identifier: "ValidationExceptionReason",
-      }),
-    ),
-    Fields: S.optional(
-      S.suspend(() => ValidationExceptionFieldList).annotate({
-        identifier: "ValidationExceptionFieldList",
-      }),
-    ),
-  },
-  T.SyntheticError({
-    from: "ValidationException",
-    message: { includes: "Account not found for the request" },
-  }),
-).pipe(C.withBadRequestError) {}
-export class InternalServerException extends S.TaggedErrorClass<InternalServerException>()(
-  "InternalServerException",
-  {
-    Message: S.String,
-    RetryAfterSeconds: S.optional(S.Number).pipe(T.HttpHeader("Retry-After")),
-  },
-  T.HttpError(500),
-).pipe(C.withServerError) {}
-export class InvalidRotationArn extends S.TaggedErrorClass<InvalidRotationArn>()(
-  "InvalidRotationArn",
-  {
-    Message: S.String,
-    Reason: S.optional(
-      S.suspend(() => ValidationExceptionReason).annotate({
-        identifier: "ValidationExceptionReason",
-      }),
-    ),
-    Fields: S.optional(
-      S.suspend(() => ValidationExceptionFieldList).annotate({
-        identifier: "ValidationExceptionFieldList",
-      }),
-    ),
-  },
-  T.SyntheticError({
-    from: "ValidationException",
-    message: { includes: "Invalid resource Arn" },
-  }),
-).pipe(C.withBadRequestError) {}
-export class ResourceNotFoundException extends S.TaggedErrorClass<ResourceNotFoundException>()(
-  "ResourceNotFoundException",
-  { Message: S.String, ResourceId: S.String, ResourceType: S.String },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class ServiceQuotaExceededException extends S.TaggedErrorClass<ServiceQuotaExceededException>()(
-  "ServiceQuotaExceededException",
-  {
-    Message: S.String,
-    ResourceId: S.optional(S.String),
-    ResourceType: S.optional(S.String),
-    QuotaCode: S.String,
-    ServiceCode: S.String,
-  },
-  T.HttpError(402),
-).pipe(C.withQuotaError) {}
-export class ThrottlingException extends S.TaggedErrorClass<ThrottlingException>()(
-  "ThrottlingException",
-  {
-    Message: S.String,
-    QuotaCode: S.optional(S.String),
-    ServiceCode: S.optional(S.String),
-    RetryAfterSeconds: S.optional(S.Number).pipe(T.HttpHeader("Retry-After")),
-  },
-  T.HttpError(429),
-).pipe(C.withThrottlingError) {}
-export class ValidationException extends S.TaggedErrorClass<ValidationException>()(
-  "ValidationException",
-  {
-    Message: S.String,
-    Reason: S.optional(
-      S.suspend(() => ValidationExceptionReason).annotate({
-        identifier: "ValidationExceptionReason",
-      }),
-    ),
-    Fields: S.optional(
-      S.suspend(() => ValidationExceptionFieldList).annotate({
-        identifier: "ValidationExceptionFieldList",
-      }),
-    ),
-  },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
+export class AccessDeniedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
+    "AccessDeniedException",
+    { Message: S.String },
+    T.HttpError(403),
+  ).pipe(C.withAuthError) {}
+export class ConflictException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
+    "ConflictException",
+    {
+      Message: S.String,
+      ResourceId: S.String,
+      ResourceType: S.String,
+      DependentEntities: S.optional(
+        S.suspend(() => DependentEntityList).annotate({
+          identifier: "DependentEntityList",
+        }),
+      ),
+    },
+    T.HttpError(409),
+  ).pipe(C.withConflictError) {}
+export class DataEncryptionException
+  extends /*@__PURE__*/ S.TaggedErrorClass<DataEncryptionException>()(
+    "DataEncryptionException",
+    { Message: S.String },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class IncidentManagerNotOnboarded
+  extends /*@__PURE__*/ S.TaggedErrorClass<IncidentManagerNotOnboarded>()(
+    "IncidentManagerNotOnboarded",
+    {
+      Message: S.String,
+      Reason: S.optional(
+        S.suspend(() => ValidationExceptionReason).annotate({
+          identifier: "ValidationExceptionReason",
+        }),
+      ),
+      Fields: S.optional(
+        S.suspend(() => ValidationExceptionFieldList).annotate({
+          identifier: "ValidationExceptionFieldList",
+        }),
+      ),
+    },
+    T.SyntheticError({
+      from: "ValidationException",
+      message: { includes: "Account not found for the request" },
+    }),
+  ).pipe(C.withBadRequestError) {}
+export class InternalServerException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
+    "InternalServerException",
+    {
+      Message: S.String,
+      RetryAfterSeconds: S.optional(S.Number).pipe(T.HttpHeader("Retry-After")),
+    },
+    T.HttpError(500),
+  ).pipe(C.withServerError) {}
+export class InvalidRotationArn
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidRotationArn>()(
+    "InvalidRotationArn",
+    {
+      Message: S.String,
+      Reason: S.optional(
+        S.suspend(() => ValidationExceptionReason).annotate({
+          identifier: "ValidationExceptionReason",
+        }),
+      ),
+      Fields: S.optional(
+        S.suspend(() => ValidationExceptionFieldList).annotate({
+          identifier: "ValidationExceptionFieldList",
+        }),
+      ),
+    },
+    T.SyntheticError({
+      from: "ValidationException",
+      message: { includes: "Invalid resource Arn" },
+    }),
+  ).pipe(C.withBadRequestError) {}
+export class ResourceNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
+    "ResourceNotFoundException",
+    { Message: S.String, ResourceId: S.String, ResourceType: S.String },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class ServiceQuotaExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
+    "ServiceQuotaExceededException",
+    {
+      Message: S.String,
+      ResourceId: S.optional(S.String),
+      ResourceType: S.optional(S.String),
+      QuotaCode: S.String,
+      ServiceCode: S.String,
+    },
+    T.HttpError(402),
+  ).pipe(C.withQuotaError) {}
+export class ThrottlingException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
+    "ThrottlingException",
+    {
+      Message: S.String,
+      QuotaCode: S.optional(S.String),
+      ServiceCode: S.optional(S.String),
+      RetryAfterSeconds: S.optional(S.Number).pipe(T.HttpHeader("Retry-After")),
+    },
+    T.HttpError(429),
+  ).pipe(C.withThrottlingError) {}
+export class ValidationException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
+    "ValidationException",
+    {
+      Message: S.String,
+      Reason: S.optional(
+        S.suspend(() => ValidationExceptionReason).annotate({
+          identifier: "ValidationExceptionReason",
+        }),
+      ),
+      Fields: S.optional(
+        S.suspend(() => ValidationExceptionFieldList).annotate({
+          identifier: "ValidationExceptionFieldList",
+        }),
+      ),
+    },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
 export type SsmContactsArn = string;
 export type AcceptType = "DELIVERED" | "READ" | (string & {});
 export const AcceptType = /*@__PURE__*/ S.String;
@@ -2325,7 +2335,27 @@ export const listContactChannels: API.OperationMethod<
     items: "ContactChannels",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListContactChannelsRequest,
+  ListContactChannelsResult,
+  ListContactChannelsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListContactChannelsRequest,
+  ) => stream.Stream<
+    ListContactChannelsResult,
+    ListContactChannelsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListContactChannelsRequest,
+  ) => stream.Stream<
+    ContactChannel,
+    ListContactChannelsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListContactsError =
   | AccessDeniedException
@@ -2376,7 +2406,27 @@ export const listContacts: API.OperationMethod<
     items: "Contacts",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListContactsRequest,
+  ListContactsResult,
+  ListContactsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListContactsRequest,
+  ) => stream.Stream<
+    ListContactsResult,
+    ListContactsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListContactsRequest,
+  ) => stream.Stream<
+    Contact,
+    ListContactsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListEngagementsError =
   | AccessDeniedException
@@ -2427,7 +2477,27 @@ export const listEngagements: API.OperationMethod<
     items: "Engagements",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListEngagementsRequest,
+  ListEngagementsResult,
+  ListEngagementsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListEngagementsRequest,
+  ) => stream.Stream<
+    ListEngagementsResult,
+    ListEngagementsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListEngagementsRequest,
+  ) => stream.Stream<
+    Engagement,
+    ListEngagementsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListPageReceiptsError =
   | AccessDeniedException
@@ -2480,7 +2550,27 @@ export const listPageReceipts: API.OperationMethod<
     items: "Receipts",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListPageReceiptsRequest,
+  ListPageReceiptsResult,
+  ListPageReceiptsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListPageReceiptsRequest,
+  ) => stream.Stream<
+    ListPageReceiptsResult,
+    ListPageReceiptsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListPageReceiptsRequest,
+  ) => stream.Stream<
+    Receipt,
+    ListPageReceiptsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListPageResolutionsError =
   | AccessDeniedException
@@ -2536,7 +2626,27 @@ export const listPageResolutions: API.OperationMethod<
     outputToken: "NextToken",
     items: "PageResolutions",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListPageResolutionsRequest,
+  ListPageResolutionsResult,
+  ListPageResolutionsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListPageResolutionsRequest,
+  ) => stream.Stream<
+    ListPageResolutionsResult,
+    ListPageResolutionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListPageResolutionsRequest,
+  ) => stream.Stream<
+    ResolutionContact,
+    ListPageResolutionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListPagesByContactError =
   | AccessDeniedException
@@ -2589,7 +2699,27 @@ export const listPagesByContact: API.OperationMethod<
     items: "Pages",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListPagesByContactRequest,
+  ListPagesByContactResult,
+  ListPagesByContactError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListPagesByContactRequest,
+  ) => stream.Stream<
+    ListPagesByContactResult,
+    ListPagesByContactError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListPagesByContactRequest,
+  ) => stream.Stream<
+    Page,
+    ListPagesByContactError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListPagesByEngagementError =
   | AccessDeniedException
@@ -2642,7 +2772,27 @@ export const listPagesByEngagement: API.OperationMethod<
     items: "Pages",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListPagesByEngagementRequest,
+  ListPagesByEngagementResult,
+  ListPagesByEngagementError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListPagesByEngagementRequest,
+  ) => stream.Stream<
+    ListPagesByEngagementResult,
+    ListPagesByEngagementError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListPagesByEngagementRequest,
+  ) => stream.Stream<
+    Page,
+    ListPagesByEngagementError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListPreviewRotationShiftsError =
   | AccessDeniedException
@@ -2695,7 +2845,27 @@ export const listPreviewRotationShifts: API.OperationMethod<
     items: "RotationShifts",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListPreviewRotationShiftsRequest,
+  ListPreviewRotationShiftsResult,
+  ListPreviewRotationShiftsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListPreviewRotationShiftsRequest,
+  ) => stream.Stream<
+    ListPreviewRotationShiftsResult,
+    ListPreviewRotationShiftsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListPreviewRotationShiftsRequest,
+  ) => stream.Stream<
+    RotationShift,
+    ListPreviewRotationShiftsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListRotationOverridesError =
   | AccessDeniedException
@@ -2750,7 +2920,27 @@ export const listRotationOverrides: API.OperationMethod<
     items: "RotationOverrides",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListRotationOverridesRequest,
+  ListRotationOverridesResult,
+  ListRotationOverridesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListRotationOverridesRequest,
+  ) => stream.Stream<
+    ListRotationOverridesResult,
+    ListRotationOverridesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListRotationOverridesRequest,
+  ) => stream.Stream<
+    RotationOverride,
+    ListRotationOverridesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListRotationsError =
   | AccessDeniedException
@@ -2803,7 +2993,27 @@ export const listRotations: API.OperationMethod<
     items: "Rotations",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListRotationsRequest,
+  ListRotationsResult,
+  ListRotationsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListRotationsRequest,
+  ) => stream.Stream<
+    ListRotationsResult,
+    ListRotationsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListRotationsRequest,
+  ) => stream.Stream<
+    Rotation,
+    ListRotationsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListRotationShiftsError =
   | AccessDeniedException
@@ -2860,7 +3070,27 @@ export const listRotationShifts: API.OperationMethod<
     items: "RotationShifts",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListRotationShiftsRequest,
+  ListRotationShiftsResult,
+  ListRotationShiftsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListRotationShiftsRequest,
+  ) => stream.Stream<
+    ListRotationShiftsResult,
+    ListRotationShiftsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListRotationShiftsRequest,
+  ) => stream.Stream<
+    RotationShift,
+    ListRotationShiftsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListTagsForResourceError =
   | AccessDeniedException

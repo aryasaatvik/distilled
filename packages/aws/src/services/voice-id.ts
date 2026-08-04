@@ -84,41 +84,48 @@ const rules = T.EndpointResolver((p, _) => {
   return err("Invalid Configuration: Missing Region");
 });
 
-export class AccessDeniedException extends S.TaggedErrorClass<AccessDeniedException>()(
-  "AccessDeniedException",
-  { Message: S.optional(S.String) },
-  T.HttpError(403),
-).pipe(C.withAuthError) {}
-export class ConflictException extends S.TaggedErrorClass<ConflictException>()(
-  "ConflictException",
-  { Message: S.optional(S.String), ConflictType: S.optional(S.String) },
-  T.HttpError(409),
-).pipe(C.withConflictError) {}
-export class InternalServerException extends S.TaggedErrorClass<InternalServerException>()(
-  "InternalServerException",
-  { Message: S.optional(S.String) },
-  T.HttpError(500),
-).pipe(C.withServerError) {}
-export class ResourceNotFoundException extends S.TaggedErrorClass<ResourceNotFoundException>()(
-  "ResourceNotFoundException",
-  { Message: S.optional(S.String), ResourceType: S.optional(S.String) },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class ServiceQuotaExceededException extends S.TaggedErrorClass<ServiceQuotaExceededException>()(
-  "ServiceQuotaExceededException",
-  { Message: S.optional(S.String) },
-  T.HttpError(402),
-).pipe(C.withQuotaError) {}
-export class ThrottlingException extends S.TaggedErrorClass<ThrottlingException>()(
-  "ThrottlingException",
-  { Message: S.optional(S.String) },
-  T.HttpError(429),
-).pipe(C.withThrottlingError) {}
-export class ValidationException extends S.TaggedErrorClass<ValidationException>()(
-  "ValidationException",
-  { Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
+export class AccessDeniedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
+    "AccessDeniedException",
+    { Message: S.optional(S.String) },
+    T.HttpError(403),
+  ).pipe(C.withAuthError) {}
+export class ConflictException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
+    "ConflictException",
+    { Message: S.optional(S.String), ConflictType: S.optional(S.String) },
+    T.HttpError(409),
+  ).pipe(C.withConflictError) {}
+export class InternalServerException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
+    "InternalServerException",
+    { Message: S.optional(S.String) },
+    T.HttpError(500),
+  ).pipe(C.withServerError) {}
+export class ResourceNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
+    "ResourceNotFoundException",
+    { Message: S.optional(S.String), ResourceType: S.optional(S.String) },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class ServiceQuotaExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
+    "ServiceQuotaExceededException",
+    { Message: S.optional(S.String) },
+    T.HttpError(402),
+  ).pipe(C.withQuotaError) {}
+export class ThrottlingException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
+    "ThrottlingException",
+    { Message: S.optional(S.String) },
+    T.HttpError(429),
+  ).pipe(C.withThrottlingError) {}
+export class ValidationException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
+    "ValidationException",
+    { Message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
 export type DomainId = string;
 export type WatchlistId = string;
 export type FraudsterId = string | redacted.Redacted<string>;
@@ -1889,7 +1896,27 @@ export const listDomains: API.OperationMethod<
     items: "DomainSummaries",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListDomainsRequest,
+  ListDomainsResponse,
+  ListDomainsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListDomainsRequest,
+  ) => stream.Stream<
+    ListDomainsResponse,
+    ListDomainsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListDomainsRequest,
+  ) => stream.Stream<
+    DomainSummary,
+    ListDomainsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListFraudsterRegistrationJobsError =
   | AccessDeniedException
@@ -1942,7 +1969,27 @@ export const listFraudsterRegistrationJobs: API.OperationMethod<
     items: "JobSummaries",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListFraudsterRegistrationJobsRequest,
+  ListFraudsterRegistrationJobsResponse,
+  ListFraudsterRegistrationJobsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListFraudsterRegistrationJobsRequest,
+  ) => stream.Stream<
+    ListFraudsterRegistrationJobsResponse,
+    ListFraudsterRegistrationJobsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListFraudsterRegistrationJobsRequest,
+  ) => stream.Stream<
+    FraudsterRegistrationJobSummary,
+    ListFraudsterRegistrationJobsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListFraudstersError =
   | AccessDeniedException
@@ -1993,7 +2040,27 @@ export const listFraudsters: API.OperationMethod<
     items: "FraudsterSummaries",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListFraudstersRequest,
+  ListFraudstersResponse,
+  ListFraudstersError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListFraudstersRequest,
+  ) => stream.Stream<
+    ListFraudstersResponse,
+    ListFraudstersError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListFraudstersRequest,
+  ) => stream.Stream<
+    FraudsterSummary,
+    ListFraudstersError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListSpeakerEnrollmentJobsError =
   | AccessDeniedException
@@ -2046,7 +2113,27 @@ export const listSpeakerEnrollmentJobs: API.OperationMethod<
     items: "JobSummaries",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListSpeakerEnrollmentJobsRequest,
+  ListSpeakerEnrollmentJobsResponse,
+  ListSpeakerEnrollmentJobsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListSpeakerEnrollmentJobsRequest,
+  ) => stream.Stream<
+    ListSpeakerEnrollmentJobsResponse,
+    ListSpeakerEnrollmentJobsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListSpeakerEnrollmentJobsRequest,
+  ) => stream.Stream<
+    SpeakerEnrollmentJobSummary,
+    ListSpeakerEnrollmentJobsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListSpeakersError =
   | AccessDeniedException
@@ -2097,7 +2184,27 @@ export const listSpeakers: API.OperationMethod<
     items: "SpeakerSummaries",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListSpeakersRequest,
+  ListSpeakersResponse,
+  ListSpeakersError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListSpeakersRequest,
+  ) => stream.Stream<
+    ListSpeakersResponse,
+    ListSpeakersError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListSpeakersRequest,
+  ) => stream.Stream<
+    SpeakerSummary,
+    ListSpeakersError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListTagsForResourceError =
   | AccessDeniedException
@@ -2178,7 +2285,27 @@ export const listWatchlists: API.OperationMethod<
     items: "WatchlistSummaries",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListWatchlistsRequest,
+  ListWatchlistsResponse,
+  ListWatchlistsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListWatchlistsRequest,
+  ) => stream.Stream<
+    ListWatchlistsResponse,
+    ListWatchlistsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListWatchlistsRequest,
+  ) => stream.Stream<
+    WatchlistSummary,
+    ListWatchlistsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type OptOutSpeakerError =
   | AccessDeniedException

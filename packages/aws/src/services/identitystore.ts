@@ -90,54 +90,58 @@ const rules = T.EndpointResolver((p, _) => {
   return err("Invalid Configuration: Missing Region");
 });
 
-export class ConflictException extends S.TaggedErrorClass<ConflictException>()(
-  "ConflictException",
-  {
-    Message: S.optional(S.String),
-    RequestId: S.optional(S.String),
-    Reason: S.optional(
-      S.suspend(() => ConflictExceptionReason).annotate({
-        identifier: "ConflictExceptionReason",
-      }),
-    ),
-  },
-  T.HttpError(409),
-).pipe(C.withConflictError) {}
-export class ResourceNotFoundException extends S.TaggedErrorClass<ResourceNotFoundException>()(
-  "ResourceNotFoundException",
-  {
-    ResourceType: S.optional(
-      S.suspend(() => ResourceType).annotate({ identifier: "ResourceType" }),
-    ),
-    ResourceId: S.optional(S.String),
-    Reason: S.optional(
-      S.suspend(() => ResourceNotFoundExceptionReason).annotate({
-        identifier: "ResourceNotFoundExceptionReason",
-      }),
-    ),
-    Message: S.optional(S.String),
-    RequestId: S.optional(S.String),
-  },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class ServiceQuotaExceededException extends S.TaggedErrorClass<ServiceQuotaExceededException>()(
-  "ServiceQuotaExceededException",
-  { Message: S.optional(S.String), RequestId: S.optional(S.String) },
-  T.HttpError(402),
-).pipe(C.withQuotaError) {}
-export class ValidationException extends S.TaggedErrorClass<ValidationException>()(
-  "ValidationException",
-  {
-    Message: S.optional(S.String),
-    RequestId: S.optional(S.String),
-    Reason: S.optional(
-      S.suspend(() => ValidationExceptionReason).annotate({
-        identifier: "ValidationExceptionReason",
-      }),
-    ),
-  },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
+export class ConflictException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
+    "ConflictException",
+    {
+      Message: S.optional(S.String),
+      RequestId: S.optional(S.String),
+      Reason: S.optional(
+        S.suspend(() => ConflictExceptionReason).annotate({
+          identifier: "ConflictExceptionReason",
+        }),
+      ),
+    },
+    T.HttpError(409),
+  ).pipe(C.withConflictError) {}
+export class ResourceNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
+    "ResourceNotFoundException",
+    {
+      ResourceType: S.optional(
+        S.suspend(() => ResourceType).annotate({ identifier: "ResourceType" }),
+      ),
+      ResourceId: S.optional(S.String),
+      Reason: S.optional(
+        S.suspend(() => ResourceNotFoundExceptionReason).annotate({
+          identifier: "ResourceNotFoundExceptionReason",
+        }),
+      ),
+      Message: S.optional(S.String),
+      RequestId: S.optional(S.String),
+    },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class ServiceQuotaExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
+    "ServiceQuotaExceededException",
+    { Message: S.optional(S.String), RequestId: S.optional(S.String) },
+    T.HttpError(402),
+  ).pipe(C.withQuotaError) {}
+export class ValidationException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
+    "ValidationException",
+    {
+      Message: S.optional(S.String),
+      RequestId: S.optional(S.String),
+      Reason: S.optional(
+        S.suspend(() => ValidationExceptionReason).annotate({
+          identifier: "ValidationExceptionReason",
+        }),
+      ),
+    },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
 export type IdentityStoreId = string;
 export type GroupDisplayName = string | redacted.Redacted<string>;
 export type SensitiveStringType = string | redacted.Redacted<string>;
@@ -1386,7 +1390,27 @@ export const listGroupMemberships: API.OperationMethod<
     items: "GroupMemberships",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListGroupMembershipsRequest,
+  ListGroupMembershipsResponse,
+  ListGroupMembershipsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListGroupMembershipsRequest,
+  ) => stream.Stream<
+    ListGroupMembershipsResponse,
+    ListGroupMembershipsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListGroupMembershipsRequest,
+  ) => stream.Stream<
+    GroupMembership,
+    ListGroupMembershipsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListGroupMembershipsForMemberError =
   | ResourceNotFoundException
@@ -1430,7 +1454,27 @@ export const listGroupMembershipsForMember: API.OperationMethod<
     items: "GroupMemberships",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListGroupMembershipsForMemberRequest,
+  ListGroupMembershipsForMemberResponse,
+  ListGroupMembershipsForMemberError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListGroupMembershipsForMemberRequest,
+  ) => stream.Stream<
+    ListGroupMembershipsForMemberResponse,
+    ListGroupMembershipsForMemberError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListGroupMembershipsForMemberRequest,
+  ) => stream.Stream<
+    GroupMembership,
+    ListGroupMembershipsForMemberError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListGroupsError =
   | ResourceNotFoundException
@@ -1474,7 +1518,27 @@ export const listGroups: API.OperationMethod<
     items: "Groups",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListGroupsRequest,
+  ListGroupsResponse,
+  ListGroupsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListGroupsRequest,
+  ) => stream.Stream<
+    ListGroupsResponse,
+    ListGroupsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListGroupsRequest,
+  ) => stream.Stream<
+    Group,
+    ListGroupsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListUsersError =
   | ResourceNotFoundException
@@ -1518,7 +1582,27 @@ export const listUsers: API.OperationMethod<
     items: "Users",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListUsersRequest,
+  ListUsersResponse,
+  ListUsersError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListUsersRequest,
+  ) => stream.Stream<
+    ListUsersResponse,
+    ListUsersError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListUsersRequest,
+  ) => stream.Stream<
+    User,
+    ListUsersError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type UpdateGroupError =
   | ConflictException

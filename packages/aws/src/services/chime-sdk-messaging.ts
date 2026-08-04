@@ -87,96 +87,105 @@ const rules = T.EndpointResolver((p, _) => {
   return err("Invalid Configuration: Missing Region");
 });
 
-export class BadRequestException extends S.TaggedErrorClass<BadRequestException>()(
-  "BadRequestException",
-  {
-    Code: S.optional(
-      S.suspend(() => ErrorCode).annotate({ identifier: "ErrorCode" }),
-    ),
-    Message: S.optional(S.String),
-  },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class ConflictException extends S.TaggedErrorClass<ConflictException>()(
-  "ConflictException",
-  {
-    Code: S.optional(
-      S.suspend(() => ErrorCode).annotate({ identifier: "ErrorCode" }),
-    ),
-    Message: S.optional(S.String),
-  },
-  T.HttpError(409),
-).pipe(C.withConflictError) {}
-export class ForbiddenException extends S.TaggedErrorClass<ForbiddenException>()(
-  "ForbiddenException",
-  {
-    Code: S.optional(
-      S.suspend(() => ErrorCode).annotate({ identifier: "ErrorCode" }),
-    ),
-    Message: S.optional(S.String),
-  },
-  T.HttpError(403),
-).pipe(C.withAuthError) {}
-export class NotFoundException extends S.TaggedErrorClass<NotFoundException>()(
-  "NotFoundException",
-  {
-    Code: S.optional(
-      S.suspend(() => ErrorCode).annotate({ identifier: "ErrorCode" }),
-    ),
-    Message: S.optional(S.String),
-  },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class ResourceLimitExceededException extends S.TaggedErrorClass<ResourceLimitExceededException>()(
-  "ResourceLimitExceededException",
-  {
-    Code: S.optional(
-      S.suspend(() => ErrorCode).annotate({ identifier: "ErrorCode" }),
-    ),
-    Message: S.optional(S.String),
-  },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class ServiceFailureException extends S.TaggedErrorClass<ServiceFailureException>()(
-  "ServiceFailureException",
-  {
-    Code: S.optional(
-      S.suspend(() => ErrorCode).annotate({ identifier: "ErrorCode" }),
-    ),
-    Message: S.optional(S.String),
-  },
-  T.HttpError(500),
-).pipe(C.withServerError) {}
-export class ServiceUnavailableException extends S.TaggedErrorClass<ServiceUnavailableException>()(
-  "ServiceUnavailableException",
-  {
-    Code: S.optional(
-      S.suspend(() => ErrorCode).annotate({ identifier: "ErrorCode" }),
-    ),
-    Message: S.optional(S.String),
-  },
-  T.HttpError(503),
-).pipe(C.withServerError) {}
-export class ThrottledClientException extends S.TaggedErrorClass<ThrottledClientException>()(
-  "ThrottledClientException",
-  {
-    Code: S.optional(
-      S.suspend(() => ErrorCode).annotate({ identifier: "ErrorCode" }),
-    ),
-    Message: S.optional(S.String),
-  },
-  T.HttpError(429),
-).pipe(C.withThrottlingError) {}
-export class UnauthorizedClientException extends S.TaggedErrorClass<UnauthorizedClientException>()(
-  "UnauthorizedClientException",
-  {
-    Code: S.optional(
-      S.suspend(() => ErrorCode).annotate({ identifier: "ErrorCode" }),
-    ),
-    Message: S.optional(S.String),
-  },
-  T.HttpError(401),
-).pipe(C.withAuthError) {}
+export class BadRequestException
+  extends /*@__PURE__*/ S.TaggedErrorClass<BadRequestException>()(
+    "BadRequestException",
+    {
+      Code: S.optional(
+        S.suspend(() => ErrorCode).annotate({ identifier: "ErrorCode" }),
+      ),
+      Message: S.optional(S.String),
+    },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class ConflictException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
+    "ConflictException",
+    {
+      Code: S.optional(
+        S.suspend(() => ErrorCode).annotate({ identifier: "ErrorCode" }),
+      ),
+      Message: S.optional(S.String),
+    },
+    T.HttpError(409),
+  ).pipe(C.withConflictError) {}
+export class ForbiddenException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ForbiddenException>()(
+    "ForbiddenException",
+    {
+      Code: S.optional(
+        S.suspend(() => ErrorCode).annotate({ identifier: "ErrorCode" }),
+      ),
+      Message: S.optional(S.String),
+    },
+    T.HttpError(403),
+  ).pipe(C.withAuthError) {}
+export class NotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<NotFoundException>()(
+    "NotFoundException",
+    {
+      Code: S.optional(
+        S.suspend(() => ErrorCode).annotate({ identifier: "ErrorCode" }),
+      ),
+      Message: S.optional(S.String),
+    },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class ResourceLimitExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceLimitExceededException>()(
+    "ResourceLimitExceededException",
+    {
+      Code: S.optional(
+        S.suspend(() => ErrorCode).annotate({ identifier: "ErrorCode" }),
+      ),
+      Message: S.optional(S.String),
+    },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class ServiceFailureException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ServiceFailureException>()(
+    "ServiceFailureException",
+    {
+      Code: S.optional(
+        S.suspend(() => ErrorCode).annotate({ identifier: "ErrorCode" }),
+      ),
+      Message: S.optional(S.String),
+    },
+    T.HttpError(500),
+  ).pipe(C.withServerError) {}
+export class ServiceUnavailableException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ServiceUnavailableException>()(
+    "ServiceUnavailableException",
+    {
+      Code: S.optional(
+        S.suspend(() => ErrorCode).annotate({ identifier: "ErrorCode" }),
+      ),
+      Message: S.optional(S.String),
+    },
+    T.HttpError(503),
+  ).pipe(C.withServerError) {}
+export class ThrottledClientException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ThrottledClientException>()(
+    "ThrottledClientException",
+    {
+      Code: S.optional(
+        S.suspend(() => ErrorCode).annotate({ identifier: "ErrorCode" }),
+      ),
+      Message: S.optional(S.String),
+    },
+    T.HttpError(429),
+  ).pipe(C.withThrottlingError) {}
+export class UnauthorizedClientException
+  extends /*@__PURE__*/ S.TaggedErrorClass<UnauthorizedClientException>()(
+    "UnauthorizedClientException",
+    {
+      Code: S.optional(
+        S.suspend(() => ErrorCode).annotate({ identifier: "ErrorCode" }),
+      ),
+      Message: S.optional(S.String),
+    },
+    T.HttpError(401),
+  ).pipe(C.withAuthError) {}
 export type ChimeArn = string;
 export interface AssociateChannelFlowRequest {
   ChannelArn: string;
@@ -3931,7 +3940,27 @@ export const listChannelBans: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListChannelBansRequest,
+  ListChannelBansResponse,
+  ListChannelBansError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListChannelBansRequest,
+  ) => stream.Stream<
+    ListChannelBansResponse,
+    ListChannelBansError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListChannelBansRequest,
+  ) => stream.Stream<
+    unknown,
+    ListChannelBansError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListChannelFlowsError =
   | BadRequestException
@@ -3983,7 +4012,27 @@ export const listChannelFlows: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListChannelFlowsRequest,
+  ListChannelFlowsResponse,
+  ListChannelFlowsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListChannelFlowsRequest,
+  ) => stream.Stream<
+    ListChannelFlowsResponse,
+    ListChannelFlowsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListChannelFlowsRequest,
+  ) => stream.Stream<
+    unknown,
+    ListChannelFlowsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListChannelMembershipsError =
   | BadRequestException
@@ -4042,7 +4091,27 @@ export const listChannelMemberships: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListChannelMembershipsRequest,
+  ListChannelMembershipsResponse,
+  ListChannelMembershipsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListChannelMembershipsRequest,
+  ) => stream.Stream<
+    ListChannelMembershipsResponse,
+    ListChannelMembershipsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListChannelMembershipsRequest,
+  ) => stream.Stream<
+    unknown,
+    ListChannelMembershipsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListChannelMembershipsForAppInstanceUserError =
   | BadRequestException
@@ -4099,7 +4168,27 @@ export const listChannelMembershipsForAppInstanceUser: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListChannelMembershipsForAppInstanceUserRequest,
+  ListChannelMembershipsForAppInstanceUserResponse,
+  ListChannelMembershipsForAppInstanceUserError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListChannelMembershipsForAppInstanceUserRequest,
+  ) => stream.Stream<
+    ListChannelMembershipsForAppInstanceUserResponse,
+    ListChannelMembershipsForAppInstanceUserError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListChannelMembershipsForAppInstanceUserRequest,
+  ) => stream.Stream<
+    unknown,
+    ListChannelMembershipsForAppInstanceUserError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListChannelMessagesError =
   | BadRequestException
@@ -4161,7 +4250,27 @@ export const listChannelMessages: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListChannelMessagesRequest,
+  ListChannelMessagesResponse,
+  ListChannelMessagesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListChannelMessagesRequest,
+  ) => stream.Stream<
+    ListChannelMessagesResponse,
+    ListChannelMessagesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListChannelMessagesRequest,
+  ) => stream.Stream<
+    unknown,
+    ListChannelMessagesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListChannelModeratorsError =
   | BadRequestException
@@ -4217,7 +4326,27 @@ export const listChannelModerators: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListChannelModeratorsRequest,
+  ListChannelModeratorsResponse,
+  ListChannelModeratorsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListChannelModeratorsRequest,
+  ) => stream.Stream<
+    ListChannelModeratorsResponse,
+    ListChannelModeratorsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListChannelModeratorsRequest,
+  ) => stream.Stream<
+    unknown,
+    ListChannelModeratorsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListChannelsError =
   | BadRequestException
@@ -4282,7 +4411,27 @@ export const listChannels: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListChannelsRequest,
+  ListChannelsResponse,
+  ListChannelsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListChannelsRequest,
+  ) => stream.Stream<
+    ListChannelsResponse,
+    ListChannelsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListChannelsRequest,
+  ) => stream.Stream<
+    unknown,
+    ListChannelsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListChannelsAssociatedWithChannelFlowError =
   | BadRequestException
@@ -4334,7 +4483,27 @@ export const listChannelsAssociatedWithChannelFlow: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListChannelsAssociatedWithChannelFlowRequest,
+  ListChannelsAssociatedWithChannelFlowResponse,
+  ListChannelsAssociatedWithChannelFlowError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListChannelsAssociatedWithChannelFlowRequest,
+  ) => stream.Stream<
+    ListChannelsAssociatedWithChannelFlowResponse,
+    ListChannelsAssociatedWithChannelFlowError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListChannelsAssociatedWithChannelFlowRequest,
+  ) => stream.Stream<
+    unknown,
+    ListChannelsAssociatedWithChannelFlowError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListChannelsModeratedByAppInstanceUserError =
   | BadRequestException
@@ -4390,7 +4559,27 @@ export const listChannelsModeratedByAppInstanceUser: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListChannelsModeratedByAppInstanceUserRequest,
+  ListChannelsModeratedByAppInstanceUserResponse,
+  ListChannelsModeratedByAppInstanceUserError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListChannelsModeratedByAppInstanceUserRequest,
+  ) => stream.Stream<
+    ListChannelsModeratedByAppInstanceUserResponse,
+    ListChannelsModeratedByAppInstanceUserError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListChannelsModeratedByAppInstanceUserRequest,
+  ) => stream.Stream<
+    unknown,
+    ListChannelsModeratedByAppInstanceUserError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListSubChannelsError =
   | BadRequestException
@@ -4442,7 +4631,27 @@ export const listSubChannels: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListSubChannelsRequest,
+  ListSubChannelsResponse,
+  ListSubChannelsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListSubChannelsRequest,
+  ) => stream.Stream<
+    ListSubChannelsResponse,
+    ListSubChannelsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListSubChannelsRequest,
+  ) => stream.Stream<
+    unknown,
+    ListSubChannelsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListTagsForResourceError =
   | BadRequestException
@@ -4696,7 +4905,27 @@ export const searchChannels: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  SearchChannelsRequest,
+  SearchChannelsResponse,
+  SearchChannelsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: SearchChannelsRequest,
+  ) => stream.Stream<
+    SearchChannelsResponse,
+    SearchChannelsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: SearchChannelsRequest,
+  ) => stream.Stream<
+    unknown,
+    SearchChannelsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type SendChannelMessageError =
   | BadRequestException

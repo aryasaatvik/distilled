@@ -86,87 +86,96 @@ const rules = T.EndpointResolver((p, _) => {
   return err("Invalid Configuration: Missing Region");
 });
 
-export class InsufficientCapacityException extends S.TaggedErrorClass<InsufficientCapacityException>()(
-  "InsufficientCapacityException",
-  {
-    type: S.optional(S.String),
-    code: S.optional(S.String),
-    message: S.optional(S.String),
-  },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class InvalidParameterValueException extends S.TaggedErrorClass<InvalidParameterValueException>()(
-  "InvalidParameterValueException",
-  {
-    type: S.optional(S.String),
-    code: S.optional(S.String),
-    message: S.optional(S.String),
-  },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class LimitExceededException extends S.TaggedErrorClass<LimitExceededException>()(
-  "LimitExceededException",
-  {
-    type: S.optional(S.String),
-    code: S.optional(S.String),
-    message: S.optional(S.String),
-  },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class MissingParameterValueException extends S.TaggedErrorClass<MissingParameterValueException>()(
-  "MissingParameterValueException",
-  {
-    type: S.optional(S.String),
-    code: S.optional(S.String),
-    message: S.optional(S.String),
-  },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class NoLongerSupportedException extends S.TaggedErrorClass<NoLongerSupportedException>()(
-  "NoLongerSupportedException",
-  {
-    type: S.optional(S.String),
-    code: S.optional(S.String),
-    message: S.optional(S.String),
-  },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class PolicyEnforcedException extends S.TaggedErrorClass<PolicyEnforcedException>()(
-  "PolicyEnforcedException",
-  {
-    type: S.optional(S.String),
-    code: S.optional(S.String),
-    message: S.optional(S.String),
-  },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class RequestTimeoutException extends S.TaggedErrorClass<RequestTimeoutException>()(
-  "RequestTimeoutException",
-  {
-    type: S.optional(S.String),
-    code: S.optional(S.String),
-    message: S.optional(S.String),
-  },
-  T.HttpError(408),
-).pipe(C.withTimeoutError) {}
-export class ResourceNotFoundException extends S.TaggedErrorClass<ResourceNotFoundException>()(
-  "ResourceNotFoundException",
-  {
-    type: S.optional(S.String),
-    code: S.optional(S.String),
-    message: S.optional(S.String),
-  },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class ServiceUnavailableException extends S.TaggedErrorClass<ServiceUnavailableException>()(
-  "ServiceUnavailableException",
-  {
-    type: S.optional(S.String),
-    code: S.optional(S.String),
-    message: S.optional(S.String),
-  },
-  T.HttpError(500),
-).pipe(C.withServerError) {}
+export class InsufficientCapacityException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InsufficientCapacityException>()(
+    "InsufficientCapacityException",
+    {
+      type: S.optional(S.String),
+      code: S.optional(S.String),
+      message: S.optional(S.String),
+    },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class InvalidParameterValueException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidParameterValueException>()(
+    "InvalidParameterValueException",
+    {
+      type: S.optional(S.String),
+      code: S.optional(S.String),
+      message: S.optional(S.String),
+    },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class LimitExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<LimitExceededException>()(
+    "LimitExceededException",
+    {
+      type: S.optional(S.String),
+      code: S.optional(S.String),
+      message: S.optional(S.String),
+    },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class MissingParameterValueException
+  extends /*@__PURE__*/ S.TaggedErrorClass<MissingParameterValueException>()(
+    "MissingParameterValueException",
+    {
+      type: S.optional(S.String),
+      code: S.optional(S.String),
+      message: S.optional(S.String),
+    },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class NoLongerSupportedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<NoLongerSupportedException>()(
+    "NoLongerSupportedException",
+    {
+      type: S.optional(S.String),
+      code: S.optional(S.String),
+      message: S.optional(S.String),
+    },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class PolicyEnforcedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<PolicyEnforcedException>()(
+    "PolicyEnforcedException",
+    {
+      type: S.optional(S.String),
+      code: S.optional(S.String),
+      message: S.optional(S.String),
+    },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class RequestTimeoutException
+  extends /*@__PURE__*/ S.TaggedErrorClass<RequestTimeoutException>()(
+    "RequestTimeoutException",
+    {
+      type: S.optional(S.String),
+      code: S.optional(S.String),
+      message: S.optional(S.String),
+    },
+    T.HttpError(408),
+  ).pipe(C.withTimeoutError) {}
+export class ResourceNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
+    "ResourceNotFoundException",
+    {
+      type: S.optional(S.String),
+      code: S.optional(S.String),
+      message: S.optional(S.String),
+    },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class ServiceUnavailableException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ServiceUnavailableException>()(
+    "ServiceUnavailableException",
+    {
+      type: S.optional(S.String),
+      code: S.optional(S.String),
+      message: S.optional(S.String),
+    },
+    T.HttpError(500),
+  ).pipe(C.withServerError) {}
 export interface AbortMultipartUploadInput {
   accountId: string;
   vaultName: string;
@@ -2816,7 +2825,27 @@ export const listJobs: API.OperationMethod<
     items: "JobList",
     pageSize: "limit",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListJobsInput,
+  ListJobsOutput,
+  ListJobsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListJobsInput,
+  ) => stream.Stream<
+    ListJobsOutput,
+    ListJobsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListJobsInput,
+  ) => stream.Stream<
+    GlacierJobDescription,
+    ListJobsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListMultipartUploadsError =
   | InvalidParameterValueException
@@ -2892,7 +2921,27 @@ export const listMultipartUploads: API.OperationMethod<
     items: "UploadsList",
     pageSize: "limit",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListMultipartUploadsInput,
+  ListMultipartUploadsOutput,
+  ListMultipartUploadsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListMultipartUploadsInput,
+  ) => stream.Stream<
+    ListMultipartUploadsOutput,
+    ListMultipartUploadsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListMultipartUploadsInput,
+  ) => stream.Stream<
+    UploadListElement,
+    ListMultipartUploadsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListPartsError =
   | InvalidParameterValueException
@@ -2965,7 +3014,27 @@ export const listParts: API.OperationMethod<
     items: "Parts",
     pageSize: "limit",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListPartsInput,
+  ListPartsOutput,
+  ListPartsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListPartsInput,
+  ) => stream.Stream<
+    ListPartsOutput,
+    ListPartsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListPartsInput,
+  ) => stream.Stream<
+    PartListElement,
+    ListPartsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListProvisionedCapacityError =
   | InvalidParameterValueException
@@ -3096,7 +3165,27 @@ export const listVaults: API.OperationMethod<
     items: "VaultList",
     pageSize: "limit",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListVaultsInput,
+  ListVaultsOutput,
+  ListVaultsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListVaultsInput,
+  ) => stream.Stream<
+    ListVaultsOutput,
+    ListVaultsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListVaultsInput,
+  ) => stream.Stream<
+    DescribeVaultOutput,
+    ListVaultsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type PurchaseProvisionedCapacityError =
   | InvalidParameterValueException

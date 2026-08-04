@@ -88,46 +88,51 @@ const rules = T.EndpointResolver((p, _) => {
   return err("Invalid Configuration: Missing Region");
 });
 
-export class InternalServiceErrorException extends S.TaggedErrorClass<InternalServiceErrorException>()(
-  "InternalServiceErrorException",
-  { Message: S.optional(S.String) },
-  T.all(
-    T.AwsQueryError({ code: "InternalServiceError", httpResponseCode: 500 }),
-    T.HttpError(500),
-  ),
-).pipe(C.withServerError) {}
-export class InvalidRequestException extends S.TaggedErrorClass<InvalidRequestException>()(
-  "InvalidRequestException",
-  { Message: S.optional(S.String) },
-  T.all(
-    T.AwsQueryError({ code: "InvalidRequest", httpResponseCode: 400 }),
-    T.HttpError(400),
-  ),
-).pipe(C.withBadRequestError) {}
-export class InvalidStateException extends S.TaggedErrorClass<InvalidStateException>()(
-  "InvalidStateException",
-  { Message: S.optional(S.String) },
-  T.all(
-    T.AwsQueryError({ code: "InvalidState", httpResponseCode: 400 }),
-    T.HttpError(400),
-  ),
-).pipe(C.withBadRequestError) {}
-export class ResourceNotFoundException extends S.TaggedErrorClass<ResourceNotFoundException>()(
-  "ResourceNotFoundException",
-  { Message: S.optional(S.String) },
-  T.all(
-    T.AwsQueryError({ code: "ResourceNotfound", httpResponseCode: 400 }),
-    T.HttpError(400),
-  ),
-).pipe(C.withBadRequestError) {}
-export class ServiceQuotaExceededException extends S.TaggedErrorClass<ServiceQuotaExceededException>()(
-  "ServiceQuotaExceededException",
-  { Message: S.optional(S.String) },
-  T.all(
-    T.AwsQueryError({ code: "ServiceQuotaExceeded", httpResponseCode: 402 }),
-    T.HttpError(402),
-  ),
-).pipe(C.withQuotaError) {}
+export class InternalServiceErrorException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InternalServiceErrorException>()(
+    "InternalServiceErrorException",
+    { Message: S.optional(S.String) },
+    T.all(
+      T.AwsQueryError({ code: "InternalServiceError", httpResponseCode: 500 }),
+      T.HttpError(500),
+    ),
+  ).pipe(C.withServerError) {}
+export class InvalidRequestException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidRequestException>()(
+    "InvalidRequestException",
+    { Message: S.optional(S.String) },
+    T.all(
+      T.AwsQueryError({ code: "InvalidRequest", httpResponseCode: 400 }),
+      T.HttpError(400),
+    ),
+  ).pipe(C.withBadRequestError) {}
+export class InvalidStateException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidStateException>()(
+    "InvalidStateException",
+    { Message: S.optional(S.String) },
+    T.all(
+      T.AwsQueryError({ code: "InvalidState", httpResponseCode: 400 }),
+      T.HttpError(400),
+    ),
+  ).pipe(C.withBadRequestError) {}
+export class ResourceNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
+    "ResourceNotFoundException",
+    { Message: S.optional(S.String) },
+    T.all(
+      T.AwsQueryError({ code: "ResourceNotfound", httpResponseCode: 400 }),
+      T.HttpError(400),
+    ),
+  ).pipe(C.withBadRequestError) {}
+export class ServiceQuotaExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
+    "ServiceQuotaExceededException",
+    { Message: S.optional(S.String) },
+    T.all(
+      T.AwsQueryError({ code: "ServiceQuotaExceeded", httpResponseCode: 402 }),
+      T.HttpError(402),
+    ),
+  ).pipe(C.withQuotaError) {}
 export type AppRunnerResourceArn = string;
 export type DomainName = string;
 export interface AssociateCustomDomainRequest {
@@ -2569,7 +2574,27 @@ export const describeCustomDomains: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  DescribeCustomDomainsRequest,
+  DescribeCustomDomainsResponse,
+  DescribeCustomDomainsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: DescribeCustomDomainsRequest,
+  ) => stream.Stream<
+    DescribeCustomDomainsResponse,
+    DescribeCustomDomainsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: DescribeCustomDomainsRequest,
+  ) => stream.Stream<
+    unknown,
+    DescribeCustomDomainsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type DescribeObservabilityConfigurationError =
   | InternalServiceErrorException
@@ -2751,7 +2776,27 @@ export const listAutoScalingConfigurations: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListAutoScalingConfigurationsRequest,
+  ListAutoScalingConfigurationsResponse,
+  ListAutoScalingConfigurationsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListAutoScalingConfigurationsRequest,
+  ) => stream.Stream<
+    ListAutoScalingConfigurationsResponse,
+    ListAutoScalingConfigurationsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListAutoScalingConfigurationsRequest,
+  ) => stream.Stream<
+    unknown,
+    ListAutoScalingConfigurationsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListConnectionsError =
   | InternalServiceErrorException
@@ -2792,7 +2837,27 @@ export const listConnections: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListConnectionsRequest,
+  ListConnectionsResponse,
+  ListConnectionsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListConnectionsRequest,
+  ) => stream.Stream<
+    ListConnectionsResponse,
+    ListConnectionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListConnectionsRequest,
+  ) => stream.Stream<
+    unknown,
+    ListConnectionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListObservabilityConfigurationsError =
   | InternalServiceErrorException
@@ -2838,7 +2903,27 @@ export const listObservabilityConfigurations: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListObservabilityConfigurationsRequest,
+  ListObservabilityConfigurationsResponse,
+  ListObservabilityConfigurationsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListObservabilityConfigurationsRequest,
+  ) => stream.Stream<
+    ListObservabilityConfigurationsResponse,
+    ListObservabilityConfigurationsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListObservabilityConfigurationsRequest,
+  ) => stream.Stream<
+    unknown,
+    ListObservabilityConfigurationsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListOperationsError =
   | InternalServiceErrorException
@@ -2887,7 +2972,27 @@ export const listOperations: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListOperationsRequest,
+  ListOperationsResponse,
+  ListOperationsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListOperationsRequest,
+  ) => stream.Stream<
+    ListOperationsResponse,
+    ListOperationsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListOperationsRequest,
+  ) => stream.Stream<
+    unknown,
+    ListOperationsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListServicesError =
   | InternalServiceErrorException
@@ -2928,7 +3033,27 @@ export const listServices: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListServicesRequest,
+  ListServicesResponse,
+  ListServicesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListServicesRequest,
+  ) => stream.Stream<
+    ListServicesResponse,
+    ListServicesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListServicesRequest,
+  ) => stream.Stream<
+    unknown,
+    ListServicesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListServicesForAutoScalingConfigurationError =
   | InternalServiceErrorException
@@ -2974,7 +3099,27 @@ export const listServicesForAutoScalingConfiguration: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListServicesForAutoScalingConfigurationRequest,
+  ListServicesForAutoScalingConfigurationResponse,
+  ListServicesForAutoScalingConfigurationError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListServicesForAutoScalingConfigurationRequest,
+  ) => stream.Stream<
+    ListServicesForAutoScalingConfigurationResponse,
+    ListServicesForAutoScalingConfigurationError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListServicesForAutoScalingConfigurationRequest,
+  ) => stream.Stream<
+    unknown,
+    ListServicesForAutoScalingConfigurationError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListTagsForResourceError =
   | InternalServiceErrorException
@@ -3043,7 +3188,27 @@ export const listVpcConnectors: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListVpcConnectorsRequest,
+  ListVpcConnectorsResponse,
+  ListVpcConnectorsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListVpcConnectorsRequest,
+  ) => stream.Stream<
+    ListVpcConnectorsResponse,
+    ListVpcConnectorsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListVpcConnectorsRequest,
+  ) => stream.Stream<
+    unknown,
+    ListVpcConnectorsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListVpcIngressConnectionsError =
   | InternalServiceErrorException
@@ -3084,7 +3249,27 @@ export const listVpcIngressConnections: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListVpcIngressConnectionsRequest,
+  ListVpcIngressConnectionsResponse,
+  ListVpcIngressConnectionsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListVpcIngressConnectionsRequest,
+  ) => stream.Stream<
+    ListVpcIngressConnectionsResponse,
+    ListVpcIngressConnectionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListVpcIngressConnectionsRequest,
+  ) => stream.Stream<
+    unknown,
+    ListVpcIngressConnectionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type PauseServiceError =
   | InternalServiceErrorException

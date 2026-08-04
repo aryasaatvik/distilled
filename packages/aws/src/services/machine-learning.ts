@@ -90,44 +90,52 @@ const rules = T.EndpointResolver((p, _) => {
   return err("Invalid Configuration: Missing Region");
 });
 
-export class IdempotentParameterMismatchException extends S.TaggedErrorClass<IdempotentParameterMismatchException>()(
-  "IdempotentParameterMismatchException",
-  { message: S.optional(S.String), code: S.optional(S.Number) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class InternalServerException extends S.TaggedErrorClass<InternalServerException>()(
-  "InternalServerException",
-  { message: S.optional(S.String), code: S.optional(S.Number) },
-  T.HttpError(500),
-).pipe(C.withServerError) {}
-export class InvalidInputException extends S.TaggedErrorClass<InvalidInputException>()(
-  "InvalidInputException",
-  { message: S.optional(S.String), code: S.optional(S.Number) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class InvalidTagException extends S.TaggedErrorClass<InvalidTagException>()(
-  "InvalidTagException",
-  { message: S.optional(S.String) },
-) {}
-export class LimitExceededException extends S.TaggedErrorClass<LimitExceededException>()(
-  "LimitExceededException",
-  { message: S.optional(S.String), code: S.optional(S.Number) },
-  T.HttpError(417),
-) {}
-export class PredictorNotMountedException extends S.TaggedErrorClass<PredictorNotMountedException>()(
-  "PredictorNotMountedException",
-  { message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class ResourceNotFoundException extends S.TaggedErrorClass<ResourceNotFoundException>()(
-  "ResourceNotFoundException",
-  { message: S.optional(S.String), code: S.optional(S.Number) },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class TagLimitExceededException extends S.TaggedErrorClass<TagLimitExceededException>()(
-  "TagLimitExceededException",
-  { message: S.optional(S.String) },
-) {}
+export class IdempotentParameterMismatchException
+  extends /*@__PURE__*/ S.TaggedErrorClass<IdempotentParameterMismatchException>()(
+    "IdempotentParameterMismatchException",
+    { message: S.optional(S.String), code: S.optional(S.Number) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class InternalServerException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
+    "InternalServerException",
+    { message: S.optional(S.String), code: S.optional(S.Number) },
+    T.HttpError(500),
+  ).pipe(C.withServerError) {}
+export class InvalidInputException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidInputException>()(
+    "InvalidInputException",
+    { message: S.optional(S.String), code: S.optional(S.Number) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class InvalidTagException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidTagException>()(
+    "InvalidTagException",
+    { message: S.optional(S.String) },
+  ) {}
+export class LimitExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<LimitExceededException>()(
+    "LimitExceededException",
+    { message: S.optional(S.String), code: S.optional(S.Number) },
+    T.HttpError(417),
+  ) {}
+export class PredictorNotMountedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<PredictorNotMountedException>()(
+    "PredictorNotMountedException",
+    { message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class ResourceNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
+    "ResourceNotFoundException",
+    { message: S.optional(S.String), code: S.optional(S.Number) },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class TagLimitExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<TagLimitExceededException>()(
+    "TagLimitExceededException",
+    { message: S.optional(S.String) },
+  ) {}
 export type TagKey = string;
 export type TagValue = string;
 export interface Tag {
@@ -2267,7 +2275,27 @@ export const describeBatchPredictions: API.OperationMethod<
     items: "Results",
     pageSize: "Limit",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  DescribeBatchPredictionsInput,
+  DescribeBatchPredictionsOutput,
+  DescribeBatchPredictionsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: DescribeBatchPredictionsInput,
+  ) => stream.Stream<
+    DescribeBatchPredictionsOutput,
+    DescribeBatchPredictionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: DescribeBatchPredictionsInput,
+  ) => stream.Stream<
+    BatchPrediction,
+    DescribeBatchPredictionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type DescribeDataSourcesError =
   | InternalServerException
@@ -2309,7 +2337,27 @@ export const describeDataSources: API.OperationMethod<
     items: "Results",
     pageSize: "Limit",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  DescribeDataSourcesInput,
+  DescribeDataSourcesOutput,
+  DescribeDataSourcesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: DescribeDataSourcesInput,
+  ) => stream.Stream<
+    DescribeDataSourcesOutput,
+    DescribeDataSourcesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: DescribeDataSourcesInput,
+  ) => stream.Stream<
+    DataSource,
+    DescribeDataSourcesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type DescribeEvaluationsError =
   | InternalServerException
@@ -2351,7 +2399,27 @@ export const describeEvaluations: API.OperationMethod<
     items: "Results",
     pageSize: "Limit",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  DescribeEvaluationsInput,
+  DescribeEvaluationsOutput,
+  DescribeEvaluationsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: DescribeEvaluationsInput,
+  ) => stream.Stream<
+    DescribeEvaluationsOutput,
+    DescribeEvaluationsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: DescribeEvaluationsInput,
+  ) => stream.Stream<
+    Evaluation,
+    DescribeEvaluationsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type DescribeMLModelsError =
   | InternalServerException
@@ -2393,7 +2461,27 @@ export const describeMLModels: API.OperationMethod<
     items: "Results",
     pageSize: "Limit",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  DescribeMLModelsInput,
+  DescribeMLModelsOutput,
+  DescribeMLModelsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: DescribeMLModelsInput,
+  ) => stream.Stream<
+    DescribeMLModelsOutput,
+    DescribeMLModelsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: DescribeMLModelsInput,
+  ) => stream.Stream<
+    MLModel,
+    DescribeMLModelsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type DescribeTagsError =
   | InternalServerException

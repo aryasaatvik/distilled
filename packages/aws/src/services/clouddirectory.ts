@@ -88,188 +88,223 @@ const rules = T.EndpointResolver((p, _) => {
   return err("Invalid Configuration: Missing Region");
 });
 
-export class AccessDeniedException extends S.TaggedErrorClass<AccessDeniedException>()(
-  "AccessDeniedException",
-  { Message: S.optional(S.String) },
-  T.HttpError(403),
-).pipe(C.withAuthError) {}
-export class BatchWriteException extends S.TaggedErrorClass<BatchWriteException>()(
-  "BatchWriteException",
-  {
-    Index: S.optional(S.Number),
-    Type: S.optional(
-      S.suspend(() => BatchWriteExceptionType).annotate({
-        identifier: "BatchWriteExceptionType",
-      }),
-    ),
-    Message: S.optional(S.String),
-  },
-) {}
-export class CannotListParentOfRootException extends S.TaggedErrorClass<CannotListParentOfRootException>()(
-  "CannotListParentOfRootException",
-  { Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class DirectoryAlreadyExistsException extends S.TaggedErrorClass<DirectoryAlreadyExistsException>()(
-  "DirectoryAlreadyExistsException",
-  { Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError, C.withAlreadyExistsError) {}
-export class DirectoryDeletedException extends S.TaggedErrorClass<DirectoryDeletedException>()(
-  "DirectoryDeletedException",
-  { Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class DirectoryNotDisabledException extends S.TaggedErrorClass<DirectoryNotDisabledException>()(
-  "DirectoryNotDisabledException",
-  { Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class DirectoryNotEnabledException extends S.TaggedErrorClass<DirectoryNotEnabledException>()(
-  "DirectoryNotEnabledException",
-  { Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class FacetAlreadyExistsException extends S.TaggedErrorClass<FacetAlreadyExistsException>()(
-  "FacetAlreadyExistsException",
-  { Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError, C.withAlreadyExistsError) {}
-export class FacetInUseException extends S.TaggedErrorClass<FacetInUseException>()(
-  "FacetInUseException",
-  { Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class FacetNotFoundException extends S.TaggedErrorClass<FacetNotFoundException>()(
-  "FacetNotFoundException",
-  { Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class FacetValidationException extends S.TaggedErrorClass<FacetValidationException>()(
-  "FacetValidationException",
-  { Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class IncompatibleSchemaException extends S.TaggedErrorClass<IncompatibleSchemaException>()(
-  "IncompatibleSchemaException",
-  { Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class IndexedAttributeMissingException extends S.TaggedErrorClass<IndexedAttributeMissingException>()(
-  "IndexedAttributeMissingException",
-  { Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class InternalServiceException extends S.TaggedErrorClass<InternalServiceException>()(
-  "InternalServiceException",
-  { Message: S.optional(S.String) },
-  T.HttpError(500),
-).pipe(C.withServerError) {}
-export class InvalidArnException extends S.TaggedErrorClass<InvalidArnException>()(
-  "InvalidArnException",
-  { Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class InvalidAttachmentException extends S.TaggedErrorClass<InvalidAttachmentException>()(
-  "InvalidAttachmentException",
-  { Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class InvalidFacetUpdateException extends S.TaggedErrorClass<InvalidFacetUpdateException>()(
-  "InvalidFacetUpdateException",
-  { Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class InvalidNextTokenException extends S.TaggedErrorClass<InvalidNextTokenException>()(
-  "InvalidNextTokenException",
-  { Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class InvalidRuleException extends S.TaggedErrorClass<InvalidRuleException>()(
-  "InvalidRuleException",
-  { Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class InvalidSchemaDocException extends S.TaggedErrorClass<InvalidSchemaDocException>()(
-  "InvalidSchemaDocException",
-  { Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class InvalidTaggingRequestException extends S.TaggedErrorClass<InvalidTaggingRequestException>()(
-  "InvalidTaggingRequestException",
-  { Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class LimitExceededException extends S.TaggedErrorClass<LimitExceededException>()(
-  "LimitExceededException",
-  { Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class LinkNameAlreadyInUseException extends S.TaggedErrorClass<LinkNameAlreadyInUseException>()(
-  "LinkNameAlreadyInUseException",
-  { Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class NotIndexException extends S.TaggedErrorClass<NotIndexException>()(
-  "NotIndexException",
-  { Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class NotNodeException extends S.TaggedErrorClass<NotNodeException>()(
-  "NotNodeException",
-  { Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class NotPolicyException extends S.TaggedErrorClass<NotPolicyException>()(
-  "NotPolicyException",
-  { Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class ObjectAlreadyDetachedException extends S.TaggedErrorClass<ObjectAlreadyDetachedException>()(
-  "ObjectAlreadyDetachedException",
-  { Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class ObjectNotDetachedException extends S.TaggedErrorClass<ObjectNotDetachedException>()(
-  "ObjectNotDetachedException",
-  { Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class ResourceNotFoundException extends S.TaggedErrorClass<ResourceNotFoundException>()(
-  "ResourceNotFoundException",
-  { Message: S.optional(S.String) },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class RetryableConflictException extends S.TaggedErrorClass<RetryableConflictException>()(
-  "RetryableConflictException",
-  { Message: S.optional(S.String) },
-  T.HttpError(409),
-).pipe(C.withConflictError) {}
-export class SchemaAlreadyExistsException extends S.TaggedErrorClass<SchemaAlreadyExistsException>()(
-  "SchemaAlreadyExistsException",
-  { Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError, C.withAlreadyExistsError) {}
-export class SchemaAlreadyPublishedException extends S.TaggedErrorClass<SchemaAlreadyPublishedException>()(
-  "SchemaAlreadyPublishedException",
-  { Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class StillContainsLinksException extends S.TaggedErrorClass<StillContainsLinksException>()(
-  "StillContainsLinksException",
-  { Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class UnsupportedIndexTypeException extends S.TaggedErrorClass<UnsupportedIndexTypeException>()(
-  "UnsupportedIndexTypeException",
-  { Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class ValidationException extends S.TaggedErrorClass<ValidationException>()(
-  "ValidationException",
-  { Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
+export class AccessDeniedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
+    "AccessDeniedException",
+    { Message: S.optional(S.String) },
+    T.HttpError(403),
+  ).pipe(C.withAuthError) {}
+export class BatchWriteException
+  extends /*@__PURE__*/ S.TaggedErrorClass<BatchWriteException>()(
+    "BatchWriteException",
+    {
+      Index: S.optional(S.Number),
+      Type: S.optional(
+        S.suspend(() => BatchWriteExceptionType).annotate({
+          identifier: "BatchWriteExceptionType",
+        }),
+      ),
+      Message: S.optional(S.String),
+    },
+  ) {}
+export class CannotListParentOfRootException
+  extends /*@__PURE__*/ S.TaggedErrorClass<CannotListParentOfRootException>()(
+    "CannotListParentOfRootException",
+    { Message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class DirectoryAlreadyExistsException
+  extends /*@__PURE__*/ S.TaggedErrorClass<DirectoryAlreadyExistsException>()(
+    "DirectoryAlreadyExistsException",
+    { Message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError, C.withAlreadyExistsError) {}
+export class DirectoryDeletedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<DirectoryDeletedException>()(
+    "DirectoryDeletedException",
+    { Message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class DirectoryNotDisabledException
+  extends /*@__PURE__*/ S.TaggedErrorClass<DirectoryNotDisabledException>()(
+    "DirectoryNotDisabledException",
+    { Message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class DirectoryNotEnabledException
+  extends /*@__PURE__*/ S.TaggedErrorClass<DirectoryNotEnabledException>()(
+    "DirectoryNotEnabledException",
+    { Message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class FacetAlreadyExistsException
+  extends /*@__PURE__*/ S.TaggedErrorClass<FacetAlreadyExistsException>()(
+    "FacetAlreadyExistsException",
+    { Message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError, C.withAlreadyExistsError) {}
+export class FacetInUseException
+  extends /*@__PURE__*/ S.TaggedErrorClass<FacetInUseException>()(
+    "FacetInUseException",
+    { Message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class FacetNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<FacetNotFoundException>()(
+    "FacetNotFoundException",
+    { Message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class FacetValidationException
+  extends /*@__PURE__*/ S.TaggedErrorClass<FacetValidationException>()(
+    "FacetValidationException",
+    { Message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class IncompatibleSchemaException
+  extends /*@__PURE__*/ S.TaggedErrorClass<IncompatibleSchemaException>()(
+    "IncompatibleSchemaException",
+    { Message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class IndexedAttributeMissingException
+  extends /*@__PURE__*/ S.TaggedErrorClass<IndexedAttributeMissingException>()(
+    "IndexedAttributeMissingException",
+    { Message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class InternalServiceException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InternalServiceException>()(
+    "InternalServiceException",
+    { Message: S.optional(S.String) },
+    T.HttpError(500),
+  ).pipe(C.withServerError) {}
+export class InvalidArnException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidArnException>()(
+    "InvalidArnException",
+    { Message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class InvalidAttachmentException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidAttachmentException>()(
+    "InvalidAttachmentException",
+    { Message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class InvalidFacetUpdateException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidFacetUpdateException>()(
+    "InvalidFacetUpdateException",
+    { Message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class InvalidNextTokenException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidNextTokenException>()(
+    "InvalidNextTokenException",
+    { Message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class InvalidRuleException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidRuleException>()(
+    "InvalidRuleException",
+    { Message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class InvalidSchemaDocException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidSchemaDocException>()(
+    "InvalidSchemaDocException",
+    { Message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class InvalidTaggingRequestException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidTaggingRequestException>()(
+    "InvalidTaggingRequestException",
+    { Message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class LimitExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<LimitExceededException>()(
+    "LimitExceededException",
+    { Message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class LinkNameAlreadyInUseException
+  extends /*@__PURE__*/ S.TaggedErrorClass<LinkNameAlreadyInUseException>()(
+    "LinkNameAlreadyInUseException",
+    { Message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class NotIndexException
+  extends /*@__PURE__*/ S.TaggedErrorClass<NotIndexException>()(
+    "NotIndexException",
+    { Message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class NotNodeException
+  extends /*@__PURE__*/ S.TaggedErrorClass<NotNodeException>()(
+    "NotNodeException",
+    { Message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class NotPolicyException
+  extends /*@__PURE__*/ S.TaggedErrorClass<NotPolicyException>()(
+    "NotPolicyException",
+    { Message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class ObjectAlreadyDetachedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ObjectAlreadyDetachedException>()(
+    "ObjectAlreadyDetachedException",
+    { Message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class ObjectNotDetachedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ObjectNotDetachedException>()(
+    "ObjectNotDetachedException",
+    { Message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class ResourceNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
+    "ResourceNotFoundException",
+    { Message: S.optional(S.String) },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class RetryableConflictException
+  extends /*@__PURE__*/ S.TaggedErrorClass<RetryableConflictException>()(
+    "RetryableConflictException",
+    { Message: S.optional(S.String) },
+    T.HttpError(409),
+  ).pipe(C.withConflictError) {}
+export class SchemaAlreadyExistsException
+  extends /*@__PURE__*/ S.TaggedErrorClass<SchemaAlreadyExistsException>()(
+    "SchemaAlreadyExistsException",
+    { Message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError, C.withAlreadyExistsError) {}
+export class SchemaAlreadyPublishedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<SchemaAlreadyPublishedException>()(
+    "SchemaAlreadyPublishedException",
+    { Message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class StillContainsLinksException
+  extends /*@__PURE__*/ S.TaggedErrorClass<StillContainsLinksException>()(
+    "StillContainsLinksException",
+    { Message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class UnsupportedIndexTypeException
+  extends /*@__PURE__*/ S.TaggedErrorClass<UnsupportedIndexTypeException>()(
+    "UnsupportedIndexTypeException",
+    { Message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class ValidationException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
+    "ValidationException",
+    { Message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
 export type Arn = string;
 export type FacetName = string;
 export interface SchemaFacet {
@@ -5385,7 +5420,27 @@ export const listAppliedSchemaArns: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListAppliedSchemaArnsRequest,
+  ListAppliedSchemaArnsResponse,
+  ListAppliedSchemaArnsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListAppliedSchemaArnsRequest,
+  ) => stream.Stream<
+    ListAppliedSchemaArnsResponse,
+    ListAppliedSchemaArnsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListAppliedSchemaArnsRequest,
+  ) => stream.Stream<
+    unknown,
+    ListAppliedSchemaArnsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListAttachedIndicesError =
   | AccessDeniedException
@@ -5441,7 +5496,27 @@ export const listAttachedIndices: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListAttachedIndicesRequest,
+  ListAttachedIndicesResponse,
+  ListAttachedIndicesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListAttachedIndicesRequest,
+  ) => stream.Stream<
+    ListAttachedIndicesResponse,
+    ListAttachedIndicesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListAttachedIndicesRequest,
+  ) => stream.Stream<
+    unknown,
+    ListAttachedIndicesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListDevelopmentSchemaArnsError =
   | AccessDeniedException
@@ -5498,7 +5573,27 @@ export const listDevelopmentSchemaArns: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListDevelopmentSchemaArnsRequest,
+  ListDevelopmentSchemaArnsResponse,
+  ListDevelopmentSchemaArnsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListDevelopmentSchemaArnsRequest,
+  ) => stream.Stream<
+    ListDevelopmentSchemaArnsResponse,
+    ListDevelopmentSchemaArnsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListDevelopmentSchemaArnsRequest,
+  ) => stream.Stream<
+    unknown,
+    ListDevelopmentSchemaArnsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListDirectoriesError =
   | AccessDeniedException
@@ -5552,7 +5647,27 @@ export const listDirectories: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListDirectoriesRequest,
+  ListDirectoriesResponse,
+  ListDirectoriesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListDirectoriesRequest,
+  ) => stream.Stream<
+    ListDirectoriesResponse,
+    ListDirectoriesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListDirectoriesRequest,
+  ) => stream.Stream<
+    unknown,
+    ListDirectoriesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListFacetAttributesError =
   | AccessDeniedException
@@ -5610,7 +5725,27 @@ export const listFacetAttributes: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListFacetAttributesRequest,
+  ListFacetAttributesResponse,
+  ListFacetAttributesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListFacetAttributesRequest,
+  ) => stream.Stream<
+    ListFacetAttributesResponse,
+    ListFacetAttributesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListFacetAttributesRequest,
+  ) => stream.Stream<
+    unknown,
+    ListFacetAttributesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListFacetNamesError =
   | AccessDeniedException
@@ -5666,7 +5801,27 @@ export const listFacetNames: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListFacetNamesRequest,
+  ListFacetNamesResponse,
+  ListFacetNamesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListFacetNamesRequest,
+  ) => stream.Stream<
+    ListFacetNamesResponse,
+    ListFacetNamesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListFacetNamesRequest,
+  ) => stream.Stream<
+    unknown,
+    ListFacetNamesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListIncomingTypedLinksError =
   | AccessDeniedException
@@ -5770,7 +5925,27 @@ export const listIndex: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListIndexRequest,
+  ListIndexResponse,
+  ListIndexError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListIndexRequest,
+  ) => stream.Stream<
+    ListIndexResponse,
+    ListIndexError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListIndexRequest,
+  ) => stream.Stream<
+    unknown,
+    ListIndexError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListManagedSchemaArnsError =
   | AccessDeniedException
@@ -5822,7 +5997,27 @@ export const listManagedSchemaArns: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListManagedSchemaArnsRequest,
+  ListManagedSchemaArnsResponse,
+  ListManagedSchemaArnsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListManagedSchemaArnsRequest,
+  ) => stream.Stream<
+    ListManagedSchemaArnsResponse,
+    ListManagedSchemaArnsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListManagedSchemaArnsRequest,
+  ) => stream.Stream<
+    unknown,
+    ListManagedSchemaArnsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListObjectAttributesError =
   | AccessDeniedException
@@ -5882,7 +6077,27 @@ export const listObjectAttributes: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListObjectAttributesRequest,
+  ListObjectAttributesResponse,
+  ListObjectAttributesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListObjectAttributesRequest,
+  ) => stream.Stream<
+    ListObjectAttributesResponse,
+    ListObjectAttributesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListObjectAttributesRequest,
+  ) => stream.Stream<
+    unknown,
+    ListObjectAttributesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListObjectChildrenError =
   | AccessDeniedException
@@ -5943,7 +6158,27 @@ export const listObjectChildren: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListObjectChildrenRequest,
+  ListObjectChildrenResponse,
+  ListObjectChildrenError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListObjectChildrenRequest,
+  ) => stream.Stream<
+    ListObjectChildrenResponse,
+    ListObjectChildrenError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListObjectChildrenRequest,
+  ) => stream.Stream<
+    unknown,
+    ListObjectChildrenError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListObjectParentPathsError =
   | AccessDeniedException
@@ -6009,7 +6244,27 @@ export const listObjectParentPaths: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListObjectParentPathsRequest,
+  ListObjectParentPathsResponse,
+  ListObjectParentPathsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListObjectParentPathsRequest,
+  ) => stream.Stream<
+    ListObjectParentPathsResponse,
+    ListObjectParentPathsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListObjectParentPathsRequest,
+  ) => stream.Stream<
+    unknown,
+    ListObjectParentPathsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListObjectParentsError =
   | AccessDeniedException
@@ -6070,7 +6325,27 @@ export const listObjectParents: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListObjectParentsRequest,
+  ListObjectParentsResponse,
+  ListObjectParentsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListObjectParentsRequest,
+  ) => stream.Stream<
+    ListObjectParentsResponse,
+    ListObjectParentsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListObjectParentsRequest,
+  ) => stream.Stream<
+    unknown,
+    ListObjectParentsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListObjectPoliciesError =
   | AccessDeniedException
@@ -6128,7 +6403,27 @@ export const listObjectPolicies: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListObjectPoliciesRequest,
+  ListObjectPoliciesResponse,
+  ListObjectPoliciesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListObjectPoliciesRequest,
+  ) => stream.Stream<
+    ListObjectPoliciesResponse,
+    ListObjectPoliciesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListObjectPoliciesRequest,
+  ) => stream.Stream<
+    unknown,
+    ListObjectPoliciesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListOutgoingTypedLinksError =
   | AccessDeniedException
@@ -6230,7 +6525,27 @@ export const listPolicyAttachments: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListPolicyAttachmentsRequest,
+  ListPolicyAttachmentsResponse,
+  ListPolicyAttachmentsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListPolicyAttachmentsRequest,
+  ) => stream.Stream<
+    ListPolicyAttachmentsResponse,
+    ListPolicyAttachmentsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListPolicyAttachmentsRequest,
+  ) => stream.Stream<
+    unknown,
+    ListPolicyAttachmentsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListPublishedSchemaArnsError =
   | AccessDeniedException
@@ -6286,7 +6601,27 @@ export const listPublishedSchemaArns: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListPublishedSchemaArnsRequest,
+  ListPublishedSchemaArnsResponse,
+  ListPublishedSchemaArnsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListPublishedSchemaArnsRequest,
+  ) => stream.Stream<
+    ListPublishedSchemaArnsResponse,
+    ListPublishedSchemaArnsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListPublishedSchemaArnsRequest,
+  ) => stream.Stream<
+    unknown,
+    ListPublishedSchemaArnsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListTagsForResourceError =
   | AccessDeniedException
@@ -6344,7 +6679,27 @@ export const listTagsForResource: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListTagsForResourceRequest,
+  ListTagsForResourceResponse,
+  ListTagsForResourceError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListTagsForResourceRequest,
+  ) => stream.Stream<
+    ListTagsForResourceResponse,
+    ListTagsForResourceError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListTagsForResourceRequest,
+  ) => stream.Stream<
+    unknown,
+    ListTagsForResourceError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListTypedLinkFacetAttributesError =
   | AccessDeniedException
@@ -6402,7 +6757,27 @@ export const listTypedLinkFacetAttributes: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListTypedLinkFacetAttributesRequest,
+  ListTypedLinkFacetAttributesResponse,
+  ListTypedLinkFacetAttributesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListTypedLinkFacetAttributesRequest,
+  ) => stream.Stream<
+    ListTypedLinkFacetAttributesResponse,
+    ListTypedLinkFacetAttributesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListTypedLinkFacetAttributesRequest,
+  ) => stream.Stream<
+    unknown,
+    ListTypedLinkFacetAttributesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListTypedLinkFacetNamesError =
   | AccessDeniedException
@@ -6459,7 +6834,27 @@ export const listTypedLinkFacetNames: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListTypedLinkFacetNamesRequest,
+  ListTypedLinkFacetNamesResponse,
+  ListTypedLinkFacetNamesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListTypedLinkFacetNamesRequest,
+  ) => stream.Stream<
+    ListTypedLinkFacetNamesResponse,
+    ListTypedLinkFacetNamesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListTypedLinkFacetNamesRequest,
+  ) => stream.Stream<
+    unknown,
+    ListTypedLinkFacetNamesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type LookupPolicyError =
   | AccessDeniedException
@@ -6522,7 +6917,27 @@ export const lookupPolicy: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  LookupPolicyRequest,
+  LookupPolicyResponse,
+  LookupPolicyError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: LookupPolicyRequest,
+  ) => stream.Stream<
+    LookupPolicyResponse,
+    LookupPolicyError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: LookupPolicyRequest,
+  ) => stream.Stream<
+    unknown,
+    LookupPolicyError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type PublishSchemaError =
   | AccessDeniedException

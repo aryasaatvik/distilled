@@ -85,81 +85,90 @@ const rules = T.EndpointResolver((p, _) => {
   return err("Invalid Configuration: Missing Region");
 });
 
-export class AccessDeniedException extends S.TaggedErrorClass<AccessDeniedException>()(
-  "AccessDeniedException",
-  { message: S.String },
-  T.HttpError(403),
-).pipe(C.withAuthError) {}
-export class ConflictException extends S.TaggedErrorClass<ConflictException>()(
-  "ConflictException",
-  {
-    message: S.String,
-    resourceId: S.optional(S.String),
-    resourceType: S.optional(S.String),
-  },
-  T.HttpError(409),
-).pipe(C.withConflictError) {}
-export class ExecutionTimeoutException extends S.TaggedErrorClass<ExecutionTimeoutException>()(
-  "ExecutionTimeoutException",
-  { message: S.String },
-  T.all(T.HttpError(504), T.Retryable()),
-).pipe(C.withTimeoutError, C.withRetryableError) {}
-export class InternalServerException extends S.TaggedErrorClass<InternalServerException>()(
-  "InternalServerException",
-  {
-    message: S.String,
-    retryAfterSeconds: S.optional(S.Number).pipe(T.HttpHeader("Retry-After")),
-  },
-  T.all(T.HttpError(500), T.Retryable()),
-).pipe(C.withServerError, C.withRetryableError) {}
-export class ResourceNotFoundException extends S.TaggedErrorClass<ResourceNotFoundException>()(
-  "ResourceNotFoundException",
-  {
-    message: S.String,
-    resourceId: S.optional(S.String),
-    resourceType: S.optional(S.String),
-  },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class ServiceQuotaExceededException extends S.TaggedErrorClass<ServiceQuotaExceededException>()(
-  "ServiceQuotaExceededException",
-  {
-    message: S.String,
-    resourceId: S.optional(S.String),
-    resourceType: S.optional(S.String),
-    serviceCode: S.optional(S.String),
-    quotaCode: S.optional(S.String),
-  },
-  T.HttpError(402),
-).pipe(C.withQuotaError) {}
-export class ServiceUnavailableException extends S.TaggedErrorClass<ServiceUnavailableException>()(
-  "ServiceUnavailableException",
-  { message: S.String },
-  T.all(T.HttpError(503), T.Retryable()),
-).pipe(C.withServerError, C.withRetryableError) {}
-export class ThrottlingException extends S.TaggedErrorClass<ThrottlingException>()(
-  "ThrottlingException",
-  {
-    message: S.String,
-    serviceCode: S.optional(S.String),
-    quotaCode: S.optional(S.String),
-    retryAfterSeconds: S.optional(S.Number).pipe(T.HttpHeader("Retry-After")),
-  },
-  T.all(T.HttpError(429), T.Retryable({ throttling: true })),
-).pipe(C.withThrottlingError, C.withRetryableError) {}
-export class ValidationException extends S.TaggedErrorClass<ValidationException>()(
-  "ValidationException",
-  {
-    message: S.String,
-    reason: S.optional(S.String),
-    fieldList: S.optional(
-      S.suspend(() => ValidationExceptionFieldList).annotate({
-        identifier: "ValidationExceptionFieldList",
-      }),
-    ),
-  },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
+export class AccessDeniedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
+    "AccessDeniedException",
+    { message: S.String },
+    T.HttpError(403),
+  ).pipe(C.withAuthError) {}
+export class ConflictException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
+    "ConflictException",
+    {
+      message: S.String,
+      resourceId: S.optional(S.String),
+      resourceType: S.optional(S.String),
+    },
+    T.HttpError(409),
+  ).pipe(C.withConflictError) {}
+export class ExecutionTimeoutException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ExecutionTimeoutException>()(
+    "ExecutionTimeoutException",
+    { message: S.String },
+    T.all(T.HttpError(504), T.Retryable()),
+  ).pipe(C.withTimeoutError, C.withRetryableError) {}
+export class InternalServerException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
+    "InternalServerException",
+    {
+      message: S.String,
+      retryAfterSeconds: S.optional(S.Number).pipe(T.HttpHeader("Retry-After")),
+    },
+    T.all(T.HttpError(500), T.Retryable()),
+  ).pipe(C.withServerError, C.withRetryableError) {}
+export class ResourceNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
+    "ResourceNotFoundException",
+    {
+      message: S.String,
+      resourceId: S.optional(S.String),
+      resourceType: S.optional(S.String),
+    },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class ServiceQuotaExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
+    "ServiceQuotaExceededException",
+    {
+      message: S.String,
+      resourceId: S.optional(S.String),
+      resourceType: S.optional(S.String),
+      serviceCode: S.optional(S.String),
+      quotaCode: S.optional(S.String),
+    },
+    T.HttpError(402),
+  ).pipe(C.withQuotaError) {}
+export class ServiceUnavailableException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ServiceUnavailableException>()(
+    "ServiceUnavailableException",
+    { message: S.String },
+    T.all(T.HttpError(503), T.Retryable()),
+  ).pipe(C.withServerError, C.withRetryableError) {}
+export class ThrottlingException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
+    "ThrottlingException",
+    {
+      message: S.String,
+      serviceCode: S.optional(S.String),
+      quotaCode: S.optional(S.String),
+      retryAfterSeconds: S.optional(S.Number).pipe(T.HttpHeader("Retry-After")),
+    },
+    T.all(T.HttpError(429), T.Retryable({ throttling: true })),
+  ).pipe(C.withThrottlingError, C.withRetryableError) {}
+export class ValidationException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
+    "ValidationException",
+    {
+      message: S.String,
+      reason: S.optional(S.String),
+      fieldList: S.optional(
+        S.suspend(() => ValidationExceptionFieldList).annotate({
+          identifier: "ValidationExceptionFieldList",
+        }),
+      ),
+    },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
 export type Identifier = string;
 export type AuthSecretsManagerArn = string;
 export interface CancelBatchJobExecutionRequest {
@@ -2971,7 +2980,27 @@ export const listApplications: API.OperationMethod<
     items: "applications",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListApplicationsRequest,
+  ListApplicationsResponse,
+  ListApplicationsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListApplicationsRequest,
+  ) => stream.Stream<
+    ListApplicationsResponse,
+    ListApplicationsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListApplicationsRequest,
+  ) => stream.Stream<
+    ApplicationSummary,
+    ListApplicationsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListApplicationVersionsError =
   | AccessDeniedException
@@ -3022,7 +3051,27 @@ export const listApplicationVersions: API.OperationMethod<
     items: "applicationVersions",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListApplicationVersionsRequest,
+  ListApplicationVersionsResponse,
+  ListApplicationVersionsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListApplicationVersionsRequest,
+  ) => stream.Stream<
+    ListApplicationVersionsResponse,
+    ListApplicationVersionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListApplicationVersionsRequest,
+  ) => stream.Stream<
+    ApplicationVersionSummary,
+    ListApplicationVersionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListBatchJobDefinitionsError =
   | AccessDeniedException
@@ -3075,7 +3124,27 @@ export const listBatchJobDefinitions: API.OperationMethod<
     items: "batchJobDefinitions",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListBatchJobDefinitionsRequest,
+  ListBatchJobDefinitionsResponse,
+  ListBatchJobDefinitionsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListBatchJobDefinitionsRequest,
+  ) => stream.Stream<
+    ListBatchJobDefinitionsResponse,
+    ListBatchJobDefinitionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListBatchJobDefinitionsRequest,
+  ) => stream.Stream<
+    BatchJobDefinition,
+    ListBatchJobDefinitionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListBatchJobExecutionsError =
   | AccessDeniedException
@@ -3127,7 +3196,27 @@ export const listBatchJobExecutions: API.OperationMethod<
     items: "batchJobExecutions",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListBatchJobExecutionsRequest,
+  ListBatchJobExecutionsResponse,
+  ListBatchJobExecutionsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListBatchJobExecutionsRequest,
+  ) => stream.Stream<
+    ListBatchJobExecutionsResponse,
+    ListBatchJobExecutionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListBatchJobExecutionsRequest,
+  ) => stream.Stream<
+    BatchJobExecutionSummary,
+    ListBatchJobExecutionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListBatchJobRestartPointsError =
   | AccessDeniedException
@@ -3210,7 +3299,27 @@ export const listDataSetExportHistory: API.OperationMethod<
     items: "dataSetExportTasks",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListDataSetExportHistoryRequest,
+  ListDataSetExportHistoryResponse,
+  ListDataSetExportHistoryError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListDataSetExportHistoryRequest,
+  ) => stream.Stream<
+    ListDataSetExportHistoryResponse,
+    ListDataSetExportHistoryError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListDataSetExportHistoryRequest,
+  ) => stream.Stream<
+    DataSetExportTask,
+    ListDataSetExportHistoryError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListDataSetImportHistoryError =
   | AccessDeniedException
@@ -3261,7 +3370,27 @@ export const listDataSetImportHistory: API.OperationMethod<
     items: "dataSetImportTasks",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListDataSetImportHistoryRequest,
+  ListDataSetImportHistoryResponse,
+  ListDataSetImportHistoryError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListDataSetImportHistoryRequest,
+  ) => stream.Stream<
+    ListDataSetImportHistoryResponse,
+    ListDataSetImportHistoryError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListDataSetImportHistoryRequest,
+  ) => stream.Stream<
+    DataSetImportTask,
+    ListDataSetImportHistoryError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListDataSetsError =
   | AccessDeniedException
@@ -3320,7 +3449,27 @@ export const listDataSets: API.OperationMethod<
     items: "dataSets",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListDataSetsRequest,
+  ListDataSetsResponse,
+  ListDataSetsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListDataSetsRequest,
+  ) => stream.Stream<
+    ListDataSetsResponse,
+    ListDataSetsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListDataSetsRequest,
+  ) => stream.Stream<
+    DataSetSummary,
+    ListDataSetsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListDeploymentsError =
   | AccessDeniedException
@@ -3373,7 +3522,27 @@ export const listDeployments: API.OperationMethod<
     items: "deployments",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListDeploymentsRequest,
+  ListDeploymentsResponse,
+  ListDeploymentsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListDeploymentsRequest,
+  ) => stream.Stream<
+    ListDeploymentsResponse,
+    ListDeploymentsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListDeploymentsRequest,
+  ) => stream.Stream<
+    DeploymentSummary,
+    ListDeploymentsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListEngineVersionsError =
   | AccessDeniedException
@@ -3422,7 +3591,27 @@ export const listEngineVersions: API.OperationMethod<
     items: "engineVersions",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListEngineVersionsRequest,
+  ListEngineVersionsResponse,
+  ListEngineVersionsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListEngineVersionsRequest,
+  ) => stream.Stream<
+    ListEngineVersionsResponse,
+    ListEngineVersionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListEngineVersionsRequest,
+  ) => stream.Stream<
+    EngineVersionsSummary,
+    ListEngineVersionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListEnvironmentsError =
   | AccessDeniedException
@@ -3471,7 +3660,27 @@ export const listEnvironments: API.OperationMethod<
     items: "environments",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListEnvironmentsRequest,
+  ListEnvironmentsResponse,
+  ListEnvironmentsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListEnvironmentsRequest,
+  ) => stream.Stream<
+    ListEnvironmentsResponse,
+    ListEnvironmentsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListEnvironmentsRequest,
+  ) => stream.Stream<
+    EnvironmentSummary,
+    ListEnvironmentsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListTagsForResourceError =
   | AccessDeniedException

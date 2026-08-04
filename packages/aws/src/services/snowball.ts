@@ -87,50 +87,61 @@ const rules = T.EndpointResolver((p, _) => {
   return err("Invalid Configuration: Missing Region");
 });
 
-export class ClusterLimitExceededException extends S.TaggedErrorClass<ClusterLimitExceededException>()(
-  "ClusterLimitExceededException",
-  { Message: S.optional(S.String) },
-) {}
-export class ConflictException extends S.TaggedErrorClass<ConflictException>()(
-  "ConflictException",
-  { ConflictResource: S.optional(S.String), Message: S.optional(S.String) },
-) {}
-export class Ec2RequestFailedException extends S.TaggedErrorClass<Ec2RequestFailedException>()(
-  "Ec2RequestFailedException",
-  { Message: S.optional(S.String) },
-) {}
-export class InvalidAddressException extends S.TaggedErrorClass<InvalidAddressException>()(
-  "InvalidAddressException",
-  { Message: S.optional(S.String) },
-) {}
-export class InvalidInputCombinationException extends S.TaggedErrorClass<InvalidInputCombinationException>()(
-  "InvalidInputCombinationException",
-  { Message: S.optional(S.String) },
-) {}
-export class InvalidJobStateException extends S.TaggedErrorClass<InvalidJobStateException>()(
-  "InvalidJobStateException",
-  { Message: S.optional(S.String) },
-) {}
-export class InvalidNextTokenException extends S.TaggedErrorClass<InvalidNextTokenException>()(
-  "InvalidNextTokenException",
-  { Message: S.optional(S.String) },
-) {}
-export class InvalidResourceException extends S.TaggedErrorClass<InvalidResourceException>()(
-  "InvalidResourceException",
-  { Message: S.optional(S.String), ResourceType: S.optional(S.String) },
-) {}
-export class KMSRequestFailedException extends S.TaggedErrorClass<KMSRequestFailedException>()(
-  "KMSRequestFailedException",
-  { Message: S.optional(S.String) },
-) {}
-export class ReturnShippingLabelAlreadyExistsException extends S.TaggedErrorClass<ReturnShippingLabelAlreadyExistsException>()(
-  "ReturnShippingLabelAlreadyExistsException",
-  { Message: S.optional(S.String) },
-).pipe(C.withAlreadyExistsError) {}
-export class UnsupportedAddressException extends S.TaggedErrorClass<UnsupportedAddressException>()(
-  "UnsupportedAddressException",
-  { Message: S.optional(S.String) },
-) {}
+export class ClusterLimitExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ClusterLimitExceededException>()(
+    "ClusterLimitExceededException",
+    { Message: S.optional(S.String) },
+  ) {}
+export class ConflictException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
+    "ConflictException",
+    { ConflictResource: S.optional(S.String), Message: S.optional(S.String) },
+  ) {}
+export class Ec2RequestFailedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<Ec2RequestFailedException>()(
+    "Ec2RequestFailedException",
+    { Message: S.optional(S.String) },
+  ) {}
+export class InvalidAddressException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidAddressException>()(
+    "InvalidAddressException",
+    { Message: S.optional(S.String) },
+  ) {}
+export class InvalidInputCombinationException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidInputCombinationException>()(
+    "InvalidInputCombinationException",
+    { Message: S.optional(S.String) },
+  ) {}
+export class InvalidJobStateException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidJobStateException>()(
+    "InvalidJobStateException",
+    { Message: S.optional(S.String) },
+  ) {}
+export class InvalidNextTokenException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidNextTokenException>()(
+    "InvalidNextTokenException",
+    { Message: S.optional(S.String) },
+  ) {}
+export class InvalidResourceException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidResourceException>()(
+    "InvalidResourceException",
+    { Message: S.optional(S.String), ResourceType: S.optional(S.String) },
+  ) {}
+export class KMSRequestFailedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<KMSRequestFailedException>()(
+    "KMSRequestFailedException",
+    { Message: S.optional(S.String) },
+  ) {}
+export class ReturnShippingLabelAlreadyExistsException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ReturnShippingLabelAlreadyExistsException>()(
+    "ReturnShippingLabelAlreadyExistsException",
+    { Message: S.optional(S.String) },
+  ).pipe(C.withAlreadyExistsError) {}
+export class UnsupportedAddressException
+  extends /*@__PURE__*/ S.TaggedErrorClass<UnsupportedAddressException>()(
+    "UnsupportedAddressException",
+    { Message: S.optional(S.String) },
+  ) {}
 export type ClusterId = string;
 export interface CancelClusterRequest {
   ClusterId: string;
@@ -1821,7 +1832,27 @@ export const describeAddresses: API.OperationMethod<
     items: "Addresses",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  DescribeAddressesRequest,
+  DescribeAddressesResult,
+  DescribeAddressesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: DescribeAddressesRequest,
+  ) => stream.Stream<
+    DescribeAddressesResult,
+    DescribeAddressesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: DescribeAddressesRequest,
+  ) => stream.Stream<
+    Address,
+    DescribeAddressesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type DescribeClusterError = InvalidResourceException | CommonErrors;
 /**
@@ -2047,7 +2078,27 @@ export const listClusterJobs: API.OperationMethod<
     items: "JobListEntries",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListClusterJobsRequest,
+  ListClusterJobsResult,
+  ListClusterJobsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListClusterJobsRequest,
+  ) => stream.Stream<
+    ListClusterJobsResult,
+    ListClusterJobsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListClusterJobsRequest,
+  ) => stream.Stream<
+    JobListEntry,
+    ListClusterJobsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListClustersError = InvalidNextTokenException | CommonErrors;
 /**
@@ -2088,7 +2139,27 @@ export const listClusters: API.OperationMethod<
     items: "ClusterListEntries",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListClustersRequest,
+  ListClustersResult,
+  ListClustersError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListClustersRequest,
+  ) => stream.Stream<
+    ListClustersResult,
+    ListClustersError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListClustersRequest,
+  ) => stream.Stream<
+    ClusterListEntry,
+    ListClustersError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListCompatibleImagesError =
   | Ec2RequestFailedException
@@ -2133,7 +2204,27 @@ export const listCompatibleImages: API.OperationMethod<
     items: "CompatibleImages",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListCompatibleImagesRequest,
+  ListCompatibleImagesResult,
+  ListCompatibleImagesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListCompatibleImagesRequest,
+  ) => stream.Stream<
+    ListCompatibleImagesResult,
+    ListCompatibleImagesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListCompatibleImagesRequest,
+  ) => stream.Stream<
+    CompatibleImage,
+    ListCompatibleImagesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListJobsError = InvalidNextTokenException | CommonErrors;
 /**
@@ -2176,7 +2267,27 @@ export const listJobs: API.OperationMethod<
     items: "JobListEntries",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListJobsRequest,
+  ListJobsResult,
+  ListJobsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListJobsRequest,
+  ) => stream.Stream<
+    ListJobsResult,
+    ListJobsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListJobsRequest,
+  ) => stream.Stream<
+    JobListEntry,
+    ListJobsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListLongTermPricingError =
   | InvalidNextTokenException
@@ -2218,7 +2329,27 @@ export const listLongTermPricing: API.OperationMethod<
     items: "LongTermPricingEntries",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListLongTermPricingRequest,
+  ListLongTermPricingResult,
+  ListLongTermPricingError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListLongTermPricingRequest,
+  ) => stream.Stream<
+    ListLongTermPricingResult,
+    ListLongTermPricingError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListLongTermPricingRequest,
+  ) => stream.Stream<
+    LongTermPricingListEntry,
+    ListLongTermPricingError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListPickupLocationsError = InvalidResourceException | CommonErrors;
 /**
@@ -2256,7 +2387,27 @@ export const listPickupLocations: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListPickupLocationsRequest,
+  ListPickupLocationsResult,
+  ListPickupLocationsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListPickupLocationsRequest,
+  ) => stream.Stream<
+    ListPickupLocationsResult,
+    ListPickupLocationsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListPickupLocationsRequest,
+  ) => stream.Stream<
+    unknown,
+    ListPickupLocationsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListServiceVersionsError =
   | InvalidNextTokenException

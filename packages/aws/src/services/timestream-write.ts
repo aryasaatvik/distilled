@@ -102,68 +102,78 @@ const rules = T.EndpointResolver((p, _) => {
   return err("Invalid Configuration: Missing Region");
 });
 
-export class AccessDeniedException extends S.TaggedErrorClass<AccessDeniedException>()(
-  "AccessDeniedException",
-  { Message: S.String },
-  T.HttpError(403),
-).pipe(C.withAuthError) {}
-export class ConflictException extends S.TaggedErrorClass<ConflictException>()(
-  "ConflictException",
-  { Message: S.String },
-  T.HttpError(409),
-).pipe(C.withConflictError) {}
-export class InternalServerException extends S.TaggedErrorClass<InternalServerException>()(
-  "InternalServerException",
-  { Message: S.String },
-  T.HttpError(500),
-).pipe(C.withServerError) {}
-export class InvalidEndpointException extends S.TaggedErrorClass<InvalidEndpointException>()(
-  "InvalidEndpointException",
-  { Message: S.optional(S.String) },
-  T.HttpError(421),
-) {}
-export class RejectedRecordsException extends S.TaggedErrorClass<RejectedRecordsException>()(
-  "RejectedRecordsException",
-  {
-    Message: S.optional(S.String),
-    RejectedRecords: S.optional(
-      S.suspend(() => RejectedRecords).annotate({
-        identifier: "RejectedRecords",
-      }),
-    ),
-  },
-  T.HttpError(419),
-) {}
-export class ResourceNotFoundException extends S.TaggedErrorClass<ResourceNotFoundException>()(
-  "ResourceNotFoundException",
-  { Message: S.optional(S.String) },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class ServiceQuotaExceededException extends S.TaggedErrorClass<ServiceQuotaExceededException>()(
-  "ServiceQuotaExceededException",
-  { Message: S.optional(S.String) },
-  T.HttpError(402),
-).pipe(C.withQuotaError) {}
-export class ThrottlingException extends S.TaggedErrorClass<ThrottlingException>()(
-  "ThrottlingException",
-  { Message: S.String },
-  T.HttpError(429),
-).pipe(C.withThrottlingError) {}
-export class TimestreamNotOnboarded extends S.TaggedErrorClass<TimestreamNotOnboarded>()(
-  "TimestreamNotOnboarded",
-  { Message: S.String },
-  T.SyntheticError({
-    from: "AccessDeniedException",
-    message: {
-      includes: "Only existing Timestream for LiveAnalytics customers",
+export class AccessDeniedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
+    "AccessDeniedException",
+    { Message: S.String },
+    T.HttpError(403),
+  ).pipe(C.withAuthError) {}
+export class ConflictException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
+    "ConflictException",
+    { Message: S.String },
+    T.HttpError(409),
+  ).pipe(C.withConflictError) {}
+export class InternalServerException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
+    "InternalServerException",
+    { Message: S.String },
+    T.HttpError(500),
+  ).pipe(C.withServerError) {}
+export class InvalidEndpointException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidEndpointException>()(
+    "InvalidEndpointException",
+    { Message: S.optional(S.String) },
+    T.HttpError(421),
+  ) {}
+export class RejectedRecordsException
+  extends /*@__PURE__*/ S.TaggedErrorClass<RejectedRecordsException>()(
+    "RejectedRecordsException",
+    {
+      Message: S.optional(S.String),
+      RejectedRecords: S.optional(
+        S.suspend(() => RejectedRecords).annotate({
+          identifier: "RejectedRecords",
+        }),
+      ),
     },
-  }),
-).pipe(C.withAuthError) {}
-export class ValidationException extends S.TaggedErrorClass<ValidationException>()(
-  "ValidationException",
-  { Message: S.String },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
+    T.HttpError(419),
+  ) {}
+export class ResourceNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
+    "ResourceNotFoundException",
+    { Message: S.optional(S.String) },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class ServiceQuotaExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
+    "ServiceQuotaExceededException",
+    { Message: S.optional(S.String) },
+    T.HttpError(402),
+  ).pipe(C.withQuotaError) {}
+export class ThrottlingException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
+    "ThrottlingException",
+    { Message: S.String },
+    T.HttpError(429),
+  ).pipe(C.withThrottlingError) {}
+export class TimestreamNotOnboarded
+  extends /*@__PURE__*/ S.TaggedErrorClass<TimestreamNotOnboarded>()(
+    "TimestreamNotOnboarded",
+    { Message: S.String },
+    T.SyntheticError({
+      from: "AccessDeniedException",
+      message: {
+        includes: "Only existing Timestream for LiveAnalytics customers",
+      },
+    }),
+  ).pipe(C.withAuthError) {}
+export class ValidationException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
+    "ValidationException",
+    { Message: S.String },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
 export type ClientRequestToken = string | redacted.Redacted<string>;
 export type StringValue256 = string;
 export type TimeUnit =
@@ -1525,7 +1535,27 @@ export const listBatchLoadTasks: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListBatchLoadTasksRequest,
+  ListBatchLoadTasksResponse,
+  ListBatchLoadTasksError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListBatchLoadTasksRequest,
+  ) => stream.Stream<
+    ListBatchLoadTasksResponse,
+    ListBatchLoadTasksError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListBatchLoadTasksRequest,
+  ) => stream.Stream<
+    unknown,
+    ListBatchLoadTasksError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListDatabasesError =
   | AccessDeniedException
@@ -1577,7 +1607,27 @@ export const listDatabases: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListDatabasesRequest,
+  ListDatabasesResponse,
+  ListDatabasesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListDatabasesRequest,
+  ) => stream.Stream<
+    ListDatabasesResponse,
+    ListDatabasesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListDatabasesRequest,
+  ) => stream.Stream<
+    unknown,
+    ListDatabasesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListTablesError =
   | AccessDeniedException
@@ -1631,7 +1681,27 @@ export const listTables: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListTablesRequest,
+  ListTablesResponse,
+  ListTablesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListTablesRequest,
+  ) => stream.Stream<
+    ListTablesResponse,
+    ListTablesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListTablesRequest,
+  ) => stream.Stream<
+    unknown,
+    ListTablesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListTagsForResourceError =
   | InvalidEndpointException

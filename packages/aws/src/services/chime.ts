@@ -106,116 +106,127 @@ const rules = T.EndpointResolver((p, _) => {
   return err("Invalid Configuration: Missing Region");
 });
 
-export class AccessDeniedException extends S.TaggedErrorClass<AccessDeniedException>()(
-  "AccessDeniedException",
-  {
-    Code: S.optional(
-      S.suspend(() => ErrorCode).annotate({ identifier: "ErrorCode" }),
-    ),
-    Message: S.optional(S.String),
-  },
-  T.HttpError(403),
-).pipe(C.withAuthError) {}
-export class BadRequestException extends S.TaggedErrorClass<BadRequestException>()(
-  "BadRequestException",
-  {
-    Code: S.optional(
-      S.suspend(() => ErrorCode).annotate({ identifier: "ErrorCode" }),
-    ),
-    Message: S.optional(S.String),
-  },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class ConflictException extends S.TaggedErrorClass<ConflictException>()(
-  "ConflictException",
-  {
-    Code: S.optional(
-      S.suspend(() => ErrorCode).annotate({ identifier: "ErrorCode" }),
-    ),
-    Message: S.optional(S.String),
-  },
-  T.HttpError(409),
-).pipe(C.withConflictError) {}
-export class ForbiddenException extends S.TaggedErrorClass<ForbiddenException>()(
-  "ForbiddenException",
-  {
-    Code: S.optional(
-      S.suspend(() => ErrorCode).annotate({ identifier: "ErrorCode" }),
-    ),
-    Message: S.optional(S.String),
-  },
-  T.HttpError(403),
-).pipe(C.withAuthError) {}
-export class NotFoundException extends S.TaggedErrorClass<NotFoundException>()(
-  "NotFoundException",
-  {
-    Code: S.optional(
-      S.suspend(() => ErrorCode).annotate({ identifier: "ErrorCode" }),
-    ),
-    Message: S.optional(S.String),
-  },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class ResourceLimitExceededException extends S.TaggedErrorClass<ResourceLimitExceededException>()(
-  "ResourceLimitExceededException",
-  {
-    Code: S.optional(
-      S.suspend(() => ErrorCode).annotate({ identifier: "ErrorCode" }),
-    ),
-    Message: S.optional(S.String),
-  },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class ServiceFailureException extends S.TaggedErrorClass<ServiceFailureException>()(
-  "ServiceFailureException",
-  {
-    Code: S.optional(
-      S.suspend(() => ErrorCode).annotate({ identifier: "ErrorCode" }),
-    ),
-    Message: S.optional(S.String),
-  },
-  T.HttpError(500),
-).pipe(C.withServerError) {}
-export class ServiceUnavailableException extends S.TaggedErrorClass<ServiceUnavailableException>()(
-  "ServiceUnavailableException",
-  {
-    Code: S.optional(
-      S.suspend(() => ErrorCode).annotate({ identifier: "ErrorCode" }),
-    ),
-    Message: S.optional(S.String),
-  },
-  T.HttpError(503),
-).pipe(C.withServerError) {}
-export class ThrottledClientException extends S.TaggedErrorClass<ThrottledClientException>()(
-  "ThrottledClientException",
-  {
-    Code: S.optional(
-      S.suspend(() => ErrorCode).annotate({ identifier: "ErrorCode" }),
-    ),
-    Message: S.optional(S.String),
-  },
-  T.HttpError(429),
-).pipe(C.withThrottlingError) {}
-export class UnauthorizedClientException extends S.TaggedErrorClass<UnauthorizedClientException>()(
-  "UnauthorizedClientException",
-  {
-    Code: S.optional(
-      S.suspend(() => ErrorCode).annotate({ identifier: "ErrorCode" }),
-    ),
-    Message: S.optional(S.String),
-  },
-  T.HttpError(401),
-).pipe(C.withAuthError) {}
-export class UnprocessableEntityException extends S.TaggedErrorClass<UnprocessableEntityException>()(
-  "UnprocessableEntityException",
-  {
-    Code: S.optional(
-      S.suspend(() => ErrorCode).annotate({ identifier: "ErrorCode" }),
-    ),
-    Message: S.optional(S.String),
-  },
-  T.HttpError(422),
-).pipe(C.withBadRequestError) {}
+export class AccessDeniedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
+    "AccessDeniedException",
+    {
+      Code: S.optional(
+        S.suspend(() => ErrorCode).annotate({ identifier: "ErrorCode" }),
+      ),
+      Message: S.optional(S.String),
+    },
+    T.HttpError(403),
+  ).pipe(C.withAuthError) {}
+export class BadRequestException
+  extends /*@__PURE__*/ S.TaggedErrorClass<BadRequestException>()(
+    "BadRequestException",
+    {
+      Code: S.optional(
+        S.suspend(() => ErrorCode).annotate({ identifier: "ErrorCode" }),
+      ),
+      Message: S.optional(S.String),
+    },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class ConflictException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
+    "ConflictException",
+    {
+      Code: S.optional(
+        S.suspend(() => ErrorCode).annotate({ identifier: "ErrorCode" }),
+      ),
+      Message: S.optional(S.String),
+    },
+    T.HttpError(409),
+  ).pipe(C.withConflictError) {}
+export class ForbiddenException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ForbiddenException>()(
+    "ForbiddenException",
+    {
+      Code: S.optional(
+        S.suspend(() => ErrorCode).annotate({ identifier: "ErrorCode" }),
+      ),
+      Message: S.optional(S.String),
+    },
+    T.HttpError(403),
+  ).pipe(C.withAuthError) {}
+export class NotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<NotFoundException>()(
+    "NotFoundException",
+    {
+      Code: S.optional(
+        S.suspend(() => ErrorCode).annotate({ identifier: "ErrorCode" }),
+      ),
+      Message: S.optional(S.String),
+    },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class ResourceLimitExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceLimitExceededException>()(
+    "ResourceLimitExceededException",
+    {
+      Code: S.optional(
+        S.suspend(() => ErrorCode).annotate({ identifier: "ErrorCode" }),
+      ),
+      Message: S.optional(S.String),
+    },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class ServiceFailureException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ServiceFailureException>()(
+    "ServiceFailureException",
+    {
+      Code: S.optional(
+        S.suspend(() => ErrorCode).annotate({ identifier: "ErrorCode" }),
+      ),
+      Message: S.optional(S.String),
+    },
+    T.HttpError(500),
+  ).pipe(C.withServerError) {}
+export class ServiceUnavailableException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ServiceUnavailableException>()(
+    "ServiceUnavailableException",
+    {
+      Code: S.optional(
+        S.suspend(() => ErrorCode).annotate({ identifier: "ErrorCode" }),
+      ),
+      Message: S.optional(S.String),
+    },
+    T.HttpError(503),
+  ).pipe(C.withServerError) {}
+export class ThrottledClientException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ThrottledClientException>()(
+    "ThrottledClientException",
+    {
+      Code: S.optional(
+        S.suspend(() => ErrorCode).annotate({ identifier: "ErrorCode" }),
+      ),
+      Message: S.optional(S.String),
+    },
+    T.HttpError(429),
+  ).pipe(C.withThrottlingError) {}
+export class UnauthorizedClientException
+  extends /*@__PURE__*/ S.TaggedErrorClass<UnauthorizedClientException>()(
+    "UnauthorizedClientException",
+    {
+      Code: S.optional(
+        S.suspend(() => ErrorCode).annotate({ identifier: "ErrorCode" }),
+      ),
+      Message: S.optional(S.String),
+    },
+    T.HttpError(401),
+  ).pipe(C.withAuthError) {}
+export class UnprocessableEntityException
+  extends /*@__PURE__*/ S.TaggedErrorClass<UnprocessableEntityException>()(
+    "UnprocessableEntityException",
+    {
+      Code: S.optional(
+        S.suspend(() => ErrorCode).annotate({ identifier: "ErrorCode" }),
+      ),
+      Message: S.optional(S.String),
+    },
+    T.HttpError(422),
+  ).pipe(C.withBadRequestError) {}
 export type E164PhoneNumber = string | redacted.Redacted<string>;
 export interface AssociatePhoneNumberWithUserRequest {
   AccountId: string;
@@ -4125,7 +4136,27 @@ export const listAccounts: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListAccountsRequest,
+  ListAccountsResponse,
+  ListAccountsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListAccountsRequest,
+  ) => stream.Stream<
+    ListAccountsResponse,
+    ListAccountsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListAccountsRequest,
+  ) => stream.Stream<
+    unknown,
+    ListAccountsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListBotsError =
   | BadRequestException
@@ -4179,7 +4210,27 @@ export const listBots: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListBotsRequest,
+  ListBotsResponse,
+  ListBotsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListBotsRequest,
+  ) => stream.Stream<
+    ListBotsResponse,
+    ListBotsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListBotsRequest,
+  ) => stream.Stream<
+    unknown,
+    ListBotsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListPhoneNumberOrdersError =
   | BadRequestException
@@ -4231,7 +4282,27 @@ export const listPhoneNumberOrders: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListPhoneNumberOrdersRequest,
+  ListPhoneNumberOrdersResponse,
+  ListPhoneNumberOrdersError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListPhoneNumberOrdersRequest,
+  ) => stream.Stream<
+    ListPhoneNumberOrdersResponse,
+    ListPhoneNumberOrdersError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListPhoneNumberOrdersRequest,
+  ) => stream.Stream<
+    unknown,
+    ListPhoneNumberOrdersError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListPhoneNumbersError =
   | BadRequestException
@@ -4285,7 +4356,27 @@ export const listPhoneNumbers: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListPhoneNumbersRequest,
+  ListPhoneNumbersResponse,
+  ListPhoneNumbersError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListPhoneNumbersRequest,
+  ) => stream.Stream<
+    ListPhoneNumbersResponse,
+    ListPhoneNumbersError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListPhoneNumbersRequest,
+  ) => stream.Stream<
+    unknown,
+    ListPhoneNumbersError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListRoomMembershipsError =
   | BadRequestException
@@ -4340,7 +4431,27 @@ export const listRoomMemberships: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListRoomMembershipsRequest,
+  ListRoomMembershipsResponse,
+  ListRoomMembershipsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListRoomMembershipsRequest,
+  ) => stream.Stream<
+    ListRoomMembershipsResponse,
+    ListRoomMembershipsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListRoomMembershipsRequest,
+  ) => stream.Stream<
+    unknown,
+    ListRoomMembershipsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListRoomsError =
   | BadRequestException
@@ -4394,7 +4505,27 @@ export const listRooms: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListRoomsRequest,
+  ListRoomsResponse,
+  ListRoomsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListRoomsRequest,
+  ) => stream.Stream<
+    ListRoomsResponse,
+    ListRoomsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListRoomsRequest,
+  ) => stream.Stream<
+    unknown,
+    ListRoomsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListSupportedPhoneNumberCountriesError =
   | AccessDeniedException
@@ -4483,7 +4614,27 @@ export const listUsers: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListUsersRequest,
+  ListUsersResponse,
+  ListUsersError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListUsersRequest,
+  ) => stream.Stream<
+    ListUsersResponse,
+    ListUsersError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListUsersRequest,
+  ) => stream.Stream<
+    unknown,
+    ListUsersError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type LogoutUserError =
   | BadRequestException
@@ -4831,7 +4982,27 @@ export const searchAvailablePhoneNumbers: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  SearchAvailablePhoneNumbersRequest,
+  SearchAvailablePhoneNumbersResponse,
+  SearchAvailablePhoneNumbersError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: SearchAvailablePhoneNumbersRequest,
+  ) => stream.Stream<
+    SearchAvailablePhoneNumbersResponse,
+    SearchAvailablePhoneNumbersError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: SearchAvailablePhoneNumbersRequest,
+  ) => stream.Stream<
+    unknown,
+    SearchAvailablePhoneNumbersError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type UpdateAccountError =
   | BadRequestException

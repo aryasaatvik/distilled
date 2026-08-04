@@ -90,92 +90,108 @@ const rules = T.EndpointResolver((p, _) => {
   return err("Invalid Configuration: Missing Region");
 });
 
-export class ConcurrentUpdateException extends S.TaggedErrorClass<ConcurrentUpdateException>()(
-  "ConcurrentUpdateException",
-  { Message: S.optional(S.String) },
-  T.all(
-    T.AwsQueryError({
-      code: "ConcurrentUpdateException",
-      httpResponseCode: 500,
+export class ConcurrentUpdateException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ConcurrentUpdateException>()(
+    "ConcurrentUpdateException",
+    { Message: S.optional(S.String) },
+    T.all(
+      T.AwsQueryError({
+        code: "ConcurrentUpdateException",
+        httpResponseCode: 500,
+      }),
+      T.HttpError(500),
+    ),
+  ).pipe(C.withServerError) {}
+export class FailedResourceAccessException
+  extends /*@__PURE__*/ S.TaggedErrorClass<FailedResourceAccessException>()(
+    "FailedResourceAccessException",
+    { Message: S.optional(S.String) },
+    T.all(
+      T.AwsQueryError({
+        code: "FailedResourceAccessException",
+        httpResponseCode: 400,
+      }),
+      T.HttpError(400),
+    ),
+  ).pipe(C.withBadRequestError) {}
+export class InternalServiceException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InternalServiceException>()(
+    "InternalServiceException",
+    { Message: S.optional(S.String) },
+    T.all(
+      T.AwsQueryError({
+        code: "InternalServiceException",
+        httpResponseCode: 500,
+      }),
+      T.HttpError(500),
+    ),
+  ).pipe(C.withServerError) {}
+export class InvalidNextTokenException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidNextTokenException>()(
+    "InvalidNextTokenException",
+    { Message: S.optional(S.String) },
+    T.all(
+      T.AwsQueryError({
+        code: "InvalidNextTokenException",
+        httpResponseCode: 400,
+      }),
+      T.HttpError(400),
+    ),
+  ).pipe(C.withBadRequestError) {}
+export class LimitExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<LimitExceededException>()(
+    "LimitExceededException",
+    { Message: S.optional(S.String) },
+    T.all(
+      T.AwsQueryError({
+        code: "LimitExceededException",
+        httpResponseCode: 400,
+      }),
+      T.HttpError(400),
+    ),
+  ).pipe(C.withBadRequestError) {}
+export class ObjectNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ObjectNotFoundException>()(
+    "ObjectNotFoundException",
+    { Message: S.optional(S.String) },
+    T.all(
+      T.AwsQueryError({
+        code: "ObjectNotFoundException",
+        httpResponseCode: 400,
+      }),
+      T.HttpError(400),
+    ),
+  ).pipe(C.withBadRequestError) {}
+export class PredictiveScalingForecastNotSupported
+  extends /*@__PURE__*/ S.TaggedErrorClass<PredictiveScalingForecastNotSupported>()(
+    "PredictiveScalingForecastNotSupported",
+    {},
+    T.SyntheticError({
+      from: "AccessDeniedException",
+      message: { includes: "GetPredictiveScalingForecast is not supported" },
     }),
-    T.HttpError(500),
-  ),
-).pipe(C.withServerError) {}
-export class FailedResourceAccessException extends S.TaggedErrorClass<FailedResourceAccessException>()(
-  "FailedResourceAccessException",
-  { Message: S.optional(S.String) },
-  T.all(
-    T.AwsQueryError({
-      code: "FailedResourceAccessException",
-      httpResponseCode: 400,
-    }),
+  ) {}
+export class ResourceNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
+    "ResourceNotFoundException",
+    { Message: S.optional(S.String), ResourceName: S.optional(S.String) },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class TooManyTagsException
+  extends /*@__PURE__*/ S.TaggedErrorClass<TooManyTagsException>()(
+    "TooManyTagsException",
+    { Message: S.optional(S.String), ResourceName: S.optional(S.String) },
     T.HttpError(400),
-  ),
-).pipe(C.withBadRequestError) {}
-export class InternalServiceException extends S.TaggedErrorClass<InternalServiceException>()(
-  "InternalServiceException",
-  { Message: S.optional(S.String) },
-  T.all(
-    T.AwsQueryError({
-      code: "InternalServiceException",
-      httpResponseCode: 500,
-    }),
-    T.HttpError(500),
-  ),
-).pipe(C.withServerError) {}
-export class InvalidNextTokenException extends S.TaggedErrorClass<InvalidNextTokenException>()(
-  "InvalidNextTokenException",
-  { Message: S.optional(S.String) },
-  T.all(
-    T.AwsQueryError({
-      code: "InvalidNextTokenException",
-      httpResponseCode: 400,
-    }),
-    T.HttpError(400),
-  ),
-).pipe(C.withBadRequestError) {}
-export class LimitExceededException extends S.TaggedErrorClass<LimitExceededException>()(
-  "LimitExceededException",
-  { Message: S.optional(S.String) },
-  T.all(
-    T.AwsQueryError({ code: "LimitExceededException", httpResponseCode: 400 }),
-    T.HttpError(400),
-  ),
-).pipe(C.withBadRequestError) {}
-export class ObjectNotFoundException extends S.TaggedErrorClass<ObjectNotFoundException>()(
-  "ObjectNotFoundException",
-  { Message: S.optional(S.String) },
-  T.all(
-    T.AwsQueryError({ code: "ObjectNotFoundException", httpResponseCode: 400 }),
-    T.HttpError(400),
-  ),
-).pipe(C.withBadRequestError) {}
-export class PredictiveScalingForecastNotSupported extends S.TaggedErrorClass<PredictiveScalingForecastNotSupported>()(
-  "PredictiveScalingForecastNotSupported",
-  {},
-  T.SyntheticError({
-    from: "AccessDeniedException",
-    message: { includes: "GetPredictiveScalingForecast is not supported" },
-  }),
-) {}
-export class ResourceNotFoundException extends S.TaggedErrorClass<ResourceNotFoundException>()(
-  "ResourceNotFoundException",
-  { Message: S.optional(S.String), ResourceName: S.optional(S.String) },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class TooManyTagsException extends S.TaggedErrorClass<TooManyTagsException>()(
-  "TooManyTagsException",
-  { Message: S.optional(S.String), ResourceName: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class ValidationException extends S.TaggedErrorClass<ValidationException>()(
-  "ValidationException",
-  { Message: S.optional(S.String) },
-  T.all(
-    T.AwsQueryError({ code: "ValidationException", httpResponseCode: 400 }),
-    T.HttpError(400),
-  ),
-).pipe(C.withBadRequestError) {}
+  ).pipe(C.withBadRequestError) {}
+export class ValidationException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
+    "ValidationException",
+    { Message: S.optional(S.String) },
+    T.all(
+      T.AwsQueryError({ code: "ValidationException", httpResponseCode: 400 }),
+      T.HttpError(400),
+    ),
+  ).pipe(C.withBadRequestError) {}
 export type ResourceIdMaxLen1600 = string;
 export type ServiceNamespace =
   | "ecs"
@@ -1452,7 +1468,27 @@ export const describeScalableTargets: API.OperationMethod<
     items: "ScalableTargets",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  DescribeScalableTargetsRequest,
+  DescribeScalableTargetsResponse,
+  DescribeScalableTargetsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: DescribeScalableTargetsRequest,
+  ) => stream.Stream<
+    DescribeScalableTargetsResponse,
+    DescribeScalableTargetsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: DescribeScalableTargetsRequest,
+  ) => stream.Stream<
+    ScalableTarget,
+    DescribeScalableTargetsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type DescribeScalingActivitiesError =
   | ConcurrentUpdateException
@@ -1507,7 +1543,27 @@ export const describeScalingActivities: API.OperationMethod<
     items: "ScalingActivities",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  DescribeScalingActivitiesRequest,
+  DescribeScalingActivitiesResponse,
+  DescribeScalingActivitiesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: DescribeScalingActivitiesRequest,
+  ) => stream.Stream<
+    DescribeScalingActivitiesResponse,
+    DescribeScalingActivitiesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: DescribeScalingActivitiesRequest,
+  ) => stream.Stream<
+    ScalingActivity,
+    DescribeScalingActivitiesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type DescribeScalingPoliciesError =
   | ConcurrentUpdateException
@@ -1563,7 +1619,27 @@ export const describeScalingPolicies: API.OperationMethod<
     items: "ScalingPolicies",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  DescribeScalingPoliciesRequest,
+  DescribeScalingPoliciesResponse,
+  DescribeScalingPoliciesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: DescribeScalingPoliciesRequest,
+  ) => stream.Stream<
+    DescribeScalingPoliciesResponse,
+    DescribeScalingPoliciesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: DescribeScalingPoliciesRequest,
+  ) => stream.Stream<
+    ScalingPolicy,
+    DescribeScalingPoliciesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type DescribeScheduledActionsError =
   | ConcurrentUpdateException
@@ -1617,7 +1693,27 @@ export const describeScheduledActions: API.OperationMethod<
     items: "ScheduledActions",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  DescribeScheduledActionsRequest,
+  DescribeScheduledActionsResponse,
+  DescribeScheduledActionsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: DescribeScheduledActionsRequest,
+  ) => stream.Stream<
+    DescribeScheduledActionsResponse,
+    DescribeScheduledActionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: DescribeScheduledActionsRequest,
+  ) => stream.Stream<
+    ScheduledAction,
+    DescribeScheduledActionsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type GetPredictiveScalingForecastError =
   | InternalServiceException

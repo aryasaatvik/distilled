@@ -139,174 +139,206 @@ const rules = T.EndpointResolver((p, _) => {
   return err("Invalid Configuration: Missing Region");
 });
 
-export class AccessPointAlreadyExists extends S.TaggedErrorClass<AccessPointAlreadyExists>()(
-  "AccessPointAlreadyExists",
-  {
-    ErrorCode: S.String,
-    Message: S.optional(S.String),
-    AccessPointId: S.String,
-  },
-  T.HttpError(409),
-).pipe(C.withConflictError, C.withAlreadyExistsError) {}
-export class AccessPointLimitExceeded extends S.TaggedErrorClass<AccessPointLimitExceeded>()(
-  "AccessPointLimitExceeded",
-  { ErrorCode: S.String, Message: S.optional(S.String) },
-  T.HttpError(403),
-).pipe(C.withAuthError, C.withThrottlingError) {}
-export class AccessPointNotFound extends S.TaggedErrorClass<AccessPointNotFound>()(
-  "AccessPointNotFound",
-  { ErrorCode: S.String, Message: S.optional(S.String) },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class AvailabilityZonesMismatch extends S.TaggedErrorClass<AvailabilityZonesMismatch>()(
-  "AvailabilityZonesMismatch",
-  { ErrorCode: S.optional(S.String), Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class BadRequest extends S.TaggedErrorClass<BadRequest>()(
-  "BadRequest",
-  { ErrorCode: S.String, Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class ConflictException extends S.TaggedErrorClass<ConflictException>()(
-  "ConflictException",
-  { ErrorCode: S.optional(S.String), Message: S.optional(S.String) },
-  T.HttpError(409),
-).pipe(C.withConflictError) {}
-export class DependencyTimeout extends S.TaggedErrorClass<DependencyTimeout>()(
-  "DependencyTimeout",
-  { ErrorCode: S.String, Message: S.optional(S.String) },
-  T.HttpError(504),
-).pipe(C.withTimeoutError) {}
-export class FileSystemAlreadyExists extends S.TaggedErrorClass<FileSystemAlreadyExists>()(
-  "FileSystemAlreadyExists",
-  {
-    ErrorCode: S.String,
-    Message: S.optional(S.String),
-    FileSystemId: S.String,
-  },
-  T.HttpError(409),
-).pipe(C.withConflictError, C.withAlreadyExistsError) {}
-export class FileSystemInUse extends S.TaggedErrorClass<FileSystemInUse>()(
-  "FileSystemInUse",
-  { ErrorCode: S.String, Message: S.optional(S.String) },
-  T.HttpError(409),
-).pipe(C.withConflictError, C.withDependencyViolationError) {}
-export class FileSystemLimitExceeded extends S.TaggedErrorClass<FileSystemLimitExceeded>()(
-  "FileSystemLimitExceeded",
-  { ErrorCode: S.String, Message: S.optional(S.String) },
-  T.HttpError(403),
-).pipe(C.withAuthError, C.withThrottlingError) {}
-export class FileSystemNotFound extends S.TaggedErrorClass<FileSystemNotFound>()(
-  "FileSystemNotFound",
-  { ErrorCode: S.String, Message: S.optional(S.String) },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class IncorrectFileSystemLifeCycleState extends S.TaggedErrorClass<IncorrectFileSystemLifeCycleState>()(
-  "IncorrectFileSystemLifeCycleState",
-  { ErrorCode: S.String, Message: S.optional(S.String) },
-  T.HttpError(409),
-).pipe(C.withConflictError) {}
-export class IncorrectMountTargetState extends S.TaggedErrorClass<IncorrectMountTargetState>()(
-  "IncorrectMountTargetState",
-  { ErrorCode: S.String, Message: S.optional(S.String) },
-  T.HttpError(409),
-).pipe(C.withConflictError) {}
-export class InsufficientThroughputCapacity extends S.TaggedErrorClass<InsufficientThroughputCapacity>()(
-  "InsufficientThroughputCapacity",
-  { ErrorCode: S.String, Message: S.optional(S.String) },
-  T.HttpError(503),
-).pipe(C.withServerError) {}
-export class InternalServerError extends S.TaggedErrorClass<InternalServerError>()(
-  "InternalServerError",
-  { ErrorCode: S.String, Message: S.optional(S.String) },
-  T.HttpError(500),
-).pipe(C.withServerError) {}
-export class InvalidPolicyException extends S.TaggedErrorClass<InvalidPolicyException>()(
-  "InvalidPolicyException",
-  { ErrorCode: S.optional(S.String), Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class IpAddressInUse extends S.TaggedErrorClass<IpAddressInUse>()(
-  "IpAddressInUse",
-  { ErrorCode: S.String, Message: S.optional(S.String) },
-  T.HttpError(409),
-).pipe(C.withConflictError, C.withDependencyViolationError) {}
-export class MountTargetConflict extends S.TaggedErrorClass<MountTargetConflict>()(
-  "MountTargetConflict",
-  { ErrorCode: S.String, Message: S.optional(S.String) },
-  T.HttpError(409),
-).pipe(C.withConflictError) {}
-export class MountTargetNotFound extends S.TaggedErrorClass<MountTargetNotFound>()(
-  "MountTargetNotFound",
-  { ErrorCode: S.String, Message: S.optional(S.String) },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class NetworkInterfaceLimitExceeded extends S.TaggedErrorClass<NetworkInterfaceLimitExceeded>()(
-  "NetworkInterfaceLimitExceeded",
-  { ErrorCode: S.String, Message: S.optional(S.String) },
-  T.HttpError(409),
-).pipe(C.withConflictError, C.withThrottlingError) {}
-export class NoFreeAddressesInSubnet extends S.TaggedErrorClass<NoFreeAddressesInSubnet>()(
-  "NoFreeAddressesInSubnet",
-  { ErrorCode: S.String, Message: S.optional(S.String) },
-  T.HttpError(409),
-).pipe(C.withConflictError) {}
-export class PolicyNotFound extends S.TaggedErrorClass<PolicyNotFound>()(
-  "PolicyNotFound",
-  { ErrorCode: S.optional(S.String), Message: S.optional(S.String) },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class ReplicationAlreadyExists extends S.TaggedErrorClass<ReplicationAlreadyExists>()(
-  "ReplicationAlreadyExists",
-  { ErrorCode: S.optional(S.String), Message: S.optional(S.String) },
-  T.HttpError(409),
-).pipe(C.withConflictError, C.withAlreadyExistsError) {}
-export class ReplicationNotFound extends S.TaggedErrorClass<ReplicationNotFound>()(
-  "ReplicationNotFound",
-  { ErrorCode: S.optional(S.String), Message: S.optional(S.String) },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class SecurityGroupLimitExceeded extends S.TaggedErrorClass<SecurityGroupLimitExceeded>()(
-  "SecurityGroupLimitExceeded",
-  { ErrorCode: S.String, Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError, C.withThrottlingError) {}
-export class SecurityGroupNotFound extends S.TaggedErrorClass<SecurityGroupNotFound>()(
-  "SecurityGroupNotFound",
-  { ErrorCode: S.String, Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class SubnetNotFound extends S.TaggedErrorClass<SubnetNotFound>()(
-  "SubnetNotFound",
-  { ErrorCode: S.String, Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class ThrottlingException extends S.TaggedErrorClass<ThrottlingException>()(
-  "ThrottlingException",
-  { ErrorCode: S.optional(S.String), Message: S.optional(S.String) },
-  T.HttpError(429),
-).pipe(C.withThrottlingError) {}
-export class ThroughputLimitExceeded extends S.TaggedErrorClass<ThroughputLimitExceeded>()(
-  "ThroughputLimitExceeded",
-  { ErrorCode: S.String, Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError, C.withThrottlingError) {}
-export class TooManyRequests extends S.TaggedErrorClass<TooManyRequests>()(
-  "TooManyRequests",
-  { ErrorCode: S.String, Message: S.optional(S.String) },
-  T.HttpError(429),
-).pipe(C.withThrottlingError) {}
-export class UnsupportedAvailabilityZone extends S.TaggedErrorClass<UnsupportedAvailabilityZone>()(
-  "UnsupportedAvailabilityZone",
-  { ErrorCode: S.String, Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class ValidationException extends S.TaggedErrorClass<ValidationException>()(
-  "ValidationException",
-  { ErrorCode: S.String, Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
+export class AccessPointAlreadyExists
+  extends /*@__PURE__*/ S.TaggedErrorClass<AccessPointAlreadyExists>()(
+    "AccessPointAlreadyExists",
+    {
+      ErrorCode: S.String,
+      Message: S.optional(S.String),
+      AccessPointId: S.String,
+    },
+    T.HttpError(409),
+  ).pipe(C.withConflictError, C.withAlreadyExistsError) {}
+export class AccessPointLimitExceeded
+  extends /*@__PURE__*/ S.TaggedErrorClass<AccessPointLimitExceeded>()(
+    "AccessPointLimitExceeded",
+    { ErrorCode: S.String, Message: S.optional(S.String) },
+    T.HttpError(403),
+  ).pipe(C.withAuthError, C.withThrottlingError) {}
+export class AccessPointNotFound
+  extends /*@__PURE__*/ S.TaggedErrorClass<AccessPointNotFound>()(
+    "AccessPointNotFound",
+    { ErrorCode: S.String, Message: S.optional(S.String) },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class AvailabilityZonesMismatch
+  extends /*@__PURE__*/ S.TaggedErrorClass<AvailabilityZonesMismatch>()(
+    "AvailabilityZonesMismatch",
+    { ErrorCode: S.optional(S.String), Message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class BadRequest
+  extends /*@__PURE__*/ S.TaggedErrorClass<BadRequest>()(
+    "BadRequest",
+    { ErrorCode: S.String, Message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class ConflictException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
+    "ConflictException",
+    { ErrorCode: S.optional(S.String), Message: S.optional(S.String) },
+    T.HttpError(409),
+  ).pipe(C.withConflictError) {}
+export class DependencyTimeout
+  extends /*@__PURE__*/ S.TaggedErrorClass<DependencyTimeout>()(
+    "DependencyTimeout",
+    { ErrorCode: S.String, Message: S.optional(S.String) },
+    T.HttpError(504),
+  ).pipe(C.withTimeoutError) {}
+export class FileSystemAlreadyExists
+  extends /*@__PURE__*/ S.TaggedErrorClass<FileSystemAlreadyExists>()(
+    "FileSystemAlreadyExists",
+    {
+      ErrorCode: S.String,
+      Message: S.optional(S.String),
+      FileSystemId: S.String,
+    },
+    T.HttpError(409),
+  ).pipe(C.withConflictError, C.withAlreadyExistsError) {}
+export class FileSystemInUse
+  extends /*@__PURE__*/ S.TaggedErrorClass<FileSystemInUse>()(
+    "FileSystemInUse",
+    { ErrorCode: S.String, Message: S.optional(S.String) },
+    T.HttpError(409),
+  ).pipe(C.withConflictError, C.withDependencyViolationError) {}
+export class FileSystemLimitExceeded
+  extends /*@__PURE__*/ S.TaggedErrorClass<FileSystemLimitExceeded>()(
+    "FileSystemLimitExceeded",
+    { ErrorCode: S.String, Message: S.optional(S.String) },
+    T.HttpError(403),
+  ).pipe(C.withAuthError, C.withThrottlingError) {}
+export class FileSystemNotFound
+  extends /*@__PURE__*/ S.TaggedErrorClass<FileSystemNotFound>()(
+    "FileSystemNotFound",
+    { ErrorCode: S.String, Message: S.optional(S.String) },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class IncorrectFileSystemLifeCycleState
+  extends /*@__PURE__*/ S.TaggedErrorClass<IncorrectFileSystemLifeCycleState>()(
+    "IncorrectFileSystemLifeCycleState",
+    { ErrorCode: S.String, Message: S.optional(S.String) },
+    T.HttpError(409),
+  ).pipe(C.withConflictError) {}
+export class IncorrectMountTargetState
+  extends /*@__PURE__*/ S.TaggedErrorClass<IncorrectMountTargetState>()(
+    "IncorrectMountTargetState",
+    { ErrorCode: S.String, Message: S.optional(S.String) },
+    T.HttpError(409),
+  ).pipe(C.withConflictError) {}
+export class InsufficientThroughputCapacity
+  extends /*@__PURE__*/ S.TaggedErrorClass<InsufficientThroughputCapacity>()(
+    "InsufficientThroughputCapacity",
+    { ErrorCode: S.String, Message: S.optional(S.String) },
+    T.HttpError(503),
+  ).pipe(C.withServerError) {}
+export class InternalServerError
+  extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerError>()(
+    "InternalServerError",
+    { ErrorCode: S.String, Message: S.optional(S.String) },
+    T.HttpError(500),
+  ).pipe(C.withServerError) {}
+export class InvalidPolicyException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidPolicyException>()(
+    "InvalidPolicyException",
+    { ErrorCode: S.optional(S.String), Message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class IpAddressInUse
+  extends /*@__PURE__*/ S.TaggedErrorClass<IpAddressInUse>()(
+    "IpAddressInUse",
+    { ErrorCode: S.String, Message: S.optional(S.String) },
+    T.HttpError(409),
+  ).pipe(C.withConflictError, C.withDependencyViolationError) {}
+export class MountTargetConflict
+  extends /*@__PURE__*/ S.TaggedErrorClass<MountTargetConflict>()(
+    "MountTargetConflict",
+    { ErrorCode: S.String, Message: S.optional(S.String) },
+    T.HttpError(409),
+  ).pipe(C.withConflictError) {}
+export class MountTargetNotFound
+  extends /*@__PURE__*/ S.TaggedErrorClass<MountTargetNotFound>()(
+    "MountTargetNotFound",
+    { ErrorCode: S.String, Message: S.optional(S.String) },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class NetworkInterfaceLimitExceeded
+  extends /*@__PURE__*/ S.TaggedErrorClass<NetworkInterfaceLimitExceeded>()(
+    "NetworkInterfaceLimitExceeded",
+    { ErrorCode: S.String, Message: S.optional(S.String) },
+    T.HttpError(409),
+  ).pipe(C.withConflictError, C.withThrottlingError) {}
+export class NoFreeAddressesInSubnet
+  extends /*@__PURE__*/ S.TaggedErrorClass<NoFreeAddressesInSubnet>()(
+    "NoFreeAddressesInSubnet",
+    { ErrorCode: S.String, Message: S.optional(S.String) },
+    T.HttpError(409),
+  ).pipe(C.withConflictError) {}
+export class PolicyNotFound
+  extends /*@__PURE__*/ S.TaggedErrorClass<PolicyNotFound>()(
+    "PolicyNotFound",
+    { ErrorCode: S.optional(S.String), Message: S.optional(S.String) },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class ReplicationAlreadyExists
+  extends /*@__PURE__*/ S.TaggedErrorClass<ReplicationAlreadyExists>()(
+    "ReplicationAlreadyExists",
+    { ErrorCode: S.optional(S.String), Message: S.optional(S.String) },
+    T.HttpError(409),
+  ).pipe(C.withConflictError, C.withAlreadyExistsError) {}
+export class ReplicationNotFound
+  extends /*@__PURE__*/ S.TaggedErrorClass<ReplicationNotFound>()(
+    "ReplicationNotFound",
+    { ErrorCode: S.optional(S.String), Message: S.optional(S.String) },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class SecurityGroupLimitExceeded
+  extends /*@__PURE__*/ S.TaggedErrorClass<SecurityGroupLimitExceeded>()(
+    "SecurityGroupLimitExceeded",
+    { ErrorCode: S.String, Message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError, C.withThrottlingError) {}
+export class SecurityGroupNotFound
+  extends /*@__PURE__*/ S.TaggedErrorClass<SecurityGroupNotFound>()(
+    "SecurityGroupNotFound",
+    { ErrorCode: S.String, Message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class SubnetNotFound
+  extends /*@__PURE__*/ S.TaggedErrorClass<SubnetNotFound>()(
+    "SubnetNotFound",
+    { ErrorCode: S.String, Message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class ThrottlingException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
+    "ThrottlingException",
+    { ErrorCode: S.optional(S.String), Message: S.optional(S.String) },
+    T.HttpError(429),
+  ).pipe(C.withThrottlingError) {}
+export class ThroughputLimitExceeded
+  extends /*@__PURE__*/ S.TaggedErrorClass<ThroughputLimitExceeded>()(
+    "ThroughputLimitExceeded",
+    { ErrorCode: S.String, Message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError, C.withThrottlingError) {}
+export class TooManyRequests
+  extends /*@__PURE__*/ S.TaggedErrorClass<TooManyRequests>()(
+    "TooManyRequests",
+    { ErrorCode: S.String, Message: S.optional(S.String) },
+    T.HttpError(429),
+  ).pipe(C.withThrottlingError) {}
+export class UnsupportedAvailabilityZone
+  extends /*@__PURE__*/ S.TaggedErrorClass<UnsupportedAvailabilityZone>()(
+    "UnsupportedAvailabilityZone",
+    { ErrorCode: S.String, Message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class ValidationException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
+    "ValidationException",
+    { ErrorCode: S.String, Message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
 export type ClientToken = string;
 export type TagKey = string;
 export type TagValue = string;
@@ -2334,7 +2366,27 @@ export const describeAccessPoints: API.OperationMethod<
     items: "AccessPoints",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  DescribeAccessPointsRequest,
+  DescribeAccessPointsResponse,
+  DescribeAccessPointsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: DescribeAccessPointsRequest,
+  ) => stream.Stream<
+    DescribeAccessPointsResponse,
+    DescribeAccessPointsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: DescribeAccessPointsRequest,
+  ) => stream.Stream<
+    AccessPointDescription,
+    DescribeAccessPointsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type DescribeAccountPreferencesError =
   | InternalServerError
@@ -2476,7 +2528,27 @@ export const describeFileSystems: API.OperationMethod<
     items: "FileSystems",
     pageSize: "MaxItems",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  DescribeFileSystemsRequest,
+  DescribeFileSystemsResponse,
+  DescribeFileSystemsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: DescribeFileSystemsRequest,
+  ) => stream.Stream<
+    DescribeFileSystemsResponse,
+    DescribeFileSystemsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: DescribeFileSystemsRequest,
+  ) => stream.Stream<
+    FileSystemDescription,
+    DescribeFileSystemsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type DescribeLifecycleConfigurationError =
   | BadRequest
@@ -2563,7 +2635,27 @@ export const describeMountTargets: API.OperationMethod<
     items: "MountTargets",
     pageSize: "MaxItems",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  DescribeMountTargetsRequest,
+  DescribeMountTargetsResponse,
+  DescribeMountTargetsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: DescribeMountTargetsRequest,
+  ) => stream.Stream<
+    DescribeMountTargetsResponse,
+    DescribeMountTargetsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: DescribeMountTargetsRequest,
+  ) => stream.Stream<
+    MountTargetDescription,
+    DescribeMountTargetsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type DescribeMountTargetSecurityGroupsError =
   | BadRequest
@@ -2654,7 +2746,27 @@ export const describeReplicationConfigurations: API.OperationMethod<
     items: "Replications",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  DescribeReplicationConfigurationsRequest,
+  DescribeReplicationConfigurationsResponse,
+  DescribeReplicationConfigurationsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: DescribeReplicationConfigurationsRequest,
+  ) => stream.Stream<
+    DescribeReplicationConfigurationsResponse,
+    DescribeReplicationConfigurationsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: DescribeReplicationConfigurationsRequest,
+  ) => stream.Stream<
+    ReplicationConfigurationDescription,
+    DescribeReplicationConfigurationsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type DescribeTagsError =
   | BadRequest
@@ -2706,7 +2818,27 @@ export const describeTags: API.OperationMethod<
     items: "Tags",
     pageSize: "MaxItems",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  DescribeTagsRequest,
+  DescribeTagsResponse,
+  DescribeTagsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: DescribeTagsRequest,
+  ) => stream.Stream<
+    DescribeTagsResponse,
+    DescribeTagsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: DescribeTagsRequest,
+  ) => stream.Stream<
+    Tag,
+    DescribeTagsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListTagsForResourceError =
   | AccessPointNotFound
@@ -2757,7 +2889,27 @@ export const listTagsForResource: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListTagsForResourceRequest,
+  ListTagsForResourceResponse,
+  ListTagsForResourceError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListTagsForResourceRequest,
+  ) => stream.Stream<
+    ListTagsForResourceResponse,
+    ListTagsForResourceError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListTagsForResourceRequest,
+  ) => stream.Stream<
+    unknown,
+    ListTagsForResourceError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ModifyMountTargetSecurityGroupsError =
   | BadRequest

@@ -87,102 +87,119 @@ const rules = T.EndpointResolver((p, _) => {
   return err("Invalid Configuration: Missing Region");
 });
 
-export class BatchSizeLimitExceededException extends S.TaggedErrorClass<BatchSizeLimitExceededException>()(
-  "BatchSizeLimitExceededException",
-  { Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class ConcurrentModificationException extends S.TaggedErrorClass<ConcurrentModificationException>()(
-  "ConcurrentModificationException",
-  { Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class InternalServerException extends S.TaggedErrorClass<InternalServerException>()(
-  "InternalServerException",
-  { Message: S.optional(S.String) },
-  T.HttpError(500),
-).pipe(C.withServerError) {}
-export class InvalidFilterException extends S.TaggedErrorClass<InvalidFilterException>()(
-  "InvalidFilterException",
-  { Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class InvalidRequestException extends S.TaggedErrorClass<InvalidRequestException>()(
-  "InvalidRequestException",
-  {
-    Message: S.optional(S.String),
-    Reason: S.optional(
-      S.suspend(() => InvalidRequestReason).annotate({
-        identifier: "InvalidRequestReason",
-      }),
-    ),
-    Detail: S.optional(
-      S.suspend(() => InvalidRequestDetail).annotate({
-        identifier: "InvalidRequestDetail",
-      }),
-    ),
-  },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class JobNotFoundException extends S.TaggedErrorClass<JobNotFoundException>()(
-  "JobNotFoundException",
-  { Message: S.optional(S.String) },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class KmsKeyValidationException extends S.TaggedErrorClass<KmsKeyValidationException>()(
-  "KmsKeyValidationException",
-  { Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class NotAuthorizedException extends S.TaggedErrorClass<NotAuthorizedException>()(
-  "NotAuthorizedException",
-  { message: S.optional(S.String) },
-).pipe(C.withAuthError) {}
-export class ResourceInUseException extends S.TaggedErrorClass<ResourceInUseException>()(
-  "ResourceInUseException",
-  { Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class ResourceLimitExceededException extends S.TaggedErrorClass<ResourceLimitExceededException>()(
-  "ResourceLimitExceededException",
-  { Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class ResourceNotFoundException extends S.TaggedErrorClass<ResourceNotFoundException>()(
-  "ResourceNotFoundException",
-  { Message: S.optional(S.String) },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class ResourceUnavailableException extends S.TaggedErrorClass<ResourceUnavailableException>()(
-  "ResourceUnavailableException",
-  { Message: S.optional(S.String) },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class TextSizeLimitExceededException extends S.TaggedErrorClass<TextSizeLimitExceededException>()(
-  "TextSizeLimitExceededException",
-  { Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class TooManyRequestsException extends S.TaggedErrorClass<TooManyRequestsException>()(
-  "TooManyRequestsException",
-  { Message: S.optional(S.String) },
-  T.HttpError(429),
-).pipe(C.withThrottlingError) {}
-export class TooManyTagKeysException extends S.TaggedErrorClass<TooManyTagKeysException>()(
-  "TooManyTagKeysException",
-  { Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class TooManyTagsException extends S.TaggedErrorClass<TooManyTagsException>()(
-  "TooManyTagsException",
-  { Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class UnsupportedLanguageException extends S.TaggedErrorClass<UnsupportedLanguageException>()(
-  "UnsupportedLanguageException",
-  { Message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
+export class BatchSizeLimitExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<BatchSizeLimitExceededException>()(
+    "BatchSizeLimitExceededException",
+    { Message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class ConcurrentModificationException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ConcurrentModificationException>()(
+    "ConcurrentModificationException",
+    { Message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class InternalServerException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
+    "InternalServerException",
+    { Message: S.optional(S.String) },
+    T.HttpError(500),
+  ).pipe(C.withServerError) {}
+export class InvalidFilterException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidFilterException>()(
+    "InvalidFilterException",
+    { Message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class InvalidRequestException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InvalidRequestException>()(
+    "InvalidRequestException",
+    {
+      Message: S.optional(S.String),
+      Reason: S.optional(
+        S.suspend(() => InvalidRequestReason).annotate({
+          identifier: "InvalidRequestReason",
+        }),
+      ),
+      Detail: S.optional(
+        S.suspend(() => InvalidRequestDetail).annotate({
+          identifier: "InvalidRequestDetail",
+        }),
+      ),
+    },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class JobNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<JobNotFoundException>()(
+    "JobNotFoundException",
+    { Message: S.optional(S.String) },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class KmsKeyValidationException
+  extends /*@__PURE__*/ S.TaggedErrorClass<KmsKeyValidationException>()(
+    "KmsKeyValidationException",
+    { Message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class NotAuthorizedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<NotAuthorizedException>()(
+    "NotAuthorizedException",
+    { message: S.optional(S.String) },
+  ).pipe(C.withAuthError) {}
+export class ResourceInUseException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceInUseException>()(
+    "ResourceInUseException",
+    { Message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class ResourceLimitExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceLimitExceededException>()(
+    "ResourceLimitExceededException",
+    { Message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class ResourceNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
+    "ResourceNotFoundException",
+    { Message: S.optional(S.String) },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class ResourceUnavailableException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceUnavailableException>()(
+    "ResourceUnavailableException",
+    { Message: S.optional(S.String) },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class TextSizeLimitExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<TextSizeLimitExceededException>()(
+    "TextSizeLimitExceededException",
+    { Message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class TooManyRequestsException
+  extends /*@__PURE__*/ S.TaggedErrorClass<TooManyRequestsException>()(
+    "TooManyRequestsException",
+    { Message: S.optional(S.String) },
+    T.HttpError(429),
+  ).pipe(C.withThrottlingError) {}
+export class TooManyTagKeysException
+  extends /*@__PURE__*/ S.TaggedErrorClass<TooManyTagKeysException>()(
+    "TooManyTagKeysException",
+    { Message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class TooManyTagsException
+  extends /*@__PURE__*/ S.TaggedErrorClass<TooManyTagsException>()(
+    "TooManyTagsException",
+    { Message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class UnsupportedLanguageException
+  extends /*@__PURE__*/ S.TaggedErrorClass<UnsupportedLanguageException>()(
+    "UnsupportedLanguageException",
+    { Message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
 export type CustomerInputString = string | redacted.Redacted<string>;
 export type CustomerInputStringList = (string | redacted.Redacted<string>)[];
 export const CustomerInputStringList = /*@__PURE__*/ S.Array(SensitiveString);
@@ -6255,7 +6272,27 @@ export const listDatasets: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListDatasetsRequest,
+  ListDatasetsResponse,
+  ListDatasetsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListDatasetsRequest,
+  ) => stream.Stream<
+    ListDatasetsResponse,
+    ListDatasetsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListDatasetsRequest,
+  ) => stream.Stream<
+    unknown,
+    ListDatasetsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListDocumentClassificationJobsError =
   | InternalServerException
@@ -6303,7 +6340,27 @@ export const listDocumentClassificationJobs: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListDocumentClassificationJobsRequest,
+  ListDocumentClassificationJobsResponse,
+  ListDocumentClassificationJobsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListDocumentClassificationJobsRequest,
+  ) => stream.Stream<
+    ListDocumentClassificationJobsResponse,
+    ListDocumentClassificationJobsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListDocumentClassificationJobsRequest,
+  ) => stream.Stream<
+    unknown,
+    ListDocumentClassificationJobsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListDocumentClassifiersError =
   | InternalServerException
@@ -6351,7 +6408,27 @@ export const listDocumentClassifiers: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListDocumentClassifiersRequest,
+  ListDocumentClassifiersResponse,
+  ListDocumentClassifiersError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListDocumentClassifiersRequest,
+  ) => stream.Stream<
+    ListDocumentClassifiersResponse,
+    ListDocumentClassifiersError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListDocumentClassifiersRequest,
+  ) => stream.Stream<
+    unknown,
+    ListDocumentClassifiersError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListDocumentClassifierSummariesError =
   | InternalServerException
@@ -6397,7 +6474,27 @@ export const listDocumentClassifierSummaries: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListDocumentClassifierSummariesRequest,
+  ListDocumentClassifierSummariesResponse,
+  ListDocumentClassifierSummariesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListDocumentClassifierSummariesRequest,
+  ) => stream.Stream<
+    ListDocumentClassifierSummariesResponse,
+    ListDocumentClassifierSummariesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListDocumentClassifierSummariesRequest,
+  ) => stream.Stream<
+    unknown,
+    ListDocumentClassifierSummariesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListDominantLanguageDetectionJobsError =
   | InternalServerException
@@ -6445,7 +6542,27 @@ export const listDominantLanguageDetectionJobs: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListDominantLanguageDetectionJobsRequest,
+  ListDominantLanguageDetectionJobsResponse,
+  ListDominantLanguageDetectionJobsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListDominantLanguageDetectionJobsRequest,
+  ) => stream.Stream<
+    ListDominantLanguageDetectionJobsResponse,
+    ListDominantLanguageDetectionJobsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListDominantLanguageDetectionJobsRequest,
+  ) => stream.Stream<
+    unknown,
+    ListDominantLanguageDetectionJobsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListEndpointsError =
   | InternalServerException
@@ -6493,7 +6610,27 @@ export const listEndpoints: API.OperationMethod<
     items: "EndpointPropertiesList",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListEndpointsRequest,
+  ListEndpointsResponse,
+  ListEndpointsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListEndpointsRequest,
+  ) => stream.Stream<
+    ListEndpointsResponse,
+    ListEndpointsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListEndpointsRequest,
+  ) => stream.Stream<
+    EndpointProperties,
+    ListEndpointsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListEntitiesDetectionJobsError =
   | InternalServerException
@@ -6541,7 +6678,27 @@ export const listEntitiesDetectionJobs: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListEntitiesDetectionJobsRequest,
+  ListEntitiesDetectionJobsResponse,
+  ListEntitiesDetectionJobsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListEntitiesDetectionJobsRequest,
+  ) => stream.Stream<
+    ListEntitiesDetectionJobsResponse,
+    ListEntitiesDetectionJobsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListEntitiesDetectionJobsRequest,
+  ) => stream.Stream<
+    unknown,
+    ListEntitiesDetectionJobsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListEntityRecognizersError =
   | InternalServerException
@@ -6595,7 +6752,27 @@ export const listEntityRecognizers: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListEntityRecognizersRequest,
+  ListEntityRecognizersResponse,
+  ListEntityRecognizersError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListEntityRecognizersRequest,
+  ) => stream.Stream<
+    ListEntityRecognizersResponse,
+    ListEntityRecognizersError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListEntityRecognizersRequest,
+  ) => stream.Stream<
+    unknown,
+    ListEntityRecognizersError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListEntityRecognizerSummariesError =
   | InternalServerException
@@ -6641,7 +6818,27 @@ export const listEntityRecognizerSummaries: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListEntityRecognizerSummariesRequest,
+  ListEntityRecognizerSummariesResponse,
+  ListEntityRecognizerSummariesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListEntityRecognizerSummariesRequest,
+  ) => stream.Stream<
+    ListEntityRecognizerSummariesResponse,
+    ListEntityRecognizerSummariesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListEntityRecognizerSummariesRequest,
+  ) => stream.Stream<
+    unknown,
+    ListEntityRecognizerSummariesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListEventsDetectionJobsError =
   | InternalServerException
@@ -6691,7 +6888,27 @@ export const listEventsDetectionJobs: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListEventsDetectionJobsRequest,
+  ListEventsDetectionJobsResponse,
+  ListEventsDetectionJobsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListEventsDetectionJobsRequest,
+  ) => stream.Stream<
+    ListEventsDetectionJobsResponse,
+    ListEventsDetectionJobsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListEventsDetectionJobsRequest,
+  ) => stream.Stream<
+    unknown,
+    ListEventsDetectionJobsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListFlywheelIterationHistoryError =
   | InternalServerException
@@ -6743,7 +6960,27 @@ export const listFlywheelIterationHistory: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListFlywheelIterationHistoryRequest,
+  ListFlywheelIterationHistoryResponse,
+  ListFlywheelIterationHistoryError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListFlywheelIterationHistoryRequest,
+  ) => stream.Stream<
+    ListFlywheelIterationHistoryResponse,
+    ListFlywheelIterationHistoryError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListFlywheelIterationHistoryRequest,
+  ) => stream.Stream<
+    unknown,
+    ListFlywheelIterationHistoryError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListFlywheelsError =
   | InternalServerException
@@ -6791,7 +7028,27 @@ export const listFlywheels: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListFlywheelsRequest,
+  ListFlywheelsResponse,
+  ListFlywheelsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListFlywheelsRequest,
+  ) => stream.Stream<
+    ListFlywheelsResponse,
+    ListFlywheelsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListFlywheelsRequest,
+  ) => stream.Stream<
+    unknown,
+    ListFlywheelsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListKeyPhrasesDetectionJobsError =
   | InternalServerException
@@ -6839,7 +7096,27 @@ export const listKeyPhrasesDetectionJobs: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListKeyPhrasesDetectionJobsRequest,
+  ListKeyPhrasesDetectionJobsResponse,
+  ListKeyPhrasesDetectionJobsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListKeyPhrasesDetectionJobsRequest,
+  ) => stream.Stream<
+    ListKeyPhrasesDetectionJobsResponse,
+    ListKeyPhrasesDetectionJobsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListKeyPhrasesDetectionJobsRequest,
+  ) => stream.Stream<
+    unknown,
+    ListKeyPhrasesDetectionJobsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListPiiEntitiesDetectionJobsError =
   | InternalServerException
@@ -6888,7 +7165,27 @@ export const listPiiEntitiesDetectionJobs: API.OperationMethod<
     items: "PiiEntitiesDetectionJobPropertiesList",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListPiiEntitiesDetectionJobsRequest,
+  ListPiiEntitiesDetectionJobsResponse,
+  ListPiiEntitiesDetectionJobsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListPiiEntitiesDetectionJobsRequest,
+  ) => stream.Stream<
+    ListPiiEntitiesDetectionJobsResponse,
+    ListPiiEntitiesDetectionJobsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListPiiEntitiesDetectionJobsRequest,
+  ) => stream.Stream<
+    PiiEntitiesDetectionJobProperties,
+    ListPiiEntitiesDetectionJobsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListSentimentDetectionJobsError =
   | InternalServerException
@@ -6936,7 +7233,27 @@ export const listSentimentDetectionJobs: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListSentimentDetectionJobsRequest,
+  ListSentimentDetectionJobsResponse,
+  ListSentimentDetectionJobsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListSentimentDetectionJobsRequest,
+  ) => stream.Stream<
+    ListSentimentDetectionJobsResponse,
+    ListSentimentDetectionJobsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListSentimentDetectionJobsRequest,
+  ) => stream.Stream<
+    unknown,
+    ListSentimentDetectionJobsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListTagsForResourceError =
   | InternalServerException
@@ -7010,7 +7327,27 @@ export const listTargetedSentimentDetectionJobs: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListTargetedSentimentDetectionJobsRequest,
+  ListTargetedSentimentDetectionJobsResponse,
+  ListTargetedSentimentDetectionJobsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListTargetedSentimentDetectionJobsRequest,
+  ) => stream.Stream<
+    ListTargetedSentimentDetectionJobsResponse,
+    ListTargetedSentimentDetectionJobsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListTargetedSentimentDetectionJobsRequest,
+  ) => stream.Stream<
+    unknown,
+    ListTargetedSentimentDetectionJobsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListTopicsDetectionJobsError =
   | InternalServerException
@@ -7058,7 +7395,27 @@ export const listTopicsDetectionJobs: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListTopicsDetectionJobsRequest,
+  ListTopicsDetectionJobsResponse,
+  ListTopicsDetectionJobsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListTopicsDetectionJobsRequest,
+  ) => stream.Stream<
+    ListTopicsDetectionJobsResponse,
+    ListTopicsDetectionJobsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListTopicsDetectionJobsRequest,
+  ) => stream.Stream<
+    unknown,
+    ListTopicsDetectionJobsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type PutResourcePolicyError =
   | InternalServerException

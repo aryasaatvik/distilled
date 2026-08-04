@@ -88,25 +88,29 @@ const rules = T.EndpointResolver((p, _) => {
   return err("Invalid Configuration: Missing Region");
 });
 
-export class ContainerNotFoundException extends S.TaggedErrorClass<ContainerNotFoundException>()(
-  "ContainerNotFoundException",
-  { Message: S.optional(S.String) },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class InternalServerError extends S.TaggedErrorClass<InternalServerError>()(
-  "InternalServerError",
-  { Message: S.optional(S.String) },
-) {}
-export class ObjectNotFoundException extends S.TaggedErrorClass<ObjectNotFoundException>()(
-  "ObjectNotFoundException",
-  { Message: S.optional(S.String) },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class RequestedRangeNotSatisfiableException extends S.TaggedErrorClass<RequestedRangeNotSatisfiableException>()(
-  "RequestedRangeNotSatisfiableException",
-  { Message: S.optional(S.String) },
-  T.HttpError(416),
-) {}
+export class ContainerNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ContainerNotFoundException>()(
+    "ContainerNotFoundException",
+    { Message: S.optional(S.String) },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class InternalServerError
+  extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerError>()(
+    "InternalServerError",
+    { Message: S.optional(S.String) },
+  ) {}
+export class ObjectNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ObjectNotFoundException>()(
+    "ObjectNotFoundException",
+    { Message: S.optional(S.String) },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class RequestedRangeNotSatisfiableException
+  extends /*@__PURE__*/ S.TaggedErrorClass<RequestedRangeNotSatisfiableException>()(
+    "RequestedRangeNotSatisfiableException",
+    { Message: S.optional(S.String) },
+    T.HttpError(416),
+  ) {}
 export type PathNaming = string;
 export interface DeleteObjectRequest {
   Path: string;
@@ -464,7 +468,27 @@ export const listItems: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListItemsRequest,
+  ListItemsResponse,
+  ListItemsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListItemsRequest,
+  ) => stream.Stream<
+    ListItemsResponse,
+    ListItemsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListItemsRequest,
+  ) => stream.Stream<
+    unknown,
+    ListItemsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type PutObjectError =
   | ContainerNotFoundException

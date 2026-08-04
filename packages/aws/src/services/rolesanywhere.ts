@@ -87,26 +87,30 @@ const rules = T.EndpointResolver((p, _) => {
   return err("Invalid Configuration: Missing Region");
 });
 
-export class AccessDeniedException extends S.TaggedErrorClass<AccessDeniedException>()(
-  "AccessDeniedException",
-  { message: S.optional(S.String) },
-  T.HttpError(403),
-).pipe(C.withAuthError) {}
-export class ResourceNotFoundException extends S.TaggedErrorClass<ResourceNotFoundException>()(
-  "ResourceNotFoundException",
-  { message: S.optional(S.String) },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class TooManyTagsException extends S.TaggedErrorClass<TooManyTagsException>()(
-  "TooManyTagsException",
-  { message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class ValidationException extends S.TaggedErrorClass<ValidationException>()(
-  "ValidationException",
-  { message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
+export class AccessDeniedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
+    "AccessDeniedException",
+    { message: S.optional(S.String) },
+    T.HttpError(403),
+  ).pipe(C.withAuthError) {}
+export class ResourceNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
+    "ResourceNotFoundException",
+    { message: S.optional(S.String) },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class TooManyTagsException
+  extends /*@__PURE__*/ S.TaggedErrorClass<TooManyTagsException>()(
+    "TooManyTagsException",
+    { message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class ValidationException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
+    "ValidationException",
+    { message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
 export type ResourceName = string;
 export type RoleArn = string;
 export type RoleArnList = string[];
@@ -1442,7 +1446,27 @@ export const listCrls: API.OperationMethod<
     outputToken: "nextToken",
     items: "crls",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListRequest,
+  ListCrlsResponse,
+  ListCrlsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListRequest,
+  ) => stream.Stream<
+    ListCrlsResponse,
+    ListCrlsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListRequest,
+  ) => stream.Stream<
+    CrlDetail,
+    ListCrlsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export interface ListProfilesRequest extends ListRequest {}
 export const ListProfilesRequest = /*@__PURE__*/ ListRequest.pipe(
@@ -1491,7 +1515,27 @@ export const listProfiles: API.OperationMethod<
     outputToken: "nextToken",
     items: "profiles",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListProfilesRequest,
+  ListProfilesResponse,
+  ListProfilesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListProfilesRequest,
+  ) => stream.Stream<
+    ListProfilesResponse,
+    ListProfilesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListProfilesRequest,
+  ) => stream.Stream<
+    ProfileDetail,
+    ListProfilesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export interface ListSubjectsRequest extends ListRequest {}
 export const ListSubjectsRequest = /*@__PURE__*/ ListRequest.pipe(
@@ -1540,7 +1584,27 @@ export const listSubjects: API.OperationMethod<
     outputToken: "nextToken",
     items: "subjects",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListSubjectsRequest,
+  ListSubjectsResponse,
+  ListSubjectsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListSubjectsRequest,
+  ) => stream.Stream<
+    ListSubjectsResponse,
+    ListSubjectsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListSubjectsRequest,
+  ) => stream.Stream<
+    SubjectSummary,
+    ListSubjectsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListTagsForResourceError =
   | AccessDeniedException
@@ -1617,7 +1681,27 @@ export const listTrustAnchors: API.OperationMethod<
     outputToken: "nextToken",
     items: "trustAnchors",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListTrustAnchorsRequest,
+  ListTrustAnchorsResponse,
+  ListTrustAnchorsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListTrustAnchorsRequest,
+  ) => stream.Stream<
+    ListTrustAnchorsResponse,
+    ListTrustAnchorsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListTrustAnchorsRequest,
+  ) => stream.Stream<
+    TrustAnchorDetail,
+    ListTrustAnchorsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type PutAttributeMappingError =
   | AccessDeniedException

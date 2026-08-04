@@ -85,45 +85,52 @@ const rules = T.EndpointResolver((p, _) => {
   return err("Invalid Configuration: Missing Region");
 });
 
-export class AccessDeniedException extends S.TaggedErrorClass<AccessDeniedException>()(
-  "AccessDeniedException",
-  { message: S.optional(S.String) },
-  T.HttpError(403),
-).pipe(C.withAuthError) {}
-export class ConflictException extends S.TaggedErrorClass<ConflictException>()(
-  "ConflictException",
-  { message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
-export class ExceedsLimitException extends S.TaggedErrorClass<ExceedsLimitException>()(
-  "ExceedsLimitException",
-  {
-    message: S.optional(S.String),
-    quotaName: S.optional(S.String),
-    quotaValue: S.optional(S.Number),
-  },
-  T.HttpError(402),
-).pipe(C.withQuotaError) {}
-export class InternalServerException extends S.TaggedErrorClass<InternalServerException>()(
-  "InternalServerException",
-  { message: S.optional(S.String) },
-  T.all(T.HttpError(500), T.Retryable()),
-).pipe(C.withServerError, C.withRetryableError) {}
-export class ResourceNotFoundException extends S.TaggedErrorClass<ResourceNotFoundException>()(
-  "ResourceNotFoundException",
-  { message: S.optional(S.String) },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class ThrottlingException extends S.TaggedErrorClass<ThrottlingException>()(
-  "ThrottlingException",
-  { message: S.optional(S.String) },
-  T.all(T.HttpError(429), T.Retryable({ throttling: true })),
-).pipe(C.withThrottlingError, C.withRetryableError) {}
-export class ValidationException extends S.TaggedErrorClass<ValidationException>()(
-  "ValidationException",
-  { message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
+export class AccessDeniedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
+    "AccessDeniedException",
+    { message: S.optional(S.String) },
+    T.HttpError(403),
+  ).pipe(C.withAuthError) {}
+export class ConflictException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
+    "ConflictException",
+    { message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
+export class ExceedsLimitException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ExceedsLimitException>()(
+    "ExceedsLimitException",
+    {
+      message: S.optional(S.String),
+      quotaName: S.optional(S.String),
+      quotaValue: S.optional(S.Number),
+    },
+    T.HttpError(402),
+  ).pipe(C.withQuotaError) {}
+export class InternalServerException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
+    "InternalServerException",
+    { message: S.optional(S.String) },
+    T.all(T.HttpError(500), T.Retryable()),
+  ).pipe(C.withServerError, C.withRetryableError) {}
+export class ResourceNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
+    "ResourceNotFoundException",
+    { message: S.optional(S.String) },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class ThrottlingException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
+    "ThrottlingException",
+    { message: S.optional(S.String) },
+    T.all(T.HttpError(429), T.Retryable({ throttling: true })),
+  ).pipe(C.withThrottlingError, C.withRetryableError) {}
+export class ValidationException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
+    "ValidationException",
+    { message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
 export type VeniceGlobalArn = string;
 export type StatementId = string;
 export type StatementEffect = "Allow" | "Deny" | (string & {});
@@ -3166,7 +3173,27 @@ export const listIdMappingJobs: API.OperationMethod<
     items: "jobs",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListIdMappingJobsInput,
+  ListIdMappingJobsOutput,
+  ListIdMappingJobsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListIdMappingJobsInput,
+  ) => stream.Stream<
+    ListIdMappingJobsOutput,
+    ListIdMappingJobsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListIdMappingJobsInput,
+  ) => stream.Stream<
+    JobSummary,
+    ListIdMappingJobsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListIdMappingWorkflowsError =
   | AccessDeniedException
@@ -3215,7 +3242,27 @@ export const listIdMappingWorkflows: API.OperationMethod<
     items: "workflowSummaries",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListIdMappingWorkflowsInput,
+  ListIdMappingWorkflowsOutput,
+  ListIdMappingWorkflowsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListIdMappingWorkflowsInput,
+  ) => stream.Stream<
+    ListIdMappingWorkflowsOutput,
+    ListIdMappingWorkflowsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListIdMappingWorkflowsInput,
+  ) => stream.Stream<
+    IdMappingWorkflowSummary,
+    ListIdMappingWorkflowsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListIdNamespacesError =
   | AccessDeniedException
@@ -3264,7 +3311,27 @@ export const listIdNamespaces: API.OperationMethod<
     items: "idNamespaceSummaries",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListIdNamespacesInput,
+  ListIdNamespacesOutput,
+  ListIdNamespacesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListIdNamespacesInput,
+  ) => stream.Stream<
+    ListIdNamespacesOutput,
+    ListIdNamespacesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListIdNamespacesInput,
+  ) => stream.Stream<
+    IdNamespaceSummary,
+    ListIdNamespacesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListMatchingJobsError =
   | AccessDeniedException
@@ -3315,7 +3382,27 @@ export const listMatchingJobs: API.OperationMethod<
     items: "jobs",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListMatchingJobsInput,
+  ListMatchingJobsOutput,
+  ListMatchingJobsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListMatchingJobsInput,
+  ) => stream.Stream<
+    ListMatchingJobsOutput,
+    ListMatchingJobsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListMatchingJobsInput,
+  ) => stream.Stream<
+    JobSummary,
+    ListMatchingJobsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListMatchingWorkflowsError =
   | AccessDeniedException
@@ -3364,7 +3451,27 @@ export const listMatchingWorkflows: API.OperationMethod<
     items: "workflowSummaries",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListMatchingWorkflowsInput,
+  ListMatchingWorkflowsOutput,
+  ListMatchingWorkflowsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListMatchingWorkflowsInput,
+  ) => stream.Stream<
+    ListMatchingWorkflowsOutput,
+    ListMatchingWorkflowsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListMatchingWorkflowsInput,
+  ) => stream.Stream<
+    MatchingWorkflowSummary,
+    ListMatchingWorkflowsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListProviderServicesError =
   | AccessDeniedException
@@ -3413,7 +3520,27 @@ export const listProviderServices: API.OperationMethod<
     items: "providerServiceSummaries",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListProviderServicesInput,
+  ListProviderServicesOutput,
+  ListProviderServicesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListProviderServicesInput,
+  ) => stream.Stream<
+    ListProviderServicesOutput,
+    ListProviderServicesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListProviderServicesInput,
+  ) => stream.Stream<
+    ProviderServiceSummary,
+    ListProviderServicesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListSchemaMappingsError =
   | AccessDeniedException
@@ -3462,7 +3589,27 @@ export const listSchemaMappings: API.OperationMethod<
     items: "schemaList",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListSchemaMappingsInput,
+  ListSchemaMappingsOutput,
+  ListSchemaMappingsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListSchemaMappingsInput,
+  ) => stream.Stream<
+    ListSchemaMappingsOutput,
+    ListSchemaMappingsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListSchemaMappingsInput,
+  ) => stream.Stream<
+    SchemaMappingSummary,
+    ListSchemaMappingsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListTagsForResourceError =
   | InternalServerException

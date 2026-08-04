@@ -52,41 +52,48 @@ const rules = T.EndpointResolver((p, _) => {
   return err("Invalid Configuration: Missing Region");
 });
 
-export class AccessDeniedException extends S.TaggedErrorClass<AccessDeniedException>()(
-  "AccessDeniedException",
-  { message: S.optional(S.String) },
-  T.HttpError(403),
-).pipe(C.withAuthError) {}
-export class ConflictException extends S.TaggedErrorClass<ConflictException>()(
-  "ConflictException",
-  { message: S.optional(S.String) },
-  T.HttpError(409),
-).pipe(C.withConflictError) {}
-export class InternalServerException extends S.TaggedErrorClass<InternalServerException>()(
-  "InternalServerException",
-  { message: S.optional(S.String) },
-  T.all(T.HttpError(500), T.Retryable()),
-).pipe(C.withServerError, C.withRetryableError) {}
-export class ResourceNotFoundException extends S.TaggedErrorClass<ResourceNotFoundException>()(
-  "ResourceNotFoundException",
-  { message: S.optional(S.String) },
-  T.HttpError(404),
-).pipe(C.withBadRequestError) {}
-export class ServiceQuotaExceededException extends S.TaggedErrorClass<ServiceQuotaExceededException>()(
-  "ServiceQuotaExceededException",
-  { message: S.optional(S.String) },
-  T.HttpError(402),
-).pipe(C.withQuotaError) {}
-export class ThrottlingException extends S.TaggedErrorClass<ThrottlingException>()(
-  "ThrottlingException",
-  { message: S.optional(S.String) },
-  T.all(T.HttpError(429), T.Retryable({ throttling: true })),
-).pipe(C.withThrottlingError, C.withRetryableError) {}
-export class ValidationException extends S.TaggedErrorClass<ValidationException>()(
-  "ValidationException",
-  { message: S.optional(S.String) },
-  T.HttpError(400),
-).pipe(C.withBadRequestError) {}
+export class AccessDeniedException
+  extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
+    "AccessDeniedException",
+    { message: S.optional(S.String) },
+    T.HttpError(403),
+  ).pipe(C.withAuthError) {}
+export class ConflictException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
+    "ConflictException",
+    { message: S.optional(S.String) },
+    T.HttpError(409),
+  ).pipe(C.withConflictError) {}
+export class InternalServerException
+  extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
+    "InternalServerException",
+    { message: S.optional(S.String) },
+    T.all(T.HttpError(500), T.Retryable()),
+  ).pipe(C.withServerError, C.withRetryableError) {}
+export class ResourceNotFoundException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
+    "ResourceNotFoundException",
+    { message: S.optional(S.String) },
+    T.HttpError(404),
+  ).pipe(C.withBadRequestError) {}
+export class ServiceQuotaExceededException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
+    "ServiceQuotaExceededException",
+    { message: S.optional(S.String) },
+    T.HttpError(402),
+  ).pipe(C.withQuotaError) {}
+export class ThrottlingException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
+    "ThrottlingException",
+    { message: S.optional(S.String) },
+    T.all(T.HttpError(429), T.Retryable({ throttling: true })),
+  ).pipe(C.withThrottlingError, C.withRetryableError) {}
+export class ValidationException
+  extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
+    "ValidationException",
+    { message: S.optional(S.String) },
+    T.HttpError(400),
+  ).pipe(C.withBadRequestError) {}
 export type ResourceName = string;
 export type MonitorLocalResourceType =
   | "AWS::EC2::VPC"
@@ -1554,7 +1561,27 @@ export const getQueryResultsMonitorTopContributors: API.OperationMethod<
     items: "topContributors",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  GetQueryResultsMonitorTopContributorsInput,
+  GetQueryResultsMonitorTopContributorsOutput,
+  GetQueryResultsMonitorTopContributorsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: GetQueryResultsMonitorTopContributorsInput,
+  ) => stream.Stream<
+    GetQueryResultsMonitorTopContributorsOutput,
+    GetQueryResultsMonitorTopContributorsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: GetQueryResultsMonitorTopContributorsInput,
+  ) => stream.Stream<
+    MonitorTopContributorsRow,
+    GetQueryResultsMonitorTopContributorsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type GetQueryResultsWorkloadInsightsTopContributorsError =
   | AccessDeniedException
@@ -1613,7 +1640,27 @@ export const getQueryResultsWorkloadInsightsTopContributors: API.OperationMethod
     items: "topContributors",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  GetQueryResultsWorkloadInsightsTopContributorsInput,
+  GetQueryResultsWorkloadInsightsTopContributorsOutput,
+  GetQueryResultsWorkloadInsightsTopContributorsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: GetQueryResultsWorkloadInsightsTopContributorsInput,
+  ) => stream.Stream<
+    GetQueryResultsWorkloadInsightsTopContributorsOutput,
+    GetQueryResultsWorkloadInsightsTopContributorsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: GetQueryResultsWorkloadInsightsTopContributorsInput,
+  ) => stream.Stream<
+    WorkloadInsightsTopContributorsRow,
+    GetQueryResultsWorkloadInsightsTopContributorsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type GetQueryResultsWorkloadInsightsTopContributorsDataError =
   | AccessDeniedException
@@ -1674,7 +1721,27 @@ export const getQueryResultsWorkloadInsightsTopContributorsData: API.OperationMe
     items: "datapoints",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  GetQueryResultsWorkloadInsightsTopContributorsDataInput,
+  GetQueryResultsWorkloadInsightsTopContributorsDataOutput,
+  GetQueryResultsWorkloadInsightsTopContributorsDataError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: GetQueryResultsWorkloadInsightsTopContributorsDataInput,
+  ) => stream.Stream<
+    GetQueryResultsWorkloadInsightsTopContributorsDataOutput,
+    GetQueryResultsWorkloadInsightsTopContributorsDataError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: GetQueryResultsWorkloadInsightsTopContributorsDataInput,
+  ) => stream.Stream<
+    WorkloadInsightsTopContributorsDataPoint,
+    GetQueryResultsWorkloadInsightsTopContributorsDataError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type GetQueryStatusMonitorTopContributorsError =
   | AccessDeniedException
@@ -1859,7 +1926,27 @@ export const listMonitors: API.OperationMethod<
     items: "monitors",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListMonitorsInput,
+  ListMonitorsOutput,
+  ListMonitorsError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListMonitorsInput,
+  ) => stream.Stream<
+    ListMonitorsOutput,
+    ListMonitorsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListMonitorsInput,
+  ) => stream.Stream<
+    MonitorSummary,
+    ListMonitorsError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListScopesError =
   | AccessDeniedException
@@ -1910,7 +1997,27 @@ export const listScopes: API.OperationMethod<
     items: "scopes",
     pageSize: "maxResults",
   } as const,
-}));
+})) as any as API.OperationMethod<
+  ListScopesInput,
+  ListScopesOutput,
+  ListScopesError,
+  Credentials | Region | HttpClient.HttpClient
+> & {
+  pages: (
+    input: ListScopesInput,
+  ) => stream.Stream<
+    ListScopesOutput,
+    ListScopesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListScopesInput,
+  ) => stream.Stream<
+    ScopeSummary,
+    ListScopesError,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+};
 
 export type ListTagsForResourceError =
   | AccessDeniedException
