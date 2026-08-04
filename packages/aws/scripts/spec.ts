@@ -2228,6 +2228,10 @@ export const awsSpec = (
         // this service's model doesn't state, and the name heuristics run
         // last. `errorTraits` is passed rather than `def.traits` because
         // spec-file `errorHttpStatus` patches land there.
+        //
+        // AWS deviates on one status: the shared helper folds 404 into
+        // `BadRequestError`, but on AWS a 404 is a genuine not-found (see
+        // apigatewayv2's `NotFoundException`), so it is remapped here.
         categories.push(
           ...errorCategories(
             {
@@ -2238,7 +2242,11 @@ export const awsSpec = (
               ...(serviceSpec.errorCategories?.[name] ?? []),
               ...inferCategoriesFromName(name),
             ],
-          ).map((cat) => `C.with${cat}`),
+          ).map((cat) =>
+            cat === "BadRequestError" && errorTraits?.httpError === 404
+              ? "C.withNotFoundError"
+              : `C.with${cat}`,
+          ),
         );
 
         let annotationsArg = "";

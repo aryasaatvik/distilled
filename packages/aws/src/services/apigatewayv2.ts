@@ -109,7 +109,7 @@ export class NotFoundException
       ResourceType: S.optional(S.String),
     },
     T.HttpError(404),
-  ).pipe(C.withBadRequestError) {}
+  ).pipe(C.withNotFoundError) {}
 export class TooManyRequestsException
   extends /*@__PURE__*/ S.TaggedError<TooManyRequestsException>()(
     "TooManyRequestsException",
