@@ -6,7 +6,7 @@ import * as Endpoint from "../src/endpoint.ts";
 describe("service endpoint resolution", () => {
   const endpoints = {
     resolve: (service: string) =>
-      service === "ses"
+      ["ses", "sesv2", "servicequotas"].includes(service)
         ? "http://samva-emulate.test/ses"
         : "http://floci.test:4566",
   } satisfies Endpoint.ServiceEndpointResolver;
@@ -14,6 +14,12 @@ describe("service endpoint resolution", () => {
   it.effect("uses a service override before the global local endpoint", () =>
     Effect.gen(function* () {
       expect(yield* Endpoint.resolve("ses")).toBe(
+        "http://samva-emulate.test/ses",
+      );
+      expect(yield* Endpoint.resolve("sesv2")).toBe(
+        "http://samva-emulate.test/ses",
+      );
+      expect(yield* Endpoint.resolve("servicequotas")).toBe(
         "http://samva-emulate.test/ses",
       );
       expect(yield* Endpoint.resolve("sqs")).toBe("http://floci.test:4566");
