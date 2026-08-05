@@ -1,6 +1,5 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -8,7 +7,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 const ns = T.XmlNamespace("http://sdb.amazonaws.com/doc/2009-04-15/");
 const svc = T.AwsApiService({
   sdkId: "SimpleDB",
@@ -52,96 +50,147 @@ const rules = T.EndpointResolver((p, _) => {
 export class AttributeDoesNotExist
   extends /*@__PURE__*/ S.TaggedErrorClass<AttributeDoesNotExist>()(
     "AttributeDoesNotExist",
-    { message: S.optional(S.String), BoxUsage: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      BoxUsage: S.optional(S.String),
+    },
   ).pipe(C.withNotFoundError) {}
 export class DuplicateItemName
   extends /*@__PURE__*/ S.TaggedErrorClass<DuplicateItemName>()(
     "DuplicateItemName",
-    { message: S.optional(S.String), BoxUsage: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      BoxUsage: S.optional(S.String),
+    },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class InvalidNextToken
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidNextToken>()(
     "InvalidNextToken",
-    { message: S.optional(S.String), BoxUsage: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      BoxUsage: S.optional(S.String),
+    },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class InvalidNumberPredicates
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidNumberPredicates>()(
     "InvalidNumberPredicates",
-    { message: S.optional(S.String), BoxUsage: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      BoxUsage: S.optional(S.String),
+    },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class InvalidNumberValueTests
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidNumberValueTests>()(
     "InvalidNumberValueTests",
-    { message: S.optional(S.String), BoxUsage: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      BoxUsage: S.optional(S.String),
+    },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class InvalidParameterValue
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidParameterValue>()(
     "InvalidParameterValue",
-    { message: S.optional(S.String), BoxUsage: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      BoxUsage: S.optional(S.String),
+    },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class InvalidQueryExpression
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidQueryExpression>()(
     "InvalidQueryExpression",
-    { message: S.optional(S.String), BoxUsage: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      BoxUsage: S.optional(S.String),
+    },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class MissingParameter
   extends /*@__PURE__*/ S.TaggedErrorClass<MissingParameter>()(
     "MissingParameter",
-    { message: S.optional(S.String), BoxUsage: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      BoxUsage: S.optional(S.String),
+    },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class NoSuchDomain
   extends /*@__PURE__*/ S.TaggedErrorClass<NoSuchDomain>()(
     "NoSuchDomain",
-    { message: S.optional(S.String), BoxUsage: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      BoxUsage: S.optional(S.String),
+    },
     T.HttpError(400),
   ).pipe(C.withBadRequestError, C.withNotFoundError) {}
 export class NumberDomainAttributesExceeded
   extends /*@__PURE__*/ S.TaggedErrorClass<NumberDomainAttributesExceeded>()(
     "NumberDomainAttributesExceeded",
-    { message: S.optional(S.String), BoxUsage: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      BoxUsage: S.optional(S.String),
+    },
   ).pipe(C.withQuotaError) {}
 export class NumberDomainBytesExceeded
   extends /*@__PURE__*/ S.TaggedErrorClass<NumberDomainBytesExceeded>()(
     "NumberDomainBytesExceeded",
-    { message: S.optional(S.String), BoxUsage: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      BoxUsage: S.optional(S.String),
+    },
   ).pipe(C.withQuotaError) {}
 export class NumberDomainsExceeded
   extends /*@__PURE__*/ S.TaggedErrorClass<NumberDomainsExceeded>()(
     "NumberDomainsExceeded",
-    { message: S.optional(S.String), BoxUsage: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      BoxUsage: S.optional(S.String),
+    },
   ).pipe(C.withQuotaError) {}
 export class NumberItemAttributesExceeded
   extends /*@__PURE__*/ S.TaggedErrorClass<NumberItemAttributesExceeded>()(
     "NumberItemAttributesExceeded",
-    { message: S.optional(S.String), BoxUsage: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      BoxUsage: S.optional(S.String),
+    },
   ).pipe(C.withQuotaError) {}
 export class NumberSubmittedAttributesExceeded
   extends /*@__PURE__*/ S.TaggedErrorClass<NumberSubmittedAttributesExceeded>()(
     "NumberSubmittedAttributesExceeded",
-    { message: S.optional(S.String), BoxUsage: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      BoxUsage: S.optional(S.String),
+    },
   ).pipe(C.withQuotaError) {}
 export class NumberSubmittedItemsExceeded
   extends /*@__PURE__*/ S.TaggedErrorClass<NumberSubmittedItemsExceeded>()(
     "NumberSubmittedItemsExceeded",
-    { message: S.optional(S.String), BoxUsage: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      BoxUsage: S.optional(S.String),
+    },
   ).pipe(C.withQuotaError) {}
 export class RequestTimeout
   extends /*@__PURE__*/ S.TaggedErrorClass<RequestTimeout>()(
     "RequestTimeout",
-    { message: S.optional(S.String), BoxUsage: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      BoxUsage: S.optional(S.String),
+    },
     T.HttpError(408),
   ).pipe(C.withTimeoutError) {}
 export class TooManyRequestedAttributes
   extends /*@__PURE__*/ S.TaggedErrorClass<TooManyRequestedAttributes>()(
     "TooManyRequestedAttributes",
-    { message: S.optional(S.String), BoxUsage: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      BoxUsage: S.optional(S.String),
+    },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export type DomainName = string;
@@ -585,7 +634,7 @@ export const batchDeleteAttributes: API.OperationMethod<
   BatchDeleteAttributesRequest,
   BatchDeleteAttributesResponse,
   BatchDeleteAttributesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchDeleteAttributesRequest,
   output: BatchDeleteAttributesResponse,
@@ -613,7 +662,7 @@ export const batchPutAttributes: API.OperationMethod<
   BatchPutAttributesRequest,
   BatchPutAttributesResponse,
   BatchPutAttributesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchPutAttributesRequest,
   output: BatchPutAttributesResponse,
@@ -645,7 +694,7 @@ export const createDomain: API.OperationMethod<
   CreateDomainRequest,
   CreateDomainResponse,
   CreateDomainError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateDomainRequest,
   output: CreateDomainResponse,
@@ -668,7 +717,7 @@ export const deleteAttributes: API.OperationMethod<
   DeleteAttributesRequest,
   DeleteAttributesResponse,
   DeleteAttributesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteAttributesRequest,
   output: DeleteAttributesResponse,
@@ -691,7 +740,7 @@ export const deleteDomain: API.OperationMethod<
   DeleteDomainRequest,
   DeleteDomainResponse,
   DeleteDomainError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteDomainRequest,
   output: DeleteDomainResponse,
@@ -712,7 +761,7 @@ export const domainMetadata: API.OperationMethod<
   DomainMetadataRequest,
   DomainMetadataResponse,
   DomainMetadataError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DomainMetadataRequest,
   output: DomainMetadataResponse,
@@ -734,7 +783,7 @@ export const getAttributes: API.OperationMethod<
   GetAttributesRequest,
   GetAttributesResponse,
   GetAttributesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetAttributesRequest,
   output: GetAttributesResponse,
@@ -751,27 +800,13 @@ export type ListDomainsError =
 /**
  * Lists all SimpleDB domains in the account/region. Paginated.
  */
-export const listDomains: API.OperationMethod<
+export const listDomains: API.PaginatedOperationMethod<
   ListDomainsRequest,
   ListDomainsResponse,
   ListDomainsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDomainsRequest,
-  ) => stream.Stream<
-    ListDomainsResponse,
-    ListDomainsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDomainsRequest,
-  ) => stream.Stream<
-    string,
-    ListDomainsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  string
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListDomainsRequest,
   output: ListDomainsResponse,
   errors: [InvalidNextToken, InvalidParameterValue],
@@ -784,27 +819,7 @@ export const listDomains: API.OperationMethod<
     items: "DomainNames",
     pageSize: "MaxNumberOfDomains",
   } as const,
-})) as any as API.OperationMethod<
-  ListDomainsRequest,
-  ListDomainsResponse,
-  ListDomainsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDomainsRequest,
-  ) => stream.Stream<
-    ListDomainsResponse,
-    ListDomainsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDomainsRequest,
-  ) => stream.Stream<
-    string,
-    ListDomainsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type PutAttributesError =
   | AttributeDoesNotExist
@@ -822,7 +837,7 @@ export const putAttributes: API.OperationMethod<
   PutAttributesRequest,
   PutAttributesResponse,
   PutAttributesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutAttributesRequest,
   output: PutAttributesResponse,
@@ -854,27 +869,13 @@ export type SelectError =
 /**
  * Runs a SimpleDB select expression (`select output_list from domain [where ...]`). Paginated via `NextToken`.
  */
-export const select: API.OperationMethod<
+export const select: API.PaginatedOperationMethod<
   SelectRequest,
   SelectResponse,
   SelectError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: SelectRequest,
-  ) => stream.Stream<
-    SelectResponse,
-    SelectError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: SelectRequest,
-  ) => stream.Stream<
-    Item,
-    SelectError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Item
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: SelectRequest,
   output: SelectResponse,
   errors: [
@@ -896,24 +897,4 @@ export const select: API.OperationMethod<
     outputToken: "NextToken",
     items: "Items",
   } as const,
-})) as any as API.OperationMethod<
-  SelectRequest,
-  SelectResponse,
-  SelectError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: SelectRequest,
-  ) => stream.Stream<
-    SelectResponse,
-    SelectError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: SelectRequest,
-  ) => stream.Stream<
-    Item,
-    SelectError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;

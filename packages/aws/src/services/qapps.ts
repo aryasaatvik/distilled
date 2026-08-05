@@ -1,6 +1,5 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -8,7 +7,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 const svc = T.AwsApiService({
   sdkId: "QApps",
   serviceShapeName: "QAppsService",
@@ -88,26 +86,34 @@ const rules = T.EndpointResolver((p, _) => {
 export class AccessDeniedException
   extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
     "AccessDeniedException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(403),
   ).pipe(C.withAuthError) {}
 export class ConflictException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
     "ConflictException",
-    { message: S.String, resourceId: S.String, resourceType: S.String },
+    {
+      message: S.String.pipe(T.ErrorMessage()),
+      resourceId: S.String,
+      resourceType: S.String,
+    },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class ContentTooLargeException
   extends /*@__PURE__*/ S.TaggedErrorClass<ContentTooLargeException>()(
     "ContentTooLargeException",
-    { message: S.String, resourceId: S.String, resourceType: S.String },
+    {
+      message: S.String.pipe(T.ErrorMessage()),
+      resourceId: S.String,
+      resourceType: S.String,
+    },
     T.HttpError(413),
   ).pipe(C.withBadRequestError) {}
 export class InternalServerException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
     "InternalServerException",
     {
-      message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       retryAfterSeconds: S.optional(S.Number).pipe(T.HttpHeader("Retry-After")),
     },
     T.all(T.HttpError(500), T.Retryable()),
@@ -115,14 +121,18 @@ export class InternalServerException
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { message: S.String, resourceId: S.String, resourceType: S.String },
+    {
+      message: S.String.pipe(T.ErrorMessage()),
+      resourceId: S.String,
+      resourceType: S.String,
+    },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class ServiceQuotaExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
     "ServiceQuotaExceededException",
     {
-      message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       resourceId: S.String,
       resourceType: S.String,
       serviceCode: S.String,
@@ -134,7 +144,7 @@ export class ThrottlingException
   extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
     "ThrottlingException",
     {
-      message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       serviceCode: S.String,
       quotaCode: S.String,
       retryAfterSeconds: S.optional(S.Number).pipe(T.HttpHeader("Retry-After")),
@@ -144,13 +154,13 @@ export class ThrottlingException
 export class UnauthorizedException
   extends /*@__PURE__*/ S.TaggedErrorClass<UnauthorizedException>()(
     "UnauthorizedException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(401),
   ).pipe(C.withAuthError) {}
 export class ValidationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
     "ValidationException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export type InstanceId = string;
@@ -2245,7 +2255,7 @@ export const associateLibraryItemReview: API.OperationMethod<
   AssociateLibraryItemReviewInput,
   AssociateLibraryItemReviewResponse,
   AssociateLibraryItemReviewError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AssociateLibraryItemReviewInput,
   output: AssociateLibraryItemReviewResponse,
@@ -2280,7 +2290,7 @@ export const associateQAppWithUser: API.OperationMethod<
   AssociateQAppWithUserInput,
   AssociateQAppWithUserResponse,
   AssociateQAppWithUserError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AssociateQAppWithUserInput,
   output: AssociateQAppWithUserResponse,
@@ -2314,7 +2324,7 @@ export const batchCreateCategory: API.OperationMethod<
   BatchCreateCategoryInput,
   BatchCreateCategoryResponse,
   BatchCreateCategoryError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchCreateCategoryInput,
   output: BatchCreateCategoryResponse,
@@ -2348,7 +2358,7 @@ export const batchDeleteCategory: API.OperationMethod<
   BatchDeleteCategoryInput,
   BatchDeleteCategoryResponse,
   BatchDeleteCategoryError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchDeleteCategoryInput,
   output: BatchDeleteCategoryResponse,
@@ -2382,7 +2392,7 @@ export const batchUpdateCategory: API.OperationMethod<
   BatchUpdateCategoryInput,
   BatchUpdateCategoryResponse,
   BatchUpdateCategoryError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchUpdateCategoryInput,
   output: BatchUpdateCategoryResponse,
@@ -2416,7 +2426,7 @@ export const createLibraryItem: API.OperationMethod<
   CreateLibraryItemInput,
   CreateLibraryItemOutput,
   CreateLibraryItemError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateLibraryItemInput,
   output: CreateLibraryItemOutput,
@@ -2450,7 +2460,7 @@ export const createPresignedUrl: API.OperationMethod<
   CreatePresignedUrlInput,
   CreatePresignedUrlOutput,
   CreatePresignedUrlError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreatePresignedUrlInput,
   output: CreatePresignedUrlOutput,
@@ -2483,7 +2493,7 @@ export const createQApp: API.OperationMethod<
   CreateQAppInput,
   CreateQAppOutput,
   CreateQAppError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateQAppInput,
   output: CreateQAppOutput,
@@ -2518,7 +2528,7 @@ export const deleteLibraryItem: API.OperationMethod<
   DeleteLibraryItemInput,
   DeleteLibraryItemResponse,
   DeleteLibraryItemError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteLibraryItemInput,
   output: DeleteLibraryItemResponse,
@@ -2551,7 +2561,7 @@ export const deleteQApp: API.OperationMethod<
   DeleteQAppInput,
   DeleteQAppResponse,
   DeleteQAppError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteQAppInput,
   output: DeleteQAppResponse,
@@ -2583,7 +2593,7 @@ export const describeQAppPermissions: API.OperationMethod<
   DescribeQAppPermissionsInput,
   DescribeQAppPermissionsOutput,
   DescribeQAppPermissionsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeQAppPermissionsInput,
   output: DescribeQAppPermissionsOutput,
@@ -2617,7 +2627,7 @@ export const disassociateLibraryItemReview: API.OperationMethod<
   DisassociateLibraryItemReviewInput,
   DisassociateLibraryItemReviewResponse,
   DisassociateLibraryItemReviewError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DisassociateLibraryItemReviewInput,
   output: DisassociateLibraryItemReviewResponse,
@@ -2651,7 +2661,7 @@ export const disassociateQAppFromUser: API.OperationMethod<
   DisassociateQAppFromUserInput,
   DisassociateQAppFromUserResponse,
   DisassociateQAppFromUserError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DisassociateQAppFromUserInput,
   output: DisassociateQAppFromUserResponse,
@@ -2685,7 +2695,7 @@ export const exportQAppSessionData: API.OperationMethod<
   ExportQAppSessionDataInput,
   ExportQAppSessionDataOutput,
   ExportQAppSessionDataError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ExportQAppSessionDataInput,
   output: ExportQAppSessionDataOutput,
@@ -2719,7 +2729,7 @@ export const getLibraryItem: API.OperationMethod<
   GetLibraryItemInput,
   GetLibraryItemOutput,
   GetLibraryItemError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetLibraryItemInput,
   output: GetLibraryItemOutput,
@@ -2751,7 +2761,7 @@ export const getQApp: API.OperationMethod<
   GetQAppInput,
   GetQAppOutput,
   GetQAppError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetQAppInput,
   output: GetQAppOutput,
@@ -2784,7 +2794,7 @@ export const getQAppSession: API.OperationMethod<
   GetQAppSessionInput,
   GetQAppSessionOutput,
   GetQAppSessionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetQAppSessionInput,
   output: GetQAppSessionOutput,
@@ -2818,7 +2828,7 @@ export const getQAppSessionMetadata: API.OperationMethod<
   GetQAppSessionMetadataInput,
   GetQAppSessionMetadataOutput,
   GetQAppSessionMetadataError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetQAppSessionMetadataInput,
   output: GetQAppSessionMetadataOutput,
@@ -2853,7 +2863,7 @@ export const importDocument: API.OperationMethod<
   ImportDocumentInput,
   ImportDocumentOutput,
   ImportDocumentError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ImportDocumentInput,
   output: ImportDocumentOutput,
@@ -2887,7 +2897,7 @@ export const listCategories: API.OperationMethod<
   ListCategoriesInput,
   ListCategoriesOutput,
   ListCategoriesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListCategoriesInput,
   output: ListCategoriesOutput,
@@ -2915,27 +2925,13 @@ export type ListLibraryItemsError =
 /**
  * Lists the library items for Amazon Q Apps that are published and available for users in your Amazon Web Services account.
  */
-export const listLibraryItems: API.OperationMethod<
+export const listLibraryItems: API.PaginatedOperationMethod<
   ListLibraryItemsInput,
   ListLibraryItemsOutput,
   ListLibraryItemsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListLibraryItemsInput,
-  ) => stream.Stream<
-    ListLibraryItemsOutput,
-    ListLibraryItemsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListLibraryItemsInput,
-  ) => stream.Stream<
-    LibraryItemMember,
-    ListLibraryItemsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  LibraryItemMember
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListLibraryItemsInput,
   output: ListLibraryItemsOutput,
   errors: [
@@ -2955,27 +2951,7 @@ export const listLibraryItems: API.OperationMethod<
     items: "libraryItems",
     pageSize: "limit",
   } as const,
-})) as any as API.OperationMethod<
-  ListLibraryItemsInput,
-  ListLibraryItemsOutput,
-  ListLibraryItemsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListLibraryItemsInput,
-  ) => stream.Stream<
-    ListLibraryItemsOutput,
-    ListLibraryItemsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListLibraryItemsInput,
-  ) => stream.Stream<
-    LibraryItemMember,
-    ListLibraryItemsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListQAppsError =
   | AccessDeniedException
@@ -2987,27 +2963,13 @@ export type ListQAppsError =
 /**
  * Lists the Amazon Q Apps owned by or associated with the user either because they created it or because they used it from the library in the past. The user identity is extracted from the credentials used to invoke this operation..
  */
-export const listQApps: API.OperationMethod<
+export const listQApps: API.PaginatedOperationMethod<
   ListQAppsInput,
   ListQAppsOutput,
   ListQAppsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListQAppsInput,
-  ) => stream.Stream<
-    ListQAppsOutput,
-    ListQAppsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListQAppsInput,
-  ) => stream.Stream<
-    UserAppItem,
-    ListQAppsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  UserAppItem
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListQAppsInput,
   output: ListQAppsOutput,
   errors: [
@@ -3026,27 +2988,7 @@ export const listQApps: API.OperationMethod<
     items: "apps",
     pageSize: "limit",
   } as const,
-})) as any as API.OperationMethod<
-  ListQAppsInput,
-  ListQAppsOutput,
-  ListQAppsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListQAppsInput,
-  ) => stream.Stream<
-    ListQAppsOutput,
-    ListQAppsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListQAppsInput,
-  ) => stream.Stream<
-    UserAppItem,
-    ListQAppsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListQAppSessionDataError =
   | AccessDeniedException
@@ -3064,7 +3006,7 @@ export const listQAppSessionData: API.OperationMethod<
   ListQAppSessionDataInput,
   ListQAppSessionDataOutput,
   ListQAppSessionDataError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListQAppSessionDataInput,
   output: ListQAppSessionDataOutput,
@@ -3096,7 +3038,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceRequest,
   ListTagsForResourceResponse,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -3126,7 +3068,7 @@ export const predictQApp: API.OperationMethod<
   PredictQAppInput,
   PredictQAppOutput,
   PredictQAppError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PredictQAppInput,
   output: PredictQAppOutput,
@@ -3160,7 +3102,7 @@ export const startQAppSession: API.OperationMethod<
   StartQAppSessionInput,
   StartQAppSessionOutput,
   StartQAppSessionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartQAppSessionInput,
   output: StartQAppSessionOutput,
@@ -3194,7 +3136,7 @@ export const stopQAppSession: API.OperationMethod<
   StopQAppSessionInput,
   StopQAppSessionResponse,
   StopQAppSessionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StopQAppSessionInput,
   output: StopQAppSessionResponse,
@@ -3227,7 +3169,7 @@ export const tagResource: API.OperationMethod<
   TagResourceRequest,
   TagResourceResponse,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -3258,7 +3200,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceRequest,
   UntagResourceResponse,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -3290,7 +3232,7 @@ export const updateLibraryItem: API.OperationMethod<
   UpdateLibraryItemInput,
   UpdateLibraryItemOutput,
   UpdateLibraryItemError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateLibraryItemInput,
   output: UpdateLibraryItemOutput,
@@ -3324,7 +3266,7 @@ export const updateLibraryItemMetadata: API.OperationMethod<
   UpdateLibraryItemMetadataInput,
   UpdateLibraryItemMetadataResponse,
   UpdateLibraryItemMetadataError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateLibraryItemMetadataInput,
   output: UpdateLibraryItemMetadataResponse,
@@ -3358,7 +3300,7 @@ export const updateQApp: API.OperationMethod<
   UpdateQAppInput,
   UpdateQAppOutput,
   UpdateQAppError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateQAppInput,
   output: UpdateQAppOutput,
@@ -3391,7 +3333,7 @@ export const updateQAppPermissions: API.OperationMethod<
   UpdateQAppPermissionsInput,
   UpdateQAppPermissionsOutput,
   UpdateQAppPermissionsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateQAppPermissionsInput,
   output: UpdateQAppPermissionsOutput,
@@ -3424,7 +3366,7 @@ export const updateQAppSession: API.OperationMethod<
   UpdateQAppSessionInput,
   UpdateQAppSessionOutput,
   UpdateQAppSessionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateQAppSessionInput,
   output: UpdateQAppSessionOutput,
@@ -3458,7 +3400,7 @@ export const updateQAppSessionMetadata: API.OperationMethod<
   UpdateQAppSessionMetadataInput,
   UpdateQAppSessionMetadataOutput,
   UpdateQAppSessionMetadataError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateQAppSessionMetadataInput,
   output: UpdateQAppSessionMetadataOutput,

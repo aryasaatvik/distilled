@@ -1,6 +1,5 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -8,7 +7,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 const svc = T.AwsApiService({ sdkId: "schemas", serviceShapeName: "schemas" });
 const auth = T.AwsAuthSigv4({ name: "schemas" });
 const ver = T.ServiceVersion("2019-12-02");
@@ -85,61 +83,91 @@ const rules = T.EndpointResolver((p, _) => {
 export class BadRequestException
   extends /*@__PURE__*/ S.TaggedErrorClass<BadRequestException>()(
     "BadRequestException",
-    { Code: S.optional(S.String), Message: S.optional(S.String) },
+    {
+      Code: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class ConflictException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
     "ConflictException",
-    { Code: S.optional(S.String), Message: S.optional(S.String) },
+    {
+      Code: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class ForbiddenException
   extends /*@__PURE__*/ S.TaggedErrorClass<ForbiddenException>()(
     "ForbiddenException",
-    { Code: S.optional(S.String), Message: S.optional(S.String) },
+    {
+      Code: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(403),
   ).pipe(C.withAuthError) {}
 export class GoneException
   extends /*@__PURE__*/ S.TaggedErrorClass<GoneException>()(
     "GoneException",
-    { Code: S.optional(S.String), Message: S.optional(S.String) },
+    {
+      Code: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(410),
   ).pipe(C.withBadRequestError) {}
 export class InternalServerErrorException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerErrorException>()(
     "InternalServerErrorException",
-    { Code: S.optional(S.String), Message: S.optional(S.String) },
+    {
+      Code: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(500),
   ).pipe(C.withServerError) {}
 export class NotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<NotFoundException>()(
     "NotFoundException",
-    { Code: S.optional(S.String), Message: S.optional(S.String) },
+    {
+      Code: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class PreconditionFailedException
   extends /*@__PURE__*/ S.TaggedErrorClass<PreconditionFailedException>()(
     "PreconditionFailedException",
-    { Code: S.optional(S.String), Message: S.optional(S.String) },
+    {
+      Code: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(412),
   ) {}
 export class ServiceUnavailableException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceUnavailableException>()(
     "ServiceUnavailableException",
-    { Code: S.optional(S.String), Message: S.optional(S.String) },
+    {
+      Code: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(503),
   ).pipe(C.withServerError) {}
 export class TooManyRequestsException
   extends /*@__PURE__*/ S.TaggedErrorClass<TooManyRequestsException>()(
     "TooManyRequestsException",
-    { Code: S.optional(S.String), Message: S.optional(S.String) },
+    {
+      Code: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(429),
   ).pipe(C.withThrottlingError) {}
 export class UnauthorizedException
   extends /*@__PURE__*/ S.TaggedErrorClass<UnauthorizedException>()(
     "UnauthorizedException",
-    { Code: S.optional(S.String), Message: S.optional(S.String) },
+    {
+      Code: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(401),
   ).pipe(C.withAuthError) {}
 export type __stringMin0Max256 = string;
@@ -1465,7 +1493,7 @@ export const createDiscoverer: API.OperationMethod<
   CreateDiscovererRequest,
   CreateDiscovererResponse,
   CreateDiscovererError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateDiscovererRequest,
   output: CreateDiscovererResponse,
@@ -1497,7 +1525,7 @@ export const createRegistry: API.OperationMethod<
   CreateRegistryRequest,
   CreateRegistryResponse,
   CreateRegistryError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateRegistryRequest,
   output: CreateRegistryResponse,
@@ -1529,7 +1557,7 @@ export const createSchema: API.OperationMethod<
   CreateSchemaRequest,
   CreateSchemaResponse,
   CreateSchemaError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateSchemaRequest,
   output: CreateSchemaResponse,
@@ -1559,7 +1587,7 @@ export const deleteDiscoverer: API.OperationMethod<
   DeleteDiscovererRequest,
   DeleteDiscovererResponse,
   DeleteDiscovererError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteDiscovererRequest,
   output: DeleteDiscovererResponse,
@@ -1591,7 +1619,7 @@ export const deleteRegistry: API.OperationMethod<
   DeleteRegistryRequest,
   DeleteRegistryResponse,
   DeleteRegistryError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteRegistryRequest,
   output: DeleteRegistryResponse,
@@ -1623,7 +1651,7 @@ export const deleteResourcePolicy: API.OperationMethod<
   DeleteResourcePolicyRequest,
   DeleteResourcePolicyResponse,
   DeleteResourcePolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteResourcePolicyRequest,
   output: DeleteResourcePolicyResponse,
@@ -1655,7 +1683,7 @@ export const deleteSchema: API.OperationMethod<
   DeleteSchemaRequest,
   DeleteSchemaResponse,
   DeleteSchemaError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteSchemaRequest,
   output: DeleteSchemaResponse,
@@ -1687,7 +1715,7 @@ export const deleteSchemaVersion: API.OperationMethod<
   DeleteSchemaVersionRequest,
   DeleteSchemaVersionResponse,
   DeleteSchemaVersionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteSchemaVersionRequest,
   output: DeleteSchemaVersionResponse,
@@ -1719,7 +1747,7 @@ export const describeCodeBinding: API.OperationMethod<
   DescribeCodeBindingRequest,
   DescribeCodeBindingResponse,
   DescribeCodeBindingError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeCodeBindingRequest,
   output: DescribeCodeBindingResponse,
@@ -1751,7 +1779,7 @@ export const describeDiscoverer: API.OperationMethod<
   DescribeDiscovererRequest,
   DescribeDiscovererResponse,
   DescribeDiscovererError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeDiscovererRequest,
   output: DescribeDiscovererResponse,
@@ -1783,7 +1811,7 @@ export const describeRegistry: API.OperationMethod<
   DescribeRegistryRequest,
   DescribeRegistryResponse,
   DescribeRegistryError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeRegistryRequest,
   output: DescribeRegistryResponse,
@@ -1815,7 +1843,7 @@ export const describeSchema: API.OperationMethod<
   DescribeSchemaRequest,
   DescribeSchemaResponse,
   DescribeSchemaError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeSchemaRequest,
   output: DescribeSchemaResponse,
@@ -1848,7 +1876,7 @@ export const exportSchema: API.OperationMethod<
   ExportSchemaRequest,
   ExportSchemaResponse,
   ExportSchemaError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ExportSchemaRequest,
   output: ExportSchemaResponse,
@@ -1881,7 +1909,7 @@ export const getCodeBindingSource: API.OperationMethod<
   GetCodeBindingSourceRequest,
   GetCodeBindingSourceResponse,
   GetCodeBindingSourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetCodeBindingSourceRequest,
   output: GetCodeBindingSourceResponse,
@@ -1912,7 +1940,7 @@ export const getDiscoveredSchema: API.OperationMethod<
   GetDiscoveredSchemaRequest,
   GetDiscoveredSchemaResponse,
   GetDiscoveredSchemaError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetDiscoveredSchemaRequest,
   output: GetDiscoveredSchemaResponse,
@@ -1943,7 +1971,7 @@ export const getResourcePolicy: API.OperationMethod<
   GetResourcePolicyRequest,
   GetResourcePolicyResponse,
   GetResourcePolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetResourcePolicyRequest,
   output: GetResourcePolicyResponse,
@@ -1970,27 +1998,13 @@ export type ListDiscoverersError =
 /**
  * List the discoverers.
  */
-export const listDiscoverers: API.OperationMethod<
+export const listDiscoverers: API.PaginatedOperationMethod<
   ListDiscoverersRequest,
   ListDiscoverersResponse,
   ListDiscoverersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDiscoverersRequest,
-  ) => stream.Stream<
-    ListDiscoverersResponse,
-    ListDiscoverersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDiscoverersRequest,
-  ) => stream.Stream<
-    DiscovererSummary,
-    ListDiscoverersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  DiscovererSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListDiscoverersRequest,
   output: ListDiscoverersResponse,
   errors: [
@@ -2009,27 +2023,7 @@ export const listDiscoverers: API.OperationMethod<
     items: "Discoverers",
     pageSize: "Limit",
   } as const,
-})) as any as API.OperationMethod<
-  ListDiscoverersRequest,
-  ListDiscoverersResponse,
-  ListDiscoverersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDiscoverersRequest,
-  ) => stream.Stream<
-    ListDiscoverersResponse,
-    ListDiscoverersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDiscoverersRequest,
-  ) => stream.Stream<
-    DiscovererSummary,
-    ListDiscoverersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListRegistriesError =
   | BadRequestException
@@ -2041,27 +2035,13 @@ export type ListRegistriesError =
 /**
  * List the registries.
  */
-export const listRegistries: API.OperationMethod<
+export const listRegistries: API.PaginatedOperationMethod<
   ListRegistriesRequest,
   ListRegistriesResponse,
   ListRegistriesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListRegistriesRequest,
-  ) => stream.Stream<
-    ListRegistriesResponse,
-    ListRegistriesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListRegistriesRequest,
-  ) => stream.Stream<
-    RegistrySummary,
-    ListRegistriesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  RegistrySummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListRegistriesRequest,
   output: ListRegistriesResponse,
   errors: [
@@ -2080,27 +2060,7 @@ export const listRegistries: API.OperationMethod<
     items: "Registries",
     pageSize: "Limit",
   } as const,
-})) as any as API.OperationMethod<
-  ListRegistriesRequest,
-  ListRegistriesResponse,
-  ListRegistriesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListRegistriesRequest,
-  ) => stream.Stream<
-    ListRegistriesResponse,
-    ListRegistriesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListRegistriesRequest,
-  ) => stream.Stream<
-    RegistrySummary,
-    ListRegistriesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListSchemasError =
   | BadRequestException
@@ -2112,27 +2072,13 @@ export type ListSchemasError =
 /**
  * List the schemas.
  */
-export const listSchemas: API.OperationMethod<
+export const listSchemas: API.PaginatedOperationMethod<
   ListSchemasRequest,
   ListSchemasResponse,
   ListSchemasError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSchemasRequest,
-  ) => stream.Stream<
-    ListSchemasResponse,
-    ListSchemasError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSchemasRequest,
-  ) => stream.Stream<
-    SchemaSummary,
-    ListSchemasError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  SchemaSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListSchemasRequest,
   output: ListSchemasResponse,
   errors: [
@@ -2151,27 +2097,7 @@ export const listSchemas: API.OperationMethod<
     items: "Schemas",
     pageSize: "Limit",
   } as const,
-})) as any as API.OperationMethod<
-  ListSchemasRequest,
-  ListSchemasResponse,
-  ListSchemasError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSchemasRequest,
-  ) => stream.Stream<
-    ListSchemasResponse,
-    ListSchemasError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSchemasRequest,
-  ) => stream.Stream<
-    SchemaSummary,
-    ListSchemasError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListSchemaVersionsError =
   | BadRequestException
@@ -2184,27 +2110,13 @@ export type ListSchemaVersionsError =
 /**
  * Provides a list of the schema versions and related information.
  */
-export const listSchemaVersions: API.OperationMethod<
+export const listSchemaVersions: API.PaginatedOperationMethod<
   ListSchemaVersionsRequest,
   ListSchemaVersionsResponse,
   ListSchemaVersionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSchemaVersionsRequest,
-  ) => stream.Stream<
-    ListSchemaVersionsResponse,
-    ListSchemaVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSchemaVersionsRequest,
-  ) => stream.Stream<
-    SchemaVersionSummary,
-    ListSchemaVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  SchemaVersionSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListSchemaVersionsRequest,
   output: ListSchemaVersionsResponse,
   errors: [
@@ -2224,27 +2136,7 @@ export const listSchemaVersions: API.OperationMethod<
     items: "SchemaVersions",
     pageSize: "Limit",
   } as const,
-})) as any as API.OperationMethod<
-  ListSchemaVersionsRequest,
-  ListSchemaVersionsResponse,
-  ListSchemaVersionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSchemaVersionsRequest,
-  ) => stream.Stream<
-    ListSchemaVersionsResponse,
-    ListSchemaVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSchemaVersionsRequest,
-  ) => stream.Stream<
-    SchemaVersionSummary,
-    ListSchemaVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsForResourceError =
   | BadRequestException
@@ -2259,7 +2151,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceRequest,
   ListTagsForResourceResponse,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -2291,7 +2183,7 @@ export const putCodeBinding: API.OperationMethod<
   PutCodeBindingRequest,
   PutCodeBindingResponse,
   PutCodeBindingError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutCodeBindingRequest,
   output: PutCodeBindingResponse,
@@ -2326,7 +2218,7 @@ export const putResourcePolicy: API.OperationMethod<
   PutResourcePolicyRequest,
   PutResourcePolicyResponse,
   PutResourcePolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutResourcePolicyRequest,
   output: PutResourcePolicyResponse,
@@ -2354,27 +2246,13 @@ export type SearchSchemasError =
 /**
  * Search the schemas
  */
-export const searchSchemas: API.OperationMethod<
+export const searchSchemas: API.PaginatedOperationMethod<
   SearchSchemasRequest,
   SearchSchemasResponse,
   SearchSchemasError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: SearchSchemasRequest,
-  ) => stream.Stream<
-    SearchSchemasResponse,
-    SearchSchemasError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: SearchSchemasRequest,
-  ) => stream.Stream<
-    SearchSchemaSummary,
-    SearchSchemasError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  SearchSchemaSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: SearchSchemasRequest,
   output: SearchSchemasResponse,
   errors: [
@@ -2393,27 +2271,7 @@ export const searchSchemas: API.OperationMethod<
     items: "Schemas",
     pageSize: "Limit",
   } as const,
-})) as any as API.OperationMethod<
-  SearchSchemasRequest,
-  SearchSchemasResponse,
-  SearchSchemasError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: SearchSchemasRequest,
-  ) => stream.Stream<
-    SearchSchemasResponse,
-    SearchSchemasError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: SearchSchemasRequest,
-  ) => stream.Stream<
-    SearchSchemaSummary,
-    SearchSchemasError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type StartDiscovererError =
   | BadRequestException
@@ -2430,7 +2288,7 @@ export const startDiscoverer: API.OperationMethod<
   StartDiscovererRequest,
   StartDiscovererResponse,
   StartDiscovererError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartDiscovererRequest,
   output: StartDiscovererResponse,
@@ -2462,7 +2320,7 @@ export const stopDiscoverer: API.OperationMethod<
   StopDiscovererRequest,
   StopDiscovererResponse,
   StopDiscovererError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StopDiscovererRequest,
   output: StopDiscovererResponse,
@@ -2492,7 +2350,7 @@ export const tagResource: API.OperationMethod<
   TagResourceRequest,
   TagResourceResponse,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -2520,7 +2378,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceRequest,
   UntagResourceResponse,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -2550,7 +2408,7 @@ export const updateDiscoverer: API.OperationMethod<
   UpdateDiscovererRequest,
   UpdateDiscovererResponse,
   UpdateDiscovererError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateDiscovererRequest,
   output: UpdateDiscovererResponse,
@@ -2582,7 +2440,7 @@ export const updateRegistry: API.OperationMethod<
   UpdateRegistryRequest,
   UpdateRegistryResponse,
   UpdateRegistryError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateRegistryRequest,
   output: UpdateRegistryResponse,
@@ -2615,7 +2473,7 @@ export const updateSchema: API.OperationMethod<
   UpdateSchemaRequest,
   UpdateSchemaResponse,
   UpdateSchemaError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateSchemaRequest,
   output: UpdateSchemaResponse,

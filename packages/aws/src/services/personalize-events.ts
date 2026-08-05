@@ -8,7 +8,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 import { SensitiveString } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "Personalize Events",
@@ -89,19 +88,19 @@ const rules = T.EndpointResolver((p, _) => {
 export class InvalidInputException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidInputException>()(
     "InvalidInputException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class ResourceInUseException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceInUseException>()(
     "ResourceInUseException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export type StringType = string;
@@ -363,7 +362,7 @@ export const putActionInteractions: API.OperationMethod<
   PutActionInteractionsRequest,
   PutActionInteractionsResponse,
   PutActionInteractionsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutActionInteractionsRequest,
   output: PutActionInteractionsResponse,
@@ -390,7 +389,7 @@ export const putActions: API.OperationMethod<
   PutActionsRequest,
   PutActionsResponse,
   PutActionsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutActionsRequest,
   output: PutActionsResponse,
@@ -413,7 +412,7 @@ export const putEvents: API.OperationMethod<
   PutEventsRequest,
   PutEventsResponse,
   PutEventsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutEventsRequest,
   output: PutEventsResponse,
@@ -436,7 +435,7 @@ export const putItems: API.OperationMethod<
   PutItemsRequest,
   PutItemsResponse,
   PutItemsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutItemsRequest,
   output: PutItemsResponse,
@@ -463,7 +462,7 @@ export const putUsers: API.OperationMethod<
   PutUsersRequest,
   PutUsersResponse,
   PutUsersError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutUsersRequest,
   output: PutUsersResponse,

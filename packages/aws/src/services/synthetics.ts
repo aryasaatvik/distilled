@@ -1,6 +1,5 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -8,7 +7,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 const svc = T.AwsApiService({
   sdkId: "synthetics",
   serviceShapeName: "Synthetics",
@@ -88,67 +86,67 @@ const rules = T.EndpointResolver((p, _) => {
 export class AccessDeniedException
   extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
     "AccessDeniedException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(403),
   ).pipe(C.withAuthError) {}
 export class BadRequestException
   extends /*@__PURE__*/ S.TaggedErrorClass<BadRequestException>()(
     "BadRequestException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class ConflictException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
     "ConflictException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class InternalFailureException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalFailureException>()(
     "InternalFailureException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(500),
   ).pipe(C.withServerError) {}
 export class InternalServerException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
     "InternalServerException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(500),
   ).pipe(C.withServerError) {}
 export class NotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<NotFoundException>()(
     "NotFoundException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class RequestEntityTooLargeException
   extends /*@__PURE__*/ S.TaggedErrorClass<RequestEntityTooLargeException>()(
     "RequestEntityTooLargeException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(413),
   ).pipe(C.withBadRequestError) {}
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class ServiceQuotaExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
     "ServiceQuotaExceededException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(402),
   ).pipe(C.withQuotaError) {}
 export class TooManyRequestsException
   extends /*@__PURE__*/ S.TaggedErrorClass<TooManyRequestsException>()(
     "TooManyRequestsException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(429),
   ).pipe(C.withThrottlingError) {}
 export class ValidationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
     "ValidationException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export type GroupIdentifier = string;
@@ -1569,7 +1567,7 @@ export const associateResource: API.OperationMethod<
   AssociateResourceRequest,
   AssociateResourceResponse,
   AssociateResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AssociateResourceRequest,
   output: AssociateResourceResponse,
@@ -1613,7 +1611,7 @@ export const createCanary: API.OperationMethod<
   CreateCanaryRequest,
   CreateCanaryResponse,
   CreateCanaryError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateCanaryRequest,
   output: CreateCanaryResponse,
@@ -1655,7 +1653,7 @@ export const createGroup: API.OperationMethod<
   CreateGroupRequest,
   CreateGroupResponse,
   CreateGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateGroupRequest,
   output: CreateGroupResponse,
@@ -1708,7 +1706,7 @@ export const deleteCanary: API.OperationMethod<
   DeleteCanaryRequest,
   DeleteCanaryResponse,
   DeleteCanaryError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteCanaryRequest,
   output: DeleteCanaryResponse,
@@ -1740,7 +1738,7 @@ export const deleteGroup: API.OperationMethod<
   DeleteGroupRequest,
   DeleteGroupResponse,
   DeleteGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteGroupRequest,
   output: DeleteGroupResponse,
@@ -1773,27 +1771,13 @@ export type DescribeCanariesError =
  * see
  * Limiting a user to viewing specific canaries.
  */
-export const describeCanaries: API.OperationMethod<
+export const describeCanaries: API.PaginatedOperationMethod<
   DescribeCanariesRequest,
   DescribeCanariesResponse,
   DescribeCanariesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeCanariesRequest,
-  ) => stream.Stream<
-    DescribeCanariesResponse,
-    DescribeCanariesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeCanariesRequest,
-  ) => stream.Stream<
-    unknown,
-    DescribeCanariesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeCanariesRequest,
   output: DescribeCanariesResponse,
   errors: [InternalServerException, ValidationException],
@@ -1805,27 +1789,7 @@ export const describeCanaries: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeCanariesRequest,
-  DescribeCanariesResponse,
-  DescribeCanariesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeCanariesRequest,
-  ) => stream.Stream<
-    DescribeCanariesResponse,
-    DescribeCanariesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeCanariesRequest,
-  ) => stream.Stream<
-    unknown,
-    DescribeCanariesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeCanariesLastRunError =
   | InternalServerException
@@ -1844,27 +1808,13 @@ export type DescribeCanariesLastRunError =
  * see
  * Limiting a user to viewing specific canaries.
  */
-export const describeCanariesLastRun: API.OperationMethod<
+export const describeCanariesLastRun: API.PaginatedOperationMethod<
   DescribeCanariesLastRunRequest,
   DescribeCanariesLastRunResponse,
   DescribeCanariesLastRunError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeCanariesLastRunRequest,
-  ) => stream.Stream<
-    DescribeCanariesLastRunResponse,
-    DescribeCanariesLastRunError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeCanariesLastRunRequest,
-  ) => stream.Stream<
-    unknown,
-    DescribeCanariesLastRunError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeCanariesLastRunRequest,
   output: DescribeCanariesLastRunResponse,
   errors: [InternalServerException, ValidationException],
@@ -1876,27 +1826,7 @@ export const describeCanariesLastRun: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeCanariesLastRunRequest,
-  DescribeCanariesLastRunResponse,
-  DescribeCanariesLastRunError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeCanariesLastRunRequest,
-  ) => stream.Stream<
-    DescribeCanariesLastRunResponse,
-    DescribeCanariesLastRunError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeCanariesLastRunRequest,
-  ) => stream.Stream<
-    unknown,
-    DescribeCanariesLastRunError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeRuntimeVersionsError =
   | InternalServerException
@@ -1907,27 +1837,13 @@ export type DescribeRuntimeVersionsError =
  * see
  * Canary Runtime Versions.
  */
-export const describeRuntimeVersions: API.OperationMethod<
+export const describeRuntimeVersions: API.PaginatedOperationMethod<
   DescribeRuntimeVersionsRequest,
   DescribeRuntimeVersionsResponse,
   DescribeRuntimeVersionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeRuntimeVersionsRequest,
-  ) => stream.Stream<
-    DescribeRuntimeVersionsResponse,
-    DescribeRuntimeVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeRuntimeVersionsRequest,
-  ) => stream.Stream<
-    unknown,
-    DescribeRuntimeVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeRuntimeVersionsRequest,
   output: DescribeRuntimeVersionsResponse,
   errors: [InternalServerException, ValidationException],
@@ -1939,27 +1855,7 @@ export const describeRuntimeVersions: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeRuntimeVersionsRequest,
-  DescribeRuntimeVersionsResponse,
-  DescribeRuntimeVersionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeRuntimeVersionsRequest,
-  ) => stream.Stream<
-    DescribeRuntimeVersionsResponse,
-    DescribeRuntimeVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeRuntimeVersionsRequest,
-  ) => stream.Stream<
-    unknown,
-    DescribeRuntimeVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DisassociateResourceError =
   | ConflictException
@@ -1974,7 +1870,7 @@ export const disassociateResource: API.OperationMethod<
   DisassociateResourceRequest,
   DisassociateResourceResponse,
   DisassociateResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DisassociateResourceRequest,
   output: DisassociateResourceResponse,
@@ -2003,7 +1899,7 @@ export const getCanary: API.OperationMethod<
   GetCanaryRequest,
   GetCanaryResponse,
   GetCanaryError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetCanaryRequest,
   output: GetCanaryResponse,
@@ -2025,27 +1921,13 @@ export type GetCanaryRunsError =
 /**
  * Retrieves a list of runs for a specified canary.
  */
-export const getCanaryRuns: API.OperationMethod<
+export const getCanaryRuns: API.PaginatedOperationMethod<
   GetCanaryRunsRequest,
   GetCanaryRunsResponse,
   GetCanaryRunsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetCanaryRunsRequest,
-  ) => stream.Stream<
-    GetCanaryRunsResponse,
-    GetCanaryRunsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetCanaryRunsRequest,
-  ) => stream.Stream<
-    unknown,
-    GetCanaryRunsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetCanaryRunsRequest,
   output: GetCanaryRunsResponse,
   errors: [
@@ -2061,27 +1943,7 @@ export const getCanaryRuns: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetCanaryRunsRequest,
-  GetCanaryRunsResponse,
-  GetCanaryRunsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetCanaryRunsRequest,
-  ) => stream.Stream<
-    GetCanaryRunsResponse,
-    GetCanaryRunsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetCanaryRunsRequest,
-  ) => stream.Stream<
-    unknown,
-    GetCanaryRunsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetGroupError =
   | ConflictException
@@ -2097,7 +1959,7 @@ export const getGroup: API.OperationMethod<
   GetGroupRequest,
   GetGroupResponse,
   GetGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetGroupRequest,
   output: GetGroupResponse,
@@ -2121,27 +1983,13 @@ export type ListAssociatedGroupsError =
  * Returns a list of the groups that the specified canary is associated with. The canary
  * that you specify must be in the current Region.
  */
-export const listAssociatedGroups: API.OperationMethod<
+export const listAssociatedGroups: API.PaginatedOperationMethod<
   ListAssociatedGroupsRequest,
   ListAssociatedGroupsResponse,
   ListAssociatedGroupsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAssociatedGroupsRequest,
-  ) => stream.Stream<
-    ListAssociatedGroupsResponse,
-    ListAssociatedGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAssociatedGroupsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListAssociatedGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListAssociatedGroupsRequest,
   output: ListAssociatedGroupsResponse,
   errors: [
@@ -2157,27 +2005,7 @@ export const listAssociatedGroups: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListAssociatedGroupsRequest,
-  ListAssociatedGroupsResponse,
-  ListAssociatedGroupsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAssociatedGroupsRequest,
-  ) => stream.Stream<
-    ListAssociatedGroupsResponse,
-    ListAssociatedGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAssociatedGroupsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListAssociatedGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListGroupResourcesError =
   | ConflictException
@@ -2188,27 +2016,13 @@ export type ListGroupResourcesError =
 /**
  * This operation returns a list of the ARNs of the canaries that are associated with the specified group.
  */
-export const listGroupResources: API.OperationMethod<
+export const listGroupResources: API.PaginatedOperationMethod<
   ListGroupResourcesRequest,
   ListGroupResourcesResponse,
   ListGroupResourcesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListGroupResourcesRequest,
-  ) => stream.Stream<
-    ListGroupResourcesResponse,
-    ListGroupResourcesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListGroupResourcesRequest,
-  ) => stream.Stream<
-    unknown,
-    ListGroupResourcesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListGroupResourcesRequest,
   output: ListGroupResourcesResponse,
   errors: [
@@ -2225,27 +2039,7 @@ export const listGroupResources: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListGroupResourcesRequest,
-  ListGroupResourcesResponse,
-  ListGroupResourcesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListGroupResourcesRequest,
-  ) => stream.Stream<
-    ListGroupResourcesResponse,
-    ListGroupResourcesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListGroupResourcesRequest,
-  ) => stream.Stream<
-    unknown,
-    ListGroupResourcesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListGroupsError =
   | InternalServerException
@@ -2255,27 +2049,13 @@ export type ListGroupsError =
  * Returns a list of all groups in the account, displaying their names, unique IDs, and ARNs. The groups
  * from all Regions are returned.
  */
-export const listGroups: API.OperationMethod<
+export const listGroups: API.PaginatedOperationMethod<
   ListGroupsRequest,
   ListGroupsResponse,
   ListGroupsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListGroupsRequest,
-  ) => stream.Stream<
-    ListGroupsResponse,
-    ListGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListGroupsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListGroupsRequest,
   output: ListGroupsResponse,
   errors: [InternalServerException, ValidationException],
@@ -2287,27 +2067,7 @@ export const listGroups: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListGroupsRequest,
-  ListGroupsResponse,
-  ListGroupsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListGroupsRequest,
-  ) => stream.Stream<
-    ListGroupsResponse,
-    ListGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListGroupsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsForResourceError =
   | BadRequestException
@@ -2323,7 +2083,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceRequest,
   ListTagsForResourceResponse,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -2354,7 +2114,7 @@ export const startCanary: API.OperationMethod<
   StartCanaryRequest,
   StartCanaryResponse,
   StartCanaryError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartCanaryRequest,
   output: StartCanaryResponse,
@@ -2383,7 +2143,7 @@ export const startCanaryDryRun: API.OperationMethod<
   StartCanaryDryRunRequest,
   StartCanaryDryRunResponse,
   StartCanaryDryRunError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartCanaryDryRunRequest,
   output: StartCanaryDryRunResponse,
@@ -2417,7 +2177,7 @@ export const stopCanary: API.OperationMethod<
   StopCanaryRequest,
   StopCanaryResponse,
   StopCanaryError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StopCanaryRequest,
   output: StopCanaryResponse,
@@ -2461,7 +2221,7 @@ export const tagResource: API.OperationMethod<
   TagResourceRequest,
   TagResourceResponse,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -2491,7 +2251,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceRequest,
   UntagResourceResponse,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -2533,7 +2293,7 @@ export const updateCanary: API.OperationMethod<
   UpdateCanaryRequest,
   UpdateCanaryResponse,
   UpdateCanaryError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateCanaryRequest,
   output: UpdateCanaryResponse,

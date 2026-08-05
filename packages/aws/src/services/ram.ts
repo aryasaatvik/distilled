@@ -1,6 +1,5 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -8,7 +7,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 const svc = T.AwsApiService({
   sdkId: "RAM",
   serviceShapeName: "AmazonResourceSharing",
@@ -91,7 +89,7 @@ const rules = T.EndpointResolver((p, _) => {
 export class IdempotentParameterMismatchException
   extends /*@__PURE__*/ S.TaggedErrorClass<IdempotentParameterMismatchException>()(
     "IdempotentParameterMismatchException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "IdempotentParameterMismatch",
@@ -103,7 +101,7 @@ export class IdempotentParameterMismatchException
 export class InvalidClientTokenException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidClientTokenException>()(
     "InvalidClientTokenException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "InvalidClientToken", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -112,7 +110,7 @@ export class InvalidClientTokenException
 export class InvalidMaxResultsException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidMaxResultsException>()(
     "InvalidMaxResultsException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "InvalidMaxResults", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -121,7 +119,7 @@ export class InvalidMaxResultsException
 export class InvalidNextTokenException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidNextTokenException>()(
     "InvalidNextTokenException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "InvalidNextToken", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -130,7 +128,7 @@ export class InvalidNextTokenException
 export class InvalidParameterException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidParameterException>()(
     "InvalidParameterException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "InvalidParameter", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -139,7 +137,7 @@ export class InvalidParameterException
 export class InvalidPolicyException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidPolicyException>()(
     "InvalidPolicyException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "InvalidPolicy", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -148,7 +146,7 @@ export class InvalidPolicyException
 export class InvalidResourceTypeException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidResourceTypeException>()(
     "InvalidResourceTypeException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "InvalidResourceType.Unknown",
@@ -160,7 +158,7 @@ export class InvalidResourceTypeException
 export class InvalidStateTransitionException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidStateTransitionException>()(
     "InvalidStateTransitionException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "InvalidStateTransitionException.Unknown",
@@ -172,7 +170,7 @@ export class InvalidStateTransitionException
 export class MalformedArnException
   extends /*@__PURE__*/ S.TaggedErrorClass<MalformedArnException>()(
     "MalformedArnException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "InvalidArn.Malformed", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -181,7 +179,7 @@ export class MalformedArnException
 export class MalformedPolicyTemplateException
   extends /*@__PURE__*/ S.TaggedErrorClass<MalformedPolicyTemplateException>()(
     "MalformedPolicyTemplateException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "MalformedPolicyTemplateException",
@@ -193,7 +191,7 @@ export class MalformedPolicyTemplateException
 export class MissingRequiredParameterException
   extends /*@__PURE__*/ S.TaggedErrorClass<MissingRequiredParameterException>()(
     "MissingRequiredParameterException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "MissingRequiredParameter",
@@ -205,7 +203,7 @@ export class MissingRequiredParameterException
 export class OperationNotPermittedException
   extends /*@__PURE__*/ S.TaggedErrorClass<OperationNotPermittedException>()(
     "OperationNotPermittedException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "OperationNotPermitted", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -214,7 +212,7 @@ export class OperationNotPermittedException
 export class PermissionAlreadyExistsException
   extends /*@__PURE__*/ S.TaggedErrorClass<PermissionAlreadyExistsException>()(
     "PermissionAlreadyExistsException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "PermissionAlreadyExistsException",
@@ -226,7 +224,7 @@ export class PermissionAlreadyExistsException
 export class PermissionLimitExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<PermissionLimitExceededException>()(
     "PermissionLimitExceededException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "PermissionLimitExceededException",
@@ -238,7 +236,7 @@ export class PermissionLimitExceededException
 export class PermissionVersionsLimitExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<PermissionVersionsLimitExceededException>()(
     "PermissionVersionsLimitExceededException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "PermissionVersionsLimitExceededException",
@@ -250,7 +248,7 @@ export class PermissionVersionsLimitExceededException
 export class ResourceArnNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceArnNotFoundException>()(
     "ResourceArnNotFoundException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "InvalidResourceArn.NotFound",
@@ -262,7 +260,7 @@ export class ResourceArnNotFoundException
 export class ResourceShareInvitationAlreadyAcceptedException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceShareInvitationAlreadyAcceptedException>()(
     "ResourceShareInvitationAlreadyAcceptedException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "InvalidResourceShareInvitationArn.AlreadyAccepted",
@@ -274,7 +272,7 @@ export class ResourceShareInvitationAlreadyAcceptedException
 export class ResourceShareInvitationAlreadyRejectedException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceShareInvitationAlreadyRejectedException>()(
     "ResourceShareInvitationAlreadyRejectedException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "InvalidResourceShareInvitationArn.AlreadyRejected",
@@ -286,7 +284,7 @@ export class ResourceShareInvitationAlreadyRejectedException
 export class ResourceShareInvitationArnNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceShareInvitationArnNotFoundException>()(
     "ResourceShareInvitationArnNotFoundException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "InvalidResourceShareInvitationArn.NotFound",
@@ -298,7 +296,7 @@ export class ResourceShareInvitationArnNotFoundException
 export class ResourceShareInvitationExpiredException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceShareInvitationExpiredException>()(
     "ResourceShareInvitationExpiredException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "InvalidResourceShareInvitationArn.Expired",
@@ -310,7 +308,7 @@ export class ResourceShareInvitationExpiredException
 export class ResourceShareLimitExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceShareLimitExceededException>()(
     "ResourceShareLimitExceededException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "ResourceShareLimitExceeded",
@@ -322,7 +320,7 @@ export class ResourceShareLimitExceededException
 export class ServerInternalException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServerInternalException>()(
     "ServerInternalException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "InternalError", httpResponseCode: 500 }),
       T.HttpError(500),
@@ -331,7 +329,7 @@ export class ServerInternalException
 export class ServiceUnavailableException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceUnavailableException>()(
     "ServiceUnavailableException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "Unavailable", httpResponseCode: 503 }),
       T.HttpError(503),
@@ -340,7 +338,7 @@ export class ServiceUnavailableException
 export class TagLimitExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<TagLimitExceededException>()(
     "TagLimitExceededException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "TagLimitExceeded", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -349,7 +347,7 @@ export class TagLimitExceededException
 export class TagPolicyViolationException
   extends /*@__PURE__*/ S.TaggedErrorClass<TagPolicyViolationException>()(
     "TagPolicyViolationException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "TagPolicyViolation", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -358,7 +356,7 @@ export class TagPolicyViolationException
 export class ThrottlingException
   extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
     "ThrottlingException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "ThrottlingException", httpResponseCode: 429 }),
       T.HttpError(429),
@@ -367,7 +365,7 @@ export class ThrottlingException
 export class UnknownResourceException
   extends /*@__PURE__*/ S.TaggedErrorClass<UnknownResourceException>()(
     "UnknownResourceException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "InvalidResourceShareArn.NotFound",
@@ -379,7 +377,7 @@ export class UnknownResourceException
 export class UnmatchedPolicyPermissionException
   extends /*@__PURE__*/ S.TaggedErrorClass<UnmatchedPolicyPermissionException>()(
     "UnmatchedPolicyPermissionException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "UnmatchedPolicyPermissionException",
@@ -2236,7 +2234,7 @@ export const acceptResourceShareInvitation: API.OperationMethod<
   AcceptResourceShareInvitationRequest,
   AcceptResourceShareInvitationResponse,
   AcceptResourceShareInvitationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AcceptResourceShareInvitationRequest,
   output: AcceptResourceShareInvitationResponse,
@@ -2279,7 +2277,7 @@ export const associateResourceShare: API.OperationMethod<
   AssociateResourceShareRequest,
   AssociateResourceShareResponse,
   AssociateResourceShareError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AssociateResourceShareRequest,
   output: AssociateResourceShareResponse,
@@ -2320,7 +2318,7 @@ export const associateResourceSharePermission: API.OperationMethod<
   AssociateResourceSharePermissionRequest,
   AssociateResourceSharePermissionResponse,
   AssociateResourceSharePermissionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AssociateResourceSharePermissionRequest,
   output: AssociateResourceSharePermissionResponse,
@@ -2358,7 +2356,7 @@ export const createPermission: API.OperationMethod<
   CreatePermissionRequest,
   CreatePermissionResponse,
   CreatePermissionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreatePermissionRequest,
   output: CreatePermissionResponse,
@@ -2404,7 +2402,7 @@ export const createPermissionVersion: API.OperationMethod<
   CreatePermissionVersionRequest,
   CreatePermissionVersionResponse,
   CreatePermissionVersionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreatePermissionVersionRequest,
   output: CreatePermissionVersionResponse,
@@ -2453,7 +2451,7 @@ export const createResourceShare: API.OperationMethod<
   CreateResourceShareRequest,
   CreateResourceShareResponse,
   CreateResourceShareError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateResourceShareRequest,
   output: CreateResourceShareResponse,
@@ -2495,7 +2493,7 @@ export const deletePermission: API.OperationMethod<
   DeletePermissionRequest,
   DeletePermissionResponse,
   DeletePermissionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeletePermissionRequest,
   output: DeletePermissionResponse,
@@ -2534,7 +2532,7 @@ export const deletePermissionVersion: API.OperationMethod<
   DeletePermissionVersionRequest,
   DeletePermissionVersionResponse,
   DeletePermissionVersionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeletePermissionVersionRequest,
   output: DeletePermissionVersionResponse,
@@ -2575,7 +2573,7 @@ export const deleteResourceShare: API.OperationMethod<
   DeleteResourceShareRequest,
   DeleteResourceShareResponse,
   DeleteResourceShareError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteResourceShareRequest,
   output: DeleteResourceShareResponse,
@@ -2617,7 +2615,7 @@ export const disassociateResourceShare: API.OperationMethod<
   DisassociateResourceShareRequest,
   DisassociateResourceShareResponse,
   DisassociateResourceShareError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DisassociateResourceShareRequest,
   output: DisassociateResourceShareResponse,
@@ -2658,7 +2656,7 @@ export const disassociateResourceSharePermission: API.OperationMethod<
   DisassociateResourceSharePermissionRequest,
   DisassociateResourceSharePermissionResponse,
   DisassociateResourceSharePermissionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DisassociateResourceSharePermissionRequest,
   output: DisassociateResourceSharePermissionResponse,
@@ -2699,7 +2697,7 @@ export const enableSharingWithAwsOrganization: API.OperationMethod<
   EnableSharingWithAwsOrganizationRequest,
   EnableSharingWithAwsOrganizationResponse,
   EnableSharingWithAwsOrganizationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: EnableSharingWithAwsOrganizationRequest,
   output: EnableSharingWithAwsOrganizationResponse,
@@ -2728,7 +2726,7 @@ export const getPermission: API.OperationMethod<
   GetPermissionRequest,
   GetPermissionResponse,
   GetPermissionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetPermissionRequest,
   output: GetPermissionResponse,
@@ -2763,27 +2761,13 @@ export type GetResourcePoliciesError =
  * *only*
  * when there are no more results to display.
  */
-export const getResourcePolicies: API.OperationMethod<
+export const getResourcePolicies: API.PaginatedOperationMethod<
   GetResourcePoliciesRequest,
   GetResourcePoliciesResponse,
   GetResourcePoliciesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetResourcePoliciesRequest,
-  ) => stream.Stream<
-    GetResourcePoliciesResponse,
-    GetResourcePoliciesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetResourcePoliciesRequest,
-  ) => stream.Stream<
-    unknown,
-    GetResourcePoliciesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetResourcePoliciesRequest,
   output: GetResourcePoliciesResponse,
   errors: [
@@ -2802,27 +2786,7 @@ export const getResourcePolicies: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetResourcePoliciesRequest,
-  GetResourcePoliciesResponse,
-  GetResourcePoliciesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetResourcePoliciesRequest,
-  ) => stream.Stream<
-    GetResourcePoliciesResponse,
-    GetResourcePoliciesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetResourcePoliciesRequest,
-  ) => stream.Stream<
-    unknown,
-    GetResourcePoliciesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetResourceShareAssociationsError =
   | InvalidNextTokenException
@@ -2843,27 +2807,13 @@ export type GetResourceShareAssociationsError =
  * *only*
  * when there are no more results to display.
  */
-export const getResourceShareAssociations: API.OperationMethod<
+export const getResourceShareAssociations: API.PaginatedOperationMethod<
   GetResourceShareAssociationsRequest,
   GetResourceShareAssociationsResponse,
   GetResourceShareAssociationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetResourceShareAssociationsRequest,
-  ) => stream.Stream<
-    GetResourceShareAssociationsResponse,
-    GetResourceShareAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetResourceShareAssociationsRequest,
-  ) => stream.Stream<
-    unknown,
-    GetResourceShareAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetResourceShareAssociationsRequest,
   output: GetResourceShareAssociationsResponse,
   errors: [
@@ -2883,27 +2833,7 @@ export const getResourceShareAssociations: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetResourceShareAssociationsRequest,
-  GetResourceShareAssociationsResponse,
-  GetResourceShareAssociationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetResourceShareAssociationsRequest,
-  ) => stream.Stream<
-    GetResourceShareAssociationsResponse,
-    GetResourceShareAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetResourceShareAssociationsRequest,
-  ) => stream.Stream<
-    unknown,
-    GetResourceShareAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetResourceShareInvitationsError =
   | InvalidMaxResultsException
@@ -2924,27 +2854,13 @@ export type GetResourceShareInvitationsError =
  * *only*
  * when there are no more results to display.
  */
-export const getResourceShareInvitations: API.OperationMethod<
+export const getResourceShareInvitations: API.PaginatedOperationMethod<
   GetResourceShareInvitationsRequest,
   GetResourceShareInvitationsResponse,
   GetResourceShareInvitationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetResourceShareInvitationsRequest,
-  ) => stream.Stream<
-    GetResourceShareInvitationsResponse,
-    GetResourceShareInvitationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetResourceShareInvitationsRequest,
-  ) => stream.Stream<
-    unknown,
-    GetResourceShareInvitationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetResourceShareInvitationsRequest,
   output: GetResourceShareInvitationsResponse,
   errors: [
@@ -2965,27 +2881,7 @@ export const getResourceShareInvitations: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetResourceShareInvitationsRequest,
-  GetResourceShareInvitationsResponse,
-  GetResourceShareInvitationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetResourceShareInvitationsRequest,
-  ) => stream.Stream<
-    GetResourceShareInvitationsResponse,
-    GetResourceShareInvitationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetResourceShareInvitationsRequest,
-  ) => stream.Stream<
-    unknown,
-    GetResourceShareInvitationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetResourceSharesError =
   | InvalidNextTokenException
@@ -3004,27 +2900,13 @@ export type GetResourceSharesError =
  * *only*
  * when there are no more results to display.
  */
-export const getResourceShares: API.OperationMethod<
+export const getResourceShares: API.PaginatedOperationMethod<
   GetResourceSharesRequest,
   GetResourceSharesResponse,
   GetResourceSharesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetResourceSharesRequest,
-  ) => stream.Stream<
-    GetResourceSharesResponse,
-    GetResourceSharesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetResourceSharesRequest,
-  ) => stream.Stream<
-    unknown,
-    GetResourceSharesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetResourceSharesRequest,
   output: GetResourceSharesResponse,
   errors: [
@@ -3043,27 +2925,7 @@ export const getResourceShares: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetResourceSharesRequest,
-  GetResourceSharesResponse,
-  GetResourceSharesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetResourceSharesRequest,
-  ) => stream.Stream<
-    GetResourceSharesResponse,
-    GetResourceSharesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetResourceSharesRequest,
-  ) => stream.Stream<
-    unknown,
-    GetResourceSharesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListPendingInvitationResourcesError =
   | InvalidNextTokenException
@@ -3087,27 +2949,13 @@ export type ListPendingInvitationResourcesError =
  * *only*
  * when there are no more results to display.
  */
-export const listPendingInvitationResources: API.OperationMethod<
+export const listPendingInvitationResources: API.PaginatedOperationMethod<
   ListPendingInvitationResourcesRequest,
   ListPendingInvitationResourcesResponse,
   ListPendingInvitationResourcesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPendingInvitationResourcesRequest,
-  ) => stream.Stream<
-    ListPendingInvitationResourcesResponse,
-    ListPendingInvitationResourcesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPendingInvitationResourcesRequest,
-  ) => stream.Stream<
-    unknown,
-    ListPendingInvitationResourcesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListPendingInvitationResourcesRequest,
   output: ListPendingInvitationResourcesResponse,
   errors: [
@@ -3129,27 +2977,7 @@ export const listPendingInvitationResources: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListPendingInvitationResourcesRequest,
-  ListPendingInvitationResourcesResponse,
-  ListPendingInvitationResourcesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPendingInvitationResourcesRequest,
-  ) => stream.Stream<
-    ListPendingInvitationResourcesResponse,
-    ListPendingInvitationResourcesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPendingInvitationResourcesRequest,
-  ) => stream.Stream<
-    unknown,
-    ListPendingInvitationResourcesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListPermissionAssociationsError =
   | InvalidNextTokenException
@@ -3169,27 +2997,13 @@ export type ListPermissionAssociationsError =
  * *only*
  * when there are no more results to display.
  */
-export const listPermissionAssociations: API.OperationMethod<
+export const listPermissionAssociations: API.PaginatedOperationMethod<
   ListPermissionAssociationsRequest,
   ListPermissionAssociationsResponse,
   ListPermissionAssociationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPermissionAssociationsRequest,
-  ) => stream.Stream<
-    ListPermissionAssociationsResponse,
-    ListPermissionAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPermissionAssociationsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListPermissionAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListPermissionAssociationsRequest,
   output: ListPermissionAssociationsResponse,
   errors: [
@@ -3207,27 +3021,7 @@ export const listPermissionAssociations: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListPermissionAssociationsRequest,
-  ListPermissionAssociationsResponse,
-  ListPermissionAssociationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPermissionAssociationsRequest,
-  ) => stream.Stream<
-    ListPermissionAssociationsResponse,
-    ListPermissionAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPermissionAssociationsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListPermissionAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListPermissionsError =
   | InvalidNextTokenException
@@ -3246,27 +3040,13 @@ export type ListPermissionsError =
  * *only*
  * when there are no more results to display.
  */
-export const listPermissions: API.OperationMethod<
+export const listPermissions: API.PaginatedOperationMethod<
   ListPermissionsRequest,
   ListPermissionsResponse,
   ListPermissionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPermissionsRequest,
-  ) => stream.Stream<
-    ListPermissionsResponse,
-    ListPermissionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPermissionsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListPermissionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListPermissionsRequest,
   output: ListPermissionsResponse,
   errors: [
@@ -3284,27 +3064,7 @@ export const listPermissions: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListPermissionsRequest,
-  ListPermissionsResponse,
-  ListPermissionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPermissionsRequest,
-  ) => stream.Stream<
-    ListPermissionsResponse,
-    ListPermissionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPermissionsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListPermissionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListPermissionVersionsError =
   | InvalidNextTokenException
@@ -3324,27 +3084,13 @@ export type ListPermissionVersionsError =
  * *only*
  * when there are no more results to display.
  */
-export const listPermissionVersions: API.OperationMethod<
+export const listPermissionVersions: API.PaginatedOperationMethod<
   ListPermissionVersionsRequest,
   ListPermissionVersionsResponse,
   ListPermissionVersionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPermissionVersionsRequest,
-  ) => stream.Stream<
-    ListPermissionVersionsResponse,
-    ListPermissionVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPermissionVersionsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListPermissionVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListPermissionVersionsRequest,
   output: ListPermissionVersionsResponse,
   errors: [
@@ -3364,27 +3110,7 @@ export const listPermissionVersions: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListPermissionVersionsRequest,
-  ListPermissionVersionsResponse,
-  ListPermissionVersionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPermissionVersionsRequest,
-  ) => stream.Stream<
-    ListPermissionVersionsResponse,
-    ListPermissionVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPermissionVersionsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListPermissionVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListPrincipalsError =
   | InvalidNextTokenException
@@ -3404,27 +3130,13 @@ export type ListPrincipalsError =
  * *only*
  * when there are no more results to display.
  */
-export const listPrincipals: API.OperationMethod<
+export const listPrincipals: API.PaginatedOperationMethod<
   ListPrincipalsRequest,
   ListPrincipalsResponse,
   ListPrincipalsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPrincipalsRequest,
-  ) => stream.Stream<
-    ListPrincipalsResponse,
-    ListPrincipalsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPrincipalsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListPrincipalsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListPrincipalsRequest,
   output: ListPrincipalsResponse,
   errors: [
@@ -3443,27 +3155,7 @@ export const listPrincipals: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListPrincipalsRequest,
-  ListPrincipalsResponse,
-  ListPrincipalsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPrincipalsRequest,
-  ) => stream.Stream<
-    ListPrincipalsResponse,
-    ListPrincipalsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPrincipalsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListPrincipalsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListReplacePermissionAssociationsWorkError =
   | InvalidNextTokenException
@@ -3481,27 +3173,13 @@ export type ListReplacePermissionAssociationsWorkError =
  * *only*
  * when there are no more results to display.
  */
-export const listReplacePermissionAssociationsWork: API.OperationMethod<
+export const listReplacePermissionAssociationsWork: API.PaginatedOperationMethod<
   ListReplacePermissionAssociationsWorkRequest,
   ListReplacePermissionAssociationsWorkResponse,
   ListReplacePermissionAssociationsWorkError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListReplacePermissionAssociationsWorkRequest,
-  ) => stream.Stream<
-    ListReplacePermissionAssociationsWorkResponse,
-    ListReplacePermissionAssociationsWorkError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListReplacePermissionAssociationsWorkRequest,
-  ) => stream.Stream<
-    unknown,
-    ListReplacePermissionAssociationsWorkError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListReplacePermissionAssociationsWorkRequest,
   output: ListReplacePermissionAssociationsWorkResponse,
   errors: [
@@ -3518,27 +3196,7 @@ export const listReplacePermissionAssociationsWork: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListReplacePermissionAssociationsWorkRequest,
-  ListReplacePermissionAssociationsWorkResponse,
-  ListReplacePermissionAssociationsWorkError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListReplacePermissionAssociationsWorkRequest,
-  ) => stream.Stream<
-    ListReplacePermissionAssociationsWorkResponse,
-    ListReplacePermissionAssociationsWorkError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListReplacePermissionAssociationsWorkRequest,
-  ) => stream.Stream<
-    unknown,
-    ListReplacePermissionAssociationsWorkError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListResourcesError =
   | InvalidNextTokenException
@@ -3559,27 +3217,13 @@ export type ListResourcesError =
  * *only*
  * when there are no more results to display.
  */
-export const listResources: API.OperationMethod<
+export const listResources: API.PaginatedOperationMethod<
   ListResourcesRequest,
   ListResourcesResponse,
   ListResourcesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListResourcesRequest,
-  ) => stream.Stream<
-    ListResourcesResponse,
-    ListResourcesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListResourcesRequest,
-  ) => stream.Stream<
-    unknown,
-    ListResourcesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListResourcesRequest,
   output: ListResourcesResponse,
   errors: [
@@ -3599,27 +3243,7 @@ export const listResources: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListResourcesRequest,
-  ListResourcesResponse,
-  ListResourcesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListResourcesRequest,
-  ) => stream.Stream<
-    ListResourcesResponse,
-    ListResourcesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListResourcesRequest,
-  ) => stream.Stream<
-    unknown,
-    ListResourcesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListResourceSharePermissionsError =
   | InvalidNextTokenException
@@ -3639,27 +3263,13 @@ export type ListResourceSharePermissionsError =
  * *only*
  * when there are no more results to display.
  */
-export const listResourceSharePermissions: API.OperationMethod<
+export const listResourceSharePermissions: API.PaginatedOperationMethod<
   ListResourceSharePermissionsRequest,
   ListResourceSharePermissionsResponse,
   ListResourceSharePermissionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListResourceSharePermissionsRequest,
-  ) => stream.Stream<
-    ListResourceSharePermissionsResponse,
-    ListResourceSharePermissionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListResourceSharePermissionsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListResourceSharePermissionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListResourceSharePermissionsRequest,
   output: ListResourceSharePermissionsResponse,
   errors: [
@@ -3679,27 +3289,7 @@ export const listResourceSharePermissions: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListResourceSharePermissionsRequest,
-  ListResourceSharePermissionsResponse,
-  ListResourceSharePermissionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListResourceSharePermissionsRequest,
-  ) => stream.Stream<
-    ListResourceSharePermissionsResponse,
-    ListResourceSharePermissionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListResourceSharePermissionsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListResourceSharePermissionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListResourceTypesError =
   | InvalidNextTokenException
@@ -3710,27 +3300,13 @@ export type ListResourceTypesError =
 /**
  * Lists the resource types that can be shared by RAM.
  */
-export const listResourceTypes: API.OperationMethod<
+export const listResourceTypes: API.PaginatedOperationMethod<
   ListResourceTypesRequest,
   ListResourceTypesResponse,
   ListResourceTypesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListResourceTypesRequest,
-  ) => stream.Stream<
-    ListResourceTypesResponse,
-    ListResourceTypesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListResourceTypesRequest,
-  ) => stream.Stream<
-    unknown,
-    ListResourceTypesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListResourceTypesRequest,
   output: ListResourceTypesResponse,
   errors: [
@@ -3747,27 +3323,7 @@ export const listResourceTypes: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListResourceTypesRequest,
-  ListResourceTypesResponse,
-  ListResourceTypesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListResourceTypesRequest,
-  ) => stream.Stream<
-    ListResourceTypesResponse,
-    ListResourceTypesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListResourceTypesRequest,
-  ) => stream.Stream<
-    unknown,
-    ListResourceTypesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListSourceAssociationsError =
   | InvalidNextTokenException
@@ -3782,27 +3338,13 @@ export type ListSourceAssociationsError =
  *
  * You can filter the results by resource share Amazon Resource Name (ARN), source ID, source type, or association status. We recommend using pagination to ensure that the operation returns quickly and successfully.
  */
-export const listSourceAssociations: API.OperationMethod<
+export const listSourceAssociations: API.PaginatedOperationMethod<
   ListSourceAssociationsRequest,
   ListSourceAssociationsResponse,
   ListSourceAssociationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSourceAssociationsRequest,
-  ) => stream.Stream<
-    ListSourceAssociationsResponse,
-    ListSourceAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSourceAssociationsRequest,
-  ) => stream.Stream<
-    AssociatedSource,
-    ListSourceAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  AssociatedSource
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListSourceAssociationsRequest,
   output: ListSourceAssociationsResponse,
   errors: [
@@ -3822,27 +3364,7 @@ export const listSourceAssociations: API.OperationMethod<
     items: "sourceAssociations",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListSourceAssociationsRequest,
-  ListSourceAssociationsResponse,
-  ListSourceAssociationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSourceAssociationsRequest,
-  ) => stream.Stream<
-    ListSourceAssociationsResponse,
-    ListSourceAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSourceAssociationsRequest,
-  ) => stream.Stream<
-    AssociatedSource,
-    ListSourceAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type PromotePermissionCreatedFromPolicyError =
   | InvalidParameterException
@@ -3887,7 +3409,7 @@ export const promotePermissionCreatedFromPolicy: API.OperationMethod<
   PromotePermissionCreatedFromPolicyRequest,
   PromotePermissionCreatedFromPolicyResponse,
   PromotePermissionCreatedFromPolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PromotePermissionCreatedFromPolicyRequest,
   output: PromotePermissionCreatedFromPolicyResponse,
@@ -3938,7 +3460,7 @@ export const promoteResourceShareCreatedFromPolicy: API.OperationMethod<
   PromoteResourceShareCreatedFromPolicyRequest,
   PromoteResourceShareCreatedFromPolicyResponse,
   PromoteResourceShareCreatedFromPolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PromoteResourceShareCreatedFromPolicyRequest,
   output: PromoteResourceShareCreatedFromPolicyResponse,
@@ -3978,7 +3500,7 @@ export const rejectResourceShareInvitation: API.OperationMethod<
   RejectResourceShareInvitationRequest,
   RejectResourceShareInvitationResponse,
   RejectResourceShareInvitationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RejectResourceShareInvitationRequest,
   output: RejectResourceShareInvitationResponse,
@@ -4031,7 +3553,7 @@ export const replacePermissionAssociations: API.OperationMethod<
   ReplacePermissionAssociationsRequest,
   ReplacePermissionAssociationsResponse,
   ReplacePermissionAssociationsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ReplacePermissionAssociationsRequest,
   output: ReplacePermissionAssociationsResponse,
@@ -4068,7 +3590,7 @@ export const setDefaultPermissionVersion: API.OperationMethod<
   SetDefaultPermissionVersionRequest,
   SetDefaultPermissionVersionResponse,
   SetDefaultPermissionVersionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: SetDefaultPermissionVersionRequest,
   output: SetDefaultPermissionVersionResponse,
@@ -4106,7 +3628,7 @@ export const tagResource: API.OperationMethod<
   TagResourceRequest,
   TagResourceResponse,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -4139,7 +3661,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceRequest,
   UntagResourceResponse,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -4173,7 +3695,7 @@ export const updateResourceShare: API.OperationMethod<
   UpdateResourceShareRequest,
   UpdateResourceShareResponse,
   UpdateResourceShareError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateResourceShareRequest,
   output: UpdateResourceShareResponse,

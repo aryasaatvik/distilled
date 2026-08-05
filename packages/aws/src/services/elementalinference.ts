@@ -1,6 +1,5 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -8,7 +7,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 const svc = T.AwsApiService({
   sdkId: "ElementalInference",
   serviceShapeName: "ElementalInference",
@@ -88,43 +86,43 @@ const rules = T.EndpointResolver((p, _) => {
 export class AccessDeniedException
   extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
     "AccessDeniedException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(403),
   ).pipe(C.withAuthError) {}
 export class ConflictException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
     "ConflictException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.all(T.HttpError(409), T.Retryable()),
   ).pipe(C.withConflictError, C.withRetryableError) {}
 export class InternalServerErrorException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerErrorException>()(
     "InternalServerErrorException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.all(T.HttpError(500), T.Retryable()),
   ).pipe(C.withServerError, C.withRetryableError) {}
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class ServiceQuotaExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
     "ServiceQuotaExceededException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(402),
   ).pipe(C.withQuotaError) {}
 export class TooManyRequestException
   extends /*@__PURE__*/ S.TaggedErrorClass<TooManyRequestException>()(
     "TooManyRequestException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.all(T.HttpError(429), T.Retryable()),
   ).pipe(C.withThrottlingError, C.withRetryableError) {}
 export class ValidationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
     "ValidationException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export type FeedId = string;
@@ -923,7 +921,7 @@ export const associateFeed: API.OperationMethod<
   AssociateFeedRequest,
   AssociateFeedResponse,
   AssociateFeedError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AssociateFeedRequest,
   output: AssociateFeedResponse,
@@ -956,7 +954,7 @@ export const createDictionary: API.OperationMethod<
   CreateDictionaryRequest,
   CreateDictionaryResponse,
   CreateDictionaryError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateDictionaryRequest,
   output: CreateDictionaryResponse,
@@ -990,7 +988,7 @@ export const createFeed: API.OperationMethod<
   CreateFeedRequest,
   CreateFeedResponse,
   CreateFeedError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateFeedRequest,
   output: CreateFeedResponse,
@@ -1022,7 +1020,7 @@ export const deleteDictionary: API.OperationMethod<
   DeleteDictionaryRequest,
   DeleteDictionaryResponse,
   DeleteDictionaryError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteDictionaryRequest,
   output: DeleteDictionaryResponse,
@@ -1054,7 +1052,7 @@ export const deleteFeed: API.OperationMethod<
   DeleteFeedRequest,
   DeleteFeedResponse,
   DeleteFeedError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteFeedRequest,
   output: DeleteFeedResponse,
@@ -1086,7 +1084,7 @@ export const disassociateFeed: API.OperationMethod<
   DisassociateFeedRequest,
   DisassociateFeedResponse,
   DisassociateFeedError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DisassociateFeedRequest,
   output: DisassociateFeedResponse,
@@ -1117,7 +1115,7 @@ export const exportDictionaryEntries: API.OperationMethod<
   ExportDictionaryEntriesRequest,
   ExportDictionaryEntriesResponse,
   ExportDictionaryEntriesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ExportDictionaryEntriesRequest,
   output: ExportDictionaryEntriesResponse,
@@ -1147,7 +1145,7 @@ export const getDictionary: API.OperationMethod<
   GetDictionaryRequest,
   GetDictionaryResponse,
   GetDictionaryError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetDictionaryRequest,
   output: GetDictionaryResponse,
@@ -1176,7 +1174,7 @@ export const getFeed: API.OperationMethod<
   GetFeedRequest,
   GetFeedResponse,
   GetFeedError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetFeedRequest,
   output: GetFeedResponse,
@@ -1200,27 +1198,13 @@ export type ListDictionariesError =
 /**
  * Lists the dictionaries in your account.
  */
-export const listDictionaries: API.OperationMethod<
+export const listDictionaries: API.PaginatedOperationMethod<
   ListDictionariesRequest,
   ListDictionariesResponse,
   ListDictionariesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDictionariesRequest,
-  ) => stream.Stream<
-    ListDictionariesResponse,
-    ListDictionariesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDictionariesRequest,
-  ) => stream.Stream<
-    DictionarySummary,
-    ListDictionariesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  DictionarySummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListDictionariesRequest,
   output: ListDictionariesResponse,
   errors: [
@@ -1238,27 +1222,7 @@ export const listDictionaries: API.OperationMethod<
     items: "dictionaries",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListDictionariesRequest,
-  ListDictionariesResponse,
-  ListDictionariesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDictionariesRequest,
-  ) => stream.Stream<
-    ListDictionariesResponse,
-    ListDictionariesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDictionariesRequest,
-  ) => stream.Stream<
-    DictionarySummary,
-    ListDictionariesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListFeedsError =
   | AccessDeniedException
@@ -1270,27 +1234,13 @@ export type ListFeedsError =
 /**
  * Displays a list of feeds that belong to this AWS account.
  */
-export const listFeeds: API.OperationMethod<
+export const listFeeds: API.PaginatedOperationMethod<
   ListFeedsRequest,
   ListFeedsResponse,
   ListFeedsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListFeedsRequest,
-  ) => stream.Stream<
-    ListFeedsResponse,
-    ListFeedsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListFeedsRequest,
-  ) => stream.Stream<
-    FeedSummary,
-    ListFeedsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  FeedSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListFeedsRequest,
   output: ListFeedsResponse,
   errors: [
@@ -1309,27 +1259,7 @@ export const listFeeds: API.OperationMethod<
     items: "feeds",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListFeedsRequest,
-  ListFeedsResponse,
-  ListFeedsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListFeedsRequest,
-  ) => stream.Stream<
-    ListFeedsResponse,
-    ListFeedsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListFeedsRequest,
-  ) => stream.Stream<
-    FeedSummary,
-    ListFeedsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsForResourceError =
   | AccessDeniedException
@@ -1345,7 +1275,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceRequest,
   ListTagsForResourceResponse,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -1376,7 +1306,7 @@ export const tagResource: API.OperationMethod<
   TagResourceRequest,
   TagResourceResponse,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -1408,7 +1338,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceRequest,
   UntagResourceResponse,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -1440,7 +1370,7 @@ export const updateDictionary: API.OperationMethod<
   UpdateDictionaryRequest,
   UpdateDictionaryResponse,
   UpdateDictionaryError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateDictionaryRequest,
   output: UpdateDictionaryResponse,
@@ -1479,7 +1409,7 @@ export const updateFeed: API.OperationMethod<
   UpdateFeedRequest,
   UpdateFeedResponse,
   UpdateFeedError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateFeedRequest,
   output: UpdateFeedResponse,

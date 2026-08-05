@@ -1,7 +1,6 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as redacted from "effect/Redacted";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -9,7 +8,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 import { SensitiveString } from "../sensitive.ts";
 const svc = T.AwsApiService({ sdkId: "EBS", serviceShapeName: "Ebs" });
 const auth = T.AwsAuthSigv4({ name: "ebs" });
@@ -88,7 +86,7 @@ export class AccessDeniedException
   extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
     "AccessDeniedException",
     {
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       Reason: S.suspend(() => AccessDeniedExceptionReason).annotate({
         identifier: "AccessDeniedExceptionReason",
       }),
@@ -98,31 +96,31 @@ export class AccessDeniedException
 export class ConcurrentLimitExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConcurrentLimitExceededException>()(
     "ConcurrentLimitExceededException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class ConflictException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
     "ConflictException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class InternalServerException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
     "InternalServerException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(500),
   ).pipe(C.withServerError) {}
 export class InvalidSignatureException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidSignatureException>()(
     "InvalidSignatureException",
-    {},
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class RequestThrottledException
   extends /*@__PURE__*/ S.TaggedErrorClass<RequestThrottledException>()(
     "RequestThrottledException",
     {
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       Reason: S.optional(
         S.suspend(() => RequestThrottledExceptionReason).annotate({
           identifier: "RequestThrottledExceptionReason",
@@ -135,7 +133,7 @@ export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
     {
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       Reason: S.optional(
         S.suspend(() => ResourceNotFoundExceptionReason).annotate({
           identifier: "ResourceNotFoundExceptionReason",
@@ -148,7 +146,7 @@ export class ServiceQuotaExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
     "ServiceQuotaExceededException",
     {
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       Reason: S.optional(
         S.suspend(() => ServiceQuotaExceededExceptionReason).annotate({
           identifier: "ServiceQuotaExceededExceptionReason",
@@ -161,7 +159,7 @@ export class ValidationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
     "ValidationException",
     {
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       Reason: S.optional(
         S.suspend(() => ValidationExceptionReason).annotate({
           identifier: "ValidationExceptionReason",
@@ -595,7 +593,7 @@ export const completeSnapshot: API.OperationMethod<
   CompleteSnapshotRequest,
   CompleteSnapshotResponse,
   CompleteSnapshotError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CompleteSnapshotRequest,
   output: CompleteSnapshotResponse,
@@ -633,7 +631,7 @@ export const getSnapshotBlock: API.OperationMethod<
   GetSnapshotBlockRequest,
   GetSnapshotBlockResponse,
   GetSnapshotBlockError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetSnapshotBlockRequest,
   output: GetSnapshotBlockResponse,
@@ -667,27 +665,13 @@ export type ListChangedBlocksError =
  * client error responses. For more information see Error retries in the
  * *Amazon Elastic Compute Cloud User Guide*.
  */
-export const listChangedBlocks: API.OperationMethod<
+export const listChangedBlocks: API.PaginatedOperationMethod<
   ListChangedBlocksRequest,
   ListChangedBlocksResponse,
   ListChangedBlocksError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListChangedBlocksRequest,
-  ) => stream.Stream<
-    ListChangedBlocksResponse,
-    ListChangedBlocksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListChangedBlocksRequest,
-  ) => stream.Stream<
-    unknown,
-    ListChangedBlocksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListChangedBlocksRequest,
   output: ListChangedBlocksResponse,
   errors: [
@@ -706,27 +690,7 @@ export const listChangedBlocks: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListChangedBlocksRequest,
-  ListChangedBlocksResponse,
-  ListChangedBlocksError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListChangedBlocksRequest,
-  ) => stream.Stream<
-    ListChangedBlocksResponse,
-    ListChangedBlocksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListChangedBlocksRequest,
-  ) => stream.Stream<
-    unknown,
-    ListChangedBlocksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListSnapshotBlocksError =
   | AccessDeniedException
@@ -744,27 +708,13 @@ export type ListSnapshotBlocksError =
  * client error responses. For more information see Error retries in the
  * *Amazon Elastic Compute Cloud User Guide*.
  */
-export const listSnapshotBlocks: API.OperationMethod<
+export const listSnapshotBlocks: API.PaginatedOperationMethod<
   ListSnapshotBlocksRequest,
   ListSnapshotBlocksResponse,
   ListSnapshotBlocksError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSnapshotBlocksRequest,
-  ) => stream.Stream<
-    ListSnapshotBlocksResponse,
-    ListSnapshotBlocksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSnapshotBlocksRequest,
-  ) => stream.Stream<
-    unknown,
-    ListSnapshotBlocksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListSnapshotBlocksRequest,
   output: ListSnapshotBlocksResponse,
   errors: [
@@ -783,27 +733,7 @@ export const listSnapshotBlocks: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListSnapshotBlocksRequest,
-  ListSnapshotBlocksResponse,
-  ListSnapshotBlocksError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSnapshotBlocksRequest,
-  ) => stream.Stream<
-    ListSnapshotBlocksResponse,
-    ListSnapshotBlocksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSnapshotBlocksRequest,
-  ) => stream.Stream<
-    unknown,
-    ListSnapshotBlocksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type PutSnapshotBlockError =
   | AccessDeniedException
@@ -830,7 +760,7 @@ export const putSnapshotBlock: API.OperationMethod<
   PutSnapshotBlockRequest,
   PutSnapshotBlockResponse,
   PutSnapshotBlockError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutSnapshotBlockRequest,
   output: PutSnapshotBlockResponse,
@@ -874,7 +804,7 @@ export const startSnapshot: API.OperationMethod<
   StartSnapshotRequest,
   StartSnapshotResponse,
   StartSnapshotError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartSnapshotRequest,
   output: StartSnapshotResponse,

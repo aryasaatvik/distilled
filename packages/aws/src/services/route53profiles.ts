@@ -1,6 +1,5 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -8,7 +7,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 const svc = T.AwsApiService({
   sdkId: "Route53Profiles",
   serviceShapeName: "Route53Profiles",
@@ -88,52 +86,64 @@ const rules = T.EndpointResolver((p, _) => {
 export class AccessDeniedException
   extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
     "AccessDeniedException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ).pipe(C.withAuthError) {}
 export class ConflictException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
     "ConflictException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InternalServiceErrorException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServiceErrorException>()(
     "InternalServiceErrorException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidNextTokenException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidNextTokenException>()(
     "InvalidNextTokenException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidParameterException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidParameterException>()(
     "InvalidParameterException",
-    { Message: S.String, FieldName: S.optional(S.String) },
+    {
+      message: S.String.pipe(T.ErrorMessage()),
+      FieldName: S.optional(S.String),
+    },
   ) {}
 export class LimitExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<LimitExceededException>()(
     "LimitExceededException",
-    { Message: S.optional(S.String), ResourceType: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      ResourceType: S.optional(S.String),
+    },
   ) {}
 export class ResourceExistsException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceExistsException>()(
     "ResourceExistsException",
-    { Message: S.optional(S.String), ResourceType: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      ResourceType: S.optional(S.String),
+    },
   ) {}
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { Message: S.optional(S.String), ResourceType: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      ResourceType: S.optional(S.String),
+    },
   ) {}
 export class ThrottlingException
   extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
     "ThrottlingException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class ValidationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
     "ValidationException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export type ResourceId = string;
 export type Name = string;
@@ -822,7 +832,7 @@ export const associateProfile: API.OperationMethod<
   AssociateProfileRequest,
   AssociateProfileResponse,
   AssociateProfileError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AssociateProfileRequest,
   output: AssociateProfileResponse,
@@ -858,7 +868,7 @@ export const associateResourceToProfile: API.OperationMethod<
   AssociateResourceToProfileRequest,
   AssociateResourceToProfileResponse,
   AssociateResourceToProfileError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AssociateResourceToProfileRequest,
   output: AssociateResourceToProfileResponse,
@@ -891,7 +901,7 @@ export const createProfile: API.OperationMethod<
   CreateProfileRequest,
   CreateProfileResponse,
   CreateProfileError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateProfileRequest,
   output: CreateProfileResponse,
@@ -921,7 +931,7 @@ export const deleteProfile: API.OperationMethod<
   DeleteProfileRequest,
   DeleteProfileResponse,
   DeleteProfileError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteProfileRequest,
   output: DeleteProfileResponse,
@@ -952,7 +962,7 @@ export const disassociateProfile: API.OperationMethod<
   DisassociateProfileRequest,
   DisassociateProfileResponse,
   DisassociateProfileError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DisassociateProfileRequest,
   output: DisassociateProfileResponse,
@@ -986,7 +996,7 @@ export const disassociateResourceFromProfile: API.OperationMethod<
   DisassociateResourceFromProfileRequest,
   DisassociateResourceFromProfileResponse,
   DisassociateResourceFromProfileError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DisassociateResourceFromProfileRequest,
   output: DisassociateResourceFromProfileResponse,
@@ -1018,7 +1028,7 @@ export const getProfile: API.OperationMethod<
   GetProfileRequest,
   GetProfileResponse,
   GetProfileError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetProfileRequest,
   output: GetProfileResponse,
@@ -1046,7 +1056,7 @@ export const getProfileAssociation: API.OperationMethod<
   GetProfileAssociationRequest,
   GetProfileAssociationResponse,
   GetProfileAssociationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetProfileAssociationRequest,
   output: GetProfileAssociationResponse,
@@ -1075,7 +1085,7 @@ export const getProfileResourceAssociation: API.OperationMethod<
   GetProfileResourceAssociationRequest,
   GetProfileResourceAssociationResponse,
   GetProfileResourceAssociationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetProfileResourceAssociationRequest,
   output: GetProfileResourceAssociationResponse,
@@ -1101,27 +1111,13 @@ export type ListProfileAssociationsError =
 /**
  * Lists all the VPCs that the specified Route 53 Profile is associated with.
  */
-export const listProfileAssociations: API.OperationMethod<
+export const listProfileAssociations: API.PaginatedOperationMethod<
   ListProfileAssociationsRequest,
   ListProfileAssociationsResponse,
   ListProfileAssociationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListProfileAssociationsRequest,
-  ) => stream.Stream<
-    ListProfileAssociationsResponse,
-    ListProfileAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListProfileAssociationsRequest,
-  ) => stream.Stream<
-    ProfileAssociation,
-    ListProfileAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ProfileAssociation
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListProfileAssociationsRequest,
   output: ListProfileAssociationsResponse,
   errors: [
@@ -1140,27 +1136,7 @@ export const listProfileAssociations: API.OperationMethod<
     items: "ProfileAssociations",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListProfileAssociationsRequest,
-  ListProfileAssociationsResponse,
-  ListProfileAssociationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListProfileAssociationsRequest,
-  ) => stream.Stream<
-    ListProfileAssociationsResponse,
-    ListProfileAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListProfileAssociationsRequest,
-  ) => stream.Stream<
-    ProfileAssociation,
-    ListProfileAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListProfileResourceAssociationsError =
   | AccessDeniedException
@@ -1174,27 +1150,13 @@ export type ListProfileResourceAssociationsError =
 /**
  * Lists all the resource associations for the specified Route 53 Profile.
  */
-export const listProfileResourceAssociations: API.OperationMethod<
+export const listProfileResourceAssociations: API.PaginatedOperationMethod<
   ListProfileResourceAssociationsRequest,
   ListProfileResourceAssociationsResponse,
   ListProfileResourceAssociationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListProfileResourceAssociationsRequest,
-  ) => stream.Stream<
-    ListProfileResourceAssociationsResponse,
-    ListProfileResourceAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListProfileResourceAssociationsRequest,
-  ) => stream.Stream<
-    ProfileResourceAssociation,
-    ListProfileResourceAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ProfileResourceAssociation
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListProfileResourceAssociationsRequest,
   output: ListProfileResourceAssociationsResponse,
   errors: [
@@ -1215,27 +1177,7 @@ export const listProfileResourceAssociations: API.OperationMethod<
     items: "ProfileResourceAssociations",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListProfileResourceAssociationsRequest,
-  ListProfileResourceAssociationsResponse,
-  ListProfileResourceAssociationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListProfileResourceAssociationsRequest,
-  ) => stream.Stream<
-    ListProfileResourceAssociationsResponse,
-    ListProfileResourceAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListProfileResourceAssociationsRequest,
-  ) => stream.Stream<
-    ProfileResourceAssociation,
-    ListProfileResourceAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListProfilesError =
   | AccessDeniedException
@@ -1247,27 +1189,13 @@ export type ListProfilesError =
 /**
  * Lists all the Route 53 Profiles associated with your Amazon Web Services account.
  */
-export const listProfiles: API.OperationMethod<
+export const listProfiles: API.PaginatedOperationMethod<
   ListProfilesRequest,
   ListProfilesResponse,
   ListProfilesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListProfilesRequest,
-  ) => stream.Stream<
-    ListProfilesResponse,
-    ListProfilesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListProfilesRequest,
-  ) => stream.Stream<
-    ProfileSummary,
-    ListProfilesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ProfileSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListProfilesRequest,
   output: ListProfilesResponse,
   errors: [
@@ -1286,27 +1214,7 @@ export const listProfiles: API.OperationMethod<
     items: "ProfileSummaries",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListProfilesRequest,
-  ListProfilesResponse,
-  ListProfilesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListProfilesRequest,
-  ) => stream.Stream<
-    ListProfilesResponse,
-    ListProfilesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListProfilesRequest,
-  ) => stream.Stream<
-    ProfileSummary,
-    ListProfilesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsForResourceError =
   | AccessDeniedException
@@ -1322,7 +1230,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceRequest,
   ListTagsForResourceResponse,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -1351,7 +1259,7 @@ export const tagResource: API.OperationMethod<
   TagResourceRequest,
   TagResourceResponse,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -1380,7 +1288,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceRequest,
   UntagResourceResponse,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -1413,7 +1321,7 @@ export const updateProfileResourceAssociation: API.OperationMethod<
   UpdateProfileResourceAssociationRequest,
   UpdateProfileResourceAssociationResponse,
   UpdateProfileResourceAssociationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateProfileResourceAssociationRequest,
   output: UpdateProfileResourceAssociationResponse,

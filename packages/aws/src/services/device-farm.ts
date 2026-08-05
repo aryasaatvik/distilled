@@ -1,7 +1,6 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as redacted from "effect/Redacted";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -9,7 +8,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 import { SensitiveString } from "../sensitive.ts";
 const ns = T.XmlNamespace("http://devicefarm.amazonaws.com/doc/2015-06-23/");
 const svc = T.AwsApiService({
@@ -91,66 +89,75 @@ const rules = T.EndpointResolver((p, _) => {
 export class ArgumentException
   extends /*@__PURE__*/ S.TaggedErrorClass<ArgumentException>()(
     "ArgumentException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class CannotDeleteException
   extends /*@__PURE__*/ S.TaggedErrorClass<CannotDeleteException>()(
     "CannotDeleteException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class IdempotencyException
   extends /*@__PURE__*/ S.TaggedErrorClass<IdempotencyException>()(
     "IdempotencyException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InternalServiceException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServiceException>()(
     "InternalServiceException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(500),
   ).pipe(C.withServerError) {}
 export class InvalidOperationException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidOperationException>()(
     "InvalidOperationException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class LimitExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<LimitExceededException>()(
     "LimitExceededException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class NotEligibleException
   extends /*@__PURE__*/ S.TaggedErrorClass<NotEligibleException>()(
     "NotEligibleException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class NotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<NotFoundException>()(
     "NotFoundException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class ServiceAccountException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceAccountException>()(
     "ServiceAccountException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class TagOperationException
   extends /*@__PURE__*/ S.TaggedErrorClass<TagOperationException>()(
     "TagOperationException",
-    { message: S.optional(S.String), resourceName: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      resourceName: S.optional(S.String),
+    },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class TagPolicyException
   extends /*@__PURE__*/ S.TaggedErrorClass<TagPolicyException>()(
     "TagPolicyException",
-    { message: S.optional(S.String), resourceName: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      resourceName: S.optional(S.String),
+    },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class TooManyTagsException
   extends /*@__PURE__*/ S.TaggedErrorClass<TooManyTagsException>()(
     "TooManyTagsException",
-    { message: S.optional(S.String), resourceName: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      resourceName: S.optional(S.String),
+    },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export type AmazonResourceName = string;
@@ -3930,7 +3937,7 @@ export const createDevicePool: API.OperationMethod<
   CreateDevicePoolRequest,
   CreateDevicePoolResult,
   CreateDevicePoolError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateDevicePoolRequest,
   output: CreateDevicePoolResult,
@@ -3959,7 +3966,7 @@ export const createInstanceProfile: API.OperationMethod<
   CreateInstanceProfileRequest,
   CreateInstanceProfileResult,
   CreateInstanceProfileError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateInstanceProfileRequest,
   output: CreateInstanceProfileResult,
@@ -3987,7 +3994,7 @@ export const createNetworkProfile: API.OperationMethod<
   CreateNetworkProfileRequest,
   CreateNetworkProfileResult,
   CreateNetworkProfileError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateNetworkProfileRequest,
   output: CreateNetworkProfileResult,
@@ -4016,7 +4023,7 @@ export const createProject: API.OperationMethod<
   CreateProjectRequest,
   CreateProjectResult,
   CreateProjectError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateProjectRequest,
   output: CreateProjectResult,
@@ -4045,7 +4052,7 @@ export const createRemoteAccessSession: API.OperationMethod<
   CreateRemoteAccessSessionRequest,
   CreateRemoteAccessSessionResult,
   CreateRemoteAccessSessionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateRemoteAccessSessionRequest,
   output: CreateRemoteAccessSessionResult,
@@ -4073,7 +4080,7 @@ export const createTestGridProject: API.OperationMethod<
   CreateTestGridProjectRequest,
   CreateTestGridProjectResult,
   CreateTestGridProjectError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateTestGridProjectRequest,
   output: CreateTestGridProjectResult,
@@ -4096,7 +4103,7 @@ export const createTestGridUrl: API.OperationMethod<
   CreateTestGridUrlRequest,
   CreateTestGridUrlResult,
   CreateTestGridUrlError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateTestGridUrlRequest,
   output: CreateTestGridUrlResult,
@@ -4119,7 +4126,7 @@ export const createUpload: API.OperationMethod<
   CreateUploadRequest,
   CreateUploadResult,
   CreateUploadError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateUploadRequest,
   output: CreateUploadResult,
@@ -4147,7 +4154,7 @@ export const createVPCEConfiguration: API.OperationMethod<
   CreateVPCEConfigurationRequest,
   CreateVPCEConfigurationResult,
   CreateVPCEConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateVPCEConfigurationRequest,
   output: CreateVPCEConfigurationResult,
@@ -4171,7 +4178,7 @@ export const deleteDevicePool: API.OperationMethod<
   DeleteDevicePoolRequest,
   DeleteDevicePoolResult,
   DeleteDevicePoolError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteDevicePoolRequest,
   output: DeleteDevicePoolResult,
@@ -4199,7 +4206,7 @@ export const deleteInstanceProfile: API.OperationMethod<
   DeleteInstanceProfileRequest,
   DeleteInstanceProfileResult,
   DeleteInstanceProfileError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteInstanceProfileRequest,
   output: DeleteInstanceProfileResult,
@@ -4227,7 +4234,7 @@ export const deleteNetworkProfile: API.OperationMethod<
   DeleteNetworkProfileRequest,
   DeleteNetworkProfileResult,
   DeleteNetworkProfileError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteNetworkProfileRequest,
   output: DeleteNetworkProfileResult,
@@ -4257,7 +4264,7 @@ export const deleteProject: API.OperationMethod<
   DeleteProjectRequest,
   DeleteProjectResult,
   DeleteProjectError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteProjectRequest,
   output: DeleteProjectResult,
@@ -4287,7 +4294,7 @@ export const deleteRemoteAccessSession: API.OperationMethod<
   DeleteRemoteAccessSessionRequest,
   DeleteRemoteAccessSessionResult,
   DeleteRemoteAccessSessionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteRemoteAccessSessionRequest,
   output: DeleteRemoteAccessSessionResult,
@@ -4317,7 +4324,7 @@ export const deleteRun: API.OperationMethod<
   DeleteRunRequest,
   DeleteRunResult,
   DeleteRunError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteRunRequest,
   output: DeleteRunResult,
@@ -4347,7 +4354,7 @@ export const deleteTestGridProject: API.OperationMethod<
   DeleteTestGridProjectRequest,
   DeleteTestGridProjectResult,
   DeleteTestGridProjectError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteTestGridProjectRequest,
   output: DeleteTestGridProjectResult,
@@ -4375,7 +4382,7 @@ export const deleteUpload: API.OperationMethod<
   DeleteUploadRequest,
   DeleteUploadResult,
   DeleteUploadError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteUploadRequest,
   output: DeleteUploadResult,
@@ -4403,7 +4410,7 @@ export const deleteVPCEConfiguration: API.OperationMethod<
   DeleteVPCEConfigurationRequest,
   DeleteVPCEConfigurationResult,
   DeleteVPCEConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteVPCEConfigurationRequest,
   output: DeleteVPCEConfigurationResult,
@@ -4432,7 +4439,7 @@ export const getAccountSettings: API.OperationMethod<
   GetAccountSettingsRequest,
   GetAccountSettingsResult,
   GetAccountSettingsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetAccountSettingsRequest,
   output: GetAccountSettingsResult,
@@ -4460,7 +4467,7 @@ export const getDevice: API.OperationMethod<
   GetDeviceRequest,
   GetDeviceResult,
   GetDeviceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetDeviceRequest,
   output: GetDeviceResult,
@@ -4488,7 +4495,7 @@ export const getDeviceInstance: API.OperationMethod<
   GetDeviceInstanceRequest,
   GetDeviceInstanceResult,
   GetDeviceInstanceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetDeviceInstanceRequest,
   output: GetDeviceInstanceResult,
@@ -4516,7 +4523,7 @@ export const getDevicePool: API.OperationMethod<
   GetDevicePoolRequest,
   GetDevicePoolResult,
   GetDevicePoolError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetDevicePoolRequest,
   output: GetDevicePoolResult,
@@ -4544,7 +4551,7 @@ export const getDevicePoolCompatibility: API.OperationMethod<
   GetDevicePoolCompatibilityRequest,
   GetDevicePoolCompatibilityResult,
   GetDevicePoolCompatibilityError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetDevicePoolCompatibilityRequest,
   output: GetDevicePoolCompatibilityResult,
@@ -4572,7 +4579,7 @@ export const getInstanceProfile: API.OperationMethod<
   GetInstanceProfileRequest,
   GetInstanceProfileResult,
   GetInstanceProfileError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetInstanceProfileRequest,
   output: GetInstanceProfileResult,
@@ -4600,7 +4607,7 @@ export const getJob: API.OperationMethod<
   GetJobRequest,
   GetJobResult,
   GetJobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetJobRequest,
   output: GetJobResult,
@@ -4628,7 +4635,7 @@ export const getNetworkProfile: API.OperationMethod<
   GetNetworkProfileRequest,
   GetNetworkProfileResult,
   GetNetworkProfileError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetNetworkProfileRequest,
   output: GetNetworkProfileResult,
@@ -4656,27 +4663,13 @@ export type GetOfferingStatusError =
  * period. The API returns a `NotEligible` error if the user is not permitted to invoke the
  * operation. If you must be able to invoke this operation, contact aws-devicefarm-support@amazon.com.
  */
-export const getOfferingStatus: API.OperationMethod<
+export const getOfferingStatus: API.PaginatedOperationMethod<
   GetOfferingStatusRequest,
   GetOfferingStatusResult,
   GetOfferingStatusError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetOfferingStatusRequest,
-  ) => stream.Stream<
-    GetOfferingStatusResult,
-    GetOfferingStatusError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetOfferingStatusRequest,
-  ) => stream.Stream<
-    unknown,
-    GetOfferingStatusError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetOfferingStatusRequest,
   output: GetOfferingStatusResult,
   errors: [
@@ -4690,27 +4683,7 @@ export const getOfferingStatus: API.OperationMethod<
   retry: Retry,
   operationName: "GetOfferingStatus",
   pagination: { inputToken: "nextToken", outputToken: "nextToken" } as const,
-})) as any as API.OperationMethod<
-  GetOfferingStatusRequest,
-  GetOfferingStatusResult,
-  GetOfferingStatusError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetOfferingStatusRequest,
-  ) => stream.Stream<
-    GetOfferingStatusResult,
-    GetOfferingStatusError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetOfferingStatusRequest,
-  ) => stream.Stream<
-    unknown,
-    GetOfferingStatusError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetProjectError =
   | ArgumentException
@@ -4725,7 +4698,7 @@ export const getProject: API.OperationMethod<
   GetProjectRequest,
   GetProjectResult,
   GetProjectError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetProjectRequest,
   output: GetProjectResult,
@@ -4753,7 +4726,7 @@ export const getRemoteAccessSession: API.OperationMethod<
   GetRemoteAccessSessionRequest,
   GetRemoteAccessSessionResult,
   GetRemoteAccessSessionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetRemoteAccessSessionRequest,
   output: GetRemoteAccessSessionResult,
@@ -4781,7 +4754,7 @@ export const getRun: API.OperationMethod<
   GetRunRequest,
   GetRunResult,
   GetRunError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetRunRequest,
   output: GetRunResult,
@@ -4809,7 +4782,7 @@ export const getSuite: API.OperationMethod<
   GetSuiteRequest,
   GetSuiteResult,
   GetSuiteError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetSuiteRequest,
   output: GetSuiteResult,
@@ -4837,7 +4810,7 @@ export const getTest: API.OperationMethod<
   GetTestRequest,
   GetTestResult,
   GetTestError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetTestRequest,
   output: GetTestResult,
@@ -4864,7 +4837,7 @@ export const getTestGridProject: API.OperationMethod<
   GetTestGridProjectRequest,
   GetTestGridProjectResult,
   GetTestGridProjectError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetTestGridProjectRequest,
   output: GetTestGridProjectResult,
@@ -4890,7 +4863,7 @@ export const getTestGridSession: API.OperationMethod<
   GetTestGridSessionRequest,
   GetTestGridSessionResult,
   GetTestGridSessionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetTestGridSessionRequest,
   output: GetTestGridSessionResult,
@@ -4913,7 +4886,7 @@ export const getUpload: API.OperationMethod<
   GetUploadRequest,
   GetUploadResult,
   GetUploadError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetUploadRequest,
   output: GetUploadResult,
@@ -4941,7 +4914,7 @@ export const getVPCEConfiguration: API.OperationMethod<
   GetVPCEConfigurationRequest,
   GetVPCEConfigurationResult,
   GetVPCEConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetVPCEConfigurationRequest,
   output: GetVPCEConfigurationResult,
@@ -4966,7 +4939,7 @@ export const installToRemoteAccessSession: API.OperationMethod<
   InstallToRemoteAccessSessionRequest,
   InstallToRemoteAccessSessionResult,
   InstallToRemoteAccessSessionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: InstallToRemoteAccessSessionRequest,
   output: InstallToRemoteAccessSessionResult,
@@ -4990,27 +4963,13 @@ export type ListArtifactsError =
 /**
  * Gets information about artifacts.
  */
-export const listArtifacts: API.OperationMethod<
+export const listArtifacts: API.PaginatedOperationMethod<
   ListArtifactsRequest,
   ListArtifactsResult,
   ListArtifactsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListArtifactsRequest,
-  ) => stream.Stream<
-    ListArtifactsResult,
-    ListArtifactsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListArtifactsRequest,
-  ) => stream.Stream<
-    Artifact,
-    ListArtifactsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Artifact
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListArtifactsRequest,
   output: ListArtifactsResult,
   errors: [
@@ -5027,27 +4986,7 @@ export const listArtifacts: API.OperationMethod<
     outputToken: "nextToken",
     items: "artifacts",
   } as const,
-})) as any as API.OperationMethod<
-  ListArtifactsRequest,
-  ListArtifactsResult,
-  ListArtifactsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListArtifactsRequest,
-  ) => stream.Stream<
-    ListArtifactsResult,
-    ListArtifactsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListArtifactsRequest,
-  ) => stream.Stream<
-    Artifact,
-    ListArtifactsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListDeviceInstancesError =
   | ArgumentException
@@ -5063,7 +5002,7 @@ export const listDeviceInstances: API.OperationMethod<
   ListDeviceInstancesRequest,
   ListDeviceInstancesResult,
   ListDeviceInstancesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListDeviceInstancesRequest,
   output: ListDeviceInstancesResult,
@@ -5087,27 +5026,13 @@ export type ListDevicePoolsError =
 /**
  * Gets information about device pools.
  */
-export const listDevicePools: API.OperationMethod<
+export const listDevicePools: API.PaginatedOperationMethod<
   ListDevicePoolsRequest,
   ListDevicePoolsResult,
   ListDevicePoolsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDevicePoolsRequest,
-  ) => stream.Stream<
-    ListDevicePoolsResult,
-    ListDevicePoolsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDevicePoolsRequest,
-  ) => stream.Stream<
-    DevicePool,
-    ListDevicePoolsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  DevicePool
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListDevicePoolsRequest,
   output: ListDevicePoolsResult,
   errors: [
@@ -5124,27 +5049,7 @@ export const listDevicePools: API.OperationMethod<
     outputToken: "nextToken",
     items: "devicePools",
   } as const,
-})) as any as API.OperationMethod<
-  ListDevicePoolsRequest,
-  ListDevicePoolsResult,
-  ListDevicePoolsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDevicePoolsRequest,
-  ) => stream.Stream<
-    ListDevicePoolsResult,
-    ListDevicePoolsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDevicePoolsRequest,
-  ) => stream.Stream<
-    DevicePool,
-    ListDevicePoolsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListDevicesError =
   | ArgumentException
@@ -5155,27 +5060,13 @@ export type ListDevicesError =
 /**
  * Gets information about unique device types.
  */
-export const listDevices: API.OperationMethod<
+export const listDevices: API.PaginatedOperationMethod<
   ListDevicesRequest,
   ListDevicesResult,
   ListDevicesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDevicesRequest,
-  ) => stream.Stream<
-    ListDevicesResult,
-    ListDevicesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDevicesRequest,
-  ) => stream.Stream<
-    Device,
-    ListDevicesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Device
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListDevicesRequest,
   output: ListDevicesResult,
   errors: [
@@ -5192,27 +5083,7 @@ export const listDevices: API.OperationMethod<
     outputToken: "nextToken",
     items: "devices",
   } as const,
-})) as any as API.OperationMethod<
-  ListDevicesRequest,
-  ListDevicesResult,
-  ListDevicesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDevicesRequest,
-  ) => stream.Stream<
-    ListDevicesResult,
-    ListDevicesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDevicesRequest,
-  ) => stream.Stream<
-    Device,
-    ListDevicesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListInstanceProfilesError =
   | ArgumentException
@@ -5227,7 +5098,7 @@ export const listInstanceProfiles: API.OperationMethod<
   ListInstanceProfilesRequest,
   ListInstanceProfilesResult,
   ListInstanceProfilesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListInstanceProfilesRequest,
   output: ListInstanceProfilesResult,
@@ -5251,27 +5122,13 @@ export type ListJobsError =
 /**
  * Gets information about jobs for a given test run.
  */
-export const listJobs: API.OperationMethod<
+export const listJobs: API.PaginatedOperationMethod<
   ListJobsRequest,
   ListJobsResult,
   ListJobsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListJobsRequest,
-  ) => stream.Stream<
-    ListJobsResult,
-    ListJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListJobsRequest,
-  ) => stream.Stream<
-    Job,
-    ListJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Job
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListJobsRequest,
   output: ListJobsResult,
   errors: [
@@ -5288,27 +5145,7 @@ export const listJobs: API.OperationMethod<
     outputToken: "nextToken",
     items: "jobs",
   } as const,
-})) as any as API.OperationMethod<
-  ListJobsRequest,
-  ListJobsResult,
-  ListJobsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListJobsRequest,
-  ) => stream.Stream<
-    ListJobsResult,
-    ListJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListJobsRequest,
-  ) => stream.Stream<
-    Job,
-    ListJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListNetworkProfilesError =
   | ArgumentException
@@ -5323,7 +5160,7 @@ export const listNetworkProfiles: API.OperationMethod<
   ListNetworkProfilesRequest,
   ListNetworkProfilesResult,
   ListNetworkProfilesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListNetworkProfilesRequest,
   output: ListNetworkProfilesResult,
@@ -5354,7 +5191,7 @@ export const listOfferingPromotions: API.OperationMethod<
   ListOfferingPromotionsRequest,
   ListOfferingPromotionsResult,
   ListOfferingPromotionsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListOfferingPromotionsRequest,
   output: ListOfferingPromotionsResult,
@@ -5383,27 +5220,13 @@ export type ListOfferingsError =
  * `NotEligible` error if the user is not permitted to invoke the operation. If you must be
  * able to invoke this operation, contact aws-devicefarm-support@amazon.com.
  */
-export const listOfferings: API.OperationMethod<
+export const listOfferings: API.PaginatedOperationMethod<
   ListOfferingsRequest,
   ListOfferingsResult,
   ListOfferingsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListOfferingsRequest,
-  ) => stream.Stream<
-    ListOfferingsResult,
-    ListOfferingsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListOfferingsRequest,
-  ) => stream.Stream<
-    Offering,
-    ListOfferingsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Offering
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListOfferingsRequest,
   output: ListOfferingsResult,
   errors: [
@@ -5421,27 +5244,7 @@ export const listOfferings: API.OperationMethod<
     outputToken: "nextToken",
     items: "offerings",
   } as const,
-})) as any as API.OperationMethod<
-  ListOfferingsRequest,
-  ListOfferingsResult,
-  ListOfferingsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListOfferingsRequest,
-  ) => stream.Stream<
-    ListOfferingsResult,
-    ListOfferingsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListOfferingsRequest,
-  ) => stream.Stream<
-    Offering,
-    ListOfferingsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListOfferingTransactionsError =
   | ArgumentException
@@ -5456,27 +5259,13 @@ export type ListOfferingTransactionsError =
  * The API returns a `NotEligible` error if the user is not permitted to invoke the operation. If
  * you must be able to invoke this operation, contact aws-devicefarm-support@amazon.com.
  */
-export const listOfferingTransactions: API.OperationMethod<
+export const listOfferingTransactions: API.PaginatedOperationMethod<
   ListOfferingTransactionsRequest,
   ListOfferingTransactionsResult,
   ListOfferingTransactionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListOfferingTransactionsRequest,
-  ) => stream.Stream<
-    ListOfferingTransactionsResult,
-    ListOfferingTransactionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListOfferingTransactionsRequest,
-  ) => stream.Stream<
-    OfferingTransaction,
-    ListOfferingTransactionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  OfferingTransaction
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListOfferingTransactionsRequest,
   output: ListOfferingTransactionsResult,
   errors: [
@@ -5494,27 +5283,7 @@ export const listOfferingTransactions: API.OperationMethod<
     outputToken: "nextToken",
     items: "offeringTransactions",
   } as const,
-})) as any as API.OperationMethod<
-  ListOfferingTransactionsRequest,
-  ListOfferingTransactionsResult,
-  ListOfferingTransactionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListOfferingTransactionsRequest,
-  ) => stream.Stream<
-    ListOfferingTransactionsResult,
-    ListOfferingTransactionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListOfferingTransactionsRequest,
-  ) => stream.Stream<
-    OfferingTransaction,
-    ListOfferingTransactionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListProjectsError =
   | ArgumentException
@@ -5525,27 +5294,13 @@ export type ListProjectsError =
 /**
  * Gets information about projects.
  */
-export const listProjects: API.OperationMethod<
+export const listProjects: API.PaginatedOperationMethod<
   ListProjectsRequest,
   ListProjectsResult,
   ListProjectsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListProjectsRequest,
-  ) => stream.Stream<
-    ListProjectsResult,
-    ListProjectsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListProjectsRequest,
-  ) => stream.Stream<
-    Project,
-    ListProjectsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Project
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListProjectsRequest,
   output: ListProjectsResult,
   errors: [
@@ -5562,27 +5317,7 @@ export const listProjects: API.OperationMethod<
     outputToken: "nextToken",
     items: "projects",
   } as const,
-})) as any as API.OperationMethod<
-  ListProjectsRequest,
-  ListProjectsResult,
-  ListProjectsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListProjectsRequest,
-  ) => stream.Stream<
-    ListProjectsResult,
-    ListProjectsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListProjectsRequest,
-  ) => stream.Stream<
-    Project,
-    ListProjectsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListRemoteAccessSessionsError =
   | ArgumentException
@@ -5597,7 +5332,7 @@ export const listRemoteAccessSessions: API.OperationMethod<
   ListRemoteAccessSessionsRequest,
   ListRemoteAccessSessionsResult,
   ListRemoteAccessSessionsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListRemoteAccessSessionsRequest,
   output: ListRemoteAccessSessionsResult,
@@ -5621,27 +5356,13 @@ export type ListRunsError =
 /**
  * Gets information about runs, given an AWS Device Farm project ARN.
  */
-export const listRuns: API.OperationMethod<
+export const listRuns: API.PaginatedOperationMethod<
   ListRunsRequest,
   ListRunsResult,
   ListRunsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListRunsRequest,
-  ) => stream.Stream<
-    ListRunsResult,
-    ListRunsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListRunsRequest,
-  ) => stream.Stream<
-    Run,
-    ListRunsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Run
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListRunsRequest,
   output: ListRunsResult,
   errors: [
@@ -5658,27 +5379,7 @@ export const listRuns: API.OperationMethod<
     outputToken: "nextToken",
     items: "runs",
   } as const,
-})) as any as API.OperationMethod<
-  ListRunsRequest,
-  ListRunsResult,
-  ListRunsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListRunsRequest,
-  ) => stream.Stream<
-    ListRunsResult,
-    ListRunsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListRunsRequest,
-  ) => stream.Stream<
-    Run,
-    ListRunsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListSamplesError =
   | ArgumentException
@@ -5689,27 +5390,13 @@ export type ListSamplesError =
 /**
  * Gets information about samples, given an AWS Device Farm job ARN.
  */
-export const listSamples: API.OperationMethod<
+export const listSamples: API.PaginatedOperationMethod<
   ListSamplesRequest,
   ListSamplesResult,
   ListSamplesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSamplesRequest,
-  ) => stream.Stream<
-    ListSamplesResult,
-    ListSamplesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSamplesRequest,
-  ) => stream.Stream<
-    Sample,
-    ListSamplesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Sample
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListSamplesRequest,
   output: ListSamplesResult,
   errors: [
@@ -5726,27 +5413,7 @@ export const listSamples: API.OperationMethod<
     outputToken: "nextToken",
     items: "samples",
   } as const,
-})) as any as API.OperationMethod<
-  ListSamplesRequest,
-  ListSamplesResult,
-  ListSamplesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSamplesRequest,
-  ) => stream.Stream<
-    ListSamplesResult,
-    ListSamplesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSamplesRequest,
-  ) => stream.Stream<
-    Sample,
-    ListSamplesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListSuitesError =
   | ArgumentException
@@ -5757,27 +5424,13 @@ export type ListSuitesError =
 /**
  * Gets information about test suites for a given job.
  */
-export const listSuites: API.OperationMethod<
+export const listSuites: API.PaginatedOperationMethod<
   ListSuitesRequest,
   ListSuitesResult,
   ListSuitesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSuitesRequest,
-  ) => stream.Stream<
-    ListSuitesResult,
-    ListSuitesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSuitesRequest,
-  ) => stream.Stream<
-    Suite,
-    ListSuitesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Suite
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListSuitesRequest,
   output: ListSuitesResult,
   errors: [
@@ -5794,27 +5447,7 @@ export const listSuites: API.OperationMethod<
     outputToken: "nextToken",
     items: "suites",
   } as const,
-})) as any as API.OperationMethod<
-  ListSuitesRequest,
-  ListSuitesResult,
-  ListSuitesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSuitesRequest,
-  ) => stream.Stream<
-    ListSuitesResult,
-    ListSuitesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSuitesRequest,
-  ) => stream.Stream<
-    Suite,
-    ListSuitesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsForResourceError =
   | ArgumentException
@@ -5828,7 +5461,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceRequest,
   ListTagsForResourceResponse,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -5845,27 +5478,13 @@ export type ListTestGridProjectsError =
 /**
  * Gets a list of all Selenium testing projects in your account.
  */
-export const listTestGridProjects: API.OperationMethod<
+export const listTestGridProjects: API.PaginatedOperationMethod<
   ListTestGridProjectsRequest,
   ListTestGridProjectsResult,
   ListTestGridProjectsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTestGridProjectsRequest,
-  ) => stream.Stream<
-    ListTestGridProjectsResult,
-    ListTestGridProjectsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTestGridProjectsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListTestGridProjectsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListTestGridProjectsRequest,
   output: ListTestGridProjectsResult,
   errors: [ArgumentException, InternalServiceException],
@@ -5877,27 +5496,7 @@ export const listTestGridProjects: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResult",
   } as const,
-})) as any as API.OperationMethod<
-  ListTestGridProjectsRequest,
-  ListTestGridProjectsResult,
-  ListTestGridProjectsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTestGridProjectsRequest,
-  ) => stream.Stream<
-    ListTestGridProjectsResult,
-    ListTestGridProjectsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTestGridProjectsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListTestGridProjectsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTestGridSessionActionsError =
   | ArgumentException
@@ -5907,27 +5506,13 @@ export type ListTestGridSessionActionsError =
 /**
  * Returns a list of the actions taken in a TestGridSession.
  */
-export const listTestGridSessionActions: API.OperationMethod<
+export const listTestGridSessionActions: API.PaginatedOperationMethod<
   ListTestGridSessionActionsRequest,
   ListTestGridSessionActionsResult,
   ListTestGridSessionActionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTestGridSessionActionsRequest,
-  ) => stream.Stream<
-    ListTestGridSessionActionsResult,
-    ListTestGridSessionActionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTestGridSessionActionsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListTestGridSessionActionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListTestGridSessionActionsRequest,
   output: ListTestGridSessionActionsResult,
   errors: [ArgumentException, InternalServiceException, NotFoundException],
@@ -5939,27 +5524,7 @@ export const listTestGridSessionActions: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResult",
   } as const,
-})) as any as API.OperationMethod<
-  ListTestGridSessionActionsRequest,
-  ListTestGridSessionActionsResult,
-  ListTestGridSessionActionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTestGridSessionActionsRequest,
-  ) => stream.Stream<
-    ListTestGridSessionActionsResult,
-    ListTestGridSessionActionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTestGridSessionActionsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListTestGridSessionActionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTestGridSessionArtifactsError =
   | ArgumentException
@@ -5969,27 +5534,13 @@ export type ListTestGridSessionArtifactsError =
 /**
  * Retrieves a list of artifacts created during the session.
  */
-export const listTestGridSessionArtifacts: API.OperationMethod<
+export const listTestGridSessionArtifacts: API.PaginatedOperationMethod<
   ListTestGridSessionArtifactsRequest,
   ListTestGridSessionArtifactsResult,
   ListTestGridSessionArtifactsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTestGridSessionArtifactsRequest,
-  ) => stream.Stream<
-    ListTestGridSessionArtifactsResult,
-    ListTestGridSessionArtifactsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTestGridSessionArtifactsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListTestGridSessionArtifactsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListTestGridSessionArtifactsRequest,
   output: ListTestGridSessionArtifactsResult,
   errors: [ArgumentException, InternalServiceException, NotFoundException],
@@ -6001,27 +5552,7 @@ export const listTestGridSessionArtifacts: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResult",
   } as const,
-})) as any as API.OperationMethod<
-  ListTestGridSessionArtifactsRequest,
-  ListTestGridSessionArtifactsResult,
-  ListTestGridSessionArtifactsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTestGridSessionArtifactsRequest,
-  ) => stream.Stream<
-    ListTestGridSessionArtifactsResult,
-    ListTestGridSessionArtifactsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTestGridSessionArtifactsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListTestGridSessionArtifactsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTestGridSessionsError =
   | ArgumentException
@@ -6031,27 +5562,13 @@ export type ListTestGridSessionsError =
 /**
  * Retrieves a list of sessions for a TestGridProject.
  */
-export const listTestGridSessions: API.OperationMethod<
+export const listTestGridSessions: API.PaginatedOperationMethod<
   ListTestGridSessionsRequest,
   ListTestGridSessionsResult,
   ListTestGridSessionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTestGridSessionsRequest,
-  ) => stream.Stream<
-    ListTestGridSessionsResult,
-    ListTestGridSessionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTestGridSessionsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListTestGridSessionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListTestGridSessionsRequest,
   output: ListTestGridSessionsResult,
   errors: [ArgumentException, InternalServiceException, NotFoundException],
@@ -6063,27 +5580,7 @@ export const listTestGridSessions: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResult",
   } as const,
-})) as any as API.OperationMethod<
-  ListTestGridSessionsRequest,
-  ListTestGridSessionsResult,
-  ListTestGridSessionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTestGridSessionsRequest,
-  ) => stream.Stream<
-    ListTestGridSessionsResult,
-    ListTestGridSessionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTestGridSessionsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListTestGridSessionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTestsError =
   | ArgumentException
@@ -6094,27 +5591,13 @@ export type ListTestsError =
 /**
  * Gets information about tests in a given test suite.
  */
-export const listTests: API.OperationMethod<
+export const listTests: API.PaginatedOperationMethod<
   ListTestsRequest,
   ListTestsResult,
   ListTestsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTestsRequest,
-  ) => stream.Stream<
-    ListTestsResult,
-    ListTestsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTestsRequest,
-  ) => stream.Stream<
-    Test,
-    ListTestsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Test
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListTestsRequest,
   output: ListTestsResult,
   errors: [
@@ -6131,27 +5614,7 @@ export const listTests: API.OperationMethod<
     outputToken: "nextToken",
     items: "tests",
   } as const,
-})) as any as API.OperationMethod<
-  ListTestsRequest,
-  ListTestsResult,
-  ListTestsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTestsRequest,
-  ) => stream.Stream<
-    ListTestsResult,
-    ListTestsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTestsRequest,
-  ) => stream.Stream<
-    Test,
-    ListTestsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListUniqueProblemsError =
   | ArgumentException
@@ -6167,27 +5630,13 @@ export type ListUniqueProblemsError =
  * MyActivity.java:386), `ListUniqueProblems` returns a single entry instead of many
  * individual entries for that exception.
  */
-export const listUniqueProblems: API.OperationMethod<
+export const listUniqueProblems: API.PaginatedOperationMethod<
   ListUniqueProblemsRequest,
   ListUniqueProblemsResult,
   ListUniqueProblemsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListUniqueProblemsRequest,
-  ) => stream.Stream<
-    ListUniqueProblemsResult,
-    ListUniqueProblemsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListUniqueProblemsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListUniqueProblemsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListUniqueProblemsRequest,
   output: ListUniqueProblemsResult,
   errors: [
@@ -6204,27 +5653,7 @@ export const listUniqueProblems: API.OperationMethod<
     outputToken: "nextToken",
     items: "uniqueProblems",
   } as const,
-})) as any as API.OperationMethod<
-  ListUniqueProblemsRequest,
-  ListUniqueProblemsResult,
-  ListUniqueProblemsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListUniqueProblemsRequest,
-  ) => stream.Stream<
-    ListUniqueProblemsResult,
-    ListUniqueProblemsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListUniqueProblemsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListUniqueProblemsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListUploadsError =
   | ArgumentException
@@ -6235,27 +5664,13 @@ export type ListUploadsError =
 /**
  * Gets information about uploads, given an AWS Device Farm project ARN.
  */
-export const listUploads: API.OperationMethod<
+export const listUploads: API.PaginatedOperationMethod<
   ListUploadsRequest,
   ListUploadsResult,
   ListUploadsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListUploadsRequest,
-  ) => stream.Stream<
-    ListUploadsResult,
-    ListUploadsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListUploadsRequest,
-  ) => stream.Stream<
-    Upload,
-    ListUploadsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Upload
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListUploadsRequest,
   output: ListUploadsResult,
   errors: [
@@ -6272,27 +5687,7 @@ export const listUploads: API.OperationMethod<
     outputToken: "nextToken",
     items: "uploads",
   } as const,
-})) as any as API.OperationMethod<
-  ListUploadsRequest,
-  ListUploadsResult,
-  ListUploadsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListUploadsRequest,
-  ) => stream.Stream<
-    ListUploadsResult,
-    ListUploadsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListUploadsRequest,
-  ) => stream.Stream<
-    Upload,
-    ListUploadsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListVPCEConfigurationsError =
   | ArgumentException
@@ -6306,7 +5701,7 @@ export const listVPCEConfigurations: API.OperationMethod<
   ListVPCEConfigurationsRequest,
   ListVPCEConfigurationsResult,
   ListVPCEConfigurationsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListVPCEConfigurationsRequest,
   output: ListVPCEConfigurationsResult,
@@ -6333,7 +5728,7 @@ export const purchaseOffering: API.OperationMethod<
   PurchaseOfferingRequest,
   PurchaseOfferingResult,
   PurchaseOfferingError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PurchaseOfferingRequest,
   output: PurchaseOfferingResult,
@@ -6365,7 +5760,7 @@ export const renewOffering: API.OperationMethod<
   RenewOfferingRequest,
   RenewOfferingResult,
   RenewOfferingError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RenewOfferingRequest,
   output: RenewOfferingResult,
@@ -6395,7 +5790,7 @@ export const scheduleRun: API.OperationMethod<
   ScheduleRunRequest,
   ScheduleRunResult,
   ScheduleRunError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ScheduleRunRequest,
   output: ScheduleRunResult,
@@ -6427,7 +5822,7 @@ export const stopJob: API.OperationMethod<
   StopJobRequest,
   StopJobResult,
   StopJobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StopJobRequest,
   output: StopJobResult,
@@ -6455,7 +5850,7 @@ export const stopRemoteAccessSession: API.OperationMethod<
   StopRemoteAccessSessionRequest,
   StopRemoteAccessSessionResult,
   StopRemoteAccessSessionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StopRemoteAccessSessionRequest,
   output: StopRemoteAccessSessionResult,
@@ -6486,7 +5881,7 @@ export const stopRun: API.OperationMethod<
   StopRunRequest,
   StopRunResult,
   StopRunError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StopRunRequest,
   output: StopRunResult,
@@ -6517,7 +5912,7 @@ export const tagResource: API.OperationMethod<
   TagResourceRequest,
   TagResourceResponse,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -6545,7 +5940,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceRequest,
   UntagResourceResponse,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -6568,7 +5963,7 @@ export const updateDeviceInstance: API.OperationMethod<
   UpdateDeviceInstanceRequest,
   UpdateDeviceInstanceResult,
   UpdateDeviceInstanceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateDeviceInstanceRequest,
   output: UpdateDeviceInstanceResult,
@@ -6598,7 +5993,7 @@ export const updateDevicePool: API.OperationMethod<
   UpdateDevicePoolRequest,
   UpdateDevicePoolResult,
   UpdateDevicePoolError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateDevicePoolRequest,
   output: UpdateDevicePoolResult,
@@ -6626,7 +6021,7 @@ export const updateInstanceProfile: API.OperationMethod<
   UpdateInstanceProfileRequest,
   UpdateInstanceProfileResult,
   UpdateInstanceProfileError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateInstanceProfileRequest,
   output: UpdateInstanceProfileResult,
@@ -6654,7 +6049,7 @@ export const updateNetworkProfile: API.OperationMethod<
   UpdateNetworkProfileRequest,
   UpdateNetworkProfileResult,
   UpdateNetworkProfileError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateNetworkProfileRequest,
   output: UpdateNetworkProfileResult,
@@ -6683,7 +6078,7 @@ export const updateProject: API.OperationMethod<
   UpdateProjectRequest,
   UpdateProjectResult,
   UpdateProjectError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateProjectRequest,
   output: UpdateProjectResult,
@@ -6711,7 +6106,7 @@ export const updateTestGridProject: API.OperationMethod<
   UpdateTestGridProjectRequest,
   UpdateTestGridProjectResult,
   UpdateTestGridProjectError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateTestGridProjectRequest,
   output: UpdateTestGridProjectResult,
@@ -6739,7 +6134,7 @@ export const updateUpload: API.OperationMethod<
   UpdateUploadRequest,
   UpdateUploadResult,
   UpdateUploadError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateUploadRequest,
   output: UpdateUploadResult,
@@ -6767,7 +6162,7 @@ export const updateVPCEConfiguration: API.OperationMethod<
   UpdateVPCEConfigurationRequest,
   UpdateVPCEConfigurationResult,
   UpdateVPCEConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateVPCEConfigurationRequest,
   output: UpdateVPCEConfigurationResult,

@@ -1,7 +1,6 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as redacted from "effect/Redacted";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -9,7 +8,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 import { SensitiveString } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "MailManager",
@@ -90,37 +88,37 @@ const rules = T.EndpointResolver((p, _) => {
 export class AccessDeniedException
   extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
     "AccessDeniedException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(403),
   ).pipe(C.withAuthError) {}
 export class ConflictException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
     "ConflictException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class ServiceQuotaExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
     "ServiceQuotaExceededException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(402),
   ).pipe(C.withQuotaError) {}
 export class ThrottlingException
   extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
     "ThrottlingException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(429),
   ).pipe(C.withThrottlingError) {}
 export class ValidationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
     "ValidationException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export type IdempotencyToken = string;
@@ -3285,7 +3283,7 @@ export const createAddonInstance: API.OperationMethod<
   CreateAddonInstanceRequest,
   CreateAddonInstanceResponse,
   CreateAddonInstanceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateAddonInstanceRequest,
   output: CreateAddonInstanceResponse,
@@ -3313,7 +3311,7 @@ export const createAddonSubscription: API.OperationMethod<
   CreateAddonSubscriptionRequest,
   CreateAddonSubscriptionResponse,
   CreateAddonSubscriptionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateAddonSubscriptionRequest,
   output: CreateAddonSubscriptionResponse,
@@ -3342,7 +3340,7 @@ export const createAddressList: API.OperationMethod<
   CreateAddressListRequest,
   CreateAddressListResponse,
   CreateAddressListError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateAddressListRequest,
   output: CreateAddressListResponse,
@@ -3371,7 +3369,7 @@ export const createAddressListImportJob: API.OperationMethod<
   CreateAddressListImportJobRequest,
   CreateAddressListImportJobResponse,
   CreateAddressListImportJobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateAddressListImportJobRequest,
   output: CreateAddressListImportJobResponse,
@@ -3400,7 +3398,7 @@ export const createArchive: API.OperationMethod<
   CreateArchiveRequest,
   CreateArchiveResponse,
   CreateArchiveError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateArchiveRequest,
   output: CreateArchiveResponse,
@@ -3428,7 +3426,7 @@ export const createIngressPoint: API.OperationMethod<
   CreateIngressPointRequest,
   CreateIngressPointResponse,
   CreateIngressPointError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateIngressPointRequest,
   output: CreateIngressPointResponse,
@@ -3454,7 +3452,7 @@ export const createRelay: API.OperationMethod<
   CreateRelayRequest,
   CreateRelayResponse,
   CreateRelayError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateRelayRequest,
   output: CreateRelayResponse,
@@ -3480,7 +3478,7 @@ export const createRuleSet: API.OperationMethod<
   CreateRuleSetRequest,
   CreateRuleSetResponse,
   CreateRuleSetError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateRuleSetRequest,
   output: CreateRuleSetResponse,
@@ -3506,7 +3504,7 @@ export const createTrafficPolicy: API.OperationMethod<
   CreateTrafficPolicyRequest,
   CreateTrafficPolicyResponse,
   CreateTrafficPolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateTrafficPolicyRequest,
   output: CreateTrafficPolicyResponse,
@@ -3531,7 +3529,7 @@ export const deleteAddonInstance: API.OperationMethod<
   DeleteAddonInstanceRequest,
   DeleteAddonInstanceResponse,
   DeleteAddonInstanceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteAddonInstanceRequest,
   output: DeleteAddonInstanceResponse,
@@ -3552,7 +3550,7 @@ export const deleteAddonSubscription: API.OperationMethod<
   DeleteAddonSubscriptionRequest,
   DeleteAddonSubscriptionResponse,
   DeleteAddonSubscriptionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteAddonSubscriptionRequest,
   output: DeleteAddonSubscriptionResponse,
@@ -3575,7 +3573,7 @@ export const deleteAddressList: API.OperationMethod<
   DeleteAddressListRequest,
   DeleteAddressListResponse,
   DeleteAddressListError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteAddressListRequest,
   output: DeleteAddressListResponse,
@@ -3603,7 +3601,7 @@ export const deleteArchive: API.OperationMethod<
   DeleteArchiveRequest,
   DeleteArchiveResponse,
   DeleteArchiveError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteArchiveRequest,
   output: DeleteArchiveResponse,
@@ -3630,7 +3628,7 @@ export const deleteIngressPoint: API.OperationMethod<
   DeleteIngressPointRequest,
   DeleteIngressPointResponse,
   DeleteIngressPointError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteIngressPointRequest,
   output: DeleteIngressPointResponse,
@@ -3652,7 +3650,7 @@ export const deleteRelay: API.OperationMethod<
   DeleteRelayRequest,
   DeleteRelayResponse,
   DeleteRelayError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteRelayRequest,
   output: DeleteRelayResponse,
@@ -3673,7 +3671,7 @@ export const deleteRuleSet: API.OperationMethod<
   DeleteRuleSetRequest,
   DeleteRuleSetResponse,
   DeleteRuleSetError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteRuleSetRequest,
   output: DeleteRuleSetResponse,
@@ -3695,7 +3693,7 @@ export const deleteTrafficPolicy: API.OperationMethod<
   DeleteTrafficPolicyRequest,
   DeleteTrafficPolicyResponse,
   DeleteTrafficPolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteTrafficPolicyRequest,
   output: DeleteTrafficPolicyResponse,
@@ -3719,7 +3717,7 @@ export const deregisterMemberFromAddressList: API.OperationMethod<
   DeregisterMemberFromAddressListRequest,
   DeregisterMemberFromAddressListResponse,
   DeregisterMemberFromAddressListError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeregisterMemberFromAddressListRequest,
   output: DeregisterMemberFromAddressListResponse,
@@ -3746,7 +3744,7 @@ export const getAddonInstance: API.OperationMethod<
   GetAddonInstanceRequest,
   GetAddonInstanceResponse,
   GetAddonInstanceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetAddonInstanceRequest,
   output: GetAddonInstanceResponse,
@@ -3767,7 +3765,7 @@ export const getAddonSubscription: API.OperationMethod<
   GetAddonSubscriptionRequest,
   GetAddonSubscriptionResponse,
   GetAddonSubscriptionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetAddonSubscriptionRequest,
   output: GetAddonSubscriptionResponse,
@@ -3790,7 +3788,7 @@ export const getAddressList: API.OperationMethod<
   GetAddressListRequest,
   GetAddressListResponse,
   GetAddressListError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetAddressListRequest,
   output: GetAddressListResponse,
@@ -3818,7 +3816,7 @@ export const getAddressListImportJob: API.OperationMethod<
   GetAddressListImportJobRequest,
   GetAddressListImportJobResponse,
   GetAddressListImportJobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetAddressListImportJobRequest,
   output: GetAddressListImportJobResponse,
@@ -3846,7 +3844,7 @@ export const getArchive: API.OperationMethod<
   GetArchiveRequest,
   GetArchiveResponse,
   GetArchiveError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetArchiveRequest,
   output: GetArchiveResponse,
@@ -3873,7 +3871,7 @@ export const getArchiveExport: API.OperationMethod<
   GetArchiveExportRequest,
   GetArchiveExportResponse,
   GetArchiveExportError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetArchiveExportRequest,
   output: GetArchiveExportResponse,
@@ -3895,7 +3893,7 @@ export const getArchiveMessage: API.OperationMethod<
   GetArchiveMessageRequest,
   GetArchiveMessageResponse,
   GetArchiveMessageError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetArchiveMessageRequest,
   output: GetArchiveMessageResponse,
@@ -3917,7 +3915,7 @@ export const getArchiveMessageContent: API.OperationMethod<
   GetArchiveMessageContentRequest,
   GetArchiveMessageContentResponse,
   GetArchiveMessageContentError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetArchiveMessageContentRequest,
   output: GetArchiveMessageContentResponse,
@@ -3939,7 +3937,7 @@ export const getArchiveSearch: API.OperationMethod<
   GetArchiveSearchRequest,
   GetArchiveSearchResponse,
   GetArchiveSearchError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetArchiveSearchRequest,
   output: GetArchiveSearchResponse,
@@ -3962,7 +3960,7 @@ export const getArchiveSearchResults: API.OperationMethod<
   GetArchiveSearchResultsRequest,
   GetArchiveSearchResultsResponse,
   GetArchiveSearchResultsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetArchiveSearchResultsRequest,
   output: GetArchiveSearchResultsResponse,
@@ -3988,7 +3986,7 @@ export const getIngressPoint: API.OperationMethod<
   GetIngressPointRequest,
   GetIngressPointResponse,
   GetIngressPointError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetIngressPointRequest,
   output: GetIngressPointResponse,
@@ -4011,7 +4009,7 @@ export const getMemberOfAddressList: API.OperationMethod<
   GetMemberOfAddressListRequest,
   GetMemberOfAddressListResponse,
   GetMemberOfAddressListError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetMemberOfAddressListRequest,
   output: GetMemberOfAddressListResponse,
@@ -4037,7 +4035,7 @@ export const getRelay: API.OperationMethod<
   GetRelayRequest,
   GetRelayResponse,
   GetRelayError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetRelayRequest,
   output: GetRelayResponse,
@@ -4058,7 +4056,7 @@ export const getRuleSet: API.OperationMethod<
   GetRuleSetRequest,
   GetRuleSetResponse,
   GetRuleSetError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetRuleSetRequest,
   output: GetRuleSetResponse,
@@ -4079,7 +4077,7 @@ export const getTrafficPolicy: API.OperationMethod<
   GetTrafficPolicyRequest,
   GetTrafficPolicyResponse,
   GetTrafficPolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetTrafficPolicyRequest,
   output: GetTrafficPolicyResponse,
@@ -4093,27 +4091,13 @@ export type ListAddonInstancesError = ValidationException | CommonErrors;
 /**
  * Lists all Add On instances in your account.
  */
-export const listAddonInstances: API.OperationMethod<
+export const listAddonInstances: API.PaginatedOperationMethod<
   ListAddonInstancesRequest,
   ListAddonInstancesResponse,
   ListAddonInstancesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAddonInstancesRequest,
-  ) => stream.Stream<
-    ListAddonInstancesResponse,
-    ListAddonInstancesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAddonInstancesRequest,
-  ) => stream.Stream<
-    AddonInstance,
-    ListAddonInstancesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  AddonInstance
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListAddonInstancesRequest,
   output: ListAddonInstancesResponse,
   errors: [ValidationException],
@@ -4126,53 +4110,19 @@ export const listAddonInstances: API.OperationMethod<
     items: "AddonInstances",
     pageSize: "PageSize",
   } as const,
-})) as any as API.OperationMethod<
-  ListAddonInstancesRequest,
-  ListAddonInstancesResponse,
-  ListAddonInstancesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAddonInstancesRequest,
-  ) => stream.Stream<
-    ListAddonInstancesResponse,
-    ListAddonInstancesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAddonInstancesRequest,
-  ) => stream.Stream<
-    AddonInstance,
-    ListAddonInstancesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListAddonSubscriptionsError = ValidationException | CommonErrors;
 /**
  * Lists all Add On subscriptions in your account.
  */
-export const listAddonSubscriptions: API.OperationMethod<
+export const listAddonSubscriptions: API.PaginatedOperationMethod<
   ListAddonSubscriptionsRequest,
   ListAddonSubscriptionsResponse,
   ListAddonSubscriptionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAddonSubscriptionsRequest,
-  ) => stream.Stream<
-    ListAddonSubscriptionsResponse,
-    ListAddonSubscriptionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAddonSubscriptionsRequest,
-  ) => stream.Stream<
-    AddonSubscription,
-    ListAddonSubscriptionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  AddonSubscription
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListAddonSubscriptionsRequest,
   output: ListAddonSubscriptionsResponse,
   errors: [ValidationException],
@@ -4185,27 +4135,7 @@ export const listAddonSubscriptions: API.OperationMethod<
     items: "AddonSubscriptions",
     pageSize: "PageSize",
   } as const,
-})) as any as API.OperationMethod<
-  ListAddonSubscriptionsRequest,
-  ListAddonSubscriptionsResponse,
-  ListAddonSubscriptionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAddonSubscriptionsRequest,
-  ) => stream.Stream<
-    ListAddonSubscriptionsResponse,
-    ListAddonSubscriptionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAddonSubscriptionsRequest,
-  ) => stream.Stream<
-    AddonSubscription,
-    ListAddonSubscriptionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListAddressListImportJobsError =
   | AccessDeniedException
@@ -4216,27 +4146,13 @@ export type ListAddressListImportJobsError =
 /**
  * Lists jobs for an address list.
  */
-export const listAddressListImportJobs: API.OperationMethod<
+export const listAddressListImportJobs: API.PaginatedOperationMethod<
   ListAddressListImportJobsRequest,
   ListAddressListImportJobsResponse,
   ListAddressListImportJobsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAddressListImportJobsRequest,
-  ) => stream.Stream<
-    ListAddressListImportJobsResponse,
-    ListAddressListImportJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAddressListImportJobsRequest,
-  ) => stream.Stream<
-    ImportJob,
-    ListAddressListImportJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ImportJob
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListAddressListImportJobsRequest,
   output: ListAddressListImportJobsResponse,
   errors: [
@@ -4254,27 +4170,7 @@ export const listAddressListImportJobs: API.OperationMethod<
     items: "ImportJobs",
     pageSize: "PageSize",
   } as const,
-})) as any as API.OperationMethod<
-  ListAddressListImportJobsRequest,
-  ListAddressListImportJobsResponse,
-  ListAddressListImportJobsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAddressListImportJobsRequest,
-  ) => stream.Stream<
-    ListAddressListImportJobsResponse,
-    ListAddressListImportJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAddressListImportJobsRequest,
-  ) => stream.Stream<
-    ImportJob,
-    ListAddressListImportJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListAddressListsError =
   | AccessDeniedException
@@ -4284,27 +4180,13 @@ export type ListAddressListsError =
 /**
  * Lists address lists for this account.
  */
-export const listAddressLists: API.OperationMethod<
+export const listAddressLists: API.PaginatedOperationMethod<
   ListAddressListsRequest,
   ListAddressListsResponse,
   ListAddressListsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAddressListsRequest,
-  ) => stream.Stream<
-    ListAddressListsResponse,
-    ListAddressListsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAddressListsRequest,
-  ) => stream.Stream<
-    AddressList,
-    ListAddressListsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  AddressList
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListAddressListsRequest,
   output: ListAddressListsResponse,
   errors: [AccessDeniedException, ThrottlingException, ValidationException],
@@ -4317,27 +4199,7 @@ export const listAddressLists: API.OperationMethod<
     items: "AddressLists",
     pageSize: "PageSize",
   } as const,
-})) as any as API.OperationMethod<
-  ListAddressListsRequest,
-  ListAddressListsResponse,
-  ListAddressListsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAddressListsRequest,
-  ) => stream.Stream<
-    ListAddressListsResponse,
-    ListAddressListsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAddressListsRequest,
-  ) => stream.Stream<
-    AddressList,
-    ListAddressListsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListArchiveExportsError =
   | AccessDeniedException
@@ -4348,27 +4210,13 @@ export type ListArchiveExportsError =
 /**
  * Returns a list of email archive export jobs.
  */
-export const listArchiveExports: API.OperationMethod<
+export const listArchiveExports: API.PaginatedOperationMethod<
   ListArchiveExportsRequest,
   ListArchiveExportsResponse,
   ListArchiveExportsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListArchiveExportsRequest,
-  ) => stream.Stream<
-    ListArchiveExportsResponse,
-    ListArchiveExportsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListArchiveExportsRequest,
-  ) => stream.Stream<
-    ExportSummary,
-    ListArchiveExportsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ExportSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListArchiveExportsRequest,
   output: ListArchiveExportsResponse,
   errors: [
@@ -4386,27 +4234,7 @@ export const listArchiveExports: API.OperationMethod<
     items: "Exports",
     pageSize: "PageSize",
   } as const,
-})) as any as API.OperationMethod<
-  ListArchiveExportsRequest,
-  ListArchiveExportsResponse,
-  ListArchiveExportsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListArchiveExportsRequest,
-  ) => stream.Stream<
-    ListArchiveExportsResponse,
-    ListArchiveExportsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListArchiveExportsRequest,
-  ) => stream.Stream<
-    ExportSummary,
-    ListArchiveExportsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListArchivesError =
   | AccessDeniedException
@@ -4416,27 +4244,13 @@ export type ListArchivesError =
 /**
  * Returns a list of all email archives in your account.
  */
-export const listArchives: API.OperationMethod<
+export const listArchives: API.PaginatedOperationMethod<
   ListArchivesRequest,
   ListArchivesResponse,
   ListArchivesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListArchivesRequest,
-  ) => stream.Stream<
-    ListArchivesResponse,
-    ListArchivesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListArchivesRequest,
-  ) => stream.Stream<
-    Archive,
-    ListArchivesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Archive
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListArchivesRequest,
   output: ListArchivesResponse,
   errors: [AccessDeniedException, ThrottlingException, ValidationException],
@@ -4449,27 +4263,7 @@ export const listArchives: API.OperationMethod<
     items: "Archives",
     pageSize: "PageSize",
   } as const,
-})) as any as API.OperationMethod<
-  ListArchivesRequest,
-  ListArchivesResponse,
-  ListArchivesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListArchivesRequest,
-  ) => stream.Stream<
-    ListArchivesResponse,
-    ListArchivesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListArchivesRequest,
-  ) => stream.Stream<
-    Archive,
-    ListArchivesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListArchiveSearchesError =
   | AccessDeniedException
@@ -4480,27 +4274,13 @@ export type ListArchiveSearchesError =
 /**
  * Returns a list of email archive search jobs.
  */
-export const listArchiveSearches: API.OperationMethod<
+export const listArchiveSearches: API.PaginatedOperationMethod<
   ListArchiveSearchesRequest,
   ListArchiveSearchesResponse,
   ListArchiveSearchesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListArchiveSearchesRequest,
-  ) => stream.Stream<
-    ListArchiveSearchesResponse,
-    ListArchiveSearchesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListArchiveSearchesRequest,
-  ) => stream.Stream<
-    SearchSummary,
-    ListArchiveSearchesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  SearchSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListArchiveSearchesRequest,
   output: ListArchiveSearchesResponse,
   errors: [
@@ -4518,53 +4298,19 @@ export const listArchiveSearches: API.OperationMethod<
     items: "Searches",
     pageSize: "PageSize",
   } as const,
-})) as any as API.OperationMethod<
-  ListArchiveSearchesRequest,
-  ListArchiveSearchesResponse,
-  ListArchiveSearchesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListArchiveSearchesRequest,
-  ) => stream.Stream<
-    ListArchiveSearchesResponse,
-    ListArchiveSearchesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListArchiveSearchesRequest,
-  ) => stream.Stream<
-    SearchSummary,
-    ListArchiveSearchesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListIngressPointsError = ValidationException | CommonErrors;
 /**
  * List all ingress endpoint resources.
  */
-export const listIngressPoints: API.OperationMethod<
+export const listIngressPoints: API.PaginatedOperationMethod<
   ListIngressPointsRequest,
   ListIngressPointsResponse,
   ListIngressPointsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListIngressPointsRequest,
-  ) => stream.Stream<
-    ListIngressPointsResponse,
-    ListIngressPointsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListIngressPointsRequest,
-  ) => stream.Stream<
-    IngressPoint,
-    ListIngressPointsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  IngressPoint
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListIngressPointsRequest,
   output: ListIngressPointsResponse,
   errors: [ValidationException],
@@ -4577,27 +4323,7 @@ export const listIngressPoints: API.OperationMethod<
     items: "IngressPoints",
     pageSize: "PageSize",
   } as const,
-})) as any as API.OperationMethod<
-  ListIngressPointsRequest,
-  ListIngressPointsResponse,
-  ListIngressPointsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListIngressPointsRequest,
-  ) => stream.Stream<
-    ListIngressPointsResponse,
-    ListIngressPointsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListIngressPointsRequest,
-  ) => stream.Stream<
-    IngressPoint,
-    ListIngressPointsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListMembersOfAddressListError =
   | AccessDeniedException
@@ -4608,27 +4334,13 @@ export type ListMembersOfAddressListError =
 /**
  * Lists members of an address list.
  */
-export const listMembersOfAddressList: API.OperationMethod<
+export const listMembersOfAddressList: API.PaginatedOperationMethod<
   ListMembersOfAddressListRequest,
   ListMembersOfAddressListResponse,
   ListMembersOfAddressListError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListMembersOfAddressListRequest,
-  ) => stream.Stream<
-    ListMembersOfAddressListResponse,
-    ListMembersOfAddressListError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListMembersOfAddressListRequest,
-  ) => stream.Stream<
-    SavedAddress,
-    ListMembersOfAddressListError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  SavedAddress
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListMembersOfAddressListRequest,
   output: ListMembersOfAddressListResponse,
   errors: [
@@ -4646,53 +4358,19 @@ export const listMembersOfAddressList: API.OperationMethod<
     items: "Addresses",
     pageSize: "PageSize",
   } as const,
-})) as any as API.OperationMethod<
-  ListMembersOfAddressListRequest,
-  ListMembersOfAddressListResponse,
-  ListMembersOfAddressListError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListMembersOfAddressListRequest,
-  ) => stream.Stream<
-    ListMembersOfAddressListResponse,
-    ListMembersOfAddressListError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListMembersOfAddressListRequest,
-  ) => stream.Stream<
-    SavedAddress,
-    ListMembersOfAddressListError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListRelaysError = ValidationException | CommonErrors;
 /**
  * Lists all the existing relay resources.
  */
-export const listRelays: API.OperationMethod<
+export const listRelays: API.PaginatedOperationMethod<
   ListRelaysRequest,
   ListRelaysResponse,
   ListRelaysError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListRelaysRequest,
-  ) => stream.Stream<
-    ListRelaysResponse,
-    ListRelaysError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListRelaysRequest,
-  ) => stream.Stream<
-    Relay,
-    ListRelaysError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Relay
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListRelaysRequest,
   output: ListRelaysResponse,
   errors: [ValidationException],
@@ -4705,53 +4383,19 @@ export const listRelays: API.OperationMethod<
     items: "Relays",
     pageSize: "PageSize",
   } as const,
-})) as any as API.OperationMethod<
-  ListRelaysRequest,
-  ListRelaysResponse,
-  ListRelaysError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListRelaysRequest,
-  ) => stream.Stream<
-    ListRelaysResponse,
-    ListRelaysError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListRelaysRequest,
-  ) => stream.Stream<
-    Relay,
-    ListRelaysError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListRuleSetsError = ValidationException | CommonErrors;
 /**
  * List rule sets for this account.
  */
-export const listRuleSets: API.OperationMethod<
+export const listRuleSets: API.PaginatedOperationMethod<
   ListRuleSetsRequest,
   ListRuleSetsResponse,
   ListRuleSetsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListRuleSetsRequest,
-  ) => stream.Stream<
-    ListRuleSetsResponse,
-    ListRuleSetsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListRuleSetsRequest,
-  ) => stream.Stream<
-    RuleSet,
-    ListRuleSetsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  RuleSet
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListRuleSetsRequest,
   output: ListRuleSetsResponse,
   errors: [ValidationException],
@@ -4764,27 +4408,7 @@ export const listRuleSets: API.OperationMethod<
     items: "RuleSets",
     pageSize: "PageSize",
   } as const,
-})) as any as API.OperationMethod<
-  ListRuleSetsRequest,
-  ListRuleSetsResponse,
-  ListRuleSetsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListRuleSetsRequest,
-  ) => stream.Stream<
-    ListRuleSetsResponse,
-    ListRuleSetsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListRuleSetsRequest,
-  ) => stream.Stream<
-    RuleSet,
-    ListRuleSetsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsForResourceError =
   | ResourceNotFoundException
@@ -4797,7 +4421,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceRequest,
   ListTagsForResourceResponse,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -4811,27 +4435,13 @@ export type ListTrafficPoliciesError = ValidationException | CommonErrors;
 /**
  * List traffic policy resources.
  */
-export const listTrafficPolicies: API.OperationMethod<
+export const listTrafficPolicies: API.PaginatedOperationMethod<
   ListTrafficPoliciesRequest,
   ListTrafficPoliciesResponse,
   ListTrafficPoliciesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTrafficPoliciesRequest,
-  ) => stream.Stream<
-    ListTrafficPoliciesResponse,
-    ListTrafficPoliciesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTrafficPoliciesRequest,
-  ) => stream.Stream<
-    TrafficPolicy,
-    ListTrafficPoliciesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  TrafficPolicy
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListTrafficPoliciesRequest,
   output: ListTrafficPoliciesResponse,
   errors: [ValidationException],
@@ -4844,27 +4454,7 @@ export const listTrafficPolicies: API.OperationMethod<
     items: "TrafficPolicies",
     pageSize: "PageSize",
   } as const,
-})) as any as API.OperationMethod<
-  ListTrafficPoliciesRequest,
-  ListTrafficPoliciesResponse,
-  ListTrafficPoliciesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTrafficPoliciesRequest,
-  ) => stream.Stream<
-    ListTrafficPoliciesResponse,
-    ListTrafficPoliciesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTrafficPoliciesRequest,
-  ) => stream.Stream<
-    TrafficPolicy,
-    ListTrafficPoliciesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type RegisterMemberToAddressListError =
   | AccessDeniedException
@@ -4881,7 +4471,7 @@ export const registerMemberToAddressList: API.OperationMethod<
   RegisterMemberToAddressListRequest,
   RegisterMemberToAddressListResponse,
   RegisterMemberToAddressListError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RegisterMemberToAddressListRequest,
   output: RegisterMemberToAddressListResponse,
@@ -4913,7 +4503,7 @@ export const startAddressListImportJob: API.OperationMethod<
   StartAddressListImportJobRequest,
   StartAddressListImportJobResponse,
   StartAddressListImportJobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartAddressListImportJobRequest,
   output: StartAddressListImportJobResponse,
@@ -4944,7 +4534,7 @@ export const startArchiveExport: API.OperationMethod<
   StartArchiveExportRequest,
   StartArchiveExportResponse,
   StartArchiveExportError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartArchiveExportRequest,
   output: StartArchiveExportResponse,
@@ -4975,7 +4565,7 @@ export const startArchiveSearch: API.OperationMethod<
   StartArchiveSearchRequest,
   StartArchiveSearchResponse,
   StartArchiveSearchError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartArchiveSearchRequest,
   output: StartArchiveSearchResponse,
@@ -5006,7 +4596,7 @@ export const stopAddressListImportJob: API.OperationMethod<
   StopAddressListImportJobRequest,
   StopAddressListImportJobResponse,
   StopAddressListImportJobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StopAddressListImportJobRequest,
   output: StopAddressListImportJobResponse,
@@ -5034,7 +4624,7 @@ export const stopArchiveExport: API.OperationMethod<
   StopArchiveExportRequest,
   StopArchiveExportResponse,
   StopArchiveExportError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StopArchiveExportRequest,
   output: StopArchiveExportResponse,
@@ -5056,7 +4646,7 @@ export const stopArchiveSearch: API.OperationMethod<
   StopArchiveSearchRequest,
   StopArchiveSearchResponse,
   StopArchiveSearchError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StopArchiveSearchRequest,
   output: StopArchiveSearchResponse,
@@ -5079,7 +4669,7 @@ export const tagResource: API.OperationMethod<
   TagResourceRequest,
   TagResourceResponse,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -5106,7 +4696,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceRequest,
   UntagResourceResponse,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -5131,7 +4721,7 @@ export const updateArchive: API.OperationMethod<
   UpdateArchiveRequest,
   UpdateArchiveResponse,
   UpdateArchiveError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateArchiveRequest,
   output: UpdateArchiveResponse,
@@ -5160,7 +4750,7 @@ export const updateIngressPoint: API.OperationMethod<
   UpdateIngressPointRequest,
   UpdateIngressPointResponse,
   UpdateIngressPointError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateIngressPointRequest,
   output: UpdateIngressPointResponse,
@@ -5182,7 +4772,7 @@ export const updateRelay: API.OperationMethod<
   UpdateRelayRequest,
   UpdateRelayResponse,
   UpdateRelayError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateRelayRequest,
   output: UpdateRelayResponse,
@@ -5204,7 +4794,7 @@ export const updateRuleSet: API.OperationMethod<
   UpdateRuleSetRequest,
   UpdateRuleSetResponse,
   UpdateRuleSetError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateRuleSetRequest,
   output: UpdateRuleSetResponse,
@@ -5226,7 +4816,7 @@ export const updateTrafficPolicy: API.OperationMethod<
   UpdateTrafficPolicyRequest,
   UpdateTrafficPolicyResponse,
   UpdateTrafficPolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateTrafficPolicyRequest,
   output: UpdateTrafficPolicyResponse,

@@ -1,6 +1,5 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -8,7 +7,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 const svc = T.AwsApiService({
   sdkId: "Compute Optimizer",
   serviceShapeName: "ComputeOptimizerService",
@@ -88,55 +86,55 @@ const rules = T.EndpointResolver((p, _) => {
 export class AccessDeniedException
   extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
     "AccessDeniedException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(403),
   ).pipe(C.withAuthError) {}
 export class InternalServerException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
     "InternalServerException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(500),
   ).pipe(C.withServerError) {}
 export class InvalidParameterValueException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidParameterValueException>()(
     "InvalidParameterValueException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class LimitExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<LimitExceededException>()(
     "LimitExceededException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class MissingAuthenticationToken
   extends /*@__PURE__*/ S.TaggedErrorClass<MissingAuthenticationToken>()(
     "MissingAuthenticationToken",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(403),
   ).pipe(C.withAuthError) {}
 export class OptInRequiredException
   extends /*@__PURE__*/ S.TaggedErrorClass<OptInRequiredException>()(
     "OptInRequiredException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(403),
   ).pipe(C.withAuthError) {}
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class ServiceUnavailableException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceUnavailableException>()(
     "ServiceUnavailableException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(503),
   ).pipe(C.withServerError) {}
 export class ThrottlingException
   extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
     "ThrottlingException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(429),
   ).pipe(C.withThrottlingError) {}
 export type ResourceType =
@@ -4220,7 +4218,7 @@ export const deleteRecommendationPreferences: API.OperationMethod<
   DeleteRecommendationPreferencesRequest,
   DeleteRecommendationPreferencesResponse,
   DeleteRecommendationPreferencesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteRecommendationPreferencesRequest,
   output: DeleteRecommendationPreferencesResponse,
@@ -4256,27 +4254,13 @@ export type DescribeRecommendationExportJobsError =
  * recommendations. Then use the DescribeRecommendationExportJobs action
  * to view your export jobs.
  */
-export const describeRecommendationExportJobs: API.OperationMethod<
+export const describeRecommendationExportJobs: API.PaginatedOperationMethod<
   DescribeRecommendationExportJobsRequest,
   DescribeRecommendationExportJobsResponse,
   DescribeRecommendationExportJobsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeRecommendationExportJobsRequest,
-  ) => stream.Stream<
-    DescribeRecommendationExportJobsResponse,
-    DescribeRecommendationExportJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeRecommendationExportJobsRequest,
-  ) => stream.Stream<
-    RecommendationExportJob,
-    DescribeRecommendationExportJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  RecommendationExportJob
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeRecommendationExportJobsRequest,
   output: DescribeRecommendationExportJobsResponse,
   errors: [
@@ -4298,27 +4282,7 @@ export const describeRecommendationExportJobs: API.OperationMethod<
     items: "recommendationExportJobs",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeRecommendationExportJobsRequest,
-  DescribeRecommendationExportJobsResponse,
-  DescribeRecommendationExportJobsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeRecommendationExportJobsRequest,
-  ) => stream.Stream<
-    DescribeRecommendationExportJobsResponse,
-    DescribeRecommendationExportJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeRecommendationExportJobsRequest,
-  ) => stream.Stream<
-    RecommendationExportJob,
-    DescribeRecommendationExportJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ExportAutoScalingGroupRecommendationsError =
   | AccessDeniedException
@@ -4344,7 +4308,7 @@ export const exportAutoScalingGroupRecommendations: API.OperationMethod<
   ExportAutoScalingGroupRecommendationsRequest,
   ExportAutoScalingGroupRecommendationsResponse,
   ExportAutoScalingGroupRecommendationsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ExportAutoScalingGroupRecommendationsRequest,
   output: ExportAutoScalingGroupRecommendationsResponse,
@@ -4387,7 +4351,7 @@ export const exportEBSVolumeRecommendations: API.OperationMethod<
   ExportEBSVolumeRecommendationsRequest,
   ExportEBSVolumeRecommendationsResponse,
   ExportEBSVolumeRecommendationsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ExportEBSVolumeRecommendationsRequest,
   output: ExportEBSVolumeRecommendationsResponse,
@@ -4430,7 +4394,7 @@ export const exportEC2InstanceRecommendations: API.OperationMethod<
   ExportEC2InstanceRecommendationsRequest,
   ExportEC2InstanceRecommendationsResponse,
   ExportEC2InstanceRecommendationsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ExportEC2InstanceRecommendationsRequest,
   output: ExportEC2InstanceRecommendationsResponse,
@@ -4473,7 +4437,7 @@ export const exportECSServiceRecommendations: API.OperationMethod<
   ExportECSServiceRecommendationsRequest,
   ExportECSServiceRecommendationsResponse,
   ExportECSServiceRecommendationsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ExportECSServiceRecommendationsRequest,
   output: ExportECSServiceRecommendationsResponse,
@@ -4516,7 +4480,7 @@ export const exportIdleRecommendations: API.OperationMethod<
   ExportIdleRecommendationsRequest,
   ExportIdleRecommendationsResponse,
   ExportIdleRecommendationsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ExportIdleRecommendationsRequest,
   output: ExportIdleRecommendationsResponse,
@@ -4559,7 +4523,7 @@ export const exportLambdaFunctionRecommendations: API.OperationMethod<
   ExportLambdaFunctionRecommendationsRequest,
   ExportLambdaFunctionRecommendationsResponse,
   ExportLambdaFunctionRecommendationsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ExportLambdaFunctionRecommendationsRequest,
   output: ExportLambdaFunctionRecommendationsResponse,
@@ -4602,7 +4566,7 @@ export const exportLicenseRecommendations: API.OperationMethod<
   ExportLicenseRecommendationsRequest,
   ExportLicenseRecommendationsResponse,
   ExportLicenseRecommendationsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ExportLicenseRecommendationsRequest,
   output: ExportLicenseRecommendationsResponse,
@@ -4645,7 +4609,7 @@ export const exportRDSDatabaseRecommendations: API.OperationMethod<
   ExportRDSDatabaseRecommendationsRequest,
   ExportRDSDatabaseRecommendationsResponse,
   ExportRDSDatabaseRecommendationsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ExportRDSDatabaseRecommendationsRequest,
   output: ExportRDSDatabaseRecommendationsResponse,
@@ -4686,7 +4650,7 @@ export const getAutoScalingGroupRecommendations: API.OperationMethod<
   GetAutoScalingGroupRecommendationsRequest,
   GetAutoScalingGroupRecommendationsResponse,
   GetAutoScalingGroupRecommendationsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetAutoScalingGroupRecommendationsRequest,
   output: GetAutoScalingGroupRecommendationsResponse,
@@ -4727,7 +4691,7 @@ export const getEBSVolumeRecommendations: API.OperationMethod<
   GetEBSVolumeRecommendationsRequest,
   GetEBSVolumeRecommendationsResponse,
   GetEBSVolumeRecommendationsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetEBSVolumeRecommendationsRequest,
   output: GetEBSVolumeRecommendationsResponse,
@@ -4768,7 +4732,7 @@ export const getEC2InstanceRecommendations: API.OperationMethod<
   GetEC2InstanceRecommendationsRequest,
   GetEC2InstanceRecommendationsResponse,
   GetEC2InstanceRecommendationsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetEC2InstanceRecommendationsRequest,
   output: GetEC2InstanceRecommendationsResponse,
@@ -4810,7 +4774,7 @@ export const getEC2RecommendationProjectedMetrics: API.OperationMethod<
   GetEC2RecommendationProjectedMetricsRequest,
   GetEC2RecommendationProjectedMetricsResponse,
   GetEC2RecommendationProjectedMetricsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetEC2RecommendationProjectedMetricsRequest,
   output: GetEC2RecommendationProjectedMetricsResponse,
@@ -4846,7 +4810,7 @@ export const getECSServiceRecommendationProjectedMetrics: API.OperationMethod<
   GetECSServiceRecommendationProjectedMetricsRequest,
   GetECSServiceRecommendationProjectedMetricsResponse,
   GetECSServiceRecommendationProjectedMetricsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetECSServiceRecommendationProjectedMetricsRequest,
   output: GetECSServiceRecommendationProjectedMetricsResponse,
@@ -4888,7 +4852,7 @@ export const getECSServiceRecommendations: API.OperationMethod<
   GetECSServiceRecommendationsRequest,
   GetECSServiceRecommendationsResponse,
   GetECSServiceRecommendationsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetECSServiceRecommendationsRequest,
   output: GetECSServiceRecommendationsResponse,
@@ -4930,7 +4894,7 @@ export const getEffectiveRecommendationPreferences: API.OperationMethod<
   GetEffectiveRecommendationPreferencesRequest,
   GetEffectiveRecommendationPreferencesResponse,
   GetEffectiveRecommendationPreferencesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetEffectiveRecommendationPreferencesRequest,
   output: GetEffectiveRecommendationPreferencesResponse,
@@ -4969,7 +4933,7 @@ export const getEnrollmentStatus: API.OperationMethod<
   GetEnrollmentStatusRequest,
   GetEnrollmentStatusResponse,
   GetEnrollmentStatusError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetEnrollmentStatusRequest,
   output: GetEnrollmentStatusResponse,
@@ -5000,27 +4964,13 @@ export type GetEnrollmentStatusesForOrganizationError =
  *
  * To get the enrollment status of standalone accounts, use the GetEnrollmentStatus action.
  */
-export const getEnrollmentStatusesForOrganization: API.OperationMethod<
+export const getEnrollmentStatusesForOrganization: API.PaginatedOperationMethod<
   GetEnrollmentStatusesForOrganizationRequest,
   GetEnrollmentStatusesForOrganizationResponse,
   GetEnrollmentStatusesForOrganizationError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetEnrollmentStatusesForOrganizationRequest,
-  ) => stream.Stream<
-    GetEnrollmentStatusesForOrganizationResponse,
-    GetEnrollmentStatusesForOrganizationError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetEnrollmentStatusesForOrganizationRequest,
-  ) => stream.Stream<
-    AccountEnrollmentStatus,
-    GetEnrollmentStatusesForOrganizationError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  AccountEnrollmentStatus
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetEnrollmentStatusesForOrganizationRequest,
   output: GetEnrollmentStatusesForOrganizationResponse,
   errors: [
@@ -5040,27 +4990,7 @@ export const getEnrollmentStatusesForOrganization: API.OperationMethod<
     items: "accountEnrollmentStatuses",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetEnrollmentStatusesForOrganizationRequest,
-  GetEnrollmentStatusesForOrganizationResponse,
-  GetEnrollmentStatusesForOrganizationError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetEnrollmentStatusesForOrganizationRequest,
-  ) => stream.Stream<
-    GetEnrollmentStatusesForOrganizationResponse,
-    GetEnrollmentStatusesForOrganizationError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetEnrollmentStatusesForOrganizationRequest,
-  ) => stream.Stream<
-    AccountEnrollmentStatus,
-    GetEnrollmentStatusesForOrganizationError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetIdleRecommendationsError =
   | AccessDeniedException
@@ -5082,7 +5012,7 @@ export const getIdleRecommendations: API.OperationMethod<
   GetIdleRecommendationsRequest,
   GetIdleRecommendationsResponse,
   GetIdleRecommendationsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetIdleRecommendationsRequest,
   output: GetIdleRecommendationsResponse,
@@ -5119,27 +5049,13 @@ export type GetLambdaFunctionRecommendationsError =
  * requirements in the Compute Optimizer User
  * Guide.
  */
-export const getLambdaFunctionRecommendations: API.OperationMethod<
+export const getLambdaFunctionRecommendations: API.PaginatedOperationMethod<
   GetLambdaFunctionRecommendationsRequest,
   GetLambdaFunctionRecommendationsResponse,
   GetLambdaFunctionRecommendationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetLambdaFunctionRecommendationsRequest,
-  ) => stream.Stream<
-    GetLambdaFunctionRecommendationsResponse,
-    GetLambdaFunctionRecommendationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetLambdaFunctionRecommendationsRequest,
-  ) => stream.Stream<
-    LambdaFunctionRecommendation,
-    GetLambdaFunctionRecommendationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  LambdaFunctionRecommendation
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetLambdaFunctionRecommendationsRequest,
   output: GetLambdaFunctionRecommendationsResponse,
   errors: [
@@ -5161,27 +5077,7 @@ export const getLambdaFunctionRecommendations: API.OperationMethod<
     items: "lambdaFunctionRecommendations",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetLambdaFunctionRecommendationsRequest,
-  GetLambdaFunctionRecommendationsResponse,
-  GetLambdaFunctionRecommendationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetLambdaFunctionRecommendationsRequest,
-  ) => stream.Stream<
-    GetLambdaFunctionRecommendationsResponse,
-    GetLambdaFunctionRecommendationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetLambdaFunctionRecommendationsRequest,
-  ) => stream.Stream<
-    LambdaFunctionRecommendation,
-    GetLambdaFunctionRecommendationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetLicenseRecommendationsError =
   | AccessDeniedException
@@ -5205,7 +5101,7 @@ export const getLicenseRecommendations: API.OperationMethod<
   GetLicenseRecommendationsRequest,
   GetLicenseRecommendationsResponse,
   GetLicenseRecommendationsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetLicenseRecommendationsRequest,
   output: GetLicenseRecommendationsResponse,
@@ -5241,7 +5137,7 @@ export const getRDSDatabaseRecommendationProjectedMetrics: API.OperationMethod<
   GetRDSDatabaseRecommendationProjectedMetricsRequest,
   GetRDSDatabaseRecommendationProjectedMetricsResponse,
   GetRDSDatabaseRecommendationProjectedMetricsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetRDSDatabaseRecommendationProjectedMetricsRequest,
   output: GetRDSDatabaseRecommendationProjectedMetricsResponse,
@@ -5283,7 +5179,7 @@ export const getRDSDatabaseRecommendations: API.OperationMethod<
   GetRDSDatabaseRecommendationsRequest,
   GetRDSDatabaseRecommendationsResponse,
   GetRDSDatabaseRecommendationsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetRDSDatabaseRecommendationsRequest,
   output: GetRDSDatabaseRecommendationsResponse,
@@ -5324,27 +5220,13 @@ export type GetRecommendationPreferencesError =
  * enhanced infrastructure metrics in the Compute Optimizer User
  * Guide.
  */
-export const getRecommendationPreferences: API.OperationMethod<
+export const getRecommendationPreferences: API.PaginatedOperationMethod<
   GetRecommendationPreferencesRequest,
   GetRecommendationPreferencesResponse,
   GetRecommendationPreferencesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetRecommendationPreferencesRequest,
-  ) => stream.Stream<
-    GetRecommendationPreferencesResponse,
-    GetRecommendationPreferencesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetRecommendationPreferencesRequest,
-  ) => stream.Stream<
-    RecommendationPreferencesDetail,
-    GetRecommendationPreferencesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  RecommendationPreferencesDetail
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetRecommendationPreferencesRequest,
   output: GetRecommendationPreferencesResponse,
   errors: [
@@ -5366,27 +5248,7 @@ export const getRecommendationPreferences: API.OperationMethod<
     items: "recommendationPreferencesDetails",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetRecommendationPreferencesRequest,
-  GetRecommendationPreferencesResponse,
-  GetRecommendationPreferencesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetRecommendationPreferencesRequest,
-  ) => stream.Stream<
-    GetRecommendationPreferencesResponse,
-    GetRecommendationPreferencesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetRecommendationPreferencesRequest,
-  ) => stream.Stream<
-    RecommendationPreferencesDetail,
-    GetRecommendationPreferencesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetRecommendationSummariesError =
   | AccessDeniedException
@@ -5424,27 +5286,13 @@ export type GetRecommendationSummariesError =
  * - Amazon Aurora and Amazon RDS databases in an account that are `Underprovisioned`,
  * `Overprovisioned`, `Optimized`, or `NotOptimized`.
  */
-export const getRecommendationSummaries: API.OperationMethod<
+export const getRecommendationSummaries: API.PaginatedOperationMethod<
   GetRecommendationSummariesRequest,
   GetRecommendationSummariesResponse,
   GetRecommendationSummariesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetRecommendationSummariesRequest,
-  ) => stream.Stream<
-    GetRecommendationSummariesResponse,
-    GetRecommendationSummariesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetRecommendationSummariesRequest,
-  ) => stream.Stream<
-    RecommendationSummary,
-    GetRecommendationSummariesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  RecommendationSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetRecommendationSummariesRequest,
   output: GetRecommendationSummariesResponse,
   errors: [
@@ -5465,27 +5313,7 @@ export const getRecommendationSummaries: API.OperationMethod<
     items: "recommendationSummaries",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetRecommendationSummariesRequest,
-  GetRecommendationSummariesResponse,
-  GetRecommendationSummariesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetRecommendationSummariesRequest,
-  ) => stream.Stream<
-    GetRecommendationSummariesResponse,
-    GetRecommendationSummariesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetRecommendationSummariesRequest,
-  ) => stream.Stream<
-    RecommendationSummary,
-    GetRecommendationSummariesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type PutRecommendationPreferencesError =
   | AccessDeniedException
@@ -5509,7 +5337,7 @@ export const putRecommendationPreferences: API.OperationMethod<
   PutRecommendationPreferencesRequest,
   PutRecommendationPreferencesResponse,
   PutRecommendationPreferencesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutRecommendationPreferencesRequest,
   output: PutRecommendationPreferencesResponse,
@@ -5553,7 +5381,7 @@ export const updateEnrollmentStatus: API.OperationMethod<
   UpdateEnrollmentStatusRequest,
   UpdateEnrollmentStatusResponse,
   UpdateEnrollmentStatusError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateEnrollmentStatusRequest,
   output: UpdateEnrollmentStatusResponse,

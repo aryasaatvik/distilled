@@ -1,6 +1,5 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -8,7 +7,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 const svc = T.AwsApiService({
   sdkId: "Service Quotas",
   serviceShapeName: "ServiceQuotasV20190624",
@@ -91,103 +89,103 @@ const rules = T.EndpointResolver((p, _) => {
 export class AccessDeniedException
   extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
     "AccessDeniedException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(403),
   ).pipe(C.withAuthError) {}
 export class AWSServiceAccessNotEnabledException
   extends /*@__PURE__*/ S.TaggedErrorClass<AWSServiceAccessNotEnabledException>()(
     "AWSServiceAccessNotEnabledException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(403),
   ).pipe(C.withAuthError) {}
 export class DependencyAccessDeniedException
   extends /*@__PURE__*/ S.TaggedErrorClass<DependencyAccessDeniedException>()(
     "DependencyAccessDeniedException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(403),
   ).pipe(C.withAuthError) {}
 export class IllegalArgumentException
   extends /*@__PURE__*/ S.TaggedErrorClass<IllegalArgumentException>()(
     "IllegalArgumentException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class InvalidPaginationTokenException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidPaginationTokenException>()(
     "InvalidPaginationTokenException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class InvalidResourceStateException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidResourceStateException>()(
     "InvalidResourceStateException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(405),
   ).pipe(C.withBadRequestError) {}
 export class NoAvailableOrganizationException
   extends /*@__PURE__*/ S.TaggedErrorClass<NoAvailableOrganizationException>()(
     "NoAvailableOrganizationException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(403),
   ).pipe(C.withAuthError) {}
 export class NoSuchResourceException
   extends /*@__PURE__*/ S.TaggedErrorClass<NoSuchResourceException>()(
     "NoSuchResourceException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class OrganizationNotInAllFeaturesModeException
   extends /*@__PURE__*/ S.TaggedErrorClass<OrganizationNotInAllFeaturesModeException>()(
     "OrganizationNotInAllFeaturesModeException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class QuotaExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<QuotaExceededException>()(
     "QuotaExceededException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class ResourceAlreadyExistsException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceAlreadyExistsException>()(
     "ResourceAlreadyExistsException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError, C.withAlreadyExistsError) {}
 export class ServiceException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceException>()(
     "ServiceException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(500),
   ).pipe(C.withServerError) {}
 export class ServiceQuotaTemplateNotInUseException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaTemplateNotInUseException>()(
     "ServiceQuotaTemplateNotInUseException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class TagPolicyViolationException
   extends /*@__PURE__*/ S.TaggedErrorClass<TagPolicyViolationException>()(
     "TagPolicyViolationException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(401),
   ).pipe(C.withAuthError) {}
 export class TemplatesNotAvailableInRegionException
   extends /*@__PURE__*/ S.TaggedErrorClass<TemplatesNotAvailableInRegionException>()(
     "TemplatesNotAvailableInRegionException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class TooManyRequestsException
   extends /*@__PURE__*/ S.TaggedErrorClass<TooManyRequestsException>()(
     "TooManyRequestsException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(429),
   ).pipe(C.withThrottlingError) {}
 export class TooManyTagsException
   extends /*@__PURE__*/ S.TaggedErrorClass<TooManyTagsException>()(
     "TooManyTagsException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export interface AssociateServiceQuotaTemplateRequest {}
@@ -1198,7 +1196,7 @@ export const associateServiceQuotaTemplate: API.OperationMethod<
   AssociateServiceQuotaTemplateRequest,
   AssociateServiceQuotaTemplateResponse,
   AssociateServiceQuotaTemplateError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AssociateServiceQuotaTemplateRequest,
   output: AssociateServiceQuotaTemplateResponse,
@@ -1235,7 +1233,7 @@ export const createSupportCase: API.OperationMethod<
   CreateSupportCaseRequest,
   CreateSupportCaseResponse,
   CreateSupportCaseError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateSupportCaseRequest,
   output: CreateSupportCaseResponse,
@@ -1273,7 +1271,7 @@ export const deleteServiceQuotaIncreaseRequestFromTemplate: API.OperationMethod<
   DeleteServiceQuotaIncreaseRequestFromTemplateRequest,
   DeleteServiceQuotaIncreaseRequestFromTemplateResponse,
   DeleteServiceQuotaIncreaseRequestFromTemplateError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteServiceQuotaIncreaseRequestFromTemplateRequest,
   output: DeleteServiceQuotaIncreaseRequestFromTemplateResponse,
@@ -1312,7 +1310,7 @@ export const disassociateServiceQuotaTemplate: API.OperationMethod<
   DisassociateServiceQuotaTemplateRequest,
   DisassociateServiceQuotaTemplateResponse,
   DisassociateServiceQuotaTemplateError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DisassociateServiceQuotaTemplateRequest,
   output: DisassociateServiceQuotaTemplateResponse,
@@ -1348,7 +1346,7 @@ export const getAssociationForServiceQuotaTemplate: API.OperationMethod<
   GetAssociationForServiceQuotaTemplateRequest,
   GetAssociationForServiceQuotaTemplateResponse,
   GetAssociationForServiceQuotaTemplateError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetAssociationForServiceQuotaTemplateRequest,
   output: GetAssociationForServiceQuotaTemplateResponse,
@@ -1382,7 +1380,7 @@ export const getAutoManagementConfiguration: API.OperationMethod<
   GetAutoManagementConfigurationRequest,
   GetAutoManagementConfigurationResponse,
   GetAutoManagementConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetAutoManagementConfigurationRequest,
   output: GetAutoManagementConfigurationResponse,
@@ -1413,7 +1411,7 @@ export const getAWSDefaultServiceQuota: API.OperationMethod<
   GetAWSDefaultServiceQuotaRequest,
   GetAWSDefaultServiceQuotaResponse,
   GetAWSDefaultServiceQuotaError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetAWSDefaultServiceQuotaRequest,
   output: GetAWSDefaultServiceQuotaResponse,
@@ -1454,7 +1452,7 @@ export const getQuotaUtilizationReport: API.OperationMethod<
   GetQuotaUtilizationReportRequest,
   GetQuotaUtilizationReportResponse,
   GetQuotaUtilizationReportError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetQuotaUtilizationReportRequest,
   output: GetQuotaUtilizationReportResponse,
@@ -1484,7 +1482,7 @@ export const getRequestedServiceQuotaChange: API.OperationMethod<
   GetRequestedServiceQuotaChangeRequest,
   GetRequestedServiceQuotaChangeResponse,
   GetRequestedServiceQuotaChangeError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetRequestedServiceQuotaChangeRequest,
   output: GetRequestedServiceQuotaChangeResponse,
@@ -1516,7 +1514,7 @@ export const getServiceQuota: API.OperationMethod<
   GetServiceQuotaRequest,
   GetServiceQuotaResponse,
   GetServiceQuotaError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetServiceQuotaRequest,
   output: GetServiceQuotaResponse,
@@ -1551,7 +1549,7 @@ export const getServiceQuotaIncreaseRequestFromTemplate: API.OperationMethod<
   GetServiceQuotaIncreaseRequestFromTemplateRequest,
   GetServiceQuotaIncreaseRequestFromTemplateResponse,
   GetServiceQuotaIncreaseRequestFromTemplateError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetServiceQuotaIncreaseRequestFromTemplateRequest,
   output: GetServiceQuotaIncreaseRequestFromTemplateResponse,
@@ -1583,27 +1581,13 @@ export type ListAWSDefaultServiceQuotasError =
  * Lists the default values for the quotas for the specified Amazon Web Services service. A default
  * value does not reflect any quota increases.
  */
-export const listAWSDefaultServiceQuotas: API.OperationMethod<
+export const listAWSDefaultServiceQuotas: API.PaginatedOperationMethod<
   ListAWSDefaultServiceQuotasRequest,
   ListAWSDefaultServiceQuotasResponse,
   ListAWSDefaultServiceQuotasError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAWSDefaultServiceQuotasRequest,
-  ) => stream.Stream<
-    ListAWSDefaultServiceQuotasResponse,
-    ListAWSDefaultServiceQuotasError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAWSDefaultServiceQuotasRequest,
-  ) => stream.Stream<
-    ServiceQuota,
-    ListAWSDefaultServiceQuotasError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ServiceQuota
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListAWSDefaultServiceQuotasRequest,
   output: ListAWSDefaultServiceQuotasResponse,
   errors: [
@@ -1623,27 +1607,7 @@ export const listAWSDefaultServiceQuotas: API.OperationMethod<
     items: "Quotas",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListAWSDefaultServiceQuotasRequest,
-  ListAWSDefaultServiceQuotasResponse,
-  ListAWSDefaultServiceQuotasError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAWSDefaultServiceQuotasRequest,
-  ) => stream.Stream<
-    ListAWSDefaultServiceQuotasResponse,
-    ListAWSDefaultServiceQuotasError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAWSDefaultServiceQuotasRequest,
-  ) => stream.Stream<
-    ServiceQuota,
-    ListAWSDefaultServiceQuotasError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListRequestedServiceQuotaChangeHistoryError =
   | AccessDeniedException
@@ -1658,27 +1622,13 @@ export type ListRequestedServiceQuotaChangeHistoryError =
  * responses to return quota requests at either the account level, resource level, or all
  * levels. Responses include any open or closed requests within 90 days.
  */
-export const listRequestedServiceQuotaChangeHistory: API.OperationMethod<
+export const listRequestedServiceQuotaChangeHistory: API.PaginatedOperationMethod<
   ListRequestedServiceQuotaChangeHistoryRequest,
   ListRequestedServiceQuotaChangeHistoryResponse,
   ListRequestedServiceQuotaChangeHistoryError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListRequestedServiceQuotaChangeHistoryRequest,
-  ) => stream.Stream<
-    ListRequestedServiceQuotaChangeHistoryResponse,
-    ListRequestedServiceQuotaChangeHistoryError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListRequestedServiceQuotaChangeHistoryRequest,
-  ) => stream.Stream<
-    RequestedServiceQuotaChange,
-    ListRequestedServiceQuotaChangeHistoryError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  RequestedServiceQuotaChange
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListRequestedServiceQuotaChangeHistoryRequest,
   output: ListRequestedServiceQuotaChangeHistoryResponse,
   errors: [
@@ -1698,27 +1648,7 @@ export const listRequestedServiceQuotaChangeHistory: API.OperationMethod<
     items: "RequestedQuotas",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListRequestedServiceQuotaChangeHistoryRequest,
-  ListRequestedServiceQuotaChangeHistoryResponse,
-  ListRequestedServiceQuotaChangeHistoryError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListRequestedServiceQuotaChangeHistoryRequest,
-  ) => stream.Stream<
-    ListRequestedServiceQuotaChangeHistoryResponse,
-    ListRequestedServiceQuotaChangeHistoryError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListRequestedServiceQuotaChangeHistoryRequest,
-  ) => stream.Stream<
-    RequestedServiceQuotaChange,
-    ListRequestedServiceQuotaChangeHistoryError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListRequestedServiceQuotaChangeHistoryByQuotaError =
   | AccessDeniedException
@@ -1732,27 +1662,13 @@ export type ListRequestedServiceQuotaChangeHistoryByQuotaError =
  * Retrieves the quota increase requests for the specified quota. Filter responses to
  * return quota requests at either the account level, resource level, or all levels.
  */
-export const listRequestedServiceQuotaChangeHistoryByQuota: API.OperationMethod<
+export const listRequestedServiceQuotaChangeHistoryByQuota: API.PaginatedOperationMethod<
   ListRequestedServiceQuotaChangeHistoryByQuotaRequest,
   ListRequestedServiceQuotaChangeHistoryByQuotaResponse,
   ListRequestedServiceQuotaChangeHistoryByQuotaError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListRequestedServiceQuotaChangeHistoryByQuotaRequest,
-  ) => stream.Stream<
-    ListRequestedServiceQuotaChangeHistoryByQuotaResponse,
-    ListRequestedServiceQuotaChangeHistoryByQuotaError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListRequestedServiceQuotaChangeHistoryByQuotaRequest,
-  ) => stream.Stream<
-    RequestedServiceQuotaChange,
-    ListRequestedServiceQuotaChangeHistoryByQuotaError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  RequestedServiceQuotaChange
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListRequestedServiceQuotaChangeHistoryByQuotaRequest,
   output: ListRequestedServiceQuotaChangeHistoryByQuotaResponse,
   errors: [
@@ -1772,27 +1688,7 @@ export const listRequestedServiceQuotaChangeHistoryByQuota: API.OperationMethod<
     items: "RequestedQuotas",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListRequestedServiceQuotaChangeHistoryByQuotaRequest,
-  ListRequestedServiceQuotaChangeHistoryByQuotaResponse,
-  ListRequestedServiceQuotaChangeHistoryByQuotaError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListRequestedServiceQuotaChangeHistoryByQuotaRequest,
-  ) => stream.Stream<
-    ListRequestedServiceQuotaChangeHistoryByQuotaResponse,
-    ListRequestedServiceQuotaChangeHistoryByQuotaError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListRequestedServiceQuotaChangeHistoryByQuotaRequest,
-  ) => stream.Stream<
-    RequestedServiceQuotaChange,
-    ListRequestedServiceQuotaChangeHistoryByQuotaError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListServiceQuotaIncreaseRequestsInTemplateError =
   | AccessDeniedException
@@ -1807,27 +1703,13 @@ export type ListServiceQuotaIncreaseRequestsInTemplateError =
 /**
  * Lists the quota increase requests in the specified quota request template.
  */
-export const listServiceQuotaIncreaseRequestsInTemplate: API.OperationMethod<
+export const listServiceQuotaIncreaseRequestsInTemplate: API.PaginatedOperationMethod<
   ListServiceQuotaIncreaseRequestsInTemplateRequest,
   ListServiceQuotaIncreaseRequestsInTemplateResponse,
   ListServiceQuotaIncreaseRequestsInTemplateError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListServiceQuotaIncreaseRequestsInTemplateRequest,
-  ) => stream.Stream<
-    ListServiceQuotaIncreaseRequestsInTemplateResponse,
-    ListServiceQuotaIncreaseRequestsInTemplateError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListServiceQuotaIncreaseRequestsInTemplateRequest,
-  ) => stream.Stream<
-    ServiceQuotaIncreaseRequestInTemplate,
-    ListServiceQuotaIncreaseRequestsInTemplateError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ServiceQuotaIncreaseRequestInTemplate
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListServiceQuotaIncreaseRequestsInTemplateRequest,
   output: ListServiceQuotaIncreaseRequestsInTemplateResponse,
   errors: [
@@ -1849,27 +1731,7 @@ export const listServiceQuotaIncreaseRequestsInTemplate: API.OperationMethod<
     items: "ServiceQuotaIncreaseRequestInTemplateList",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListServiceQuotaIncreaseRequestsInTemplateRequest,
-  ListServiceQuotaIncreaseRequestsInTemplateResponse,
-  ListServiceQuotaIncreaseRequestsInTemplateError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListServiceQuotaIncreaseRequestsInTemplateRequest,
-  ) => stream.Stream<
-    ListServiceQuotaIncreaseRequestsInTemplateResponse,
-    ListServiceQuotaIncreaseRequestsInTemplateError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListServiceQuotaIncreaseRequestsInTemplateRequest,
-  ) => stream.Stream<
-    ServiceQuotaIncreaseRequestInTemplate,
-    ListServiceQuotaIncreaseRequestsInTemplateError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListServiceQuotasError =
   | AccessDeniedException
@@ -1885,27 +1747,13 @@ export type ListServiceQuotasError =
  * quota, the quota is not retrieved. Filter responses to return applied quota values at
  * either the account level, resource level, or all levels.
  */
-export const listServiceQuotas: API.OperationMethod<
+export const listServiceQuotas: API.PaginatedOperationMethod<
   ListServiceQuotasRequest,
   ListServiceQuotasResponse,
   ListServiceQuotasError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListServiceQuotasRequest,
-  ) => stream.Stream<
-    ListServiceQuotasResponse,
-    ListServiceQuotasError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListServiceQuotasRequest,
-  ) => stream.Stream<
-    ServiceQuota,
-    ListServiceQuotasError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ServiceQuota
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListServiceQuotasRequest,
   output: ListServiceQuotasResponse,
   errors: [
@@ -1925,27 +1773,7 @@ export const listServiceQuotas: API.OperationMethod<
     items: "Quotas",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListServiceQuotasRequest,
-  ListServiceQuotasResponse,
-  ListServiceQuotasError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListServiceQuotasRequest,
-  ) => stream.Stream<
-    ListServiceQuotasResponse,
-    ListServiceQuotasError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListServiceQuotasRequest,
-  ) => stream.Stream<
-    ServiceQuota,
-    ListServiceQuotasError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListServicesError =
   | AccessDeniedException
@@ -1957,27 +1785,13 @@ export type ListServicesError =
 /**
  * Lists the names and codes for the Amazon Web Services services integrated with Service Quotas.
  */
-export const listServices: API.OperationMethod<
+export const listServices: API.PaginatedOperationMethod<
   ListServicesRequest,
   ListServicesResponse,
   ListServicesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListServicesRequest,
-  ) => stream.Stream<
-    ListServicesResponse,
-    ListServicesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListServicesRequest,
-  ) => stream.Stream<
-    ServiceInfo,
-    ListServicesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ServiceInfo
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListServicesRequest,
   output: ListServicesResponse,
   errors: [
@@ -1996,27 +1810,7 @@ export const listServices: API.OperationMethod<
     items: "Services",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListServicesRequest,
-  ListServicesResponse,
-  ListServicesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListServicesRequest,
-  ) => stream.Stream<
-    ListServicesResponse,
-    ListServicesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListServicesRequest,
-  ) => stream.Stream<
-    ServiceInfo,
-    ListServicesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsForResourceError =
   | AccessDeniedException
@@ -2032,7 +1826,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceRequest,
   ListTagsForResourceResponse,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -2067,7 +1861,7 @@ export const putServiceQuotaIncreaseRequestIntoTemplate: API.OperationMethod<
   PutServiceQuotaIncreaseRequestIntoTemplateRequest,
   PutServiceQuotaIncreaseRequestIntoTemplateResponse,
   PutServiceQuotaIncreaseRequestIntoTemplateError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutServiceQuotaIncreaseRequestIntoTemplateRequest,
   output: PutServiceQuotaIncreaseRequestIntoTemplateResponse,
@@ -2107,7 +1901,7 @@ export const requestServiceQuotaIncrease: API.OperationMethod<
   RequestServiceQuotaIncreaseRequest,
   RequestServiceQuotaIncreaseResponse,
   RequestServiceQuotaIncreaseError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RequestServiceQuotaIncreaseRequest,
   output: RequestServiceQuotaIncreaseResponse,
@@ -2143,7 +1937,7 @@ export const startAutoManagement: API.OperationMethod<
   StartAutoManagementRequest,
   StartAutoManagementResponse,
   StartAutoManagementError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartAutoManagementRequest,
   output: StartAutoManagementResponse,
@@ -2180,7 +1974,7 @@ export const startQuotaUtilizationReport: API.OperationMethod<
   StartQuotaUtilizationReportRequest,
   StartQuotaUtilizationReportResponse,
   StartQuotaUtilizationReportError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartQuotaUtilizationReportRequest,
   output: StartQuotaUtilizationReportResponse,
@@ -2213,7 +2007,7 @@ export const stopAutoManagement: API.OperationMethod<
   StopAutoManagementRequest,
   StopAutoManagementResponse,
   StopAutoManagementError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StopAutoManagementRequest,
   output: StopAutoManagementResponse,
@@ -2246,7 +2040,7 @@ export const tagResource: API.OperationMethod<
   TagResourceRequest,
   TagResourceResponse,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -2279,7 +2073,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceRequest,
   UntagResourceResponse,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -2311,7 +2105,7 @@ export const updateAutoManagement: API.OperationMethod<
   UpdateAutoManagementRequest,
   UpdateAutoManagementResponse,
   UpdateAutoManagementError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateAutoManagementRequest,
   output: UpdateAutoManagementResponse,

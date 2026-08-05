@@ -7,7 +7,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 const ns = T.XmlNamespace("http://cognito-sync.amazonaws.com/doc/2014-06-30/");
 const svc = T.AwsApiService({
   sdkId: "Cognito Sync",
@@ -88,7 +87,7 @@ const rules = T.EndpointResolver((p, _) => {
 export class AlreadyStreamedException
   extends /*@__PURE__*/ S.TaggedErrorClass<AlreadyStreamedException>()(
     "AlreadyStreamedException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "AlreadyStreamed", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -97,7 +96,7 @@ export class AlreadyStreamedException
 export class ConcurrentModificationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConcurrentModificationException>()(
     "ConcurrentModificationException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "ConcurrentModification",
@@ -109,7 +108,7 @@ export class ConcurrentModificationException
 export class DuplicateRequestException
   extends /*@__PURE__*/ S.TaggedErrorClass<DuplicateRequestException>()(
     "DuplicateRequestException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "DuplicateRequest", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -118,7 +117,7 @@ export class DuplicateRequestException
 export class InternalErrorException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalErrorException>()(
     "InternalErrorException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "InternalError", httpResponseCode: 500 }),
       T.HttpError(500),
@@ -127,7 +126,7 @@ export class InternalErrorException
 export class InvalidConfigurationException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidConfigurationException>()(
     "InvalidConfigurationException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "InvalidConfiguration", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -136,7 +135,7 @@ export class InvalidConfigurationException
 export class InvalidLambdaFunctionOutputException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidLambdaFunctionOutputException>()(
     "InvalidLambdaFunctionOutputException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "InvalidLambdaFunctionOutput",
@@ -148,7 +147,7 @@ export class InvalidLambdaFunctionOutputException
 export class InvalidParameterException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidParameterException>()(
     "InvalidParameterException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "InvalidParameter", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -157,7 +156,7 @@ export class InvalidParameterException
 export class LambdaThrottledException
   extends /*@__PURE__*/ S.TaggedErrorClass<LambdaThrottledException>()(
     "LambdaThrottledException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "LambdaThrottled", httpResponseCode: 429 }),
       T.HttpError(429),
@@ -166,7 +165,7 @@ export class LambdaThrottledException
 export class LimitExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<LimitExceededException>()(
     "LimitExceededException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "LimitExceeded", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -175,7 +174,7 @@ export class LimitExceededException
 export class NotAuthorizedException
   extends /*@__PURE__*/ S.TaggedErrorClass<NotAuthorizedException>()(
     "NotAuthorizedException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "NotAuthorizedError", httpResponseCode: 403 }),
       T.HttpError(403),
@@ -184,7 +183,7 @@ export class NotAuthorizedException
 export class ResourceConflictException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceConflictException>()(
     "ResourceConflictException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "ResourceConflict", httpResponseCode: 409 }),
       T.HttpError(409),
@@ -193,7 +192,7 @@ export class ResourceConflictException
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "ResourceNotFound", httpResponseCode: 404 }),
       T.HttpError(404),
@@ -202,7 +201,7 @@ export class ResourceNotFoundException
 export class TooManyRequestsException
   extends /*@__PURE__*/ S.TaggedErrorClass<TooManyRequestsException>()(
     "TooManyRequestsException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "TooManyRequests", httpResponseCode: 429 }),
       T.HttpError(429),
@@ -1034,7 +1033,7 @@ export const bulkPublish: API.OperationMethod<
   BulkPublishRequest,
   BulkPublishResponse,
   BulkPublishError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BulkPublishRequest,
   output: BulkPublishResponse,
@@ -1071,7 +1070,7 @@ export const deleteDataset: API.OperationMethod<
   DeleteDatasetRequest,
   DeleteDatasetResponse,
   DeleteDatasetError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteDatasetRequest,
   output: DeleteDatasetResponse,
@@ -1106,7 +1105,7 @@ export const describeDataset: API.OperationMethod<
   DescribeDatasetRequest,
   DescribeDatasetResponse,
   DescribeDatasetError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeDatasetRequest,
   output: DescribeDatasetResponse,
@@ -1179,7 +1178,7 @@ export const describeIdentityPoolUsage: API.OperationMethod<
   DescribeIdentityPoolUsageRequest,
   DescribeIdentityPoolUsageResponse,
   DescribeIdentityPoolUsageError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeIdentityPoolUsageRequest,
   output: DescribeIdentityPoolUsageResponse,
@@ -1254,7 +1253,7 @@ export const describeIdentityUsage: API.OperationMethod<
   DescribeIdentityUsageRequest,
   DescribeIdentityUsageResponse,
   DescribeIdentityUsageError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeIdentityUsageRequest,
   output: DescribeIdentityUsageResponse,
@@ -1285,7 +1284,7 @@ export const getBulkPublishDetails: API.OperationMethod<
   GetBulkPublishDetailsRequest,
   GetBulkPublishDetailsResponse,
   GetBulkPublishDetailsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetBulkPublishDetailsRequest,
   output: GetBulkPublishDetailsResponse,
@@ -1316,7 +1315,7 @@ export const getCognitoEvents: API.OperationMethod<
   GetCognitoEventsRequest,
   GetCognitoEventsResponse,
   GetCognitoEventsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetCognitoEventsRequest,
   output: GetCognitoEventsResponse,
@@ -1388,7 +1387,7 @@ export const getIdentityPoolConfiguration: API.OperationMethod<
   GetIdentityPoolConfigurationRequest,
   GetIdentityPoolConfigurationResponse,
   GetIdentityPoolConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetIdentityPoolConfigurationRequest,
   output: GetIdentityPoolConfigurationResponse,
@@ -1471,7 +1470,7 @@ export const listDatasets: API.OperationMethod<
   ListDatasetsRequest,
   ListDatasetsResponse,
   ListDatasetsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListDatasetsRequest,
   output: ListDatasetsResponse,
@@ -1553,7 +1552,7 @@ export const listIdentityPoolUsage: API.OperationMethod<
   ListIdentityPoolUsageRequest,
   ListIdentityPoolUsageResponse,
   ListIdentityPoolUsageError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListIdentityPoolUsageRequest,
   output: ListIdentityPoolUsageResponse,
@@ -1632,7 +1631,7 @@ export const listRecords: API.OperationMethod<
   ListRecordsRequest,
   ListRecordsResponse,
   ListRecordsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListRecordsRequest,
   output: ListRecordsResponse,
@@ -1703,7 +1702,7 @@ export const registerDevice: API.OperationMethod<
   RegisterDeviceRequest,
   RegisterDeviceResponse,
   RegisterDeviceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RegisterDeviceRequest,
   output: RegisterDeviceResponse,
@@ -1736,7 +1735,7 @@ export const setCognitoEvents: API.OperationMethod<
   SetCognitoEventsRequest,
   SetCognitoEventsResponse,
   SetCognitoEventsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: SetCognitoEventsRequest,
   output: SetCognitoEventsResponse,
@@ -1814,7 +1813,7 @@ export const setIdentityPoolConfiguration: API.OperationMethod<
   SetIdentityPoolConfigurationRequest,
   SetIdentityPoolConfigurationResponse,
   SetIdentityPoolConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: SetIdentityPoolConfigurationRequest,
   output: SetIdentityPoolConfigurationResponse,
@@ -1886,7 +1885,7 @@ export const subscribeToDataset: API.OperationMethod<
   SubscribeToDatasetRequest,
   SubscribeToDatasetResponse,
   SubscribeToDatasetError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: SubscribeToDatasetRequest,
   output: SubscribeToDatasetResponse,
@@ -1959,7 +1958,7 @@ export const unsubscribeFromDataset: API.OperationMethod<
   UnsubscribeFromDatasetRequest,
   UnsubscribeFromDatasetResponse,
   UnsubscribeFromDatasetError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UnsubscribeFromDatasetRequest,
   output: UnsubscribeFromDatasetResponse,
@@ -2000,7 +1999,7 @@ export const updateRecords: API.OperationMethod<
   UpdateRecordsRequest,
   UpdateRecordsResponse,
   UpdateRecordsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateRecordsRequest,
   output: UpdateRecordsResponse,

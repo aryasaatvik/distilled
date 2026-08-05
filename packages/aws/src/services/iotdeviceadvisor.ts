@@ -1,6 +1,5 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -8,7 +7,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 const svc = T.AwsApiService({
   sdkId: "IotDeviceAdvisor",
   serviceShapeName: "IotSenateService",
@@ -88,25 +86,25 @@ const rules = T.EndpointResolver((p, _) => {
 export class ConflictException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
     "ConflictException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class InternalServerException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
     "InternalServerException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(500),
   ).pipe(C.withServerError) {}
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class ValidationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
     "ValidationException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export type SuiteDefinitionName = string;
@@ -897,7 +895,7 @@ export const createSuiteDefinition: API.OperationMethod<
   CreateSuiteDefinitionRequest,
   CreateSuiteDefinitionResponse,
   CreateSuiteDefinitionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateSuiteDefinitionRequest,
   output: CreateSuiteDefinitionResponse,
@@ -920,7 +918,7 @@ export const deleteSuiteDefinition: API.OperationMethod<
   DeleteSuiteDefinitionRequest,
   DeleteSuiteDefinitionResponse,
   DeleteSuiteDefinitionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteSuiteDefinitionRequest,
   output: DeleteSuiteDefinitionResponse,
@@ -942,7 +940,7 @@ export const getEndpoint: API.OperationMethod<
   GetEndpointRequest,
   GetEndpointResponse,
   GetEndpointError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetEndpointRequest,
   output: GetEndpointResponse,
@@ -970,7 +968,7 @@ export const getSuiteDefinition: API.OperationMethod<
   GetSuiteDefinitionRequest,
   GetSuiteDefinitionResponse,
   GetSuiteDefinitionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetSuiteDefinitionRequest,
   output: GetSuiteDefinitionResponse,
@@ -998,7 +996,7 @@ export const getSuiteRun: API.OperationMethod<
   GetSuiteRunRequest,
   GetSuiteRunResponse,
   GetSuiteRunError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetSuiteRunRequest,
   output: GetSuiteRunResponse,
@@ -1026,7 +1024,7 @@ export const getSuiteRunReport: API.OperationMethod<
   GetSuiteRunReportRequest,
   GetSuiteRunReportResponse,
   GetSuiteRunReportError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetSuiteRunReportRequest,
   output: GetSuiteRunReportResponse,
@@ -1049,27 +1047,13 @@ export type ListSuiteDefinitionsError =
  *
  * Requires permission to access the ListSuiteDefinitions action.
  */
-export const listSuiteDefinitions: API.OperationMethod<
+export const listSuiteDefinitions: API.PaginatedOperationMethod<
   ListSuiteDefinitionsRequest,
   ListSuiteDefinitionsResponse,
   ListSuiteDefinitionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSuiteDefinitionsRequest,
-  ) => stream.Stream<
-    ListSuiteDefinitionsResponse,
-    ListSuiteDefinitionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSuiteDefinitionsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListSuiteDefinitionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListSuiteDefinitionsRequest,
   output: ListSuiteDefinitionsResponse,
   errors: [InternalServerException, ValidationException],
@@ -1081,27 +1065,7 @@ export const listSuiteDefinitions: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListSuiteDefinitionsRequest,
-  ListSuiteDefinitionsResponse,
-  ListSuiteDefinitionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSuiteDefinitionsRequest,
-  ) => stream.Stream<
-    ListSuiteDefinitionsResponse,
-    ListSuiteDefinitionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSuiteDefinitionsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListSuiteDefinitionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListSuiteRunsError =
   | InternalServerException
@@ -1113,27 +1077,13 @@ export type ListSuiteRunsError =
  *
  * Requires permission to access the ListSuiteRuns action.
  */
-export const listSuiteRuns: API.OperationMethod<
+export const listSuiteRuns: API.PaginatedOperationMethod<
   ListSuiteRunsRequest,
   ListSuiteRunsResponse,
   ListSuiteRunsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSuiteRunsRequest,
-  ) => stream.Stream<
-    ListSuiteRunsResponse,
-    ListSuiteRunsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSuiteRunsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListSuiteRunsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListSuiteRunsRequest,
   output: ListSuiteRunsResponse,
   errors: [InternalServerException, ValidationException],
@@ -1145,27 +1095,7 @@ export const listSuiteRuns: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListSuiteRunsRequest,
-  ListSuiteRunsResponse,
-  ListSuiteRunsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSuiteRunsRequest,
-  ) => stream.Stream<
-    ListSuiteRunsResponse,
-    ListSuiteRunsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSuiteRunsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListSuiteRunsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsForResourceError =
   | InternalServerException
@@ -1181,7 +1111,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceRequest,
   ListTagsForResourceResponse,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -1209,7 +1139,7 @@ export const startSuiteRun: API.OperationMethod<
   StartSuiteRunRequest,
   StartSuiteRunResponse,
   StartSuiteRunError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartSuiteRunRequest,
   output: StartSuiteRunResponse,
@@ -1233,7 +1163,7 @@ export const stopSuiteRun: API.OperationMethod<
   StopSuiteRunRequest,
   StopSuiteRunResponse,
   StopSuiteRunError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StopSuiteRunRequest,
   output: StopSuiteRunResponse,
@@ -1261,7 +1191,7 @@ export const tagResource: API.OperationMethod<
   TagResourceRequest,
   TagResourceResponse,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -1289,7 +1219,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceRequest,
   UntagResourceResponse,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -1316,7 +1246,7 @@ export const updateSuiteDefinition: API.OperationMethod<
   UpdateSuiteDefinitionRequest,
   UpdateSuiteDefinitionResponse,
   UpdateSuiteDefinitionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateSuiteDefinitionRequest,
   output: UpdateSuiteDefinitionResponse,

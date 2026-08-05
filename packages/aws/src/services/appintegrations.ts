@@ -1,6 +1,5 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -8,7 +7,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 const svc = T.AwsApiService({
   sdkId: "AppIntegrations",
   serviceShapeName: "AmazonAppIntegrationService",
@@ -88,54 +86,54 @@ const rules = T.EndpointResolver((p, _) => {
 export class AccessDeniedException
   extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
     "AccessDeniedException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(403),
   ).pipe(C.withAuthError) {}
 export class DuplicateResourceException
   extends /*@__PURE__*/ S.TaggedErrorClass<DuplicateResourceException>()(
     "DuplicateResourceException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class InternalServiceError
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServiceError>()(
     "InternalServiceError",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(500),
   ).pipe(C.withServerError) {}
 export class InvalidRequestException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidRequestException>()(
     "InvalidRequestException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class ResourceQuotaExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceQuotaExceededException>()(
     "ResourceQuotaExceededException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(429),
   ).pipe(C.withThrottlingError) {}
 export class ThrottlingException
   extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
     "ThrottlingException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(429),
   ).pipe(C.withThrottlingError) {}
 export class TooManyRequestsException
   extends /*@__PURE__*/ S.TaggedErrorClass<TooManyRequestsException>()(
     "TooManyRequestsException",
-    {},
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ).pipe(C.withThrottlingError, C.withRetryableError) {}
 export class UnsupportedOperationException
   extends /*@__PURE__*/ S.TaggedErrorClass<UnsupportedOperationException>()(
     "UnsupportedOperationException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export type ApplicationName = string;
@@ -1387,7 +1385,7 @@ export const createApplication: API.OperationMethod<
   CreateApplicationRequest,
   CreateApplicationResponse,
   CreateApplicationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateApplicationRequest,
   output: CreateApplicationResponse,
@@ -1426,7 +1424,7 @@ export const createDataIntegration: API.OperationMethod<
   CreateDataIntegrationRequest,
   CreateDataIntegrationResponse,
   CreateDataIntegrationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateDataIntegrationRequest,
   output: CreateDataIntegrationResponse,
@@ -1460,7 +1458,7 @@ export const createDataIntegrationAssociation: API.OperationMethod<
   CreateDataIntegrationAssociationRequest,
   CreateDataIntegrationAssociationResponse,
   CreateDataIntegrationAssociationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateDataIntegrationAssociationRequest,
   output: CreateDataIntegrationAssociationResponse,
@@ -1497,7 +1495,7 @@ export const createEventIntegration: API.OperationMethod<
   CreateEventIntegrationRequest,
   CreateEventIntegrationResponse,
   CreateEventIntegrationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateEventIntegrationRequest,
   output: CreateEventIntegrationResponse,
@@ -1531,7 +1529,7 @@ export const deleteApplication: API.OperationMethod<
   DeleteApplicationRequest,
   DeleteApplicationResponse,
   DeleteApplicationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteApplicationRequest,
   output: DeleteApplicationResponse,
@@ -1569,7 +1567,7 @@ export const deleteDataIntegration: API.OperationMethod<
   DeleteDataIntegrationRequest,
   DeleteDataIntegrationResponse,
   DeleteDataIntegrationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteDataIntegrationRequest,
   output: DeleteDataIntegrationResponse,
@@ -1602,7 +1600,7 @@ export const deleteEventIntegration: API.OperationMethod<
   DeleteEventIntegrationRequest,
   DeleteEventIntegrationResponse,
   DeleteEventIntegrationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteEventIntegrationRequest,
   output: DeleteEventIntegrationResponse,
@@ -1634,7 +1632,7 @@ export const getApplication: API.OperationMethod<
   GetApplicationRequest,
   GetApplicationResponse,
   GetApplicationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetApplicationRequest,
   output: GetApplicationResponse,
@@ -1670,7 +1668,7 @@ export const getDataIntegration: API.OperationMethod<
   GetDataIntegrationRequest,
   GetDataIntegrationResponse,
   GetDataIntegrationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetDataIntegrationRequest,
   output: GetDataIntegrationResponse,
@@ -1702,7 +1700,7 @@ export const getEventIntegration: API.OperationMethod<
   GetEventIntegrationRequest,
   GetEventIntegrationResponse,
   GetEventIntegrationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetEventIntegrationRequest,
   output: GetEventIntegrationResponse,
@@ -1730,27 +1728,13 @@ export type ListApplicationAssociationsError =
 /**
  * Returns a paginated list of application associations for an application.
  */
-export const listApplicationAssociations: API.OperationMethod<
+export const listApplicationAssociations: API.PaginatedOperationMethod<
   ListApplicationAssociationsRequest,
   ListApplicationAssociationsResponse,
   ListApplicationAssociationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListApplicationAssociationsRequest,
-  ) => stream.Stream<
-    ListApplicationAssociationsResponse,
-    ListApplicationAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListApplicationAssociationsRequest,
-  ) => stream.Stream<
-    ApplicationAssociationSummary,
-    ListApplicationAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ApplicationAssociationSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListApplicationAssociationsRequest,
   output: ListApplicationAssociationsResponse,
   errors: [
@@ -1770,27 +1754,7 @@ export const listApplicationAssociations: API.OperationMethod<
     items: "ApplicationAssociations",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListApplicationAssociationsRequest,
-  ListApplicationAssociationsResponse,
-  ListApplicationAssociationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListApplicationAssociationsRequest,
-  ) => stream.Stream<
-    ListApplicationAssociationsResponse,
-    ListApplicationAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListApplicationAssociationsRequest,
-  ) => stream.Stream<
-    ApplicationAssociationSummary,
-    ListApplicationAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListApplicationsError =
   | AccessDeniedException
@@ -1802,27 +1766,13 @@ export type ListApplicationsError =
 /**
  * Lists applications in the account.
  */
-export const listApplications: API.OperationMethod<
+export const listApplications: API.PaginatedOperationMethod<
   ListApplicationsRequest,
   ListApplicationsResponse,
   ListApplicationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListApplicationsRequest,
-  ) => stream.Stream<
-    ListApplicationsResponse,
-    ListApplicationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListApplicationsRequest,
-  ) => stream.Stream<
-    ApplicationSummary,
-    ListApplicationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ApplicationSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListApplicationsRequest,
   output: ListApplicationsResponse,
   errors: [
@@ -1841,27 +1791,7 @@ export const listApplications: API.OperationMethod<
     items: "Applications",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListApplicationsRequest,
-  ListApplicationsResponse,
-  ListApplicationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListApplicationsRequest,
-  ) => stream.Stream<
-    ListApplicationsResponse,
-    ListApplicationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListApplicationsRequest,
-  ) => stream.Stream<
-    ApplicationSummary,
-    ListApplicationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListDataIntegrationAssociationsError =
   | AccessDeniedException
@@ -1878,27 +1808,13 @@ export type ListDataIntegrationAssociationsError =
  * Use a different DataIntegration, or recreate the DataIntegration using the
  * CreateDataIntegration API.
  */
-export const listDataIntegrationAssociations: API.OperationMethod<
+export const listDataIntegrationAssociations: API.PaginatedOperationMethod<
   ListDataIntegrationAssociationsRequest,
   ListDataIntegrationAssociationsResponse,
   ListDataIntegrationAssociationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDataIntegrationAssociationsRequest,
-  ) => stream.Stream<
-    ListDataIntegrationAssociationsResponse,
-    ListDataIntegrationAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDataIntegrationAssociationsRequest,
-  ) => stream.Stream<
-    DataIntegrationAssociationSummary,
-    ListDataIntegrationAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  DataIntegrationAssociationSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListDataIntegrationAssociationsRequest,
   output: ListDataIntegrationAssociationsResponse,
   errors: [
@@ -1918,27 +1834,7 @@ export const listDataIntegrationAssociations: API.OperationMethod<
     items: "DataIntegrationAssociations",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListDataIntegrationAssociationsRequest,
-  ListDataIntegrationAssociationsResponse,
-  ListDataIntegrationAssociationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDataIntegrationAssociationsRequest,
-  ) => stream.Stream<
-    ListDataIntegrationAssociationsResponse,
-    ListDataIntegrationAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDataIntegrationAssociationsRequest,
-  ) => stream.Stream<
-    DataIntegrationAssociationSummary,
-    ListDataIntegrationAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListDataIntegrationsError =
   | AccessDeniedException
@@ -1954,27 +1850,13 @@ export type ListDataIntegrationsError =
  * Use a different DataIntegration, or recreate the DataIntegration using the
  * CreateDataIntegration API.
  */
-export const listDataIntegrations: API.OperationMethod<
+export const listDataIntegrations: API.PaginatedOperationMethod<
   ListDataIntegrationsRequest,
   ListDataIntegrationsResponse,
   ListDataIntegrationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDataIntegrationsRequest,
-  ) => stream.Stream<
-    ListDataIntegrationsResponse,
-    ListDataIntegrationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDataIntegrationsRequest,
-  ) => stream.Stream<
-    DataIntegrationSummary,
-    ListDataIntegrationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  DataIntegrationSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListDataIntegrationsRequest,
   output: ListDataIntegrationsResponse,
   errors: [
@@ -1993,27 +1875,7 @@ export const listDataIntegrations: API.OperationMethod<
     items: "DataIntegrations",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListDataIntegrationsRequest,
-  ListDataIntegrationsResponse,
-  ListDataIntegrationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDataIntegrationsRequest,
-  ) => stream.Stream<
-    ListDataIntegrationsResponse,
-    ListDataIntegrationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDataIntegrationsRequest,
-  ) => stream.Stream<
-    DataIntegrationSummary,
-    ListDataIntegrationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListEventIntegrationAssociationsError =
   | AccessDeniedException
@@ -2026,27 +1888,13 @@ export type ListEventIntegrationAssociationsError =
 /**
  * Returns a paginated list of event integration associations in the account.
  */
-export const listEventIntegrationAssociations: API.OperationMethod<
+export const listEventIntegrationAssociations: API.PaginatedOperationMethod<
   ListEventIntegrationAssociationsRequest,
   ListEventIntegrationAssociationsResponse,
   ListEventIntegrationAssociationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListEventIntegrationAssociationsRequest,
-  ) => stream.Stream<
-    ListEventIntegrationAssociationsResponse,
-    ListEventIntegrationAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListEventIntegrationAssociationsRequest,
-  ) => stream.Stream<
-    EventIntegrationAssociation,
-    ListEventIntegrationAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  EventIntegrationAssociation
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListEventIntegrationAssociationsRequest,
   output: ListEventIntegrationAssociationsResponse,
   errors: [
@@ -2066,27 +1914,7 @@ export const listEventIntegrationAssociations: API.OperationMethod<
     items: "EventIntegrationAssociations",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListEventIntegrationAssociationsRequest,
-  ListEventIntegrationAssociationsResponse,
-  ListEventIntegrationAssociationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListEventIntegrationAssociationsRequest,
-  ) => stream.Stream<
-    ListEventIntegrationAssociationsResponse,
-    ListEventIntegrationAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListEventIntegrationAssociationsRequest,
-  ) => stream.Stream<
-    EventIntegrationAssociation,
-    ListEventIntegrationAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListEventIntegrationsError =
   | AccessDeniedException
@@ -2098,27 +1926,13 @@ export type ListEventIntegrationsError =
 /**
  * Returns a paginated list of event integrations in the account.
  */
-export const listEventIntegrations: API.OperationMethod<
+export const listEventIntegrations: API.PaginatedOperationMethod<
   ListEventIntegrationsRequest,
   ListEventIntegrationsResponse,
   ListEventIntegrationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListEventIntegrationsRequest,
-  ) => stream.Stream<
-    ListEventIntegrationsResponse,
-    ListEventIntegrationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListEventIntegrationsRequest,
-  ) => stream.Stream<
-    EventIntegration,
-    ListEventIntegrationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  EventIntegration
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListEventIntegrationsRequest,
   output: ListEventIntegrationsResponse,
   errors: [
@@ -2137,27 +1951,7 @@ export const listEventIntegrations: API.OperationMethod<
     items: "EventIntegrations",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListEventIntegrationsRequest,
-  ListEventIntegrationsResponse,
-  ListEventIntegrationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListEventIntegrationsRequest,
-  ) => stream.Stream<
-    ListEventIntegrationsResponse,
-    ListEventIntegrationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListEventIntegrationsRequest,
-  ) => stream.Stream<
-    EventIntegration,
-    ListEventIntegrationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsForResourceError =
   | InternalServiceError
@@ -2173,7 +1967,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceRequest,
   ListTagsForResourceResponse,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -2203,7 +1997,7 @@ export const tagResource: API.OperationMethod<
   TagResourceRequest,
   TagResourceResponse,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -2233,7 +2027,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceRequest,
   UntagResourceResponse,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -2265,7 +2059,7 @@ export const updateApplication: API.OperationMethod<
   UpdateApplicationRequest,
   UpdateApplicationResponse,
   UpdateApplicationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateApplicationRequest,
   output: UpdateApplicationResponse,
@@ -2302,7 +2096,7 @@ export const updateDataIntegration: API.OperationMethod<
   UpdateDataIntegrationRequest,
   UpdateDataIntegrationResponse,
   UpdateDataIntegrationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateDataIntegrationRequest,
   output: UpdateDataIntegrationResponse,
@@ -2336,7 +2130,7 @@ export const updateDataIntegrationAssociation: API.OperationMethod<
   UpdateDataIntegrationAssociationRequest,
   UpdateDataIntegrationAssociationResponse,
   UpdateDataIntegrationAssociationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateDataIntegrationAssociationRequest,
   output: UpdateDataIntegrationAssociationResponse,
@@ -2368,7 +2162,7 @@ export const updateEventIntegration: API.OperationMethod<
   UpdateEventIntegrationRequest,
   UpdateEventIntegrationResponse,
   UpdateEventIntegrationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateEventIntegrationRequest,
   output: UpdateEventIntegrationResponse,

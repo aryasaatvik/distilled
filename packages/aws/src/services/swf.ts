@@ -1,6 +1,5 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -8,7 +7,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 const ns = T.XmlNamespace("http://swf.amazonaws.com/doc/2012-01-25");
 const svc = T.AwsApiService({
   sdkId: "SWF",
@@ -107,58 +105,58 @@ const rules = T.EndpointResolver((p, _) => {
 export class DefaultUndefinedFault
   extends /*@__PURE__*/ S.TaggedErrorClass<DefaultUndefinedFault>()(
     "DefaultUndefinedFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class DomainAlreadyExistsFault
   extends /*@__PURE__*/ S.TaggedErrorClass<DomainAlreadyExistsFault>()(
     "DomainAlreadyExistsFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ).pipe(C.withAlreadyExistsError) {}
 export class DomainDeprecatedFault
   extends /*@__PURE__*/ S.TaggedErrorClass<DomainDeprecatedFault>()(
     "DomainDeprecatedFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class LimitExceededFault
   extends /*@__PURE__*/ S.TaggedErrorClass<LimitExceededFault>()(
     "LimitExceededFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class OperationNotPermittedFault
   extends /*@__PURE__*/ S.TaggedErrorClass<OperationNotPermittedFault>()(
     "OperationNotPermittedFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class TooManyTagsFault
   extends /*@__PURE__*/ S.TaggedErrorClass<TooManyTagsFault>()(
     "TooManyTagsFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class TypeAlreadyExistsFault
   extends /*@__PURE__*/ S.TaggedErrorClass<TypeAlreadyExistsFault>()(
     "TypeAlreadyExistsFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ).pipe(C.withAlreadyExistsError) {}
 export class TypeDeprecatedFault
   extends /*@__PURE__*/ S.TaggedErrorClass<TypeDeprecatedFault>()(
     "TypeDeprecatedFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class TypeNotDeprecatedFault
   extends /*@__PURE__*/ S.TaggedErrorClass<TypeNotDeprecatedFault>()(
     "TypeNotDeprecatedFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class UnknownResourceFault
   extends /*@__PURE__*/ S.TaggedErrorClass<UnknownResourceFault>()(
     "UnknownResourceFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class WorkflowExecutionAlreadyStartedFault
   extends /*@__PURE__*/ S.TaggedErrorClass<WorkflowExecutionAlreadyStartedFault>()(
     "WorkflowExecutionAlreadyStartedFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export type DomainName = string;
 export interface ExecutionTimeFilter {
@@ -3389,7 +3387,7 @@ export const countClosedWorkflowExecutions: API.OperationMethod<
   CountClosedWorkflowExecutionsInput,
   WorkflowExecutionCount,
   CountClosedWorkflowExecutionsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CountClosedWorkflowExecutionsInput,
   output: WorkflowExecutionCount,
@@ -3443,7 +3441,7 @@ export const countOpenWorkflowExecutions: API.OperationMethod<
   CountOpenWorkflowExecutionsInput,
   WorkflowExecutionCount,
   CountOpenWorkflowExecutionsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CountOpenWorkflowExecutionsInput,
   output: WorkflowExecutionCount,
@@ -3487,7 +3485,7 @@ export const countPendingActivityTasks: API.OperationMethod<
   CountPendingActivityTasksInput,
   PendingTaskCount,
   CountPendingActivityTasksError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CountPendingActivityTasksInput,
   output: PendingTaskCount,
@@ -3531,7 +3529,7 @@ export const countPendingDecisionTasks: API.OperationMethod<
   CountPendingDecisionTasksInput,
   PendingTaskCount,
   CountPendingDecisionTasksError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CountPendingDecisionTasksInput,
   output: PendingTaskCount,
@@ -3582,7 +3580,7 @@ export const deleteActivityType: API.OperationMethod<
   DeleteActivityTypeInput,
   DeleteActivityTypeResponse,
   DeleteActivityTypeError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteActivityTypeInput,
   output: DeleteActivityTypeResponse,
@@ -3638,7 +3636,7 @@ export const deleteWorkflowType: API.OperationMethod<
   DeleteWorkflowTypeInput,
   DeleteWorkflowTypeResponse,
   DeleteWorkflowTypeError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteWorkflowTypeInput,
   output: DeleteWorkflowTypeResponse,
@@ -3692,7 +3690,7 @@ export const deprecateActivityType: API.OperationMethod<
   DeprecateActivityTypeInput,
   DeprecateActivityTypeResponse,
   DeprecateActivityTypeError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeprecateActivityTypeInput,
   output: DeprecateActivityTypeResponse,
@@ -3744,7 +3742,7 @@ export const deprecateDomain: API.OperationMethod<
   DeprecateDomainInput,
   DeprecateDomainResponse,
   DeprecateDomainError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeprecateDomainInput,
   output: DeprecateDomainResponse,
@@ -3802,7 +3800,7 @@ export const deprecateWorkflowType: API.OperationMethod<
   DeprecateWorkflowTypeInput,
   DeprecateWorkflowTypeResponse,
   DeprecateWorkflowTypeError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeprecateWorkflowTypeInput,
   output: DeprecateWorkflowTypeResponse,
@@ -3855,7 +3853,7 @@ export const describeActivityType: API.OperationMethod<
   DescribeActivityTypeInput,
   ActivityTypeDetail,
   DescribeActivityTypeError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeActivityTypeInput,
   output: ActivityTypeDetail,
@@ -3896,7 +3894,7 @@ export const describeDomain: API.OperationMethod<
   DescribeDomainInput,
   DomainDetail,
   DescribeDomainError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeDomainInput,
   output: DomainDetail,
@@ -3940,7 +3938,7 @@ export const describeWorkflowExecution: API.OperationMethod<
   DescribeWorkflowExecutionInput,
   WorkflowExecutionDetail,
   DescribeWorkflowExecutionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeWorkflowExecutionInput,
   output: WorkflowExecutionDetail,
@@ -3989,7 +3987,7 @@ export const describeWorkflowType: API.OperationMethod<
   DescribeWorkflowTypeInput,
   WorkflowTypeDetail,
   DescribeWorkflowTypeError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeWorkflowTypeInput,
   output: WorkflowTypeDetail,
@@ -4030,27 +4028,13 @@ export type GetWorkflowExecutionHistoryError =
  * For details and example IAM policies, see Using IAM to Manage Access to Amazon SWF
  * Workflows in the *Amazon SWF Developer Guide*.
  */
-export const getWorkflowExecutionHistory: API.OperationMethod<
+export const getWorkflowExecutionHistory: API.PaginatedOperationMethod<
   GetWorkflowExecutionHistoryInput,
   History,
   GetWorkflowExecutionHistoryError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetWorkflowExecutionHistoryInput,
-  ) => stream.Stream<
-    History,
-    GetWorkflowExecutionHistoryError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetWorkflowExecutionHistoryInput,
-  ) => stream.Stream<
-    HistoryEvent,
-    GetWorkflowExecutionHistoryError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  HistoryEvent
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetWorkflowExecutionHistoryInput,
   output: History,
   errors: [OperationNotPermittedFault, UnknownResourceFault],
@@ -4063,27 +4047,7 @@ export const getWorkflowExecutionHistory: API.OperationMethod<
     items: "events",
     pageSize: "maximumPageSize",
   } as const,
-})) as any as API.OperationMethod<
-  GetWorkflowExecutionHistoryInput,
-  History,
-  GetWorkflowExecutionHistoryError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetWorkflowExecutionHistoryInput,
-  ) => stream.Stream<
-    History,
-    GetWorkflowExecutionHistoryError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetWorkflowExecutionHistoryInput,
-  ) => stream.Stream<
-    HistoryEvent,
-    GetWorkflowExecutionHistoryError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListActivityTypesError =
   | OperationNotPermittedFault
@@ -4115,27 +4079,13 @@ export type ListActivityTypesError =
  * For details and example IAM policies, see Using IAM to Manage Access to Amazon SWF
  * Workflows in the *Amazon SWF Developer Guide*.
  */
-export const listActivityTypes: API.OperationMethod<
+export const listActivityTypes: API.PaginatedOperationMethod<
   ListActivityTypesInput,
   ActivityTypeInfos,
   ListActivityTypesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListActivityTypesInput,
-  ) => stream.Stream<
-    ActivityTypeInfos,
-    ListActivityTypesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListActivityTypesInput,
-  ) => stream.Stream<
-    ActivityTypeInfo,
-    ListActivityTypesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ActivityTypeInfo
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListActivityTypesInput,
   output: ActivityTypeInfos,
   errors: [OperationNotPermittedFault, UnknownResourceFault],
@@ -4148,27 +4098,7 @@ export const listActivityTypes: API.OperationMethod<
     items: "typeInfos",
     pageSize: "maximumPageSize",
   } as const,
-})) as any as API.OperationMethod<
-  ListActivityTypesInput,
-  ActivityTypeInfos,
-  ListActivityTypesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListActivityTypesInput,
-  ) => stream.Stream<
-    ActivityTypeInfos,
-    ListActivityTypesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListActivityTypesInput,
-  ) => stream.Stream<
-    ActivityTypeInfo,
-    ListActivityTypesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListClosedWorkflowExecutionsError =
   | OperationNotPermittedFault
@@ -4211,27 +4141,13 @@ export type ListClosedWorkflowExecutionsError =
  * For details and example IAM policies, see Using IAM to Manage Access to Amazon SWF
  * Workflows in the *Amazon SWF Developer Guide*.
  */
-export const listClosedWorkflowExecutions: API.OperationMethod<
+export const listClosedWorkflowExecutions: API.PaginatedOperationMethod<
   ListClosedWorkflowExecutionsInput,
   WorkflowExecutionInfos,
   ListClosedWorkflowExecutionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListClosedWorkflowExecutionsInput,
-  ) => stream.Stream<
-    WorkflowExecutionInfos,
-    ListClosedWorkflowExecutionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListClosedWorkflowExecutionsInput,
-  ) => stream.Stream<
-    WorkflowExecutionInfo,
-    ListClosedWorkflowExecutionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  WorkflowExecutionInfo
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListClosedWorkflowExecutionsInput,
   output: WorkflowExecutionInfos,
   errors: [OperationNotPermittedFault, UnknownResourceFault],
@@ -4244,27 +4160,7 @@ export const listClosedWorkflowExecutions: API.OperationMethod<
     items: "executionInfos",
     pageSize: "maximumPageSize",
   } as const,
-})) as any as API.OperationMethod<
-  ListClosedWorkflowExecutionsInput,
-  WorkflowExecutionInfos,
-  ListClosedWorkflowExecutionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListClosedWorkflowExecutionsInput,
-  ) => stream.Stream<
-    WorkflowExecutionInfos,
-    ListClosedWorkflowExecutionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListClosedWorkflowExecutionsInput,
-  ) => stream.Stream<
-    WorkflowExecutionInfo,
-    ListClosedWorkflowExecutionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListDomainsError = OperationNotPermittedFault | CommonErrors;
 /**
@@ -4296,27 +4192,13 @@ export type ListDomainsError = OperationNotPermittedFault | CommonErrors;
  * For details and example IAM policies, see Using IAM to Manage Access to Amazon SWF
  * Workflows in the *Amazon SWF Developer Guide*.
  */
-export const listDomains: API.OperationMethod<
+export const listDomains: API.PaginatedOperationMethod<
   ListDomainsInput,
   DomainInfos,
   ListDomainsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDomainsInput,
-  ) => stream.Stream<
-    DomainInfos,
-    ListDomainsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDomainsInput,
-  ) => stream.Stream<
-    DomainInfo,
-    ListDomainsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  DomainInfo
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListDomainsInput,
   output: DomainInfos,
   errors: [OperationNotPermittedFault],
@@ -4329,27 +4211,7 @@ export const listDomains: API.OperationMethod<
     items: "domainInfos",
     pageSize: "maximumPageSize",
   } as const,
-})) as any as API.OperationMethod<
-  ListDomainsInput,
-  DomainInfos,
-  ListDomainsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDomainsInput,
-  ) => stream.Stream<
-    DomainInfos,
-    ListDomainsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDomainsInput,
-  ) => stream.Stream<
-    DomainInfo,
-    ListDomainsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListOpenWorkflowExecutionsError =
   | OperationNotPermittedFault
@@ -4392,27 +4254,13 @@ export type ListOpenWorkflowExecutionsError =
  * For details and example IAM policies, see Using IAM to Manage Access to Amazon SWF
  * Workflows in the *Amazon SWF Developer Guide*.
  */
-export const listOpenWorkflowExecutions: API.OperationMethod<
+export const listOpenWorkflowExecutions: API.PaginatedOperationMethod<
   ListOpenWorkflowExecutionsInput,
   WorkflowExecutionInfos,
   ListOpenWorkflowExecutionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListOpenWorkflowExecutionsInput,
-  ) => stream.Stream<
-    WorkflowExecutionInfos,
-    ListOpenWorkflowExecutionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListOpenWorkflowExecutionsInput,
-  ) => stream.Stream<
-    WorkflowExecutionInfo,
-    ListOpenWorkflowExecutionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  WorkflowExecutionInfo
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListOpenWorkflowExecutionsInput,
   output: WorkflowExecutionInfos,
   errors: [OperationNotPermittedFault, UnknownResourceFault],
@@ -4425,27 +4273,7 @@ export const listOpenWorkflowExecutions: API.OperationMethod<
     items: "executionInfos",
     pageSize: "maximumPageSize",
   } as const,
-})) as any as API.OperationMethod<
-  ListOpenWorkflowExecutionsInput,
-  WorkflowExecutionInfos,
-  ListOpenWorkflowExecutionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListOpenWorkflowExecutionsInput,
-  ) => stream.Stream<
-    WorkflowExecutionInfos,
-    ListOpenWorkflowExecutionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListOpenWorkflowExecutionsInput,
-  ) => stream.Stream<
-    WorkflowExecutionInfo,
-    ListOpenWorkflowExecutionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsForResourceError =
   | LimitExceededFault
@@ -4459,7 +4287,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceInput,
   ListTagsForResourceOutput,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceInput,
   output: ListTagsForResourceOutput,
@@ -4500,27 +4328,13 @@ export type ListWorkflowTypesError =
  * For details and example IAM policies, see Using IAM to Manage Access to Amazon SWF
  * Workflows in the *Amazon SWF Developer Guide*.
  */
-export const listWorkflowTypes: API.OperationMethod<
+export const listWorkflowTypes: API.PaginatedOperationMethod<
   ListWorkflowTypesInput,
   WorkflowTypeInfos,
   ListWorkflowTypesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListWorkflowTypesInput,
-  ) => stream.Stream<
-    WorkflowTypeInfos,
-    ListWorkflowTypesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListWorkflowTypesInput,
-  ) => stream.Stream<
-    WorkflowTypeInfo,
-    ListWorkflowTypesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  WorkflowTypeInfo
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListWorkflowTypesInput,
   output: WorkflowTypeInfos,
   errors: [OperationNotPermittedFault, UnknownResourceFault],
@@ -4533,27 +4347,7 @@ export const listWorkflowTypes: API.OperationMethod<
     items: "typeInfos",
     pageSize: "maximumPageSize",
   } as const,
-})) as any as API.OperationMethod<
-  ListWorkflowTypesInput,
-  WorkflowTypeInfos,
-  ListWorkflowTypesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListWorkflowTypesInput,
-  ) => stream.Stream<
-    WorkflowTypeInfos,
-    ListWorkflowTypesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListWorkflowTypesInput,
-  ) => stream.Stream<
-    WorkflowTypeInfo,
-    ListWorkflowTypesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type PollForActivityTaskError =
   | LimitExceededFault
@@ -4597,7 +4391,7 @@ export const pollForActivityTask: API.OperationMethod<
   PollForActivityTaskInput,
   ActivityTask,
   PollForActivityTaskError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PollForActivityTaskInput,
   output: ActivityTask,
@@ -4661,27 +4455,13 @@ export type PollForDecisionTaskError =
  * For details and example IAM policies, see Using IAM to Manage Access to Amazon SWF
  * Workflows in the *Amazon SWF Developer Guide*.
  */
-export const pollForDecisionTask: API.OperationMethod<
+export const pollForDecisionTask: API.PaginatedOperationMethod<
   PollForDecisionTaskInput,
   DecisionTask,
   PollForDecisionTaskError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: PollForDecisionTaskInput,
-  ) => stream.Stream<
-    DecisionTask,
-    PollForDecisionTaskError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: PollForDecisionTaskInput,
-  ) => stream.Stream<
-    HistoryEvent,
-    PollForDecisionTaskError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  HistoryEvent
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: PollForDecisionTaskInput,
   output: DecisionTask,
   errors: [
@@ -4698,27 +4478,7 @@ export const pollForDecisionTask: API.OperationMethod<
     items: "events",
     pageSize: "maximumPageSize",
   } as const,
-})) as any as API.OperationMethod<
-  PollForDecisionTaskInput,
-  DecisionTask,
-  PollForDecisionTaskError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: PollForDecisionTaskInput,
-  ) => stream.Stream<
-    DecisionTask,
-    PollForDecisionTaskError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: PollForDecisionTaskInput,
-  ) => stream.Stream<
-    HistoryEvent,
-    PollForDecisionTaskError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type RecordActivityTaskHeartbeatError =
   | OperationNotPermittedFault
@@ -4773,7 +4533,7 @@ export const recordActivityTaskHeartbeat: API.OperationMethod<
   RecordActivityTaskHeartbeatInput,
   ActivityTaskStatus,
   RecordActivityTaskHeartbeatError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RecordActivityTaskHeartbeatInput,
   output: ActivityTaskStatus,
@@ -4829,7 +4589,7 @@ export const registerActivityType: API.OperationMethod<
   RegisterActivityTypeInput,
   RegisterActivityTypeResponse,
   RegisterActivityTypeError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RegisterActivityTypeInput,
   output: RegisterActivityTypeResponse,
@@ -4876,7 +4636,7 @@ export const registerDomain: API.OperationMethod<
   RegisterDomainInput,
   RegisterDomainResponse,
   RegisterDomainError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RegisterDomainInput,
   output: RegisterDomainResponse,
@@ -4939,7 +4699,7 @@ export const registerWorkflowType: API.OperationMethod<
   RegisterWorkflowTypeInput,
   RegisterWorkflowTypeResponse,
   RegisterWorkflowTypeError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RegisterWorkflowTypeInput,
   output: RegisterWorkflowTypeResponse,
@@ -4995,7 +4755,7 @@ export const requestCancelWorkflowExecution: API.OperationMethod<
   RequestCancelWorkflowExecutionInput,
   RequestCancelWorkflowExecutionResponse,
   RequestCancelWorkflowExecutionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RequestCancelWorkflowExecutionInput,
   output: RequestCancelWorkflowExecutionResponse,
@@ -5050,7 +4810,7 @@ export const respondActivityTaskCanceled: API.OperationMethod<
   RespondActivityTaskCanceledInput,
   RespondActivityTaskCanceledResponse,
   RespondActivityTaskCanceledError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RespondActivityTaskCanceledInput,
   output: RespondActivityTaskCanceledResponse,
@@ -5103,7 +4863,7 @@ export const respondActivityTaskCompleted: API.OperationMethod<
   RespondActivityTaskCompletedInput,
   RespondActivityTaskCompletedResponse,
   RespondActivityTaskCompletedError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RespondActivityTaskCompletedInput,
   output: RespondActivityTaskCompletedResponse,
@@ -5151,7 +4911,7 @@ export const respondActivityTaskFailed: API.OperationMethod<
   RespondActivityTaskFailedInput,
   RespondActivityTaskFailedResponse,
   RespondActivityTaskFailedError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RespondActivityTaskFailedInput,
   output: RespondActivityTaskFailedResponse,
@@ -5189,7 +4949,7 @@ export const respondDecisionTaskCompleted: API.OperationMethod<
   RespondDecisionTaskCompletedInput,
   RespondDecisionTaskCompletedResponse,
   RespondDecisionTaskCompletedError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RespondDecisionTaskCompletedInput,
   output: RespondDecisionTaskCompletedResponse,
@@ -5239,7 +4999,7 @@ export const signalWorkflowExecution: API.OperationMethod<
   SignalWorkflowExecutionInput,
   SignalWorkflowExecutionResponse,
   SignalWorkflowExecutionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: SignalWorkflowExecutionInput,
   output: SignalWorkflowExecutionResponse,
@@ -5306,7 +5066,7 @@ export const startWorkflowExecution: API.OperationMethod<
   StartWorkflowExecutionInput,
   Run,
   StartWorkflowExecutionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartWorkflowExecutionInput,
   output: Run,
@@ -5338,7 +5098,7 @@ export const tagResource: API.OperationMethod<
   TagResourceInput,
   TagResourceResponse,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceInput,
   output: TagResourceResponse,
@@ -5396,7 +5156,7 @@ export const terminateWorkflowExecution: API.OperationMethod<
   TerminateWorkflowExecutionInput,
   TerminateWorkflowExecutionResponse,
   TerminateWorkflowExecutionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TerminateWorkflowExecutionInput,
   output: TerminateWorkflowExecutionResponse,
@@ -5448,7 +5208,7 @@ export const undeprecateActivityType: API.OperationMethod<
   UndeprecateActivityTypeInput,
   UndeprecateActivityTypeResponse,
   UndeprecateActivityTypeError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UndeprecateActivityTypeInput,
   output: UndeprecateActivityTypeResponse,
@@ -5497,7 +5257,7 @@ export const undeprecateDomain: API.OperationMethod<
   UndeprecateDomainInput,
   UndeprecateDomainResponse,
   UndeprecateDomainError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UndeprecateDomainInput,
   output: UndeprecateDomainResponse,
@@ -5553,7 +5313,7 @@ export const undeprecateWorkflowType: API.OperationMethod<
   UndeprecateWorkflowTypeInput,
   UndeprecateWorkflowTypeResponse,
   UndeprecateWorkflowTypeError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UndeprecateWorkflowTypeInput,
   output: UndeprecateWorkflowTypeResponse,
@@ -5579,7 +5339,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceInput,
   UntagResourceResponse,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceInput,
   output: UntagResourceResponse,

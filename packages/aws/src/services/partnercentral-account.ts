@@ -1,7 +1,6 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as redacted from "effect/Redacted";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -9,7 +8,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 import { SensitiveString } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "PartnerCentral Account",
@@ -58,7 +56,7 @@ export class AccessDeniedException
   extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
     "AccessDeniedException",
     {
-      Message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       Reason: S.suspend(() => AccessDeniedExceptionReason).annotate({
         identifier: "AccessDeniedExceptionReason",
       }),
@@ -69,7 +67,7 @@ export class ConflictException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
     "ConflictException",
     {
-      Message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       Reason: S.suspend(() => ConflictExceptionReason).annotate({
         identifier: "ConflictExceptionReason",
       }),
@@ -79,14 +77,14 @@ export class ConflictException
 export class InternalServerException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
     "InternalServerException",
-    { Message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.all(T.HttpError(500), T.Retryable()),
   ).pipe(C.withServerError, C.withRetryableError) {}
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
     {
-      Message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       Reason: S.suspend(() => ResourceNotFoundExceptionReason).annotate({
         identifier: "ResourceNotFoundExceptionReason",
       }),
@@ -97,7 +95,7 @@ export class ServiceQuotaExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
     "ServiceQuotaExceededException",
     {
-      Message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       Reason: S.suspend(() => ServiceQuotaExceededExceptionReason).annotate({
         identifier: "ServiceQuotaExceededExceptionReason",
       }),
@@ -108,7 +106,7 @@ export class ThrottlingException
   extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
     "ThrottlingException",
     {
-      Message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       ServiceCode: S.optional(S.String),
       QuotaCode: S.optional(S.String),
     },
@@ -118,7 +116,7 @@ export class ValidationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
     "ValidationException",
     {
-      Message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       Reason: S.suspend(() => ValidationExceptionReason).annotate({
         identifier: "ValidationExceptionReason",
       }),
@@ -1785,7 +1783,7 @@ export const acceptConnectionInvitation: API.OperationMethod<
   AcceptConnectionInvitationRequest,
   AcceptConnectionInvitationResponse,
   AcceptConnectionInvitationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AcceptConnectionInvitationRequest,
   output: AcceptConnectionInvitationResponse,
@@ -1818,7 +1816,7 @@ export const associateAwsTrainingCertificationEmailDomain: API.OperationMethod<
   AssociateAwsTrainingCertificationEmailDomainRequest,
   AssociateAwsTrainingCertificationEmailDomainResponse,
   AssociateAwsTrainingCertificationEmailDomainError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AssociateAwsTrainingCertificationEmailDomainRequest,
   output: AssociateAwsTrainingCertificationEmailDomainResponse,
@@ -1850,7 +1848,7 @@ export const cancelConnection: API.OperationMethod<
   CancelConnectionRequest,
   CancelConnectionResponse,
   CancelConnectionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CancelConnectionRequest,
   output: CancelConnectionResponse,
@@ -1882,7 +1880,7 @@ export const cancelConnectionInvitation: API.OperationMethod<
   CancelConnectionInvitationRequest,
   CancelConnectionInvitationResponse,
   CancelConnectionInvitationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CancelConnectionInvitationRequest,
   output: CancelConnectionInvitationResponse,
@@ -1914,7 +1912,7 @@ export const cancelProfileUpdateTask: API.OperationMethod<
   CancelProfileUpdateTaskRequest,
   CancelProfileUpdateTaskResponse,
   CancelProfileUpdateTaskError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CancelProfileUpdateTaskRequest,
   output: CancelProfileUpdateTaskResponse,
@@ -1947,7 +1945,7 @@ export const createConnectionInvitation: API.OperationMethod<
   CreateConnectionInvitationRequest,
   CreateConnectionInvitationResponse,
   CreateConnectionInvitationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateConnectionInvitationRequest,
   output: CreateConnectionInvitationResponse,
@@ -1979,7 +1977,7 @@ export const createPartner: API.OperationMethod<
   CreatePartnerRequest,
   CreatePartnerResponse,
   CreatePartnerError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreatePartnerRequest,
   output: CreatePartnerResponse,
@@ -2009,7 +2007,7 @@ export const disassociateAwsTrainingCertificationEmailDomain: API.OperationMetho
   DisassociateAwsTrainingCertificationEmailDomainRequest,
   DisassociateAwsTrainingCertificationEmailDomainResponse,
   DisassociateAwsTrainingCertificationEmailDomainError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DisassociateAwsTrainingCertificationEmailDomainRequest,
   output: DisassociateAwsTrainingCertificationEmailDomainResponse,
@@ -2039,7 +2037,7 @@ export const getAllianceLeadContact: API.OperationMethod<
   GetAllianceLeadContactRequest,
   GetAllianceLeadContactResponse,
   GetAllianceLeadContactError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetAllianceLeadContactRequest,
   output: GetAllianceLeadContactResponse,
@@ -2069,7 +2067,7 @@ export const getConnection: API.OperationMethod<
   GetConnectionRequest,
   GetConnectionResponse,
   GetConnectionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetConnectionRequest,
   output: GetConnectionResponse,
@@ -2099,7 +2097,7 @@ export const getConnectionInvitation: API.OperationMethod<
   GetConnectionInvitationRequest,
   GetConnectionInvitationResponse,
   GetConnectionInvitationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetConnectionInvitationRequest,
   output: GetConnectionInvitationResponse,
@@ -2128,7 +2126,7 @@ export const getConnectionPreferences: API.OperationMethod<
   GetConnectionPreferencesRequest,
   GetConnectionPreferencesResponse,
   GetConnectionPreferencesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetConnectionPreferencesRequest,
   output: GetConnectionPreferencesResponse,
@@ -2157,7 +2155,7 @@ export const getPartner: API.OperationMethod<
   GetPartnerRequest,
   GetPartnerResponse,
   GetPartnerError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetPartnerRequest,
   output: GetPartnerResponse,
@@ -2187,7 +2185,7 @@ export const getProfileUpdateTask: API.OperationMethod<
   GetProfileUpdateTaskRequest,
   GetProfileUpdateTaskResponse,
   GetProfileUpdateTaskError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetProfileUpdateTaskRequest,
   output: GetProfileUpdateTaskResponse,
@@ -2217,7 +2215,7 @@ export const getProfileVisibility: API.OperationMethod<
   GetProfileVisibilityRequest,
   GetProfileVisibilityResponse,
   GetProfileVisibilityError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetProfileVisibilityRequest,
   output: GetProfileVisibilityResponse,
@@ -2247,7 +2245,7 @@ export const getVerification: API.OperationMethod<
   GetVerificationRequest,
   GetVerificationResponse,
   GetVerificationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetVerificationRequest,
   output: GetVerificationResponse,
@@ -2272,27 +2270,13 @@ export type ListConnectionInvitationsError =
 /**
  * Lists connection invitations for the partner account, with optional filtering by status, type, and other criteria.
  */
-export const listConnectionInvitations: API.OperationMethod<
+export const listConnectionInvitations: API.PaginatedOperationMethod<
   ListConnectionInvitationsRequest,
   ListConnectionInvitationsResponse,
   ListConnectionInvitationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListConnectionInvitationsRequest,
-  ) => stream.Stream<
-    ListConnectionInvitationsResponse,
-    ListConnectionInvitationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListConnectionInvitationsRequest,
-  ) => stream.Stream<
-    ConnectionInvitationSummary,
-    ListConnectionInvitationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ConnectionInvitationSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListConnectionInvitationsRequest,
   output: ListConnectionInvitationsResponse,
   errors: [
@@ -2310,27 +2294,7 @@ export const listConnectionInvitations: API.OperationMethod<
     items: "ConnectionInvitationSummaries",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListConnectionInvitationsRequest,
-  ListConnectionInvitationsResponse,
-  ListConnectionInvitationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListConnectionInvitationsRequest,
-  ) => stream.Stream<
-    ListConnectionInvitationsResponse,
-    ListConnectionInvitationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListConnectionInvitationsRequest,
-  ) => stream.Stream<
-    ConnectionInvitationSummary,
-    ListConnectionInvitationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListConnectionsError =
   | AccessDeniedException
@@ -2341,27 +2305,13 @@ export type ListConnectionsError =
 /**
  * Lists active connections for the partner account, with optional filtering by connection type and participant.
  */
-export const listConnections: API.OperationMethod<
+export const listConnections: API.PaginatedOperationMethod<
   ListConnectionsRequest,
   ListConnectionsResponse,
   ListConnectionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListConnectionsRequest,
-  ) => stream.Stream<
-    ListConnectionsResponse,
-    ListConnectionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListConnectionsRequest,
-  ) => stream.Stream<
-    ConnectionSummary,
-    ListConnectionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ConnectionSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListConnectionsRequest,
   output: ListConnectionsResponse,
   errors: [
@@ -2379,27 +2329,7 @@ export const listConnections: API.OperationMethod<
     items: "ConnectionSummaries",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListConnectionsRequest,
-  ListConnectionsResponse,
-  ListConnectionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListConnectionsRequest,
-  ) => stream.Stream<
-    ListConnectionsResponse,
-    ListConnectionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListConnectionsRequest,
-  ) => stream.Stream<
-    ConnectionSummary,
-    ListConnectionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListPartnersError =
   | AccessDeniedException
@@ -2410,27 +2340,13 @@ export type ListPartnersError =
 /**
  * Lists partner accounts in the catalog, providing a summary view of all partners.
  */
-export const listPartners: API.OperationMethod<
+export const listPartners: API.PaginatedOperationMethod<
   ListPartnersRequest,
   ListPartnersResponse,
   ListPartnersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPartnersRequest,
-  ) => stream.Stream<
-    ListPartnersResponse,
-    ListPartnersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPartnersRequest,
-  ) => stream.Stream<
-    PartnerSummary,
-    ListPartnersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  PartnerSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListPartnersRequest,
   output: ListPartnersResponse,
   errors: [
@@ -2447,27 +2363,7 @@ export const listPartners: API.OperationMethod<
     outputToken: "NextToken",
     items: "PartnerSummaryList",
   } as const,
-})) as any as API.OperationMethod<
-  ListPartnersRequest,
-  ListPartnersResponse,
-  ListPartnersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPartnersRequest,
-  ) => stream.Stream<
-    ListPartnersResponse,
-    ListPartnersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPartnersRequest,
-  ) => stream.Stream<
-    PartnerSummary,
-    ListPartnersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsForResourceError =
   | AccessDeniedException
@@ -2483,7 +2379,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceRequest,
   ListTagsForResourceResponse,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -2513,7 +2409,7 @@ export const putAllianceLeadContact: API.OperationMethod<
   PutAllianceLeadContactRequest,
   PutAllianceLeadContactResponse,
   PutAllianceLeadContactError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutAllianceLeadContactRequest,
   output: PutAllianceLeadContactResponse,
@@ -2544,7 +2440,7 @@ export const putProfileVisibility: API.OperationMethod<
   PutProfileVisibilityRequest,
   PutProfileVisibilityResponse,
   PutProfileVisibilityError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutProfileVisibilityRequest,
   output: PutProfileVisibilityResponse,
@@ -2576,7 +2472,7 @@ export const rejectConnectionInvitation: API.OperationMethod<
   RejectConnectionInvitationRequest,
   RejectConnectionInvitationResponse,
   RejectConnectionInvitationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RejectConnectionInvitationRequest,
   output: RejectConnectionInvitationResponse,
@@ -2607,7 +2503,7 @@ export const sendEmailVerificationCode: API.OperationMethod<
   SendEmailVerificationCodeRequest,
   SendEmailVerificationCodeResponse,
   SendEmailVerificationCodeError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: SendEmailVerificationCodeRequest,
   output: SendEmailVerificationCodeResponse,
@@ -2639,7 +2535,7 @@ export const startProfileUpdateTask: API.OperationMethod<
   StartProfileUpdateTaskRequest,
   StartProfileUpdateTaskResponse,
   StartProfileUpdateTaskError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartProfileUpdateTaskRequest,
   output: StartProfileUpdateTaskResponse,
@@ -2672,7 +2568,7 @@ export const startVerification: API.OperationMethod<
   StartVerificationRequest,
   StartVerificationResponse,
   StartVerificationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartVerificationRequest,
   output: StartVerificationResponse,
@@ -2704,7 +2600,7 @@ export const tagResource: API.OperationMethod<
   TagResourceRequest,
   TagResourceResponse,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -2736,7 +2632,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceRequest,
   UntagResourceResponse,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -2767,7 +2663,7 @@ export const updateConnectionPreferences: API.OperationMethod<
   UpdateConnectionPreferencesRequest,
   UpdateConnectionPreferencesResponse,
   UpdateConnectionPreferencesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateConnectionPreferencesRequest,
   output: UpdateConnectionPreferencesResponse,

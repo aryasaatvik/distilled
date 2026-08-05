@@ -1,7 +1,6 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as redacted from "effect/Redacted";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -9,7 +8,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 import { SensitiveString } from "../sensitive.ts";
 const svc = T.AwsApiService({ sdkId: "Glue", serviceShapeName: "AWSGlue" });
 const auth = T.AwsAuthSigv4({ name: "glue" });
@@ -87,68 +85,68 @@ const rules = T.EndpointResolver((p, _) => {
 export class AccessDeniedException
   extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
     "AccessDeniedException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ).pipe(C.withAuthError) {}
 export class AlreadyExistsException
   extends /*@__PURE__*/ S.TaggedErrorClass<AlreadyExistsException>()(
     "AlreadyExistsException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ).pipe(C.withAlreadyExistsError) {}
 export class ColumnStatisticsTaskNotRunningException
   extends /*@__PURE__*/ S.TaggedErrorClass<ColumnStatisticsTaskNotRunningException>()(
     "ColumnStatisticsTaskNotRunningException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class ColumnStatisticsTaskRunningException
   extends /*@__PURE__*/ S.TaggedErrorClass<ColumnStatisticsTaskRunningException>()(
     "ColumnStatisticsTaskRunningException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class ColumnStatisticsTaskStoppingException
   extends /*@__PURE__*/ S.TaggedErrorClass<ColumnStatisticsTaskStoppingException>()(
     "ColumnStatisticsTaskStoppingException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class ConcurrentModificationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConcurrentModificationException>()(
     "ConcurrentModificationException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class ConcurrentRunsExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConcurrentRunsExceededException>()(
     "ConcurrentRunsExceededException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class ConditionCheckFailureException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConditionCheckFailureException>()(
     "ConditionCheckFailureException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class ConflictException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
     "ConflictException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class CrawlerNotRunningException
   extends /*@__PURE__*/ S.TaggedErrorClass<CrawlerNotRunningException>()(
     "CrawlerNotRunningException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class CrawlerRunningException
   extends /*@__PURE__*/ S.TaggedErrorClass<CrawlerRunningException>()(
     "CrawlerRunningException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class CrawlerStoppingException
   extends /*@__PURE__*/ S.TaggedErrorClass<CrawlerStoppingException>()(
     "CrawlerStoppingException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class EntityNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<EntityNotFoundException>()(
     "EntityNotFoundException",
     {
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       FromFederationSource: S.optional(S.Boolean),
     },
   ) {}
@@ -156,7 +154,7 @@ export class FederatedResourceAlreadyExistsException
   extends /*@__PURE__*/ S.TaggedErrorClass<FederatedResourceAlreadyExistsException>()(
     "FederatedResourceAlreadyExistsException",
     {
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       AssociatedGlueResource: S.optional(S.String),
     },
   ).pipe(C.withAlreadyExistsError) {}
@@ -169,24 +167,24 @@ export class FederationSourceException
           identifier: "FederationSourceErrorCode",
         }),
       ),
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
     },
   ) {}
 export class FederationSourceRetryableException
   extends /*@__PURE__*/ S.TaggedErrorClass<FederationSourceRetryableException>()(
     "FederationSourceRetryableException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class GlueEncryptionException
   extends /*@__PURE__*/ S.TaggedErrorClass<GlueEncryptionException>()(
     "GlueEncryptionException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class GlueRoleNotAssumable
   extends /*@__PURE__*/ S.TaggedErrorClass<GlueRoleNotAssumable>()(
     "GlueRoleNotAssumable",
     {
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       FromFederationSource: S.optional(S.Boolean),
     },
     T.SyntheticError({
@@ -198,7 +196,7 @@ export class GlueS3TargetNotReady
   extends /*@__PURE__*/ S.TaggedErrorClass<GlueS3TargetNotReady>()(
     "GlueS3TargetNotReady",
     {
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       FromFederationSource: S.optional(S.Boolean),
     },
     T.SyntheticError({
@@ -209,173 +207,173 @@ export class GlueS3TargetNotReady
 export class IdempotentParameterMismatchException
   extends /*@__PURE__*/ S.TaggedErrorClass<IdempotentParameterMismatchException>()(
     "IdempotentParameterMismatchException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class IllegalBlueprintStateException
   extends /*@__PURE__*/ S.TaggedErrorClass<IllegalBlueprintStateException>()(
     "IllegalBlueprintStateException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class IllegalSessionStateException
   extends /*@__PURE__*/ S.TaggedErrorClass<IllegalSessionStateException>()(
     "IllegalSessionStateException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class IllegalWorkflowStateException
   extends /*@__PURE__*/ S.TaggedErrorClass<IllegalWorkflowStateException>()(
     "IllegalWorkflowStateException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class IntegrationConflictOperationFault
   extends /*@__PURE__*/ S.TaggedErrorClass<IntegrationConflictOperationFault>()(
     "IntegrationConflictOperationFault",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class IntegrationNotFoundFault
   extends /*@__PURE__*/ S.TaggedErrorClass<IntegrationNotFoundFault>()(
     "IntegrationNotFoundFault",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class IntegrationQuotaExceededFault
   extends /*@__PURE__*/ S.TaggedErrorClass<IntegrationQuotaExceededFault>()(
     "IntegrationQuotaExceededFault",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(402),
   ).pipe(C.withQuotaError) {}
 export class InternalServerException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
     "InternalServerException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(500),
   ).pipe(C.withServerError) {}
 export class InternalServiceException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServiceException>()(
     "InternalServiceException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidInputException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidInputException>()(
     "InvalidInputException",
     {
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       FromFederationSource: S.optional(S.Boolean),
     },
   ) {}
 export class InvalidIntegrationStateFault
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidIntegrationStateFault>()(
     "InvalidIntegrationStateFault",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class InvalidStateException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidStateException>()(
     "InvalidStateException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class KMSKeyNotAccessibleFault
   extends /*@__PURE__*/ S.TaggedErrorClass<KMSKeyNotAccessibleFault>()(
     "KMSKeyNotAccessibleFault",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class MaterializedViewRefreshTaskNotRunningException
   extends /*@__PURE__*/ S.TaggedErrorClass<MaterializedViewRefreshTaskNotRunningException>()(
     "MaterializedViewRefreshTaskNotRunningException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class MaterializedViewRefreshTaskRunningException
   extends /*@__PURE__*/ S.TaggedErrorClass<MaterializedViewRefreshTaskRunningException>()(
     "MaterializedViewRefreshTaskRunningException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class MaterializedViewRefreshTaskStoppingException
   extends /*@__PURE__*/ S.TaggedErrorClass<MaterializedViewRefreshTaskStoppingException>()(
     "MaterializedViewRefreshTaskStoppingException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class MLTransformNotReadyException
   extends /*@__PURE__*/ S.TaggedErrorClass<MLTransformNotReadyException>()(
     "MLTransformNotReadyException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class NoScheduleException
   extends /*@__PURE__*/ S.TaggedErrorClass<NoScheduleException>()(
     "NoScheduleException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class OperationNotSupportedException
   extends /*@__PURE__*/ S.TaggedErrorClass<OperationNotSupportedException>()(
     "OperationNotSupportedException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class OperationTimeoutException
   extends /*@__PURE__*/ S.TaggedErrorClass<OperationTimeoutException>()(
     "OperationTimeoutException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class PermissionTypeMismatchException
   extends /*@__PURE__*/ S.TaggedErrorClass<PermissionTypeMismatchException>()(
     "PermissionTypeMismatchException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class ResourceNotReadyException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotReadyException>()(
     "ResourceNotReadyException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class ResourceNumberLimitExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNumberLimitExceededException>()(
     "ResourceNumberLimitExceededException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class SchedulerNotRunningException
   extends /*@__PURE__*/ S.TaggedErrorClass<SchedulerNotRunningException>()(
     "SchedulerNotRunningException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class SchedulerRunningException
   extends /*@__PURE__*/ S.TaggedErrorClass<SchedulerRunningException>()(
     "SchedulerRunningException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class SchedulerTransitioningException
   extends /*@__PURE__*/ S.TaggedErrorClass<SchedulerTransitioningException>()(
     "SchedulerTransitioningException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class SessionBusyException
   extends /*@__PURE__*/ S.TaggedErrorClass<SessionBusyException>()(
     "SessionBusyException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class TargetResourceNotFound
   extends /*@__PURE__*/ S.TaggedErrorClass<TargetResourceNotFound>()(
     "TargetResourceNotFound",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class ThrottlingException
   extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
     "ThrottlingException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class ValidationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
     "ValidationException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class VersionMismatchException
   extends /*@__PURE__*/ S.TaggedErrorClass<VersionMismatchException>()(
     "VersionMismatchException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export type AssetId = string;
 export type GlossaryTermId = string;
@@ -18623,7 +18621,7 @@ export const associateGlossaryTerms: API.OperationMethod<
   AssociateGlossaryTermsRequest,
   AssociateGlossaryTermsResponse,
   AssociateGlossaryTermsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AssociateGlossaryTermsRequest,
   output: AssociateGlossaryTermsResponse,
@@ -18656,7 +18654,7 @@ export const batchCreatePartition: API.OperationMethod<
   BatchCreatePartitionRequest,
   BatchCreatePartitionResponse,
   BatchCreatePartitionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchCreatePartitionRequest,
   output: BatchCreatePartitionResponse,
@@ -18685,7 +18683,7 @@ export const batchDeleteConnection: API.OperationMethod<
   BatchDeleteConnectionRequest,
   BatchDeleteConnectionResponse,
   BatchDeleteConnectionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchDeleteConnectionRequest,
   output: BatchDeleteConnectionResponse,
@@ -18708,7 +18706,7 @@ export const batchDeletePartition: API.OperationMethod<
   BatchDeletePartitionRequest,
   BatchDeletePartitionResponse,
   BatchDeletePartitionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchDeletePartitionRequest,
   output: BatchDeletePartitionResponse,
@@ -18748,7 +18746,7 @@ export const batchDeleteTable: API.OperationMethod<
   BatchDeleteTableRequest,
   BatchDeleteTableResponse,
   BatchDeleteTableError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchDeleteTableRequest,
   output: BatchDeleteTableResponse,
@@ -18778,7 +18776,7 @@ export const batchDeleteTableVersion: API.OperationMethod<
   BatchDeleteTableVersionRequest,
   BatchDeleteTableVersionResponse,
   BatchDeleteTableVersionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchDeleteTableVersionRequest,
   output: BatchDeleteTableVersionResponse,
@@ -18805,7 +18803,7 @@ export const batchGetBlueprints: API.OperationMethod<
   BatchGetBlueprintsRequest,
   BatchGetBlueprintsResponse,
   BatchGetBlueprintsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchGetBlueprintsRequest,
   output: BatchGetBlueprintsResponse,
@@ -18830,7 +18828,7 @@ export const batchGetCrawlers: API.OperationMethod<
   BatchGetCrawlersRequest,
   BatchGetCrawlersResponse,
   BatchGetCrawlersError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchGetCrawlersRequest,
   output: BatchGetCrawlersResponse,
@@ -18852,7 +18850,7 @@ export const batchGetCustomEntityTypes: API.OperationMethod<
   BatchGetCustomEntityTypesRequest,
   BatchGetCustomEntityTypesResponse,
   BatchGetCustomEntityTypesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchGetCustomEntityTypesRequest,
   output: BatchGetCustomEntityTypesResponse,
@@ -18878,7 +18876,7 @@ export const batchGetDataQualityResult: API.OperationMethod<
   BatchGetDataQualityResultRequest,
   BatchGetDataQualityResultResponse,
   BatchGetDataQualityResultError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchGetDataQualityResultRequest,
   output: BatchGetDataQualityResultResponse,
@@ -18908,7 +18906,7 @@ export const batchGetDevEndpoints: API.OperationMethod<
   BatchGetDevEndpointsRequest,
   BatchGetDevEndpointsResponse,
   BatchGetDevEndpointsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchGetDevEndpointsRequest,
   output: BatchGetDevEndpointsResponse,
@@ -18937,7 +18935,7 @@ export const batchGetIterableForms: API.OperationMethod<
   BatchGetIterableFormsRequest,
   BatchGetIterableFormsResponse,
   BatchGetIterableFormsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchGetIterableFormsRequest,
   output: BatchGetIterableFormsResponse,
@@ -18965,7 +18963,7 @@ export const batchGetJobs: API.OperationMethod<
   BatchGetJobsRequest,
   BatchGetJobsResponse,
   BatchGetJobsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchGetJobsRequest,
   output: BatchGetJobsResponse,
@@ -18996,7 +18994,7 @@ export const batchGetPartition: API.OperationMethod<
   BatchGetPartitionRequest,
   BatchGetPartitionResponse,
   BatchGetPartitionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchGetPartitionRequest,
   output: BatchGetPartitionResponse,
@@ -19029,7 +19027,7 @@ export const batchGetTableOptimizer: API.OperationMethod<
   BatchGetTableOptimizerRequest,
   BatchGetTableOptimizerResponse,
   BatchGetTableOptimizerError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchGetTableOptimizerRequest,
   output: BatchGetTableOptimizerResponse,
@@ -19057,7 +19055,7 @@ export const batchGetTriggers: API.OperationMethod<
   BatchGetTriggersRequest,
   BatchGetTriggersResponse,
   BatchGetTriggersError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchGetTriggersRequest,
   output: BatchGetTriggersResponse,
@@ -19083,7 +19081,7 @@ export const batchGetWorkflows: API.OperationMethod<
   BatchGetWorkflowsRequest,
   BatchGetWorkflowsResponse,
   BatchGetWorkflowsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchGetWorkflowsRequest,
   output: BatchGetWorkflowsResponse,
@@ -19112,7 +19110,7 @@ export const batchPutDataQualityStatisticAnnotation: API.OperationMethod<
   BatchPutDataQualityStatisticAnnotationRequest,
   BatchPutDataQualityStatisticAnnotationResponse,
   BatchPutDataQualityStatisticAnnotationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchPutDataQualityStatisticAnnotationRequest,
   output: BatchPutDataQualityStatisticAnnotationResponse,
@@ -19139,7 +19137,7 @@ export const batchStopJobRun: API.OperationMethod<
   BatchStopJobRunRequest,
   BatchStopJobRunResponse,
   BatchStopJobRunError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchStopJobRunRequest,
   output: BatchStopJobRunResponse,
@@ -19167,7 +19165,7 @@ export const batchUpdatePartition: API.OperationMethod<
   BatchUpdatePartitionRequest,
   BatchUpdatePartitionResponse,
   BatchUpdatePartitionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchUpdatePartitionRequest,
   output: BatchUpdatePartitionResponse,
@@ -19196,7 +19194,7 @@ export const cancelDataQualityRuleRecommendationRun: API.OperationMethod<
   CancelDataQualityRuleRecommendationRunRequest,
   CancelDataQualityRuleRecommendationRunResponse,
   CancelDataQualityRuleRecommendationRunError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CancelDataQualityRuleRecommendationRunRequest,
   output: CancelDataQualityRuleRecommendationRunResponse,
@@ -19224,7 +19222,7 @@ export const cancelDataQualityRulesetEvaluationRun: API.OperationMethod<
   CancelDataQualityRulesetEvaluationRunRequest,
   CancelDataQualityRulesetEvaluationRunResponse,
   CancelDataQualityRulesetEvaluationRunError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CancelDataQualityRulesetEvaluationRunRequest,
   output: CancelDataQualityRulesetEvaluationRunResponse,
@@ -19254,7 +19252,7 @@ export const cancelMLTaskRun: API.OperationMethod<
   CancelMLTaskRunRequest,
   CancelMLTaskRunResponse,
   CancelMLTaskRunError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CancelMLTaskRunRequest,
   output: CancelMLTaskRunResponse,
@@ -19284,7 +19282,7 @@ export const cancelStatement: API.OperationMethod<
   CancelStatementRequest,
   CancelStatementResponse,
   CancelStatementError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CancelStatementRequest,
   output: CancelStatementResponse,
@@ -19313,7 +19311,7 @@ export const checkSchemaVersionValidity: API.OperationMethod<
   CheckSchemaVersionValidityInput,
   CheckSchemaVersionValidityResponse,
   CheckSchemaVersionValidityError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CheckSchemaVersionValidityInput,
   output: CheckSchemaVersionValidityResponse,
@@ -19341,7 +19339,7 @@ export const createBlueprint: API.OperationMethod<
   CreateBlueprintRequest,
   CreateBlueprintResponse,
   CreateBlueprintError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateBlueprintRequest,
   output: CreateBlueprintResponse,
@@ -19377,7 +19375,7 @@ export const createCatalog: API.OperationMethod<
   CreateCatalogRequest,
   CreateCatalogResponse,
   CreateCatalogError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateCatalogRequest,
   output: CreateCatalogResponse,
@@ -19413,7 +19411,7 @@ export const createClassifier: API.OperationMethod<
   CreateClassifierRequest,
   CreateClassifierResponse,
   CreateClassifierError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateClassifierRequest,
   output: CreateClassifierResponse,
@@ -19443,7 +19441,7 @@ export const createColumnStatisticsTaskSettings: API.OperationMethod<
   CreateColumnStatisticsTaskSettingsRequest,
   CreateColumnStatisticsTaskSettingsResponse,
   CreateColumnStatisticsTaskSettingsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateColumnStatisticsTaskSettingsRequest,
   output: CreateColumnStatisticsTaskSettingsResponse,
@@ -19477,7 +19475,7 @@ export const createConnection: API.OperationMethod<
   CreateConnectionRequest,
   CreateConnectionResponse,
   CreateConnectionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateConnectionRequest,
   output: CreateConnectionResponse,
@@ -19510,7 +19508,7 @@ export const createCrawler: API.OperationMethod<
   CreateCrawlerRequest,
   CreateCrawlerResponse,
   CreateCrawlerError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateCrawlerRequest,
   output: CreateCrawlerResponse,
@@ -19545,7 +19543,7 @@ export const createCustomEntityType: API.OperationMethod<
   CreateCustomEntityTypeRequest,
   CreateCustomEntityTypeResponse,
   CreateCustomEntityTypeError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateCustomEntityTypeRequest,
   output: CreateCustomEntityTypeResponse,
@@ -19582,7 +19580,7 @@ export const createDatabase: API.OperationMethod<
   CreateDatabaseRequest,
   CreateDatabaseResponse,
   CreateDatabaseError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateDatabaseRequest,
   output: CreateDatabaseResponse,
@@ -19619,7 +19617,7 @@ export const createDataQualityRuleset: API.OperationMethod<
   CreateDataQualityRulesetRequest,
   CreateDataQualityRulesetResponse,
   CreateDataQualityRulesetError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateDataQualityRulesetRequest,
   output: CreateDataQualityRulesetResponse,
@@ -19652,7 +19650,7 @@ export const createDevEndpoint: API.OperationMethod<
   CreateDevEndpointRequest,
   CreateDevEndpointResponse,
   CreateDevEndpointError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateDevEndpointRequest,
   output: CreateDevEndpointResponse,
@@ -19686,7 +19684,7 @@ export const createGlossary: API.OperationMethod<
   CreateGlossaryRequest,
   CreateGlossaryResponse,
   CreateGlossaryError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateGlossaryRequest,
   output: CreateGlossaryResponse,
@@ -19719,7 +19717,7 @@ export const createGlossaryTerm: API.OperationMethod<
   CreateGlossaryTermRequest,
   CreateGlossaryTermResponse,
   CreateGlossaryTermError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateGlossaryTermRequest,
   output: CreateGlossaryTermResponse,
@@ -19753,7 +19751,7 @@ export const createGlueIdentityCenterConfiguration: API.OperationMethod<
   CreateGlueIdentityCenterConfigurationRequest,
   CreateGlueIdentityCenterConfigurationResponse,
   CreateGlueIdentityCenterConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateGlueIdentityCenterConfigurationRequest,
   output: CreateGlueIdentityCenterConfigurationResponse,
@@ -19791,7 +19789,7 @@ export const createIntegration: API.OperationMethod<
   CreateIntegrationRequest,
   CreateIntegrationResponse,
   CreateIntegrationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateIntegrationRequest,
   output: CreateIntegrationResponse,
@@ -19831,7 +19829,7 @@ export const createIntegrationResourceProperty: API.OperationMethod<
   CreateIntegrationResourcePropertyRequest,
   CreateIntegrationResourcePropertyResponse,
   CreateIntegrationResourcePropertyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateIntegrationResourcePropertyRequest,
   output: CreateIntegrationResourcePropertyResponse,
@@ -19866,7 +19864,7 @@ export const createIntegrationTableProperties: API.OperationMethod<
   CreateIntegrationTablePropertiesRequest,
   CreateIntegrationTablePropertiesResponse,
   CreateIntegrationTablePropertiesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateIntegrationTablePropertiesRequest,
   output: CreateIntegrationTablePropertiesResponse,
@@ -19901,7 +19899,7 @@ export const createJob: API.OperationMethod<
   CreateJobRequest,
   CreateJobResponse,
   CreateJobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateJobRequest,
   output: CreateJobResponse,
@@ -19948,7 +19946,7 @@ export const createMLTransform: API.OperationMethod<
   CreateMLTransformRequest,
   CreateMLTransformResponse,
   CreateMLTransformError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateMLTransformRequest,
   output: CreateMLTransformResponse,
@@ -19982,7 +19980,7 @@ export const createPartition: API.OperationMethod<
   CreatePartitionRequest,
   CreatePartitionResponse,
   CreatePartitionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreatePartitionRequest,
   output: CreatePartitionResponse,
@@ -20016,7 +20014,7 @@ export const createPartitionIndex: API.OperationMethod<
   CreatePartitionIndexRequest,
   CreatePartitionIndexResponse,
   CreatePartitionIndexError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreatePartitionIndexRequest,
   output: CreatePartitionIndexResponse,
@@ -20049,7 +20047,7 @@ export const createRegistry: API.OperationMethod<
   CreateRegistryInput,
   CreateRegistryResponse,
   CreateRegistryError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateRegistryInput,
   output: CreateRegistryResponse,
@@ -20086,7 +20084,7 @@ export const createSchema: API.OperationMethod<
   CreateSchemaInput,
   CreateSchemaResponse,
   CreateSchemaError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateSchemaInput,
   output: CreateSchemaResponse,
@@ -20116,7 +20114,7 @@ export const createScript: API.OperationMethod<
   CreateScriptRequest,
   CreateScriptResponse,
   CreateScriptError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateScriptRequest,
   output: CreateScriptResponse,
@@ -20144,7 +20142,7 @@ export const createSecurityConfiguration: API.OperationMethod<
   CreateSecurityConfigurationRequest,
   CreateSecurityConfigurationResponse,
   CreateSecurityConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateSecurityConfigurationRequest,
   output: CreateSecurityConfigurationResponse,
@@ -20178,7 +20176,7 @@ export const createSession: API.OperationMethod<
   CreateSessionRequest,
   CreateSessionResponse,
   CreateSessionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateSessionRequest,
   output: CreateSessionResponse,
@@ -20218,7 +20216,7 @@ export const createTable: API.OperationMethod<
   CreateTableRequest,
   CreateTableResponse,
   CreateTableError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateTableRequest,
   output: CreateTableResponse,
@@ -20256,7 +20254,7 @@ export const createTableOptimizer: API.OperationMethod<
   CreateTableOptimizerRequest,
   CreateTableOptimizerResponse,
   CreateTableOptimizerError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateTableOptimizerRequest,
   output: CreateTableOptimizerResponse,
@@ -20293,7 +20291,7 @@ export const createTrigger: API.OperationMethod<
   CreateTriggerRequest,
   CreateTriggerResponse,
   CreateTriggerError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateTriggerRequest,
   output: CreateTriggerResponse,
@@ -20327,7 +20325,7 @@ export const createUsageProfile: API.OperationMethod<
   CreateUsageProfileRequest,
   CreateUsageProfileResponse,
   CreateUsageProfileError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateUsageProfileRequest,
   output: CreateUsageProfileResponse,
@@ -20360,7 +20358,7 @@ export const createUserDefinedFunction: API.OperationMethod<
   CreateUserDefinedFunctionRequest,
   CreateUserDefinedFunctionResponse,
   CreateUserDefinedFunctionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateUserDefinedFunctionRequest,
   output: CreateUserDefinedFunctionResponse,
@@ -20393,7 +20391,7 @@ export const createWorkflow: API.OperationMethod<
   CreateWorkflowRequest,
   CreateWorkflowResponse,
   CreateWorkflowError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateWorkflowRequest,
   output: CreateWorkflowResponse,
@@ -20424,7 +20422,7 @@ export const deleteAsset: API.OperationMethod<
   DeleteAssetRequest,
   DeleteAssetResponse,
   DeleteAssetError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteAssetRequest,
   output: DeleteAssetResponse,
@@ -20454,7 +20452,7 @@ export const deleteAssetType: API.OperationMethod<
   DeleteAssetTypeRequest,
   DeleteAssetTypeResponse,
   DeleteAssetTypeError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteAssetTypeRequest,
   output: DeleteAssetTypeResponse,
@@ -20485,7 +20483,7 @@ export const deleteAttachment: API.OperationMethod<
   DeleteAttachmentRequest,
   DeleteAttachmentResponse,
   DeleteAttachmentError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteAttachmentRequest,
   output: DeleteAttachmentResponse,
@@ -20514,7 +20512,7 @@ export const deleteBlueprint: API.OperationMethod<
   DeleteBlueprintRequest,
   DeleteBlueprintResponse,
   DeleteBlueprintError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteBlueprintRequest,
   output: DeleteBlueprintResponse,
@@ -20549,7 +20547,7 @@ export const deleteCatalog: API.OperationMethod<
   DeleteCatalogRequest,
   DeleteCatalogResponse,
   DeleteCatalogError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteCatalogRequest,
   output: DeleteCatalogResponse,
@@ -20579,7 +20577,7 @@ export const deleteClassifier: API.OperationMethod<
   DeleteClassifierRequest,
   DeleteClassifierResponse,
   DeleteClassifierError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteClassifierRequest,
   output: DeleteClassifierResponse,
@@ -20605,7 +20603,7 @@ export const deleteColumnStatisticsForPartition: API.OperationMethod<
   DeleteColumnStatisticsForPartitionRequest,
   DeleteColumnStatisticsForPartitionResponse,
   DeleteColumnStatisticsForPartitionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteColumnStatisticsForPartitionRequest,
   output: DeleteColumnStatisticsForPartitionResponse,
@@ -20637,7 +20635,7 @@ export const deleteColumnStatisticsForTable: API.OperationMethod<
   DeleteColumnStatisticsForTableRequest,
   DeleteColumnStatisticsForTableResponse,
   DeleteColumnStatisticsForTableError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteColumnStatisticsForTableRequest,
   output: DeleteColumnStatisticsForTableResponse,
@@ -20665,7 +20663,7 @@ export const deleteColumnStatisticsTaskSettings: API.OperationMethod<
   DeleteColumnStatisticsTaskSettingsRequest,
   DeleteColumnStatisticsTaskSettingsResponse,
   DeleteColumnStatisticsTaskSettingsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteColumnStatisticsTaskSettingsRequest,
   output: DeleteColumnStatisticsTaskSettingsResponse,
@@ -20690,7 +20688,7 @@ export const deleteConnection: API.OperationMethod<
   DeleteConnectionRequest,
   DeleteConnectionResponse,
   DeleteConnectionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteConnectionRequest,
   output: DeleteConnectionResponse,
@@ -20717,7 +20715,7 @@ export const deleteConnectionType: API.OperationMethod<
   DeleteConnectionTypeRequest,
   DeleteConnectionTypeResponse,
   DeleteConnectionTypeError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteConnectionTypeRequest,
   output: DeleteConnectionTypeResponse,
@@ -20748,7 +20746,7 @@ export const deleteCrawler: API.OperationMethod<
   DeleteCrawlerRequest,
   DeleteCrawlerResponse,
   DeleteCrawlerError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteCrawlerRequest,
   output: DeleteCrawlerResponse,
@@ -20777,7 +20775,7 @@ export const deleteCustomEntityType: API.OperationMethod<
   DeleteCustomEntityTypeRequest,
   DeleteCustomEntityTypeResponse,
   DeleteCustomEntityTypeError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteCustomEntityTypeRequest,
   output: DeleteCustomEntityTypeResponse,
@@ -20821,7 +20819,7 @@ export const deleteDatabase: API.OperationMethod<
   DeleteDatabaseRequest,
   DeleteDatabaseResponse,
   DeleteDatabaseError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteDatabaseRequest,
   output: DeleteDatabaseResponse,
@@ -20852,7 +20850,7 @@ export const deleteDataQualityRuleset: API.OperationMethod<
   DeleteDataQualityRulesetRequest,
   DeleteDataQualityRulesetResponse,
   DeleteDataQualityRulesetError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteDataQualityRulesetRequest,
   output: DeleteDataQualityRulesetResponse,
@@ -20880,7 +20878,7 @@ export const deleteDevEndpoint: API.OperationMethod<
   DeleteDevEndpointRequest,
   DeleteDevEndpointResponse,
   DeleteDevEndpointError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteDevEndpointRequest,
   output: DeleteDevEndpointResponse,
@@ -20910,7 +20908,7 @@ export const deleteFormType: API.OperationMethod<
   DeleteFormTypeRequest,
   DeleteFormTypeResponse,
   DeleteFormTypeError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteFormTypeRequest,
   output: DeleteFormTypeResponse,
@@ -20942,7 +20940,7 @@ export const deleteGlossary: API.OperationMethod<
   DeleteGlossaryRequest,
   DeleteGlossaryResponse,
   DeleteGlossaryError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteGlossaryRequest,
   output: DeleteGlossaryResponse,
@@ -20973,7 +20971,7 @@ export const deleteGlossaryTerm: API.OperationMethod<
   DeleteGlossaryTermRequest,
   DeleteGlossaryTermResponse,
   DeleteGlossaryTermError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteGlossaryTermRequest,
   output: DeleteGlossaryTermResponse,
@@ -21005,7 +21003,7 @@ export const deleteGlueIdentityCenterConfiguration: API.OperationMethod<
   DeleteGlueIdentityCenterConfigurationRequest,
   DeleteGlueIdentityCenterConfigurationResponse,
   DeleteGlueIdentityCenterConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteGlueIdentityCenterConfigurationRequest,
   output: DeleteGlueIdentityCenterConfigurationResponse,
@@ -21042,7 +21040,7 @@ export const deleteIntegration: API.OperationMethod<
   DeleteIntegrationRequest,
   DeleteIntegrationResponse,
   DeleteIntegrationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteIntegrationRequest,
   output: DeleteIntegrationResponse,
@@ -21080,7 +21078,7 @@ export const deleteIntegrationResourceProperty: API.OperationMethod<
   DeleteIntegrationResourcePropertyRequest,
   DeleteIntegrationResourcePropertyResponse,
   DeleteIntegrationResourcePropertyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteIntegrationResourcePropertyRequest,
   output: DeleteIntegrationResourcePropertyResponse,
@@ -21114,7 +21112,7 @@ export const deleteIntegrationTableProperties: API.OperationMethod<
   DeleteIntegrationTablePropertiesRequest,
   DeleteIntegrationTablePropertiesResponse,
   DeleteIntegrationTablePropertiesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteIntegrationTablePropertiesRequest,
   output: DeleteIntegrationTablePropertiesResponse,
@@ -21145,7 +21143,7 @@ export const deleteJob: API.OperationMethod<
   DeleteJobRequest,
   DeleteJobResponse,
   DeleteJobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteJobRequest,
   output: DeleteJobResponse,
@@ -21177,7 +21175,7 @@ export const deleteMLTransform: API.OperationMethod<
   DeleteMLTransformRequest,
   DeleteMLTransformResponse,
   DeleteMLTransformError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteMLTransformRequest,
   output: DeleteMLTransformResponse,
@@ -21205,7 +21203,7 @@ export const deletePartition: API.OperationMethod<
   DeletePartitionRequest,
   DeletePartitionResponse,
   DeletePartitionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeletePartitionRequest,
   output: DeletePartitionResponse,
@@ -21235,7 +21233,7 @@ export const deletePartitionIndex: API.OperationMethod<
   DeletePartitionIndexRequest,
   DeletePartitionIndexResponse,
   DeletePartitionIndexError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeletePartitionIndexRequest,
   output: DeletePartitionIndexResponse,
@@ -21265,7 +21263,7 @@ export const deleteRegistry: API.OperationMethod<
   DeleteRegistryInput,
   DeleteRegistryResponse,
   DeleteRegistryError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteRegistryInput,
   output: DeleteRegistryResponse,
@@ -21294,7 +21292,7 @@ export const deleteResourcePolicy: API.OperationMethod<
   DeleteResourcePolicyRequest,
   DeleteResourcePolicyResponse,
   DeleteResourcePolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteResourcePolicyRequest,
   output: DeleteResourcePolicyResponse,
@@ -21323,7 +21321,7 @@ export const deleteSchema: API.OperationMethod<
   DeleteSchemaInput,
   DeleteSchemaResponse,
   DeleteSchemaError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteSchemaInput,
   output: DeleteSchemaResponse,
@@ -21357,7 +21355,7 @@ export const deleteSchemaVersions: API.OperationMethod<
   DeleteSchemaVersionsInput,
   DeleteSchemaVersionsResponse,
   DeleteSchemaVersionsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteSchemaVersionsInput,
   output: DeleteSchemaVersionsResponse,
@@ -21385,7 +21383,7 @@ export const deleteSecurityConfiguration: API.OperationMethod<
   DeleteSecurityConfigurationRequest,
   DeleteSecurityConfigurationResponse,
   DeleteSecurityConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteSecurityConfigurationRequest,
   output: DeleteSecurityConfigurationResponse,
@@ -21415,7 +21413,7 @@ export const deleteSession: API.OperationMethod<
   DeleteSessionRequest,
   DeleteSessionResponse,
   DeleteSessionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteSessionRequest,
   output: DeleteSessionResponse,
@@ -21459,7 +21457,7 @@ export const deleteTable: API.OperationMethod<
   DeleteTableRequest,
   DeleteTableResponse,
   DeleteTableError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteTableRequest,
   output: DeleteTableResponse,
@@ -21492,7 +21490,7 @@ export const deleteTableOptimizer: API.OperationMethod<
   DeleteTableOptimizerRequest,
   DeleteTableOptimizerResponse,
   DeleteTableOptimizerError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteTableOptimizerRequest,
   output: DeleteTableOptimizerResponse,
@@ -21521,7 +21519,7 @@ export const deleteTableVersion: API.OperationMethod<
   DeleteTableVersionRequest,
   DeleteTableVersionResponse,
   DeleteTableVersionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteTableVersionRequest,
   output: DeleteTableVersionResponse,
@@ -21550,7 +21548,7 @@ export const deleteTrigger: API.OperationMethod<
   DeleteTriggerRequest,
   DeleteTriggerResponse,
   DeleteTriggerError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteTriggerRequest,
   output: DeleteTriggerResponse,
@@ -21578,7 +21576,7 @@ export const deleteUsageProfile: API.OperationMethod<
   DeleteUsageProfileRequest,
   DeleteUsageProfileResponse,
   DeleteUsageProfileError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteUsageProfileRequest,
   output: DeleteUsageProfileResponse,
@@ -21606,7 +21604,7 @@ export const deleteUserDefinedFunction: API.OperationMethod<
   DeleteUserDefinedFunctionRequest,
   DeleteUserDefinedFunctionResponse,
   DeleteUserDefinedFunctionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteUserDefinedFunctionRequest,
   output: DeleteUserDefinedFunctionResponse,
@@ -21634,7 +21632,7 @@ export const deleteWorkflow: API.OperationMethod<
   DeleteWorkflowRequest,
   DeleteWorkflowResponse,
   DeleteWorkflowError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteWorkflowRequest,
   output: DeleteWorkflowResponse,
@@ -21664,7 +21662,7 @@ export const describeConnectionType: API.OperationMethod<
   DescribeConnectionTypeRequest,
   DescribeConnectionTypeResponse,
   DescribeConnectionTypeError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeConnectionTypeRequest,
   output: DescribeConnectionTypeResponse,
@@ -21693,27 +21691,13 @@ export type DescribeEntityError =
  *
  * The response includes all the fields which make up the entity.
  */
-export const describeEntity: API.OperationMethod<
+export const describeEntity: API.PaginatedOperationMethod<
   DescribeEntityRequest,
   DescribeEntityResponse,
   DescribeEntityError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeEntityRequest,
-  ) => stream.Stream<
-    DescribeEntityResponse,
-    DescribeEntityError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeEntityRequest,
-  ) => stream.Stream<
-    Field,
-    DescribeEntityError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Field
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeEntityRequest,
   output: DescribeEntityResponse,
   errors: [
@@ -21733,27 +21717,7 @@ export const describeEntity: API.OperationMethod<
     outputToken: "NextToken",
     items: "Fields",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeEntityRequest,
-  DescribeEntityResponse,
-  DescribeEntityError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeEntityRequest,
-  ) => stream.Stream<
-    DescribeEntityResponse,
-    DescribeEntityError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeEntityRequest,
-  ) => stream.Stream<
-    Field,
-    DescribeEntityError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeInboundIntegrationsError =
   | AccessDeniedException
@@ -21773,7 +21737,7 @@ export const describeInboundIntegrations: API.OperationMethod<
   DescribeInboundIntegrationsRequest,
   DescribeInboundIntegrationsResponse,
   DescribeInboundIntegrationsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeInboundIntegrationsRequest,
   output: DescribeInboundIntegrationsResponse,
@@ -21809,7 +21773,7 @@ export const describeIntegrations: API.OperationMethod<
   DescribeIntegrationsRequest,
   DescribeIntegrationsResponse,
   DescribeIntegrationsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeIntegrationsRequest,
   output: DescribeIntegrationsResponse,
@@ -21842,7 +21806,7 @@ export const disassociateGlossaryTerms: API.OperationMethod<
   DisassociateGlossaryTermsRequest,
   DisassociateGlossaryTermsResponse,
   DisassociateGlossaryTermsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DisassociateGlossaryTermsRequest,
   output: DisassociateGlossaryTermsResponse,
@@ -21873,7 +21837,7 @@ export const getAsset: API.OperationMethod<
   GetAssetInput,
   GetAssetOutput,
   GetAssetError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetAssetInput,
   output: GetAssetOutput,
@@ -21903,7 +21867,7 @@ export const getAssetType: API.OperationMethod<
   GetAssetTypeRequest,
   GetAssetTypeResponse,
   GetAssetTypeError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetAssetTypeRequest,
   output: GetAssetTypeResponse,
@@ -21932,7 +21896,7 @@ export const getBlueprint: API.OperationMethod<
   GetBlueprintRequest,
   GetBlueprintResponse,
   GetBlueprintError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetBlueprintRequest,
   output: GetBlueprintResponse,
@@ -21959,7 +21923,7 @@ export const getBlueprintRun: API.OperationMethod<
   GetBlueprintRunRequest,
   GetBlueprintRunResponse,
   GetBlueprintRunError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetBlueprintRunRequest,
   output: GetBlueprintRunResponse,
@@ -21982,27 +21946,13 @@ export type GetBlueprintRunsError =
 /**
  * Retrieves the details of blueprint runs for a specified blueprint.
  */
-export const getBlueprintRuns: API.OperationMethod<
+export const getBlueprintRuns: API.PaginatedOperationMethod<
   GetBlueprintRunsRequest,
   GetBlueprintRunsResponse,
   GetBlueprintRunsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetBlueprintRunsRequest,
-  ) => stream.Stream<
-    GetBlueprintRunsResponse,
-    GetBlueprintRunsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetBlueprintRunsRequest,
-  ) => stream.Stream<
-    unknown,
-    GetBlueprintRunsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetBlueprintRunsRequest,
   output: GetBlueprintRunsResponse,
   errors: [
@@ -22019,27 +21969,7 @@ export const getBlueprintRuns: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetBlueprintRunsRequest,
-  GetBlueprintRunsResponse,
-  GetBlueprintRunsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetBlueprintRunsRequest,
-  ) => stream.Stream<
-    GetBlueprintRunsResponse,
-    GetBlueprintRunsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetBlueprintRunsRequest,
-  ) => stream.Stream<
-    unknown,
-    GetBlueprintRunsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetCatalogError =
   | AccessDeniedException
@@ -22058,7 +21988,7 @@ export const getCatalog: API.OperationMethod<
   GetCatalogRequest,
   GetCatalogResponse,
   GetCatalogError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetCatalogRequest,
   output: GetCatalogResponse,
@@ -22088,7 +22018,7 @@ export const getCatalogImportStatus: API.OperationMethod<
   GetCatalogImportStatusRequest,
   GetCatalogImportStatusResponse,
   GetCatalogImportStatusError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetCatalogImportStatusRequest,
   output: GetCatalogImportStatusResponse,
@@ -22115,7 +22045,7 @@ export const getCatalogs: API.OperationMethod<
   GetCatalogsRequest,
   GetCatalogsResponse,
   GetCatalogsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetCatalogsRequest,
   output: GetCatalogsResponse,
@@ -22145,7 +22075,7 @@ export const getClassifier: API.OperationMethod<
   GetClassifierRequest,
   GetClassifierResponse,
   GetClassifierError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetClassifierRequest,
   output: GetClassifierResponse,
@@ -22159,27 +22089,13 @@ export type GetClassifiersError = OperationTimeoutException | CommonErrors;
 /**
  * Lists all classifier objects in the Data Catalog.
  */
-export const getClassifiers: API.OperationMethod<
+export const getClassifiers: API.PaginatedOperationMethod<
   GetClassifiersRequest,
   GetClassifiersResponse,
   GetClassifiersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetClassifiersRequest,
-  ) => stream.Stream<
-    GetClassifiersResponse,
-    GetClassifiersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetClassifiersRequest,
-  ) => stream.Stream<
-    unknown,
-    GetClassifiersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetClassifiersRequest,
   output: GetClassifiersResponse,
   errors: [OperationTimeoutException],
@@ -22191,27 +22107,7 @@ export const getClassifiers: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetClassifiersRequest,
-  GetClassifiersResponse,
-  GetClassifiersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetClassifiersRequest,
-  ) => stream.Stream<
-    GetClassifiersResponse,
-    GetClassifiersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetClassifiersRequest,
-  ) => stream.Stream<
-    unknown,
-    GetClassifiersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetColumnStatisticsForPartitionError =
   | EntityNotFoundException
@@ -22229,7 +22125,7 @@ export const getColumnStatisticsForPartition: API.OperationMethod<
   GetColumnStatisticsForPartitionRequest,
   GetColumnStatisticsForPartitionResponse,
   GetColumnStatisticsForPartitionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetColumnStatisticsForPartitionRequest,
   output: GetColumnStatisticsForPartitionResponse,
@@ -22261,7 +22157,7 @@ export const getColumnStatisticsForTable: API.OperationMethod<
   GetColumnStatisticsForTableRequest,
   GetColumnStatisticsForTableResponse,
   GetColumnStatisticsForTableError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetColumnStatisticsForTableRequest,
   output: GetColumnStatisticsForTableResponse,
@@ -22289,7 +22185,7 @@ export const getColumnStatisticsTaskRun: API.OperationMethod<
   GetColumnStatisticsTaskRunRequest,
   GetColumnStatisticsTaskRunResponse,
   GetColumnStatisticsTaskRunError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetColumnStatisticsTaskRunRequest,
   output: GetColumnStatisticsTaskRunResponse,
@@ -22309,27 +22205,13 @@ export type GetColumnStatisticsTaskRunsError =
 /**
  * Retrieves information about all runs associated with the specified table.
  */
-export const getColumnStatisticsTaskRuns: API.OperationMethod<
+export const getColumnStatisticsTaskRuns: API.PaginatedOperationMethod<
   GetColumnStatisticsTaskRunsRequest,
   GetColumnStatisticsTaskRunsResponse,
   GetColumnStatisticsTaskRunsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetColumnStatisticsTaskRunsRequest,
-  ) => stream.Stream<
-    GetColumnStatisticsTaskRunsResponse,
-    GetColumnStatisticsTaskRunsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetColumnStatisticsTaskRunsRequest,
-  ) => stream.Stream<
-    unknown,
-    GetColumnStatisticsTaskRunsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetColumnStatisticsTaskRunsRequest,
   output: GetColumnStatisticsTaskRunsResponse,
   errors: [OperationTimeoutException],
@@ -22341,27 +22223,7 @@ export const getColumnStatisticsTaskRuns: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetColumnStatisticsTaskRunsRequest,
-  GetColumnStatisticsTaskRunsResponse,
-  GetColumnStatisticsTaskRunsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetColumnStatisticsTaskRunsRequest,
-  ) => stream.Stream<
-    GetColumnStatisticsTaskRunsResponse,
-    GetColumnStatisticsTaskRunsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetColumnStatisticsTaskRunsRequest,
-  ) => stream.Stream<
-    unknown,
-    GetColumnStatisticsTaskRunsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetColumnStatisticsTaskSettingsError =
   | EntityNotFoundException
@@ -22375,7 +22237,7 @@ export const getColumnStatisticsTaskSettings: API.OperationMethod<
   GetColumnStatisticsTaskSettingsRequest,
   GetColumnStatisticsTaskSettingsResponse,
   GetColumnStatisticsTaskSettingsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetColumnStatisticsTaskSettingsRequest,
   output: GetColumnStatisticsTaskSettingsResponse,
@@ -22402,7 +22264,7 @@ export const getConnection: API.OperationMethod<
   GetConnectionRequest,
   GetConnectionResponse,
   GetConnectionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetConnectionRequest,
   output: GetConnectionResponse,
@@ -22426,27 +22288,13 @@ export type GetConnectionsError =
 /**
  * Retrieves a list of connection definitions from the Data Catalog.
  */
-export const getConnections: API.OperationMethod<
+export const getConnections: API.PaginatedOperationMethod<
   GetConnectionsRequest,
   GetConnectionsResponse,
   GetConnectionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetConnectionsRequest,
-  ) => stream.Stream<
-    GetConnectionsResponse,
-    GetConnectionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetConnectionsRequest,
-  ) => stream.Stream<
-    unknown,
-    GetConnectionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetConnectionsRequest,
   output: GetConnectionsResponse,
   errors: [
@@ -22463,27 +22311,7 @@ export const getConnections: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetConnectionsRequest,
-  GetConnectionsResponse,
-  GetConnectionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetConnectionsRequest,
-  ) => stream.Stream<
-    GetConnectionsResponse,
-    GetConnectionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetConnectionsRequest,
-  ) => stream.Stream<
-    unknown,
-    GetConnectionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetCrawlerError =
   | EntityNotFoundException
@@ -22496,7 +22324,7 @@ export const getCrawler: API.OperationMethod<
   GetCrawlerRequest,
   GetCrawlerResponse,
   GetCrawlerError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetCrawlerRequest,
   output: GetCrawlerResponse,
@@ -22510,27 +22338,13 @@ export type GetCrawlerMetricsError = OperationTimeoutException | CommonErrors;
 /**
  * Retrieves metrics about specified crawlers.
  */
-export const getCrawlerMetrics: API.OperationMethod<
+export const getCrawlerMetrics: API.PaginatedOperationMethod<
   GetCrawlerMetricsRequest,
   GetCrawlerMetricsResponse,
   GetCrawlerMetricsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetCrawlerMetricsRequest,
-  ) => stream.Stream<
-    GetCrawlerMetricsResponse,
-    GetCrawlerMetricsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetCrawlerMetricsRequest,
-  ) => stream.Stream<
-    unknown,
-    GetCrawlerMetricsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetCrawlerMetricsRequest,
   output: GetCrawlerMetricsResponse,
   errors: [OperationTimeoutException],
@@ -22542,54 +22356,20 @@ export const getCrawlerMetrics: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetCrawlerMetricsRequest,
-  GetCrawlerMetricsResponse,
-  GetCrawlerMetricsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetCrawlerMetricsRequest,
-  ) => stream.Stream<
-    GetCrawlerMetricsResponse,
-    GetCrawlerMetricsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetCrawlerMetricsRequest,
-  ) => stream.Stream<
-    unknown,
-    GetCrawlerMetricsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetCrawlersError = OperationTimeoutException | CommonErrors;
 /**
  * Retrieves metadata for all crawlers defined in the customer
  * account.
  */
-export const getCrawlers: API.OperationMethod<
+export const getCrawlers: API.PaginatedOperationMethod<
   GetCrawlersRequest,
   GetCrawlersResponse,
   GetCrawlersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetCrawlersRequest,
-  ) => stream.Stream<
-    GetCrawlersResponse,
-    GetCrawlersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetCrawlersRequest,
-  ) => stream.Stream<
-    unknown,
-    GetCrawlersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetCrawlersRequest,
   output: GetCrawlersResponse,
   errors: [OperationTimeoutException],
@@ -22601,27 +22381,7 @@ export const getCrawlers: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetCrawlersRequest,
-  GetCrawlersResponse,
-  GetCrawlersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetCrawlersRequest,
-  ) => stream.Stream<
-    GetCrawlersResponse,
-    GetCrawlersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetCrawlersRequest,
-  ) => stream.Stream<
-    unknown,
-    GetCrawlersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetCustomEntityTypeError =
   | AccessDeniedException
@@ -22637,7 +22397,7 @@ export const getCustomEntityType: API.OperationMethod<
   GetCustomEntityTypeRequest,
   GetCustomEntityTypeResponse,
   GetCustomEntityTypeError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetCustomEntityTypeRequest,
   output: GetCustomEntityTypeResponse,
@@ -22667,7 +22427,7 @@ export const getDashboardUrl: API.OperationMethod<
   GetDashboardUrlRequest,
   GetDashboardUrlResponse,
   GetDashboardUrlError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetDashboardUrlRequest,
   output: GetDashboardUrlResponse,
@@ -22699,7 +22459,7 @@ export const getDatabase: API.OperationMethod<
   GetDatabaseRequest,
   GetDatabaseResponse,
   GetDatabaseError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetDatabaseRequest,
   output: GetDatabaseResponse,
@@ -22729,27 +22489,13 @@ export type GetDatabasesError =
 /**
  * Retrieves all databases defined in a given Data Catalog.
  */
-export const getDatabases: API.OperationMethod<
+export const getDatabases: API.PaginatedOperationMethod<
   GetDatabasesRequest,
   GetDatabasesResponse,
   GetDatabasesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetDatabasesRequest,
-  ) => stream.Stream<
-    GetDatabasesResponse,
-    GetDatabasesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetDatabasesRequest,
-  ) => stream.Stream<
-    unknown,
-    GetDatabasesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetDatabasesRequest,
   output: GetDatabasesResponse,
   errors: [
@@ -22769,27 +22515,7 @@ export const getDatabases: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetDatabasesRequest,
-  GetDatabasesResponse,
-  GetDatabasesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetDatabasesRequest,
-  ) => stream.Stream<
-    GetDatabasesResponse,
-    GetDatabasesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetDatabasesRequest,
-  ) => stream.Stream<
-    unknown,
-    GetDatabasesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetDataCatalogEncryptionSettingsError =
   | InternalServiceException
@@ -22803,7 +22529,7 @@ export const getDataCatalogEncryptionSettings: API.OperationMethod<
   GetDataCatalogEncryptionSettingsRequest,
   GetDataCatalogEncryptionSettingsResponse,
   GetDataCatalogEncryptionSettingsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetDataCatalogEncryptionSettingsRequest,
   output: GetDataCatalogEncryptionSettingsResponse,
@@ -22829,7 +22555,7 @@ export const getDataflowGraph: API.OperationMethod<
   GetDataflowGraphRequest,
   GetDataflowGraphResponse,
   GetDataflowGraphError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetDataflowGraphRequest,
   output: GetDataflowGraphResponse,
@@ -22856,7 +22582,7 @@ export const getDataQualityModel: API.OperationMethod<
   GetDataQualityModelRequest,
   GetDataQualityModelResponse,
   GetDataQualityModelError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetDataQualityModelRequest,
   output: GetDataQualityModelResponse,
@@ -22884,7 +22610,7 @@ export const getDataQualityModelResult: API.OperationMethod<
   GetDataQualityModelResultRequest,
   GetDataQualityModelResultResponse,
   GetDataQualityModelResultError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetDataQualityModelResultRequest,
   output: GetDataQualityModelResultResponse,
@@ -22912,7 +22638,7 @@ export const getDataQualityResult: API.OperationMethod<
   GetDataQualityResultRequest,
   GetDataQualityResultResponse,
   GetDataQualityResultError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetDataQualityResultRequest,
   output: GetDataQualityResultResponse,
@@ -22940,7 +22666,7 @@ export const getDataQualityRuleRecommendationRun: API.OperationMethod<
   GetDataQualityRuleRecommendationRunRequest,
   GetDataQualityRuleRecommendationRunResponse,
   GetDataQualityRuleRecommendationRunError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetDataQualityRuleRecommendationRunRequest,
   output: GetDataQualityRuleRecommendationRunResponse,
@@ -22968,7 +22694,7 @@ export const getDataQualityRuleset: API.OperationMethod<
   GetDataQualityRulesetRequest,
   GetDataQualityRulesetResponse,
   GetDataQualityRulesetError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetDataQualityRulesetRequest,
   output: GetDataQualityRulesetResponse,
@@ -22996,7 +22722,7 @@ export const getDataQualityRulesetEvaluationRun: API.OperationMethod<
   GetDataQualityRulesetEvaluationRunRequest,
   GetDataQualityRulesetEvaluationRunResponse,
   GetDataQualityRulesetEvaluationRunError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetDataQualityRulesetEvaluationRunRequest,
   output: GetDataQualityRulesetEvaluationRunResponse,
@@ -23028,7 +22754,7 @@ export const getDevEndpoint: API.OperationMethod<
   GetDevEndpointRequest,
   GetDevEndpointResponse,
   GetDevEndpointError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetDevEndpointRequest,
   output: GetDevEndpointResponse,
@@ -23056,27 +22782,13 @@ export type GetDevEndpointsError =
  * and the public IP address field is not populated. When you create a non-VPC development
  * endpoint, Glue returns only a public IP address.
  */
-export const getDevEndpoints: API.OperationMethod<
+export const getDevEndpoints: API.PaginatedOperationMethod<
   GetDevEndpointsRequest,
   GetDevEndpointsResponse,
   GetDevEndpointsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetDevEndpointsRequest,
-  ) => stream.Stream<
-    GetDevEndpointsResponse,
-    GetDevEndpointsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetDevEndpointsRequest,
-  ) => stream.Stream<
-    unknown,
-    GetDevEndpointsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetDevEndpointsRequest,
   output: GetDevEndpointsResponse,
   errors: [
@@ -23093,27 +22805,7 @@ export const getDevEndpoints: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetDevEndpointsRequest,
-  GetDevEndpointsResponse,
-  GetDevEndpointsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetDevEndpointsRequest,
-  ) => stream.Stream<
-    GetDevEndpointsResponse,
-    GetDevEndpointsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetDevEndpointsRequest,
-  ) => stream.Stream<
-    unknown,
-    GetDevEndpointsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetEntityRecordsError =
   | AccessDeniedException
@@ -23135,7 +22827,7 @@ export const getEntityRecords: API.OperationMethod<
   GetEntityRecordsRequest,
   GetEntityRecordsResponse,
   GetEntityRecordsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetEntityRecordsRequest,
   output: GetEntityRecordsResponse,
@@ -23167,7 +22859,7 @@ export const getFormType: API.OperationMethod<
   GetFormTypeRequest,
   GetFormTypeResponse,
   GetFormTypeError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetFormTypeRequest,
   output: GetFormTypeResponse,
@@ -23196,7 +22888,7 @@ export const getGlossary: API.OperationMethod<
   GetGlossaryRequest,
   GetGlossaryResponse,
   GetGlossaryError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetGlossaryRequest,
   output: GetGlossaryResponse,
@@ -23224,7 +22916,7 @@ export const getGlossaryTerm: API.OperationMethod<
   GetGlossaryTermRequest,
   GetGlossaryTermResponse,
   GetGlossaryTermError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetGlossaryTermRequest,
   output: GetGlossaryTermResponse,
@@ -23255,7 +22947,7 @@ export const getGlueIdentityCenterConfiguration: API.OperationMethod<
   GetGlueIdentityCenterConfigurationRequest,
   GetGlueIdentityCenterConfigurationResponse,
   GetGlueIdentityCenterConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetGlueIdentityCenterConfigurationRequest,
   output: GetGlueIdentityCenterConfigurationResponse,
@@ -23288,7 +22980,7 @@ export const getIntegrationResourceProperty: API.OperationMethod<
   GetIntegrationResourcePropertyRequest,
   GetIntegrationResourcePropertyResponse,
   GetIntegrationResourcePropertyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetIntegrationResourcePropertyRequest,
   output: GetIntegrationResourcePropertyResponse,
@@ -23322,7 +23014,7 @@ export const getIntegrationTableProperties: API.OperationMethod<
   GetIntegrationTablePropertiesRequest,
   GetIntegrationTablePropertiesResponse,
   GetIntegrationTablePropertiesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetIntegrationTablePropertiesRequest,
   output: GetIntegrationTablePropertiesResponse,
@@ -23353,7 +23045,7 @@ export const getJob: API.OperationMethod<
   GetJobRequest,
   GetJobResponse,
   GetJobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetJobRequest,
   output: GetJobResponse,
@@ -23390,7 +23082,7 @@ export const getJobBookmark: API.OperationMethod<
   GetJobBookmarkRequest,
   GetJobBookmarkResponse,
   GetJobBookmarkError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetJobBookmarkRequest,
   output: GetJobBookmarkResponse,
@@ -23419,7 +23111,7 @@ export const getJobRun: API.OperationMethod<
   GetJobRunRequest,
   GetJobRunResponse,
   GetJobRunError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetJobRunRequest,
   output: GetJobRunResponse,
@@ -23445,27 +23137,13 @@ export type GetJobRunsError =
  *
  * `GetJobRuns` returns the job runs in chronological order, with the newest jobs returned first.
  */
-export const getJobRuns: API.OperationMethod<
+export const getJobRuns: API.PaginatedOperationMethod<
   GetJobRunsRequest,
   GetJobRunsResponse,
   GetJobRunsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetJobRunsRequest,
-  ) => stream.Stream<
-    GetJobRunsResponse,
-    GetJobRunsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetJobRunsRequest,
-  ) => stream.Stream<
-    JobRun,
-    GetJobRunsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  JobRun
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetJobRunsRequest,
   output: GetJobRunsResponse,
   errors: [
@@ -23483,27 +23161,7 @@ export const getJobRuns: API.OperationMethod<
     items: "JobRuns",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetJobRunsRequest,
-  GetJobRunsResponse,
-  GetJobRunsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetJobRunsRequest,
-  ) => stream.Stream<
-    GetJobRunsResponse,
-    GetJobRunsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetJobRunsRequest,
-  ) => stream.Stream<
-    JobRun,
-    GetJobRunsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetJobsError =
   | EntityNotFoundException
@@ -23514,27 +23172,13 @@ export type GetJobsError =
 /**
  * Retrieves all current job definitions.
  */
-export const getJobs: API.OperationMethod<
+export const getJobs: API.PaginatedOperationMethod<
   GetJobsRequest,
   GetJobsResponse,
   GetJobsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetJobsRequest,
-  ) => stream.Stream<
-    GetJobsResponse,
-    GetJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetJobsRequest,
-  ) => stream.Stream<
-    Job,
-    GetJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Job
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetJobsRequest,
   output: GetJobsResponse,
   errors: [
@@ -23552,27 +23196,7 @@ export const getJobs: API.OperationMethod<
     items: "Jobs",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetJobsRequest,
-  GetJobsResponse,
-  GetJobsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetJobsRequest,
-  ) => stream.Stream<
-    GetJobsResponse,
-    GetJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetJobsRequest,
-  ) => stream.Stream<
-    Job,
-    GetJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetMappingError =
   | EntityNotFoundException
@@ -23587,7 +23211,7 @@ export const getMapping: API.OperationMethod<
   GetMappingRequest,
   GetMappingResponse,
   GetMappingError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetMappingRequest,
   output: GetMappingResponse,
@@ -23615,7 +23239,7 @@ export const getMaterializedViewRefreshTaskRun: API.OperationMethod<
   GetMaterializedViewRefreshTaskRunRequest,
   GetMaterializedViewRefreshTaskRunResponse,
   GetMaterializedViewRefreshTaskRunError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetMaterializedViewRefreshTaskRunRequest,
   output: GetMaterializedViewRefreshTaskRunResponse,
@@ -23647,7 +23271,7 @@ export const getMLTaskRun: API.OperationMethod<
   GetMLTaskRunRequest,
   GetMLTaskRunResponse,
   GetMLTaskRunError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetMLTaskRunRequest,
   output: GetMLTaskRunResponse,
@@ -23677,27 +23301,13 @@ export type GetMLTaskRunsError =
  *
  * This operation returns a list of historic runs and must be paginated.
  */
-export const getMLTaskRuns: API.OperationMethod<
+export const getMLTaskRuns: API.PaginatedOperationMethod<
   GetMLTaskRunsRequest,
   GetMLTaskRunsResponse,
   GetMLTaskRunsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetMLTaskRunsRequest,
-  ) => stream.Stream<
-    GetMLTaskRunsResponse,
-    GetMLTaskRunsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetMLTaskRunsRequest,
-  ) => stream.Stream<
-    unknown,
-    GetMLTaskRunsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetMLTaskRunsRequest,
   output: GetMLTaskRunsResponse,
   errors: [
@@ -23714,27 +23324,7 @@ export const getMLTaskRuns: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetMLTaskRunsRequest,
-  GetMLTaskRunsResponse,
-  GetMLTaskRunsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetMLTaskRunsRequest,
-  ) => stream.Stream<
-    GetMLTaskRunsResponse,
-    GetMLTaskRunsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetMLTaskRunsRequest,
-  ) => stream.Stream<
-    unknown,
-    GetMLTaskRunsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetMLTransformError =
   | EntityNotFoundException
@@ -23753,7 +23343,7 @@ export const getMLTransform: API.OperationMethod<
   GetMLTransformRequest,
   GetMLTransformResponse,
   GetMLTransformError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetMLTransformRequest,
   output: GetMLTransformResponse,
@@ -23781,27 +23371,13 @@ export type GetMLTransformsError =
  * These transformations are then saved by Glue, and you can retrieve their metadata by
  * calling `GetMLTransforms`.
  */
-export const getMLTransforms: API.OperationMethod<
+export const getMLTransforms: API.PaginatedOperationMethod<
   GetMLTransformsRequest,
   GetMLTransformsResponse,
   GetMLTransformsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetMLTransformsRequest,
-  ) => stream.Stream<
-    GetMLTransformsResponse,
-    GetMLTransformsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetMLTransformsRequest,
-  ) => stream.Stream<
-    unknown,
-    GetMLTransformsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetMLTransformsRequest,
   output: GetMLTransformsResponse,
   errors: [
@@ -23818,27 +23394,7 @@ export const getMLTransforms: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetMLTransformsRequest,
-  GetMLTransformsResponse,
-  GetMLTransformsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetMLTransformsRequest,
-  ) => stream.Stream<
-    GetMLTransformsResponse,
-    GetMLTransformsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetMLTransformsRequest,
-  ) => stream.Stream<
-    unknown,
-    GetMLTransformsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetPartitionError =
   | EntityNotFoundException
@@ -23856,7 +23412,7 @@ export const getPartition: API.OperationMethod<
   GetPartitionRequest,
   GetPartitionResponse,
   GetPartitionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetPartitionRequest,
   output: GetPartitionResponse,
@@ -23884,27 +23440,13 @@ export type GetPartitionIndexesError =
 /**
  * Retrieves the partition indexes associated with a table.
  */
-export const getPartitionIndexes: API.OperationMethod<
+export const getPartitionIndexes: API.PaginatedOperationMethod<
   GetPartitionIndexesRequest,
   GetPartitionIndexesResponse,
   GetPartitionIndexesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetPartitionIndexesRequest,
-  ) => stream.Stream<
-    GetPartitionIndexesResponse,
-    GetPartitionIndexesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetPartitionIndexesRequest,
-  ) => stream.Stream<
-    PartitionIndexDescriptor,
-    GetPartitionIndexesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  PartitionIndexDescriptor
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetPartitionIndexesRequest,
   output: GetPartitionIndexesResponse,
   errors: [
@@ -23922,27 +23464,7 @@ export const getPartitionIndexes: API.OperationMethod<
     outputToken: "NextToken",
     items: "PartitionIndexDescriptorList",
   } as const,
-})) as any as API.OperationMethod<
-  GetPartitionIndexesRequest,
-  GetPartitionIndexesResponse,
-  GetPartitionIndexesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetPartitionIndexesRequest,
-  ) => stream.Stream<
-    GetPartitionIndexesResponse,
-    GetPartitionIndexesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetPartitionIndexesRequest,
-  ) => stream.Stream<
-    PartitionIndexDescriptor,
-    GetPartitionIndexesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetPartitionsError =
   | EntityNotFoundException
@@ -23958,27 +23480,13 @@ export type GetPartitionsError =
 /**
  * Retrieves information about the partitions in a table.
  */
-export const getPartitions: API.OperationMethod<
+export const getPartitions: API.PaginatedOperationMethod<
   GetPartitionsRequest,
   GetPartitionsResponse,
   GetPartitionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetPartitionsRequest,
-  ) => stream.Stream<
-    GetPartitionsResponse,
-    GetPartitionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetPartitionsRequest,
-  ) => stream.Stream<
-    unknown,
-    GetPartitionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetPartitionsRequest,
   output: GetPartitionsResponse,
   errors: [
@@ -24000,27 +23508,7 @@ export const getPartitions: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetPartitionsRequest,
-  GetPartitionsResponse,
-  GetPartitionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetPartitionsRequest,
-  ) => stream.Stream<
-    GetPartitionsResponse,
-    GetPartitionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetPartitionsRequest,
-  ) => stream.Stream<
-    unknown,
-    GetPartitionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetPlanError =
   | InternalServiceException
@@ -24034,7 +23522,7 @@ export const getPlan: API.OperationMethod<
   GetPlanRequest,
   GetPlanResponse,
   GetPlanError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetPlanRequest,
   output: GetPlanResponse,
@@ -24061,7 +23549,7 @@ export const getRegistry: API.OperationMethod<
   GetRegistryInput,
   GetRegistryResponse,
   GetRegistryError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetRegistryInput,
   output: GetRegistryResponse,
@@ -24091,27 +23579,13 @@ export type GetResourcePoliciesError =
  * permission on the KMS key, the operation can't return the Data Catalog resource
  * policy.
  */
-export const getResourcePolicies: API.OperationMethod<
+export const getResourcePolicies: API.PaginatedOperationMethod<
   GetResourcePoliciesRequest,
   GetResourcePoliciesResponse,
   GetResourcePoliciesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetResourcePoliciesRequest,
-  ) => stream.Stream<
-    GetResourcePoliciesResponse,
-    GetResourcePoliciesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetResourcePoliciesRequest,
-  ) => stream.Stream<
-    GluePolicy,
-    GetResourcePoliciesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  GluePolicy
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetResourcePoliciesRequest,
   output: GetResourcePoliciesResponse,
   errors: [
@@ -24129,27 +23603,7 @@ export const getResourcePolicies: API.OperationMethod<
     items: "GetResourcePoliciesResponseList",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetResourcePoliciesRequest,
-  GetResourcePoliciesResponse,
-  GetResourcePoliciesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetResourcePoliciesRequest,
-  ) => stream.Stream<
-    GetResourcePoliciesResponse,
-    GetResourcePoliciesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetResourcePoliciesRequest,
-  ) => stream.Stream<
-    GluePolicy,
-    GetResourcePoliciesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetResourcePolicyError =
   | EntityNotFoundException
@@ -24164,7 +23618,7 @@ export const getResourcePolicy: API.OperationMethod<
   GetResourcePolicyRequest,
   GetResourcePolicyResponse,
   GetResourcePolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetResourcePolicyRequest,
   output: GetResourcePolicyResponse,
@@ -24192,7 +23646,7 @@ export const getSchema: API.OperationMethod<
   GetSchemaInput,
   GetSchemaResponse,
   GetSchemaError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetSchemaInput,
   output: GetSchemaResponse,
@@ -24220,7 +23674,7 @@ export const getSchemaByDefinition: API.OperationMethod<
   GetSchemaByDefinitionInput,
   GetSchemaByDefinitionResponse,
   GetSchemaByDefinitionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetSchemaByDefinitionInput,
   output: GetSchemaByDefinitionResponse,
@@ -24248,7 +23702,7 @@ export const getSchemaVersion: API.OperationMethod<
   GetSchemaVersionInput,
   GetSchemaVersionResponse,
   GetSchemaVersionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetSchemaVersionInput,
   output: GetSchemaVersionResponse,
@@ -24278,7 +23732,7 @@ export const getSchemaVersionsDiff: API.OperationMethod<
   GetSchemaVersionsDiffInput,
   GetSchemaVersionsDiffResponse,
   GetSchemaVersionsDiffError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetSchemaVersionsDiffInput,
   output: GetSchemaVersionsDiffResponse,
@@ -24306,7 +23760,7 @@ export const getSecurityConfiguration: API.OperationMethod<
   GetSecurityConfigurationRequest,
   GetSecurityConfigurationResponse,
   GetSecurityConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetSecurityConfigurationRequest,
   output: GetSecurityConfigurationResponse,
@@ -24330,27 +23784,13 @@ export type GetSecurityConfigurationsError =
 /**
  * Retrieves a list of all security configurations.
  */
-export const getSecurityConfigurations: API.OperationMethod<
+export const getSecurityConfigurations: API.PaginatedOperationMethod<
   GetSecurityConfigurationsRequest,
   GetSecurityConfigurationsResponse,
   GetSecurityConfigurationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetSecurityConfigurationsRequest,
-  ) => stream.Stream<
-    GetSecurityConfigurationsResponse,
-    GetSecurityConfigurationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetSecurityConfigurationsRequest,
-  ) => stream.Stream<
-    SecurityConfiguration,
-    GetSecurityConfigurationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  SecurityConfiguration
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetSecurityConfigurationsRequest,
   output: GetSecurityConfigurationsResponse,
   errors: [
@@ -24368,27 +23808,7 @@ export const getSecurityConfigurations: API.OperationMethod<
     items: "SecurityConfigurations",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetSecurityConfigurationsRequest,
-  GetSecurityConfigurationsResponse,
-  GetSecurityConfigurationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetSecurityConfigurationsRequest,
-  ) => stream.Stream<
-    GetSecurityConfigurationsResponse,
-    GetSecurityConfigurationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetSecurityConfigurationsRequest,
-  ) => stream.Stream<
-    SecurityConfiguration,
-    GetSecurityConfigurationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetSessionError =
   | AccessDeniedException
@@ -24404,7 +23824,7 @@ export const getSession: API.OperationMethod<
   GetSessionRequest,
   GetSessionResponse,
   GetSessionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetSessionRequest,
   output: GetSessionResponse,
@@ -24436,7 +23856,7 @@ export const getSessionEndpoint: API.OperationMethod<
   GetSessionEndpointRequest,
   GetSessionEndpointResponse,
   GetSessionEndpointError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetSessionEndpointRequest,
   output: GetSessionEndpointResponse,
@@ -24469,7 +23889,7 @@ export const getStatement: API.OperationMethod<
   GetStatementRequest,
   GetStatementResponse,
   GetStatementError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetStatementRequest,
   output: GetStatementResponse,
@@ -24504,7 +23924,7 @@ export const getTable: API.OperationMethod<
   GetTableRequest,
   GetTableResponse,
   GetTableError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetTableRequest,
   output: GetTableResponse,
@@ -24537,7 +23957,7 @@ export const getTableOptimizer: API.OperationMethod<
   GetTableOptimizerRequest,
   GetTableOptimizerResponse,
   GetTableOptimizerError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetTableOptimizerRequest,
   output: GetTableOptimizerResponse,
@@ -24566,27 +23986,13 @@ export type GetTablesError =
  * Retrieves the definitions of some or all of the tables in a given
  * `Database`.
  */
-export const getTables: API.OperationMethod<
+export const getTables: API.PaginatedOperationMethod<
   GetTablesRequest,
   GetTablesResponse,
   GetTablesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetTablesRequest,
-  ) => stream.Stream<
-    GetTablesResponse,
-    GetTablesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetTablesRequest,
-  ) => stream.Stream<
-    unknown,
-    GetTablesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetTablesRequest,
   output: GetTablesResponse,
   errors: [
@@ -24606,27 +24012,7 @@ export const getTables: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetTablesRequest,
-  GetTablesResponse,
-  GetTablesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetTablesRequest,
-  ) => stream.Stream<
-    GetTablesResponse,
-    GetTablesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetTablesRequest,
-  ) => stream.Stream<
-    unknown,
-    GetTablesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetTableVersionError =
   | EntityNotFoundException
@@ -24642,7 +24028,7 @@ export const getTableVersion: API.OperationMethod<
   GetTableVersionRequest,
   GetTableVersionResponse,
   GetTableVersionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetTableVersionRequest,
   output: GetTableVersionResponse,
@@ -24669,27 +24055,13 @@ export type GetTableVersionsError =
  * Retrieves a list of strings that identify available versions of
  * a specified table.
  */
-export const getTableVersions: API.OperationMethod<
+export const getTableVersions: API.PaginatedOperationMethod<
   GetTableVersionsRequest,
   GetTableVersionsResponse,
   GetTableVersionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetTableVersionsRequest,
-  ) => stream.Stream<
-    GetTableVersionsResponse,
-    GetTableVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetTableVersionsRequest,
-  ) => stream.Stream<
-    unknown,
-    GetTableVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetTableVersionsRequest,
   output: GetTableVersionsResponse,
   errors: [
@@ -24707,27 +24079,7 @@ export const getTableVersions: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetTableVersionsRequest,
-  GetTableVersionsResponse,
-  GetTableVersionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetTableVersionsRequest,
-  ) => stream.Stream<
-    GetTableVersionsResponse,
-    GetTableVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetTableVersionsRequest,
-  ) => stream.Stream<
-    unknown,
-    GetTableVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetTagsError =
   | EntityNotFoundException
@@ -24742,7 +24094,7 @@ export const getTags: API.OperationMethod<
   GetTagsRequest,
   GetTagsResponse,
   GetTagsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetTagsRequest,
   output: GetTagsResponse,
@@ -24770,7 +24122,7 @@ export const getTrigger: API.OperationMethod<
   GetTriggerRequest,
   GetTriggerResponse,
   GetTriggerError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetTriggerRequest,
   output: GetTriggerResponse,
@@ -24794,27 +24146,13 @@ export type GetTriggersError =
 /**
  * Gets all the triggers associated with a job.
  */
-export const getTriggers: API.OperationMethod<
+export const getTriggers: API.PaginatedOperationMethod<
   GetTriggersRequest,
   GetTriggersResponse,
   GetTriggersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetTriggersRequest,
-  ) => stream.Stream<
-    GetTriggersResponse,
-    GetTriggersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetTriggersRequest,
-  ) => stream.Stream<
-    Trigger,
-    GetTriggersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Trigger
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetTriggersRequest,
   output: GetTriggersResponse,
   errors: [
@@ -24832,27 +24170,7 @@ export const getTriggers: API.OperationMethod<
     items: "Triggers",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetTriggersRequest,
-  GetTriggersResponse,
-  GetTriggersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetTriggersRequest,
-  ) => stream.Stream<
-    GetTriggersResponse,
-    GetTriggersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetTriggersRequest,
-  ) => stream.Stream<
-    Trigger,
-    GetTriggersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetUnfilteredPartitionMetadataError =
   | EntityNotFoundException
@@ -24874,7 +24192,7 @@ export const getUnfilteredPartitionMetadata: API.OperationMethod<
   GetUnfilteredPartitionMetadataRequest,
   GetUnfilteredPartitionMetadataResponse,
   GetUnfilteredPartitionMetadataError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetUnfilteredPartitionMetadataRequest,
   output: GetUnfilteredPartitionMetadataResponse,
@@ -24909,27 +24227,13 @@ export type GetUnfilteredPartitionsMetadataError =
  *
  * For IAM authorization, the public IAM action associated with this API is `glue:GetPartitions`.
  */
-export const getUnfilteredPartitionsMetadata: API.OperationMethod<
+export const getUnfilteredPartitionsMetadata: API.PaginatedOperationMethod<
   GetUnfilteredPartitionsMetadataRequest,
   GetUnfilteredPartitionsMetadataResponse,
   GetUnfilteredPartitionsMetadataError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetUnfilteredPartitionsMetadataRequest,
-  ) => stream.Stream<
-    GetUnfilteredPartitionsMetadataResponse,
-    GetUnfilteredPartitionsMetadataError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetUnfilteredPartitionsMetadataRequest,
-  ) => stream.Stream<
-    unknown,
-    GetUnfilteredPartitionsMetadataError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetUnfilteredPartitionsMetadataRequest,
   output: GetUnfilteredPartitionsMetadataResponse,
   errors: [
@@ -24950,27 +24254,7 @@ export const getUnfilteredPartitionsMetadata: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetUnfilteredPartitionsMetadataRequest,
-  GetUnfilteredPartitionsMetadataResponse,
-  GetUnfilteredPartitionsMetadataError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetUnfilteredPartitionsMetadataRequest,
-  ) => stream.Stream<
-    GetUnfilteredPartitionsMetadataResponse,
-    GetUnfilteredPartitionsMetadataError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetUnfilteredPartitionsMetadataRequest,
-  ) => stream.Stream<
-    unknown,
-    GetUnfilteredPartitionsMetadataError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetUnfilteredTableMetadataError =
   | EntityNotFoundException
@@ -24991,7 +24275,7 @@ export const getUnfilteredTableMetadata: API.OperationMethod<
   GetUnfilteredTableMetadataRequest,
   GetUnfilteredTableMetadataResponse,
   GetUnfilteredTableMetadataError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetUnfilteredTableMetadataRequest,
   output: GetUnfilteredTableMetadataResponse,
@@ -25024,7 +24308,7 @@ export const getUsageProfile: API.OperationMethod<
   GetUsageProfileRequest,
   GetUsageProfileResponse,
   GetUsageProfileError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetUsageProfileRequest,
   output: GetUsageProfileResponse,
@@ -25054,7 +24338,7 @@ export const getUserDefinedFunction: API.OperationMethod<
   GetUserDefinedFunctionRequest,
   GetUserDefinedFunctionResponse,
   GetUserDefinedFunctionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetUserDefinedFunctionRequest,
   output: GetUserDefinedFunctionResponse,
@@ -25080,27 +24364,13 @@ export type GetUserDefinedFunctionsError =
 /**
  * Retrieves multiple function definitions from the Data Catalog.
  */
-export const getUserDefinedFunctions: API.OperationMethod<
+export const getUserDefinedFunctions: API.PaginatedOperationMethod<
   GetUserDefinedFunctionsRequest,
   GetUserDefinedFunctionsResponse,
   GetUserDefinedFunctionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetUserDefinedFunctionsRequest,
-  ) => stream.Stream<
-    GetUserDefinedFunctionsResponse,
-    GetUserDefinedFunctionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetUserDefinedFunctionsRequest,
-  ) => stream.Stream<
-    unknown,
-    GetUserDefinedFunctionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetUserDefinedFunctionsRequest,
   output: GetUserDefinedFunctionsResponse,
   errors: [
@@ -25118,27 +24388,7 @@ export const getUserDefinedFunctions: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetUserDefinedFunctionsRequest,
-  GetUserDefinedFunctionsResponse,
-  GetUserDefinedFunctionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetUserDefinedFunctionsRequest,
-  ) => stream.Stream<
-    GetUserDefinedFunctionsResponse,
-    GetUserDefinedFunctionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetUserDefinedFunctionsRequest,
-  ) => stream.Stream<
-    unknown,
-    GetUserDefinedFunctionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetWorkflowError =
   | EntityNotFoundException
@@ -25153,7 +24403,7 @@ export const getWorkflow: API.OperationMethod<
   GetWorkflowRequest,
   GetWorkflowResponse,
   GetWorkflowError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetWorkflowRequest,
   output: GetWorkflowResponse,
@@ -25181,7 +24431,7 @@ export const getWorkflowRun: API.OperationMethod<
   GetWorkflowRunRequest,
   GetWorkflowRunResponse,
   GetWorkflowRunError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetWorkflowRunRequest,
   output: GetWorkflowRunResponse,
@@ -25209,7 +24459,7 @@ export const getWorkflowRunProperties: API.OperationMethod<
   GetWorkflowRunPropertiesRequest,
   GetWorkflowRunPropertiesResponse,
   GetWorkflowRunPropertiesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetWorkflowRunPropertiesRequest,
   output: GetWorkflowRunPropertiesResponse,
@@ -25233,27 +24483,13 @@ export type GetWorkflowRunsError =
 /**
  * Retrieves metadata for all runs of a given workflow.
  */
-export const getWorkflowRuns: API.OperationMethod<
+export const getWorkflowRuns: API.PaginatedOperationMethod<
   GetWorkflowRunsRequest,
   GetWorkflowRunsResponse,
   GetWorkflowRunsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetWorkflowRunsRequest,
-  ) => stream.Stream<
-    GetWorkflowRunsResponse,
-    GetWorkflowRunsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetWorkflowRunsRequest,
-  ) => stream.Stream<
-    WorkflowRun,
-    GetWorkflowRunsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  WorkflowRun
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetWorkflowRunsRequest,
   output: GetWorkflowRunsResponse,
   errors: [
@@ -25271,27 +24507,7 @@ export const getWorkflowRuns: API.OperationMethod<
     items: "Runs",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetWorkflowRunsRequest,
-  GetWorkflowRunsResponse,
-  GetWorkflowRunsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetWorkflowRunsRequest,
-  ) => stream.Stream<
-    GetWorkflowRunsResponse,
-    GetWorkflowRunsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetWorkflowRunsRequest,
-  ) => stream.Stream<
-    WorkflowRun,
-    GetWorkflowRunsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ImportCatalogToGlueError =
   | InternalServiceException
@@ -25304,7 +24520,7 @@ export const importCatalogToGlue: API.OperationMethod<
   ImportCatalogToGlueRequest,
   ImportCatalogToGlueResponse,
   ImportCatalogToGlueError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ImportCatalogToGlueRequest,
   output: ImportCatalogToGlueResponse,
@@ -25323,27 +24539,13 @@ export type ListAssetTypesError =
 /**
  * Lists the asset types defined in Glue Data Catalog.
  */
-export const listAssetTypes: API.OperationMethod<
+export const listAssetTypes: API.PaginatedOperationMethod<
   ListAssetTypesRequest,
   ListAssetTypesResponse,
   ListAssetTypesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAssetTypesRequest,
-  ) => stream.Stream<
-    ListAssetTypesResponse,
-    ListAssetTypesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAssetTypesRequest,
-  ) => stream.Stream<
-    AssetTypeItem,
-    ListAssetTypesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  AssetTypeItem
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListAssetTypesRequest,
   output: ListAssetTypesResponse,
   errors: [
@@ -25361,27 +24563,7 @@ export const listAssetTypes: API.OperationMethod<
     items: "Items",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListAssetTypesRequest,
-  ListAssetTypesResponse,
-  ListAssetTypesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAssetTypesRequest,
-  ) => stream.Stream<
-    ListAssetTypesResponse,
-    ListAssetTypesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAssetTypesRequest,
-  ) => stream.Stream<
-    AssetTypeItem,
-    ListAssetTypesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListBlueprintsError =
   | InternalServiceException
@@ -25391,27 +24573,13 @@ export type ListBlueprintsError =
 /**
  * Lists all the blueprint names in an account.
  */
-export const listBlueprints: API.OperationMethod<
+export const listBlueprints: API.PaginatedOperationMethod<
   ListBlueprintsRequest,
   ListBlueprintsResponse,
   ListBlueprintsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListBlueprintsRequest,
-  ) => stream.Stream<
-    ListBlueprintsResponse,
-    ListBlueprintsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListBlueprintsRequest,
-  ) => stream.Stream<
-    OrchestrationNameString,
-    ListBlueprintsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  OrchestrationNameString
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListBlueprintsRequest,
   output: ListBlueprintsResponse,
   errors: [
@@ -25428,27 +24596,7 @@ export const listBlueprints: API.OperationMethod<
     items: "Blueprints",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListBlueprintsRequest,
-  ListBlueprintsResponse,
-  ListBlueprintsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListBlueprintsRequest,
-  ) => stream.Stream<
-    ListBlueprintsResponse,
-    ListBlueprintsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListBlueprintsRequest,
-  ) => stream.Stream<
-    OrchestrationNameString,
-    ListBlueprintsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListColumnStatisticsTaskRunsError =
   | OperationTimeoutException
@@ -25456,27 +24604,13 @@ export type ListColumnStatisticsTaskRunsError =
 /**
  * List all task runs for a particular account.
  */
-export const listColumnStatisticsTaskRuns: API.OperationMethod<
+export const listColumnStatisticsTaskRuns: API.PaginatedOperationMethod<
   ListColumnStatisticsTaskRunsRequest,
   ListColumnStatisticsTaskRunsResponse,
   ListColumnStatisticsTaskRunsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListColumnStatisticsTaskRunsRequest,
-  ) => stream.Stream<
-    ListColumnStatisticsTaskRunsResponse,
-    ListColumnStatisticsTaskRunsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListColumnStatisticsTaskRunsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListColumnStatisticsTaskRunsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListColumnStatisticsTaskRunsRequest,
   output: ListColumnStatisticsTaskRunsResponse,
   errors: [OperationTimeoutException],
@@ -25488,27 +24622,7 @@ export const listColumnStatisticsTaskRuns: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListColumnStatisticsTaskRunsRequest,
-  ListColumnStatisticsTaskRunsResponse,
-  ListColumnStatisticsTaskRunsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListColumnStatisticsTaskRunsRequest,
-  ) => stream.Stream<
-    ListColumnStatisticsTaskRunsResponse,
-    ListColumnStatisticsTaskRunsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListColumnStatisticsTaskRunsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListColumnStatisticsTaskRunsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListConnectionTypesError =
   | AccessDeniedException
@@ -25519,27 +24633,13 @@ export type ListConnectionTypesError =
  *
  * See also: `DescribeConnectionType`, `RegisterConnectionType`, `DeleteConnectionType`
  */
-export const listConnectionTypes: API.OperationMethod<
+export const listConnectionTypes: API.PaginatedOperationMethod<
   ListConnectionTypesRequest,
   ListConnectionTypesResponse,
   ListConnectionTypesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListConnectionTypesRequest,
-  ) => stream.Stream<
-    ListConnectionTypesResponse,
-    ListConnectionTypesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListConnectionTypesRequest,
-  ) => stream.Stream<
-    ConnectionTypeBrief,
-    ListConnectionTypesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ConnectionTypeBrief
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListConnectionTypesRequest,
   output: ListConnectionTypesResponse,
   errors: [AccessDeniedException, InternalServiceException],
@@ -25552,27 +24652,7 @@ export const listConnectionTypes: API.OperationMethod<
     items: "ConnectionTypes",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListConnectionTypesRequest,
-  ListConnectionTypesResponse,
-  ListConnectionTypesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListConnectionTypesRequest,
-  ) => stream.Stream<
-    ListConnectionTypesResponse,
-    ListConnectionTypesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListConnectionTypesRequest,
-  ) => stream.Stream<
-    ConnectionTypeBrief,
-    ListConnectionTypesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListCrawlersError = OperationTimeoutException | CommonErrors;
 /**
@@ -25584,27 +24664,13 @@ export type ListCrawlersError = OperationTimeoutException | CommonErrors;
  * the response so that tagged resources can be retrieved as a group. If you choose to use tags
  * filtering, only resources with the tag are retrieved.
  */
-export const listCrawlers: API.OperationMethod<
+export const listCrawlers: API.PaginatedOperationMethod<
   ListCrawlersRequest,
   ListCrawlersResponse,
   ListCrawlersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCrawlersRequest,
-  ) => stream.Stream<
-    ListCrawlersResponse,
-    ListCrawlersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCrawlersRequest,
-  ) => stream.Stream<
-    unknown,
-    ListCrawlersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListCrawlersRequest,
   output: ListCrawlersResponse,
   errors: [OperationTimeoutException],
@@ -25616,27 +24682,7 @@ export const listCrawlers: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListCrawlersRequest,
-  ListCrawlersResponse,
-  ListCrawlersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCrawlersRequest,
-  ) => stream.Stream<
-    ListCrawlersResponse,
-    ListCrawlersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCrawlersRequest,
-  ) => stream.Stream<
-    unknown,
-    ListCrawlersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListCrawlsError =
   | EntityNotFoundException
@@ -25660,7 +24706,7 @@ export const listCrawls: API.OperationMethod<
   ListCrawlsRequest,
   ListCrawlsResponse,
   ListCrawlsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListCrawlsRequest,
   output: ListCrawlsResponse,
@@ -25682,27 +24728,13 @@ export type ListCustomEntityTypesError =
 /**
  * Lists all the custom patterns that have been created.
  */
-export const listCustomEntityTypes: API.OperationMethod<
+export const listCustomEntityTypes: API.PaginatedOperationMethod<
   ListCustomEntityTypesRequest,
   ListCustomEntityTypesResponse,
   ListCustomEntityTypesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCustomEntityTypesRequest,
-  ) => stream.Stream<
-    ListCustomEntityTypesResponse,
-    ListCustomEntityTypesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCustomEntityTypesRequest,
-  ) => stream.Stream<
-    unknown,
-    ListCustomEntityTypesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListCustomEntityTypesRequest,
   output: ListCustomEntityTypesResponse,
   errors: [
@@ -25718,27 +24750,7 @@ export const listCustomEntityTypes: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListCustomEntityTypesRequest,
-  ListCustomEntityTypesResponse,
-  ListCustomEntityTypesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCustomEntityTypesRequest,
-  ) => stream.Stream<
-    ListCustomEntityTypesResponse,
-    ListCustomEntityTypesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCustomEntityTypesRequest,
-  ) => stream.Stream<
-    unknown,
-    ListCustomEntityTypesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListDataQualityResultsError =
   | InternalServiceException
@@ -25748,27 +24760,13 @@ export type ListDataQualityResultsError =
 /**
  * Returns all data quality execution results for your account.
  */
-export const listDataQualityResults: API.OperationMethod<
+export const listDataQualityResults: API.PaginatedOperationMethod<
   ListDataQualityResultsRequest,
   ListDataQualityResultsResponse,
   ListDataQualityResultsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDataQualityResultsRequest,
-  ) => stream.Stream<
-    ListDataQualityResultsResponse,
-    ListDataQualityResultsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDataQualityResultsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListDataQualityResultsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListDataQualityResultsRequest,
   output: ListDataQualityResultsResponse,
   errors: [
@@ -25784,27 +24782,7 @@ export const listDataQualityResults: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListDataQualityResultsRequest,
-  ListDataQualityResultsResponse,
-  ListDataQualityResultsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDataQualityResultsRequest,
-  ) => stream.Stream<
-    ListDataQualityResultsResponse,
-    ListDataQualityResultsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDataQualityResultsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListDataQualityResultsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListDataQualityRuleRecommendationRunsError =
   | InternalServiceException
@@ -25814,27 +24792,13 @@ export type ListDataQualityRuleRecommendationRunsError =
 /**
  * Lists the recommendation runs meeting the filter criteria.
  */
-export const listDataQualityRuleRecommendationRuns: API.OperationMethod<
+export const listDataQualityRuleRecommendationRuns: API.PaginatedOperationMethod<
   ListDataQualityRuleRecommendationRunsRequest,
   ListDataQualityRuleRecommendationRunsResponse,
   ListDataQualityRuleRecommendationRunsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDataQualityRuleRecommendationRunsRequest,
-  ) => stream.Stream<
-    ListDataQualityRuleRecommendationRunsResponse,
-    ListDataQualityRuleRecommendationRunsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDataQualityRuleRecommendationRunsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListDataQualityRuleRecommendationRunsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListDataQualityRuleRecommendationRunsRequest,
   output: ListDataQualityRuleRecommendationRunsResponse,
   errors: [
@@ -25850,27 +24814,7 @@ export const listDataQualityRuleRecommendationRuns: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListDataQualityRuleRecommendationRunsRequest,
-  ListDataQualityRuleRecommendationRunsResponse,
-  ListDataQualityRuleRecommendationRunsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDataQualityRuleRecommendationRunsRequest,
-  ) => stream.Stream<
-    ListDataQualityRuleRecommendationRunsResponse,
-    ListDataQualityRuleRecommendationRunsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDataQualityRuleRecommendationRunsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListDataQualityRuleRecommendationRunsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListDataQualityRulesetEvaluationRunsError =
   | InternalServiceException
@@ -25880,27 +24824,13 @@ export type ListDataQualityRulesetEvaluationRunsError =
 /**
  * Lists all the runs meeting the filter criteria, where a ruleset is evaluated against a data source.
  */
-export const listDataQualityRulesetEvaluationRuns: API.OperationMethod<
+export const listDataQualityRulesetEvaluationRuns: API.PaginatedOperationMethod<
   ListDataQualityRulesetEvaluationRunsRequest,
   ListDataQualityRulesetEvaluationRunsResponse,
   ListDataQualityRulesetEvaluationRunsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDataQualityRulesetEvaluationRunsRequest,
-  ) => stream.Stream<
-    ListDataQualityRulesetEvaluationRunsResponse,
-    ListDataQualityRulesetEvaluationRunsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDataQualityRulesetEvaluationRunsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListDataQualityRulesetEvaluationRunsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListDataQualityRulesetEvaluationRunsRequest,
   output: ListDataQualityRulesetEvaluationRunsResponse,
   errors: [
@@ -25916,27 +24846,7 @@ export const listDataQualityRulesetEvaluationRuns: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListDataQualityRulesetEvaluationRunsRequest,
-  ListDataQualityRulesetEvaluationRunsResponse,
-  ListDataQualityRulesetEvaluationRunsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDataQualityRulesetEvaluationRunsRequest,
-  ) => stream.Stream<
-    ListDataQualityRulesetEvaluationRunsResponse,
-    ListDataQualityRulesetEvaluationRunsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDataQualityRulesetEvaluationRunsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListDataQualityRulesetEvaluationRunsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListDataQualityRulesetsError =
   | EntityNotFoundException
@@ -25947,27 +24857,13 @@ export type ListDataQualityRulesetsError =
 /**
  * Returns a paginated list of rulesets for the specified list of Glue tables.
  */
-export const listDataQualityRulesets: API.OperationMethod<
+export const listDataQualityRulesets: API.PaginatedOperationMethod<
   ListDataQualityRulesetsRequest,
   ListDataQualityRulesetsResponse,
   ListDataQualityRulesetsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDataQualityRulesetsRequest,
-  ) => stream.Stream<
-    ListDataQualityRulesetsResponse,
-    ListDataQualityRulesetsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDataQualityRulesetsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListDataQualityRulesetsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListDataQualityRulesetsRequest,
   output: ListDataQualityRulesetsResponse,
   errors: [
@@ -25984,27 +24880,7 @@ export const listDataQualityRulesets: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListDataQualityRulesetsRequest,
-  ListDataQualityRulesetsResponse,
-  ListDataQualityRulesetsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDataQualityRulesetsRequest,
-  ) => stream.Stream<
-    ListDataQualityRulesetsResponse,
-    ListDataQualityRulesetsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDataQualityRulesetsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListDataQualityRulesetsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListDataQualityStatisticAnnotationsError =
   | InternalServiceException
@@ -26017,7 +24893,7 @@ export const listDataQualityStatisticAnnotations: API.OperationMethod<
   ListDataQualityStatisticAnnotationsRequest,
   ListDataQualityStatisticAnnotationsResponse,
   ListDataQualityStatisticAnnotationsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListDataQualityStatisticAnnotationsRequest,
   output: ListDataQualityStatisticAnnotationsResponse,
@@ -26039,7 +24915,7 @@ export const listDataQualityStatistics: API.OperationMethod<
   ListDataQualityStatisticsRequest,
   ListDataQualityStatisticsResponse,
   ListDataQualityStatisticsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListDataQualityStatisticsRequest,
   output: ListDataQualityStatisticsResponse,
@@ -26068,27 +24944,13 @@ export type ListDevEndpointsError =
  * the response so that tagged resources can be retrieved as a group. If you choose to use tags
  * filtering, only resources with the tag are retrieved.
  */
-export const listDevEndpoints: API.OperationMethod<
+export const listDevEndpoints: API.PaginatedOperationMethod<
   ListDevEndpointsRequest,
   ListDevEndpointsResponse,
   ListDevEndpointsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDevEndpointsRequest,
-  ) => stream.Stream<
-    ListDevEndpointsResponse,
-    ListDevEndpointsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDevEndpointsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListDevEndpointsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListDevEndpointsRequest,
   output: ListDevEndpointsResponse,
   errors: [
@@ -26105,27 +24967,7 @@ export const listDevEndpoints: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListDevEndpointsRequest,
-  ListDevEndpointsResponse,
-  ListDevEndpointsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDevEndpointsRequest,
-  ) => stream.Stream<
-    ListDevEndpointsResponse,
-    ListDevEndpointsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDevEndpointsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListDevEndpointsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListEntitiesError =
   | AccessDeniedException
@@ -26139,27 +24981,13 @@ export type ListEntitiesError =
 /**
  * Returns the available entities supported by the connection type.
  */
-export const listEntities: API.OperationMethod<
+export const listEntities: API.PaginatedOperationMethod<
   ListEntitiesRequest,
   ListEntitiesResponse,
   ListEntitiesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListEntitiesRequest,
-  ) => stream.Stream<
-    ListEntitiesResponse,
-    ListEntitiesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListEntitiesRequest,
-  ) => stream.Stream<
-    Entity,
-    ListEntitiesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Entity
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListEntitiesRequest,
   output: ListEntitiesResponse,
   errors: [
@@ -26179,27 +25007,7 @@ export const listEntities: API.OperationMethod<
     outputToken: "NextToken",
     items: "Entities",
   } as const,
-})) as any as API.OperationMethod<
-  ListEntitiesRequest,
-  ListEntitiesResponse,
-  ListEntitiesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListEntitiesRequest,
-  ) => stream.Stream<
-    ListEntitiesResponse,
-    ListEntitiesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListEntitiesRequest,
-  ) => stream.Stream<
-    Entity,
-    ListEntitiesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListFormTypesError =
   | AccessDeniedException
@@ -26210,27 +25018,13 @@ export type ListFormTypesError =
 /**
  * Lists the form types defined in Glue Data Catalog.
  */
-export const listFormTypes: API.OperationMethod<
+export const listFormTypes: API.PaginatedOperationMethod<
   ListFormTypesRequest,
   ListFormTypesResponse,
   ListFormTypesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListFormTypesRequest,
-  ) => stream.Stream<
-    ListFormTypesResponse,
-    ListFormTypesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListFormTypesRequest,
-  ) => stream.Stream<
-    FormTypeItem,
-    ListFormTypesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  FormTypeItem
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListFormTypesRequest,
   output: ListFormTypesResponse,
   errors: [
@@ -26248,27 +25042,7 @@ export const listFormTypes: API.OperationMethod<
     items: "Items",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListFormTypesRequest,
-  ListFormTypesResponse,
-  ListFormTypesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListFormTypesRequest,
-  ) => stream.Stream<
-    ListFormTypesResponse,
-    ListFormTypesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListFormTypesRequest,
-  ) => stream.Stream<
-    FormTypeItem,
-    ListFormTypesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListGlossariesError =
   | AccessDeniedException
@@ -26279,27 +25053,13 @@ export type ListGlossariesError =
 /**
  * Lists business glossaries in Glue Data Catalog.
  */
-export const listGlossaries: API.OperationMethod<
+export const listGlossaries: API.PaginatedOperationMethod<
   ListGlossariesRequest,
   ListGlossariesResponse,
   ListGlossariesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListGlossariesRequest,
-  ) => stream.Stream<
-    ListGlossariesResponse,
-    ListGlossariesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListGlossariesRequest,
-  ) => stream.Stream<
-    GlossaryItem,
-    ListGlossariesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  GlossaryItem
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListGlossariesRequest,
   output: ListGlossariesResponse,
   errors: [
@@ -26317,27 +25077,7 @@ export const listGlossaries: API.OperationMethod<
     items: "Items",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListGlossariesRequest,
-  ListGlossariesResponse,
-  ListGlossariesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListGlossariesRequest,
-  ) => stream.Stream<
-    ListGlossariesResponse,
-    ListGlossariesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListGlossariesRequest,
-  ) => stream.Stream<
-    GlossaryItem,
-    ListGlossariesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListGlossaryTermsError =
   | AccessDeniedException
@@ -26348,27 +25088,13 @@ export type ListGlossaryTermsError =
 /**
  * Lists glossary terms within a business glossary in Glue Data Catalog.
  */
-export const listGlossaryTerms: API.OperationMethod<
+export const listGlossaryTerms: API.PaginatedOperationMethod<
   ListGlossaryTermsRequest,
   ListGlossaryTermsResponse,
   ListGlossaryTermsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListGlossaryTermsRequest,
-  ) => stream.Stream<
-    ListGlossaryTermsResponse,
-    ListGlossaryTermsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListGlossaryTermsRequest,
-  ) => stream.Stream<
-    GlossaryTermItem,
-    ListGlossaryTermsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  GlossaryTermItem
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListGlossaryTermsRequest,
   output: ListGlossaryTermsResponse,
   errors: [
@@ -26386,27 +25112,7 @@ export const listGlossaryTerms: API.OperationMethod<
     items: "Items",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListGlossaryTermsRequest,
-  ListGlossaryTermsResponse,
-  ListGlossaryTermsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListGlossaryTermsRequest,
-  ) => stream.Stream<
-    ListGlossaryTermsResponse,
-    ListGlossaryTermsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListGlossaryTermsRequest,
-  ) => stream.Stream<
-    GlossaryTermItem,
-    ListGlossaryTermsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListIntegrationResourcePropertiesError =
   | AccessDeniedException
@@ -26424,7 +25130,7 @@ export const listIntegrationResourceProperties: API.OperationMethod<
   ListIntegrationResourcePropertiesRequest,
   ListIntegrationResourcePropertiesResponse,
   ListIntegrationResourcePropertiesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListIntegrationResourcePropertiesRequest,
   output: ListIntegrationResourcePropertiesResponse,
@@ -26452,27 +25158,13 @@ export type ListIterableFormsError =
 /**
  * Lists the items in an iterable form on an asset in Glue Data Catalog. For example, lists the columns of a table asset.
  */
-export const listIterableForms: API.OperationMethod<
+export const listIterableForms: API.PaginatedOperationMethod<
   ListIterableFormsRequest,
   ListIterableFormsResponse,
   ListIterableFormsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListIterableFormsRequest,
-  ) => stream.Stream<
-    ListIterableFormsResponse,
-    ListIterableFormsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListIterableFormsRequest,
-  ) => stream.Stream<
-    IterableFormListItem,
-    ListIterableFormsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  IterableFormListItem
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListIterableFormsRequest,
   output: ListIterableFormsResponse,
   errors: [
@@ -26491,27 +25183,7 @@ export const listIterableForms: API.OperationMethod<
     items: "Items",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListIterableFormsRequest,
-  ListIterableFormsResponse,
-  ListIterableFormsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListIterableFormsRequest,
-  ) => stream.Stream<
-    ListIterableFormsResponse,
-    ListIterableFormsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListIterableFormsRequest,
-  ) => stream.Stream<
-    IterableFormListItem,
-    ListIterableFormsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListJobsError =
   | EntityNotFoundException
@@ -26526,27 +25198,13 @@ export type ListJobsError =
  * the response so that tagged resources can be retrieved as a group. If you choose to use tags
  * filtering, only resources with the tag are retrieved.
  */
-export const listJobs: API.OperationMethod<
+export const listJobs: API.PaginatedOperationMethod<
   ListJobsRequest,
   ListJobsResponse,
   ListJobsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListJobsRequest,
-  ) => stream.Stream<
-    ListJobsResponse,
-    ListJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListJobsRequest,
-  ) => stream.Stream<
-    NameString,
-    ListJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  NameString
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListJobsRequest,
   output: ListJobsResponse,
   errors: [
@@ -26564,27 +25222,7 @@ export const listJobs: API.OperationMethod<
     items: "JobNames",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListJobsRequest,
-  ListJobsResponse,
-  ListJobsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListJobsRequest,
-  ) => stream.Stream<
-    ListJobsResponse,
-    ListJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListJobsRequest,
-  ) => stream.Stream<
-    NameString,
-    ListJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListMaterializedViewRefreshTaskRunsError =
   | AccessDeniedException
@@ -26594,27 +25232,13 @@ export type ListMaterializedViewRefreshTaskRunsError =
 /**
  * List all task runs for a particular account.
  */
-export const listMaterializedViewRefreshTaskRuns: API.OperationMethod<
+export const listMaterializedViewRefreshTaskRuns: API.PaginatedOperationMethod<
   ListMaterializedViewRefreshTaskRunsRequest,
   ListMaterializedViewRefreshTaskRunsResponse,
   ListMaterializedViewRefreshTaskRunsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListMaterializedViewRefreshTaskRunsRequest,
-  ) => stream.Stream<
-    ListMaterializedViewRefreshTaskRunsResponse,
-    ListMaterializedViewRefreshTaskRunsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListMaterializedViewRefreshTaskRunsRequest,
-  ) => stream.Stream<
-    MaterializedViewRefreshTaskRun,
-    ListMaterializedViewRefreshTaskRunsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  MaterializedViewRefreshTaskRun
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListMaterializedViewRefreshTaskRunsRequest,
   output: ListMaterializedViewRefreshTaskRunsResponse,
   errors: [
@@ -26631,27 +25255,7 @@ export const listMaterializedViewRefreshTaskRuns: API.OperationMethod<
     items: "MaterializedViewRefreshTaskRuns",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListMaterializedViewRefreshTaskRunsRequest,
-  ListMaterializedViewRefreshTaskRunsResponse,
-  ListMaterializedViewRefreshTaskRunsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListMaterializedViewRefreshTaskRunsRequest,
-  ) => stream.Stream<
-    ListMaterializedViewRefreshTaskRunsResponse,
-    ListMaterializedViewRefreshTaskRunsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListMaterializedViewRefreshTaskRunsRequest,
-  ) => stream.Stream<
-    MaterializedViewRefreshTaskRun,
-    ListMaterializedViewRefreshTaskRunsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListMLTransformsError =
   | EntityNotFoundException
@@ -26665,27 +25269,13 @@ export type ListMLTransformsError =
  * a filter of the responses so that tagged resources can be retrieved as a group. If you choose to use tag
  * filtering, only resources with the tags are retrieved.
  */
-export const listMLTransforms: API.OperationMethod<
+export const listMLTransforms: API.PaginatedOperationMethod<
   ListMLTransformsRequest,
   ListMLTransformsResponse,
   ListMLTransformsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListMLTransformsRequest,
-  ) => stream.Stream<
-    ListMLTransformsResponse,
-    ListMLTransformsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListMLTransformsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListMLTransformsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListMLTransformsRequest,
   output: ListMLTransformsResponse,
   errors: [
@@ -26702,27 +25292,7 @@ export const listMLTransforms: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListMLTransformsRequest,
-  ListMLTransformsResponse,
-  ListMLTransformsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListMLTransformsRequest,
-  ) => stream.Stream<
-    ListMLTransformsResponse,
-    ListMLTransformsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListMLTransformsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListMLTransformsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListRegistriesError =
   | AccessDeniedException
@@ -26732,27 +25302,13 @@ export type ListRegistriesError =
 /**
  * Returns a list of registries that you have created, with minimal registry information. Registries in the `Deleting` status will not be included in the results. Empty results will be returned if there are no registries available.
  */
-export const listRegistries: API.OperationMethod<
+export const listRegistries: API.PaginatedOperationMethod<
   ListRegistriesInput,
   ListRegistriesResponse,
   ListRegistriesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListRegistriesInput,
-  ) => stream.Stream<
-    ListRegistriesResponse,
-    ListRegistriesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListRegistriesInput,
-  ) => stream.Stream<
-    RegistryListItem,
-    ListRegistriesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  RegistryListItem
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListRegistriesInput,
   output: ListRegistriesResponse,
   errors: [
@@ -26769,27 +25325,7 @@ export const listRegistries: API.OperationMethod<
     items: "Registries",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListRegistriesInput,
-  ListRegistriesResponse,
-  ListRegistriesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListRegistriesInput,
-  ) => stream.Stream<
-    ListRegistriesResponse,
-    ListRegistriesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListRegistriesInput,
-  ) => stream.Stream<
-    RegistryListItem,
-    ListRegistriesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListSchemasError =
   | AccessDeniedException
@@ -26802,27 +25338,13 @@ export type ListSchemasError =
  *
  * When the `RegistryId` is not provided, all the schemas across registries will be part of the API response.
  */
-export const listSchemas: API.OperationMethod<
+export const listSchemas: API.PaginatedOperationMethod<
   ListSchemasInput,
   ListSchemasResponse,
   ListSchemasError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSchemasInput,
-  ) => stream.Stream<
-    ListSchemasResponse,
-    ListSchemasError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSchemasInput,
-  ) => stream.Stream<
-    SchemaListItem,
-    ListSchemasError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  SchemaListItem
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListSchemasInput,
   output: ListSchemasResponse,
   errors: [
@@ -26840,27 +25362,7 @@ export const listSchemas: API.OperationMethod<
     items: "Schemas",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListSchemasInput,
-  ListSchemasResponse,
-  ListSchemasError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSchemasInput,
-  ) => stream.Stream<
-    ListSchemasResponse,
-    ListSchemasError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSchemasInput,
-  ) => stream.Stream<
-    SchemaListItem,
-    ListSchemasError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListSchemaVersionsError =
   | AccessDeniedException
@@ -26871,27 +25373,13 @@ export type ListSchemaVersionsError =
 /**
  * Returns a list of schema versions that you have created, with minimal information. Schema versions in Deleted status will not be included in the results. Empty results will be returned if there are no schema versions available.
  */
-export const listSchemaVersions: API.OperationMethod<
+export const listSchemaVersions: API.PaginatedOperationMethod<
   ListSchemaVersionsInput,
   ListSchemaVersionsResponse,
   ListSchemaVersionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSchemaVersionsInput,
-  ) => stream.Stream<
-    ListSchemaVersionsResponse,
-    ListSchemaVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSchemaVersionsInput,
-  ) => stream.Stream<
-    SchemaVersionListItem,
-    ListSchemaVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  SchemaVersionListItem
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListSchemaVersionsInput,
   output: ListSchemaVersionsResponse,
   errors: [
@@ -26909,27 +25397,7 @@ export const listSchemaVersions: API.OperationMethod<
     items: "Schemas",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListSchemaVersionsInput,
-  ListSchemaVersionsResponse,
-  ListSchemaVersionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSchemaVersionsInput,
-  ) => stream.Stream<
-    ListSchemaVersionsResponse,
-    ListSchemaVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSchemaVersionsInput,
-  ) => stream.Stream<
-    SchemaVersionListItem,
-    ListSchemaVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListSessionsError =
   | AccessDeniedException
@@ -26940,27 +25408,13 @@ export type ListSessionsError =
 /**
  * Retrieve a list of sessions.
  */
-export const listSessions: API.OperationMethod<
+export const listSessions: API.PaginatedOperationMethod<
   ListSessionsRequest,
   ListSessionsResponse,
   ListSessionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSessionsRequest,
-  ) => stream.Stream<
-    ListSessionsResponse,
-    ListSessionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSessionsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListSessionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListSessionsRequest,
   output: ListSessionsResponse,
   errors: [
@@ -26977,27 +25431,7 @@ export const listSessions: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListSessionsRequest,
-  ListSessionsResponse,
-  ListSessionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSessionsRequest,
-  ) => stream.Stream<
-    ListSessionsResponse,
-    ListSessionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSessionsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListSessionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListStatementsError =
   | AccessDeniedException
@@ -27014,7 +25448,7 @@ export const listStatements: API.OperationMethod<
   ListStatementsRequest,
   ListStatementsResponse,
   ListStatementsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListStatementsRequest,
   output: ListStatementsResponse,
@@ -27042,27 +25476,13 @@ export type ListTableOptimizerRunsError =
 /**
  * Lists the history of previous optimizer runs for a specific table.
  */
-export const listTableOptimizerRuns: API.OperationMethod<
+export const listTableOptimizerRuns: API.PaginatedOperationMethod<
   ListTableOptimizerRunsRequest,
   ListTableOptimizerRunsResponse,
   ListTableOptimizerRunsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTableOptimizerRunsRequest,
-  ) => stream.Stream<
-    ListTableOptimizerRunsResponse,
-    ListTableOptimizerRunsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTableOptimizerRunsRequest,
-  ) => stream.Stream<
-    TableOptimizerRun,
-    ListTableOptimizerRunsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  TableOptimizerRun
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListTableOptimizerRunsRequest,
   output: ListTableOptimizerRunsResponse,
   errors: [
@@ -27082,27 +25502,7 @@ export const listTableOptimizerRuns: API.OperationMethod<
     items: "TableOptimizerRuns",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListTableOptimizerRunsRequest,
-  ListTableOptimizerRunsResponse,
-  ListTableOptimizerRunsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTableOptimizerRunsRequest,
-  ) => stream.Stream<
-    ListTableOptimizerRunsResponse,
-    ListTableOptimizerRunsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTableOptimizerRunsRequest,
-  ) => stream.Stream<
-    TableOptimizerRun,
-    ListTableOptimizerRunsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTriggersError =
   | EntityNotFoundException
@@ -27117,27 +25517,13 @@ export type ListTriggersError =
  * the response so that tagged resources can be retrieved as a group. If you choose to use tags
  * filtering, only resources with the tag are retrieved.
  */
-export const listTriggers: API.OperationMethod<
+export const listTriggers: API.PaginatedOperationMethod<
   ListTriggersRequest,
   ListTriggersResponse,
   ListTriggersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTriggersRequest,
-  ) => stream.Stream<
-    ListTriggersResponse,
-    ListTriggersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTriggersRequest,
-  ) => stream.Stream<
-    NameString,
-    ListTriggersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  NameString
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListTriggersRequest,
   output: ListTriggersResponse,
   errors: [
@@ -27155,27 +25541,7 @@ export const listTriggers: API.OperationMethod<
     items: "TriggerNames",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListTriggersRequest,
-  ListTriggersResponse,
-  ListTriggersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTriggersRequest,
-  ) => stream.Stream<
-    ListTriggersResponse,
-    ListTriggersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTriggersRequest,
-  ) => stream.Stream<
-    NameString,
-    ListTriggersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListUsageProfilesError =
   | InternalServiceException
@@ -27186,27 +25552,13 @@ export type ListUsageProfilesError =
 /**
  * List all the Glue usage profiles.
  */
-export const listUsageProfiles: API.OperationMethod<
+export const listUsageProfiles: API.PaginatedOperationMethod<
   ListUsageProfilesRequest,
   ListUsageProfilesResponse,
   ListUsageProfilesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListUsageProfilesRequest,
-  ) => stream.Stream<
-    ListUsageProfilesResponse,
-    ListUsageProfilesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListUsageProfilesRequest,
-  ) => stream.Stream<
-    UsageProfileDefinition,
-    ListUsageProfilesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  UsageProfileDefinition
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListUsageProfilesRequest,
   output: ListUsageProfilesResponse,
   errors: [
@@ -27224,27 +25576,7 @@ export const listUsageProfiles: API.OperationMethod<
     items: "Profiles",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListUsageProfilesRequest,
-  ListUsageProfilesResponse,
-  ListUsageProfilesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListUsageProfilesRequest,
-  ) => stream.Stream<
-    ListUsageProfilesResponse,
-    ListUsageProfilesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListUsageProfilesRequest,
-  ) => stream.Stream<
-    UsageProfileDefinition,
-    ListUsageProfilesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListWorkflowsError =
   | InternalServiceException
@@ -27254,27 +25586,13 @@ export type ListWorkflowsError =
 /**
  * Lists names of workflows created in the account.
  */
-export const listWorkflows: API.OperationMethod<
+export const listWorkflows: API.PaginatedOperationMethod<
   ListWorkflowsRequest,
   ListWorkflowsResponse,
   ListWorkflowsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListWorkflowsRequest,
-  ) => stream.Stream<
-    ListWorkflowsResponse,
-    ListWorkflowsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListWorkflowsRequest,
-  ) => stream.Stream<
-    NameString,
-    ListWorkflowsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  NameString
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListWorkflowsRequest,
   output: ListWorkflowsResponse,
   errors: [
@@ -27291,27 +25609,7 @@ export const listWorkflows: API.OperationMethod<
     items: "Workflows",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListWorkflowsRequest,
-  ListWorkflowsResponse,
-  ListWorkflowsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListWorkflowsRequest,
-  ) => stream.Stream<
-    ListWorkflowsResponse,
-    ListWorkflowsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListWorkflowsRequest,
-  ) => stream.Stream<
-    NameString,
-    ListWorkflowsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ModifyIntegrationError =
   | AccessDeniedException
@@ -27333,7 +25631,7 @@ export const modifyIntegration: API.OperationMethod<
   ModifyIntegrationRequest,
   ModifyIntegrationResponse,
   ModifyIntegrationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ModifyIntegrationRequest,
   output: ModifyIntegrationResponse,
@@ -27370,7 +25668,7 @@ export const putAsset: API.OperationMethod<
   PutAssetRequest,
   PutAssetResponse,
   PutAssetError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutAssetRequest,
   output: PutAssetResponse,
@@ -27401,7 +25699,7 @@ export const putAssetType: API.OperationMethod<
   PutAssetTypeRequest,
   PutAssetTypeResponse,
   PutAssetTypeError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutAssetTypeRequest,
   output: PutAssetTypeResponse,
@@ -27432,7 +25730,7 @@ export const putAttachment: API.OperationMethod<
   PutAttachmentRequest,
   PutAttachmentResponse,
   PutAttachmentError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutAttachmentRequest,
   output: PutAttachmentResponse,
@@ -27462,7 +25760,7 @@ export const putDataCatalogEncryptionSettings: API.OperationMethod<
   PutDataCatalogEncryptionSettingsRequest,
   PutDataCatalogEncryptionSettingsResponse,
   PutDataCatalogEncryptionSettingsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutDataCatalogEncryptionSettingsRequest,
   output: PutDataCatalogEncryptionSettingsResponse,
@@ -27488,7 +25786,7 @@ export const putDataQualityProfileAnnotation: API.OperationMethod<
   PutDataQualityProfileAnnotationRequest,
   PutDataQualityProfileAnnotationResponse,
   PutDataQualityProfileAnnotationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutDataQualityProfileAnnotationRequest,
   output: PutDataQualityProfileAnnotationResponse,
@@ -27516,7 +25814,7 @@ export const putFormType: API.OperationMethod<
   PutFormTypeRequest,
   PutFormTypeResponse,
   PutFormTypeError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutFormTypeRequest,
   output: PutFormTypeResponse,
@@ -27546,7 +25844,7 @@ export const putResourcePolicy: API.OperationMethod<
   PutResourcePolicyRequest,
   PutResourcePolicyResponse,
   PutResourcePolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutResourcePolicyRequest,
   output: PutResourcePolicyResponse,
@@ -27576,7 +25874,7 @@ export const putSchemaVersionMetadata: API.OperationMethod<
   PutSchemaVersionMetadataInput,
   PutSchemaVersionMetadataResponse,
   PutSchemaVersionMetadataError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutSchemaVersionMetadataInput,
   output: PutSchemaVersionMetadataResponse,
@@ -27608,7 +25906,7 @@ export const putWorkflowRunProperties: API.OperationMethod<
   PutWorkflowRunPropertiesRequest,
   PutWorkflowRunPropertiesResponse,
   PutWorkflowRunPropertiesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutWorkflowRunPropertiesRequest,
   output: PutWorkflowRunPropertiesResponse,
@@ -27638,7 +25936,7 @@ export const querySchemaVersionMetadata: API.OperationMethod<
   QuerySchemaVersionMetadataInput,
   QuerySchemaVersionMetadataResponse,
   QuerySchemaVersionMetadataError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: QuerySchemaVersionMetadataInput,
   output: QuerySchemaVersionMetadataResponse,
@@ -27671,7 +25969,7 @@ export const registerConnectionType: API.OperationMethod<
   RegisterConnectionTypeRequest,
   RegisterConnectionTypeResponse,
   RegisterConnectionTypeError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RegisterConnectionTypeRequest,
   output: RegisterConnectionTypeResponse,
@@ -27707,7 +26005,7 @@ export const registerSchemaVersion: API.OperationMethod<
   RegisterSchemaVersionInput,
   RegisterSchemaVersionResponse,
   RegisterSchemaVersionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RegisterSchemaVersionInput,
   output: RegisterSchemaVersionResponse,
@@ -27736,7 +26034,7 @@ export const removeSchemaVersionMetadata: API.OperationMethod<
   RemoveSchemaVersionMetadataInput,
   RemoveSchemaVersionMetadataResponse,
   RemoveSchemaVersionMetadataError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RemoveSchemaVersionMetadataInput,
   output: RemoveSchemaVersionMetadataResponse,
@@ -27771,7 +26069,7 @@ export const resetJobBookmark: API.OperationMethod<
   ResetJobBookmarkRequest,
   ResetJobBookmarkResponse,
   ResetJobBookmarkError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ResetJobBookmarkRequest,
   output: ResetJobBookmarkResponse,
@@ -27801,7 +26099,7 @@ export const resumeWorkflowRun: API.OperationMethod<
   ResumeWorkflowRunRequest,
   ResumeWorkflowRunResponse,
   ResumeWorkflowRunError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ResumeWorkflowRunRequest,
   output: ResumeWorkflowRunResponse,
@@ -27837,7 +26135,7 @@ export const runStatement: API.OperationMethod<
   RunStatementRequest,
   RunStatementResponse,
   RunStatementError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RunStatementRequest,
   output: RunStatementResponse,
@@ -27867,27 +26165,13 @@ export type SearchAssetsError =
 /**
  * Searches for assets in Glue Data Catalog using full-text search, filters, sorting, and aggregations. Returns matching assets with relevance-ranked results.
  */
-export const searchAssets: API.OperationMethod<
+export const searchAssets: API.PaginatedOperationMethod<
   SearchAssetsInput,
   SearchAssetsOutput,
   SearchAssetsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: SearchAssetsInput,
-  ) => stream.Stream<
-    SearchAssetsOutput,
-    SearchAssetsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: SearchAssetsInput,
-  ) => stream.Stream<
-    SearchResultItem,
-    SearchAssetsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  SearchResultItem
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: SearchAssetsInput,
   output: SearchAssetsOutput,
   errors: [
@@ -27905,27 +26189,7 @@ export const searchAssets: API.OperationMethod<
     items: "Items",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  SearchAssetsInput,
-  SearchAssetsOutput,
-  SearchAssetsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: SearchAssetsInput,
-  ) => stream.Stream<
-    SearchAssetsOutput,
-    SearchAssetsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: SearchAssetsInput,
-  ) => stream.Stream<
-    SearchResultItem,
-    SearchAssetsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type SearchTablesError =
   | InternalServiceException
@@ -27937,27 +26201,13 @@ export type SearchTablesError =
  *
  * You can only get tables that you have access to based on the security policies defined in Lake Formation. You need at least a read-only access to the table for it to be returned. If you do not have access to all the columns in the table, these columns will not be searched against when returning the list of tables back to you. If you have access to the columns but not the data in the columns, those columns and the associated metadata for those columns will be included in the search.
  */
-export const searchTables: API.OperationMethod<
+export const searchTables: API.PaginatedOperationMethod<
   SearchTablesRequest,
   SearchTablesResponse,
   SearchTablesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: SearchTablesRequest,
-  ) => stream.Stream<
-    SearchTablesResponse,
-    SearchTablesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: SearchTablesRequest,
-  ) => stream.Stream<
-    unknown,
-    SearchTablesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: SearchTablesRequest,
   output: SearchTablesResponse,
   errors: [
@@ -27973,27 +26223,7 @@ export const searchTables: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  SearchTablesRequest,
-  SearchTablesResponse,
-  SearchTablesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: SearchTablesRequest,
-  ) => stream.Stream<
-    SearchTablesResponse,
-    SearchTablesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: SearchTablesRequest,
-  ) => stream.Stream<
-    unknown,
-    SearchTablesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type StartBlueprintRunError =
   | EntityNotFoundException
@@ -28010,7 +26240,7 @@ export const startBlueprintRun: API.OperationMethod<
   StartBlueprintRunRequest,
   StartBlueprintRunResponse,
   StartBlueprintRunError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartBlueprintRunRequest,
   output: StartBlueprintRunResponse,
@@ -28042,7 +26272,7 @@ export const startColumnStatisticsTaskRun: API.OperationMethod<
   StartColumnStatisticsTaskRunRequest,
   StartColumnStatisticsTaskRunResponse,
   StartColumnStatisticsTaskRunError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartColumnStatisticsTaskRunRequest,
   output: StartColumnStatisticsTaskRunResponse,
@@ -28072,7 +26302,7 @@ export const startColumnStatisticsTaskRunSchedule: API.OperationMethod<
   StartColumnStatisticsTaskRunScheduleRequest,
   StartColumnStatisticsTaskRunScheduleResponse,
   StartColumnStatisticsTaskRunScheduleError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartColumnStatisticsTaskRunScheduleRequest,
   output: StartColumnStatisticsTaskRunScheduleResponse,
@@ -28101,7 +26331,7 @@ export const startCrawler: API.OperationMethod<
   StartCrawlerRequest,
   StartCrawlerResponse,
   StartCrawlerError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartCrawlerRequest,
   output: StartCrawlerResponse,
@@ -28131,7 +26361,7 @@ export const startCrawlerSchedule: API.OperationMethod<
   StartCrawlerScheduleRequest,
   StartCrawlerScheduleResponse,
   StartCrawlerScheduleError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartCrawlerScheduleRequest,
   output: StartCrawlerScheduleResponse,
@@ -28162,7 +26392,7 @@ export const startDataQualityRuleRecommendationRun: API.OperationMethod<
   StartDataQualityRuleRecommendationRunRequest,
   StartDataQualityRuleRecommendationRunResponse,
   StartDataQualityRuleRecommendationRunError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartDataQualityRuleRecommendationRunRequest,
   output: StartDataQualityRuleRecommendationRunResponse,
@@ -28191,7 +26421,7 @@ export const startDataQualityRulesetEvaluationRun: API.OperationMethod<
   StartDataQualityRulesetEvaluationRunRequest,
   StartDataQualityRulesetEvaluationRunResponse,
   StartDataQualityRulesetEvaluationRunError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartDataQualityRulesetEvaluationRunRequest,
   output: StartDataQualityRulesetEvaluationRunResponse,
@@ -28228,7 +26458,7 @@ export const startExportLabelsTaskRun: API.OperationMethod<
   StartExportLabelsTaskRunRequest,
   StartExportLabelsTaskRunResponse,
   StartExportLabelsTaskRunError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartExportLabelsTaskRunRequest,
   output: StartExportLabelsTaskRunResponse,
@@ -28281,7 +26511,7 @@ export const startImportLabelsTaskRun: API.OperationMethod<
   StartImportLabelsTaskRunRequest,
   StartImportLabelsTaskRunResponse,
   StartImportLabelsTaskRunError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartImportLabelsTaskRunRequest,
   output: StartImportLabelsTaskRunResponse,
@@ -28313,7 +26543,7 @@ export const startJobRun: API.OperationMethod<
   StartJobRunRequest,
   StartJobRunResponse,
   StartJobRunError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartJobRunRequest,
   output: StartJobRunResponse,
@@ -28346,7 +26576,7 @@ export const startMaterializedViewRefreshTaskRun: API.OperationMethod<
   StartMaterializedViewRefreshTaskRunRequest,
   StartMaterializedViewRefreshTaskRunResponse,
   StartMaterializedViewRefreshTaskRunError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartMaterializedViewRefreshTaskRunRequest,
   output: StartMaterializedViewRefreshTaskRunResponse,
@@ -28385,7 +26615,7 @@ export const startMLEvaluationTaskRun: API.OperationMethod<
   StartMLEvaluationTaskRunRequest,
   StartMLEvaluationTaskRunResponse,
   StartMLEvaluationTaskRunError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartMLEvaluationTaskRunRequest,
   output: StartMLEvaluationTaskRunResponse,
@@ -28432,7 +26662,7 @@ export const startMLLabelingSetGenerationTaskRun: API.OperationMethod<
   StartMLLabelingSetGenerationTaskRunRequest,
   StartMLLabelingSetGenerationTaskRunResponse,
   StartMLLabelingSetGenerationTaskRunError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartMLLabelingSetGenerationTaskRunRequest,
   output: StartMLLabelingSetGenerationTaskRunResponse,
@@ -28465,7 +26695,7 @@ export const startTrigger: API.OperationMethod<
   StartTriggerRequest,
   StartTriggerResponse,
   StartTriggerError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartTriggerRequest,
   output: StartTriggerResponse,
@@ -28497,7 +26727,7 @@ export const startWorkflowRun: API.OperationMethod<
   StartWorkflowRunRequest,
   StartWorkflowRunResponse,
   StartWorkflowRunError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartWorkflowRunRequest,
   output: StartWorkflowRunResponse,
@@ -28527,7 +26757,7 @@ export const stopColumnStatisticsTaskRun: API.OperationMethod<
   StopColumnStatisticsTaskRunRequest,
   StopColumnStatisticsTaskRunResponse,
   StopColumnStatisticsTaskRunError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StopColumnStatisticsTaskRunRequest,
   output: StopColumnStatisticsTaskRunResponse,
@@ -28554,7 +26784,7 @@ export const stopColumnStatisticsTaskRunSchedule: API.OperationMethod<
   StopColumnStatisticsTaskRunScheduleRequest,
   StopColumnStatisticsTaskRunScheduleResponse,
   StopColumnStatisticsTaskRunScheduleError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StopColumnStatisticsTaskRunScheduleRequest,
   output: StopColumnStatisticsTaskRunScheduleResponse,
@@ -28581,7 +26811,7 @@ export const stopCrawler: API.OperationMethod<
   StopCrawlerRequest,
   StopCrawlerResponse,
   StopCrawlerError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StopCrawlerRequest,
   output: StopCrawlerResponse,
@@ -28611,7 +26841,7 @@ export const stopCrawlerSchedule: API.OperationMethod<
   StopCrawlerScheduleRequest,
   StopCrawlerScheduleResponse,
   StopCrawlerScheduleError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StopCrawlerScheduleRequest,
   output: StopCrawlerScheduleResponse,
@@ -28640,7 +26870,7 @@ export const stopMaterializedViewRefreshTaskRun: API.OperationMethod<
   StopMaterializedViewRefreshTaskRunRequest,
   StopMaterializedViewRefreshTaskRunResponse,
   StopMaterializedViewRefreshTaskRunError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StopMaterializedViewRefreshTaskRunRequest,
   output: StopMaterializedViewRefreshTaskRunResponse,
@@ -28671,7 +26901,7 @@ export const stopSession: API.OperationMethod<
   StopSessionRequest,
   StopSessionResponse,
   StopSessionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StopSessionRequest,
   output: StopSessionResponse,
@@ -28702,7 +26932,7 @@ export const stopTrigger: API.OperationMethod<
   StopTriggerRequest,
   StopTriggerResponse,
   StopTriggerError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StopTriggerRequest,
   output: StopTriggerResponse,
@@ -28732,7 +26962,7 @@ export const stopWorkflowRun: API.OperationMethod<
   StopWorkflowRunRequest,
   StopWorkflowRunResponse,
   StopWorkflowRunError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StopWorkflowRunRequest,
   output: StopWorkflowRunResponse,
@@ -28763,7 +26993,7 @@ export const tagResource: API.OperationMethod<
   TagResourceRequest,
   TagResourceResponse,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -28800,7 +27030,7 @@ export const testConnection: API.OperationMethod<
   TestConnectionRequest,
   TestConnectionResponse,
   TestConnectionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TestConnectionRequest,
   output: TestConnectionResponse,
@@ -28833,7 +27063,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceRequest,
   UntagResourceResponse,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -28863,7 +27093,7 @@ export const updateAsset: API.OperationMethod<
   UpdateAssetRequest,
   UpdateAssetResponse,
   UpdateAssetError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateAssetRequest,
   output: UpdateAssetResponse,
@@ -28895,7 +27125,7 @@ export const updateBlueprint: API.OperationMethod<
   UpdateBlueprintRequest,
   UpdateBlueprintResponse,
   UpdateBlueprintError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateBlueprintRequest,
   output: UpdateBlueprintResponse,
@@ -28929,7 +27159,7 @@ export const updateCatalog: API.OperationMethod<
   UpdateCatalogRequest,
   UpdateCatalogResponse,
   UpdateCatalogError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateCatalogRequest,
   output: UpdateCatalogResponse,
@@ -28963,7 +27193,7 @@ export const updateClassifier: API.OperationMethod<
   UpdateClassifierRequest,
   UpdateClassifierResponse,
   UpdateClassifierError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateClassifierRequest,
   output: UpdateClassifierResponse,
@@ -28994,7 +27224,7 @@ export const updateColumnStatisticsForPartition: API.OperationMethod<
   UpdateColumnStatisticsForPartitionRequest,
   UpdateColumnStatisticsForPartitionResponse,
   UpdateColumnStatisticsForPartitionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateColumnStatisticsForPartitionRequest,
   output: UpdateColumnStatisticsForPartitionResponse,
@@ -29026,7 +27256,7 @@ export const updateColumnStatisticsForTable: API.OperationMethod<
   UpdateColumnStatisticsForTableRequest,
   UpdateColumnStatisticsForTableResponse,
   UpdateColumnStatisticsForTableError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateColumnStatisticsForTableRequest,
   output: UpdateColumnStatisticsForTableResponse,
@@ -29056,7 +27286,7 @@ export const updateColumnStatisticsTaskSettings: API.OperationMethod<
   UpdateColumnStatisticsTaskSettingsRequest,
   UpdateColumnStatisticsTaskSettingsResponse,
   UpdateColumnStatisticsTaskSettingsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateColumnStatisticsTaskSettingsRequest,
   output: UpdateColumnStatisticsTaskSettingsResponse,
@@ -29085,7 +27315,7 @@ export const updateConnection: API.OperationMethod<
   UpdateConnectionRequest,
   UpdateConnectionResponse,
   UpdateConnectionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateConnectionRequest,
   output: UpdateConnectionResponse,
@@ -29118,7 +27348,7 @@ export const updateCrawler: API.OperationMethod<
   UpdateCrawlerRequest,
   UpdateCrawlerResponse,
   UpdateCrawlerError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateCrawlerRequest,
   output: UpdateCrawlerResponse,
@@ -29150,7 +27380,7 @@ export const updateCrawlerSchedule: API.OperationMethod<
   UpdateCrawlerScheduleRequest,
   UpdateCrawlerScheduleResponse,
   UpdateCrawlerScheduleError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateCrawlerScheduleRequest,
   output: UpdateCrawlerScheduleResponse,
@@ -29184,7 +27414,7 @@ export const updateDatabase: API.OperationMethod<
   UpdateDatabaseRequest,
   UpdateDatabaseResponse,
   UpdateDatabaseError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateDatabaseRequest,
   output: UpdateDatabaseResponse,
@@ -29220,7 +27450,7 @@ export const updateDataQualityRuleset: API.OperationMethod<
   UpdateDataQualityRulesetRequest,
   UpdateDataQualityRulesetResponse,
   UpdateDataQualityRulesetError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateDataQualityRulesetRequest,
   output: UpdateDataQualityRulesetResponse,
@@ -29252,7 +27482,7 @@ export const updateDevEndpoint: API.OperationMethod<
   UpdateDevEndpointRequest,
   UpdateDevEndpointResponse,
   UpdateDevEndpointError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateDevEndpointRequest,
   output: UpdateDevEndpointResponse,
@@ -29284,7 +27514,7 @@ export const updateGlossary: API.OperationMethod<
   UpdateGlossaryRequest,
   UpdateGlossaryResponse,
   UpdateGlossaryError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateGlossaryRequest,
   output: UpdateGlossaryResponse,
@@ -29318,7 +27548,7 @@ export const updateGlossaryTerm: API.OperationMethod<
   UpdateGlossaryTermRequest,
   UpdateGlossaryTermResponse,
   UpdateGlossaryTermError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateGlossaryTermRequest,
   output: UpdateGlossaryTermResponse,
@@ -29351,7 +27581,7 @@ export const updateGlueIdentityCenterConfiguration: API.OperationMethod<
   UpdateGlueIdentityCenterConfigurationRequest,
   UpdateGlueIdentityCenterConfigurationResponse,
   UpdateGlueIdentityCenterConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateGlueIdentityCenterConfigurationRequest,
   output: UpdateGlueIdentityCenterConfigurationResponse,
@@ -29384,7 +27614,7 @@ export const updateIntegrationResourceProperty: API.OperationMethod<
   UpdateIntegrationResourcePropertyRequest,
   UpdateIntegrationResourcePropertyResponse,
   UpdateIntegrationResourcePropertyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateIntegrationResourcePropertyRequest,
   output: UpdateIntegrationResourcePropertyResponse,
@@ -29420,7 +27650,7 @@ export const updateIntegrationTableProperties: API.OperationMethod<
   UpdateIntegrationTablePropertiesRequest,
   UpdateIntegrationTablePropertiesResponse,
   UpdateIntegrationTablePropertiesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateIntegrationTablePropertiesRequest,
   output: UpdateIntegrationTablePropertiesResponse,
@@ -29453,7 +27683,7 @@ export const updateJob: API.OperationMethod<
   UpdateJobRequest,
   UpdateJobResponse,
   UpdateJobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateJobRequest,
   output: UpdateJobResponse,
@@ -29488,7 +27718,7 @@ export const updateJobFromSourceControl: API.OperationMethod<
   UpdateJobFromSourceControlRequest,
   UpdateJobFromSourceControlResponse,
   UpdateJobFromSourceControlError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateJobFromSourceControlRequest,
   output: UpdateJobFromSourceControlResponse,
@@ -29524,7 +27754,7 @@ export const updateMLTransform: API.OperationMethod<
   UpdateMLTransformRequest,
   UpdateMLTransformResponse,
   UpdateMLTransformError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateMLTransformRequest,
   output: UpdateMLTransformResponse,
@@ -29554,7 +27784,7 @@ export const updatePartition: API.OperationMethod<
   UpdatePartitionRequest,
   UpdatePartitionResponse,
   UpdatePartitionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdatePartitionRequest,
   output: UpdatePartitionResponse,
@@ -29584,7 +27814,7 @@ export const updateRegistry: API.OperationMethod<
   UpdateRegistryInput,
   UpdateRegistryResponse,
   UpdateRegistryError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateRegistryInput,
   output: UpdateRegistryResponse,
@@ -29620,7 +27850,7 @@ export const updateSchema: API.OperationMethod<
   UpdateSchemaInput,
   UpdateSchemaResponse,
   UpdateSchemaError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateSchemaInput,
   output: UpdateSchemaResponse,
@@ -29654,7 +27884,7 @@ export const updateSourceControlFromJob: API.OperationMethod<
   UpdateSourceControlFromJobRequest,
   UpdateSourceControlFromJobResponse,
   UpdateSourceControlFromJobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateSourceControlFromJobRequest,
   output: UpdateSourceControlFromJobResponse,
@@ -29692,7 +27922,7 @@ export const updateTable: API.OperationMethod<
   UpdateTableRequest,
   UpdateTableResponse,
   UpdateTableError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateTableRequest,
   output: UpdateTableResponse,
@@ -29730,7 +27960,7 @@ export const updateTableOptimizer: API.OperationMethod<
   UpdateTableOptimizerRequest,
   UpdateTableOptimizerResponse,
   UpdateTableOptimizerError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateTableOptimizerRequest,
   output: UpdateTableOptimizerResponse,
@@ -29764,7 +27994,7 @@ export const updateTrigger: API.OperationMethod<
   UpdateTriggerRequest,
   UpdateTriggerResponse,
   UpdateTriggerError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateTriggerRequest,
   output: UpdateTriggerResponse,
@@ -29795,7 +28025,7 @@ export const updateUsageProfile: API.OperationMethod<
   UpdateUsageProfileRequest,
   UpdateUsageProfileResponse,
   UpdateUsageProfileError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateUsageProfileRequest,
   output: UpdateUsageProfileResponse,
@@ -29826,7 +28056,7 @@ export const updateUserDefinedFunction: API.OperationMethod<
   UpdateUserDefinedFunctionRequest,
   UpdateUserDefinedFunctionResponse,
   UpdateUserDefinedFunctionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateUserDefinedFunctionRequest,
   output: UpdateUserDefinedFunctionResponse,
@@ -29856,7 +28086,7 @@ export const updateWorkflow: API.OperationMethod<
   UpdateWorkflowRequest,
   UpdateWorkflowResponse,
   UpdateWorkflowError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateWorkflowRequest,
   output: UpdateWorkflowResponse,

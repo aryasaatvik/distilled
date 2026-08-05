@@ -1,7 +1,6 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as redacted from "effect/Redacted";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -9,7 +8,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region as Rgn } from "../region.ts";
 import { SensitiveString } from "../sensitive.ts";
 const ns = T.XmlNamespace("http://es.amazonaws.com/doc/2021-01-01/");
 const svc = T.AwsApiService({
@@ -100,71 +98,71 @@ const rules = T.EndpointResolver((p, _) => {
 export class AccessDeniedException
   extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
     "AccessDeniedException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(403),
   ).pipe(C.withAuthError) {}
 export class BaseException
   extends /*@__PURE__*/ S.TaggedErrorClass<BaseException>()("BaseException", {
-    message: S.optional(S.String),
+    message: S.optional(S.String).pipe(T.ErrorMessage()),
   }) {}
 export class ConflictException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
     "ConflictException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class DependencyFailureException
   extends /*@__PURE__*/ S.TaggedErrorClass<DependencyFailureException>()(
     "DependencyFailureException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(424),
   ) {}
 export class DisabledOperationException
   extends /*@__PURE__*/ S.TaggedErrorClass<DisabledOperationException>()(
     "DisabledOperationException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class InternalException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalException>()(
     "InternalException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(500),
   ).pipe(C.withServerError) {}
 export class InvalidPaginationTokenException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidPaginationTokenException>()(
     "InvalidPaginationTokenException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class InvalidTypeException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidTypeException>()(
     "InvalidTypeException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class LimitExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<LimitExceededException>()(
     "LimitExceededException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class ResourceAlreadyExistsException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceAlreadyExistsException>()(
     "ResourceAlreadyExistsException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(409),
   ).pipe(C.withConflictError, C.withAlreadyExistsError) {}
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class ServiceQuotaExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
     "ServiceQuotaExceededException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(402),
   ).pipe(C.withQuotaError) {}
 export class SlotNotAvailableException
@@ -174,20 +172,20 @@ export class SlotNotAvailableException
       SlotSuggestions: S.optional(
         S.suspend(() => SlotList).annotate({ identifier: "SlotList" }),
       ),
-      message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
     },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class ThrottlingException
   extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
     "ThrottlingException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(429),
   ).pipe(C.withThrottlingError) {}
 export class ValidationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
     "ValidationException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export type ConnectionId = string;
@@ -6647,7 +6645,7 @@ export const acceptInboundConnection: API.OperationMethod<
   AcceptInboundConnectionRequest,
   AcceptInboundConnectionResponse,
   AcceptInboundConnectionError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AcceptInboundConnectionRequest,
   output: AcceptInboundConnectionResponse,
@@ -6679,7 +6677,7 @@ export const addDataSource: API.OperationMethod<
   AddDataSourceRequest,
   AddDataSourceResponse,
   AddDataSourceError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AddDataSourceRequest,
   output: AddDataSourceResponse,
@@ -6713,7 +6711,7 @@ export const addDirectQueryDataSource: API.OperationMethod<
   AddDirectQueryDataSourceRequest,
   AddDirectQueryDataSourceResponse,
   AddDirectQueryDataSourceError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AddDirectQueryDataSourceRequest,
   output: AddDirectQueryDataSourceResponse,
@@ -6747,7 +6745,7 @@ export const addTags: API.OperationMethod<
   AddTagsRequest,
   AddTagsResponse,
   AddTagsError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AddTagsRequest,
   output: AddTagsResponse,
@@ -6779,7 +6777,7 @@ export const associatePackage: API.OperationMethod<
   AssociatePackageRequest,
   AssociatePackageResponse,
   AssociatePackageError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AssociatePackageRequest,
   output: AssociatePackageResponse,
@@ -6812,7 +6810,7 @@ export const associatePackages: API.OperationMethod<
   AssociatePackagesRequest,
   AssociatePackagesResponse,
   AssociatePackagesError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AssociatePackagesRequest,
   output: AssociatePackagesResponse,
@@ -6844,7 +6842,7 @@ export const attachDataSource: API.OperationMethod<
   AttachDataSourceRequest,
   AttachDataSourceResponse,
   AttachDataSourceError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AttachDataSourceRequest,
   output: AttachDataSourceResponse,
@@ -6877,7 +6875,7 @@ export const authorizeVpcEndpointAccess: API.OperationMethod<
   AuthorizeVpcEndpointAccessRequest,
   AuthorizeVpcEndpointAccessResponse,
   AuthorizeVpcEndpointAccessError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AuthorizeVpcEndpointAccessRequest,
   output: AuthorizeVpcEndpointAccessResponse,
@@ -6908,7 +6906,7 @@ export const cancelDomainConfigChange: API.OperationMethod<
   CancelDomainConfigChangeRequest,
   CancelDomainConfigChangeResponse,
   CancelDomainConfigChangeError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CancelDomainConfigChangeRequest,
   output: CancelDomainConfigChangeResponse,
@@ -6941,7 +6939,7 @@ export const cancelServiceSoftwareUpdate: API.OperationMethod<
   CancelServiceSoftwareUpdateRequest,
   CancelServiceSoftwareUpdateResponse,
   CancelServiceSoftwareUpdateError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CancelServiceSoftwareUpdateRequest,
   output: CancelServiceSoftwareUpdateResponse,
@@ -6971,7 +6969,7 @@ export const createApplication: API.OperationMethod<
   CreateApplicationRequest,
   CreateApplicationResponse,
   CreateApplicationError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateApplicationRequest,
   output: CreateApplicationResponse,
@@ -7005,7 +7003,7 @@ export const createDomain: API.OperationMethod<
   CreateDomainRequest,
   CreateDomainResponse,
   CreateDomainError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateDomainRequest,
   output: CreateDomainResponse,
@@ -7040,7 +7038,7 @@ export const createIndex: API.OperationMethod<
   CreateIndexRequest,
   CreateIndexResponse,
   CreateIndexError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateIndexRequest,
   output: CreateIndexResponse,
@@ -7074,7 +7072,7 @@ export const createOutboundConnection: API.OperationMethod<
   CreateOutboundConnectionRequest,
   CreateOutboundConnectionResponse,
   CreateOutboundConnectionError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateOutboundConnectionRequest,
   output: CreateOutboundConnectionResponse,
@@ -7107,7 +7105,7 @@ export const createPackage: API.OperationMethod<
   CreatePackageRequest,
   CreatePackageResponse,
   CreatePackageError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreatePackageRequest,
   output: CreatePackageResponse,
@@ -7140,7 +7138,7 @@ export const createVpcEndpoint: API.OperationMethod<
   CreateVpcEndpointRequest,
   CreateVpcEndpointResponse,
   CreateVpcEndpointError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateVpcEndpointRequest,
   output: CreateVpcEndpointResponse,
@@ -7173,7 +7171,7 @@ export const deleteApplication: API.OperationMethod<
   DeleteApplicationRequest,
   DeleteApplicationResponse,
   DeleteApplicationError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteApplicationRequest,
   output: DeleteApplicationResponse,
@@ -7207,7 +7205,7 @@ export const deleteDataSource: API.OperationMethod<
   DeleteDataSourceRequest,
   DeleteDataSourceResponse,
   DeleteDataSourceError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteDataSourceRequest,
   output: DeleteDataSourceResponse,
@@ -7239,7 +7237,7 @@ export const deleteDirectQueryDataSource: API.OperationMethod<
   DeleteDirectQueryDataSourceRequest,
   DeleteDirectQueryDataSourceResponse,
   DeleteDirectQueryDataSourceError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteDirectQueryDataSourceRequest,
   output: DeleteDirectQueryDataSourceResponse,
@@ -7269,7 +7267,7 @@ export const deleteDomain: API.OperationMethod<
   DeleteDomainRequest,
   DeleteDomainResponse,
   DeleteDomainError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteDomainRequest,
   output: DeleteDomainResponse,
@@ -7296,7 +7294,7 @@ export const deleteInboundConnection: API.OperationMethod<
   DeleteInboundConnectionRequest,
   DeleteInboundConnectionResponse,
   DeleteInboundConnectionError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteInboundConnectionRequest,
   output: DeleteInboundConnectionResponse,
@@ -7322,7 +7320,7 @@ export const deleteIndex: API.OperationMethod<
   DeleteIndexRequest,
   DeleteIndexResponse,
   DeleteIndexError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteIndexRequest,
   output: DeleteIndexResponse,
@@ -7352,7 +7350,7 @@ export const deleteOutboundConnection: API.OperationMethod<
   DeleteOutboundConnectionRequest,
   DeleteOutboundConnectionResponse,
   DeleteOutboundConnectionError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteOutboundConnectionRequest,
   output: DeleteOutboundConnectionResponse,
@@ -7378,7 +7376,7 @@ export const deletePackage: API.OperationMethod<
   DeletePackageRequest,
   DeletePackageResponse,
   DeletePackageError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeletePackageRequest,
   output: DeletePackageResponse,
@@ -7408,7 +7406,7 @@ export const deleteVpcEndpoint: API.OperationMethod<
   DeleteVpcEndpointRequest,
   DeleteVpcEndpointResponse,
   DeleteVpcEndpointError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteVpcEndpointRequest,
   output: DeleteVpcEndpointResponse,
@@ -7438,7 +7436,7 @@ export const deregisterCapability: API.OperationMethod<
   DeregisterCapabilityRequest,
   DeregisterCapabilityResponse,
   DeregisterCapabilityError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeregisterCapabilityRequest,
   output: DeregisterCapabilityResponse,
@@ -7469,7 +7467,7 @@ export const describeDataSourceAttachment: API.OperationMethod<
   DescribeDataSourceAttachmentRequest,
   DescribeDataSourceAttachmentResponse,
   DescribeDataSourceAttachmentError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeDataSourceAttachmentRequest,
   output: DescribeDataSourceAttachmentResponse,
@@ -7499,7 +7497,7 @@ export const describeDomain: API.OperationMethod<
   DescribeDomainRequest,
   DescribeDomainResponse,
   DescribeDomainError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeDomainRequest,
   output: DescribeDomainResponse,
@@ -7525,27 +7523,13 @@ export type DescribeDomainAutoTunesError =
  * Service domain. For more information, see Auto-Tune for Amazon
  * OpenSearch Service.
  */
-export const describeDomainAutoTunes: API.OperationMethod<
+export const describeDomainAutoTunes: API.PaginatedOperationMethod<
   DescribeDomainAutoTunesRequest,
   DescribeDomainAutoTunesResponse,
   DescribeDomainAutoTunesError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeDomainAutoTunesRequest,
-  ) => stream.Stream<
-    DescribeDomainAutoTunesResponse,
-    DescribeDomainAutoTunesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeDomainAutoTunesRequest,
-  ) => stream.Stream<
-    unknown,
-    DescribeDomainAutoTunesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeDomainAutoTunesRequest,
   output: DescribeDomainAutoTunesResponse,
   errors: [
@@ -7562,27 +7546,7 @@ export const describeDomainAutoTunes: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeDomainAutoTunesRequest,
-  DescribeDomainAutoTunesResponse,
-  DescribeDomainAutoTunesError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeDomainAutoTunesRequest,
-  ) => stream.Stream<
-    DescribeDomainAutoTunesResponse,
-    DescribeDomainAutoTunesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeDomainAutoTunesRequest,
-  ) => stream.Stream<
-    unknown,
-    DescribeDomainAutoTunesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeDomainChangeProgressError =
   | BaseException
@@ -7598,7 +7562,7 @@ export const describeDomainChangeProgress: API.OperationMethod<
   DescribeDomainChangeProgressRequest,
   DescribeDomainChangeProgressResponse,
   DescribeDomainChangeProgressError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeDomainChangeProgressRequest,
   output: DescribeDomainChangeProgressResponse,
@@ -7626,7 +7590,7 @@ export const describeDomainConfig: API.OperationMethod<
   DescribeDomainConfigRequest,
   DescribeDomainConfigResponse,
   DescribeDomainConfigError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeDomainConfigRequest,
   output: DescribeDomainConfigResponse,
@@ -7656,7 +7620,7 @@ export const describeDomainHealth: API.OperationMethod<
   DescribeDomainHealthRequest,
   DescribeDomainHealthResponse,
   DescribeDomainHealthError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeDomainHealthRequest,
   output: DescribeDomainHealthResponse,
@@ -7689,7 +7653,7 @@ export const describeDomainNodes: API.OperationMethod<
   DescribeDomainNodesRequest,
   DescribeDomainNodesResponse,
   DescribeDomainNodesError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeDomainNodesRequest,
   output: DescribeDomainNodesResponse,
@@ -7719,7 +7683,7 @@ export const describeDomains: API.OperationMethod<
   DescribeDomainsRequest,
   DescribeDomainsResponse,
   DescribeDomainsError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeDomainsRequest,
   output: DescribeDomainsResponse,
@@ -7744,7 +7708,7 @@ export const describeDryRunProgress: API.OperationMethod<
   DescribeDryRunProgressRequest,
   DescribeDryRunProgressResponse,
   DescribeDryRunProgressError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeDryRunProgressRequest,
   output: DescribeDryRunProgressResponse,
@@ -7768,27 +7732,13 @@ export type DescribeInboundConnectionsError =
  * Lists all the inbound cross-cluster search connections for a destination (remote)
  * Amazon OpenSearch Service domain. For more information, see Cross-cluster search for Amazon OpenSearch Service.
  */
-export const describeInboundConnections: API.OperationMethod<
+export const describeInboundConnections: API.PaginatedOperationMethod<
   DescribeInboundConnectionsRequest,
   DescribeInboundConnectionsResponse,
   DescribeInboundConnectionsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeInboundConnectionsRequest,
-  ) => stream.Stream<
-    DescribeInboundConnectionsResponse,
-    DescribeInboundConnectionsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeInboundConnectionsRequest,
-  ) => stream.Stream<
-    unknown,
-    DescribeInboundConnectionsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeInboundConnectionsRequest,
   output: DescribeInboundConnectionsResponse,
   errors: [DisabledOperationException, InvalidPaginationTokenException],
@@ -7800,27 +7750,7 @@ export const describeInboundConnections: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeInboundConnectionsRequest,
-  DescribeInboundConnectionsResponse,
-  DescribeInboundConnectionsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeInboundConnectionsRequest,
-  ) => stream.Stream<
-    DescribeInboundConnectionsResponse,
-    DescribeInboundConnectionsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeInboundConnectionsRequest,
-  ) => stream.Stream<
-    unknown,
-    DescribeInboundConnectionsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeInsightDetailsError =
   | BaseException
@@ -7839,7 +7769,7 @@ export const describeInsightDetails: API.OperationMethod<
   DescribeInsightDetailsRequest,
   DescribeInsightDetailsResponse,
   DescribeInsightDetailsError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeInsightDetailsRequest,
   output: DescribeInsightDetailsResponse,
@@ -7872,7 +7802,7 @@ export const describeInstanceTypeLimits: API.OperationMethod<
   DescribeInstanceTypeLimitsRequest,
   DescribeInstanceTypeLimitsResponse,
   DescribeInstanceTypeLimitsError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeInstanceTypeLimitsRequest,
   output: DescribeInstanceTypeLimitsResponse,
@@ -7897,27 +7827,13 @@ export type DescribeOutboundConnectionsError =
  * Lists all the outbound cross-cluster connections for a local (source) Amazon
  * OpenSearch Service domain. For more information, see Cross-cluster search for Amazon OpenSearch Service.
  */
-export const describeOutboundConnections: API.OperationMethod<
+export const describeOutboundConnections: API.PaginatedOperationMethod<
   DescribeOutboundConnectionsRequest,
   DescribeOutboundConnectionsResponse,
   DescribeOutboundConnectionsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeOutboundConnectionsRequest,
-  ) => stream.Stream<
-    DescribeOutboundConnectionsResponse,
-    DescribeOutboundConnectionsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeOutboundConnectionsRequest,
-  ) => stream.Stream<
-    unknown,
-    DescribeOutboundConnectionsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeOutboundConnectionsRequest,
   output: DescribeOutboundConnectionsResponse,
   errors: [DisabledOperationException, InvalidPaginationTokenException],
@@ -7929,27 +7845,7 @@ export const describeOutboundConnections: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeOutboundConnectionsRequest,
-  DescribeOutboundConnectionsResponse,
-  DescribeOutboundConnectionsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeOutboundConnectionsRequest,
-  ) => stream.Stream<
-    DescribeOutboundConnectionsResponse,
-    DescribeOutboundConnectionsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeOutboundConnectionsRequest,
-  ) => stream.Stream<
-    unknown,
-    DescribeOutboundConnectionsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribePackagesError =
   | AccessDeniedException
@@ -7963,27 +7859,13 @@ export type DescribePackagesError =
  * Custom packages
  * for Amazon OpenSearch Service.
  */
-export const describePackages: API.OperationMethod<
+export const describePackages: API.PaginatedOperationMethod<
   DescribePackagesRequest,
   DescribePackagesResponse,
   DescribePackagesError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribePackagesRequest,
-  ) => stream.Stream<
-    DescribePackagesResponse,
-    DescribePackagesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribePackagesRequest,
-  ) => stream.Stream<
-    unknown,
-    DescribePackagesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribePackagesRequest,
   output: DescribePackagesResponse,
   errors: [
@@ -8001,27 +7883,7 @@ export const describePackages: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  DescribePackagesRequest,
-  DescribePackagesResponse,
-  DescribePackagesError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribePackagesRequest,
-  ) => stream.Stream<
-    DescribePackagesResponse,
-    DescribePackagesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribePackagesRequest,
-  ) => stream.Stream<
-    unknown,
-    DescribePackagesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeReservedInstanceOfferingsError =
   | DisabledOperationException
@@ -8034,27 +7896,13 @@ export type DescribeReservedInstanceOfferingsError =
  * given Region. For more information, see Reserved Instances in Amazon
  * OpenSearch Service.
  */
-export const describeReservedInstanceOfferings: API.OperationMethod<
+export const describeReservedInstanceOfferings: API.PaginatedOperationMethod<
   DescribeReservedInstanceOfferingsRequest,
   DescribeReservedInstanceOfferingsResponse,
   DescribeReservedInstanceOfferingsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeReservedInstanceOfferingsRequest,
-  ) => stream.Stream<
-    DescribeReservedInstanceOfferingsResponse,
-    DescribeReservedInstanceOfferingsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeReservedInstanceOfferingsRequest,
-  ) => stream.Stream<
-    unknown,
-    DescribeReservedInstanceOfferingsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeReservedInstanceOfferingsRequest,
   output: DescribeReservedInstanceOfferingsResponse,
   errors: [
@@ -8071,27 +7919,7 @@ export const describeReservedInstanceOfferings: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeReservedInstanceOfferingsRequest,
-  DescribeReservedInstanceOfferingsResponse,
-  DescribeReservedInstanceOfferingsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeReservedInstanceOfferingsRequest,
-  ) => stream.Stream<
-    DescribeReservedInstanceOfferingsResponse,
-    DescribeReservedInstanceOfferingsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeReservedInstanceOfferingsRequest,
-  ) => stream.Stream<
-    unknown,
-    DescribeReservedInstanceOfferingsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeReservedInstancesError =
   | DisabledOperationException
@@ -8104,27 +7932,13 @@ export type DescribeReservedInstancesError =
  * Region. For more information, see Reserved Instances in Amazon
  * OpenSearch Service.
  */
-export const describeReservedInstances: API.OperationMethod<
+export const describeReservedInstances: API.PaginatedOperationMethod<
   DescribeReservedInstancesRequest,
   DescribeReservedInstancesResponse,
   DescribeReservedInstancesError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeReservedInstancesRequest,
-  ) => stream.Stream<
-    DescribeReservedInstancesResponse,
-    DescribeReservedInstancesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeReservedInstancesRequest,
-  ) => stream.Stream<
-    unknown,
-    DescribeReservedInstancesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeReservedInstancesRequest,
   output: DescribeReservedInstancesResponse,
   errors: [
@@ -8141,27 +7955,7 @@ export const describeReservedInstances: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeReservedInstancesRequest,
-  DescribeReservedInstancesResponse,
-  DescribeReservedInstancesError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeReservedInstancesRequest,
-  ) => stream.Stream<
-    DescribeReservedInstancesResponse,
-    DescribeReservedInstancesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeReservedInstancesRequest,
-  ) => stream.Stream<
-    unknown,
-    DescribeReservedInstancesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeVpcEndpointsError =
   | BaseException
@@ -8176,7 +7970,7 @@ export const describeVpcEndpoints: API.OperationMethod<
   DescribeVpcEndpointsRequest,
   DescribeVpcEndpointsResponse,
   DescribeVpcEndpointsError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeVpcEndpointsRequest,
   output: DescribeVpcEndpointsResponse,
@@ -8206,7 +8000,7 @@ export const detachDataSource: API.OperationMethod<
   DetachDataSourceRequest,
   DetachDataSourceResponse,
   DetachDataSourceError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DetachDataSourceRequest,
   output: DetachDataSourceResponse,
@@ -8242,7 +8036,7 @@ export const dissociatePackage: API.OperationMethod<
   DissociatePackageRequest,
   DissociatePackageResponse,
   DissociatePackageError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DissociatePackageRequest,
   output: DissociatePackageResponse,
@@ -8274,7 +8068,7 @@ export const dissociatePackages: API.OperationMethod<
   DissociatePackagesRequest,
   DissociatePackagesResponse,
   DissociatePackagesError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DissociatePackagesRequest,
   output: DissociatePackagesResponse,
@@ -8306,7 +8100,7 @@ export const getApplication: API.OperationMethod<
   GetApplicationRequest,
   GetApplicationResponse,
   GetApplicationError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetApplicationRequest,
   output: GetApplicationResponse,
@@ -8337,7 +8131,7 @@ export const getCapability: API.OperationMethod<
   GetCapabilityRequest,
   GetCapabilityResponse,
   GetCapabilityError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetCapabilityRequest,
   output: GetCapabilityResponse,
@@ -8368,7 +8162,7 @@ export const getCompatibleVersions: API.OperationMethod<
   GetCompatibleVersionsRequest,
   GetCompatibleVersionsResponse,
   GetCompatibleVersionsError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetCompatibleVersionsRequest,
   output: GetCompatibleVersionsResponse,
@@ -8399,7 +8193,7 @@ export const getDataSource: API.OperationMethod<
   GetDataSourceRequest,
   GetDataSourceResponse,
   GetDataSourceError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetDataSourceRequest,
   output: GetDataSourceResponse,
@@ -8432,7 +8226,7 @@ export const getDefaultApplicationSetting: API.OperationMethod<
   GetDefaultApplicationSettingRequest,
   GetDefaultApplicationSettingResponse,
   GetDefaultApplicationSettingError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetDefaultApplicationSettingRequest,
   output: GetDefaultApplicationSettingResponse,
@@ -8462,7 +8256,7 @@ export const getDirectQueryDataSource: API.OperationMethod<
   GetDirectQueryDataSourceRequest,
   GetDirectQueryDataSourceResponse,
   GetDirectQueryDataSourceError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetDirectQueryDataSourceRequest,
   output: GetDirectQueryDataSourceResponse,
@@ -8492,7 +8286,7 @@ export const getDomainMaintenanceStatus: API.OperationMethod<
   GetDomainMaintenanceStatusRequest,
   GetDomainMaintenanceStatusResponse,
   GetDomainMaintenanceStatusError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetDomainMaintenanceStatusRequest,
   output: GetDomainMaintenanceStatusResponse,
@@ -8524,7 +8318,7 @@ export const getIndex: API.OperationMethod<
   GetIndexRequest,
   GetIndexResponse,
   GetIndexError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetIndexRequest,
   output: GetIndexResponse,
@@ -8555,27 +8349,13 @@ export type GetPackageVersionHistoryError =
  * information, see Custom packages for Amazon
  * OpenSearch Service.
  */
-export const getPackageVersionHistory: API.OperationMethod<
+export const getPackageVersionHistory: API.PaginatedOperationMethod<
   GetPackageVersionHistoryRequest,
   GetPackageVersionHistoryResponse,
   GetPackageVersionHistoryError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetPackageVersionHistoryRequest,
-  ) => stream.Stream<
-    GetPackageVersionHistoryResponse,
-    GetPackageVersionHistoryError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetPackageVersionHistoryRequest,
-  ) => stream.Stream<
-    unknown,
-    GetPackageVersionHistoryError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetPackageVersionHistoryRequest,
   output: GetPackageVersionHistoryResponse,
   errors: [
@@ -8593,27 +8373,7 @@ export const getPackageVersionHistory: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetPackageVersionHistoryRequest,
-  GetPackageVersionHistoryResponse,
-  GetPackageVersionHistoryError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetPackageVersionHistoryRequest,
-  ) => stream.Stream<
-    GetPackageVersionHistoryResponse,
-    GetPackageVersionHistoryError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetPackageVersionHistoryRequest,
-  ) => stream.Stream<
-    unknown,
-    GetPackageVersionHistoryError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetUpgradeHistoryError =
   | BaseException
@@ -8626,27 +8386,13 @@ export type GetUpgradeHistoryError =
  * Retrieves the complete history of the last 10 upgrades performed on an Amazon OpenSearch
  * Service domain.
  */
-export const getUpgradeHistory: API.OperationMethod<
+export const getUpgradeHistory: API.PaginatedOperationMethod<
   GetUpgradeHistoryRequest,
   GetUpgradeHistoryResponse,
   GetUpgradeHistoryError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetUpgradeHistoryRequest,
-  ) => stream.Stream<
-    GetUpgradeHistoryResponse,
-    GetUpgradeHistoryError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetUpgradeHistoryRequest,
-  ) => stream.Stream<
-    unknown,
-    GetUpgradeHistoryError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetUpgradeHistoryRequest,
   output: GetUpgradeHistoryResponse,
   errors: [
@@ -8664,27 +8410,7 @@ export const getUpgradeHistory: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetUpgradeHistoryRequest,
-  GetUpgradeHistoryResponse,
-  GetUpgradeHistoryError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetUpgradeHistoryRequest,
-  ) => stream.Stream<
-    GetUpgradeHistoryResponse,
-    GetUpgradeHistoryError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetUpgradeHistoryRequest,
-  ) => stream.Stream<
-    unknown,
-    GetUpgradeHistoryError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetUpgradeStatusError =
   | BaseException
@@ -8701,7 +8427,7 @@ export const getUpgradeStatus: API.OperationMethod<
   GetUpgradeStatusRequest,
   GetUpgradeStatusResponse,
   GetUpgradeStatusError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetUpgradeStatusRequest,
   output: GetUpgradeStatusResponse,
@@ -8728,27 +8454,13 @@ export type ListApplicationsError =
 /**
  * Lists all OpenSearch applications under your account.
  */
-export const listApplications: API.OperationMethod<
+export const listApplications: API.PaginatedOperationMethod<
   ListApplicationsRequest,
   ListApplicationsResponse,
   ListApplicationsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListApplicationsRequest,
-  ) => stream.Stream<
-    ListApplicationsResponse,
-    ListApplicationsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListApplicationsRequest,
-  ) => stream.Stream<
-    ApplicationSummary,
-    ListApplicationsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ApplicationSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListApplicationsRequest,
   output: ListApplicationsResponse,
   errors: [
@@ -8768,27 +8480,7 @@ export const listApplications: API.OperationMethod<
     items: "ApplicationSummaries",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListApplicationsRequest,
-  ListApplicationsResponse,
-  ListApplicationsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListApplicationsRequest,
-  ) => stream.Stream<
-    ListApplicationsResponse,
-    ListApplicationsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListApplicationsRequest,
-  ) => stream.Stream<
-    ApplicationSummary,
-    ListApplicationsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListDataSourceAttachmentsError =
   | AccessDeniedException
@@ -8804,7 +8496,7 @@ export const listDataSourceAttachments: API.OperationMethod<
   ListDataSourceAttachmentsRequest,
   ListDataSourceAttachmentsResponse,
   ListDataSourceAttachmentsError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListDataSourceAttachmentsRequest,
   output: ListDataSourceAttachmentsResponse,
@@ -8837,7 +8529,7 @@ export const listDataSources: API.OperationMethod<
   ListDataSourcesRequest,
   ListDataSourcesResponse,
   ListDataSourcesError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListDataSourcesRequest,
   output: ListDataSourcesResponse,
@@ -8869,7 +8561,7 @@ export const listDirectQueryDataSources: API.OperationMethod<
   ListDirectQueryDataSourcesRequest,
   ListDirectQueryDataSourcesResponse,
   ListDirectQueryDataSourcesError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListDirectQueryDataSourcesRequest,
   output: ListDirectQueryDataSourcesResponse,
@@ -8895,27 +8587,13 @@ export type ListDomainMaintenancesError =
 /**
  * A list of maintenance actions for the domain.
  */
-export const listDomainMaintenances: API.OperationMethod<
+export const listDomainMaintenances: API.PaginatedOperationMethod<
   ListDomainMaintenancesRequest,
   ListDomainMaintenancesResponse,
   ListDomainMaintenancesError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDomainMaintenancesRequest,
-  ) => stream.Stream<
-    ListDomainMaintenancesResponse,
-    ListDomainMaintenancesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDomainMaintenancesRequest,
-  ) => stream.Stream<
-    unknown,
-    ListDomainMaintenancesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListDomainMaintenancesRequest,
   output: ListDomainMaintenancesResponse,
   errors: [
@@ -8933,27 +8611,7 @@ export const listDomainMaintenances: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListDomainMaintenancesRequest,
-  ListDomainMaintenancesResponse,
-  ListDomainMaintenancesError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDomainMaintenancesRequest,
-  ) => stream.Stream<
-    ListDomainMaintenancesResponse,
-    ListDomainMaintenancesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDomainMaintenancesRequest,
-  ) => stream.Stream<
-    unknown,
-    ListDomainMaintenancesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListDomainNamesError =
   | BaseException
@@ -8967,7 +8625,7 @@ export const listDomainNames: API.OperationMethod<
   ListDomainNamesRequest,
   ListDomainNamesResponse,
   ListDomainNamesError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListDomainNamesRequest,
   output: ListDomainNamesResponse,
@@ -8989,27 +8647,13 @@ export type ListDomainsForPackageError =
  * information, see Custom packages
  * for Amazon OpenSearch Service.
  */
-export const listDomainsForPackage: API.OperationMethod<
+export const listDomainsForPackage: API.PaginatedOperationMethod<
   ListDomainsForPackageRequest,
   ListDomainsForPackageResponse,
   ListDomainsForPackageError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDomainsForPackageRequest,
-  ) => stream.Stream<
-    ListDomainsForPackageResponse,
-    ListDomainsForPackageError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDomainsForPackageRequest,
-  ) => stream.Stream<
-    unknown,
-    ListDomainsForPackageError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListDomainsForPackageRequest,
   output: ListDomainsForPackageResponse,
   errors: [
@@ -9027,27 +8671,7 @@ export const listDomainsForPackage: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListDomainsForPackageRequest,
-  ListDomainsForPackageResponse,
-  ListDomainsForPackageError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDomainsForPackageRequest,
-  ) => stream.Stream<
-    ListDomainsForPackageResponse,
-    ListDomainsForPackageError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDomainsForPackageRequest,
-  ) => stream.Stream<
-    unknown,
-    ListDomainsForPackageError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListInsightsError =
   | BaseException
@@ -9066,7 +8690,7 @@ export const listInsights: API.OperationMethod<
   ListInsightsRequest,
   ListInsightsResponse,
   ListInsightsError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListInsightsRequest,
   output: ListInsightsResponse,
@@ -9093,27 +8717,13 @@ export type ListInstanceTypeDetailsError =
  * Lists all instance types and available features for a given OpenSearch or
  * Elasticsearch version.
  */
-export const listInstanceTypeDetails: API.OperationMethod<
+export const listInstanceTypeDetails: API.PaginatedOperationMethod<
   ListInstanceTypeDetailsRequest,
   ListInstanceTypeDetailsResponse,
   ListInstanceTypeDetailsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListInstanceTypeDetailsRequest,
-  ) => stream.Stream<
-    ListInstanceTypeDetailsResponse,
-    ListInstanceTypeDetailsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListInstanceTypeDetailsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListInstanceTypeDetailsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListInstanceTypeDetailsRequest,
   output: ListInstanceTypeDetailsResponse,
   errors: [
@@ -9130,27 +8740,7 @@ export const listInstanceTypeDetails: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListInstanceTypeDetailsRequest,
-  ListInstanceTypeDetailsResponse,
-  ListInstanceTypeDetailsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListInstanceTypeDetailsRequest,
-  ) => stream.Stream<
-    ListInstanceTypeDetailsResponse,
-    ListInstanceTypeDetailsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListInstanceTypeDetailsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListInstanceTypeDetailsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListPackagesForDomainError =
   | AccessDeniedException
@@ -9164,27 +8754,13 @@ export type ListPackagesForDomainError =
  * information, see Custom packages
  * for Amazon OpenSearch Service.
  */
-export const listPackagesForDomain: API.OperationMethod<
+export const listPackagesForDomain: API.PaginatedOperationMethod<
   ListPackagesForDomainRequest,
   ListPackagesForDomainResponse,
   ListPackagesForDomainError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPackagesForDomainRequest,
-  ) => stream.Stream<
-    ListPackagesForDomainResponse,
-    ListPackagesForDomainError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPackagesForDomainRequest,
-  ) => stream.Stream<
-    unknown,
-    ListPackagesForDomainError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListPackagesForDomainRequest,
   output: ListPackagesForDomainResponse,
   errors: [
@@ -9202,27 +8778,7 @@ export const listPackagesForDomain: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListPackagesForDomainRequest,
-  ListPackagesForDomainResponse,
-  ListPackagesForDomainError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPackagesForDomainRequest,
-  ) => stream.Stream<
-    ListPackagesForDomainResponse,
-    ListPackagesForDomainError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPackagesForDomainRequest,
-  ) => stream.Stream<
-    unknown,
-    ListPackagesForDomainError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListScheduledActionsError =
   | BaseException
@@ -9236,27 +8792,13 @@ export type ListScheduledActionsError =
  * changes can be service
  * software updates or blue/green Auto-Tune enhancements.
  */
-export const listScheduledActions: API.OperationMethod<
+export const listScheduledActions: API.PaginatedOperationMethod<
   ListScheduledActionsRequest,
   ListScheduledActionsResponse,
   ListScheduledActionsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListScheduledActionsRequest,
-  ) => stream.Stream<
-    ListScheduledActionsResponse,
-    ListScheduledActionsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListScheduledActionsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListScheduledActionsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListScheduledActionsRequest,
   output: ListScheduledActionsResponse,
   errors: [
@@ -9274,27 +8816,7 @@ export const listScheduledActions: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListScheduledActionsRequest,
-  ListScheduledActionsResponse,
-  ListScheduledActionsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListScheduledActionsRequest,
-  ) => stream.Stream<
-    ListScheduledActionsResponse,
-    ListScheduledActionsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListScheduledActionsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListScheduledActionsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsError =
   | BaseException
@@ -9310,7 +8832,7 @@ export const listTags: API.OperationMethod<
   ListTagsRequest,
   ListTagsResponse,
   ListTagsError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsRequest,
   output: ListTagsResponse,
@@ -9335,27 +8857,13 @@ export type ListVersionsError =
  * Lists all versions of OpenSearch and Elasticsearch that Amazon OpenSearch Service
  * supports.
  */
-export const listVersions: API.OperationMethod<
+export const listVersions: API.PaginatedOperationMethod<
   ListVersionsRequest,
   ListVersionsResponse,
   ListVersionsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListVersionsRequest,
-  ) => stream.Stream<
-    ListVersionsResponse,
-    ListVersionsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListVersionsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListVersionsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListVersionsRequest,
   output: ListVersionsResponse,
   errors: [
@@ -9372,27 +8880,7 @@ export const listVersions: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListVersionsRequest,
-  ListVersionsResponse,
-  ListVersionsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListVersionsRequest,
-  ) => stream.Stream<
-    ListVersionsResponse,
-    ListVersionsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListVersionsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListVersionsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListVpcEndpointAccessError =
   | BaseException
@@ -9409,7 +8897,7 @@ export const listVpcEndpointAccess: API.OperationMethod<
   ListVpcEndpointAccessRequest,
   ListVpcEndpointAccessResponse,
   ListVpcEndpointAccessError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListVpcEndpointAccessRequest,
   output: ListVpcEndpointAccessResponse,
@@ -9436,7 +8924,7 @@ export const listVpcEndpoints: API.OperationMethod<
   ListVpcEndpointsRequest,
   ListVpcEndpointsResponse,
   ListVpcEndpointsError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListVpcEndpointsRequest,
   output: ListVpcEndpointsResponse,
@@ -9460,7 +8948,7 @@ export const listVpcEndpointsForDomain: API.OperationMethod<
   ListVpcEndpointsForDomainRequest,
   ListVpcEndpointsForDomainResponse,
   ListVpcEndpointsForDomainError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListVpcEndpointsForDomainRequest,
   output: ListVpcEndpointsForDomainResponse,
@@ -9490,7 +8978,7 @@ export const purchaseReservedInstanceOffering: API.OperationMethod<
   PurchaseReservedInstanceOfferingRequest,
   PurchaseReservedInstanceOfferingResponse,
   PurchaseReservedInstanceOfferingError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PurchaseReservedInstanceOfferingRequest,
   output: PurchaseReservedInstanceOfferingResponse,
@@ -9525,7 +9013,7 @@ export const putDefaultApplicationSetting: API.OperationMethod<
   PutDefaultApplicationSettingRequest,
   PutDefaultApplicationSettingResponse,
   PutDefaultApplicationSettingError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutDefaultApplicationSettingRequest,
   output: PutDefaultApplicationSettingResponse,
@@ -9556,7 +9044,7 @@ export const registerCapability: API.OperationMethod<
   RegisterCapabilityRequest,
   RegisterCapabilityResponse,
   RegisterCapabilityError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RegisterCapabilityRequest,
   output: RegisterCapabilityResponse,
@@ -9586,7 +9074,7 @@ export const rejectInboundConnection: API.OperationMethod<
   RejectInboundConnectionRequest,
   RejectInboundConnectionResponse,
   RejectInboundConnectionError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RejectInboundConnectionRequest,
   output: RejectInboundConnectionResponse,
@@ -9609,7 +9097,7 @@ export const removeTags: API.OperationMethod<
   RemoveTagsRequest,
   RemoveTagsResponse,
   RemoveTagsError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RemoveTagsRequest,
   output: RemoveTagsResponse,
@@ -9634,7 +9122,7 @@ export const revokeVpcEndpointAccess: API.OperationMethod<
   RevokeVpcEndpointAccessRequest,
   RevokeVpcEndpointAccessResponse,
   RevokeVpcEndpointAccessError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RevokeVpcEndpointAccessRequest,
   output: RevokeVpcEndpointAccessResponse,
@@ -9666,7 +9154,7 @@ export const rollbackServiceSoftwareUpdate: API.OperationMethod<
   RollbackServiceSoftwareUpdateRequest,
   RollbackServiceSoftwareUpdateResponse,
   RollbackServiceSoftwareUpdateError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RollbackServiceSoftwareUpdateRequest,
   output: RollbackServiceSoftwareUpdateResponse,
@@ -9698,7 +9186,7 @@ export const startDomainMaintenance: API.OperationMethod<
   StartDomainMaintenanceRequest,
   StartDomainMaintenanceResponse,
   StartDomainMaintenanceError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartDomainMaintenanceRequest,
   output: StartDomainMaintenanceResponse,
@@ -9729,7 +9217,7 @@ export const startServiceSoftwareUpdate: API.OperationMethod<
   StartServiceSoftwareUpdateRequest,
   StartServiceSoftwareUpdateResponse,
   StartServiceSoftwareUpdateError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartServiceSoftwareUpdateRequest,
   output: StartServiceSoftwareUpdateResponse,
@@ -9760,7 +9248,7 @@ export const updateApplication: API.OperationMethod<
   UpdateApplicationRequest,
   UpdateApplicationResponse,
   UpdateApplicationError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateApplicationRequest,
   output: UpdateApplicationResponse,
@@ -9795,7 +9283,7 @@ export const updateDataSource: API.OperationMethod<
   UpdateDataSourceRequest,
   UpdateDataSourceResponse,
   UpdateDataSourceError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateDataSourceRequest,
   output: UpdateDataSourceResponse,
@@ -9828,7 +9316,7 @@ export const updateDirectQueryDataSource: API.OperationMethod<
   UpdateDirectQueryDataSourceRequest,
   UpdateDirectQueryDataSourceResponse,
   UpdateDirectQueryDataSourceError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateDirectQueryDataSourceRequest,
   output: UpdateDirectQueryDataSourceResponse,
@@ -9861,7 +9349,7 @@ export const updateDomainConfig: API.OperationMethod<
   UpdateDomainConfigRequest,
   UpdateDomainConfigResponse,
   UpdateDomainConfigError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateDomainConfigRequest,
   output: UpdateDomainConfigResponse,
@@ -9894,7 +9382,7 @@ export const updateIndex: API.OperationMethod<
   UpdateIndexRequest,
   UpdateIndexResponse,
   UpdateIndexError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateIndexRequest,
   output: UpdateIndexResponse,
@@ -9929,7 +9417,7 @@ export const updatePackage: API.OperationMethod<
   UpdatePackageRequest,
   UpdatePackageResponse,
   UpdatePackageError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdatePackageRequest,
   output: UpdatePackageResponse,
@@ -9961,7 +9449,7 @@ export const updatePackageScope: API.OperationMethod<
   UpdatePackageScopeRequest,
   UpdatePackageScopeResponse,
   UpdatePackageScopeError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdatePackageScopeRequest,
   output: UpdatePackageScopeResponse,
@@ -9995,7 +9483,7 @@ export const updateScheduledAction: API.OperationMethod<
   UpdateScheduledActionRequest,
   UpdateScheduledActionResponse,
   UpdateScheduledActionError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateScheduledActionRequest,
   output: UpdateScheduledActionResponse,
@@ -10028,7 +9516,7 @@ export const updateVpcEndpoint: API.OperationMethod<
   UpdateVpcEndpointRequest,
   UpdateVpcEndpointResponse,
   UpdateVpcEndpointError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateVpcEndpointRequest,
   output: UpdateVpcEndpointResponse,
@@ -10061,7 +9549,7 @@ export const upgradeDomain: API.OperationMethod<
   UpgradeDomainRequest,
   UpgradeDomainResponse,
   UpgradeDomainError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpgradeDomainRequest,
   output: UpgradeDomainResponse,

@@ -1,7 +1,6 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as redacted from "effect/Redacted";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -9,7 +8,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 import { SensitiveString } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "DocDB Elastic",
@@ -90,38 +88,46 @@ const rules = T.EndpointResolver((p, _) => {
 export class AccessDeniedException
   extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
     "AccessDeniedException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(403),
   ).pipe(C.withAuthError) {}
 export class ConflictException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
     "ConflictException",
-    { message: S.String, resourceId: S.String, resourceType: S.String },
+    {
+      message: S.String.pipe(T.ErrorMessage()),
+      resourceId: S.String,
+      resourceType: S.String,
+    },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class InternalServerException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
     "InternalServerException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.all(T.HttpError(500), T.Retryable()),
   ).pipe(C.withServerError, C.withRetryableError) {}
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { message: S.String, resourceId: S.String, resourceType: S.String },
+    {
+      message: S.String.pipe(T.ErrorMessage()),
+      resourceId: S.String,
+      resourceType: S.String,
+    },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class ServiceQuotaExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
     "ServiceQuotaExceededException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(402),
   ).pipe(C.withQuotaError) {}
 export class ThrottlingException
   extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
     "ThrottlingException",
     {
-      message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       retryAfterSeconds: S.optional(S.Number).pipe(T.HttpHeader("Retry-After")),
     },
     T.all(T.HttpError(429), T.Retryable()),
@@ -130,7 +136,7 @@ export class ValidationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
     "ValidationException",
     {
-      message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       reason: S.String,
       fieldList: S.optional(
         S.suspend(() => ValidationExceptionFieldList).annotate({
@@ -950,7 +956,7 @@ export const applyPendingMaintenanceAction: API.OperationMethod<
   ApplyPendingMaintenanceActionInput,
   ApplyPendingMaintenanceActionOutput,
   ApplyPendingMaintenanceActionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ApplyPendingMaintenanceActionInput,
   output: ApplyPendingMaintenanceActionOutput,
@@ -983,7 +989,7 @@ export const copyClusterSnapshot: API.OperationMethod<
   CopyClusterSnapshotInput,
   CopyClusterSnapshotOutput,
   CopyClusterSnapshotError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CopyClusterSnapshotInput,
   output: CopyClusterSnapshotOutput,
@@ -1016,7 +1022,7 @@ export const createCluster: API.OperationMethod<
   CreateClusterInput,
   CreateClusterOutput,
   CreateClusterError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateClusterInput,
   output: CreateClusterOutput,
@@ -1049,7 +1055,7 @@ export const createClusterSnapshot: API.OperationMethod<
   CreateClusterSnapshotInput,
   CreateClusterSnapshotOutput,
   CreateClusterSnapshotError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateClusterSnapshotInput,
   output: CreateClusterSnapshotOutput,
@@ -1082,7 +1088,7 @@ export const deleteCluster: API.OperationMethod<
   DeleteClusterInput,
   DeleteClusterOutput,
   DeleteClusterError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteClusterInput,
   output: DeleteClusterOutput,
@@ -1114,7 +1120,7 @@ export const deleteClusterSnapshot: API.OperationMethod<
   DeleteClusterSnapshotInput,
   DeleteClusterSnapshotOutput,
   DeleteClusterSnapshotError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteClusterSnapshotInput,
   output: DeleteClusterSnapshotOutput,
@@ -1145,7 +1151,7 @@ export const getCluster: API.OperationMethod<
   GetClusterInput,
   GetClusterOutput,
   GetClusterError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetClusterInput,
   output: GetClusterOutput,
@@ -1175,7 +1181,7 @@ export const getClusterSnapshot: API.OperationMethod<
   GetClusterSnapshotInput,
   GetClusterSnapshotOutput,
   GetClusterSnapshotError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetClusterSnapshotInput,
   output: GetClusterSnapshotOutput,
@@ -1206,7 +1212,7 @@ export const getPendingMaintenanceAction: API.OperationMethod<
   GetPendingMaintenanceActionInput,
   GetPendingMaintenanceActionOutput,
   GetPendingMaintenanceActionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetPendingMaintenanceActionInput,
   output: GetPendingMaintenanceActionOutput,
@@ -1232,27 +1238,13 @@ export type ListClustersError =
 /**
  * Returns information about provisioned Amazon DocumentDB elastic clusters.
  */
-export const listClusters: API.OperationMethod<
+export const listClusters: API.PaginatedOperationMethod<
   ListClustersInput,
   ListClustersOutput,
   ListClustersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListClustersInput,
-  ) => stream.Stream<
-    ListClustersOutput,
-    ListClustersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListClustersInput,
-  ) => stream.Stream<
-    ClusterInList,
-    ListClustersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ClusterInList
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListClustersInput,
   output: ListClustersOutput,
   errors: [
@@ -1270,27 +1262,7 @@ export const listClusters: API.OperationMethod<
     items: "clusters",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListClustersInput,
-  ListClustersOutput,
-  ListClustersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListClustersInput,
-  ) => stream.Stream<
-    ListClustersOutput,
-    ListClustersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListClustersInput,
-  ) => stream.Stream<
-    ClusterInList,
-    ListClustersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListClusterSnapshotsError =
   | AccessDeniedException
@@ -1301,27 +1273,13 @@ export type ListClusterSnapshotsError =
 /**
  * Returns information about snapshots for a specified elastic cluster.
  */
-export const listClusterSnapshots: API.OperationMethod<
+export const listClusterSnapshots: API.PaginatedOperationMethod<
   ListClusterSnapshotsInput,
   ListClusterSnapshotsOutput,
   ListClusterSnapshotsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListClusterSnapshotsInput,
-  ) => stream.Stream<
-    ListClusterSnapshotsOutput,
-    ListClusterSnapshotsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListClusterSnapshotsInput,
-  ) => stream.Stream<
-    ClusterSnapshotInList,
-    ListClusterSnapshotsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ClusterSnapshotInList
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListClusterSnapshotsInput,
   output: ListClusterSnapshotsOutput,
   errors: [
@@ -1339,27 +1297,7 @@ export const listClusterSnapshots: API.OperationMethod<
     items: "snapshots",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListClusterSnapshotsInput,
-  ListClusterSnapshotsOutput,
-  ListClusterSnapshotsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListClusterSnapshotsInput,
-  ) => stream.Stream<
-    ListClusterSnapshotsOutput,
-    ListClusterSnapshotsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListClusterSnapshotsInput,
-  ) => stream.Stream<
-    ClusterSnapshotInList,
-    ListClusterSnapshotsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListPendingMaintenanceActionsError =
   | AccessDeniedException
@@ -1370,27 +1308,13 @@ export type ListPendingMaintenanceActionsError =
 /**
  * Retrieves a list of all maintenance actions that are pending.
  */
-export const listPendingMaintenanceActions: API.OperationMethod<
+export const listPendingMaintenanceActions: API.PaginatedOperationMethod<
   ListPendingMaintenanceActionsInput,
   ListPendingMaintenanceActionsOutput,
   ListPendingMaintenanceActionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPendingMaintenanceActionsInput,
-  ) => stream.Stream<
-    ListPendingMaintenanceActionsOutput,
-    ListPendingMaintenanceActionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPendingMaintenanceActionsInput,
-  ) => stream.Stream<
-    ResourcePendingMaintenanceAction,
-    ListPendingMaintenanceActionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ResourcePendingMaintenanceAction
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListPendingMaintenanceActionsInput,
   output: ListPendingMaintenanceActionsOutput,
   errors: [
@@ -1408,27 +1332,7 @@ export const listPendingMaintenanceActions: API.OperationMethod<
     items: "resourcePendingMaintenanceActions",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListPendingMaintenanceActionsInput,
-  ListPendingMaintenanceActionsOutput,
-  ListPendingMaintenanceActionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPendingMaintenanceActionsInput,
-  ) => stream.Stream<
-    ListPendingMaintenanceActionsOutput,
-    ListPendingMaintenanceActionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPendingMaintenanceActionsInput,
-  ) => stream.Stream<
-    ResourcePendingMaintenanceAction,
-    ListPendingMaintenanceActionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsForResourceError =
   | InternalServerException
@@ -1443,7 +1347,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceRequest,
   ListTagsForResourceResponse,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -1474,7 +1378,7 @@ export const restoreClusterFromSnapshot: API.OperationMethod<
   RestoreClusterFromSnapshotInput,
   RestoreClusterFromSnapshotOutput,
   RestoreClusterFromSnapshotError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RestoreClusterFromSnapshotInput,
   output: RestoreClusterFromSnapshotOutput,
@@ -1506,7 +1410,7 @@ export const startCluster: API.OperationMethod<
   StartClusterInput,
   StartClusterOutput,
   StartClusterError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartClusterInput,
   output: StartClusterOutput,
@@ -1537,7 +1441,7 @@ export const stopCluster: API.OperationMethod<
   StopClusterInput,
   StopClusterOutput,
   StopClusterError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StopClusterInput,
   output: StopClusterOutput,
@@ -1566,7 +1470,7 @@ export const tagResource: API.OperationMethod<
   TagResourceRequest,
   TagResourceResponse,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -1594,7 +1498,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceRequest,
   UntagResourceResponse,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -1625,7 +1529,7 @@ export const updateCluster: API.OperationMethod<
   UpdateClusterInput,
   UpdateClusterOutput,
   UpdateClusterError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateClusterInput,
   output: UpdateClusterOutput,

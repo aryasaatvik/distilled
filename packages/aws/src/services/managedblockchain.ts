@@ -1,7 +1,6 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as redacted from "effect/Redacted";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -9,7 +8,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 import { SensitiveString } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "ManagedBlockchain",
@@ -90,61 +88,67 @@ const rules = T.EndpointResolver((p, _) => {
 export class AccessDeniedException
   extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
     "AccessDeniedException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(403),
   ).pipe(C.withAuthError) {}
 export class IllegalActionException
   extends /*@__PURE__*/ S.TaggedErrorClass<IllegalActionException>()(
     "IllegalActionException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class InternalServiceErrorException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServiceErrorException>()(
     "InternalServiceErrorException",
-    {},
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(500),
   ).pipe(C.withServerError) {}
 export class InvalidRequestException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidRequestException>()(
     "InvalidRequestException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class ResourceAlreadyExistsException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceAlreadyExistsException>()(
     "ResourceAlreadyExistsException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(409),
   ).pipe(C.withConflictError, C.withAlreadyExistsError) {}
 export class ResourceLimitExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceLimitExceededException>()(
     "ResourceLimitExceededException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(429),
   ).pipe(C.withThrottlingError) {}
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { Message: S.optional(S.String), ResourceName: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      ResourceName: S.optional(S.String),
+    },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class ResourceNotReadyException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotReadyException>()(
     "ResourceNotReadyException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class ThrottlingException
   extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
     "ThrottlingException",
-    {},
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(429),
   ).pipe(C.withThrottlingError) {}
 export class TooManyTagsException
   extends /*@__PURE__*/ S.TaggedErrorClass<TooManyTagsException>()(
     "TooManyTagsException",
-    { Message: S.optional(S.String), ResourceName: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      ResourceName: S.optional(S.String),
+    },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export type ClientRequestTokenString = string;
@@ -1741,7 +1745,7 @@ export const createAccessor: API.OperationMethod<
   CreateAccessorInput,
   CreateAccessorOutput,
   CreateAccessorError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateAccessorInput,
   output: CreateAccessorOutput,
@@ -1779,7 +1783,7 @@ export const createMember: API.OperationMethod<
   CreateMemberInput,
   CreateMemberOutput,
   CreateMemberError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateMemberInput,
   output: CreateMemberOutput,
@@ -1817,7 +1821,7 @@ export const createNetwork: API.OperationMethod<
   CreateNetworkInput,
   CreateNetworkOutput,
   CreateNetworkError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateNetworkInput,
   output: CreateNetworkOutput,
@@ -1855,7 +1859,7 @@ export const createNode: API.OperationMethod<
   CreateNodeInput,
   CreateNodeOutput,
   CreateNodeError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateNodeInput,
   output: CreateNodeOutput,
@@ -1893,7 +1897,7 @@ export const createProposal: API.OperationMethod<
   CreateProposalInput,
   CreateProposalOutput,
   CreateProposalError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateProposalInput,
   output: CreateProposalOutput,
@@ -1931,7 +1935,7 @@ export const deleteAccessor: API.OperationMethod<
   DeleteAccessorInput,
   DeleteAccessorOutput,
   DeleteAccessorError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteAccessorInput,
   output: DeleteAccessorOutput,
@@ -1964,7 +1968,7 @@ export const deleteMember: API.OperationMethod<
   DeleteMemberInput,
   DeleteMemberOutput,
   DeleteMemberError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteMemberInput,
   output: DeleteMemberOutput,
@@ -1998,7 +2002,7 @@ export const deleteNode: API.OperationMethod<
   DeleteNodeInput,
   DeleteNodeOutput,
   DeleteNodeError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteNodeInput,
   output: DeleteNodeOutput,
@@ -2030,7 +2034,7 @@ export const getAccessor: API.OperationMethod<
   GetAccessorInput,
   GetAccessorOutput,
   GetAccessorError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetAccessorInput,
   output: GetAccessorOutput,
@@ -2062,7 +2066,7 @@ export const getMember: API.OperationMethod<
   GetMemberInput,
   GetMemberOutput,
   GetMemberError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetMemberInput,
   output: GetMemberOutput,
@@ -2094,7 +2098,7 @@ export const getNetwork: API.OperationMethod<
   GetNetworkInput,
   GetNetworkOutput,
   GetNetworkError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetNetworkInput,
   output: GetNetworkOutput,
@@ -2126,7 +2130,7 @@ export const getNode: API.OperationMethod<
   GetNodeInput,
   GetNodeOutput,
   GetNodeError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetNodeInput,
   output: GetNodeOutput,
@@ -2158,7 +2162,7 @@ export const getProposal: API.OperationMethod<
   GetProposalInput,
   GetProposalOutput,
   GetProposalError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetProposalInput,
   output: GetProposalOutput,
@@ -2184,27 +2188,13 @@ export type ListAccessorsError =
  * Returns a list of the accessors and their properties. Accessor objects are containers that have the
  * information required for token based access to your Ethereum nodes.
  */
-export const listAccessors: API.OperationMethod<
+export const listAccessors: API.PaginatedOperationMethod<
   ListAccessorsInput,
   ListAccessorsOutput,
   ListAccessorsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAccessorsInput,
-  ) => stream.Stream<
-    ListAccessorsOutput,
-    ListAccessorsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAccessorsInput,
-  ) => stream.Stream<
-    AccessorSummary,
-    ListAccessorsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  AccessorSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListAccessorsInput,
   output: ListAccessorsOutput,
   errors: [
@@ -2222,27 +2212,7 @@ export const listAccessors: API.OperationMethod<
     items: "Accessors",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListAccessorsInput,
-  ListAccessorsOutput,
-  ListAccessorsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAccessorsInput,
-  ) => stream.Stream<
-    ListAccessorsOutput,
-    ListAccessorsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAccessorsInput,
-  ) => stream.Stream<
-    AccessorSummary,
-    ListAccessorsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListInvitationsError =
   | AccessDeniedException
@@ -2257,27 +2227,13 @@ export type ListInvitationsError =
  *
  * Applies only to Hyperledger Fabric.
  */
-export const listInvitations: API.OperationMethod<
+export const listInvitations: API.PaginatedOperationMethod<
   ListInvitationsInput,
   ListInvitationsOutput,
   ListInvitationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListInvitationsInput,
-  ) => stream.Stream<
-    ListInvitationsOutput,
-    ListInvitationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListInvitationsInput,
-  ) => stream.Stream<
-    unknown,
-    ListInvitationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListInvitationsInput,
   output: ListInvitationsOutput,
   errors: [
@@ -2296,27 +2252,7 @@ export const listInvitations: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListInvitationsInput,
-  ListInvitationsOutput,
-  ListInvitationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListInvitationsInput,
-  ) => stream.Stream<
-    ListInvitationsOutput,
-    ListInvitationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListInvitationsInput,
-  ) => stream.Stream<
-    unknown,
-    ListInvitationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListMembersError =
   | AccessDeniedException
@@ -2329,27 +2265,13 @@ export type ListMembersError =
  *
  * Applies only to Hyperledger Fabric.
  */
-export const listMembers: API.OperationMethod<
+export const listMembers: API.PaginatedOperationMethod<
   ListMembersInput,
   ListMembersOutput,
   ListMembersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListMembersInput,
-  ) => stream.Stream<
-    ListMembersOutput,
-    ListMembersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListMembersInput,
-  ) => stream.Stream<
-    unknown,
-    ListMembersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListMembersInput,
   output: ListMembersOutput,
   errors: [
@@ -2366,27 +2288,7 @@ export const listMembers: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListMembersInput,
-  ListMembersOutput,
-  ListMembersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListMembersInput,
-  ) => stream.Stream<
-    ListMembersOutput,
-    ListMembersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListMembersInput,
-  ) => stream.Stream<
-    unknown,
-    ListMembersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListNetworksError =
   | AccessDeniedException
@@ -2399,27 +2301,13 @@ export type ListNetworksError =
  *
  * Applies to Hyperledger Fabric and Ethereum.
  */
-export const listNetworks: API.OperationMethod<
+export const listNetworks: API.PaginatedOperationMethod<
   ListNetworksInput,
   ListNetworksOutput,
   ListNetworksError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListNetworksInput,
-  ) => stream.Stream<
-    ListNetworksOutput,
-    ListNetworksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListNetworksInput,
-  ) => stream.Stream<
-    unknown,
-    ListNetworksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListNetworksInput,
   output: ListNetworksOutput,
   errors: [
@@ -2436,27 +2324,7 @@ export const listNetworks: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListNetworksInput,
-  ListNetworksOutput,
-  ListNetworksError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListNetworksInput,
-  ) => stream.Stream<
-    ListNetworksOutput,
-    ListNetworksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListNetworksInput,
-  ) => stream.Stream<
-    unknown,
-    ListNetworksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListNodesError =
   | AccessDeniedException
@@ -2469,27 +2337,13 @@ export type ListNodesError =
  *
  * Applies to Hyperledger Fabric and Ethereum.
  */
-export const listNodes: API.OperationMethod<
+export const listNodes: API.PaginatedOperationMethod<
   ListNodesInput,
   ListNodesOutput,
   ListNodesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListNodesInput,
-  ) => stream.Stream<
-    ListNodesOutput,
-    ListNodesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListNodesInput,
-  ) => stream.Stream<
-    unknown,
-    ListNodesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListNodesInput,
   output: ListNodesOutput,
   errors: [
@@ -2506,27 +2360,7 @@ export const listNodes: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListNodesInput,
-  ListNodesOutput,
-  ListNodesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListNodesInput,
-  ) => stream.Stream<
-    ListNodesOutput,
-    ListNodesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListNodesInput,
-  ) => stream.Stream<
-    unknown,
-    ListNodesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListProposalsError =
   | AccessDeniedException
@@ -2540,27 +2374,13 @@ export type ListProposalsError =
  *
  * Applies only to Hyperledger Fabric.
  */
-export const listProposals: API.OperationMethod<
+export const listProposals: API.PaginatedOperationMethod<
   ListProposalsInput,
   ListProposalsOutput,
   ListProposalsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListProposalsInput,
-  ) => stream.Stream<
-    ListProposalsOutput,
-    ListProposalsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListProposalsInput,
-  ) => stream.Stream<
-    unknown,
-    ListProposalsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListProposalsInput,
   output: ListProposalsOutput,
   errors: [
@@ -2578,27 +2398,7 @@ export const listProposals: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListProposalsInput,
-  ListProposalsOutput,
-  ListProposalsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListProposalsInput,
-  ) => stream.Stream<
-    ListProposalsOutput,
-    ListProposalsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListProposalsInput,
-  ) => stream.Stream<
-    unknown,
-    ListProposalsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListProposalVotesError =
   | AccessDeniedException
@@ -2611,27 +2411,13 @@ export type ListProposalVotesError =
  *
  * Applies only to Hyperledger Fabric.
  */
-export const listProposalVotes: API.OperationMethod<
+export const listProposalVotes: API.PaginatedOperationMethod<
   ListProposalVotesInput,
   ListProposalVotesOutput,
   ListProposalVotesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListProposalVotesInput,
-  ) => stream.Stream<
-    ListProposalVotesOutput,
-    ListProposalVotesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListProposalVotesInput,
-  ) => stream.Stream<
-    unknown,
-    ListProposalVotesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListProposalVotesInput,
   output: ListProposalVotesOutput,
   errors: [
@@ -2648,27 +2434,7 @@ export const listProposalVotes: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListProposalVotesInput,
-  ListProposalVotesOutput,
-  ListProposalVotesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListProposalVotesInput,
-  ) => stream.Stream<
-    ListProposalVotesOutput,
-    ListProposalVotesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListProposalVotesInput,
-  ) => stream.Stream<
-    unknown,
-    ListProposalVotesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsForResourceError =
   | InternalServiceErrorException
@@ -2685,7 +2451,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceRequest,
   ListTagsForResourceResponse,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -2717,7 +2483,7 @@ export const rejectInvitation: API.OperationMethod<
   RejectInvitationInput,
   RejectInvitationOutput,
   RejectInvitationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RejectInvitationInput,
   output: RejectInvitationOutput,
@@ -2754,7 +2520,7 @@ export const tagResource: API.OperationMethod<
   TagResourceRequest,
   TagResourceResponse,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -2785,7 +2551,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceRequest,
   UntagResourceResponse,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -2816,7 +2582,7 @@ export const updateMember: API.OperationMethod<
   UpdateMemberInput,
   UpdateMemberOutput,
   UpdateMemberError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateMemberInput,
   output: UpdateMemberOutput,
@@ -2848,7 +2614,7 @@ export const updateNode: API.OperationMethod<
   UpdateNodeInput,
   UpdateNodeOutput,
   UpdateNodeError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateNodeInput,
   output: UpdateNodeOutput,
@@ -2881,7 +2647,7 @@ export const voteOnProposal: API.OperationMethod<
   VoteOnProposalInput,
   VoteOnProposalOutput,
   VoteOnProposalError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: VoteOnProposalInput,
   output: VoteOnProposalOutput,

@@ -1,7 +1,6 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as redacted from "effect/Redacted";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -9,7 +8,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 import { SensitiveBlob } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "Rekognition",
@@ -91,7 +89,7 @@ export class AccessDeniedException
   extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
     "AccessDeniedException",
     {
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       Code: S.optional(S.String),
       Logref: S.optional(S.String),
     },
@@ -100,7 +98,7 @@ export class ConflictException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
     "ConflictException",
     {
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       Code: S.optional(S.String),
       Logref: S.optional(S.String),
     },
@@ -112,7 +110,7 @@ export class HumanLoopQuotaExceededException
       ResourceType: S.optional(S.String),
       QuotaCode: S.optional(S.String),
       ServiceCode: S.optional(S.String),
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       Code: S.optional(S.String),
       Logref: S.optional(S.String),
     },
@@ -122,7 +120,7 @@ export class IdempotentParameterMismatchException
   extends /*@__PURE__*/ S.TaggedErrorClass<IdempotentParameterMismatchException>()(
     "IdempotentParameterMismatchException",
     {
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       Code: S.optional(S.String),
       Logref: S.optional(S.String),
     },
@@ -131,7 +129,7 @@ export class ImageTooLargeException
   extends /*@__PURE__*/ S.TaggedErrorClass<ImageTooLargeException>()(
     "ImageTooLargeException",
     {
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       Code: S.optional(S.String),
       Logref: S.optional(S.String),
     },
@@ -140,7 +138,7 @@ export class InternalServerError
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerError>()(
     "InternalServerError",
     {
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       Code: S.optional(S.String),
       Logref: S.optional(S.String),
     },
@@ -149,7 +147,7 @@ export class InvalidImageFormatException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidImageFormatException>()(
     "InvalidImageFormatException",
     {
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       Code: S.optional(S.String),
       Logref: S.optional(S.String),
     },
@@ -158,7 +156,7 @@ export class InvalidManifestException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidManifestException>()(
     "InvalidManifestException",
     {
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       Code: S.optional(S.String),
       Logref: S.optional(S.String),
     },
@@ -167,7 +165,7 @@ export class InvalidPaginationTokenException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidPaginationTokenException>()(
     "InvalidPaginationTokenException",
     {
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       Code: S.optional(S.String),
       Logref: S.optional(S.String),
     },
@@ -176,7 +174,7 @@ export class InvalidParameterException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidParameterException>()(
     "InvalidParameterException",
     {
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       Code: S.optional(S.String),
       Logref: S.optional(S.String),
     },
@@ -185,7 +183,7 @@ export class InvalidPolicyRevisionIdException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidPolicyRevisionIdException>()(
     "InvalidPolicyRevisionIdException",
     {
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       Code: S.optional(S.String),
       Logref: S.optional(S.String),
     },
@@ -194,7 +192,7 @@ export class InvalidS3ObjectException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidS3ObjectException>()(
     "InvalidS3ObjectException",
     {
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       Code: S.optional(S.String),
       Logref: S.optional(S.String),
     },
@@ -203,7 +201,7 @@ export class LimitExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<LimitExceededException>()(
     "LimitExceededException",
     {
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       Code: S.optional(S.String),
       Logref: S.optional(S.String),
     },
@@ -212,7 +210,7 @@ export class MalformedPolicyDocumentException
   extends /*@__PURE__*/ S.TaggedErrorClass<MalformedPolicyDocumentException>()(
     "MalformedPolicyDocumentException",
     {
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       Code: S.optional(S.String),
       Logref: S.optional(S.String),
     },
@@ -221,7 +219,7 @@ export class ProvisionedThroughputExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<ProvisionedThroughputExceededException>()(
     "ProvisionedThroughputExceededException",
     {
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       Code: S.optional(S.String),
       Logref: S.optional(S.String),
     },
@@ -230,7 +228,7 @@ export class ResourceAlreadyExistsException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceAlreadyExistsException>()(
     "ResourceAlreadyExistsException",
     {
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       Code: S.optional(S.String),
       Logref: S.optional(S.String),
     },
@@ -239,7 +237,7 @@ export class ResourceInUseException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceInUseException>()(
     "ResourceInUseException",
     {
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       Code: S.optional(S.String),
       Logref: S.optional(S.String),
     },
@@ -248,7 +246,7 @@ export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
     {
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       Code: S.optional(S.String),
       Logref: S.optional(S.String),
     },
@@ -257,7 +255,7 @@ export class ResourceNotReadyException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotReadyException>()(
     "ResourceNotReadyException",
     {
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       Code: S.optional(S.String),
       Logref: S.optional(S.String),
     },
@@ -266,7 +264,7 @@ export class ServiceQuotaExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
     "ServiceQuotaExceededException",
     {
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       Code: S.optional(S.String),
       Logref: S.optional(S.String),
     },
@@ -275,7 +273,7 @@ export class SessionNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<SessionNotFoundException>()(
     "SessionNotFoundException",
     {
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       Code: S.optional(S.String),
       Logref: S.optional(S.String),
     },
@@ -284,7 +282,7 @@ export class ThrottlingException
   extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
     "ThrottlingException",
     {
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       Code: S.optional(S.String),
       Logref: S.optional(S.String),
     },
@@ -293,7 +291,7 @@ export class VideoTooLargeException
   extends /*@__PURE__*/ S.TaggedErrorClass<VideoTooLargeException>()(
     "VideoTooLargeException",
     {
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       Code: S.optional(S.String),
       Logref: S.optional(S.String),
     },
@@ -4926,7 +4924,7 @@ export const associateFaces: API.OperationMethod<
   AssociateFacesRequest,
   AssociateFacesResponse,
   AssociateFacesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AssociateFacesRequest,
   output: AssociateFacesResponse,
@@ -5018,7 +5016,7 @@ export const compareFaces: API.OperationMethod<
   CompareFacesRequest,
   CompareFacesResponse,
   CompareFacesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CompareFacesRequest,
   output: CompareFacesResponse,
@@ -5080,7 +5078,7 @@ export const copyProjectVersion: API.OperationMethod<
   CopyProjectVersionRequest,
   CopyProjectVersionResponse,
   CopyProjectVersionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CopyProjectVersionRequest,
   output: CopyProjectVersionResponse,
@@ -5132,7 +5130,7 @@ export const createCollection: API.OperationMethod<
   CreateCollectionRequest,
   CreateCollectionResponse,
   CreateCollectionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateCollectionRequest,
   output: CreateCollectionResponse,
@@ -5191,7 +5189,7 @@ export const createDataset: API.OperationMethod<
   CreateDatasetRequest,
   CreateDatasetResponse,
   CreateDatasetError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateDatasetRequest,
   output: CreateDatasetResponse,
@@ -5236,7 +5234,7 @@ export const createFaceLivenessSession: API.OperationMethod<
   CreateFaceLivenessSessionRequest,
   CreateFaceLivenessSessionResponse,
   CreateFaceLivenessSessionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateFaceLivenessSessionRequest,
   output: CreateFaceLivenessSessionResponse,
@@ -5273,7 +5271,7 @@ export const createProject: API.OperationMethod<
   CreateProjectRequest,
   CreateProjectResponse,
   CreateProjectError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateProjectRequest,
   output: CreateProjectResponse,
@@ -5337,7 +5335,7 @@ export const createProjectVersion: API.OperationMethod<
   CreateProjectVersionRequest,
   CreateProjectVersionResponse,
   CreateProjectVersionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateProjectVersionRequest,
   output: CreateProjectVersionResponse,
@@ -5402,7 +5400,7 @@ export const createStreamProcessor: API.OperationMethod<
   CreateStreamProcessorRequest,
   CreateStreamProcessorResponse,
   CreateStreamProcessorError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateStreamProcessorRequest,
   output: CreateStreamProcessorResponse,
@@ -5447,7 +5445,7 @@ export const createUser: API.OperationMethod<
   CreateUserRequest,
   CreateUserResponse,
   CreateUserError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateUserRequest,
   output: CreateUserResponse,
@@ -5487,7 +5485,7 @@ export const deleteCollection: API.OperationMethod<
   DeleteCollectionRequest,
   DeleteCollectionResponse,
   DeleteCollectionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteCollectionRequest,
   output: DeleteCollectionResponse,
@@ -5532,7 +5530,7 @@ export const deleteDataset: API.OperationMethod<
   DeleteDatasetRequest,
   DeleteDatasetResponse,
   DeleteDatasetError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteDatasetRequest,
   output: DeleteDatasetResponse,
@@ -5570,7 +5568,7 @@ export const deleteFaces: API.OperationMethod<
   DeleteFacesRequest,
   DeleteFacesResponse,
   DeleteFacesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteFacesRequest,
   output: DeleteFacesResponse,
@@ -5612,7 +5610,7 @@ export const deleteProject: API.OperationMethod<
   DeleteProjectRequest,
   DeleteProjectResponse,
   DeleteProjectError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteProjectRequest,
   output: DeleteProjectResponse,
@@ -5652,7 +5650,7 @@ export const deleteProjectPolicy: API.OperationMethod<
   DeleteProjectPolicyRequest,
   DeleteProjectPolicyResponse,
   DeleteProjectPolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteProjectPolicyRequest,
   output: DeleteProjectPolicyResponse,
@@ -5694,7 +5692,7 @@ export const deleteProjectVersion: API.OperationMethod<
   DeleteProjectVersionRequest,
   DeleteProjectVersionResponse,
   DeleteProjectVersionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteProjectVersionRequest,
   output: DeleteProjectVersionResponse,
@@ -5729,7 +5727,7 @@ export const deleteStreamProcessor: API.OperationMethod<
   DeleteStreamProcessorRequest,
   DeleteStreamProcessorResponse,
   DeleteStreamProcessorError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteStreamProcessorRequest,
   output: DeleteStreamProcessorResponse,
@@ -5768,7 +5766,7 @@ export const deleteUser: API.OperationMethod<
   DeleteUserRequest,
   DeleteUserResponse,
   DeleteUserError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteUserRequest,
   output: DeleteUserResponse,
@@ -5807,7 +5805,7 @@ export const describeCollection: API.OperationMethod<
   DescribeCollectionRequest,
   DescribeCollectionResponse,
   DescribeCollectionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeCollectionRequest,
   output: DescribeCollectionResponse,
@@ -5844,7 +5842,7 @@ export const describeDataset: API.OperationMethod<
   DescribeDatasetRequest,
   DescribeDatasetResponse,
   DescribeDatasetError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeDatasetRequest,
   output: DescribeDatasetResponse,
@@ -5874,27 +5872,13 @@ export type DescribeProjectsError =
  *
  * This operation requires permissions to perform the `rekognition:DescribeProjects` action.
  */
-export const describeProjects: API.OperationMethod<
+export const describeProjects: API.PaginatedOperationMethod<
   DescribeProjectsRequest,
   DescribeProjectsResponse,
   DescribeProjectsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeProjectsRequest,
-  ) => stream.Stream<
-    DescribeProjectsResponse,
-    DescribeProjectsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeProjectsRequest,
-  ) => stream.Stream<
-    ProjectDescription,
-    DescribeProjectsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ProjectDescription
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeProjectsRequest,
   output: DescribeProjectsResponse,
   errors: [
@@ -5914,27 +5898,7 @@ export const describeProjects: API.OperationMethod<
     items: "ProjectDescriptions",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeProjectsRequest,
-  DescribeProjectsResponse,
-  DescribeProjectsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeProjectsRequest,
-  ) => stream.Stream<
-    DescribeProjectsResponse,
-    DescribeProjectsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeProjectsRequest,
-  ) => stream.Stream<
-    ProjectDescription,
-    DescribeProjectsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeProjectVersionsError =
   | AccessDeniedException
@@ -5953,27 +5917,13 @@ export type DescribeProjectVersionsError =
  * This operation requires permissions to perform the `rekognition:DescribeProjectVersions`
  * action.
  */
-export const describeProjectVersions: API.OperationMethod<
+export const describeProjectVersions: API.PaginatedOperationMethod<
   DescribeProjectVersionsRequest,
   DescribeProjectVersionsResponse,
   DescribeProjectVersionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeProjectVersionsRequest,
-  ) => stream.Stream<
-    DescribeProjectVersionsResponse,
-    DescribeProjectVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeProjectVersionsRequest,
-  ) => stream.Stream<
-    ProjectVersionDescription,
-    DescribeProjectVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ProjectVersionDescription
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeProjectVersionsRequest,
   output: DescribeProjectVersionsResponse,
   errors: [
@@ -5994,27 +5944,7 @@ export const describeProjectVersions: API.OperationMethod<
     items: "ProjectVersionDescriptions",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeProjectVersionsRequest,
-  DescribeProjectVersionsResponse,
-  DescribeProjectVersionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeProjectVersionsRequest,
-  ) => stream.Stream<
-    DescribeProjectVersionsResponse,
-    DescribeProjectVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeProjectVersionsRequest,
-  ) => stream.Stream<
-    ProjectVersionDescription,
-    DescribeProjectVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeStreamProcessorError =
   | AccessDeniedException
@@ -6032,7 +5962,7 @@ export const describeStreamProcessor: API.OperationMethod<
   DescribeStreamProcessorRequest,
   DescribeStreamProcessorResponse,
   DescribeStreamProcessorError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeStreamProcessorRequest,
   output: DescribeStreamProcessorResponse,
@@ -6110,7 +6040,7 @@ export const detectCustomLabels: API.OperationMethod<
   DetectCustomLabelsRequest,
   DetectCustomLabelsResponse,
   DetectCustomLabelsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DetectCustomLabelsRequest,
   output: DetectCustomLabelsResponse,
@@ -6169,7 +6099,7 @@ export const detectFaces: API.OperationMethod<
   DetectFacesRequest,
   DetectFacesResponse,
   DetectFacesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DetectFacesRequest,
   output: DetectFacesResponse,
@@ -6308,7 +6238,7 @@ export const detectLabels: API.OperationMethod<
   DetectLabelsRequest,
   DetectLabelsResponse,
   DetectLabelsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DetectLabelsRequest,
   output: DetectLabelsResponse,
@@ -6365,7 +6295,7 @@ export const detectModerationLabels: API.OperationMethod<
   DetectModerationLabelsRequest,
   DetectModerationLabelsResponse,
   DetectModerationLabelsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DetectModerationLabelsRequest,
   output: DetectModerationLabelsResponse,
@@ -6435,7 +6365,7 @@ export const detectProtectiveEquipment: API.OperationMethod<
   DetectProtectiveEquipmentRequest,
   DetectProtectiveEquipmentResponse,
   DetectProtectiveEquipmentError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DetectProtectiveEquipmentRequest,
   output: DetectProtectiveEquipmentResponse,
@@ -6500,7 +6430,7 @@ export const detectText: API.OperationMethod<
   DetectTextRequest,
   DetectTextResponse,
   DetectTextError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DetectTextRequest,
   output: DetectTextResponse,
@@ -6543,7 +6473,7 @@ export const disassociateFaces: API.OperationMethod<
   DisassociateFacesRequest,
   DisassociateFacesResponse,
   DisassociateFacesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DisassociateFacesRequest,
   output: DisassociateFacesResponse,
@@ -6592,7 +6522,7 @@ export const distributeDatasetEntries: API.OperationMethod<
   DistributeDatasetEntriesRequest,
   DistributeDatasetEntriesResponse,
   DistributeDatasetEntriesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DistributeDatasetEntriesRequest,
   output: DistributeDatasetEntriesResponse,
@@ -6633,7 +6563,7 @@ export const getCelebrityInfo: API.OperationMethod<
   GetCelebrityInfoRequest,
   GetCelebrityInfoResponse,
   GetCelebrityInfoError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetCelebrityInfoRequest,
   output: GetCelebrityInfoResponse,
@@ -6705,27 +6635,13 @@ export type GetCelebrityRecognitionError =
  * and populate the `NextToken` request parameter with the token
  * value returned from the previous call to `GetCelebrityRecognition`.
  */
-export const getCelebrityRecognition: API.OperationMethod<
+export const getCelebrityRecognition: API.PaginatedOperationMethod<
   GetCelebrityRecognitionRequest,
   GetCelebrityRecognitionResponse,
   GetCelebrityRecognitionError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetCelebrityRecognitionRequest,
-  ) => stream.Stream<
-    GetCelebrityRecognitionResponse,
-    GetCelebrityRecognitionError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetCelebrityRecognitionRequest,
-  ) => stream.Stream<
-    unknown,
-    GetCelebrityRecognitionError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetCelebrityRecognitionRequest,
   output: GetCelebrityRecognitionResponse,
   errors: [
@@ -6745,27 +6661,7 @@ export const getCelebrityRecognition: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetCelebrityRecognitionRequest,
-  GetCelebrityRecognitionResponse,
-  GetCelebrityRecognitionError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetCelebrityRecognitionRequest,
-  ) => stream.Stream<
-    GetCelebrityRecognitionResponse,
-    GetCelebrityRecognitionError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetCelebrityRecognitionRequest,
-  ) => stream.Stream<
-    unknown,
-    GetCelebrityRecognitionError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetContentModerationError =
   | AccessDeniedException
@@ -6809,27 +6705,13 @@ export type GetContentModerationError =
  *
  * For more information, see moderating content in the Amazon Rekognition Developer Guide.
  */
-export const getContentModeration: API.OperationMethod<
+export const getContentModeration: API.PaginatedOperationMethod<
   GetContentModerationRequest,
   GetContentModerationResponse,
   GetContentModerationError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetContentModerationRequest,
-  ) => stream.Stream<
-    GetContentModerationResponse,
-    GetContentModerationError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetContentModerationRequest,
-  ) => stream.Stream<
-    unknown,
-    GetContentModerationError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetContentModerationRequest,
   output: GetContentModerationResponse,
   errors: [
@@ -6849,27 +6731,7 @@ export const getContentModeration: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetContentModerationRequest,
-  GetContentModerationResponse,
-  GetContentModerationError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetContentModerationRequest,
-  ) => stream.Stream<
-    GetContentModerationResponse,
-    GetContentModerationError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetContentModerationRequest,
-  ) => stream.Stream<
-    unknown,
-    GetContentModerationError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetFaceDetectionError =
   | AccessDeniedException
@@ -6900,27 +6762,13 @@ export type GetFaceDetectionError =
  * Note that for the `GetFaceDetection` operation, the returned values for
  * `FaceOccluded` and `EyeDirection` will always be "null".
  */
-export const getFaceDetection: API.OperationMethod<
+export const getFaceDetection: API.PaginatedOperationMethod<
   GetFaceDetectionRequest,
   GetFaceDetectionResponse,
   GetFaceDetectionError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetFaceDetectionRequest,
-  ) => stream.Stream<
-    GetFaceDetectionResponse,
-    GetFaceDetectionError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetFaceDetectionRequest,
-  ) => stream.Stream<
-    unknown,
-    GetFaceDetectionError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetFaceDetectionRequest,
   output: GetFaceDetectionResponse,
   errors: [
@@ -6940,27 +6788,7 @@ export const getFaceDetection: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetFaceDetectionRequest,
-  GetFaceDetectionResponse,
-  GetFaceDetectionError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetFaceDetectionRequest,
-  ) => stream.Stream<
-    GetFaceDetectionResponse,
-    GetFaceDetectionError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetFaceDetectionRequest,
-  ) => stream.Stream<
-    unknown,
-    GetFaceDetectionError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetFaceLivenessSessionResultsError =
   | AccessDeniedException
@@ -6986,7 +6814,7 @@ export const getFaceLivenessSessionResults: API.OperationMethod<
   GetFaceLivenessSessionResultsRequest,
   GetFaceLivenessSessionResultsResponse,
   GetFaceLivenessSessionResultsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetFaceLivenessSessionResultsRequest,
   output: GetFaceLivenessSessionResultsResponse,
@@ -7045,27 +6873,13 @@ export type GetFaceSearchError =
  * You can also sort by persons by specifying `INDEX` for the `SORTBY` input
  * parameter.
  */
-export const getFaceSearch: API.OperationMethod<
+export const getFaceSearch: API.PaginatedOperationMethod<
   GetFaceSearchRequest,
   GetFaceSearchResponse,
   GetFaceSearchError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetFaceSearchRequest,
-  ) => stream.Stream<
-    GetFaceSearchResponse,
-    GetFaceSearchError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetFaceSearchRequest,
-  ) => stream.Stream<
-    unknown,
-    GetFaceSearchError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetFaceSearchRequest,
   output: GetFaceSearchResponse,
   errors: [
@@ -7085,27 +6899,7 @@ export const getFaceSearch: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetFaceSearchRequest,
-  GetFaceSearchResponse,
-  GetFaceSearchError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetFaceSearchRequest,
-  ) => stream.Stream<
-    GetFaceSearchResponse,
-    GetFaceSearchError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetFaceSearchRequest,
-  ) => stream.Stream<
-    unknown,
-    GetFaceSearchError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetLabelDetectionError =
   | AccessDeniedException
@@ -7184,27 +6978,13 @@ export type GetLabelDetectionError =
  * If you are retrieving results while using the Amazon Simple Notification Service, note that you will receive an
  * "ERROR" notification if the job encounters an issue.
  */
-export const getLabelDetection: API.OperationMethod<
+export const getLabelDetection: API.PaginatedOperationMethod<
   GetLabelDetectionRequest,
   GetLabelDetectionResponse,
   GetLabelDetectionError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetLabelDetectionRequest,
-  ) => stream.Stream<
-    GetLabelDetectionResponse,
-    GetLabelDetectionError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetLabelDetectionRequest,
-  ) => stream.Stream<
-    unknown,
-    GetLabelDetectionError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetLabelDetectionRequest,
   output: GetLabelDetectionResponse,
   errors: [
@@ -7224,27 +7004,7 @@ export const getLabelDetection: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetLabelDetectionRequest,
-  GetLabelDetectionResponse,
-  GetLabelDetectionError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetLabelDetectionRequest,
-  ) => stream.Stream<
-    GetLabelDetectionResponse,
-    GetLabelDetectionError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetLabelDetectionRequest,
-  ) => stream.Stream<
-    unknown,
-    GetLabelDetectionError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetMediaAnalysisJobError =
   | AccessDeniedException
@@ -7262,7 +7022,7 @@ export const getMediaAnalysisJob: API.OperationMethod<
   GetMediaAnalysisJobRequest,
   GetMediaAnalysisJobResponse,
   GetMediaAnalysisJobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetMediaAnalysisJobRequest,
   output: GetMediaAnalysisJobResponse,
@@ -7323,27 +7083,13 @@ export type GetPersonTrackingError =
  * of results. To get the next page of results, call `GetPersonTracking` and populate the `NextToken` request parameter with the token
  * value returned from the previous call to `GetPersonTracking`.
  */
-export const getPersonTracking: API.OperationMethod<
+export const getPersonTracking: API.PaginatedOperationMethod<
   GetPersonTrackingRequest,
   GetPersonTrackingResponse,
   GetPersonTrackingError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetPersonTrackingRequest,
-  ) => stream.Stream<
-    GetPersonTrackingResponse,
-    GetPersonTrackingError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetPersonTrackingRequest,
-  ) => stream.Stream<
-    unknown,
-    GetPersonTrackingError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetPersonTrackingRequest,
   output: GetPersonTrackingResponse,
   errors: [
@@ -7363,27 +7109,7 @@ export const getPersonTracking: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetPersonTrackingRequest,
-  GetPersonTrackingResponse,
-  GetPersonTrackingError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetPersonTrackingRequest,
-  ) => stream.Stream<
-    GetPersonTrackingResponse,
-    GetPersonTrackingError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetPersonTrackingRequest,
-  ) => stream.Stream<
-    unknown,
-    GetPersonTrackingError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetSegmentDetectionError =
   | AccessDeniedException
@@ -7422,27 +7148,13 @@ export type GetSegmentDetectionError =
  *
  * For more information, see Detecting video segments in stored video in the Amazon Rekognition Developer Guide.
  */
-export const getSegmentDetection: API.OperationMethod<
+export const getSegmentDetection: API.PaginatedOperationMethod<
   GetSegmentDetectionRequest,
   GetSegmentDetectionResponse,
   GetSegmentDetectionError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetSegmentDetectionRequest,
-  ) => stream.Stream<
-    GetSegmentDetectionResponse,
-    GetSegmentDetectionError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetSegmentDetectionRequest,
-  ) => stream.Stream<
-    unknown,
-    GetSegmentDetectionError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetSegmentDetectionRequest,
   output: GetSegmentDetectionResponse,
   errors: [
@@ -7462,27 +7174,7 @@ export const getSegmentDetection: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetSegmentDetectionRequest,
-  GetSegmentDetectionResponse,
-  GetSegmentDetectionError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetSegmentDetectionRequest,
-  ) => stream.Stream<
-    GetSegmentDetectionResponse,
-    GetSegmentDetectionError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetSegmentDetectionRequest,
-  ) => stream.Stream<
-    unknown,
-    GetSegmentDetectionError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetTextDetectionError =
   | AccessDeniedException
@@ -7517,27 +7209,13 @@ export type GetTextDetectionError =
  * and populate the `NextToken` request parameter with the token value returned from the previous
  * call to `GetTextDetection`.
  */
-export const getTextDetection: API.OperationMethod<
+export const getTextDetection: API.PaginatedOperationMethod<
   GetTextDetectionRequest,
   GetTextDetectionResponse,
   GetTextDetectionError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetTextDetectionRequest,
-  ) => stream.Stream<
-    GetTextDetectionResponse,
-    GetTextDetectionError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetTextDetectionRequest,
-  ) => stream.Stream<
-    unknown,
-    GetTextDetectionError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetTextDetectionRequest,
   output: GetTextDetectionResponse,
   errors: [
@@ -7557,27 +7235,7 @@ export const getTextDetection: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetTextDetectionRequest,
-  GetTextDetectionResponse,
-  GetTextDetectionError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetTextDetectionRequest,
-  ) => stream.Stream<
-    GetTextDetectionResponse,
-    GetTextDetectionError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetTextDetectionRequest,
-  ) => stream.Stream<
-    unknown,
-    GetTextDetectionError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type IndexFacesError =
   | AccessDeniedException
@@ -7689,7 +7347,7 @@ export const indexFaces: API.OperationMethod<
   IndexFacesRequest,
   IndexFacesResponse,
   IndexFacesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: IndexFacesRequest,
   output: IndexFacesResponse,
@@ -7730,27 +7388,13 @@ export type ListCollectionsError =
  * This operation requires permissions to perform the
  * `rekognition:ListCollections` action.
  */
-export const listCollections: API.OperationMethod<
+export const listCollections: API.PaginatedOperationMethod<
   ListCollectionsRequest,
   ListCollectionsResponse,
   ListCollectionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCollectionsRequest,
-  ) => stream.Stream<
-    ListCollectionsResponse,
-    ListCollectionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCollectionsRequest,
-  ) => stream.Stream<
-    CollectionId,
-    ListCollectionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  CollectionId
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListCollectionsRequest,
   output: ListCollectionsResponse,
   errors: [
@@ -7771,27 +7415,7 @@ export const listCollections: API.OperationMethod<
     items: "CollectionIds",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListCollectionsRequest,
-  ListCollectionsResponse,
-  ListCollectionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCollectionsRequest,
-  ) => stream.Stream<
-    ListCollectionsResponse,
-    ListCollectionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCollectionsRequest,
-  ) => stream.Stream<
-    CollectionId,
-    ListCollectionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListDatasetEntriesError =
   | AccessDeniedException
@@ -7822,27 +7446,13 @@ export type ListDatasetEntriesError =
  *
  * This operation requires permissions to perform the `rekognition:ListDatasetEntries` action.
  */
-export const listDatasetEntries: API.OperationMethod<
+export const listDatasetEntries: API.PaginatedOperationMethod<
   ListDatasetEntriesRequest,
   ListDatasetEntriesResponse,
   ListDatasetEntriesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDatasetEntriesRequest,
-  ) => stream.Stream<
-    ListDatasetEntriesResponse,
-    ListDatasetEntriesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDatasetEntriesRequest,
-  ) => stream.Stream<
-    DatasetEntry,
-    ListDatasetEntriesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  DatasetEntry
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListDatasetEntriesRequest,
   output: ListDatasetEntriesResponse,
   errors: [
@@ -7865,27 +7475,7 @@ export const listDatasetEntries: API.OperationMethod<
     items: "DatasetEntries",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListDatasetEntriesRequest,
-  ListDatasetEntriesResponse,
-  ListDatasetEntriesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDatasetEntriesRequest,
-  ) => stream.Stream<
-    ListDatasetEntriesResponse,
-    ListDatasetEntriesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDatasetEntriesRequest,
-  ) => stream.Stream<
-    DatasetEntry,
-    ListDatasetEntriesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListDatasetLabelsError =
   | AccessDeniedException
@@ -7907,27 +7497,13 @@ export type ListDatasetLabelsError =
  * Lists the labels in a dataset. Amazon Rekognition Custom Labels uses labels to describe images. For more information, see Labeling images
  * in the *Amazon Rekognition Custom Labels Developer Guide*.
  */
-export const listDatasetLabels: API.OperationMethod<
+export const listDatasetLabels: API.PaginatedOperationMethod<
   ListDatasetLabelsRequest,
   ListDatasetLabelsResponse,
   ListDatasetLabelsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDatasetLabelsRequest,
-  ) => stream.Stream<
-    ListDatasetLabelsResponse,
-    ListDatasetLabelsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDatasetLabelsRequest,
-  ) => stream.Stream<
-    DatasetLabelDescription,
-    ListDatasetLabelsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  DatasetLabelDescription
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListDatasetLabelsRequest,
   output: ListDatasetLabelsResponse,
   errors: [
@@ -7950,27 +7526,7 @@ export const listDatasetLabels: API.OperationMethod<
     items: "DatasetLabelDescriptions",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListDatasetLabelsRequest,
-  ListDatasetLabelsResponse,
-  ListDatasetLabelsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDatasetLabelsRequest,
-  ) => stream.Stream<
-    ListDatasetLabelsResponse,
-    ListDatasetLabelsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDatasetLabelsRequest,
-  ) => stream.Stream<
-    DatasetLabelDescription,
-    ListDatasetLabelsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListFacesError =
   | AccessDeniedException
@@ -7990,27 +7546,13 @@ export type ListFacesError =
  * This operation requires permissions to perform the `rekognition:ListFaces`
  * action.
  */
-export const listFaces: API.OperationMethod<
+export const listFaces: API.PaginatedOperationMethod<
   ListFacesRequest,
   ListFacesResponse,
   ListFacesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListFacesRequest,
-  ) => stream.Stream<
-    ListFacesResponse,
-    ListFacesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListFacesRequest,
-  ) => stream.Stream<
-    Face,
-    ListFacesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Face
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListFacesRequest,
   output: ListFacesResponse,
   errors: [
@@ -8031,27 +7573,7 @@ export const listFaces: API.OperationMethod<
     items: "Faces",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListFacesRequest,
-  ListFacesResponse,
-  ListFacesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListFacesRequest,
-  ) => stream.Stream<
-    ListFacesResponse,
-    ListFacesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListFacesRequest,
-  ) => stream.Stream<
-    Face,
-    ListFacesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListMediaAnalysisJobsError =
   | AccessDeniedException
@@ -8064,27 +7586,13 @@ export type ListMediaAnalysisJobsError =
 /**
  * Returns a list of media analysis jobs. Results are sorted by `CreationTimestamp` in descending order.
  */
-export const listMediaAnalysisJobs: API.OperationMethod<
+export const listMediaAnalysisJobs: API.PaginatedOperationMethod<
   ListMediaAnalysisJobsRequest,
   ListMediaAnalysisJobsResponse,
   ListMediaAnalysisJobsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListMediaAnalysisJobsRequest,
-  ) => stream.Stream<
-    ListMediaAnalysisJobsResponse,
-    ListMediaAnalysisJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListMediaAnalysisJobsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListMediaAnalysisJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListMediaAnalysisJobsRequest,
   output: ListMediaAnalysisJobsResponse,
   errors: [
@@ -8103,27 +7611,7 @@ export const listMediaAnalysisJobs: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListMediaAnalysisJobsRequest,
-  ListMediaAnalysisJobsResponse,
-  ListMediaAnalysisJobsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListMediaAnalysisJobsRequest,
-  ) => stream.Stream<
-    ListMediaAnalysisJobsResponse,
-    ListMediaAnalysisJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListMediaAnalysisJobsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListMediaAnalysisJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListProjectPoliciesError =
   | AccessDeniedException
@@ -8143,27 +7631,13 @@ export type ListProjectPoliciesError =
  *
  * This operation requires permissions to perform the `rekognition:ListProjectPolicies` action.
  */
-export const listProjectPolicies: API.OperationMethod<
+export const listProjectPolicies: API.PaginatedOperationMethod<
   ListProjectPoliciesRequest,
   ListProjectPoliciesResponse,
   ListProjectPoliciesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListProjectPoliciesRequest,
-  ) => stream.Stream<
-    ListProjectPoliciesResponse,
-    ListProjectPoliciesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListProjectPoliciesRequest,
-  ) => stream.Stream<
-    ProjectPolicy,
-    ListProjectPoliciesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ProjectPolicy
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListProjectPoliciesRequest,
   output: ListProjectPoliciesResponse,
   errors: [
@@ -8184,27 +7658,7 @@ export const listProjectPolicies: API.OperationMethod<
     items: "ProjectPolicies",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListProjectPoliciesRequest,
-  ListProjectPoliciesResponse,
-  ListProjectPoliciesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListProjectPoliciesRequest,
-  ) => stream.Stream<
-    ListProjectPoliciesResponse,
-    ListProjectPoliciesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListProjectPoliciesRequest,
-  ) => stream.Stream<
-    ProjectPolicy,
-    ListProjectPoliciesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListStreamProcessorsError =
   | AccessDeniedException
@@ -8217,27 +7671,13 @@ export type ListStreamProcessorsError =
 /**
  * Gets a list of stream processors that you have created with CreateStreamProcessor.
  */
-export const listStreamProcessors: API.OperationMethod<
+export const listStreamProcessors: API.PaginatedOperationMethod<
   ListStreamProcessorsRequest,
   ListStreamProcessorsResponse,
   ListStreamProcessorsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListStreamProcessorsRequest,
-  ) => stream.Stream<
-    ListStreamProcessorsResponse,
-    ListStreamProcessorsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListStreamProcessorsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListStreamProcessorsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListStreamProcessorsRequest,
   output: ListStreamProcessorsResponse,
   errors: [
@@ -8256,27 +7696,7 @@ export const listStreamProcessors: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListStreamProcessorsRequest,
-  ListStreamProcessorsResponse,
-  ListStreamProcessorsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListStreamProcessorsRequest,
-  ) => stream.Stream<
-    ListStreamProcessorsResponse,
-    ListStreamProcessorsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListStreamProcessorsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListStreamProcessorsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsForResourceError =
   | AccessDeniedException
@@ -8297,7 +7717,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceRequest,
   ListTagsForResourceResponse,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -8330,27 +7750,13 @@ export type ListUsersError =
  * truncated, `NextToken` is returned in the response that can be used in the
  * subsequent request to retrieve the next set of identities.
  */
-export const listUsers: API.OperationMethod<
+export const listUsers: API.PaginatedOperationMethod<
   ListUsersRequest,
   ListUsersResponse,
   ListUsersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListUsersRequest,
-  ) => stream.Stream<
-    ListUsersResponse,
-    ListUsersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListUsersRequest,
-  ) => stream.Stream<
-    User,
-    ListUsersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  User
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListUsersRequest,
   output: ListUsersResponse,
   errors: [
@@ -8371,27 +7777,7 @@ export const listUsers: API.OperationMethod<
     items: "Users",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListUsersRequest,
-  ListUsersResponse,
-  ListUsersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListUsersRequest,
-  ) => stream.Stream<
-    ListUsersResponse,
-    ListUsersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListUsersRequest,
-  ) => stream.Stream<
-    User,
-    ListUsersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type PutProjectPolicyError =
   | AccessDeniedException
@@ -8433,7 +7819,7 @@ export const putProjectPolicy: API.OperationMethod<
   PutProjectPolicyRequest,
   PutProjectPolicyResponse,
   PutProjectPolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutProjectPolicyRequest,
   output: PutProjectPolicyResponse,
@@ -8503,7 +7889,7 @@ export const recognizeCelebrities: API.OperationMethod<
   RecognizeCelebritiesRequest,
   RecognizeCelebritiesResponse,
   RecognizeCelebritiesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RecognizeCelebritiesRequest,
   output: RecognizeCelebritiesResponse,
@@ -8554,7 +7940,7 @@ export const searchFaces: API.OperationMethod<
   SearchFacesRequest,
   SearchFacesResponse,
   SearchFacesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: SearchFacesRequest,
   output: SearchFacesResponse,
@@ -8630,7 +8016,7 @@ export const searchFacesByImage: API.OperationMethod<
   SearchFacesByImageRequest,
   SearchFacesByImageResponse,
   SearchFacesByImageError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: SearchFacesByImageRequest,
   output: SearchFacesByImageResponse,
@@ -8670,7 +8056,7 @@ export const searchUsers: API.OperationMethod<
   SearchUsersRequest,
   SearchUsersResponse,
   SearchUsersError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: SearchUsersRequest,
   output: SearchUsersResponse,
@@ -8715,7 +8101,7 @@ export const searchUsersByImage: API.OperationMethod<
   SearchUsersByImageRequest,
   SearchUsersByImageResponse,
   SearchUsersByImageError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: SearchUsersByImageRequest,
   output: SearchUsersByImageResponse,
@@ -8765,7 +8151,7 @@ export const startCelebrityRecognition: API.OperationMethod<
   StartCelebrityRecognitionRequest,
   StartCelebrityRecognitionResponse,
   StartCelebrityRecognitionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartCelebrityRecognitionRequest,
   output: StartCelebrityRecognitionResponse,
@@ -8816,7 +8202,7 @@ export const startContentModeration: API.OperationMethod<
   StartContentModerationRequest,
   StartContentModerationResponse,
   StartContentModerationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartContentModerationRequest,
   output: StartContentModerationResponse,
@@ -8867,7 +8253,7 @@ export const startFaceDetection: API.OperationMethod<
   StartFaceDetectionRequest,
   StartFaceDetectionResponse,
   StartFaceDetectionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartFaceDetectionRequest,
   output: StartFaceDetectionResponse,
@@ -8916,7 +8302,7 @@ export const startFaceSearch: API.OperationMethod<
   StartFaceSearchRequest,
   StartFaceSearchResponse,
   StartFaceSearchError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartFaceSearchRequest,
   output: StartFaceSearchResponse,
@@ -8982,7 +8368,7 @@ export const startLabelDetection: API.OperationMethod<
   StartLabelDetectionRequest,
   StartLabelDetectionResponse,
   StartLabelDetectionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartLabelDetectionRequest,
   output: StartLabelDetectionResponse,
@@ -9023,7 +8409,7 @@ export const startMediaAnalysisJob: API.OperationMethod<
   StartMediaAnalysisJobRequest,
   StartMediaAnalysisJobResponse,
   StartMediaAnalysisJobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartMediaAnalysisJobRequest,
   output: StartMediaAnalysisJobResponse,
@@ -9078,7 +8464,7 @@ export const startPersonTracking: API.OperationMethod<
   StartPersonTrackingRequest,
   StartPersonTrackingResponse,
   StartPersonTrackingError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartPersonTrackingRequest,
   output: StartPersonTrackingResponse,
@@ -9127,7 +8513,7 @@ export const startProjectVersion: API.OperationMethod<
   StartProjectVersionRequest,
   StartProjectVersionResponse,
   StartProjectVersionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartProjectVersionRequest,
   output: StartProjectVersionResponse,
@@ -9181,7 +8567,7 @@ export const startSegmentDetection: API.OperationMethod<
   StartSegmentDetectionRequest,
   StartSegmentDetectionResponse,
   StartSegmentDetectionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartSegmentDetectionRequest,
   output: StartSegmentDetectionResponse,
@@ -9221,7 +8607,7 @@ export const startStreamProcessor: API.OperationMethod<
   StartStreamProcessorRequest,
   StartStreamProcessorResponse,
   StartStreamProcessorError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartStreamProcessorRequest,
   output: StartStreamProcessorResponse,
@@ -9266,7 +8652,7 @@ export const startTextDetection: API.OperationMethod<
   StartTextDetectionRequest,
   StartTextDetectionResponse,
   StartTextDetectionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartTextDetectionRequest,
   output: StartTextDetectionResponse,
@@ -9308,7 +8694,7 @@ export const stopProjectVersion: API.OperationMethod<
   StopProjectVersionRequest,
   StopProjectVersionResponse,
   StopProjectVersionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StopProjectVersionRequest,
   output: StopProjectVersionResponse,
@@ -9342,7 +8728,7 @@ export const stopStreamProcessor: API.OperationMethod<
   StopStreamProcessorRequest,
   StopStreamProcessorResponse,
   StopStreamProcessorError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StopStreamProcessorRequest,
   output: StopStreamProcessorResponse,
@@ -9381,7 +8767,7 @@ export const tagResource: API.OperationMethod<
   TagResourceRequest,
   TagResourceResponse,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -9418,7 +8804,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceRequest,
   UntagResourceResponse,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -9478,7 +8864,7 @@ export const updateDatasetEntries: API.OperationMethod<
   UpdateDatasetEntriesRequest,
   UpdateDatasetEntriesResponse,
   UpdateDatasetEntriesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateDatasetEntriesRequest,
   output: UpdateDatasetEntriesResponse,
@@ -9513,7 +8899,7 @@ export const updateStreamProcessor: API.OperationMethod<
   UpdateStreamProcessorRequest,
   UpdateStreamProcessorResponse,
   UpdateStreamProcessorError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateStreamProcessorRequest,
   output: UpdateStreamProcessorResponse,

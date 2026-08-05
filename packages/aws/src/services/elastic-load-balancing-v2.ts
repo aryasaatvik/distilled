@@ -1,7 +1,6 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as redacted from "effect/Redacted";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -9,7 +8,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 import { SensitiveString } from "../sensitive.ts";
 const ns = T.XmlNamespace(
   "http://elasticloadbalancing.amazonaws.com/doc/2015-12-01/",
@@ -96,7 +94,7 @@ const rules = T.EndpointResolver((p, _) => {
 export class AllocationIdNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<AllocationIdNotFoundException>()(
     "AllocationIdNotFoundException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "AllocationIdNotFound", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -105,7 +103,7 @@ export class AllocationIdNotFoundException
 export class ALPNPolicyNotSupportedException
   extends /*@__PURE__*/ S.TaggedErrorClass<ALPNPolicyNotSupportedException>()(
     "ALPNPolicyNotSupportedException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "ALPNPolicyNotFound", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -114,7 +112,7 @@ export class ALPNPolicyNotSupportedException
 export class AvailabilityZoneNotSupportedException
   extends /*@__PURE__*/ S.TaggedErrorClass<AvailabilityZoneNotSupportedException>()(
     "AvailabilityZoneNotSupportedException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "AvailabilityZoneNotSupported",
@@ -126,7 +124,7 @@ export class AvailabilityZoneNotSupportedException
 export class CaCertificatesBundleNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<CaCertificatesBundleNotFoundException>()(
     "CaCertificatesBundleNotFoundException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "CaCertificatesBundleNotFound",
@@ -138,7 +136,7 @@ export class CaCertificatesBundleNotFoundException
 export class CapacityDecreaseRequestsLimitExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<CapacityDecreaseRequestsLimitExceededException>()(
     "CapacityDecreaseRequestsLimitExceededException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "CapacityDecreaseRequestLimitExceeded",
@@ -150,7 +148,7 @@ export class CapacityDecreaseRequestsLimitExceededException
 export class CapacityReservationPendingException
   extends /*@__PURE__*/ S.TaggedErrorClass<CapacityReservationPendingException>()(
     "CapacityReservationPendingException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "CapacityReservationPending",
@@ -162,7 +160,7 @@ export class CapacityReservationPendingException
 export class CapacityUnitsLimitExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<CapacityUnitsLimitExceededException>()(
     "CapacityUnitsLimitExceededException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "CapacityUnitsLimitExceeded",
@@ -174,7 +172,7 @@ export class CapacityUnitsLimitExceededException
 export class CertificateNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<CertificateNotFoundException>()(
     "CertificateNotFoundException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "CertificateNotFound", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -183,7 +181,7 @@ export class CertificateNotFoundException
 export class DeleteAssociationSameAccountException
   extends /*@__PURE__*/ S.TaggedErrorClass<DeleteAssociationSameAccountException>()(
     "DeleteAssociationSameAccountException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "DeleteAssociationSameAccount",
@@ -195,7 +193,7 @@ export class DeleteAssociationSameAccountException
 export class DuplicateListenerException
   extends /*@__PURE__*/ S.TaggedErrorClass<DuplicateListenerException>()(
     "DuplicateListenerException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "DuplicateListener", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -204,7 +202,7 @@ export class DuplicateListenerException
 export class DuplicateLoadBalancerNameException
   extends /*@__PURE__*/ S.TaggedErrorClass<DuplicateLoadBalancerNameException>()(
     "DuplicateLoadBalancerNameException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "DuplicateLoadBalancerName",
@@ -216,7 +214,7 @@ export class DuplicateLoadBalancerNameException
 export class DuplicateTagKeysException
   extends /*@__PURE__*/ S.TaggedErrorClass<DuplicateTagKeysException>()(
     "DuplicateTagKeysException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "DuplicateTagKeys", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -225,7 +223,7 @@ export class DuplicateTagKeysException
 export class DuplicateTargetGroupNameException
   extends /*@__PURE__*/ S.TaggedErrorClass<DuplicateTargetGroupNameException>()(
     "DuplicateTargetGroupNameException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "DuplicateTargetGroupName",
@@ -237,7 +235,7 @@ export class DuplicateTargetGroupNameException
 export class DuplicateTrustStoreNameException
   extends /*@__PURE__*/ S.TaggedErrorClass<DuplicateTrustStoreNameException>()(
     "DuplicateTrustStoreNameException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "DuplicateTrustStoreName",
@@ -249,7 +247,7 @@ export class DuplicateTrustStoreNameException
 export class HealthUnavailableException
   extends /*@__PURE__*/ S.TaggedErrorClass<HealthUnavailableException>()(
     "HealthUnavailableException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "HealthUnavailable", httpResponseCode: 500 }),
       T.HttpError(500),
@@ -258,7 +256,7 @@ export class HealthUnavailableException
 export class IncompatibleProtocolsException
   extends /*@__PURE__*/ S.TaggedErrorClass<IncompatibleProtocolsException>()(
     "IncompatibleProtocolsException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "IncompatibleProtocols", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -267,7 +265,7 @@ export class IncompatibleProtocolsException
 export class InsufficientCapacityException
   extends /*@__PURE__*/ S.TaggedErrorClass<InsufficientCapacityException>()(
     "InsufficientCapacityException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "InsufficientCapacity", httpResponseCode: 500 }),
       T.HttpError(500),
@@ -276,7 +274,7 @@ export class InsufficientCapacityException
 export class InvalidCaCertificatesBundleException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidCaCertificatesBundleException>()(
     "InvalidCaCertificatesBundleException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "InvalidCaCertificatesBundle",
@@ -288,7 +286,7 @@ export class InvalidCaCertificatesBundleException
 export class InvalidConfigurationRequestException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidConfigurationRequestException>()(
     "InvalidConfigurationRequestException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "InvalidConfigurationRequest",
@@ -300,7 +298,7 @@ export class InvalidConfigurationRequestException
 export class InvalidLoadBalancerActionException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidLoadBalancerActionException>()(
     "InvalidLoadBalancerActionException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "InvalidLoadBalancerAction",
@@ -312,7 +310,7 @@ export class InvalidLoadBalancerActionException
 export class InvalidRevocationContentException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidRevocationContentException>()(
     "InvalidRevocationContentException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "InvalidRevocationContent",
@@ -324,7 +322,7 @@ export class InvalidRevocationContentException
 export class InvalidSchemeException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidSchemeException>()(
     "InvalidSchemeException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "InvalidScheme", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -333,7 +331,7 @@ export class InvalidSchemeException
 export class InvalidSecurityGroupException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidSecurityGroupException>()(
     "InvalidSecurityGroupException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "InvalidSecurityGroup", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -342,7 +340,7 @@ export class InvalidSecurityGroupException
 export class InvalidSubnetException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidSubnetException>()(
     "InvalidSubnetException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "InvalidSubnet", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -351,7 +349,7 @@ export class InvalidSubnetException
 export class InvalidTargetException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidTargetException>()(
     "InvalidTargetException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "InvalidTarget", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -360,7 +358,7 @@ export class InvalidTargetException
 export class ListenerNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ListenerNotFoundException>()(
     "ListenerNotFoundException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "ListenerNotFound", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -369,7 +367,7 @@ export class ListenerNotFoundException
 export class LoadBalancerNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<LoadBalancerNotFoundException>()(
     "LoadBalancerNotFoundException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "LoadBalancerNotFound", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -378,7 +376,7 @@ export class LoadBalancerNotFoundException
 export class OperationNotPermittedException
   extends /*@__PURE__*/ S.TaggedErrorClass<OperationNotPermittedException>()(
     "OperationNotPermittedException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "OperationNotPermitted", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -387,7 +385,7 @@ export class OperationNotPermittedException
 export class PriorityInUseException
   extends /*@__PURE__*/ S.TaggedErrorClass<PriorityInUseException>()(
     "PriorityInUseException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "PriorityInUse", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -396,7 +394,7 @@ export class PriorityInUseException
 export class PriorRequestNotCompleteException
   extends /*@__PURE__*/ S.TaggedErrorClass<PriorRequestNotCompleteException>()(
     "PriorRequestNotCompleteException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "PriorRequestNotComplete",
@@ -408,7 +406,7 @@ export class PriorRequestNotCompleteException
 export class ResourceInUseException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceInUseException>()(
     "ResourceInUseException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "ResourceInUse", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -417,7 +415,7 @@ export class ResourceInUseException
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "ResourceNotFound", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -426,7 +424,7 @@ export class ResourceNotFoundException
 export class RevocationContentNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<RevocationContentNotFoundException>()(
     "RevocationContentNotFoundException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "RevocationContentNotFound",
@@ -438,7 +436,7 @@ export class RevocationContentNotFoundException
 export class RevocationIdNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<RevocationIdNotFoundException>()(
     "RevocationIdNotFoundException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "RevocationIdNotFound", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -447,7 +445,7 @@ export class RevocationIdNotFoundException
 export class RuleNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<RuleNotFoundException>()(
     "RuleNotFoundException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "RuleNotFound", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -456,7 +454,7 @@ export class RuleNotFoundException
 export class SSLPolicyNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<SSLPolicyNotFoundException>()(
     "SSLPolicyNotFoundException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "SSLPolicyNotFound", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -465,7 +463,7 @@ export class SSLPolicyNotFoundException
 export class SubnetNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<SubnetNotFoundException>()(
     "SubnetNotFoundException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "SubnetNotFound", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -474,7 +472,7 @@ export class SubnetNotFoundException
 export class TargetGroupAssociationLimitException
   extends /*@__PURE__*/ S.TaggedErrorClass<TargetGroupAssociationLimitException>()(
     "TargetGroupAssociationLimitException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "TargetGroupAssociationLimit",
@@ -486,7 +484,7 @@ export class TargetGroupAssociationLimitException
 export class TargetGroupNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<TargetGroupNotFoundException>()(
     "TargetGroupNotFoundException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "TargetGroupNotFound", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -495,7 +493,7 @@ export class TargetGroupNotFoundException
 export class TooManyActionsException
   extends /*@__PURE__*/ S.TaggedErrorClass<TooManyActionsException>()(
     "TooManyActionsException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "TooManyActions", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -504,7 +502,7 @@ export class TooManyActionsException
 export class TooManyCertificatesException
   extends /*@__PURE__*/ S.TaggedErrorClass<TooManyCertificatesException>()(
     "TooManyCertificatesException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "TooManyCertificates", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -513,7 +511,7 @@ export class TooManyCertificatesException
 export class TooManyListenersException
   extends /*@__PURE__*/ S.TaggedErrorClass<TooManyListenersException>()(
     "TooManyListenersException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "TooManyListeners", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -522,7 +520,7 @@ export class TooManyListenersException
 export class TooManyLoadBalancersException
   extends /*@__PURE__*/ S.TaggedErrorClass<TooManyLoadBalancersException>()(
     "TooManyLoadBalancersException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "TooManyLoadBalancers", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -531,7 +529,7 @@ export class TooManyLoadBalancersException
 export class TooManyRegistrationsForTargetIdException
   extends /*@__PURE__*/ S.TaggedErrorClass<TooManyRegistrationsForTargetIdException>()(
     "TooManyRegistrationsForTargetIdException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "TooManyRegistrationsForTargetId",
@@ -543,7 +541,7 @@ export class TooManyRegistrationsForTargetIdException
 export class TooManyRulesException
   extends /*@__PURE__*/ S.TaggedErrorClass<TooManyRulesException>()(
     "TooManyRulesException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "TooManyRules", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -552,7 +550,7 @@ export class TooManyRulesException
 export class TooManyTagsException
   extends /*@__PURE__*/ S.TaggedErrorClass<TooManyTagsException>()(
     "TooManyTagsException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "TooManyTags", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -561,7 +559,7 @@ export class TooManyTagsException
 export class TooManyTargetGroupsException
   extends /*@__PURE__*/ S.TaggedErrorClass<TooManyTargetGroupsException>()(
     "TooManyTargetGroupsException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "TooManyTargetGroups", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -570,7 +568,7 @@ export class TooManyTargetGroupsException
 export class TooManyTargetsException
   extends /*@__PURE__*/ S.TaggedErrorClass<TooManyTargetsException>()(
     "TooManyTargetsException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "TooManyTargets", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -579,7 +577,7 @@ export class TooManyTargetsException
 export class TooManyTrustStoreRevocationEntriesException
   extends /*@__PURE__*/ S.TaggedErrorClass<TooManyTrustStoreRevocationEntriesException>()(
     "TooManyTrustStoreRevocationEntriesException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "TooManyTrustStoreRevocationEntries",
@@ -591,7 +589,7 @@ export class TooManyTrustStoreRevocationEntriesException
 export class TooManyTrustStoresException
   extends /*@__PURE__*/ S.TaggedErrorClass<TooManyTrustStoresException>()(
     "TooManyTrustStoresException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "TooManyTrustStores", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -600,7 +598,7 @@ export class TooManyTrustStoresException
 export class TooManyUniqueTargetGroupsPerLoadBalancerException
   extends /*@__PURE__*/ S.TaggedErrorClass<TooManyUniqueTargetGroupsPerLoadBalancerException>()(
     "TooManyUniqueTargetGroupsPerLoadBalancerException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "TooManyUniqueTargetGroupsPerLoadBalancer",
@@ -612,7 +610,7 @@ export class TooManyUniqueTargetGroupsPerLoadBalancerException
 export class TrustStoreAssociationNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<TrustStoreAssociationNotFoundException>()(
     "TrustStoreAssociationNotFoundException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "AssociationNotFound", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -621,7 +619,7 @@ export class TrustStoreAssociationNotFoundException
 export class TrustStoreInUseException
   extends /*@__PURE__*/ S.TaggedErrorClass<TrustStoreInUseException>()(
     "TrustStoreInUseException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "TrustStoreInUse", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -630,7 +628,7 @@ export class TrustStoreInUseException
 export class TrustStoreNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<TrustStoreNotFoundException>()(
     "TrustStoreNotFoundException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "TrustStoreNotFound", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -639,7 +637,7 @@ export class TrustStoreNotFoundException
 export class TrustStoreNotReadyException
   extends /*@__PURE__*/ S.TaggedErrorClass<TrustStoreNotReadyException>()(
     "TrustStoreNotReadyException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "TrustStoreNotReady", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -648,7 +646,7 @@ export class TrustStoreNotReadyException
 export class UnsupportedProtocolException
   extends /*@__PURE__*/ S.TaggedErrorClass<UnsupportedProtocolException>()(
     "UnsupportedProtocolException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "UnsupportedProtocol", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -3895,7 +3893,7 @@ export const addListenerCertificates: API.OperationMethod<
   AddListenerCertificatesInput,
   AddListenerCertificatesOutput,
   AddListenerCertificatesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AddListenerCertificatesInput,
   output: AddListenerCertificatesOutput,
@@ -3930,7 +3928,7 @@ export const addTags: API.OperationMethod<
   AddTagsInput,
   AddTagsOutput,
   AddTagsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AddTagsInput,
   output: AddTagsOutput,
@@ -3961,7 +3959,7 @@ export const addTrustStoreRevocations: API.OperationMethod<
   AddTrustStoreRevocationsInput,
   AddTrustStoreRevocationsOutput,
   AddTrustStoreRevocationsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AddTrustStoreRevocationsInput,
   output: AddTrustStoreRevocationsOutput,
@@ -4020,7 +4018,7 @@ export const createListener: API.OperationMethod<
   CreateListenerInput,
   CreateListenerOutput,
   CreateListenerError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateListenerInput,
   output: CreateListenerOutput,
@@ -4087,7 +4085,7 @@ export const createLoadBalancer: API.OperationMethod<
   CreateLoadBalancerInput,
   CreateLoadBalancerOutput,
   CreateLoadBalancerError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateLoadBalancerInput,
   output: CreateLoadBalancerOutput,
@@ -4142,7 +4140,7 @@ export const createRule: API.OperationMethod<
   CreateRuleInput,
   CreateRuleOutput,
   CreateRuleError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateRuleInput,
   output: CreateRuleOutput,
@@ -4195,7 +4193,7 @@ export const createTargetGroup: API.OperationMethod<
   CreateTargetGroupInput,
   CreateTargetGroupOutput,
   CreateTargetGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateTargetGroupInput,
   output: CreateTargetGroupOutput,
@@ -4227,7 +4225,7 @@ export const createTrustStore: API.OperationMethod<
   CreateTrustStoreInput,
   CreateTrustStoreOutput,
   CreateTrustStoreError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateTrustStoreInput,
   output: CreateTrustStoreOutput,
@@ -4258,7 +4256,7 @@ export const deleteListener: API.OperationMethod<
   DeleteListenerInput,
   DeleteListenerOutput,
   DeleteListenerError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteListenerInput,
   output: DeleteListenerOutput,
@@ -4288,7 +4286,7 @@ export const deleteLoadBalancer: API.OperationMethod<
   DeleteLoadBalancerInput,
   DeleteLoadBalancerOutput,
   DeleteLoadBalancerError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteLoadBalancerInput,
   output: DeleteLoadBalancerOutput,
@@ -4315,7 +4313,7 @@ export const deleteRule: API.OperationMethod<
   DeleteRuleInput,
   DeleteRuleOutput,
   DeleteRuleError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteRuleInput,
   output: DeleteRuleOutput,
@@ -4337,7 +4335,7 @@ export const deleteSharedTrustStoreAssociation: API.OperationMethod<
   DeleteSharedTrustStoreAssociationInput,
   DeleteSharedTrustStoreAssociationOutput,
   DeleteSharedTrustStoreAssociationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteSharedTrustStoreAssociationInput,
   output: DeleteSharedTrustStoreAssociationOutput,
@@ -4364,7 +4362,7 @@ export const deleteTargetGroup: API.OperationMethod<
   DeleteTargetGroupInput,
   DeleteTargetGroupOutput,
   DeleteTargetGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteTargetGroupInput,
   output: DeleteTargetGroupOutput,
@@ -4385,7 +4383,7 @@ export const deleteTrustStore: API.OperationMethod<
   DeleteTrustStoreInput,
   DeleteTrustStoreOutput,
   DeleteTrustStoreError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteTrustStoreInput,
   output: DeleteTrustStoreOutput,
@@ -4424,7 +4422,7 @@ export const deregisterTargets: API.OperationMethod<
   DeregisterTargetsInput,
   DeregisterTargetsOutput,
   DeregisterTargetsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeregisterTargetsInput,
   output: DeregisterTargetsOutput,
@@ -4450,27 +4448,13 @@ export type DescribeAccountLimitsError = CommonErrors;
  * - Quotas for your Gateway
  * Load Balancers
  */
-export const describeAccountLimits: API.OperationMethod<
+export const describeAccountLimits: API.PaginatedOperationMethod<
   DescribeAccountLimitsInput,
   DescribeAccountLimitsOutput,
   DescribeAccountLimitsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeAccountLimitsInput,
-  ) => stream.Stream<
-    DescribeAccountLimitsOutput,
-    DescribeAccountLimitsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeAccountLimitsInput,
-  ) => stream.Stream<
-    Limit,
-    DescribeAccountLimitsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Limit
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeAccountLimitsInput,
   output: DescribeAccountLimitsOutput,
   errors: [],
@@ -4482,27 +4466,7 @@ export const describeAccountLimits: API.OperationMethod<
     outputToken: "NextMarker",
     items: "Limits",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeAccountLimitsInput,
-  DescribeAccountLimitsOutput,
-  DescribeAccountLimitsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeAccountLimitsInput,
-  ) => stream.Stream<
-    DescribeAccountLimitsOutput,
-    DescribeAccountLimitsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeAccountLimitsInput,
-  ) => stream.Stream<
-    Limit,
-    DescribeAccountLimitsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeCapacityReservationError =
   | LoadBalancerNotFoundException
@@ -4514,7 +4478,7 @@ export const describeCapacityReservation: API.OperationMethod<
   DescribeCapacityReservationInput,
   DescribeCapacityReservationOutput,
   DescribeCapacityReservationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeCapacityReservationInput,
   output: DescribeCapacityReservationOutput,
@@ -4534,7 +4498,7 @@ export const describeListenerAttributes: API.OperationMethod<
   DescribeListenerAttributesInput,
   DescribeListenerAttributesOutput,
   DescribeListenerAttributesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeListenerAttributesInput,
   output: DescribeListenerAttributesOutput,
@@ -4559,27 +4523,13 @@ export type DescribeListenerCertificatesError =
  * Server certificates in the Network Load Balancers
  * Guide.
  */
-export const describeListenerCertificates: API.OperationMethod<
+export const describeListenerCertificates: API.PaginatedOperationMethod<
   DescribeListenerCertificatesInput,
   DescribeListenerCertificatesOutput,
   DescribeListenerCertificatesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeListenerCertificatesInput,
-  ) => stream.Stream<
-    DescribeListenerCertificatesOutput,
-    DescribeListenerCertificatesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeListenerCertificatesInput,
-  ) => stream.Stream<
-    Certificate,
-    DescribeListenerCertificatesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Certificate
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeListenerCertificatesInput,
   output: DescribeListenerCertificatesOutput,
   errors: [ListenerNotFoundException],
@@ -4591,27 +4541,7 @@ export const describeListenerCertificates: API.OperationMethod<
     outputToken: "NextMarker",
     items: "Certificates",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeListenerCertificatesInput,
-  DescribeListenerCertificatesOutput,
-  DescribeListenerCertificatesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeListenerCertificatesInput,
-  ) => stream.Stream<
-    DescribeListenerCertificatesOutput,
-    DescribeListenerCertificatesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeListenerCertificatesInput,
-  ) => stream.Stream<
-    Certificate,
-    DescribeListenerCertificatesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeListenersError =
   | ListenerNotFoundException
@@ -4623,27 +4553,13 @@ export type DescribeListenersError =
  * Balancer, Network Load Balancer, or Gateway Load Balancer. You must specify either a load
  * balancer or one or more listeners.
  */
-export const describeListeners: API.OperationMethod<
+export const describeListeners: API.PaginatedOperationMethod<
   DescribeListenersInput,
   DescribeListenersOutput,
   DescribeListenersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeListenersInput,
-  ) => stream.Stream<
-    DescribeListenersOutput,
-    DescribeListenersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeListenersInput,
-  ) => stream.Stream<
-    Listener,
-    DescribeListenersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Listener
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeListenersInput,
   output: DescribeListenersOutput,
   errors: [
@@ -4659,27 +4575,7 @@ export const describeListeners: API.OperationMethod<
     outputToken: "NextMarker",
     items: "Listeners",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeListenersInput,
-  DescribeListenersOutput,
-  DescribeListenersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeListenersInput,
-  ) => stream.Stream<
-    DescribeListenersOutput,
-    DescribeListenersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeListenersInput,
-  ) => stream.Stream<
-    Listener,
-    DescribeListenersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeLoadBalancerAttributesError =
   | LoadBalancerNotFoundException
@@ -4703,7 +4599,7 @@ export const describeLoadBalancerAttributes: API.OperationMethod<
   DescribeLoadBalancerAttributesInput,
   DescribeLoadBalancerAttributesOutput,
   DescribeLoadBalancerAttributesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeLoadBalancerAttributesInput,
   output: DescribeLoadBalancerAttributesOutput,
@@ -4719,27 +4615,13 @@ export type DescribeLoadBalancersError =
 /**
  * Describes the specified load balancers or all of your load balancers.
  */
-export const describeLoadBalancers: API.OperationMethod<
+export const describeLoadBalancers: API.PaginatedOperationMethod<
   DescribeLoadBalancersInput,
   DescribeLoadBalancersOutput,
   DescribeLoadBalancersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeLoadBalancersInput,
-  ) => stream.Stream<
-    DescribeLoadBalancersOutput,
-    DescribeLoadBalancersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeLoadBalancersInput,
-  ) => stream.Stream<
-    LoadBalancer,
-    DescribeLoadBalancersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  LoadBalancer
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeLoadBalancersInput,
   output: DescribeLoadBalancersOutput,
   errors: [LoadBalancerNotFoundException],
@@ -4751,27 +4633,7 @@ export const describeLoadBalancers: API.OperationMethod<
     outputToken: "NextMarker",
     items: "LoadBalancers",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeLoadBalancersInput,
-  DescribeLoadBalancersOutput,
-  DescribeLoadBalancersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeLoadBalancersInput,
-  ) => stream.Stream<
-    DescribeLoadBalancersOutput,
-    DescribeLoadBalancersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeLoadBalancersInput,
-  ) => stream.Stream<
-    LoadBalancer,
-    DescribeLoadBalancersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeRulesError =
   | ListenerNotFoundException
@@ -4782,27 +4644,13 @@ export type DescribeRulesError =
  * Describes the specified rules or the rules for the specified listener. You must specify
  * either a listener or rules.
  */
-export const describeRules: API.OperationMethod<
+export const describeRules: API.PaginatedOperationMethod<
   DescribeRulesInput,
   DescribeRulesOutput,
   DescribeRulesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeRulesInput,
-  ) => stream.Stream<
-    DescribeRulesOutput,
-    DescribeRulesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeRulesInput,
-  ) => stream.Stream<
-    Rule,
-    DescribeRulesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Rule
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeRulesInput,
   output: DescribeRulesOutput,
   errors: [
@@ -4818,27 +4666,7 @@ export const describeRules: API.OperationMethod<
     outputToken: "NextMarker",
     items: "Rules",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeRulesInput,
-  DescribeRulesOutput,
-  DescribeRulesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeRulesInput,
-  ) => stream.Stream<
-    DescribeRulesOutput,
-    DescribeRulesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeRulesInput,
-  ) => stream.Stream<
-    Rule,
-    DescribeRulesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeSSLPoliciesError =
   | SSLPolicyNotFoundException
@@ -4853,7 +4681,7 @@ export const describeSSLPolicies: API.OperationMethod<
   DescribeSSLPoliciesInput,
   DescribeSSLPoliciesOutput,
   DescribeSSLPoliciesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeSSLPoliciesInput,
   output: DescribeSSLPoliciesOutput,
@@ -4879,7 +4707,7 @@ export const describeTags: API.OperationMethod<
   DescribeTagsInput,
   DescribeTagsOutput,
   DescribeTagsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeTagsInput,
   output: DescribeTagsOutput,
@@ -4916,7 +4744,7 @@ export const describeTargetGroupAttributes: API.OperationMethod<
   DescribeTargetGroupAttributesInput,
   DescribeTargetGroupAttributesOutput,
   DescribeTargetGroupAttributesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeTargetGroupAttributesInput,
   output: DescribeTargetGroupAttributesOutput,
@@ -4936,27 +4764,13 @@ export type DescribeTargetGroupsError =
  * results: the ARN of the load balancer, the names of one or more target groups, or the ARNs of
  * one or more target groups.
  */
-export const describeTargetGroups: API.OperationMethod<
+export const describeTargetGroups: API.PaginatedOperationMethod<
   DescribeTargetGroupsInput,
   DescribeTargetGroupsOutput,
   DescribeTargetGroupsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeTargetGroupsInput,
-  ) => stream.Stream<
-    DescribeTargetGroupsOutput,
-    DescribeTargetGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeTargetGroupsInput,
-  ) => stream.Stream<
-    TargetGroup,
-    DescribeTargetGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  TargetGroup
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeTargetGroupsInput,
   output: DescribeTargetGroupsOutput,
   errors: [LoadBalancerNotFoundException, TargetGroupNotFoundException],
@@ -4968,27 +4782,7 @@ export const describeTargetGroups: API.OperationMethod<
     outputToken: "NextMarker",
     items: "TargetGroups",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeTargetGroupsInput,
-  DescribeTargetGroupsOutput,
-  DescribeTargetGroupsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeTargetGroupsInput,
-  ) => stream.Stream<
-    DescribeTargetGroupsOutput,
-    DescribeTargetGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeTargetGroupsInput,
-  ) => stream.Stream<
-    TargetGroup,
-    DescribeTargetGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeTargetHealthError =
   | HealthUnavailableException
@@ -5002,7 +4796,7 @@ export const describeTargetHealth: API.OperationMethod<
   DescribeTargetHealthInput,
   DescribeTargetHealthOutput,
   DescribeTargetHealthError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeTargetHealthInput,
   output: DescribeTargetHealthOutput,
@@ -5022,27 +4816,13 @@ export type DescribeTrustStoreAssociationsError =
 /**
  * Describes all resources associated with the specified trust store.
  */
-export const describeTrustStoreAssociations: API.OperationMethod<
+export const describeTrustStoreAssociations: API.PaginatedOperationMethod<
   DescribeTrustStoreAssociationsInput,
   DescribeTrustStoreAssociationsOutput,
   DescribeTrustStoreAssociationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeTrustStoreAssociationsInput,
-  ) => stream.Stream<
-    DescribeTrustStoreAssociationsOutput,
-    DescribeTrustStoreAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeTrustStoreAssociationsInput,
-  ) => stream.Stream<
-    TrustStoreAssociation,
-    DescribeTrustStoreAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  TrustStoreAssociation
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeTrustStoreAssociationsInput,
   output: DescribeTrustStoreAssociationsOutput,
   errors: [TrustStoreNotFoundException],
@@ -5055,27 +4835,7 @@ export const describeTrustStoreAssociations: API.OperationMethod<
     items: "TrustStoreAssociations",
     pageSize: "PageSize",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeTrustStoreAssociationsInput,
-  DescribeTrustStoreAssociationsOutput,
-  DescribeTrustStoreAssociationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeTrustStoreAssociationsInput,
-  ) => stream.Stream<
-    DescribeTrustStoreAssociationsOutput,
-    DescribeTrustStoreAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeTrustStoreAssociationsInput,
-  ) => stream.Stream<
-    TrustStoreAssociation,
-    DescribeTrustStoreAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeTrustStoreRevocationsError =
   | RevocationIdNotFoundException
@@ -5085,27 +4845,13 @@ export type DescribeTrustStoreRevocationsError =
  * Describes the revocation files in use by the specified trust store or revocation
  * files.
  */
-export const describeTrustStoreRevocations: API.OperationMethod<
+export const describeTrustStoreRevocations: API.PaginatedOperationMethod<
   DescribeTrustStoreRevocationsInput,
   DescribeTrustStoreRevocationsOutput,
   DescribeTrustStoreRevocationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeTrustStoreRevocationsInput,
-  ) => stream.Stream<
-    DescribeTrustStoreRevocationsOutput,
-    DescribeTrustStoreRevocationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeTrustStoreRevocationsInput,
-  ) => stream.Stream<
-    DescribeTrustStoreRevocation,
-    DescribeTrustStoreRevocationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  DescribeTrustStoreRevocation
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeTrustStoreRevocationsInput,
   output: DescribeTrustStoreRevocationsOutput,
   errors: [RevocationIdNotFoundException, TrustStoreNotFoundException],
@@ -5118,27 +4864,7 @@ export const describeTrustStoreRevocations: API.OperationMethod<
     items: "TrustStoreRevocations",
     pageSize: "PageSize",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeTrustStoreRevocationsInput,
-  DescribeTrustStoreRevocationsOutput,
-  DescribeTrustStoreRevocationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeTrustStoreRevocationsInput,
-  ) => stream.Stream<
-    DescribeTrustStoreRevocationsOutput,
-    DescribeTrustStoreRevocationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeTrustStoreRevocationsInput,
-  ) => stream.Stream<
-    DescribeTrustStoreRevocation,
-    DescribeTrustStoreRevocationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeTrustStoresError =
   | TrustStoreNotFoundException
@@ -5146,27 +4872,13 @@ export type DescribeTrustStoresError =
 /**
  * Describes all trust stores for the specified account.
  */
-export const describeTrustStores: API.OperationMethod<
+export const describeTrustStores: API.PaginatedOperationMethod<
   DescribeTrustStoresInput,
   DescribeTrustStoresOutput,
   DescribeTrustStoresError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeTrustStoresInput,
-  ) => stream.Stream<
-    DescribeTrustStoresOutput,
-    DescribeTrustStoresError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeTrustStoresInput,
-  ) => stream.Stream<
-    TrustStore,
-    DescribeTrustStoresError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  TrustStore
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeTrustStoresInput,
   output: DescribeTrustStoresOutput,
   errors: [TrustStoreNotFoundException],
@@ -5179,27 +4891,7 @@ export const describeTrustStores: API.OperationMethod<
     items: "TrustStores",
     pageSize: "PageSize",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeTrustStoresInput,
-  DescribeTrustStoresOutput,
-  DescribeTrustStoresError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeTrustStoresInput,
-  ) => stream.Stream<
-    DescribeTrustStoresOutput,
-    DescribeTrustStoresError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeTrustStoresInput,
-  ) => stream.Stream<
-    TrustStore,
-    DescribeTrustStoresError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetResourcePolicyError = ResourceNotFoundException | CommonErrors;
 /**
@@ -5209,7 +4901,7 @@ export const getResourcePolicy: API.OperationMethod<
   GetResourcePolicyInput,
   GetResourcePolicyOutput,
   GetResourcePolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetResourcePolicyInput,
   output: GetResourcePolicyOutput,
@@ -5232,7 +4924,7 @@ export const getTrustStoreCaCertificatesBundle: API.OperationMethod<
   GetTrustStoreCaCertificatesBundleInput,
   GetTrustStoreCaCertificatesBundleOutput,
   GetTrustStoreCaCertificatesBundleError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetTrustStoreCaCertificatesBundleInput,
   output: GetTrustStoreCaCertificatesBundleOutput,
@@ -5256,7 +4948,7 @@ export const getTrustStoreRevocationContent: API.OperationMethod<
   GetTrustStoreRevocationContentInput,
   GetTrustStoreRevocationContentOutput,
   GetTrustStoreRevocationContentError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetTrustStoreRevocationContentInput,
   output: GetTrustStoreRevocationContentOutput,
@@ -5286,7 +4978,7 @@ export const modifyCapacityReservation: API.OperationMethod<
   ModifyCapacityReservationInput,
   ModifyCapacityReservationOutput,
   ModifyCapacityReservationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ModifyCapacityReservationInput,
   output: ModifyCapacityReservationOutput,
@@ -5313,7 +5005,7 @@ export const modifyIpPools: API.OperationMethod<
   ModifyIpPoolsInput,
   ModifyIpPoolsOutput,
   ModifyIpPoolsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ModifyIpPoolsInput,
   output: ModifyIpPoolsOutput,
@@ -5360,7 +5052,7 @@ export const modifyListener: API.OperationMethod<
   ModifyListenerInput,
   ModifyListenerOutput,
   ModifyListenerError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ModifyListenerInput,
   output: ModifyListenerOutput,
@@ -5401,7 +5093,7 @@ export const modifyListenerAttributes: API.OperationMethod<
   ModifyListenerAttributesInput,
   ModifyListenerAttributesOutput,
   ModifyListenerAttributesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ModifyListenerAttributesInput,
   output: ModifyListenerAttributesOutput,
@@ -5426,7 +5118,7 @@ export const modifyLoadBalancerAttributes: API.OperationMethod<
   ModifyLoadBalancerAttributesInput,
   ModifyLoadBalancerAttributesOutput,
   ModifyLoadBalancerAttributesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ModifyLoadBalancerAttributesInput,
   output: ModifyLoadBalancerAttributesOutput,
@@ -5461,7 +5153,7 @@ export const modifyRule: API.OperationMethod<
   ModifyRuleInput,
   ModifyRuleOutput,
   ModifyRuleError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ModifyRuleInput,
   output: ModifyRuleOutput,
@@ -5495,7 +5187,7 @@ export const modifyTargetGroup: API.OperationMethod<
   ModifyTargetGroupInput,
   ModifyTargetGroupOutput,
   ModifyTargetGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ModifyTargetGroupInput,
   output: ModifyTargetGroupOutput,
@@ -5516,7 +5208,7 @@ export const modifyTargetGroupAttributes: API.OperationMethod<
   ModifyTargetGroupAttributesInput,
   ModifyTargetGroupAttributesOutput,
   ModifyTargetGroupAttributesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ModifyTargetGroupAttributesInput,
   output: ModifyTargetGroupAttributesOutput,
@@ -5538,7 +5230,7 @@ export const modifyTrustStore: API.OperationMethod<
   ModifyTrustStoreInput,
   ModifyTrustStoreOutput,
   ModifyTrustStoreError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ModifyTrustStoreInput,
   output: ModifyTrustStoreOutput,
@@ -5584,7 +5276,7 @@ export const registerTargets: API.OperationMethod<
   RegisterTargetsInput,
   RegisterTargetsOutput,
   RegisterTargetsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RegisterTargetsInput,
   output: RegisterTargetsOutput,
@@ -5611,7 +5303,7 @@ export const removeListenerCertificates: API.OperationMethod<
   RemoveListenerCertificatesInput,
   RemoveListenerCertificatesOutput,
   RemoveListenerCertificatesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RemoveListenerCertificatesInput,
   output: RemoveListenerCertificatesOutput,
@@ -5638,7 +5330,7 @@ export const removeTags: API.OperationMethod<
   RemoveTagsInput,
   RemoveTagsOutput,
   RemoveTagsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RemoveTagsInput,
   output: RemoveTagsOutput,
@@ -5666,7 +5358,7 @@ export const removeTrustStoreRevocations: API.OperationMethod<
   RemoveTrustStoreRevocationsInput,
   RemoveTrustStoreRevocationsOutput,
   RemoveTrustStoreRevocationsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RemoveTrustStoreRevocationsInput,
   output: RemoveTrustStoreRevocationsOutput,
@@ -5688,7 +5380,7 @@ export const setIpAddressType: API.OperationMethod<
   SetIpAddressTypeInput,
   SetIpAddressTypeOutput,
   SetIpAddressTypeError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: SetIpAddressTypeInput,
   output: SetIpAddressTypeOutput,
@@ -5717,7 +5409,7 @@ export const setRulePriorities: API.OperationMethod<
   SetRulePrioritiesInput,
   SetRulePrioritiesOutput,
   SetRulePrioritiesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: SetRulePrioritiesInput,
   output: SetRulePrioritiesOutput,
@@ -5750,7 +5442,7 @@ export const setSecurityGroups: API.OperationMethod<
   SetSecurityGroupsInput,
   SetSecurityGroupsOutput,
   SetSecurityGroupsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: SetSecurityGroupsInput,
   output: SetSecurityGroupsOutput,
@@ -5782,7 +5474,7 @@ export const setSubnets: API.OperationMethod<
   SetSubnetsInput,
   SetSubnetsOutput,
   SetSubnetsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: SetSubnetsInput,
   output: SetSubnetsOutput,

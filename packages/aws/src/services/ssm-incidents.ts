@@ -1,6 +1,5 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -8,7 +7,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 const svc = T.AwsApiService({
   sdkId: "SSM Incidents",
   serviceShapeName: "SSMIncidents",
@@ -88,14 +86,14 @@ const rules = T.EndpointResolver((p, _) => {
 export class AccessDeniedException
   extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
     "AccessDeniedException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(403),
   ).pipe(C.withAuthError) {}
 export class ConflictException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
     "ConflictException",
     {
-      message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       resourceIdentifier: S.optional(S.String),
       resourceType: S.optional(S.String),
       retryAfter: S.optional(S.Date.pipe(T.TimestampFormat("epoch-seconds"))),
@@ -105,14 +103,14 @@ export class ConflictException
 export class InternalServerException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
     "InternalServerException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(500),
   ).pipe(C.withServerError) {}
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
     {
-      message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       resourceIdentifier: S.optional(S.String),
       resourceType: S.optional(S.String),
     },
@@ -122,7 +120,7 @@ export class ServiceQuotaExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
     "ServiceQuotaExceededException",
     {
-      message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       resourceIdentifier: S.optional(S.String),
       resourceType: S.optional(S.String),
       serviceCode: S.String,
@@ -133,18 +131,22 @@ export class ServiceQuotaExceededException
 export class ThrottlingException
   extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
     "ThrottlingException",
-    { message: S.String, serviceCode: S.String, quotaCode: S.String },
+    {
+      message: S.String.pipe(T.ErrorMessage()),
+      serviceCode: S.String,
+      quotaCode: S.String,
+    },
     T.HttpError(429),
   ).pipe(C.withThrottlingError) {}
 export class UnsupportedOperationException
   extends /*@__PURE__*/ S.TaggedErrorClass<UnsupportedOperationException>()(
     "UnsupportedOperationException",
-    {},
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ).pipe(C.withBadRequestError) {}
 export class ValidationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
     "ValidationException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export type Arn = string;
@@ -1756,7 +1758,7 @@ export const batchGetIncidentFindings: API.OperationMethod<
   BatchGetIncidentFindingsInput,
   BatchGetIncidentFindingsOutput,
   BatchGetIncidentFindingsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchGetIncidentFindingsInput,
   output: BatchGetIncidentFindingsOutput,
@@ -1789,7 +1791,7 @@ export const createReplicationSet: API.OperationMethod<
   CreateReplicationSetInput,
   CreateReplicationSetOutput,
   CreateReplicationSetError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateReplicationSetInput,
   output: CreateReplicationSetOutput,
@@ -1824,7 +1826,7 @@ export const createResponsePlan: API.OperationMethod<
   CreateResponsePlanInput,
   CreateResponsePlanOutput,
   CreateResponsePlanError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateResponsePlanInput,
   output: CreateResponsePlanOutput,
@@ -1859,7 +1861,7 @@ export const createTimelineEvent: API.OperationMethod<
   CreateTimelineEventInput,
   CreateTimelineEventOutput,
   CreateTimelineEventError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateTimelineEventInput,
   output: CreateTimelineEventOutput,
@@ -1889,7 +1891,7 @@ export const deleteIncidentRecord: API.OperationMethod<
   DeleteIncidentRecordInput,
   DeleteIncidentRecordOutput,
   DeleteIncidentRecordError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteIncidentRecordInput,
   output: DeleteIncidentRecordOutput,
@@ -1919,7 +1921,7 @@ export const deleteReplicationSet: API.OperationMethod<
   DeleteReplicationSetInput,
   DeleteReplicationSetOutput,
   DeleteReplicationSetError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteReplicationSetInput,
   output: DeleteReplicationSetOutput,
@@ -1950,7 +1952,7 @@ export const deleteResourcePolicy: API.OperationMethod<
   DeleteResourcePolicyInput,
   DeleteResourcePolicyOutput,
   DeleteResourcePolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteResourcePolicyInput,
   output: DeleteResourcePolicyOutput,
@@ -1980,7 +1982,7 @@ export const deleteResponsePlan: API.OperationMethod<
   DeleteResponsePlanInput,
   DeleteResponsePlanOutput,
   DeleteResponsePlanError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteResponsePlanInput,
   output: DeleteResponsePlanOutput,
@@ -2008,7 +2010,7 @@ export const deleteTimelineEvent: API.OperationMethod<
   DeleteTimelineEventInput,
   DeleteTimelineEventOutput,
   DeleteTimelineEventError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteTimelineEventInput,
   output: DeleteTimelineEventOutput,
@@ -2037,7 +2039,7 @@ export const getIncidentRecord: API.OperationMethod<
   GetIncidentRecordInput,
   GetIncidentRecordOutput,
   GetIncidentRecordError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetIncidentRecordInput,
   output: GetIncidentRecordOutput,
@@ -2067,7 +2069,7 @@ export const getReplicationSet: API.OperationMethod<
   GetReplicationSetInput,
   GetReplicationSetOutput,
   GetReplicationSetError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetReplicationSetInput,
   output: GetReplicationSetOutput,
@@ -2093,27 +2095,13 @@ export type GetResourcePoliciesError =
 /**
  * Retrieves the resource policies attached to the specified response plan.
  */
-export const getResourcePolicies: API.OperationMethod<
+export const getResourcePolicies: API.PaginatedOperationMethod<
   GetResourcePoliciesInput,
   GetResourcePoliciesOutput,
   GetResourcePoliciesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetResourcePoliciesInput,
-  ) => stream.Stream<
-    GetResourcePoliciesOutput,
-    GetResourcePoliciesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetResourcePoliciesInput,
-  ) => stream.Stream<
-    ResourcePolicy,
-    GetResourcePoliciesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ResourcePolicy
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetResourcePoliciesInput,
   output: GetResourcePoliciesOutput,
   errors: [
@@ -2132,27 +2120,7 @@ export const getResourcePolicies: API.OperationMethod<
     items: "resourcePolicies",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetResourcePoliciesInput,
-  GetResourcePoliciesOutput,
-  GetResourcePoliciesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetResourcePoliciesInput,
-  ) => stream.Stream<
-    GetResourcePoliciesOutput,
-    GetResourcePoliciesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetResourcePoliciesInput,
-  ) => stream.Stream<
-    ResourcePolicy,
-    GetResourcePoliciesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetResponsePlanError =
   | AccessDeniedException
@@ -2168,7 +2136,7 @@ export const getResponsePlan: API.OperationMethod<
   GetResponsePlanInput,
   GetResponsePlanOutput,
   GetResponsePlanError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetResponsePlanInput,
   output: GetResponsePlanOutput,
@@ -2198,7 +2166,7 @@ export const getTimelineEvent: API.OperationMethod<
   GetTimelineEventInput,
   GetTimelineEventOutput,
   GetTimelineEventError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetTimelineEventInput,
   output: GetTimelineEventOutput,
@@ -2227,27 +2195,13 @@ export type ListIncidentFindingsError =
  * change made by an CloudFormation stack creation or update or an CodeDeploy
  * deployment that can be investigated as a potential cause of the incident.
  */
-export const listIncidentFindings: API.OperationMethod<
+export const listIncidentFindings: API.PaginatedOperationMethod<
   ListIncidentFindingsInput,
   ListIncidentFindingsOutput,
   ListIncidentFindingsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListIncidentFindingsInput,
-  ) => stream.Stream<
-    ListIncidentFindingsOutput,
-    ListIncidentFindingsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListIncidentFindingsInput,
-  ) => stream.Stream<
-    FindingSummary,
-    ListIncidentFindingsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  FindingSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListIncidentFindingsInput,
   output: ListIncidentFindingsOutput,
   errors: [
@@ -2266,27 +2220,7 @@ export const listIncidentFindings: API.OperationMethod<
     items: "findings",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListIncidentFindingsInput,
-  ListIncidentFindingsOutput,
-  ListIncidentFindingsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListIncidentFindingsInput,
-  ) => stream.Stream<
-    ListIncidentFindingsOutput,
-    ListIncidentFindingsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListIncidentFindingsInput,
-  ) => stream.Stream<
-    FindingSummary,
-    ListIncidentFindingsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListIncidentRecordsError =
   | AccessDeniedException
@@ -2298,27 +2232,13 @@ export type ListIncidentRecordsError =
  * Lists all incident records in your account. Use this command to retrieve the Amazon
  * Resource Name (ARN) of the incident record you want to update.
  */
-export const listIncidentRecords: API.OperationMethod<
+export const listIncidentRecords: API.PaginatedOperationMethod<
   ListIncidentRecordsInput,
   ListIncidentRecordsOutput,
   ListIncidentRecordsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListIncidentRecordsInput,
-  ) => stream.Stream<
-    ListIncidentRecordsOutput,
-    ListIncidentRecordsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListIncidentRecordsInput,
-  ) => stream.Stream<
-    IncidentRecordSummary,
-    ListIncidentRecordsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  IncidentRecordSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListIncidentRecordsInput,
   output: ListIncidentRecordsOutput,
   errors: [
@@ -2336,27 +2256,7 @@ export const listIncidentRecords: API.OperationMethod<
     items: "incidentRecordSummaries",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListIncidentRecordsInput,
-  ListIncidentRecordsOutput,
-  ListIncidentRecordsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListIncidentRecordsInput,
-  ) => stream.Stream<
-    ListIncidentRecordsOutput,
-    ListIncidentRecordsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListIncidentRecordsInput,
-  ) => stream.Stream<
-    IncidentRecordSummary,
-    ListIncidentRecordsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListRelatedItemsError =
   | AccessDeniedException
@@ -2367,27 +2267,13 @@ export type ListRelatedItemsError =
 /**
  * List all related items for an incident record.
  */
-export const listRelatedItems: API.OperationMethod<
+export const listRelatedItems: API.PaginatedOperationMethod<
   ListRelatedItemsInput,
   ListRelatedItemsOutput,
   ListRelatedItemsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListRelatedItemsInput,
-  ) => stream.Stream<
-    ListRelatedItemsOutput,
-    ListRelatedItemsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListRelatedItemsInput,
-  ) => stream.Stream<
-    RelatedItem,
-    ListRelatedItemsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  RelatedItem
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListRelatedItemsInput,
   output: ListRelatedItemsOutput,
   errors: [
@@ -2405,27 +2291,7 @@ export const listRelatedItems: API.OperationMethod<
     items: "relatedItems",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListRelatedItemsInput,
-  ListRelatedItemsOutput,
-  ListRelatedItemsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListRelatedItemsInput,
-  ) => stream.Stream<
-    ListRelatedItemsOutput,
-    ListRelatedItemsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListRelatedItemsInput,
-  ) => stream.Stream<
-    RelatedItem,
-    ListRelatedItemsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListReplicationSetsError =
   | AccessDeniedException
@@ -2436,27 +2302,13 @@ export type ListReplicationSetsError =
 /**
  * Lists details about the replication set configured in your account.
  */
-export const listReplicationSets: API.OperationMethod<
+export const listReplicationSets: API.PaginatedOperationMethod<
   ListReplicationSetsInput,
   ListReplicationSetsOutput,
   ListReplicationSetsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListReplicationSetsInput,
-  ) => stream.Stream<
-    ListReplicationSetsOutput,
-    ListReplicationSetsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListReplicationSetsInput,
-  ) => stream.Stream<
-    Arn,
-    ListReplicationSetsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Arn
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListReplicationSetsInput,
   output: ListReplicationSetsOutput,
   errors: [
@@ -2474,27 +2326,7 @@ export const listReplicationSets: API.OperationMethod<
     items: "replicationSetArns",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListReplicationSetsInput,
-  ListReplicationSetsOutput,
-  ListReplicationSetsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListReplicationSetsInput,
-  ) => stream.Stream<
-    ListReplicationSetsOutput,
-    ListReplicationSetsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListReplicationSetsInput,
-  ) => stream.Stream<
-    Arn,
-    ListReplicationSetsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListResponsePlansError =
   | AccessDeniedException
@@ -2505,27 +2337,13 @@ export type ListResponsePlansError =
 /**
  * Lists all response plans in your account.
  */
-export const listResponsePlans: API.OperationMethod<
+export const listResponsePlans: API.PaginatedOperationMethod<
   ListResponsePlansInput,
   ListResponsePlansOutput,
   ListResponsePlansError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListResponsePlansInput,
-  ) => stream.Stream<
-    ListResponsePlansOutput,
-    ListResponsePlansError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListResponsePlansInput,
-  ) => stream.Stream<
-    ResponsePlanSummary,
-    ListResponsePlansError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ResponsePlanSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListResponsePlansInput,
   output: ListResponsePlansOutput,
   errors: [
@@ -2543,27 +2361,7 @@ export const listResponsePlans: API.OperationMethod<
     items: "responsePlanSummaries",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListResponsePlansInput,
-  ListResponsePlansOutput,
-  ListResponsePlansError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListResponsePlansInput,
-  ) => stream.Stream<
-    ListResponsePlansOutput,
-    ListResponsePlansError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListResponsePlansInput,
-  ) => stream.Stream<
-    ResponsePlanSummary,
-    ListResponsePlansError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsForResourceError =
   | AccessDeniedException
@@ -2579,7 +2377,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceRequest,
   ListTagsForResourceResponse,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -2604,27 +2402,13 @@ export type ListTimelineEventsError =
 /**
  * Lists timeline events for the specified incident record.
  */
-export const listTimelineEvents: API.OperationMethod<
+export const listTimelineEvents: API.PaginatedOperationMethod<
   ListTimelineEventsInput,
   ListTimelineEventsOutput,
   ListTimelineEventsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTimelineEventsInput,
-  ) => stream.Stream<
-    ListTimelineEventsOutput,
-    ListTimelineEventsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTimelineEventsInput,
-  ) => stream.Stream<
-    EventSummary,
-    ListTimelineEventsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  EventSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListTimelineEventsInput,
   output: ListTimelineEventsOutput,
   errors: [
@@ -2642,27 +2426,7 @@ export const listTimelineEvents: API.OperationMethod<
     items: "eventSummaries",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListTimelineEventsInput,
-  ListTimelineEventsOutput,
-  ListTimelineEventsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTimelineEventsInput,
-  ) => stream.Stream<
-    ListTimelineEventsOutput,
-    ListTimelineEventsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTimelineEventsInput,
-  ) => stream.Stream<
-    EventSummary,
-    ListTimelineEventsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type PutResourcePolicyError =
   | AccessDeniedException
@@ -2680,7 +2444,7 @@ export const putResourcePolicy: API.OperationMethod<
   PutResourcePolicyInput,
   PutResourcePolicyOutput,
   PutResourcePolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutResourcePolicyInput,
   output: PutResourcePolicyOutput,
@@ -2712,7 +2476,7 @@ export const startIncident: API.OperationMethod<
   StartIncidentInput,
   StartIncidentOutput,
   StartIncidentError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartIncidentInput,
   output: StartIncidentOutput,
@@ -2745,7 +2509,7 @@ export const tagResource: API.OperationMethod<
   TagResourceRequest,
   TagResourceResponse,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -2778,7 +2542,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceRequest,
   UntagResourceResponse,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -2810,7 +2574,7 @@ export const updateDeletionProtection: API.OperationMethod<
   UpdateDeletionProtectionInput,
   UpdateDeletionProtectionOutput,
   UpdateDeletionProtectionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateDeletionProtectionInput,
   output: UpdateDeletionProtectionOutput,
@@ -2843,7 +2607,7 @@ export const updateIncidentRecord: API.OperationMethod<
   UpdateIncidentRecordInput,
   UpdateIncidentRecordOutput,
   UpdateIncidentRecordError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateIncidentRecordInput,
   output: UpdateIncidentRecordOutput,
@@ -2875,7 +2639,7 @@ export const updateRelatedItems: API.OperationMethod<
   UpdateRelatedItemsInput,
   UpdateRelatedItemsOutput,
   UpdateRelatedItemsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateRelatedItemsInput,
   output: UpdateRelatedItemsOutput,
@@ -2907,7 +2671,7 @@ export const updateReplicationSet: API.OperationMethod<
   UpdateReplicationSetInput,
   UpdateReplicationSetOutput,
   UpdateReplicationSetError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateReplicationSetInput,
   output: UpdateReplicationSetOutput,
@@ -2939,7 +2703,7 @@ export const updateResponsePlan: API.OperationMethod<
   UpdateResponsePlanInput,
   UpdateResponsePlanOutput,
   UpdateResponsePlanError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateResponsePlanInput,
   output: UpdateResponsePlanOutput,
@@ -2971,7 +2735,7 @@ export const updateTimelineEvent: API.OperationMethod<
   UpdateTimelineEventInput,
   UpdateTimelineEventOutput,
   UpdateTimelineEventError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateTimelineEventInput,
   output: UpdateTimelineEventOutput,

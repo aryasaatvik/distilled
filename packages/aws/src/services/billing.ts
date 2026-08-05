@@ -1,7 +1,6 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as redacted from "effect/Redacted";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -9,7 +8,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 import { SensitiveString } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "Billing",
@@ -123,7 +121,7 @@ const rules = T.EndpointResolver((p, _) => {
 export class AccessDeniedException
   extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
     "AccessDeniedException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "BillingAccessDenied", httpResponseCode: 403 }),
       T.HttpError(403),
@@ -132,13 +130,17 @@ export class AccessDeniedException
 export class BillingViewHealthStatusException
   extends /*@__PURE__*/ S.TaggedErrorClass<BillingViewHealthStatusException>()(
     "BillingViewHealthStatusException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class ConflictException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
     "ConflictException",
-    { message: S.String, resourceId: S.String, resourceType: S.String },
+    {
+      message: S.String.pipe(T.ErrorMessage()),
+      resourceId: S.String,
+      resourceType: S.String,
+    },
     T.all(
       T.AwsQueryError({ code: "BillingConflict", httpResponseCode: 409 }),
       T.HttpError(409),
@@ -147,7 +149,7 @@ export class ConflictException
 export class InternalServerException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
     "InternalServerException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "BillingInternalServer", httpResponseCode: 500 }),
       T.HttpError(500),
@@ -156,7 +158,11 @@ export class InternalServerException
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { message: S.String, resourceId: S.String, resourceType: S.String },
+    {
+      message: S.String.pipe(T.ErrorMessage()),
+      resourceId: S.String,
+      resourceType: S.String,
+    },
     T.all(
       T.AwsQueryError({
         code: "BillingResourceNotFound",
@@ -169,7 +175,7 @@ export class ServiceQuotaExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
     "ServiceQuotaExceededException",
     {
-      message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       resourceId: S.String,
       resourceType: S.String,
       serviceCode: S.String,
@@ -186,7 +192,7 @@ export class ServiceQuotaExceededException
 export class ThrottlingException
   extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
     "ThrottlingException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "BillingThrottling", httpResponseCode: 429 }),
       T.HttpError(429),
@@ -196,7 +202,7 @@ export class ValidationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
     "ValidationException",
     {
-      message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       reason: S.suspend(() => ValidationExceptionReason).annotate({
         identifier: "ValidationExceptionReason",
       }),
@@ -752,7 +758,7 @@ export const associateSourceViews: API.OperationMethod<
   AssociateSourceViewsRequest,
   AssociateSourceViewsResponse,
   AssociateSourceViewsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AssociateSourceViewsRequest,
   output: AssociateSourceViewsResponse,
@@ -788,7 +794,7 @@ export const createBillingView: API.OperationMethod<
   CreateBillingViewRequest,
   CreateBillingViewResponse,
   CreateBillingViewError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateBillingViewRequest,
   output: CreateBillingViewResponse,
@@ -821,7 +827,7 @@ export const deleteBillingView: API.OperationMethod<
   DeleteBillingViewRequest,
   DeleteBillingViewResponse,
   DeleteBillingViewError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteBillingViewRequest,
   output: DeleteBillingViewResponse,
@@ -853,7 +859,7 @@ export const disassociateSourceViews: API.OperationMethod<
   DisassociateSourceViewsRequest,
   DisassociateSourceViewsResponse,
   DisassociateSourceViewsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DisassociateSourceViewsRequest,
   output: DisassociateSourceViewsResponse,
@@ -885,7 +891,7 @@ export const getBillingView: API.OperationMethod<
   GetBillingViewRequest,
   GetBillingViewResponse,
   GetBillingViewError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetBillingViewRequest,
   output: GetBillingViewResponse,
@@ -915,7 +921,7 @@ export const getResourcePolicy: API.OperationMethod<
   GetResourcePolicyRequest,
   GetResourcePolicyResponse,
   GetResourcePolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetResourcePolicyRequest,
   output: GetResourcePolicyResponse,
@@ -942,27 +948,13 @@ export type ListBillingViewsError =
  *
  * Every Amazon Web Services account has a unique `PRIMARY` billing view that represents the billing data available by default. Accounts that use Billing Conductor also have `BILLING_GROUP` billing views representing pro forma costs associated with each created billing group.
  */
-export const listBillingViews: API.OperationMethod<
+export const listBillingViews: API.PaginatedOperationMethod<
   ListBillingViewsRequest,
   ListBillingViewsResponse,
   ListBillingViewsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListBillingViewsRequest,
-  ) => stream.Stream<
-    ListBillingViewsResponse,
-    ListBillingViewsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListBillingViewsRequest,
-  ) => stream.Stream<
-    BillingViewListElement,
-    ListBillingViewsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  BillingViewListElement
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListBillingViewsRequest,
   output: ListBillingViewsResponse,
   errors: [
@@ -980,27 +972,7 @@ export const listBillingViews: API.OperationMethod<
     items: "billingViews",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListBillingViewsRequest,
-  ListBillingViewsResponse,
-  ListBillingViewsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListBillingViewsRequest,
-  ) => stream.Stream<
-    ListBillingViewsResponse,
-    ListBillingViewsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListBillingViewsRequest,
-  ) => stream.Stream<
-    BillingViewListElement,
-    ListBillingViewsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListSourceViewsForBillingViewError =
   | AccessDeniedException
@@ -1012,27 +984,13 @@ export type ListSourceViewsForBillingViewError =
 /**
  * Lists the source views (managed Amazon Web Services billing views) associated with the billing view.
  */
-export const listSourceViewsForBillingView: API.OperationMethod<
+export const listSourceViewsForBillingView: API.PaginatedOperationMethod<
   ListSourceViewsForBillingViewRequest,
   ListSourceViewsForBillingViewResponse,
   ListSourceViewsForBillingViewError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSourceViewsForBillingViewRequest,
-  ) => stream.Stream<
-    ListSourceViewsForBillingViewResponse,
-    ListSourceViewsForBillingViewError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSourceViewsForBillingViewRequest,
-  ) => stream.Stream<
-    BillingViewArn,
-    ListSourceViewsForBillingViewError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  BillingViewArn
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListSourceViewsForBillingViewRequest,
   output: ListSourceViewsForBillingViewResponse,
   errors: [
@@ -1051,27 +1009,7 @@ export const listSourceViewsForBillingView: API.OperationMethod<
     items: "sourceViews",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListSourceViewsForBillingViewRequest,
-  ListSourceViewsForBillingViewResponse,
-  ListSourceViewsForBillingViewError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSourceViewsForBillingViewRequest,
-  ) => stream.Stream<
-    ListSourceViewsForBillingViewResponse,
-    ListSourceViewsForBillingViewError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSourceViewsForBillingViewRequest,
-  ) => stream.Stream<
-    BillingViewArn,
-    ListSourceViewsForBillingViewError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsForResourceError =
   | AccessDeniedException
@@ -1087,7 +1025,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceRequest,
   ListTagsForResourceResponse,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -1117,7 +1055,7 @@ export const tagResource: API.OperationMethod<
   TagResourceRequest,
   TagResourceResponse,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -1147,7 +1085,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceRequest,
   UntagResourceResponse,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -1180,7 +1118,7 @@ export const updateBillingView: API.OperationMethod<
   UpdateBillingViewRequest,
   UpdateBillingViewResponse,
   UpdateBillingViewError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateBillingViewRequest,
   output: UpdateBillingViewResponse,

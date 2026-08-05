@@ -1,6 +1,5 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -8,7 +7,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 const svc = T.AwsApiService({
   sdkId: "Launch Wizard",
   serviceShapeName: "LaunchWizard",
@@ -88,25 +86,25 @@ const rules = T.EndpointResolver((p, _) => {
 export class InternalServerException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
     "InternalServerException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(500),
   ).pipe(C.withServerError) {}
 export class ResourceLimitException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceLimitException>()(
     "ResourceLimitException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class ValidationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
     "ValidationException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export type WorkloadName = string;
@@ -950,7 +948,7 @@ export const createDeployment: API.OperationMethod<
   CreateDeploymentInput,
   CreateDeploymentOutput,
   CreateDeploymentError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateDeploymentInput,
   output: CreateDeploymentOutput,
@@ -978,7 +976,7 @@ export const deleteDeployment: API.OperationMethod<
   DeleteDeploymentInput,
   DeleteDeploymentOutput,
   DeleteDeploymentError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteDeploymentInput,
   output: DeleteDeploymentOutput,
@@ -1005,7 +1003,7 @@ export const getDeployment: API.OperationMethod<
   GetDeploymentInput,
   GetDeploymentOutput,
   GetDeploymentError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetDeploymentInput,
   output: GetDeploymentOutput,
@@ -1030,7 +1028,7 @@ export const getDeploymentPatternVersion: API.OperationMethod<
   GetDeploymentPatternVersionInput,
   GetDeploymentPatternVersionOutput,
   GetDeploymentPatternVersionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetDeploymentPatternVersionInput,
   output: GetDeploymentPatternVersionOutput,
@@ -1052,7 +1050,7 @@ export const getWorkload: API.OperationMethod<
   GetWorkloadInput,
   GetWorkloadOutput,
   GetWorkloadError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetWorkloadInput,
   output: GetWorkloadOutput,
@@ -1078,7 +1076,7 @@ export const getWorkloadDeploymentPattern: API.OperationMethod<
   GetWorkloadDeploymentPatternInput,
   GetWorkloadDeploymentPatternOutput,
   GetWorkloadDeploymentPatternError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetWorkloadDeploymentPatternInput,
   output: GetWorkloadDeploymentPatternOutput,
@@ -1100,27 +1098,13 @@ export type ListDeploymentEventsError =
 /**
  * Lists the events of a deployment.
  */
-export const listDeploymentEvents: API.OperationMethod<
+export const listDeploymentEvents: API.PaginatedOperationMethod<
   ListDeploymentEventsInput,
   ListDeploymentEventsOutput,
   ListDeploymentEventsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDeploymentEventsInput,
-  ) => stream.Stream<
-    ListDeploymentEventsOutput,
-    ListDeploymentEventsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDeploymentEventsInput,
-  ) => stream.Stream<
-    DeploymentEventDataSummary,
-    ListDeploymentEventsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  DeploymentEventDataSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListDeploymentEventsInput,
   output: ListDeploymentEventsOutput,
   errors: [
@@ -1137,27 +1121,7 @@ export const listDeploymentEvents: API.OperationMethod<
     items: "deploymentEvents",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListDeploymentEventsInput,
-  ListDeploymentEventsOutput,
-  ListDeploymentEventsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDeploymentEventsInput,
-  ) => stream.Stream<
-    ListDeploymentEventsOutput,
-    ListDeploymentEventsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDeploymentEventsInput,
-  ) => stream.Stream<
-    DeploymentEventDataSummary,
-    ListDeploymentEventsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListDeploymentPatternVersionsError =
   | InternalServerException
@@ -1167,27 +1131,13 @@ export type ListDeploymentPatternVersionsError =
 /**
  * Lists the deployment pattern versions.
  */
-export const listDeploymentPatternVersions: API.OperationMethod<
+export const listDeploymentPatternVersions: API.PaginatedOperationMethod<
   ListDeploymentPatternVersionsInput,
   ListDeploymentPatternVersionsOutput,
   ListDeploymentPatternVersionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDeploymentPatternVersionsInput,
-  ) => stream.Stream<
-    ListDeploymentPatternVersionsOutput,
-    ListDeploymentPatternVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDeploymentPatternVersionsInput,
-  ) => stream.Stream<
-    DeploymentPatternVersionDataSummary,
-    ListDeploymentPatternVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  DeploymentPatternVersionDataSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListDeploymentPatternVersionsInput,
   output: ListDeploymentPatternVersionsOutput,
   errors: [
@@ -1204,27 +1154,7 @@ export const listDeploymentPatternVersions: API.OperationMethod<
     items: "deploymentPatternVersions",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListDeploymentPatternVersionsInput,
-  ListDeploymentPatternVersionsOutput,
-  ListDeploymentPatternVersionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDeploymentPatternVersionsInput,
-  ) => stream.Stream<
-    ListDeploymentPatternVersionsOutput,
-    ListDeploymentPatternVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDeploymentPatternVersionsInput,
-  ) => stream.Stream<
-    DeploymentPatternVersionDataSummary,
-    ListDeploymentPatternVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListDeploymentsError =
   | InternalServerException
@@ -1233,27 +1163,13 @@ export type ListDeploymentsError =
 /**
  * Lists the deployments that have been created.
  */
-export const listDeployments: API.OperationMethod<
+export const listDeployments: API.PaginatedOperationMethod<
   ListDeploymentsInput,
   ListDeploymentsOutput,
   ListDeploymentsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDeploymentsInput,
-  ) => stream.Stream<
-    ListDeploymentsOutput,
-    ListDeploymentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDeploymentsInput,
-  ) => stream.Stream<
-    DeploymentDataSummary,
-    ListDeploymentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  DeploymentDataSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListDeploymentsInput,
   output: ListDeploymentsOutput,
   errors: [InternalServerException, ValidationException],
@@ -1266,27 +1182,7 @@ export const listDeployments: API.OperationMethod<
     items: "deployments",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListDeploymentsInput,
-  ListDeploymentsOutput,
-  ListDeploymentsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDeploymentsInput,
-  ) => stream.Stream<
-    ListDeploymentsOutput,
-    ListDeploymentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDeploymentsInput,
-  ) => stream.Stream<
-    DeploymentDataSummary,
-    ListDeploymentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsForResourceError =
   | InternalServerException
@@ -1300,7 +1196,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceInput,
   ListTagsForResourceOutput,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceInput,
   output: ListTagsForResourceOutput,
@@ -1322,27 +1218,13 @@ export type ListWorkloadDeploymentPatternsError =
 /**
  * Lists the workload deployment patterns for a given workload name. You can use the ListWorkloads operation to discover the available workload names.
  */
-export const listWorkloadDeploymentPatterns: API.OperationMethod<
+export const listWorkloadDeploymentPatterns: API.PaginatedOperationMethod<
   ListWorkloadDeploymentPatternsInput,
   ListWorkloadDeploymentPatternsOutput,
   ListWorkloadDeploymentPatternsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListWorkloadDeploymentPatternsInput,
-  ) => stream.Stream<
-    ListWorkloadDeploymentPatternsOutput,
-    ListWorkloadDeploymentPatternsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListWorkloadDeploymentPatternsInput,
-  ) => stream.Stream<
-    WorkloadDeploymentPatternDataSummary,
-    ListWorkloadDeploymentPatternsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  WorkloadDeploymentPatternDataSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListWorkloadDeploymentPatternsInput,
   output: ListWorkloadDeploymentPatternsOutput,
   errors: [
@@ -1359,27 +1241,7 @@ export const listWorkloadDeploymentPatterns: API.OperationMethod<
     items: "workloadDeploymentPatterns",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListWorkloadDeploymentPatternsInput,
-  ListWorkloadDeploymentPatternsOutput,
-  ListWorkloadDeploymentPatternsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListWorkloadDeploymentPatternsInput,
-  ) => stream.Stream<
-    ListWorkloadDeploymentPatternsOutput,
-    ListWorkloadDeploymentPatternsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListWorkloadDeploymentPatternsInput,
-  ) => stream.Stream<
-    WorkloadDeploymentPatternDataSummary,
-    ListWorkloadDeploymentPatternsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListWorkloadsError =
   | InternalServerException
@@ -1388,27 +1250,13 @@ export type ListWorkloadsError =
 /**
  * Lists the available workload names. You can use the ListWorkloadDeploymentPatterns operation to discover the available deployment patterns for a given workload.
  */
-export const listWorkloads: API.OperationMethod<
+export const listWorkloads: API.PaginatedOperationMethod<
   ListWorkloadsInput,
   ListWorkloadsOutput,
   ListWorkloadsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListWorkloadsInput,
-  ) => stream.Stream<
-    ListWorkloadsOutput,
-    ListWorkloadsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListWorkloadsInput,
-  ) => stream.Stream<
-    WorkloadDataSummary,
-    ListWorkloadsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  WorkloadDataSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListWorkloadsInput,
   output: ListWorkloadsOutput,
   errors: [InternalServerException, ValidationException],
@@ -1421,27 +1269,7 @@ export const listWorkloads: API.OperationMethod<
     items: "workloads",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListWorkloadsInput,
-  ListWorkloadsOutput,
-  ListWorkloadsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListWorkloadsInput,
-  ) => stream.Stream<
-    ListWorkloadsOutput,
-    ListWorkloadsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListWorkloadsInput,
-  ) => stream.Stream<
-    WorkloadDataSummary,
-    ListWorkloadsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type TagResourceError =
   | InternalServerException
@@ -1455,7 +1283,7 @@ export const tagResource: API.OperationMethod<
   TagResourceInput,
   TagResourceOutput,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceInput,
   output: TagResourceOutput,
@@ -1481,7 +1309,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceInput,
   UntagResourceOutput,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceInput,
   output: UntagResourceOutput,
@@ -1508,7 +1336,7 @@ export const updateDeployment: API.OperationMethod<
   UpdateDeploymentInput,
   UpdateDeploymentOutput,
   UpdateDeploymentError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateDeploymentInput,
   output: UpdateDeploymentOutput,

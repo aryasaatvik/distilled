@@ -1,7 +1,6 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as redacted from "effect/Redacted";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -9,7 +8,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials as Creds } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region as Rgn } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const ns = T.XmlNamespace("http://ssm.amazonaws.com/doc/2014-11-06/");
 const svc = T.AwsApiService({ sdkId: "SSM", serviceShapeName: "AmazonSSM" });
@@ -91,24 +89,24 @@ const rules = T.EndpointResolver((p, _) => {
 export class AccessDeniedException
   extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
     "AccessDeniedException",
-    { Message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
   ).pipe(C.withAuthError) {}
 export class AlreadyExistsException
   extends /*@__PURE__*/ S.TaggedErrorClass<AlreadyExistsException>()(
     "AlreadyExistsException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.AwsQueryError({ code: "AlreadyExistsException", httpResponseCode: 400 }),
   ).pipe(C.withAlreadyExistsError) {}
 export class AssociatedInstances
   extends /*@__PURE__*/ S.TaggedErrorClass<AssociatedInstances>()(
     "AssociatedInstances",
-    {},
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.AwsQueryError({ code: "AssociatedInstances", httpResponseCode: 400 }),
   ) {}
 export class AssociationAlreadyExists
   extends /*@__PURE__*/ S.TaggedErrorClass<AssociationAlreadyExists>()(
     "AssociationAlreadyExists",
-    {},
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.AwsQueryError({
       code: "AssociationAlreadyExists",
       httpResponseCode: 400,
@@ -117,13 +115,13 @@ export class AssociationAlreadyExists
 export class AssociationDoesNotExist
   extends /*@__PURE__*/ S.TaggedErrorClass<AssociationDoesNotExist>()(
     "AssociationDoesNotExist",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.AwsQueryError({ code: "AssociationDoesNotExist", httpResponseCode: 404 }),
   ) {}
 export class AssociationExecutionDoesNotExist
   extends /*@__PURE__*/ S.TaggedErrorClass<AssociationExecutionDoesNotExist>()(
     "AssociationExecutionDoesNotExist",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.AwsQueryError({
       code: "AssociationExecutionDoesNotExist",
       httpResponseCode: 404,
@@ -132,7 +130,7 @@ export class AssociationExecutionDoesNotExist
 export class AssociationLimitExceeded
   extends /*@__PURE__*/ S.TaggedErrorClass<AssociationLimitExceeded>()(
     "AssociationLimitExceeded",
-    {},
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.AwsQueryError({
       code: "AssociationLimitExceeded",
       httpResponseCode: 400,
@@ -141,7 +139,7 @@ export class AssociationLimitExceeded
 export class AssociationVersionLimitExceeded
   extends /*@__PURE__*/ S.TaggedErrorClass<AssociationVersionLimitExceeded>()(
     "AssociationVersionLimitExceeded",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.AwsQueryError({
       code: "AssociationVersionLimitExceeded",
       httpResponseCode: 400,
@@ -150,7 +148,7 @@ export class AssociationVersionLimitExceeded
 export class AutomationDefinitionNotApprovedException
   extends /*@__PURE__*/ S.TaggedErrorClass<AutomationDefinitionNotApprovedException>()(
     "AutomationDefinitionNotApprovedException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.AwsQueryError({
       code: "AutomationDefinitionNotApproved",
       httpResponseCode: 400,
@@ -159,7 +157,7 @@ export class AutomationDefinitionNotApprovedException
 export class AutomationDefinitionNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<AutomationDefinitionNotFoundException>()(
     "AutomationDefinitionNotFoundException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.AwsQueryError({
       code: "AutomationDefinitionNotFound",
       httpResponseCode: 404,
@@ -168,7 +166,7 @@ export class AutomationDefinitionNotFoundException
 export class AutomationDefinitionVersionNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<AutomationDefinitionVersionNotFoundException>()(
     "AutomationDefinitionVersionNotFoundException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.AwsQueryError({
       code: "AutomationDefinitionVersionNotFound",
       httpResponseCode: 404,
@@ -177,7 +175,7 @@ export class AutomationDefinitionVersionNotFoundException
 export class AutomationExecutionLimitExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<AutomationExecutionLimitExceededException>()(
     "AutomationExecutionLimitExceededException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.AwsQueryError({
       code: "AutomationExecutionLimitExceeded",
       httpResponseCode: 429,
@@ -186,7 +184,7 @@ export class AutomationExecutionLimitExceededException
 export class AutomationExecutionNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<AutomationExecutionNotFoundException>()(
     "AutomationExecutionNotFoundException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.AwsQueryError({
       code: "AutomationExecutionNotFound",
       httpResponseCode: 404,
@@ -195,7 +193,7 @@ export class AutomationExecutionNotFoundException
 export class AutomationStepNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<AutomationStepNotFoundException>()(
     "AutomationStepNotFoundException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.AwsQueryError({
       code: "AutomationStepNotFoundException",
       httpResponseCode: 404,
@@ -204,7 +202,7 @@ export class AutomationStepNotFoundException
 export class ComplianceTypeCountLimitExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<ComplianceTypeCountLimitExceededException>()(
     "ComplianceTypeCountLimitExceededException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.AwsQueryError({
       code: "ComplianceTypeCountLimitExceeded",
       httpResponseCode: 400,
@@ -213,7 +211,7 @@ export class ComplianceTypeCountLimitExceededException
 export class CustomSchemaCountLimitExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<CustomSchemaCountLimitExceededException>()(
     "CustomSchemaCountLimitExceededException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.AwsQueryError({
       code: "CustomSchemaCountLimitExceeded",
       httpResponseCode: 400,
@@ -222,25 +220,25 @@ export class CustomSchemaCountLimitExceededException
 export class DocumentAlreadyExists
   extends /*@__PURE__*/ S.TaggedErrorClass<DocumentAlreadyExists>()(
     "DocumentAlreadyExists",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.AwsQueryError({ code: "DocumentAlreadyExists", httpResponseCode: 400 }),
   ).pipe(C.withAlreadyExistsError) {}
 export class DocumentLimitExceeded
   extends /*@__PURE__*/ S.TaggedErrorClass<DocumentLimitExceeded>()(
     "DocumentLimitExceeded",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.AwsQueryError({ code: "DocumentLimitExceeded", httpResponseCode: 400 }),
   ).pipe(C.withThrottlingError) {}
 export class DocumentPermissionLimit
   extends /*@__PURE__*/ S.TaggedErrorClass<DocumentPermissionLimit>()(
     "DocumentPermissionLimit",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.AwsQueryError({ code: "DocumentPermissionLimit", httpResponseCode: 400 }),
   ) {}
 export class DocumentVersionLimitExceeded
   extends /*@__PURE__*/ S.TaggedErrorClass<DocumentVersionLimitExceeded>()(
     "DocumentVersionLimitExceeded",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.AwsQueryError({
       code: "DocumentVersionLimitExceeded",
       httpResponseCode: 400,
@@ -249,13 +247,13 @@ export class DocumentVersionLimitExceeded
 export class DoesNotExistException
   extends /*@__PURE__*/ S.TaggedErrorClass<DoesNotExistException>()(
     "DoesNotExistException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.AwsQueryError({ code: "DoesNotExistException", httpResponseCode: 404 }),
   ) {}
 export class DuplicateDocumentContent
   extends /*@__PURE__*/ S.TaggedErrorClass<DuplicateDocumentContent>()(
     "DuplicateDocumentContent",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.AwsQueryError({
       code: "DuplicateDocumentContent",
       httpResponseCode: 400,
@@ -264,7 +262,7 @@ export class DuplicateDocumentContent
 export class DuplicateDocumentVersionName
   extends /*@__PURE__*/ S.TaggedErrorClass<DuplicateDocumentVersionName>()(
     "DuplicateDocumentVersionName",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.AwsQueryError({
       code: "DuplicateDocumentVersionName",
       httpResponseCode: 400,
@@ -273,13 +271,13 @@ export class DuplicateDocumentVersionName
 export class DuplicateInstanceId
   extends /*@__PURE__*/ S.TaggedErrorClass<DuplicateInstanceId>()(
     "DuplicateInstanceId",
-    {},
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.AwsQueryError({ code: "DuplicateInstanceId", httpResponseCode: 404 }),
   ) {}
 export class FeatureNotAvailableException
   extends /*@__PURE__*/ S.TaggedErrorClass<FeatureNotAvailableException>()(
     "FeatureNotAvailableException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.AwsQueryError({
       code: "FeatureNotAvailableException",
       httpResponseCode: 400,
@@ -288,7 +286,7 @@ export class FeatureNotAvailableException
 export class HierarchyLevelLimitExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<HierarchyLevelLimitExceededException>()(
     "HierarchyLevelLimitExceededException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.AwsQueryError({
       code: "HierarchyLevelLimitExceededException",
       httpResponseCode: 400,
@@ -297,7 +295,7 @@ export class HierarchyLevelLimitExceededException
 export class HierarchyTypeMismatchException
   extends /*@__PURE__*/ S.TaggedErrorClass<HierarchyTypeMismatchException>()(
     "HierarchyTypeMismatchException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.AwsQueryError({
       code: "HierarchyTypeMismatchException",
       httpResponseCode: 400,
@@ -306,7 +304,7 @@ export class HierarchyTypeMismatchException
 export class IdempotentParameterMismatch
   extends /*@__PURE__*/ S.TaggedErrorClass<IdempotentParameterMismatch>()(
     "IdempotentParameterMismatch",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.AwsQueryError({
       code: "IdempotentParameterMismatch",
       httpResponseCode: 400,
@@ -315,7 +313,7 @@ export class IdempotentParameterMismatch
 export class IncompatiblePolicyException
   extends /*@__PURE__*/ S.TaggedErrorClass<IncompatiblePolicyException>()(
     "IncompatiblePolicyException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.AwsQueryError({
       code: "IncompatiblePolicyException",
       httpResponseCode: 400,
@@ -324,31 +322,31 @@ export class IncompatiblePolicyException
 export class InternalServerError
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerError>()(
     "InternalServerError",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.AwsQueryError({ code: "InternalServerError", httpResponseCode: 500 }),
   ) {}
 export class InvalidActivation
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidActivation>()(
     "InvalidActivation",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.AwsQueryError({ code: "InvalidActivation", httpResponseCode: 404 }),
   ) {}
 export class InvalidActivationId
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidActivationId>()(
     "InvalidActivationId",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.AwsQueryError({ code: "InvalidActivationId", httpResponseCode: 404 }),
   ) {}
 export class InvalidAggregatorException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidAggregatorException>()(
     "InvalidAggregatorException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.AwsQueryError({ code: "InvalidAggregator", httpResponseCode: 400 }),
   ) {}
 export class InvalidAllowedPatternException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidAllowedPatternException>()(
     "InvalidAllowedPatternException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.AwsQueryError({
       code: "InvalidAllowedPatternException",
       httpResponseCode: 400,
@@ -357,13 +355,13 @@ export class InvalidAllowedPatternException
 export class InvalidAssociation
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidAssociation>()(
     "InvalidAssociation",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.AwsQueryError({ code: "InvalidAssociation", httpResponseCode: 400 }),
   ) {}
 export class InvalidAssociationVersion
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidAssociationVersion>()(
     "InvalidAssociationVersion",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.AwsQueryError({
       code: "InvalidAssociationVersion",
       httpResponseCode: 400,
@@ -372,7 +370,7 @@ export class InvalidAssociationVersion
 export class InvalidAutomationExecutionParametersException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidAutomationExecutionParametersException>()(
     "InvalidAutomationExecutionParametersException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.AwsQueryError({
       code: "InvalidAutomationExecutionParameters",
       httpResponseCode: 400,
@@ -381,7 +379,7 @@ export class InvalidAutomationExecutionParametersException
 export class InvalidAutomationSignalException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidAutomationSignalException>()(
     "InvalidAutomationSignalException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.AwsQueryError({
       code: "InvalidAutomationSignalException",
       httpResponseCode: 400,
@@ -390,7 +388,7 @@ export class InvalidAutomationSignalException
 export class InvalidAutomationStatusUpdateException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidAutomationStatusUpdateException>()(
     "InvalidAutomationStatusUpdateException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.AwsQueryError({
       code: "InvalidAutomationStatusUpdateException",
       httpResponseCode: 400,
@@ -399,13 +397,13 @@ export class InvalidAutomationStatusUpdateException
 export class InvalidCommandId
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidCommandId>()(
     "InvalidCommandId",
-    {},
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.AwsQueryError({ code: "InvalidCommandId", httpResponseCode: 404 }),
   ) {}
 export class InvalidDeleteInventoryParametersException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidDeleteInventoryParametersException>()(
     "InvalidDeleteInventoryParametersException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.AwsQueryError({
       code: "InvalidDeleteInventoryParameters",
       httpResponseCode: 400,
@@ -414,25 +412,25 @@ export class InvalidDeleteInventoryParametersException
 export class InvalidDeletionIdException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidDeletionIdException>()(
     "InvalidDeletionIdException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.AwsQueryError({ code: "InvalidDeletionId", httpResponseCode: 400 }),
   ) {}
 export class InvalidDocument
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidDocument>()(
     "InvalidDocument",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.AwsQueryError({ code: "InvalidDocument", httpResponseCode: 404 }),
   ) {}
 export class InvalidDocumentContent
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidDocumentContent>()(
     "InvalidDocumentContent",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.AwsQueryError({ code: "InvalidDocumentContent", httpResponseCode: 400 }),
   ) {}
 export class InvalidDocumentOperation
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidDocumentOperation>()(
     "InvalidDocumentOperation",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.AwsQueryError({
       code: "InvalidDocumentOperation",
       httpResponseCode: 403,
@@ -441,7 +439,7 @@ export class InvalidDocumentOperation
 export class InvalidDocumentSchemaVersion
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidDocumentSchemaVersion>()(
     "InvalidDocumentSchemaVersion",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.AwsQueryError({
       code: "InvalidDocumentSchemaVersion",
       httpResponseCode: 400,
@@ -450,49 +448,49 @@ export class InvalidDocumentSchemaVersion
 export class InvalidDocumentType
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidDocumentType>()(
     "InvalidDocumentType",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.AwsQueryError({ code: "InvalidDocumentType", httpResponseCode: 400 }),
   ) {}
 export class InvalidDocumentVersion
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidDocumentVersion>()(
     "InvalidDocumentVersion",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.AwsQueryError({ code: "InvalidDocumentVersion", httpResponseCode: 400 }),
   ) {}
 export class InvalidFilter
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidFilter>()(
     "InvalidFilter",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.AwsQueryError({ code: "InvalidFilter", httpResponseCode: 441 }),
   ) {}
 export class InvalidFilterKey
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidFilterKey>()(
     "InvalidFilterKey",
-    {},
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.AwsQueryError({ code: "InvalidFilterKey", httpResponseCode: 400 }),
   ) {}
 export class InvalidFilterOption
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidFilterOption>()(
     "InvalidFilterOption",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.AwsQueryError({ code: "InvalidFilterOption", httpResponseCode: 400 }),
   ) {}
 export class InvalidFilterValue
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidFilterValue>()(
     "InvalidFilterValue",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.AwsQueryError({ code: "InvalidFilterValue", httpResponseCode: 400 }),
   ) {}
 export class InvalidInstanceId
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidInstanceId>()(
     "InvalidInstanceId",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.AwsQueryError({ code: "InvalidInstanceId", httpResponseCode: 404 }),
   ) {}
 export class InvalidInstanceInformationFilterValue
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidInstanceInformationFilterValue>()(
     "InvalidInstanceInformationFilterValue",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.AwsQueryError({
       code: "InvalidInstanceInformationFilterValue",
       httpResponseCode: 400,
@@ -501,7 +499,7 @@ export class InvalidInstanceInformationFilterValue
 export class InvalidInstancePropertyFilterValue
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidInstancePropertyFilterValue>()(
     "InvalidInstancePropertyFilterValue",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.AwsQueryError({
       code: "InvalidInstancePropertyFilterValue",
       httpResponseCode: 400,
@@ -510,13 +508,13 @@ export class InvalidInstancePropertyFilterValue
 export class InvalidInventoryGroupException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidInventoryGroupException>()(
     "InvalidInventoryGroupException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.AwsQueryError({ code: "InvalidInventoryGroup", httpResponseCode: 400 }),
   ) {}
 export class InvalidInventoryItemContextException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidInventoryItemContextException>()(
     "InvalidInventoryItemContextException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.AwsQueryError({
       code: "InvalidInventoryItemContext",
       httpResponseCode: 400,
@@ -525,31 +523,34 @@ export class InvalidInventoryItemContextException
 export class InvalidInventoryRequestException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidInventoryRequestException>()(
     "InvalidInventoryRequestException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.AwsQueryError({ code: "InvalidInventoryRequest", httpResponseCode: 400 }),
   ) {}
 export class InvalidItemContentException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidItemContentException>()(
     "InvalidItemContentException",
-    { TypeName: S.optional(S.String), Message: S.optional(S.String) },
+    {
+      TypeName: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.AwsQueryError({ code: "InvalidItemContent", httpResponseCode: 400 }),
   ) {}
 export class InvalidKeyId
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidKeyId>()(
     "InvalidKeyId",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.AwsQueryError({ code: "InvalidKeyId", httpResponseCode: 400 }),
   ) {}
 export class InvalidNextToken
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidNextToken>()(
     "InvalidNextToken",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.AwsQueryError({ code: "InvalidNextToken", httpResponseCode: 400 }),
   ) {}
 export class InvalidNotificationConfig
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidNotificationConfig>()(
     "InvalidNotificationConfig",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.AwsQueryError({
       code: "InvalidNotificationConfig",
       httpResponseCode: 400,
@@ -558,43 +559,43 @@ export class InvalidNotificationConfig
 export class InvalidOptionException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidOptionException>()(
     "InvalidOptionException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.AwsQueryError({ code: "InvalidOption", httpResponseCode: 400 }),
   ) {}
 export class InvalidOutputFolder
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidOutputFolder>()(
     "InvalidOutputFolder",
-    {},
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.AwsQueryError({ code: "InvalidOutputFolder", httpResponseCode: 400 }),
   ) {}
 export class InvalidOutputLocation
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidOutputLocation>()(
     "InvalidOutputLocation",
-    {},
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.AwsQueryError({ code: "InvalidOutputLocation", httpResponseCode: 400 }),
   ) {}
 export class InvalidParameters
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidParameters>()(
     "InvalidParameters",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.AwsQueryError({ code: "InvalidParameters", httpResponseCode: 400 }),
   ) {}
 export class InvalidPermissionType
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidPermissionType>()(
     "InvalidPermissionType",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.AwsQueryError({ code: "InvalidPermissionType", httpResponseCode: 400 }),
   ) {}
 export class InvalidPluginName
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidPluginName>()(
     "InvalidPluginName",
-    {},
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.AwsQueryError({ code: "InvalidPluginName", httpResponseCode: 404 }),
   ) {}
 export class InvalidPolicyAttributeException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidPolicyAttributeException>()(
     "InvalidPolicyAttributeException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.AwsQueryError({
       code: "InvalidPolicyAttributeException",
       httpResponseCode: 400,
@@ -603,7 +604,7 @@ export class InvalidPolicyAttributeException
 export class InvalidPolicyTypeException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidPolicyTypeException>()(
     "InvalidPolicyTypeException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.AwsQueryError({
       code: "InvalidPolicyTypeException",
       httpResponseCode: 400,
@@ -612,85 +613,91 @@ export class InvalidPolicyTypeException
 export class InvalidResourceId
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidResourceId>()(
     "InvalidResourceId",
-    {},
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.AwsQueryError({ code: "InvalidResourceId", httpResponseCode: 400 }),
   ) {}
 export class InvalidResourceType
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidResourceType>()(
     "InvalidResourceType",
-    {},
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.AwsQueryError({ code: "InvalidResourceType", httpResponseCode: 400 }),
   ) {}
 export class InvalidResultAttributeException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidResultAttributeException>()(
     "InvalidResultAttributeException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.AwsQueryError({ code: "InvalidResultAttribute", httpResponseCode: 400 }),
   ) {}
 export class InvalidRole
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidRole>()(
     "InvalidRole",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.AwsQueryError({ code: "InvalidRole", httpResponseCode: 400 }),
   ) {}
 export class InvalidSchedule
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidSchedule>()(
     "InvalidSchedule",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.AwsQueryError({ code: "InvalidSchedule", httpResponseCode: 400 }),
   ) {}
 export class InvalidTag
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidTag>()(
     "InvalidTag",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.AwsQueryError({ code: "InvalidTag", httpResponseCode: 400 }),
   ) {}
 export class InvalidTarget
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidTarget>()(
     "InvalidTarget",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.AwsQueryError({ code: "InvalidTarget", httpResponseCode: 400 }),
   ) {}
 export class InvalidTargetMaps
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidTargetMaps>()(
     "InvalidTargetMaps",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.AwsQueryError({ code: "InvalidTargetMaps", httpResponseCode: 400 }),
   ) {}
 export class InvalidTypeNameException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidTypeNameException>()(
     "InvalidTypeNameException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.AwsQueryError({ code: "InvalidTypeName", httpResponseCode: 400 }),
   ) {}
 export class InvalidUpdate
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidUpdate>()(
     "InvalidUpdate",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.AwsQueryError({ code: "InvalidUpdate", httpResponseCode: 400 }),
   ) {}
 export class InvocationDoesNotExist
   extends /*@__PURE__*/ S.TaggedErrorClass<InvocationDoesNotExist>()(
     "InvocationDoesNotExist",
-    {},
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.AwsQueryError({ code: "InvocationDoesNotExist", httpResponseCode: 400 }),
   ) {}
 export class ItemContentMismatchException
   extends /*@__PURE__*/ S.TaggedErrorClass<ItemContentMismatchException>()(
     "ItemContentMismatchException",
-    { TypeName: S.optional(S.String), Message: S.optional(S.String) },
+    {
+      TypeName: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.AwsQueryError({ code: "ItemContentMismatch", httpResponseCode: 400 }),
   ) {}
 export class ItemSizeLimitExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<ItemSizeLimitExceededException>()(
     "ItemSizeLimitExceededException",
-    { TypeName: S.optional(S.String), Message: S.optional(S.String) },
+    {
+      TypeName: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.AwsQueryError({ code: "ItemSizeLimitExceeded", httpResponseCode: 400 }),
   ) {}
 export class MalformedResourcePolicyDocumentException
   extends /*@__PURE__*/ S.TaggedErrorClass<MalformedResourcePolicyDocumentException>()(
     "MalformedResourcePolicyDocumentException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.AwsQueryError({
       code: "MalformedResourcePolicyDocumentException",
       httpResponseCode: 400,
@@ -699,19 +706,19 @@ export class MalformedResourcePolicyDocumentException
 export class MaxDocumentSizeExceeded
   extends /*@__PURE__*/ S.TaggedErrorClass<MaxDocumentSizeExceeded>()(
     "MaxDocumentSizeExceeded",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.AwsQueryError({ code: "MaxDocumentSizeExceeded", httpResponseCode: 400 }),
   ) {}
 export class NoLongerSupportedException
   extends /*@__PURE__*/ S.TaggedErrorClass<NoLongerSupportedException>()(
     "NoLongerSupportedException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.AwsQueryError({ code: "NoLongerSupported", httpResponseCode: 400 }),
   ) {}
 export class OpsItemAccessDeniedException
   extends /*@__PURE__*/ S.TaggedErrorClass<OpsItemAccessDeniedException>()(
     "OpsItemAccessDeniedException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.AwsQueryError({
       code: "OpsItemAccessDeniedException",
       httpResponseCode: 403,
@@ -720,7 +727,10 @@ export class OpsItemAccessDeniedException
 export class OpsItemAlreadyExistsException
   extends /*@__PURE__*/ S.TaggedErrorClass<OpsItemAlreadyExistsException>()(
     "OpsItemAlreadyExistsException",
-    { Message: S.optional(S.String), OpsItemId: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      OpsItemId: S.optional(S.String),
+    },
     T.AwsQueryError({
       code: "OpsItemAlreadyExistsException",
       httpResponseCode: 400,
@@ -729,7 +739,7 @@ export class OpsItemAlreadyExistsException
 export class OpsItemConflictException
   extends /*@__PURE__*/ S.TaggedErrorClass<OpsItemConflictException>()(
     "OpsItemConflictException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.AwsQueryError({
       code: "OpsItemConflictException",
       httpResponseCode: 409,
@@ -744,7 +754,7 @@ export class OpsItemInvalidParameterException
           identifier: "OpsItemParameterNamesList",
         }),
       ),
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
     },
     T.AwsQueryError({
       code: "OpsItemInvalidParameterException",
@@ -762,7 +772,7 @@ export class OpsItemLimitExceededException
       ),
       Limit: S.optional(S.Number),
       LimitType: S.optional(S.String),
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
     },
     T.AwsQueryError({
       code: "OpsItemLimitExceededException",
@@ -772,7 +782,7 @@ export class OpsItemLimitExceededException
 export class OpsItemNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<OpsItemNotFoundException>()(
     "OpsItemNotFoundException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.AwsQueryError({
       code: "OpsItemNotFoundException",
       httpResponseCode: 400,
@@ -782,7 +792,7 @@ export class OpsItemRelatedItemAlreadyExistsException
   extends /*@__PURE__*/ S.TaggedErrorClass<OpsItemRelatedItemAlreadyExistsException>()(
     "OpsItemRelatedItemAlreadyExistsException",
     {
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       ResourceUri: S.optional(S.String),
       OpsItemId: S.optional(S.String),
     },
@@ -794,7 +804,7 @@ export class OpsItemRelatedItemAlreadyExistsException
 export class OpsItemRelatedItemAssociationNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<OpsItemRelatedItemAssociationNotFoundException>()(
     "OpsItemRelatedItemAssociationNotFoundException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.AwsQueryError({
       code: "OpsItemRelatedItemAssociationNotFoundException",
       httpResponseCode: 400,
@@ -803,7 +813,7 @@ export class OpsItemRelatedItemAssociationNotFoundException
 export class OpsMetadataAlreadyExistsException
   extends /*@__PURE__*/ S.TaggedErrorClass<OpsMetadataAlreadyExistsException>()(
     "OpsMetadataAlreadyExistsException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.AwsQueryError({
       code: "OpsMetadataAlreadyExistsException",
       httpResponseCode: 400,
@@ -812,7 +822,7 @@ export class OpsMetadataAlreadyExistsException
 export class OpsMetadataInvalidArgumentException
   extends /*@__PURE__*/ S.TaggedErrorClass<OpsMetadataInvalidArgumentException>()(
     "OpsMetadataInvalidArgumentException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.AwsQueryError({
       code: "OpsMetadataInvalidArgumentException",
       httpResponseCode: 400,
@@ -821,7 +831,7 @@ export class OpsMetadataInvalidArgumentException
 export class OpsMetadataKeyLimitExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<OpsMetadataKeyLimitExceededException>()(
     "OpsMetadataKeyLimitExceededException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.AwsQueryError({
       code: "OpsMetadataKeyLimitExceededException",
       httpResponseCode: 429,
@@ -830,7 +840,7 @@ export class OpsMetadataKeyLimitExceededException
 export class OpsMetadataLimitExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<OpsMetadataLimitExceededException>()(
     "OpsMetadataLimitExceededException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.AwsQueryError({
       code: "OpsMetadataLimitExceededException",
       httpResponseCode: 429,
@@ -839,7 +849,7 @@ export class OpsMetadataLimitExceededException
 export class OpsMetadataNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<OpsMetadataNotFoundException>()(
     "OpsMetadataNotFoundException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.AwsQueryError({
       code: "OpsMetadataNotFoundException",
       httpResponseCode: 404,
@@ -848,7 +858,7 @@ export class OpsMetadataNotFoundException
 export class OpsMetadataTooManyUpdatesException
   extends /*@__PURE__*/ S.TaggedErrorClass<OpsMetadataTooManyUpdatesException>()(
     "OpsMetadataTooManyUpdatesException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.AwsQueryError({
       code: "OpsMetadataTooManyUpdatesException",
       httpResponseCode: 429,
@@ -857,19 +867,19 @@ export class OpsMetadataTooManyUpdatesException
 export class ParameterAlreadyExists
   extends /*@__PURE__*/ S.TaggedErrorClass<ParameterAlreadyExists>()(
     "ParameterAlreadyExists",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.AwsQueryError({ code: "ParameterAlreadyExists", httpResponseCode: 400 }),
   ).pipe(C.withAlreadyExistsError) {}
 export class ParameterLimitExceeded
   extends /*@__PURE__*/ S.TaggedErrorClass<ParameterLimitExceeded>()(
     "ParameterLimitExceeded",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.AwsQueryError({ code: "ParameterLimitExceeded", httpResponseCode: 429 }),
   ).pipe(C.withThrottlingError) {}
 export class ParameterMaxVersionLimitExceeded
   extends /*@__PURE__*/ S.TaggedErrorClass<ParameterMaxVersionLimitExceeded>()(
     "ParameterMaxVersionLimitExceeded",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.AwsQueryError({
       code: "ParameterMaxVersionLimitExceeded",
       httpResponseCode: 400,
@@ -878,13 +888,13 @@ export class ParameterMaxVersionLimitExceeded
 export class ParameterNotFound
   extends /*@__PURE__*/ S.TaggedErrorClass<ParameterNotFound>()(
     "ParameterNotFound",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.AwsQueryError({ code: "ParameterNotFound", httpResponseCode: 404 }),
   ) {}
 export class ParameterPatternMismatchException
   extends /*@__PURE__*/ S.TaggedErrorClass<ParameterPatternMismatchException>()(
     "ParameterPatternMismatchException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.AwsQueryError({
       code: "ParameterPatternMismatchException",
       httpResponseCode: 400,
@@ -893,7 +903,7 @@ export class ParameterPatternMismatchException
 export class ParameterVersionLabelLimitExceeded
   extends /*@__PURE__*/ S.TaggedErrorClass<ParameterVersionLabelLimitExceeded>()(
     "ParameterVersionLabelLimitExceeded",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.AwsQueryError({
       code: "ParameterVersionLabelLimitExceeded",
       httpResponseCode: 400,
@@ -902,7 +912,7 @@ export class ParameterVersionLabelLimitExceeded
 export class ParameterVersionNotFound
   extends /*@__PURE__*/ S.TaggedErrorClass<ParameterVersionNotFound>()(
     "ParameterVersionNotFound",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.AwsQueryError({
       code: "ParameterVersionNotFound",
       httpResponseCode: 400,
@@ -911,7 +921,7 @@ export class ParameterVersionNotFound
 export class PoliciesLimitExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<PoliciesLimitExceededException>()(
     "PoliciesLimitExceededException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.AwsQueryError({
       code: "PoliciesLimitExceededException",
       httpResponseCode: 400,
@@ -920,7 +930,10 @@ export class PoliciesLimitExceededException
 export class ResourceDataSyncAlreadyExistsException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceDataSyncAlreadyExistsException>()(
     "ResourceDataSyncAlreadyExistsException",
-    { SyncName: S.optional(S.String) },
+    {
+      SyncName: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.AwsQueryError({
       code: "ResourceDataSyncAlreadyExists",
       httpResponseCode: 400,
@@ -929,7 +942,7 @@ export class ResourceDataSyncAlreadyExistsException
 export class ResourceDataSyncConflictException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceDataSyncConflictException>()(
     "ResourceDataSyncConflictException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.AwsQueryError({
       code: "ResourceDataSyncConflictException",
       httpResponseCode: 409,
@@ -938,7 +951,7 @@ export class ResourceDataSyncConflictException
 export class ResourceDataSyncCountExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceDataSyncCountExceededException>()(
     "ResourceDataSyncCountExceededException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.AwsQueryError({
       code: "ResourceDataSyncCountExceeded",
       httpResponseCode: 400,
@@ -947,7 +960,7 @@ export class ResourceDataSyncCountExceededException
 export class ResourceDataSyncInvalidConfigurationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceDataSyncInvalidConfigurationException>()(
     "ResourceDataSyncInvalidConfigurationException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.AwsQueryError({
       code: "ResourceDataSyncInvalidConfiguration",
       httpResponseCode: 400,
@@ -959,7 +972,7 @@ export class ResourceDataSyncNotFoundException
     {
       SyncName: S.optional(S.String),
       SyncType: S.optional(S.String),
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
     },
     T.AwsQueryError({
       code: "ResourceDataSyncNotFound",
@@ -969,13 +982,13 @@ export class ResourceDataSyncNotFoundException
 export class ResourceInUseException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceInUseException>()(
     "ResourceInUseException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.AwsQueryError({ code: "ResourceInUseException", httpResponseCode: 400 }),
   ) {}
 export class ResourceLimitExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceLimitExceededException>()(
     "ResourceLimitExceededException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.AwsQueryError({
       code: "ResourceLimitExceededException",
       httpResponseCode: 400,
@@ -984,7 +997,7 @@ export class ResourceLimitExceededException
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.AwsQueryError({
       code: "ResourceNotFoundException",
       httpResponseCode: 404,
@@ -993,7 +1006,7 @@ export class ResourceNotFoundException
 export class ResourcePolicyConflictException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourcePolicyConflictException>()(
     "ResourcePolicyConflictException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.AwsQueryError({
       code: "ResourcePolicyConflictException",
       httpResponseCode: 400,
@@ -1008,7 +1021,7 @@ export class ResourcePolicyInvalidParameterException
           identifier: "ResourcePolicyParameterNamesList",
         }),
       ),
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
     },
     T.AwsQueryError({
       code: "ResourcePolicyInvalidParameterException",
@@ -1021,7 +1034,7 @@ export class ResourcePolicyLimitExceededException
     {
       Limit: S.optional(S.Number),
       LimitType: S.optional(S.String),
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
     },
     T.AwsQueryError({
       code: "ResourcePolicyLimitExceededException",
@@ -1031,7 +1044,7 @@ export class ResourcePolicyLimitExceededException
 export class ResourcePolicyNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourcePolicyNotFoundException>()(
     "ResourcePolicyNotFoundException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.AwsQueryError({
       code: "ResourcePolicyNotFoundException",
       httpResponseCode: 404,
@@ -1041,7 +1054,7 @@ export class ServiceQuotaExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
     "ServiceQuotaExceededException",
     {
-      Message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       ResourceId: S.optional(S.String),
       ResourceType: S.optional(S.String),
       QuotaCode: S.String,
@@ -1051,19 +1064,19 @@ export class ServiceQuotaExceededException
 export class ServiceSettingNotFound
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceSettingNotFound>()(
     "ServiceSettingNotFound",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.AwsQueryError({ code: "ServiceSettingNotFound", httpResponseCode: 400 }),
   ) {}
 export class StatusUnchanged
   extends /*@__PURE__*/ S.TaggedErrorClass<StatusUnchanged>()(
     "StatusUnchanged",
-    {},
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.AwsQueryError({ code: "StatusUnchanged", httpResponseCode: 400 }),
   ) {}
 export class SubTypeCountLimitExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<SubTypeCountLimitExceededException>()(
     "SubTypeCountLimitExceededException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.AwsQueryError({
       code: "SubTypeCountLimitExceeded",
       httpResponseCode: 400,
@@ -1072,20 +1085,20 @@ export class SubTypeCountLimitExceededException
 export class TargetInUseException
   extends /*@__PURE__*/ S.TaggedErrorClass<TargetInUseException>()(
     "TargetInUseException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.AwsQueryError({ code: "TargetInUseException", httpResponseCode: 400 }),
   ) {}
 export class TargetNotConnected
   extends /*@__PURE__*/ S.TaggedErrorClass<TargetNotConnected>()(
     "TargetNotConnected",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.AwsQueryError({ code: "TargetNotConnected", httpResponseCode: 430 }),
   ) {}
 export class ThrottlingException
   extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
     "ThrottlingException",
     {
-      Message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       QuotaCode: S.optional(S.String),
       ServiceCode: S.optional(S.String),
     },
@@ -1093,25 +1106,25 @@ export class ThrottlingException
 export class TooManyTagsError
   extends /*@__PURE__*/ S.TaggedErrorClass<TooManyTagsError>()(
     "TooManyTagsError",
-    {},
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.AwsQueryError({ code: "TooManyTagsError", httpResponseCode: 400 }),
   ) {}
 export class TooManyUpdates
   extends /*@__PURE__*/ S.TaggedErrorClass<TooManyUpdates>()(
     "TooManyUpdates",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.AwsQueryError({ code: "TooManyUpdates", httpResponseCode: 429 }),
   ) {}
 export class TotalSizeLimitExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<TotalSizeLimitExceededException>()(
     "TotalSizeLimitExceededException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.AwsQueryError({ code: "TotalSizeLimitExceeded", httpResponseCode: 400 }),
   ) {}
 export class UnsupportedCalendarException
   extends /*@__PURE__*/ S.TaggedErrorClass<UnsupportedCalendarException>()(
     "UnsupportedCalendarException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.AwsQueryError({
       code: "UnsupportedCalendarException",
       httpResponseCode: 400,
@@ -1120,7 +1133,7 @@ export class UnsupportedCalendarException
 export class UnsupportedFeatureRequiredException
   extends /*@__PURE__*/ S.TaggedErrorClass<UnsupportedFeatureRequiredException>()(
     "UnsupportedFeatureRequiredException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.AwsQueryError({
       code: "UnsupportedFeatureRequiredException",
       httpResponseCode: 400,
@@ -1129,7 +1142,10 @@ export class UnsupportedFeatureRequiredException
 export class UnsupportedInventoryItemContextException
   extends /*@__PURE__*/ S.TaggedErrorClass<UnsupportedInventoryItemContextException>()(
     "UnsupportedInventoryItemContextException",
-    { TypeName: S.optional(S.String), Message: S.optional(S.String) },
+    {
+      TypeName: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.AwsQueryError({
       code: "UnsupportedInventoryItemContext",
       httpResponseCode: 400,
@@ -1138,7 +1154,7 @@ export class UnsupportedInventoryItemContextException
 export class UnsupportedInventorySchemaVersionException
   extends /*@__PURE__*/ S.TaggedErrorClass<UnsupportedInventorySchemaVersionException>()(
     "UnsupportedInventorySchemaVersionException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.AwsQueryError({
       code: "UnsupportedInventorySchemaVersion",
       httpResponseCode: 400,
@@ -1147,7 +1163,7 @@ export class UnsupportedInventorySchemaVersionException
 export class UnsupportedOperatingSystem
   extends /*@__PURE__*/ S.TaggedErrorClass<UnsupportedOperatingSystem>()(
     "UnsupportedOperatingSystem",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.AwsQueryError({
       code: "UnsupportedOperatingSystem",
       httpResponseCode: 400,
@@ -1156,13 +1172,13 @@ export class UnsupportedOperatingSystem
 export class UnsupportedOperationException
   extends /*@__PURE__*/ S.TaggedErrorClass<UnsupportedOperationException>()(
     "UnsupportedOperationException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.AwsQueryError({ code: "UnsupportedOperation", httpResponseCode: 400 }),
   ) {}
 export class UnsupportedParameterType
   extends /*@__PURE__*/ S.TaggedErrorClass<UnsupportedParameterType>()(
     "UnsupportedParameterType",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.AwsQueryError({
       code: "UnsupportedParameterType",
       httpResponseCode: 400,
@@ -1171,13 +1187,16 @@ export class UnsupportedParameterType
 export class UnsupportedPlatformType
   extends /*@__PURE__*/ S.TaggedErrorClass<UnsupportedPlatformType>()(
     "UnsupportedPlatformType",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.AwsQueryError({ code: "UnsupportedPlatformType", httpResponseCode: 400 }),
   ) {}
 export class ValidationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
     "ValidationException",
-    { Message: S.optional(S.String), ReasonCode: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      ReasonCode: S.optional(S.String),
+    },
     T.AwsQueryError({ code: "ValidationException", httpResponseCode: 400 }),
   ) {}
 export type ResourceTypeForTagging =
@@ -12098,7 +12117,7 @@ export const addTagsToResource: API.OperationMethod<
   AddTagsToResourceRequest,
   AddTagsToResourceResult,
   AddTagsToResourceError,
-  Creds | Rgn | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AddTagsToResourceRequest,
   output: AddTagsToResourceResult,
@@ -12131,7 +12150,7 @@ export const associateOpsItemRelatedItem: API.OperationMethod<
   AssociateOpsItemRelatedItemRequest,
   AssociateOpsItemRelatedItemResponse,
   AssociateOpsItemRelatedItemError,
-  Creds | Rgn | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AssociateOpsItemRelatedItemRequest,
   output: AssociateOpsItemRelatedItemResponse,
@@ -12162,7 +12181,7 @@ export const cancelCommand: API.OperationMethod<
   CancelCommandRequest,
   CancelCommandResult,
   CancelCommandError,
-  Creds | Rgn | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CancelCommandRequest,
   output: CancelCommandResult,
@@ -12190,7 +12209,7 @@ export const cancelMaintenanceWindowExecution: API.OperationMethod<
   CancelMaintenanceWindowExecutionRequest,
   CancelMaintenanceWindowExecutionResult,
   CancelMaintenanceWindowExecutionError,
-  Creds | Rgn | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CancelMaintenanceWindowExecutionRequest,
   output: CancelMaintenanceWindowExecutionResult,
@@ -12219,7 +12238,7 @@ export const createActivation: API.OperationMethod<
   CreateActivationRequest,
   CreateActivationResult,
   CreateActivationError,
-  Creds | Rgn | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateActivationRequest,
   output: CreateActivationResult,
@@ -12260,7 +12279,7 @@ export const createAssociation: API.OperationMethod<
   CreateAssociationRequest,
   CreateAssociationResult,
   CreateAssociationError,
-  Creds | Rgn | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateAssociationRequest,
   output: CreateAssociationResult,
@@ -12313,7 +12332,7 @@ export const createAssociationBatch: API.OperationMethod<
   CreateAssociationBatchRequest,
   CreateAssociationBatchResult,
   CreateAssociationBatchError,
-  Creds | Rgn | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateAssociationBatchRequest,
   output: CreateAssociationBatchResult,
@@ -12356,7 +12375,7 @@ export const createDocument: API.OperationMethod<
   CreateDocumentRequest,
   CreateDocumentResult,
   CreateDocumentError,
-  Creds | Rgn | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateDocumentRequest,
   output: CreateDocumentResult,
@@ -12394,7 +12413,7 @@ export const createMaintenanceWindow: API.OperationMethod<
   CreateMaintenanceWindowRequest,
   CreateMaintenanceWindowResult,
   CreateMaintenanceWindowError,
-  Creds | Rgn | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateMaintenanceWindowRequest,
   output: CreateMaintenanceWindowResult,
@@ -12428,7 +12447,7 @@ export const createOpsItem: API.OperationMethod<
   CreateOpsItemRequest,
   CreateOpsItemResponse,
   CreateOpsItemError,
-  Creds | Rgn | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateOpsItemRequest,
   output: CreateOpsItemResponse,
@@ -12459,7 +12478,7 @@ export const createOpsMetadata: API.OperationMethod<
   CreateOpsMetadataRequest,
   CreateOpsMetadataResult,
   CreateOpsMetadataError,
-  Creds | Rgn | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateOpsMetadataRequest,
   output: CreateOpsMetadataResult,
@@ -12490,7 +12509,7 @@ export const createPatchBaseline: API.OperationMethod<
   CreatePatchBaselineRequest,
   CreatePatchBaselineResult,
   CreatePatchBaselineError,
-  Creds | Rgn | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreatePatchBaselineRequest,
   output: CreatePatchBaselineResult,
@@ -12539,7 +12558,7 @@ export const createResourceDataSync: API.OperationMethod<
   CreateResourceDataSyncRequest,
   CreateResourceDataSyncResult,
   CreateResourceDataSyncError,
-  Creds | Rgn | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateResourceDataSyncRequest,
   output: CreateResourceDataSyncResult,
@@ -12569,7 +12588,7 @@ export const deleteActivation: API.OperationMethod<
   DeleteActivationRequest,
   DeleteActivationResult,
   DeleteActivationError,
-  Creds | Rgn | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteActivationRequest,
   output: DeleteActivationResult,
@@ -12605,7 +12624,7 @@ export const deleteAssociation: API.OperationMethod<
   DeleteAssociationRequest,
   DeleteAssociationResult,
   DeleteAssociationError,
-  Creds | Rgn | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteAssociationRequest,
   output: DeleteAssociationResult,
@@ -12638,7 +12657,7 @@ export const deleteDocument: API.OperationMethod<
   DeleteDocumentRequest,
   DeleteDocumentResult,
   DeleteDocumentError,
-  Creds | Rgn | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteDocumentRequest,
   output: DeleteDocumentResult,
@@ -12669,7 +12688,7 @@ export const deleteInventory: API.OperationMethod<
   DeleteInventoryRequest,
   DeleteInventoryResult,
   DeleteInventoryError,
-  Creds | Rgn | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteInventoryRequest,
   output: DeleteInventoryResult,
@@ -12693,7 +12712,7 @@ export const deleteMaintenanceWindow: API.OperationMethod<
   DeleteMaintenanceWindowRequest,
   DeleteMaintenanceWindowResult,
   DeleteMaintenanceWindowError,
-  Creds | Rgn | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteMaintenanceWindowRequest,
   output: DeleteMaintenanceWindowResult,
@@ -12734,7 +12753,7 @@ export const deleteOpsItem: API.OperationMethod<
   DeleteOpsItemRequest,
   DeleteOpsItemResponse,
   DeleteOpsItemError,
-  Creds | Rgn | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteOpsItemRequest,
   output: DeleteOpsItemResponse,
@@ -12756,7 +12775,7 @@ export const deleteOpsMetadata: API.OperationMethod<
   DeleteOpsMetadataRequest,
   DeleteOpsMetadataResult,
   DeleteOpsMetadataError,
-  Creds | Rgn | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteOpsMetadataRequest,
   output: DeleteOpsMetadataResult,
@@ -12782,7 +12801,7 @@ export const deleteParameter: API.OperationMethod<
   DeleteParameterRequest,
   DeleteParameterResult,
   DeleteParameterError,
-  Creds | Rgn | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteParameterRequest,
   output: DeleteParameterResult,
@@ -12801,7 +12820,7 @@ export const deleteParameters: API.OperationMethod<
   DeleteParametersRequest,
   DeleteParametersResult,
   DeleteParametersError,
-  Creds | Rgn | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteParametersRequest,
   output: DeleteParametersResult,
@@ -12822,7 +12841,7 @@ export const deletePatchBaseline: API.OperationMethod<
   DeletePatchBaselineRequest,
   DeletePatchBaselineResult,
   DeletePatchBaselineError,
-  Creds | Rgn | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeletePatchBaselineRequest,
   output: DeletePatchBaselineResult,
@@ -12846,7 +12865,7 @@ export const deleteResourceDataSync: API.OperationMethod<
   DeleteResourceDataSyncRequest,
   DeleteResourceDataSyncResult,
   DeleteResourceDataSyncError,
-  Creds | Rgn | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteResourceDataSyncRequest,
   output: DeleteResourceDataSyncResult,
@@ -12884,7 +12903,7 @@ export const deleteResourcePolicy: API.OperationMethod<
   DeleteResourcePolicyRequest,
   DeleteResourcePolicyResponse,
   DeleteResourcePolicyError,
-  Creds | Rgn | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteResourcePolicyRequest,
   output: DeleteResourcePolicyResponse,
@@ -12919,7 +12938,7 @@ export const deregisterManagedInstance: API.OperationMethod<
   DeregisterManagedInstanceRequest,
   DeregisterManagedInstanceResult,
   DeregisterManagedInstanceError,
-  Creds | Rgn | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeregisterManagedInstanceRequest,
   output: DeregisterManagedInstanceResult,
@@ -12940,7 +12959,7 @@ export const deregisterPatchBaselineForPatchGroup: API.OperationMethod<
   DeregisterPatchBaselineForPatchGroupRequest,
   DeregisterPatchBaselineForPatchGroupResult,
   DeregisterPatchBaselineForPatchGroupError,
-  Creds | Rgn | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeregisterPatchBaselineForPatchGroupRequest,
   output: DeregisterPatchBaselineForPatchGroupResult,
@@ -12962,7 +12981,7 @@ export const deregisterTargetFromMaintenanceWindow: API.OperationMethod<
   DeregisterTargetFromMaintenanceWindowRequest,
   DeregisterTargetFromMaintenanceWindowResult,
   DeregisterTargetFromMaintenanceWindowError,
-  Creds | Rgn | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeregisterTargetFromMaintenanceWindowRequest,
   output: DeregisterTargetFromMaintenanceWindowResult,
@@ -12983,7 +13002,7 @@ export const deregisterTaskFromMaintenanceWindow: API.OperationMethod<
   DeregisterTaskFromMaintenanceWindowRequest,
   DeregisterTaskFromMaintenanceWindowResult,
   DeregisterTaskFromMaintenanceWindowError,
-  Creds | Rgn | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeregisterTaskFromMaintenanceWindowRequest,
   output: DeregisterTaskFromMaintenanceWindowResult,
@@ -13004,27 +13023,13 @@ export type DescribeActivationsError =
  * the managed nodes in the activation, and the number of nodes registered by using this
  * activation.
  */
-export const describeActivations: API.OperationMethod<
+export const describeActivations: API.PaginatedOperationMethod<
   DescribeActivationsRequest,
   DescribeActivationsResult,
   DescribeActivationsError,
-  Creds | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeActivationsRequest,
-  ) => stream.Stream<
-    DescribeActivationsResult,
-    DescribeActivationsError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeActivationsRequest,
-  ) => stream.Stream<
-    Activation,
-    DescribeActivationsError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Creds | HttpClient.HttpClient,
+  Activation
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeActivationsRequest,
   output: DescribeActivationsResult,
   errors: [InternalServerError, InvalidFilter, InvalidNextToken],
@@ -13037,27 +13042,7 @@ export const describeActivations: API.OperationMethod<
     items: "ActivationList",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeActivationsRequest,
-  DescribeActivationsResult,
-  DescribeActivationsError,
-  Creds | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeActivationsRequest,
-  ) => stream.Stream<
-    DescribeActivationsResult,
-    DescribeActivationsError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeActivationsRequest,
-  ) => stream.Stream<
-    Activation,
-    DescribeActivationsError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeAssociationError =
   | AssociationDoesNotExist
@@ -13075,7 +13060,7 @@ export const describeAssociation: API.OperationMethod<
   DescribeAssociationRequest,
   DescribeAssociationResult,
   DescribeAssociationError,
-  Creds | Rgn | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeAssociationRequest,
   output: DescribeAssociationResult,
@@ -13099,27 +13084,13 @@ export type DescribeAssociationExecutionsError =
 /**
  * Views all executions for a specific association ID.
  */
-export const describeAssociationExecutions: API.OperationMethod<
+export const describeAssociationExecutions: API.PaginatedOperationMethod<
   DescribeAssociationExecutionsRequest,
   DescribeAssociationExecutionsResult,
   DescribeAssociationExecutionsError,
-  Creds | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeAssociationExecutionsRequest,
-  ) => stream.Stream<
-    DescribeAssociationExecutionsResult,
-    DescribeAssociationExecutionsError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeAssociationExecutionsRequest,
-  ) => stream.Stream<
-    AssociationExecution,
-    DescribeAssociationExecutionsError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Creds | HttpClient.HttpClient,
+  AssociationExecution
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeAssociationExecutionsRequest,
   output: DescribeAssociationExecutionsResult,
   errors: [AssociationDoesNotExist, InternalServerError, InvalidNextToken],
@@ -13132,27 +13103,7 @@ export const describeAssociationExecutions: API.OperationMethod<
     items: "AssociationExecutions",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeAssociationExecutionsRequest,
-  DescribeAssociationExecutionsResult,
-  DescribeAssociationExecutionsError,
-  Creds | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeAssociationExecutionsRequest,
-  ) => stream.Stream<
-    DescribeAssociationExecutionsResult,
-    DescribeAssociationExecutionsError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeAssociationExecutionsRequest,
-  ) => stream.Stream<
-    AssociationExecution,
-    DescribeAssociationExecutionsError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeAssociationExecutionTargetsError =
   | AssociationDoesNotExist
@@ -13163,27 +13114,13 @@ export type DescribeAssociationExecutionTargetsError =
 /**
  * Views information about a specific execution of a specific association.
  */
-export const describeAssociationExecutionTargets: API.OperationMethod<
+export const describeAssociationExecutionTargets: API.PaginatedOperationMethod<
   DescribeAssociationExecutionTargetsRequest,
   DescribeAssociationExecutionTargetsResult,
   DescribeAssociationExecutionTargetsError,
-  Creds | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeAssociationExecutionTargetsRequest,
-  ) => stream.Stream<
-    DescribeAssociationExecutionTargetsResult,
-    DescribeAssociationExecutionTargetsError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeAssociationExecutionTargetsRequest,
-  ) => stream.Stream<
-    AssociationExecutionTarget,
-    DescribeAssociationExecutionTargetsError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Creds | HttpClient.HttpClient,
+  AssociationExecutionTarget
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeAssociationExecutionTargetsRequest,
   output: DescribeAssociationExecutionTargetsResult,
   errors: [
@@ -13201,27 +13138,7 @@ export const describeAssociationExecutionTargets: API.OperationMethod<
     items: "AssociationExecutionTargets",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeAssociationExecutionTargetsRequest,
-  DescribeAssociationExecutionTargetsResult,
-  DescribeAssociationExecutionTargetsError,
-  Creds | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeAssociationExecutionTargetsRequest,
-  ) => stream.Stream<
-    DescribeAssociationExecutionTargetsResult,
-    DescribeAssociationExecutionTargetsError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeAssociationExecutionTargetsRequest,
-  ) => stream.Stream<
-    AssociationExecutionTarget,
-    DescribeAssociationExecutionTargetsError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeAutomationExecutionsError =
   | InternalServerError
@@ -13232,27 +13149,13 @@ export type DescribeAutomationExecutionsError =
 /**
  * Provides details about all active and terminated Automation executions.
  */
-export const describeAutomationExecutions: API.OperationMethod<
+export const describeAutomationExecutions: API.PaginatedOperationMethod<
   DescribeAutomationExecutionsRequest,
   DescribeAutomationExecutionsResult,
   DescribeAutomationExecutionsError,
-  Creds | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeAutomationExecutionsRequest,
-  ) => stream.Stream<
-    DescribeAutomationExecutionsResult,
-    DescribeAutomationExecutionsError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeAutomationExecutionsRequest,
-  ) => stream.Stream<
-    AutomationExecutionMetadata,
-    DescribeAutomationExecutionsError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Creds | HttpClient.HttpClient,
+  AutomationExecutionMetadata
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeAutomationExecutionsRequest,
   output: DescribeAutomationExecutionsResult,
   errors: [
@@ -13270,27 +13173,7 @@ export const describeAutomationExecutions: API.OperationMethod<
     items: "AutomationExecutionMetadataList",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeAutomationExecutionsRequest,
-  DescribeAutomationExecutionsResult,
-  DescribeAutomationExecutionsError,
-  Creds | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeAutomationExecutionsRequest,
-  ) => stream.Stream<
-    DescribeAutomationExecutionsResult,
-    DescribeAutomationExecutionsError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeAutomationExecutionsRequest,
-  ) => stream.Stream<
-    AutomationExecutionMetadata,
-    DescribeAutomationExecutionsError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeAutomationStepExecutionsError =
   | AutomationExecutionNotFoundException
@@ -13303,27 +13186,13 @@ export type DescribeAutomationStepExecutionsError =
  * Information about all active and terminated step executions in an Automation
  * workflow.
  */
-export const describeAutomationStepExecutions: API.OperationMethod<
+export const describeAutomationStepExecutions: API.PaginatedOperationMethod<
   DescribeAutomationStepExecutionsRequest,
   DescribeAutomationStepExecutionsResult,
   DescribeAutomationStepExecutionsError,
-  Creds | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeAutomationStepExecutionsRequest,
-  ) => stream.Stream<
-    DescribeAutomationStepExecutionsResult,
-    DescribeAutomationStepExecutionsError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeAutomationStepExecutionsRequest,
-  ) => stream.Stream<
-    StepExecution,
-    DescribeAutomationStepExecutionsError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Creds | HttpClient.HttpClient,
+  StepExecution
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeAutomationStepExecutionsRequest,
   output: DescribeAutomationStepExecutionsResult,
   errors: [
@@ -13342,27 +13211,7 @@ export const describeAutomationStepExecutions: API.OperationMethod<
     items: "StepExecutions",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeAutomationStepExecutionsRequest,
-  DescribeAutomationStepExecutionsResult,
-  DescribeAutomationStepExecutionsError,
-  Creds | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeAutomationStepExecutionsRequest,
-  ) => stream.Stream<
-    DescribeAutomationStepExecutionsResult,
-    DescribeAutomationStepExecutionsError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeAutomationStepExecutionsRequest,
-  ) => stream.Stream<
-    StepExecution,
-    DescribeAutomationStepExecutionsError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeAvailablePatchesError = InternalServerError | CommonErrors;
 /**
@@ -13371,27 +13220,13 @@ export type DescribeAvailablePatchesError = InternalServerError | CommonErrors;
  * Currently, `DescribeAvailablePatches` supports only the Amazon Linux 1, Amazon
  * Linux 2, and Windows Server operating systems.
  */
-export const describeAvailablePatches: API.OperationMethod<
+export const describeAvailablePatches: API.PaginatedOperationMethod<
   DescribeAvailablePatchesRequest,
   DescribeAvailablePatchesResult,
   DescribeAvailablePatchesError,
-  Creds | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeAvailablePatchesRequest,
-  ) => stream.Stream<
-    DescribeAvailablePatchesResult,
-    DescribeAvailablePatchesError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeAvailablePatchesRequest,
-  ) => stream.Stream<
-    Patch,
-    DescribeAvailablePatchesError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Creds | HttpClient.HttpClient,
+  Patch
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeAvailablePatchesRequest,
   output: DescribeAvailablePatchesResult,
   errors: [InternalServerError],
@@ -13404,27 +13239,7 @@ export const describeAvailablePatches: API.OperationMethod<
     items: "Patches",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeAvailablePatchesRequest,
-  DescribeAvailablePatchesResult,
-  DescribeAvailablePatchesError,
-  Creds | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeAvailablePatchesRequest,
-  ) => stream.Stream<
-    DescribeAvailablePatchesResult,
-    DescribeAvailablePatchesError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeAvailablePatchesRequest,
-  ) => stream.Stream<
-    Patch,
-    DescribeAvailablePatchesError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeDocumentError =
   | InternalServerError
@@ -13438,7 +13253,7 @@ export const describeDocument: API.OperationMethod<
   DescribeDocumentRequest,
   DescribeDocumentResult,
   DescribeDocumentError,
-  Creds | Rgn | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeDocumentRequest,
   output: DescribeDocumentResult,
@@ -13464,7 +13279,7 @@ export const describeDocumentPermission: API.OperationMethod<
   DescribeDocumentPermissionRequest,
   DescribeDocumentPermissionResponse,
   DescribeDocumentPermissionError,
-  Creds | Rgn | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeDocumentPermissionRequest,
   output: DescribeDocumentPermissionResponse,
@@ -13488,27 +13303,13 @@ export type DescribeEffectiveInstanceAssociationsError =
 /**
  * All associations for the managed nodes.
  */
-export const describeEffectiveInstanceAssociations: API.OperationMethod<
+export const describeEffectiveInstanceAssociations: API.PaginatedOperationMethod<
   DescribeEffectiveInstanceAssociationsRequest,
   DescribeEffectiveInstanceAssociationsResult,
   DescribeEffectiveInstanceAssociationsError,
-  Creds | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeEffectiveInstanceAssociationsRequest,
-  ) => stream.Stream<
-    DescribeEffectiveInstanceAssociationsResult,
-    DescribeEffectiveInstanceAssociationsError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeEffectiveInstanceAssociationsRequest,
-  ) => stream.Stream<
-    InstanceAssociation,
-    DescribeEffectiveInstanceAssociationsError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Creds | HttpClient.HttpClient,
+  InstanceAssociation
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeEffectiveInstanceAssociationsRequest,
   output: DescribeEffectiveInstanceAssociationsResult,
   errors: [InternalServerError, InvalidInstanceId, InvalidNextToken],
@@ -13521,27 +13322,7 @@ export const describeEffectiveInstanceAssociations: API.OperationMethod<
     items: "Associations",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeEffectiveInstanceAssociationsRequest,
-  DescribeEffectiveInstanceAssociationsResult,
-  DescribeEffectiveInstanceAssociationsError,
-  Creds | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeEffectiveInstanceAssociationsRequest,
-  ) => stream.Stream<
-    DescribeEffectiveInstanceAssociationsResult,
-    DescribeEffectiveInstanceAssociationsError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeEffectiveInstanceAssociationsRequest,
-  ) => stream.Stream<
-    InstanceAssociation,
-    DescribeEffectiveInstanceAssociationsError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeEffectivePatchesForPatchBaselineError =
   | DoesNotExistException
@@ -13553,27 +13334,13 @@ export type DescribeEffectivePatchesForPatchBaselineError =
  * Retrieves the current effective patches (the patch and the approval state) for the specified
  * patch baseline. Applies to patch baselines for Windows only.
  */
-export const describeEffectivePatchesForPatchBaseline: API.OperationMethod<
+export const describeEffectivePatchesForPatchBaseline: API.PaginatedOperationMethod<
   DescribeEffectivePatchesForPatchBaselineRequest,
   DescribeEffectivePatchesForPatchBaselineResult,
   DescribeEffectivePatchesForPatchBaselineError,
-  Creds | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeEffectivePatchesForPatchBaselineRequest,
-  ) => stream.Stream<
-    DescribeEffectivePatchesForPatchBaselineResult,
-    DescribeEffectivePatchesForPatchBaselineError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeEffectivePatchesForPatchBaselineRequest,
-  ) => stream.Stream<
-    EffectivePatch,
-    DescribeEffectivePatchesForPatchBaselineError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Creds | HttpClient.HttpClient,
+  EffectivePatch
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeEffectivePatchesForPatchBaselineRequest,
   output: DescribeEffectivePatchesForPatchBaselineResult,
   errors: [
@@ -13591,27 +13358,7 @@ export const describeEffectivePatchesForPatchBaseline: API.OperationMethod<
     items: "EffectivePatches",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeEffectivePatchesForPatchBaselineRequest,
-  DescribeEffectivePatchesForPatchBaselineResult,
-  DescribeEffectivePatchesForPatchBaselineError,
-  Creds | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeEffectivePatchesForPatchBaselineRequest,
-  ) => stream.Stream<
-    DescribeEffectivePatchesForPatchBaselineResult,
-    DescribeEffectivePatchesForPatchBaselineError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeEffectivePatchesForPatchBaselineRequest,
-  ) => stream.Stream<
-    EffectivePatch,
-    DescribeEffectivePatchesForPatchBaselineError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeInstanceAssociationsStatusError =
   | InternalServerError
@@ -13621,27 +13368,13 @@ export type DescribeInstanceAssociationsStatusError =
 /**
  * The status of the associations for the managed nodes.
  */
-export const describeInstanceAssociationsStatus: API.OperationMethod<
+export const describeInstanceAssociationsStatus: API.PaginatedOperationMethod<
   DescribeInstanceAssociationsStatusRequest,
   DescribeInstanceAssociationsStatusResult,
   DescribeInstanceAssociationsStatusError,
-  Creds | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeInstanceAssociationsStatusRequest,
-  ) => stream.Stream<
-    DescribeInstanceAssociationsStatusResult,
-    DescribeInstanceAssociationsStatusError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeInstanceAssociationsStatusRequest,
-  ) => stream.Stream<
-    InstanceAssociationStatusInfo,
-    DescribeInstanceAssociationsStatusError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Creds | HttpClient.HttpClient,
+  InstanceAssociationStatusInfo
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeInstanceAssociationsStatusRequest,
   output: DescribeInstanceAssociationsStatusResult,
   errors: [InternalServerError, InvalidInstanceId, InvalidNextToken],
@@ -13654,27 +13387,7 @@ export const describeInstanceAssociationsStatus: API.OperationMethod<
     items: "InstanceAssociationStatusInfos",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeInstanceAssociationsStatusRequest,
-  DescribeInstanceAssociationsStatusResult,
-  DescribeInstanceAssociationsStatusError,
-  Creds | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeInstanceAssociationsStatusRequest,
-  ) => stream.Stream<
-    DescribeInstanceAssociationsStatusResult,
-    DescribeInstanceAssociationsStatusError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeInstanceAssociationsStatusRequest,
-  ) => stream.Stream<
-    InstanceAssociationStatusInfo,
-    DescribeInstanceAssociationsStatusError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeInstanceInformationError =
   | InternalServerError
@@ -13696,27 +13409,13 @@ export type DescribeInstanceInformationError =
  * Amazon EC2 instance configured with a Systems Manager Quick Setup host management configuration or
  * the role assigned to an on-premises managed node.
  */
-export const describeInstanceInformation: API.OperationMethod<
+export const describeInstanceInformation: API.PaginatedOperationMethod<
   DescribeInstanceInformationRequest,
   DescribeInstanceInformationResult,
   DescribeInstanceInformationError,
-  Creds | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeInstanceInformationRequest,
-  ) => stream.Stream<
-    DescribeInstanceInformationResult,
-    DescribeInstanceInformationError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeInstanceInformationRequest,
-  ) => stream.Stream<
-    InstanceInformation,
-    DescribeInstanceInformationError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Creds | HttpClient.HttpClient,
+  InstanceInformation
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeInstanceInformationRequest,
   output: DescribeInstanceInformationResult,
   errors: [
@@ -13735,27 +13434,7 @@ export const describeInstanceInformation: API.OperationMethod<
     items: "InstanceInformationList",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeInstanceInformationRequest,
-  DescribeInstanceInformationResult,
-  DescribeInstanceInformationError,
-  Creds | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeInstanceInformationRequest,
-  ) => stream.Stream<
-    DescribeInstanceInformationResult,
-    DescribeInstanceInformationError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeInstanceInformationRequest,
-  ) => stream.Stream<
-    InstanceInformation,
-    DescribeInstanceInformationError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeInstancePatchesError =
   | InternalServerError
@@ -13767,27 +13446,13 @@ export type DescribeInstancePatchesError =
  * Retrieves information about the patches on the specified managed node and their state
  * relative to the patch baseline being used for the node.
  */
-export const describeInstancePatches: API.OperationMethod<
+export const describeInstancePatches: API.PaginatedOperationMethod<
   DescribeInstancePatchesRequest,
   DescribeInstancePatchesResult,
   DescribeInstancePatchesError,
-  Creds | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeInstancePatchesRequest,
-  ) => stream.Stream<
-    DescribeInstancePatchesResult,
-    DescribeInstancePatchesError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeInstancePatchesRequest,
-  ) => stream.Stream<
-    PatchComplianceData,
-    DescribeInstancePatchesError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Creds | HttpClient.HttpClient,
+  PatchComplianceData
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeInstancePatchesRequest,
   output: DescribeInstancePatchesResult,
   errors: [
@@ -13805,27 +13470,7 @@ export const describeInstancePatches: API.OperationMethod<
     items: "Patches",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeInstancePatchesRequest,
-  DescribeInstancePatchesResult,
-  DescribeInstancePatchesError,
-  Creds | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeInstancePatchesRequest,
-  ) => stream.Stream<
-    DescribeInstancePatchesResult,
-    DescribeInstancePatchesError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeInstancePatchesRequest,
-  ) => stream.Stream<
-    PatchComplianceData,
-    DescribeInstancePatchesError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeInstancePatchStatesError =
   | InternalServerError
@@ -13834,27 +13479,13 @@ export type DescribeInstancePatchStatesError =
 /**
  * Retrieves the high-level patch state of one or more managed nodes.
  */
-export const describeInstancePatchStates: API.OperationMethod<
+export const describeInstancePatchStates: API.PaginatedOperationMethod<
   DescribeInstancePatchStatesRequest,
   DescribeInstancePatchStatesResult,
   DescribeInstancePatchStatesError,
-  Creds | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeInstancePatchStatesRequest,
-  ) => stream.Stream<
-    DescribeInstancePatchStatesResult,
-    DescribeInstancePatchStatesError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeInstancePatchStatesRequest,
-  ) => stream.Stream<
-    InstancePatchState,
-    DescribeInstancePatchStatesError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Creds | HttpClient.HttpClient,
+  InstancePatchState
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeInstancePatchStatesRequest,
   output: DescribeInstancePatchStatesResult,
   errors: [InternalServerError, InvalidNextToken],
@@ -13867,27 +13498,7 @@ export const describeInstancePatchStates: API.OperationMethod<
     items: "InstancePatchStates",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeInstancePatchStatesRequest,
-  DescribeInstancePatchStatesResult,
-  DescribeInstancePatchStatesError,
-  Creds | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeInstancePatchStatesRequest,
-  ) => stream.Stream<
-    DescribeInstancePatchStatesResult,
-    DescribeInstancePatchStatesError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeInstancePatchStatesRequest,
-  ) => stream.Stream<
-    InstancePatchState,
-    DescribeInstancePatchStatesError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeInstancePatchStatesForPatchGroupError =
   | InternalServerError
@@ -13898,27 +13509,13 @@ export type DescribeInstancePatchStatesForPatchGroupError =
  * Retrieves the high-level patch state for the managed nodes in the specified patch
  * group.
  */
-export const describeInstancePatchStatesForPatchGroup: API.OperationMethod<
+export const describeInstancePatchStatesForPatchGroup: API.PaginatedOperationMethod<
   DescribeInstancePatchStatesForPatchGroupRequest,
   DescribeInstancePatchStatesForPatchGroupResult,
   DescribeInstancePatchStatesForPatchGroupError,
-  Creds | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeInstancePatchStatesForPatchGroupRequest,
-  ) => stream.Stream<
-    DescribeInstancePatchStatesForPatchGroupResult,
-    DescribeInstancePatchStatesForPatchGroupError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeInstancePatchStatesForPatchGroupRequest,
-  ) => stream.Stream<
-    InstancePatchState,
-    DescribeInstancePatchStatesForPatchGroupError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Creds | HttpClient.HttpClient,
+  InstancePatchState
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeInstancePatchStatesForPatchGroupRequest,
   output: DescribeInstancePatchStatesForPatchGroupResult,
   errors: [InternalServerError, InvalidFilter, InvalidNextToken],
@@ -13931,27 +13528,7 @@ export const describeInstancePatchStatesForPatchGroup: API.OperationMethod<
     items: "InstancePatchStates",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeInstancePatchStatesForPatchGroupRequest,
-  DescribeInstancePatchStatesForPatchGroupResult,
-  DescribeInstancePatchStatesForPatchGroupError,
-  Creds | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeInstancePatchStatesForPatchGroupRequest,
-  ) => stream.Stream<
-    DescribeInstancePatchStatesForPatchGroupResult,
-    DescribeInstancePatchStatesForPatchGroupError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeInstancePatchStatesForPatchGroupRequest,
-  ) => stream.Stream<
-    InstancePatchState,
-    DescribeInstancePatchStatesForPatchGroupError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeInstancePropertiesError =
   | InternalServerError
@@ -13966,27 +13543,13 @@ export type DescribeInstancePropertiesError =
  * An API operation used by the Systems Manager console to display information about Systems Manager managed
  * nodes.
  */
-export const describeInstanceProperties: API.OperationMethod<
+export const describeInstanceProperties: API.PaginatedOperationMethod<
   DescribeInstancePropertiesRequest,
   DescribeInstancePropertiesResult,
   DescribeInstancePropertiesError,
-  Creds | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeInstancePropertiesRequest,
-  ) => stream.Stream<
-    DescribeInstancePropertiesResult,
-    DescribeInstancePropertiesError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeInstancePropertiesRequest,
-  ) => stream.Stream<
-    InstanceProperty,
-    DescribeInstancePropertiesError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Creds | HttpClient.HttpClient,
+  InstanceProperty
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeInstancePropertiesRequest,
   output: DescribeInstancePropertiesResult,
   errors: [
@@ -14007,27 +13570,7 @@ export const describeInstanceProperties: API.OperationMethod<
     items: "InstanceProperties",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeInstancePropertiesRequest,
-  DescribeInstancePropertiesResult,
-  DescribeInstancePropertiesError,
-  Creds | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeInstancePropertiesRequest,
-  ) => stream.Stream<
-    DescribeInstancePropertiesResult,
-    DescribeInstancePropertiesError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeInstancePropertiesRequest,
-  ) => stream.Stream<
-    InstanceProperty,
-    DescribeInstancePropertiesError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeInventoryDeletionsError =
   | InternalServerError
@@ -14037,27 +13580,13 @@ export type DescribeInventoryDeletionsError =
 /**
  * Describes a specific delete inventory operation.
  */
-export const describeInventoryDeletions: API.OperationMethod<
+export const describeInventoryDeletions: API.PaginatedOperationMethod<
   DescribeInventoryDeletionsRequest,
   DescribeInventoryDeletionsResult,
   DescribeInventoryDeletionsError,
-  Creds | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeInventoryDeletionsRequest,
-  ) => stream.Stream<
-    DescribeInventoryDeletionsResult,
-    DescribeInventoryDeletionsError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeInventoryDeletionsRequest,
-  ) => stream.Stream<
-    InventoryDeletionStatusItem,
-    DescribeInventoryDeletionsError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Creds | HttpClient.HttpClient,
+  InventoryDeletionStatusItem
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeInventoryDeletionsRequest,
   output: DescribeInventoryDeletionsResult,
   errors: [InternalServerError, InvalidDeletionIdException, InvalidNextToken],
@@ -14070,27 +13599,7 @@ export const describeInventoryDeletions: API.OperationMethod<
     items: "InventoryDeletions",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeInventoryDeletionsRequest,
-  DescribeInventoryDeletionsResult,
-  DescribeInventoryDeletionsError,
-  Creds | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeInventoryDeletionsRequest,
-  ) => stream.Stream<
-    DescribeInventoryDeletionsResult,
-    DescribeInventoryDeletionsError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeInventoryDeletionsRequest,
-  ) => stream.Stream<
-    InventoryDeletionStatusItem,
-    DescribeInventoryDeletionsError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeMaintenanceWindowExecutionsError =
   | InternalServerError
@@ -14100,27 +13609,13 @@ export type DescribeMaintenanceWindowExecutionsError =
  * maintenance window was scheduled to be active, and information about tasks registered and run
  * with the maintenance window.
  */
-export const describeMaintenanceWindowExecutions: API.OperationMethod<
+export const describeMaintenanceWindowExecutions: API.PaginatedOperationMethod<
   DescribeMaintenanceWindowExecutionsRequest,
   DescribeMaintenanceWindowExecutionsResult,
   DescribeMaintenanceWindowExecutionsError,
-  Creds | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeMaintenanceWindowExecutionsRequest,
-  ) => stream.Stream<
-    DescribeMaintenanceWindowExecutionsResult,
-    DescribeMaintenanceWindowExecutionsError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeMaintenanceWindowExecutionsRequest,
-  ) => stream.Stream<
-    MaintenanceWindowExecution,
-    DescribeMaintenanceWindowExecutionsError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Creds | HttpClient.HttpClient,
+  MaintenanceWindowExecution
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeMaintenanceWindowExecutionsRequest,
   output: DescribeMaintenanceWindowExecutionsResult,
   errors: [InternalServerError],
@@ -14133,27 +13628,7 @@ export const describeMaintenanceWindowExecutions: API.OperationMethod<
     items: "WindowExecutions",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeMaintenanceWindowExecutionsRequest,
-  DescribeMaintenanceWindowExecutionsResult,
-  DescribeMaintenanceWindowExecutionsError,
-  Creds | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeMaintenanceWindowExecutionsRequest,
-  ) => stream.Stream<
-    DescribeMaintenanceWindowExecutionsResult,
-    DescribeMaintenanceWindowExecutionsError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeMaintenanceWindowExecutionsRequest,
-  ) => stream.Stream<
-    MaintenanceWindowExecution,
-    DescribeMaintenanceWindowExecutionsError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeMaintenanceWindowExecutionTaskInvocationsError =
   | DoesNotExistException
@@ -14163,27 +13638,13 @@ export type DescribeMaintenanceWindowExecutionTaskInvocationsError =
  * Retrieves the individual task executions (one per target) for a particular task run as part
  * of a maintenance window execution.
  */
-export const describeMaintenanceWindowExecutionTaskInvocations: API.OperationMethod<
+export const describeMaintenanceWindowExecutionTaskInvocations: API.PaginatedOperationMethod<
   DescribeMaintenanceWindowExecutionTaskInvocationsRequest,
   DescribeMaintenanceWindowExecutionTaskInvocationsResult,
   DescribeMaintenanceWindowExecutionTaskInvocationsError,
-  Creds | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeMaintenanceWindowExecutionTaskInvocationsRequest,
-  ) => stream.Stream<
-    DescribeMaintenanceWindowExecutionTaskInvocationsResult,
-    DescribeMaintenanceWindowExecutionTaskInvocationsError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeMaintenanceWindowExecutionTaskInvocationsRequest,
-  ) => stream.Stream<
-    MaintenanceWindowExecutionTaskInvocationIdentity,
-    DescribeMaintenanceWindowExecutionTaskInvocationsError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Creds | HttpClient.HttpClient,
+  MaintenanceWindowExecutionTaskInvocationIdentity
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeMaintenanceWindowExecutionTaskInvocationsRequest,
   output: DescribeMaintenanceWindowExecutionTaskInvocationsResult,
   errors: [DoesNotExistException, InternalServerError],
@@ -14196,27 +13657,7 @@ export const describeMaintenanceWindowExecutionTaskInvocations: API.OperationMet
     items: "WindowExecutionTaskInvocationIdentities",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeMaintenanceWindowExecutionTaskInvocationsRequest,
-  DescribeMaintenanceWindowExecutionTaskInvocationsResult,
-  DescribeMaintenanceWindowExecutionTaskInvocationsError,
-  Creds | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeMaintenanceWindowExecutionTaskInvocationsRequest,
-  ) => stream.Stream<
-    DescribeMaintenanceWindowExecutionTaskInvocationsResult,
-    DescribeMaintenanceWindowExecutionTaskInvocationsError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeMaintenanceWindowExecutionTaskInvocationsRequest,
-  ) => stream.Stream<
-    MaintenanceWindowExecutionTaskInvocationIdentity,
-    DescribeMaintenanceWindowExecutionTaskInvocationsError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeMaintenanceWindowExecutionTasksError =
   | DoesNotExistException
@@ -14225,27 +13666,13 @@ export type DescribeMaintenanceWindowExecutionTasksError =
 /**
  * For a given maintenance window execution, lists the tasks that were run.
  */
-export const describeMaintenanceWindowExecutionTasks: API.OperationMethod<
+export const describeMaintenanceWindowExecutionTasks: API.PaginatedOperationMethod<
   DescribeMaintenanceWindowExecutionTasksRequest,
   DescribeMaintenanceWindowExecutionTasksResult,
   DescribeMaintenanceWindowExecutionTasksError,
-  Creds | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeMaintenanceWindowExecutionTasksRequest,
-  ) => stream.Stream<
-    DescribeMaintenanceWindowExecutionTasksResult,
-    DescribeMaintenanceWindowExecutionTasksError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeMaintenanceWindowExecutionTasksRequest,
-  ) => stream.Stream<
-    MaintenanceWindowExecutionTaskIdentity,
-    DescribeMaintenanceWindowExecutionTasksError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Creds | HttpClient.HttpClient,
+  MaintenanceWindowExecutionTaskIdentity
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeMaintenanceWindowExecutionTasksRequest,
   output: DescribeMaintenanceWindowExecutionTasksResult,
   errors: [DoesNotExistException, InternalServerError],
@@ -14258,27 +13685,7 @@ export const describeMaintenanceWindowExecutionTasks: API.OperationMethod<
     items: "WindowExecutionTaskIdentities",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeMaintenanceWindowExecutionTasksRequest,
-  DescribeMaintenanceWindowExecutionTasksResult,
-  DescribeMaintenanceWindowExecutionTasksError,
-  Creds | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeMaintenanceWindowExecutionTasksRequest,
-  ) => stream.Stream<
-    DescribeMaintenanceWindowExecutionTasksResult,
-    DescribeMaintenanceWindowExecutionTasksError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeMaintenanceWindowExecutionTasksRequest,
-  ) => stream.Stream<
-    MaintenanceWindowExecutionTaskIdentity,
-    DescribeMaintenanceWindowExecutionTasksError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeMaintenanceWindowsError =
   | InternalServerError
@@ -14286,27 +13693,13 @@ export type DescribeMaintenanceWindowsError =
 /**
  * Retrieves the maintenance windows in an Amazon Web Services account.
  */
-export const describeMaintenanceWindows: API.OperationMethod<
+export const describeMaintenanceWindows: API.PaginatedOperationMethod<
   DescribeMaintenanceWindowsRequest,
   DescribeMaintenanceWindowsResult,
   DescribeMaintenanceWindowsError,
-  Creds | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeMaintenanceWindowsRequest,
-  ) => stream.Stream<
-    DescribeMaintenanceWindowsResult,
-    DescribeMaintenanceWindowsError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeMaintenanceWindowsRequest,
-  ) => stream.Stream<
-    MaintenanceWindowIdentity,
-    DescribeMaintenanceWindowsError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Creds | HttpClient.HttpClient,
+  MaintenanceWindowIdentity
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeMaintenanceWindowsRequest,
   output: DescribeMaintenanceWindowsResult,
   errors: [InternalServerError],
@@ -14319,27 +13712,7 @@ export const describeMaintenanceWindows: API.OperationMethod<
     items: "WindowIdentities",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeMaintenanceWindowsRequest,
-  DescribeMaintenanceWindowsResult,
-  DescribeMaintenanceWindowsError,
-  Creds | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeMaintenanceWindowsRequest,
-  ) => stream.Stream<
-    DescribeMaintenanceWindowsResult,
-    DescribeMaintenanceWindowsError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeMaintenanceWindowsRequest,
-  ) => stream.Stream<
-    MaintenanceWindowIdentity,
-    DescribeMaintenanceWindowsError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeMaintenanceWindowScheduleError =
   | DoesNotExistException
@@ -14348,27 +13721,13 @@ export type DescribeMaintenanceWindowScheduleError =
 /**
  * Retrieves information about upcoming executions of a maintenance window.
  */
-export const describeMaintenanceWindowSchedule: API.OperationMethod<
+export const describeMaintenanceWindowSchedule: API.PaginatedOperationMethod<
   DescribeMaintenanceWindowScheduleRequest,
   DescribeMaintenanceWindowScheduleResult,
   DescribeMaintenanceWindowScheduleError,
-  Creds | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeMaintenanceWindowScheduleRequest,
-  ) => stream.Stream<
-    DescribeMaintenanceWindowScheduleResult,
-    DescribeMaintenanceWindowScheduleError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeMaintenanceWindowScheduleRequest,
-  ) => stream.Stream<
-    ScheduledWindowExecution,
-    DescribeMaintenanceWindowScheduleError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Creds | HttpClient.HttpClient,
+  ScheduledWindowExecution
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeMaintenanceWindowScheduleRequest,
   output: DescribeMaintenanceWindowScheduleResult,
   errors: [DoesNotExistException, InternalServerError],
@@ -14381,27 +13740,7 @@ export const describeMaintenanceWindowSchedule: API.OperationMethod<
     items: "ScheduledWindowExecutions",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeMaintenanceWindowScheduleRequest,
-  DescribeMaintenanceWindowScheduleResult,
-  DescribeMaintenanceWindowScheduleError,
-  Creds | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeMaintenanceWindowScheduleRequest,
-  ) => stream.Stream<
-    DescribeMaintenanceWindowScheduleResult,
-    DescribeMaintenanceWindowScheduleError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeMaintenanceWindowScheduleRequest,
-  ) => stream.Stream<
-    ScheduledWindowExecution,
-    DescribeMaintenanceWindowScheduleError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeMaintenanceWindowsForTargetError =
   | InternalServerError
@@ -14410,27 +13749,13 @@ export type DescribeMaintenanceWindowsForTargetError =
  * Retrieves information about the maintenance window targets or tasks that a managed node is
  * associated with.
  */
-export const describeMaintenanceWindowsForTarget: API.OperationMethod<
+export const describeMaintenanceWindowsForTarget: API.PaginatedOperationMethod<
   DescribeMaintenanceWindowsForTargetRequest,
   DescribeMaintenanceWindowsForTargetResult,
   DescribeMaintenanceWindowsForTargetError,
-  Creds | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeMaintenanceWindowsForTargetRequest,
-  ) => stream.Stream<
-    DescribeMaintenanceWindowsForTargetResult,
-    DescribeMaintenanceWindowsForTargetError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeMaintenanceWindowsForTargetRequest,
-  ) => stream.Stream<
-    MaintenanceWindowIdentityForTarget,
-    DescribeMaintenanceWindowsForTargetError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Creds | HttpClient.HttpClient,
+  MaintenanceWindowIdentityForTarget
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeMaintenanceWindowsForTargetRequest,
   output: DescribeMaintenanceWindowsForTargetResult,
   errors: [InternalServerError],
@@ -14443,27 +13768,7 @@ export const describeMaintenanceWindowsForTarget: API.OperationMethod<
     items: "WindowIdentities",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeMaintenanceWindowsForTargetRequest,
-  DescribeMaintenanceWindowsForTargetResult,
-  DescribeMaintenanceWindowsForTargetError,
-  Creds | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeMaintenanceWindowsForTargetRequest,
-  ) => stream.Stream<
-    DescribeMaintenanceWindowsForTargetResult,
-    DescribeMaintenanceWindowsForTargetError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeMaintenanceWindowsForTargetRequest,
-  ) => stream.Stream<
-    MaintenanceWindowIdentityForTarget,
-    DescribeMaintenanceWindowsForTargetError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeMaintenanceWindowTargetsError =
   | DoesNotExistException
@@ -14472,27 +13777,13 @@ export type DescribeMaintenanceWindowTargetsError =
 /**
  * Lists the targets registered with the maintenance window.
  */
-export const describeMaintenanceWindowTargets: API.OperationMethod<
+export const describeMaintenanceWindowTargets: API.PaginatedOperationMethod<
   DescribeMaintenanceWindowTargetsRequest,
   DescribeMaintenanceWindowTargetsResult,
   DescribeMaintenanceWindowTargetsError,
-  Creds | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeMaintenanceWindowTargetsRequest,
-  ) => stream.Stream<
-    DescribeMaintenanceWindowTargetsResult,
-    DescribeMaintenanceWindowTargetsError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeMaintenanceWindowTargetsRequest,
-  ) => stream.Stream<
-    MaintenanceWindowTarget,
-    DescribeMaintenanceWindowTargetsError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Creds | HttpClient.HttpClient,
+  MaintenanceWindowTarget
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeMaintenanceWindowTargetsRequest,
   output: DescribeMaintenanceWindowTargetsResult,
   errors: [DoesNotExistException, InternalServerError],
@@ -14505,27 +13796,7 @@ export const describeMaintenanceWindowTargets: API.OperationMethod<
     items: "Targets",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeMaintenanceWindowTargetsRequest,
-  DescribeMaintenanceWindowTargetsResult,
-  DescribeMaintenanceWindowTargetsError,
-  Creds | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeMaintenanceWindowTargetsRequest,
-  ) => stream.Stream<
-    DescribeMaintenanceWindowTargetsResult,
-    DescribeMaintenanceWindowTargetsError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeMaintenanceWindowTargetsRequest,
-  ) => stream.Stream<
-    MaintenanceWindowTarget,
-    DescribeMaintenanceWindowTargetsError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeMaintenanceWindowTasksError =
   | DoesNotExistException
@@ -14539,27 +13810,13 @@ export type DescribeMaintenanceWindowTasksError =
  * placeholder value of `1`, which may be reported in the response to this command.
  * These values don't affect the running of your task and can be ignored.
  */
-export const describeMaintenanceWindowTasks: API.OperationMethod<
+export const describeMaintenanceWindowTasks: API.PaginatedOperationMethod<
   DescribeMaintenanceWindowTasksRequest,
   DescribeMaintenanceWindowTasksResult,
   DescribeMaintenanceWindowTasksError,
-  Creds | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeMaintenanceWindowTasksRequest,
-  ) => stream.Stream<
-    DescribeMaintenanceWindowTasksResult,
-    DescribeMaintenanceWindowTasksError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeMaintenanceWindowTasksRequest,
-  ) => stream.Stream<
-    MaintenanceWindowTask,
-    DescribeMaintenanceWindowTasksError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Creds | HttpClient.HttpClient,
+  MaintenanceWindowTask
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeMaintenanceWindowTasksRequest,
   output: DescribeMaintenanceWindowTasksResult,
   errors: [DoesNotExistException, InternalServerError],
@@ -14572,27 +13829,7 @@ export const describeMaintenanceWindowTasks: API.OperationMethod<
     items: "Tasks",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeMaintenanceWindowTasksRequest,
-  DescribeMaintenanceWindowTasksResult,
-  DescribeMaintenanceWindowTasksError,
-  Creds | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeMaintenanceWindowTasksRequest,
-  ) => stream.Stream<
-    DescribeMaintenanceWindowTasksResult,
-    DescribeMaintenanceWindowTasksError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeMaintenanceWindowTasksRequest,
-  ) => stream.Stream<
-    MaintenanceWindowTask,
-    DescribeMaintenanceWindowTasksError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeOpsItemsError = InternalServerError | CommonErrors;
 /**
@@ -14604,27 +13841,13 @@ export type DescribeOpsItemsError = InternalServerError | CommonErrors;
  * more information, see Amazon Web Services Systems Manager OpsCenter in the
  * *Amazon Web Services Systems Manager User Guide*.
  */
-export const describeOpsItems: API.OperationMethod<
+export const describeOpsItems: API.PaginatedOperationMethod<
   DescribeOpsItemsRequest,
   DescribeOpsItemsResponse,
   DescribeOpsItemsError,
-  Creds | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeOpsItemsRequest,
-  ) => stream.Stream<
-    DescribeOpsItemsResponse,
-    DescribeOpsItemsError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeOpsItemsRequest,
-  ) => stream.Stream<
-    OpsItemSummary,
-    DescribeOpsItemsError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Creds | HttpClient.HttpClient,
+  OpsItemSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeOpsItemsRequest,
   output: DescribeOpsItemsResponse,
   errors: [InternalServerError],
@@ -14637,27 +13860,7 @@ export const describeOpsItems: API.OperationMethod<
     items: "OpsItemSummaries",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeOpsItemsRequest,
-  DescribeOpsItemsResponse,
-  DescribeOpsItemsError,
-  Creds | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeOpsItemsRequest,
-  ) => stream.Stream<
-    DescribeOpsItemsResponse,
-    DescribeOpsItemsError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeOpsItemsRequest,
-  ) => stream.Stream<
-    OpsItemSummary,
-    DescribeOpsItemsError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeParametersError =
   | InternalServerError
@@ -14686,27 +13889,13 @@ export type DescribeParametersError =
  * `DescribeParameters` retrieves whatever the original key alias was
  * referencing.
  */
-export const describeParameters: API.OperationMethod<
+export const describeParameters: API.PaginatedOperationMethod<
   DescribeParametersRequest,
   DescribeParametersResult,
   DescribeParametersError,
-  Creds | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeParametersRequest,
-  ) => stream.Stream<
-    DescribeParametersResult,
-    DescribeParametersError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeParametersRequest,
-  ) => stream.Stream<
-    unknown,
-    DescribeParametersError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Creds | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeParametersRequest,
   output: DescribeParametersResult,
   errors: [
@@ -14724,53 +13913,19 @@ export const describeParameters: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeParametersRequest,
-  DescribeParametersResult,
-  DescribeParametersError,
-  Creds | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeParametersRequest,
-  ) => stream.Stream<
-    DescribeParametersResult,
-    DescribeParametersError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeParametersRequest,
-  ) => stream.Stream<
-    unknown,
-    DescribeParametersError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribePatchBaselinesError = InternalServerError | CommonErrors;
 /**
  * Lists the patch baselines in your Amazon Web Services account.
  */
-export const describePatchBaselines: API.OperationMethod<
+export const describePatchBaselines: API.PaginatedOperationMethod<
   DescribePatchBaselinesRequest,
   DescribePatchBaselinesResult,
   DescribePatchBaselinesError,
-  Creds | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribePatchBaselinesRequest,
-  ) => stream.Stream<
-    DescribePatchBaselinesResult,
-    DescribePatchBaselinesError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribePatchBaselinesRequest,
-  ) => stream.Stream<
-    PatchBaselineIdentity,
-    DescribePatchBaselinesError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Creds | HttpClient.HttpClient,
+  PatchBaselineIdentity
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribePatchBaselinesRequest,
   output: DescribePatchBaselinesResult,
   errors: [InternalServerError],
@@ -14783,53 +13938,19 @@ export const describePatchBaselines: API.OperationMethod<
     items: "BaselineIdentities",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  DescribePatchBaselinesRequest,
-  DescribePatchBaselinesResult,
-  DescribePatchBaselinesError,
-  Creds | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribePatchBaselinesRequest,
-  ) => stream.Stream<
-    DescribePatchBaselinesResult,
-    DescribePatchBaselinesError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribePatchBaselinesRequest,
-  ) => stream.Stream<
-    PatchBaselineIdentity,
-    DescribePatchBaselinesError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribePatchGroupsError = InternalServerError | CommonErrors;
 /**
  * Lists all patch groups that have been registered with patch baselines.
  */
-export const describePatchGroups: API.OperationMethod<
+export const describePatchGroups: API.PaginatedOperationMethod<
   DescribePatchGroupsRequest,
   DescribePatchGroupsResult,
   DescribePatchGroupsError,
-  Creds | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribePatchGroupsRequest,
-  ) => stream.Stream<
-    DescribePatchGroupsResult,
-    DescribePatchGroupsError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribePatchGroupsRequest,
-  ) => stream.Stream<
-    PatchGroupPatchBaselineMapping,
-    DescribePatchGroupsError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Creds | HttpClient.HttpClient,
+  PatchGroupPatchBaselineMapping
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribePatchGroupsRequest,
   output: DescribePatchGroupsResult,
   errors: [InternalServerError],
@@ -14842,27 +13963,7 @@ export const describePatchGroups: API.OperationMethod<
     items: "Mappings",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  DescribePatchGroupsRequest,
-  DescribePatchGroupsResult,
-  DescribePatchGroupsError,
-  Creds | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribePatchGroupsRequest,
-  ) => stream.Stream<
-    DescribePatchGroupsResult,
-    DescribePatchGroupsError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribePatchGroupsRequest,
-  ) => stream.Stream<
-    PatchGroupPatchBaselineMapping,
-    DescribePatchGroupsError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribePatchGroupStateError =
   | InternalServerError
@@ -14875,7 +13976,7 @@ export const describePatchGroupState: API.OperationMethod<
   DescribePatchGroupStateRequest,
   DescribePatchGroupStateResult,
   DescribePatchGroupStateError,
-  Creds | Rgn | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribePatchGroupStateRequest,
   output: DescribePatchGroupStateResult,
@@ -14946,27 +14047,13 @@ export type DescribePatchPropertiesError = InternalServerError | CommonErrors;
  * Valid properties: `PRODUCT` | `PRODUCT_FAMILY` |
  * `CLASSIFICATION` | `MSRC_SEVERITY`
  */
-export const describePatchProperties: API.OperationMethod<
+export const describePatchProperties: API.PaginatedOperationMethod<
   DescribePatchPropertiesRequest,
   DescribePatchPropertiesResult,
   DescribePatchPropertiesError,
-  Creds | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribePatchPropertiesRequest,
-  ) => stream.Stream<
-    DescribePatchPropertiesResult,
-    DescribePatchPropertiesError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribePatchPropertiesRequest,
-  ) => stream.Stream<
-    { [key: string]: string | undefined },
-    DescribePatchPropertiesError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Creds | HttpClient.HttpClient,
+  { [key: string]: string | undefined }
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribePatchPropertiesRequest,
   output: DescribePatchPropertiesResult,
   errors: [InternalServerError],
@@ -14979,27 +14066,7 @@ export const describePatchProperties: API.OperationMethod<
     items: "Properties",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  DescribePatchPropertiesRequest,
-  DescribePatchPropertiesResult,
-  DescribePatchPropertiesError,
-  Creds | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribePatchPropertiesRequest,
-  ) => stream.Stream<
-    DescribePatchPropertiesResult,
-    DescribePatchPropertiesError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribePatchPropertiesRequest,
-  ) => stream.Stream<
-    { [key: string]: string | undefined },
-    DescribePatchPropertiesError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeSessionsError =
   | InternalServerError
@@ -15010,27 +14077,13 @@ export type DescribeSessionsError =
  * Retrieves a list of all active sessions (both connected and disconnected) or terminated
  * sessions from the past 30 days.
  */
-export const describeSessions: API.OperationMethod<
+export const describeSessions: API.PaginatedOperationMethod<
   DescribeSessionsRequest,
   DescribeSessionsResponse,
   DescribeSessionsError,
-  Creds | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeSessionsRequest,
-  ) => stream.Stream<
-    DescribeSessionsResponse,
-    DescribeSessionsError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeSessionsRequest,
-  ) => stream.Stream<
-    Session,
-    DescribeSessionsError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Creds | HttpClient.HttpClient,
+  Session
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeSessionsRequest,
   output: DescribeSessionsResponse,
   errors: [InternalServerError, InvalidFilterKey, InvalidNextToken],
@@ -15043,27 +14096,7 @@ export const describeSessions: API.OperationMethod<
     items: "Sessions",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeSessionsRequest,
-  DescribeSessionsResponse,
-  DescribeSessionsError,
-  Creds | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeSessionsRequest,
-  ) => stream.Stream<
-    DescribeSessionsResponse,
-    DescribeSessionsError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeSessionsRequest,
-  ) => stream.Stream<
-    Session,
-    DescribeSessionsError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DisassociateOpsItemRelatedItemError =
   | InternalServerError
@@ -15081,7 +14114,7 @@ export const disassociateOpsItemRelatedItem: API.OperationMethod<
   DisassociateOpsItemRelatedItemRequest,
   DisassociateOpsItemRelatedItemResponse,
   DisassociateOpsItemRelatedItemError,
-  Creds | Rgn | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DisassociateOpsItemRelatedItemRequest,
   output: DisassociateOpsItemRelatedItemResponse,
@@ -15111,7 +14144,7 @@ export const getAccessToken: API.OperationMethod<
   GetAccessTokenRequest,
   GetAccessTokenResponse,
   GetAccessTokenError,
-  Creds | Rgn | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetAccessTokenRequest,
   output: GetAccessTokenResponse,
@@ -15138,7 +14171,7 @@ export const getAutomationExecution: API.OperationMethod<
   GetAutomationExecutionRequest,
   GetAutomationExecutionResult,
   GetAutomationExecutionError,
-  Creds | Rgn | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetAutomationExecutionRequest,
   output: GetAutomationExecutionResult,
@@ -15171,7 +14204,7 @@ export const getCalendarState: API.OperationMethod<
   GetCalendarStateRequest,
   GetCalendarStateResponse,
   GetCalendarStateError,
-  Creds | Rgn | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetCalendarStateRequest,
   output: GetCalendarStateResponse,
@@ -15209,7 +14242,7 @@ export const getCommandInvocation: API.OperationMethod<
   GetCommandInvocationRequest,
   GetCommandInvocationResult,
   GetCommandInvocationError,
-  Creds | Rgn | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetCommandInvocationRequest,
   output: GetCommandInvocationResult,
@@ -15234,7 +14267,7 @@ export const getConnectionStatus: API.OperationMethod<
   GetConnectionStatusRequest,
   GetConnectionStatusResponse,
   GetConnectionStatusError,
-  Creds | Rgn | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetConnectionStatusRequest,
   output: GetConnectionStatusResponse,
@@ -15256,7 +14289,7 @@ export const getDefaultPatchBaseline: API.OperationMethod<
   GetDefaultPatchBaselineRequest,
   GetDefaultPatchBaselineResult,
   GetDefaultPatchBaselineError,
-  Creds | Rgn | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetDefaultPatchBaselineRequest,
   output: GetDefaultPatchBaselineResult,
@@ -15285,7 +14318,7 @@ export const getDeployablePatchSnapshotForInstance: API.OperationMethod<
   GetDeployablePatchSnapshotForInstanceRequest,
   GetDeployablePatchSnapshotForInstanceResult,
   GetDeployablePatchSnapshotForInstanceError,
-  Creds | Rgn | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetDeployablePatchSnapshotForInstanceRequest,
   output: GetDeployablePatchSnapshotForInstanceResult,
@@ -15311,7 +14344,7 @@ export const getDocument: API.OperationMethod<
   GetDocumentRequest,
   GetDocumentResult,
   GetDocumentError,
-  Creds | Rgn | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetDocumentRequest,
   output: GetDocumentResult,
@@ -15333,7 +14366,7 @@ export const getExecutionPreview: API.OperationMethod<
   GetExecutionPreviewRequest,
   GetExecutionPreviewResponse,
   GetExecutionPreviewError,
-  Creds | Rgn | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetExecutionPreviewRequest,
   output: GetExecutionPreviewResponse,
@@ -15356,27 +14389,13 @@ export type GetInventoryError =
  * Query inventory information. This includes managed node status, such as `Stopped`
  * or `Terminated`.
  */
-export const getInventory: API.OperationMethod<
+export const getInventory: API.PaginatedOperationMethod<
   GetInventoryRequest,
   GetInventoryResult,
   GetInventoryError,
-  Creds | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetInventoryRequest,
-  ) => stream.Stream<
-    GetInventoryResult,
-    GetInventoryError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetInventoryRequest,
-  ) => stream.Stream<
-    InventoryResultEntity,
-    GetInventoryError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Creds | HttpClient.HttpClient,
+  InventoryResultEntity
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetInventoryRequest,
   output: GetInventoryResult,
   errors: [
@@ -15397,27 +14416,7 @@ export const getInventory: API.OperationMethod<
     items: "Entities",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetInventoryRequest,
-  GetInventoryResult,
-  GetInventoryError,
-  Creds | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetInventoryRequest,
-  ) => stream.Stream<
-    GetInventoryResult,
-    GetInventoryError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetInventoryRequest,
-  ) => stream.Stream<
-    InventoryResultEntity,
-    GetInventoryError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetInventorySchemaError =
   | InternalServerError
@@ -15428,27 +14427,13 @@ export type GetInventorySchemaError =
  * Return a list of inventory type names for the account, or return a list of attribute names
  * for a specific Inventory item type.
  */
-export const getInventorySchema: API.OperationMethod<
+export const getInventorySchema: API.PaginatedOperationMethod<
   GetInventorySchemaRequest,
   GetInventorySchemaResult,
   GetInventorySchemaError,
-  Creds | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetInventorySchemaRequest,
-  ) => stream.Stream<
-    GetInventorySchemaResult,
-    GetInventorySchemaError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetInventorySchemaRequest,
-  ) => stream.Stream<
-    InventoryItemSchema,
-    GetInventorySchemaError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Creds | HttpClient.HttpClient,
+  InventoryItemSchema
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetInventorySchemaRequest,
   output: GetInventorySchemaResult,
   errors: [InternalServerError, InvalidNextToken, InvalidTypeNameException],
@@ -15461,27 +14446,7 @@ export const getInventorySchema: API.OperationMethod<
     items: "Schemas",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetInventorySchemaRequest,
-  GetInventorySchemaResult,
-  GetInventorySchemaError,
-  Creds | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetInventorySchemaRequest,
-  ) => stream.Stream<
-    GetInventorySchemaResult,
-    GetInventorySchemaError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetInventorySchemaRequest,
-  ) => stream.Stream<
-    InventoryItemSchema,
-    GetInventorySchemaError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetMaintenanceWindowError =
   | DoesNotExistException
@@ -15494,7 +14459,7 @@ export const getMaintenanceWindow: API.OperationMethod<
   GetMaintenanceWindowRequest,
   GetMaintenanceWindowResult,
   GetMaintenanceWindowError,
-  Creds | Rgn | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetMaintenanceWindowRequest,
   output: GetMaintenanceWindowResult,
@@ -15515,7 +14480,7 @@ export const getMaintenanceWindowExecution: API.OperationMethod<
   GetMaintenanceWindowExecutionRequest,
   GetMaintenanceWindowExecutionResult,
   GetMaintenanceWindowExecutionError,
-  Creds | Rgn | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetMaintenanceWindowExecutionRequest,
   output: GetMaintenanceWindowExecutionResult,
@@ -15537,7 +14502,7 @@ export const getMaintenanceWindowExecutionTask: API.OperationMethod<
   GetMaintenanceWindowExecutionTaskRequest,
   GetMaintenanceWindowExecutionTaskResult,
   GetMaintenanceWindowExecutionTaskError,
-  Creds | Rgn | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetMaintenanceWindowExecutionTaskRequest,
   output: GetMaintenanceWindowExecutionTaskResult,
@@ -15558,7 +14523,7 @@ export const getMaintenanceWindowExecutionTaskInvocation: API.OperationMethod<
   GetMaintenanceWindowExecutionTaskInvocationRequest,
   GetMaintenanceWindowExecutionTaskInvocationResult,
   GetMaintenanceWindowExecutionTaskInvocationError,
-  Creds | Rgn | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetMaintenanceWindowExecutionTaskInvocationRequest,
   output: GetMaintenanceWindowExecutionTaskInvocationResult,
@@ -15586,7 +14551,7 @@ export const getMaintenanceWindowTask: API.OperationMethod<
   GetMaintenanceWindowTaskRequest,
   GetMaintenanceWindowTaskResult,
   GetMaintenanceWindowTaskError,
-  Creds | Rgn | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetMaintenanceWindowTaskRequest,
   output: GetMaintenanceWindowTaskResult,
@@ -15615,7 +14580,7 @@ export const getOpsItem: API.OperationMethod<
   GetOpsItemRequest,
   GetOpsItemResponse,
   GetOpsItemError,
-  Creds | Rgn | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetOpsItemRequest,
   output: GetOpsItemResponse,
@@ -15641,7 +14606,7 @@ export const getOpsMetadata: API.OperationMethod<
   GetOpsMetadataRequest,
   GetOpsMetadataResult,
   GetOpsMetadataError,
-  Creds | Rgn | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetOpsMetadataRequest,
   output: GetOpsMetadataResult,
@@ -15669,27 +14634,13 @@ export type GetOpsSummaryError =
  * well as information about any Amazon Web Services resource or service configured to report OpsData to Amazon Web Services Systems Manager
  * Explorer.
  */
-export const getOpsSummary: API.OperationMethod<
+export const getOpsSummary: API.PaginatedOperationMethod<
   GetOpsSummaryRequest,
   GetOpsSummaryResult,
   GetOpsSummaryError,
-  Creds | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetOpsSummaryRequest,
-  ) => stream.Stream<
-    GetOpsSummaryResult,
-    GetOpsSummaryError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetOpsSummaryRequest,
-  ) => stream.Stream<
-    OpsEntity,
-    GetOpsSummaryError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Creds | HttpClient.HttpClient,
+  OpsEntity
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetOpsSummaryRequest,
   output: GetOpsSummaryResult,
   errors: [
@@ -15709,27 +14660,7 @@ export const getOpsSummary: API.OperationMethod<
     items: "Entities",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetOpsSummaryRequest,
-  GetOpsSummaryResult,
-  GetOpsSummaryError,
-  Creds | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetOpsSummaryRequest,
-  ) => stream.Stream<
-    GetOpsSummaryResult,
-    GetOpsSummaryError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetOpsSummaryRequest,
-  ) => stream.Stream<
-    OpsEntity,
-    GetOpsSummaryError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetParameterError =
   | InternalServerError
@@ -15750,7 +14681,7 @@ export const getParameter: API.OperationMethod<
   GetParameterRequest,
   GetParameterResult,
   GetParameterError,
-  Creds | Rgn | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetParameterRequest,
   output: GetParameterResult,
@@ -15783,27 +14714,13 @@ export type GetParameterHistoryError =
  * `GetParameterHistory` retrieves whatever the original key alias was
  * referencing.
  */
-export const getParameterHistory: API.OperationMethod<
+export const getParameterHistory: API.PaginatedOperationMethod<
   GetParameterHistoryRequest,
   GetParameterHistoryResult,
   GetParameterHistoryError,
-  Creds | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetParameterHistoryRequest,
-  ) => stream.Stream<
-    GetParameterHistoryResult,
-    GetParameterHistoryError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetParameterHistoryRequest,
-  ) => stream.Stream<
-    unknown,
-    GetParameterHistoryError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Creds | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetParameterHistoryRequest,
   output: GetParameterHistoryResult,
   errors: [
@@ -15820,27 +14737,7 @@ export const getParameterHistory: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetParameterHistoryRequest,
-  GetParameterHistoryResult,
-  GetParameterHistoryError,
-  Creds | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetParameterHistoryRequest,
-  ) => stream.Stream<
-    GetParameterHistoryResult,
-    GetParameterHistoryError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetParameterHistoryRequest,
-  ) => stream.Stream<
-    unknown,
-    GetParameterHistoryError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetParametersError =
   | InternalServerError
@@ -15860,7 +14757,7 @@ export const getParameters: API.OperationMethod<
   GetParametersRequest,
   GetParametersResult,
   GetParametersError,
-  Creds | Rgn | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetParametersRequest,
   output: GetParametersResult,
@@ -15892,27 +14789,13 @@ export type GetParametersByPathError =
  * beginning or end of a parameter name. If the specified name for a parameter contains spaces
  * between characters, the request fails with a `ValidationException` error.
  */
-export const getParametersByPath: API.OperationMethod<
+export const getParametersByPath: API.PaginatedOperationMethod<
   GetParametersByPathRequest,
   GetParametersByPathResult,
   GetParametersByPathError,
-  Creds | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetParametersByPathRequest,
-  ) => stream.Stream<
-    GetParametersByPathResult,
-    GetParametersByPathError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetParametersByPathRequest,
-  ) => stream.Stream<
-    unknown,
-    GetParametersByPathError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Creds | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetParametersByPathRequest,
   output: GetParametersByPathResult,
   errors: [
@@ -15931,27 +14814,7 @@ export const getParametersByPath: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetParametersByPathRequest,
-  GetParametersByPathResult,
-  GetParametersByPathError,
-  Creds | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetParametersByPathRequest,
-  ) => stream.Stream<
-    GetParametersByPathResult,
-    GetParametersByPathError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetParametersByPathRequest,
-  ) => stream.Stream<
-    unknown,
-    GetParametersByPathError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetPatchBaselineError =
   | DoesNotExistException
@@ -15965,7 +14828,7 @@ export const getPatchBaseline: API.OperationMethod<
   GetPatchBaselineRequest,
   GetPatchBaselineResult,
   GetPatchBaselineError,
-  Creds | Rgn | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetPatchBaselineRequest,
   output: GetPatchBaselineResult,
@@ -15985,7 +14848,7 @@ export const getPatchBaselineForPatchGroup: API.OperationMethod<
   GetPatchBaselineForPatchGroupRequest,
   GetPatchBaselineForPatchGroupResult,
   GetPatchBaselineForPatchGroupError,
-  Creds | Rgn | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetPatchBaselineForPatchGroupRequest,
   output: GetPatchBaselineForPatchGroupResult,
@@ -16003,27 +14866,13 @@ export type GetResourcePoliciesError =
 /**
  * Returns an array of the `Policy` object.
  */
-export const getResourcePolicies: API.OperationMethod<
+export const getResourcePolicies: API.PaginatedOperationMethod<
   GetResourcePoliciesRequest,
   GetResourcePoliciesResponse,
   GetResourcePoliciesError,
-  Creds | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetResourcePoliciesRequest,
-  ) => stream.Stream<
-    GetResourcePoliciesResponse,
-    GetResourcePoliciesError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetResourcePoliciesRequest,
-  ) => stream.Stream<
-    GetResourcePoliciesResponseEntry,
-    GetResourcePoliciesError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Creds | HttpClient.HttpClient,
+  GetResourcePoliciesResponseEntry
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetResourcePoliciesRequest,
   output: GetResourcePoliciesResponse,
   errors: [
@@ -16040,27 +14889,7 @@ export const getResourcePolicies: API.OperationMethod<
     items: "Policies",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetResourcePoliciesRequest,
-  GetResourcePoliciesResponse,
-  GetResourcePoliciesError,
-  Creds | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetResourcePoliciesRequest,
-  ) => stream.Stream<
-    GetResourcePoliciesResponse,
-    GetResourcePoliciesError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetResourcePoliciesRequest,
-  ) => stream.Stream<
-    GetResourcePoliciesResponseEntry,
-    GetResourcePoliciesError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetServiceSettingError =
   | InternalServerError
@@ -16087,7 +14916,7 @@ export const getServiceSetting: API.OperationMethod<
   GetServiceSettingRequest,
   GetServiceSettingResult,
   GetServiceSettingError,
-  Creds | Rgn | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetServiceSettingRequest,
   output: GetServiceSettingResult,
@@ -16142,7 +14971,7 @@ export const labelParameterVersion: API.OperationMethod<
   LabelParameterVersionRequest,
   LabelParameterVersionResult,
   LabelParameterVersionError,
-  Creds | Rgn | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: LabelParameterVersionRequest,
   output: LabelParameterVersionResult,
@@ -16167,27 +14996,13 @@ export type ListAssociationsError =
  * can limit the results to a specific State Manager association document or managed node by
  * specifying a filter. State Manager is a tool in Amazon Web Services Systems Manager.
  */
-export const listAssociations: API.OperationMethod<
+export const listAssociations: API.PaginatedOperationMethod<
   ListAssociationsRequest,
   ListAssociationsResult,
   ListAssociationsError,
-  Creds | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAssociationsRequest,
-  ) => stream.Stream<
-    ListAssociationsResult,
-    ListAssociationsError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAssociationsRequest,
-  ) => stream.Stream<
-    Association,
-    ListAssociationsError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Creds | HttpClient.HttpClient,
+  Association
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListAssociationsRequest,
   output: ListAssociationsResult,
   errors: [InternalServerError, InvalidNextToken],
@@ -16200,27 +15015,7 @@ export const listAssociations: API.OperationMethod<
     items: "Associations",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListAssociationsRequest,
-  ListAssociationsResult,
-  ListAssociationsError,
-  Creds | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAssociationsRequest,
-  ) => stream.Stream<
-    ListAssociationsResult,
-    ListAssociationsError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAssociationsRequest,
-  ) => stream.Stream<
-    Association,
-    ListAssociationsError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListAssociationVersionsError =
   | AssociationDoesNotExist
@@ -16230,27 +15025,13 @@ export type ListAssociationVersionsError =
 /**
  * Retrieves all versions of an association for a specific association ID.
  */
-export const listAssociationVersions: API.OperationMethod<
+export const listAssociationVersions: API.PaginatedOperationMethod<
   ListAssociationVersionsRequest,
   ListAssociationVersionsResult,
   ListAssociationVersionsError,
-  Creds | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAssociationVersionsRequest,
-  ) => stream.Stream<
-    ListAssociationVersionsResult,
-    ListAssociationVersionsError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAssociationVersionsRequest,
-  ) => stream.Stream<
-    AssociationVersionInfo,
-    ListAssociationVersionsError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Creds | HttpClient.HttpClient,
+  AssociationVersionInfo
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListAssociationVersionsRequest,
   output: ListAssociationVersionsResult,
   errors: [AssociationDoesNotExist, InternalServerError, InvalidNextToken],
@@ -16263,27 +15044,7 @@ export const listAssociationVersions: API.OperationMethod<
     items: "AssociationVersions",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListAssociationVersionsRequest,
-  ListAssociationVersionsResult,
-  ListAssociationVersionsError,
-  Creds | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAssociationVersionsRequest,
-  ) => stream.Stream<
-    ListAssociationVersionsResult,
-    ListAssociationVersionsError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAssociationVersionsRequest,
-  ) => stream.Stream<
-    AssociationVersionInfo,
-    ListAssociationVersionsError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListCommandInvocationsError =
   | InternalServerError
@@ -16299,27 +15060,13 @@ export type ListCommandInvocationsError =
  * created for each requested managed node ID. `ListCommandInvocations` provide status
  * about command execution.
  */
-export const listCommandInvocations: API.OperationMethod<
+export const listCommandInvocations: API.PaginatedOperationMethod<
   ListCommandInvocationsRequest,
   ListCommandInvocationsResult,
   ListCommandInvocationsError,
-  Creds | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCommandInvocationsRequest,
-  ) => stream.Stream<
-    ListCommandInvocationsResult,
-    ListCommandInvocationsError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCommandInvocationsRequest,
-  ) => stream.Stream<
-    CommandInvocation,
-    ListCommandInvocationsError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Creds | HttpClient.HttpClient,
+  CommandInvocation
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListCommandInvocationsRequest,
   output: ListCommandInvocationsResult,
   errors: [
@@ -16338,27 +15085,7 @@ export const listCommandInvocations: API.OperationMethod<
     items: "CommandInvocations",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListCommandInvocationsRequest,
-  ListCommandInvocationsResult,
-  ListCommandInvocationsError,
-  Creds | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCommandInvocationsRequest,
-  ) => stream.Stream<
-    ListCommandInvocationsResult,
-    ListCommandInvocationsError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCommandInvocationsRequest,
-  ) => stream.Stream<
-    CommandInvocation,
-    ListCommandInvocationsError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListCommandsError =
   | InternalServerError
@@ -16370,27 +15097,13 @@ export type ListCommandsError =
 /**
  * Lists the commands requested by users of the Amazon Web Services account.
  */
-export const listCommands: API.OperationMethod<
+export const listCommands: API.PaginatedOperationMethod<
   ListCommandsRequest,
   ListCommandsResult,
   ListCommandsError,
-  Creds | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCommandsRequest,
-  ) => stream.Stream<
-    ListCommandsResult,
-    ListCommandsError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCommandsRequest,
-  ) => stream.Stream<
-    Command,
-    ListCommandsError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Creds | HttpClient.HttpClient,
+  Command
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListCommandsRequest,
   output: ListCommandsResult,
   errors: [
@@ -16409,27 +15122,7 @@ export const listCommands: API.OperationMethod<
     items: "Commands",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListCommandsRequest,
-  ListCommandsResult,
-  ListCommandsError,
-  Creds | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCommandsRequest,
-  ) => stream.Stream<
-    ListCommandsResult,
-    ListCommandsError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCommandsRequest,
-  ) => stream.Stream<
-    Command,
-    ListCommandsError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListComplianceItemsError =
   | InternalServerError
@@ -16443,27 +15136,13 @@ export type ListComplianceItemsError =
  * different resource types. Currently, you can only specify one resource ID per call. List results
  * depend on the criteria specified in the filter.
  */
-export const listComplianceItems: API.OperationMethod<
+export const listComplianceItems: API.PaginatedOperationMethod<
   ListComplianceItemsRequest,
   ListComplianceItemsResult,
   ListComplianceItemsError,
-  Creds | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListComplianceItemsRequest,
-  ) => stream.Stream<
-    ListComplianceItemsResult,
-    ListComplianceItemsError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListComplianceItemsRequest,
-  ) => stream.Stream<
-    ComplianceItem,
-    ListComplianceItemsError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Creds | HttpClient.HttpClient,
+  ComplianceItem
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListComplianceItemsRequest,
   output: ListComplianceItemsResult,
   errors: [
@@ -16482,27 +15161,7 @@ export const listComplianceItems: API.OperationMethod<
     items: "ComplianceItems",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListComplianceItemsRequest,
-  ListComplianceItemsResult,
-  ListComplianceItemsError,
-  Creds | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListComplianceItemsRequest,
-  ) => stream.Stream<
-    ListComplianceItemsResult,
-    ListComplianceItemsError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListComplianceItemsRequest,
-  ) => stream.Stream<
-    ComplianceItem,
-    ListComplianceItemsError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListComplianceSummariesError =
   | InternalServerError
@@ -16514,27 +15173,13 @@ export type ListComplianceSummariesError =
  * example, this call can return State Manager associations, patches, or custom compliance types
  * according to the filter criteria that you specify.
  */
-export const listComplianceSummaries: API.OperationMethod<
+export const listComplianceSummaries: API.PaginatedOperationMethod<
   ListComplianceSummariesRequest,
   ListComplianceSummariesResult,
   ListComplianceSummariesError,
-  Creds | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListComplianceSummariesRequest,
-  ) => stream.Stream<
-    ListComplianceSummariesResult,
-    ListComplianceSummariesError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListComplianceSummariesRequest,
-  ) => stream.Stream<
-    ComplianceSummaryItem,
-    ListComplianceSummariesError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Creds | HttpClient.HttpClient,
+  ComplianceSummaryItem
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListComplianceSummariesRequest,
   output: ListComplianceSummariesResult,
   errors: [InternalServerError, InvalidFilter, InvalidNextToken],
@@ -16547,27 +15192,7 @@ export const listComplianceSummaries: API.OperationMethod<
     items: "ComplianceSummaryItems",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListComplianceSummariesRequest,
-  ListComplianceSummariesResult,
-  ListComplianceSummariesError,
-  Creds | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListComplianceSummariesRequest,
-  ) => stream.Stream<
-    ListComplianceSummariesResult,
-    ListComplianceSummariesError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListComplianceSummariesRequest,
-  ) => stream.Stream<
-    ComplianceSummaryItem,
-    ListComplianceSummariesError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListDocumentMetadataHistoryError =
   | InternalServerError
@@ -16586,7 +15211,7 @@ export const listDocumentMetadataHistory: API.OperationMethod<
   ListDocumentMetadataHistoryRequest,
   ListDocumentMetadataHistoryResponse,
   ListDocumentMetadataHistoryError,
-  Creds | Rgn | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListDocumentMetadataHistoryRequest,
   output: ListDocumentMetadataHistoryResponse,
@@ -16610,27 +15235,13 @@ export type ListDocumentsError =
  * Returns all Systems Manager (SSM) documents in the current Amazon Web Services account and Amazon Web Services Region. You can
  * limit the results of this request by using a filter.
  */
-export const listDocuments: API.OperationMethod<
+export const listDocuments: API.PaginatedOperationMethod<
   ListDocumentsRequest,
   ListDocumentsResult,
   ListDocumentsError,
-  Creds | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDocumentsRequest,
-  ) => stream.Stream<
-    ListDocumentsResult,
-    ListDocumentsError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDocumentsRequest,
-  ) => stream.Stream<
-    DocumentIdentifier,
-    ListDocumentsError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Creds | HttpClient.HttpClient,
+  DocumentIdentifier
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListDocumentsRequest,
   output: ListDocumentsResult,
   errors: [InternalServerError, InvalidFilterKey, InvalidNextToken],
@@ -16643,27 +15254,7 @@ export const listDocuments: API.OperationMethod<
     items: "DocumentIdentifiers",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListDocumentsRequest,
-  ListDocumentsResult,
-  ListDocumentsError,
-  Creds | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDocumentsRequest,
-  ) => stream.Stream<
-    ListDocumentsResult,
-    ListDocumentsError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDocumentsRequest,
-  ) => stream.Stream<
-    DocumentIdentifier,
-    ListDocumentsError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListDocumentVersionsError =
   | InternalServerError
@@ -16673,27 +15264,13 @@ export type ListDocumentVersionsError =
 /**
  * List all versions for a document.
  */
-export const listDocumentVersions: API.OperationMethod<
+export const listDocumentVersions: API.PaginatedOperationMethod<
   ListDocumentVersionsRequest,
   ListDocumentVersionsResult,
   ListDocumentVersionsError,
-  Creds | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDocumentVersionsRequest,
-  ) => stream.Stream<
-    ListDocumentVersionsResult,
-    ListDocumentVersionsError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDocumentVersionsRequest,
-  ) => stream.Stream<
-    DocumentVersionInfo,
-    ListDocumentVersionsError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Creds | HttpClient.HttpClient,
+  DocumentVersionInfo
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListDocumentVersionsRequest,
   output: ListDocumentVersionsResult,
   errors: [InternalServerError, InvalidDocument, InvalidNextToken],
@@ -16706,27 +15283,7 @@ export const listDocumentVersions: API.OperationMethod<
     items: "DocumentVersions",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListDocumentVersionsRequest,
-  ListDocumentVersionsResult,
-  ListDocumentVersionsError,
-  Creds | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDocumentVersionsRequest,
-  ) => stream.Stream<
-    ListDocumentVersionsResult,
-    ListDocumentVersionsError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDocumentVersionsRequest,
-  ) => stream.Stream<
-    DocumentVersionInfo,
-    ListDocumentVersionsError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListInventoryEntriesError =
   | InternalServerError
@@ -16742,7 +15299,7 @@ export const listInventoryEntries: API.OperationMethod<
   ListInventoryEntriesRequest,
   ListInventoryEntriesResult,
   ListInventoryEntriesError,
-  Creds | Rgn | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListInventoryEntriesRequest,
   output: ListInventoryEntriesResult,
@@ -16768,23 +15325,13 @@ export type ListNodesError =
 /**
  * Takes in filters and returns a list of managed nodes matching the filter criteria.
  */
-export const listNodes: API.OperationMethod<
+export const listNodes: API.PaginatedOperationMethod<
   ListNodesRequest,
   ListNodesResult,
   ListNodesError,
-  Creds | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListNodesRequest,
-  ) => stream.Stream<
-    ListNodesResult,
-    ListNodesError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListNodesRequest,
-  ) => stream.Stream<Node, ListNodesError, Creds | Rgn | HttpClient.HttpClient>;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Creds | HttpClient.HttpClient,
+  Node
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListNodesRequest,
   output: ListNodesResult,
   errors: [
@@ -16803,23 +15350,7 @@ export const listNodes: API.OperationMethod<
     items: "Nodes",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListNodesRequest,
-  ListNodesResult,
-  ListNodesError,
-  Creds | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListNodesRequest,
-  ) => stream.Stream<
-    ListNodesResult,
-    ListNodesError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListNodesRequest,
-  ) => stream.Stream<Node, ListNodesError, Creds | Rgn | HttpClient.HttpClient>;
-};
+})) as any;
 
 export type ListNodesSummaryError =
   | InternalServerError
@@ -16833,27 +15364,13 @@ export type ListNodesSummaryError =
  * Generates a summary of managed instance/node metadata based on the filters and aggregators
  * you specify. Results are grouped by the input aggregator you specify.
  */
-export const listNodesSummary: API.OperationMethod<
+export const listNodesSummary: API.PaginatedOperationMethod<
   ListNodesSummaryRequest,
   ListNodesSummaryResult,
   ListNodesSummaryError,
-  Creds | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListNodesSummaryRequest,
-  ) => stream.Stream<
-    ListNodesSummaryResult,
-    ListNodesSummaryError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListNodesSummaryRequest,
-  ) => stream.Stream<
-    { [key: string]: string | undefined },
-    ListNodesSummaryError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Creds | HttpClient.HttpClient,
+  { [key: string]: string | undefined }
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListNodesSummaryRequest,
   output: ListNodesSummaryResult,
   errors: [
@@ -16873,27 +15390,7 @@ export const listNodesSummary: API.OperationMethod<
     items: "Summary",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListNodesSummaryRequest,
-  ListNodesSummaryResult,
-  ListNodesSummaryError,
-  Creds | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListNodesSummaryRequest,
-  ) => stream.Stream<
-    ListNodesSummaryResult,
-    ListNodesSummaryError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListNodesSummaryRequest,
-  ) => stream.Stream<
-    { [key: string]: string | undefined },
-    ListNodesSummaryError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListOpsItemEventsError =
   | InternalServerError
@@ -16905,27 +15402,13 @@ export type ListOpsItemEventsError =
  * Returns a list of all OpsItem events in the current Amazon Web Services Region and Amazon Web Services account. You can
  * limit the results to events associated with specific OpsItems by specifying a filter.
  */
-export const listOpsItemEvents: API.OperationMethod<
+export const listOpsItemEvents: API.PaginatedOperationMethod<
   ListOpsItemEventsRequest,
   ListOpsItemEventsResponse,
   ListOpsItemEventsError,
-  Creds | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListOpsItemEventsRequest,
-  ) => stream.Stream<
-    ListOpsItemEventsResponse,
-    ListOpsItemEventsError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListOpsItemEventsRequest,
-  ) => stream.Stream<
-    OpsItemEventSummary,
-    ListOpsItemEventsError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Creds | HttpClient.HttpClient,
+  OpsItemEventSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListOpsItemEventsRequest,
   output: ListOpsItemEventsResponse,
   errors: [
@@ -16943,27 +15426,7 @@ export const listOpsItemEvents: API.OperationMethod<
     items: "Summaries",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListOpsItemEventsRequest,
-  ListOpsItemEventsResponse,
-  ListOpsItemEventsError,
-  Creds | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListOpsItemEventsRequest,
-  ) => stream.Stream<
-    ListOpsItemEventsResponse,
-    ListOpsItemEventsError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListOpsItemEventsRequest,
-  ) => stream.Stream<
-    OpsItemEventSummary,
-    ListOpsItemEventsError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListOpsItemRelatedItemsError =
   | InternalServerError
@@ -16973,27 +15436,13 @@ export type ListOpsItemRelatedItemsError =
  * Lists all related-item resources associated with a Systems Manager OpsCenter OpsItem. OpsCenter is a
  * tool in Amazon Web Services Systems Manager.
  */
-export const listOpsItemRelatedItems: API.OperationMethod<
+export const listOpsItemRelatedItems: API.PaginatedOperationMethod<
   ListOpsItemRelatedItemsRequest,
   ListOpsItemRelatedItemsResponse,
   ListOpsItemRelatedItemsError,
-  Creds | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListOpsItemRelatedItemsRequest,
-  ) => stream.Stream<
-    ListOpsItemRelatedItemsResponse,
-    ListOpsItemRelatedItemsError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListOpsItemRelatedItemsRequest,
-  ) => stream.Stream<
-    OpsItemRelatedItemSummary,
-    ListOpsItemRelatedItemsError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Creds | HttpClient.HttpClient,
+  OpsItemRelatedItemSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListOpsItemRelatedItemsRequest,
   output: ListOpsItemRelatedItemsResponse,
   errors: [InternalServerError, OpsItemInvalidParameterException],
@@ -17006,27 +15455,7 @@ export const listOpsItemRelatedItems: API.OperationMethod<
     items: "Summaries",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListOpsItemRelatedItemsRequest,
-  ListOpsItemRelatedItemsResponse,
-  ListOpsItemRelatedItemsError,
-  Creds | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListOpsItemRelatedItemsRequest,
-  ) => stream.Stream<
-    ListOpsItemRelatedItemsResponse,
-    ListOpsItemRelatedItemsError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListOpsItemRelatedItemsRequest,
-  ) => stream.Stream<
-    OpsItemRelatedItemSummary,
-    ListOpsItemRelatedItemsError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListOpsMetadataError =
   | InternalServerError
@@ -17036,27 +15465,13 @@ export type ListOpsMetadataError =
  * Amazon Web Services Systems Manager calls this API operation when displaying all Application Manager OpsMetadata objects or
  * blobs.
  */
-export const listOpsMetadata: API.OperationMethod<
+export const listOpsMetadata: API.PaginatedOperationMethod<
   ListOpsMetadataRequest,
   ListOpsMetadataResult,
   ListOpsMetadataError,
-  Creds | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListOpsMetadataRequest,
-  ) => stream.Stream<
-    ListOpsMetadataResult,
-    ListOpsMetadataError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListOpsMetadataRequest,
-  ) => stream.Stream<
-    OpsMetadata,
-    ListOpsMetadataError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Creds | HttpClient.HttpClient,
+  OpsMetadata
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListOpsMetadataRequest,
   output: ListOpsMetadataResult,
   errors: [InternalServerError, OpsMetadataInvalidArgumentException],
@@ -17069,27 +15484,7 @@ export const listOpsMetadata: API.OperationMethod<
     items: "OpsMetadataList",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListOpsMetadataRequest,
-  ListOpsMetadataResult,
-  ListOpsMetadataError,
-  Creds | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListOpsMetadataRequest,
-  ) => stream.Stream<
-    ListOpsMetadataResult,
-    ListOpsMetadataError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListOpsMetadataRequest,
-  ) => stream.Stream<
-    OpsMetadata,
-    ListOpsMetadataError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListResourceComplianceSummariesError =
   | InternalServerError
@@ -17101,27 +15496,13 @@ export type ListResourceComplianceSummariesError =
  * non-compliant statuses and detailed compliance-item severity counts, according to the filter
  * criteria you specify.
  */
-export const listResourceComplianceSummaries: API.OperationMethod<
+export const listResourceComplianceSummaries: API.PaginatedOperationMethod<
   ListResourceComplianceSummariesRequest,
   ListResourceComplianceSummariesResult,
   ListResourceComplianceSummariesError,
-  Creds | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListResourceComplianceSummariesRequest,
-  ) => stream.Stream<
-    ListResourceComplianceSummariesResult,
-    ListResourceComplianceSummariesError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListResourceComplianceSummariesRequest,
-  ) => stream.Stream<
-    ResourceComplianceSummaryItem,
-    ListResourceComplianceSummariesError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Creds | HttpClient.HttpClient,
+  ResourceComplianceSummaryItem
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListResourceComplianceSummariesRequest,
   output: ListResourceComplianceSummariesResult,
   errors: [InternalServerError, InvalidFilter, InvalidNextToken],
@@ -17134,27 +15515,7 @@ export const listResourceComplianceSummaries: API.OperationMethod<
     items: "ResourceComplianceSummaryItems",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListResourceComplianceSummariesRequest,
-  ListResourceComplianceSummariesResult,
-  ListResourceComplianceSummariesError,
-  Creds | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListResourceComplianceSummariesRequest,
-  ) => stream.Stream<
-    ListResourceComplianceSummariesResult,
-    ListResourceComplianceSummariesError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListResourceComplianceSummariesRequest,
-  ) => stream.Stream<
-    ResourceComplianceSummaryItem,
-    ListResourceComplianceSummariesError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListResourceDataSyncError =
   | InternalServerError
@@ -17173,27 +15534,13 @@ export type ListResourceDataSyncError =
  * more sync configurations to list, you can request them by specifying the `NextToken`
  * returned in the call to the parameter of a subsequent call.
  */
-export const listResourceDataSync: API.OperationMethod<
+export const listResourceDataSync: API.PaginatedOperationMethod<
   ListResourceDataSyncRequest,
   ListResourceDataSyncResult,
   ListResourceDataSyncError,
-  Creds | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListResourceDataSyncRequest,
-  ) => stream.Stream<
-    ListResourceDataSyncResult,
-    ListResourceDataSyncError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListResourceDataSyncRequest,
-  ) => stream.Stream<
-    ResourceDataSyncItem,
-    ListResourceDataSyncError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Creds | HttpClient.HttpClient,
+  ResourceDataSyncItem
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListResourceDataSyncRequest,
   output: ListResourceDataSyncResult,
   errors: [
@@ -17210,27 +15557,7 @@ export const listResourceDataSync: API.OperationMethod<
     items: "ResourceDataSyncItems",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListResourceDataSyncRequest,
-  ListResourceDataSyncResult,
-  ListResourceDataSyncError,
-  Creds | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListResourceDataSyncRequest,
-  ) => stream.Stream<
-    ListResourceDataSyncResult,
-    ListResourceDataSyncError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListResourceDataSyncRequest,
-  ) => stream.Stream<
-    ResourceDataSyncItem,
-    ListResourceDataSyncError,
-    Creds | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsForResourceError =
   | InternalServerError
@@ -17246,7 +15573,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceRequest,
   ListTagsForResourceResult,
   ListTagsForResourceError,
-  Creds | Rgn | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResult,
@@ -17273,7 +15600,7 @@ export const modifyDocumentPermission: API.OperationMethod<
   ModifyDocumentPermissionRequest,
   ModifyDocumentPermissionResponse,
   ModifyDocumentPermissionError,
-  Creds | Rgn | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ModifyDocumentPermissionRequest,
   output: ModifyDocumentPermissionResponse,
@@ -17351,7 +15678,7 @@ export const putComplianceItems: API.OperationMethod<
   PutComplianceItemsRequest,
   PutComplianceItemsResult,
   PutComplianceItemsError,
-  Creds | Rgn | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutComplianceItemsRequest,
   output: PutComplianceItemsResult,
@@ -17392,7 +15719,7 @@ export const putInventory: API.OperationMethod<
   PutInventoryRequest,
   PutInventoryResult,
   PutInventoryError,
-  Creds | Rgn | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutInventoryRequest,
   output: PutInventoryResult,
@@ -17439,7 +15766,7 @@ export const putParameter: API.OperationMethod<
   PutParameterRequest,
   PutParameterResult,
   PutParameterError,
-  Creds | Rgn | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutParameterRequest,
   output: PutParameterResult,
@@ -17507,7 +15834,7 @@ export const putResourcePolicy: API.OperationMethod<
   PutResourcePolicyRequest,
   PutResourcePolicyResponse,
   PutResourcePolicyError,
-  Creds | Rgn | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutResourcePolicyRequest,
   output: PutResourcePolicyResponse,
@@ -17542,7 +15869,7 @@ export const registerDefaultPatchBaseline: API.OperationMethod<
   RegisterDefaultPatchBaselineRequest,
   RegisterDefaultPatchBaselineResult,
   RegisterDefaultPatchBaselineError,
-  Creds | Rgn | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RegisterDefaultPatchBaselineRequest,
   output: RegisterDefaultPatchBaselineResult,
@@ -17566,7 +15893,7 @@ export const registerPatchBaselineForPatchGroup: API.OperationMethod<
   RegisterPatchBaselineForPatchGroupRequest,
   RegisterPatchBaselineForPatchGroupResult,
   RegisterPatchBaselineForPatchGroupError,
-  Creds | Rgn | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RegisterPatchBaselineForPatchGroupRequest,
   output: RegisterPatchBaselineForPatchGroupResult,
@@ -17595,7 +15922,7 @@ export const registerTargetWithMaintenanceWindow: API.OperationMethod<
   RegisterTargetWithMaintenanceWindowRequest,
   RegisterTargetWithMaintenanceWindowResult,
   RegisterTargetWithMaintenanceWindowError,
-  Creds | Rgn | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RegisterTargetWithMaintenanceWindowRequest,
   output: RegisterTargetWithMaintenanceWindowResult,
@@ -17624,7 +15951,7 @@ export const registerTaskWithMaintenanceWindow: API.OperationMethod<
   RegisterTaskWithMaintenanceWindowRequest,
   RegisterTaskWithMaintenanceWindowResult,
   RegisterTaskWithMaintenanceWindowError,
-  Creds | Rgn | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RegisterTaskWithMaintenanceWindowRequest,
   output: RegisterTaskWithMaintenanceWindowResult,
@@ -17653,7 +15980,7 @@ export const removeTagsFromResource: API.OperationMethod<
   RemoveTagsFromResourceRequest,
   RemoveTagsFromResourceResult,
   RemoveTagsFromResourceError,
-  Creds | Rgn | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RemoveTagsFromResourceRequest,
   output: RemoveTagsFromResourceResult,
@@ -17695,7 +16022,7 @@ export const resetServiceSetting: API.OperationMethod<
   ResetServiceSettingRequest,
   ResetServiceSettingResult,
   ResetServiceSettingError,
-  Creds | Rgn | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ResetServiceSettingRequest,
   output: ResetServiceSettingResult,
@@ -17720,7 +16047,7 @@ export const resumeSession: API.OperationMethod<
   ResumeSessionRequest,
   ResumeSessionResponse,
   ResumeSessionError,
-  Creds | Rgn | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ResumeSessionRequest,
   output: ResumeSessionResponse,
@@ -17744,7 +16071,7 @@ export const sendAutomationSignal: API.OperationMethod<
   SendAutomationSignalRequest,
   SendAutomationSignalResult,
   SendAutomationSignalError,
-  Creds | Rgn | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: SendAutomationSignalRequest,
   output: SendAutomationSignalResult,
@@ -17779,7 +16106,7 @@ export const sendCommand: API.OperationMethod<
   SendCommandRequest,
   SendCommandResult,
   SendCommandError,
-  Creds | Rgn | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: SendCommandRequest,
   output: SendCommandResult,
@@ -17816,7 +16143,7 @@ export const startAccessRequest: API.OperationMethod<
   StartAccessRequestRequest,
   StartAccessRequestResponse,
   StartAccessRequestError,
-  Creds | Rgn | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartAccessRequestRequest,
   output: StartAccessRequestResponse,
@@ -17845,7 +16172,7 @@ export const startAssociationsOnce: API.OperationMethod<
   StartAssociationsOnceRequest,
   StartAssociationsOnceResult,
   StartAssociationsOnceError,
-  Creds | Rgn | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartAssociationsOnceRequest,
   output: StartAssociationsOnceResult,
@@ -17871,7 +16198,7 @@ export const startAutomationExecution: API.OperationMethod<
   StartAutomationExecutionRequest,
   StartAutomationExecutionResult,
   StartAutomationExecutionError,
-  Creds | Rgn | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartAutomationExecutionRequest,
   output: StartAutomationExecutionResult,
@@ -17912,7 +16239,7 @@ export const startChangeRequestExecution: API.OperationMethod<
   StartChangeRequestExecutionRequest,
   StartChangeRequestExecutionResult,
   StartChangeRequestExecutionError,
-  Creds | Rgn | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartChangeRequestExecutionRequest,
   output: StartChangeRequestExecutionResult,
@@ -17943,7 +16270,7 @@ export const startExecutionPreview: API.OperationMethod<
   StartExecutionPreviewRequest,
   StartExecutionPreviewResponse,
   StartExecutionPreviewError,
-  Creds | Rgn | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartExecutionPreviewRequest,
   output: StartExecutionPreviewResponse,
@@ -17974,7 +16301,7 @@ export const startSession: API.OperationMethod<
   StartSessionRequest,
   StartSessionResponse,
   StartSessionError,
-  Creds | Rgn | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartSessionRequest,
   output: StartSessionResponse,
@@ -17996,7 +16323,7 @@ export const stopAutomationExecution: API.OperationMethod<
   StopAutomationExecutionRequest,
   StopAutomationExecutionResult,
   StopAutomationExecutionError,
-  Creds | Rgn | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StopAutomationExecutionRequest,
   output: StopAutomationExecutionResult,
@@ -18019,7 +16346,7 @@ export const terminateSession: API.OperationMethod<
   TerminateSessionRequest,
   TerminateSessionResponse,
   TerminateSessionError,
-  Creds | Rgn | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TerminateSessionRequest,
   output: TerminateSessionResponse,
@@ -18046,7 +16373,7 @@ export const unlabelParameterVersion: API.OperationMethod<
   UnlabelParameterVersionRequest,
   UnlabelParameterVersionResult,
   UnlabelParameterVersionError,
-  Creds | Rgn | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UnlabelParameterVersionRequest,
   output: UnlabelParameterVersionResult,
@@ -18100,7 +16427,7 @@ export const updateAssociation: API.OperationMethod<
   UpdateAssociationRequest,
   UpdateAssociationResult,
   UpdateAssociationError,
-  Creds | Rgn | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateAssociationRequest,
   output: UpdateAssociationResult,
@@ -18144,7 +16471,7 @@ export const updateAssociationStatus: API.OperationMethod<
   UpdateAssociationStatusRequest,
   UpdateAssociationStatusResult,
   UpdateAssociationStatusError,
-  Creds | Rgn | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateAssociationStatusRequest,
   output: UpdateAssociationStatusResult,
@@ -18180,7 +16507,7 @@ export const updateDocument: API.OperationMethod<
   UpdateDocumentRequest,
   UpdateDocumentResult,
   UpdateDocumentError,
-  Creds | Rgn | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateDocumentRequest,
   output: UpdateDocumentResult,
@@ -18218,7 +16545,7 @@ export const updateDocumentDefaultVersion: API.OperationMethod<
   UpdateDocumentDefaultVersionRequest,
   UpdateDocumentDefaultVersionResult,
   UpdateDocumentDefaultVersionError,
-  Creds | Rgn | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateDocumentDefaultVersionRequest,
   output: UpdateDocumentDefaultVersionResult,
@@ -18252,7 +16579,7 @@ export const updateDocumentMetadata: API.OperationMethod<
   UpdateDocumentMetadataRequest,
   UpdateDocumentMetadataResponse,
   UpdateDocumentMetadataError,
-  Creds | Rgn | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateDocumentMetadataRequest,
   output: UpdateDocumentMetadataResponse,
@@ -18286,7 +16613,7 @@ export const updateMaintenanceWindow: API.OperationMethod<
   UpdateMaintenanceWindowRequest,
   UpdateMaintenanceWindowResult,
   UpdateMaintenanceWindowError,
-  Creds | Rgn | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateMaintenanceWindowRequest,
   output: UpdateMaintenanceWindowResult,
@@ -18323,7 +16650,7 @@ export const updateMaintenanceWindowTarget: API.OperationMethod<
   UpdateMaintenanceWindowTargetRequest,
   UpdateMaintenanceWindowTargetResult,
   UpdateMaintenanceWindowTargetError,
-  Creds | Rgn | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateMaintenanceWindowTargetRequest,
   output: UpdateMaintenanceWindowTargetResult,
@@ -18379,7 +16706,7 @@ export const updateMaintenanceWindowTask: API.OperationMethod<
   UpdateMaintenanceWindowTaskRequest,
   UpdateMaintenanceWindowTaskResult,
   UpdateMaintenanceWindowTaskError,
-  Creds | Rgn | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateMaintenanceWindowTaskRequest,
   output: UpdateMaintenanceWindowTaskResult,
@@ -18402,7 +16729,7 @@ export const updateManagedInstanceRole: API.OperationMethod<
   UpdateManagedInstanceRoleRequest,
   UpdateManagedInstanceRoleResult,
   UpdateManagedInstanceRoleError,
-  Creds | Rgn | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateManagedInstanceRoleRequest,
   output: UpdateManagedInstanceRoleResult,
@@ -18434,7 +16761,7 @@ export const updateOpsItem: API.OperationMethod<
   UpdateOpsItemRequest,
   UpdateOpsItemResponse,
   UpdateOpsItemError,
-  Creds | Rgn | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateOpsItemRequest,
   output: UpdateOpsItemResponse,
@@ -18466,7 +16793,7 @@ export const updateOpsMetadata: API.OperationMethod<
   UpdateOpsMetadataRequest,
   UpdateOpsMetadataResult,
   UpdateOpsMetadataError,
-  Creds | Rgn | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateOpsMetadataRequest,
   output: UpdateOpsMetadataResult,
@@ -18497,7 +16824,7 @@ export const updatePatchBaseline: API.OperationMethod<
   UpdatePatchBaselineRequest,
   UpdatePatchBaselineResult,
   UpdatePatchBaselineError,
-  Creds | Rgn | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdatePatchBaselineRequest,
   output: UpdatePatchBaselineResult,
@@ -18528,7 +16855,7 @@ export const updateResourceDataSync: API.OperationMethod<
   UpdateResourceDataSyncRequest,
   UpdateResourceDataSyncResult,
   UpdateResourceDataSyncError,
-  Creds | Rgn | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateResourceDataSyncRequest,
   output: UpdateResourceDataSyncResult,
@@ -18569,7 +16896,7 @@ export const updateServiceSetting: API.OperationMethod<
   UpdateServiceSettingRequest,
   UpdateServiceSettingResult,
   UpdateServiceSettingError,
-  Creds | Rgn | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateServiceSettingRequest,
   output: UpdateServiceSettingResult,

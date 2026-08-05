@@ -1,7 +1,6 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as redacted from "effect/Redacted";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -9,7 +8,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region as Rgn } from "../region.ts";
 import { SensitiveString } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "Route53GlobalResolver",
@@ -57,14 +55,14 @@ const rules = T.EndpointResolver((p, _) => {
 export class AccessDeniedException
   extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
     "AccessDeniedException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(403),
   ).pipe(C.withAuthError) {}
 export class ConflictException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
     "ConflictException",
     {
-      message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       resourceId: S.optional(S.String),
       resourceType: S.String,
     },
@@ -74,7 +72,7 @@ export class InternalServerException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
     "InternalServerException",
     {
-      message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       retryAfterSeconds: S.optional(S.Number).pipe(T.HttpHeader("Retry-After")),
     },
     T.all(T.HttpError(500), T.Retryable()),
@@ -83,7 +81,7 @@ export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
     {
-      message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       resourceId: S.optional(S.String),
       resourceType: S.String,
     },
@@ -93,7 +91,7 @@ export class ServiceQuotaExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
     "ServiceQuotaExceededException",
     {
-      message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       resourceId: S.optional(S.String),
       resourceType: S.String,
       serviceCode: S.optional(S.String),
@@ -105,7 +103,7 @@ export class ThrottlingException
   extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
     "ThrottlingException",
     {
-      message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       serviceCode: S.optional(S.String),
       quotaCode: S.optional(S.String),
       retryAfterSeconds: S.optional(S.Number).pipe(T.HttpHeader("Retry-After")),
@@ -116,7 +114,7 @@ export class ValidationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
     "ValidationException",
     {
-      message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       reason: S.suspend(() => ValidationExceptionReason).annotate({
         identifier: "ValidationExceptionReason",
       }),
@@ -2949,7 +2947,7 @@ export const associateHostedZone: API.OperationMethod<
   AssociateHostedZoneInput,
   AssociateHostedZoneOutput,
   AssociateHostedZoneError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AssociateHostedZoneInput,
   output: AssociateHostedZoneOutput,
@@ -2982,7 +2980,7 @@ export const batchCreateFirewallRule: API.OperationMethod<
   BatchCreateFirewallRuleInput,
   BatchCreateFirewallRuleOutput,
   BatchCreateFirewallRuleError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchCreateFirewallRuleInput,
   output: BatchCreateFirewallRuleOutput,
@@ -3012,7 +3010,7 @@ export const batchDeleteFirewallRule: API.OperationMethod<
   BatchDeleteFirewallRuleInput,
   BatchDeleteFirewallRuleOutput,
   BatchDeleteFirewallRuleError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchDeleteFirewallRuleInput,
   output: BatchDeleteFirewallRuleOutput,
@@ -3042,7 +3040,7 @@ export const batchUpdateFirewallRule: API.OperationMethod<
   BatchUpdateFirewallRuleInput,
   BatchUpdateFirewallRuleOutput,
   BatchUpdateFirewallRuleError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchUpdateFirewallRuleInput,
   output: BatchUpdateFirewallRuleOutput,
@@ -3075,7 +3073,7 @@ export const createAccessSource: API.OperationMethod<
   CreateAccessSourceInput,
   CreateAccessSourceOutput,
   CreateAccessSourceError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateAccessSourceInput,
   output: CreateAccessSourceOutput,
@@ -3111,7 +3109,7 @@ export const createAccessToken: API.OperationMethod<
   CreateAccessTokenInput,
   CreateAccessTokenOutput,
   CreateAccessTokenError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateAccessTokenInput,
   output: CreateAccessTokenOutput,
@@ -3147,7 +3145,7 @@ export const createDNSView: API.OperationMethod<
   CreateDNSViewInput,
   CreateDNSViewOutput,
   CreateDNSViewError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateDNSViewInput,
   output: CreateDNSViewOutput,
@@ -3183,7 +3181,7 @@ export const createFirewallDomainList: API.OperationMethod<
   CreateFirewallDomainListInput,
   CreateFirewallDomainListOutput,
   CreateFirewallDomainListError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateFirewallDomainListInput,
   output: CreateFirewallDomainListOutput,
@@ -3219,7 +3217,7 @@ export const createFirewallRule: API.OperationMethod<
   CreateFirewallRuleInput,
   CreateFirewallRuleOutput,
   CreateFirewallRuleError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateFirewallRuleInput,
   output: CreateFirewallRuleOutput,
@@ -3254,7 +3252,7 @@ export const createGlobalResolver: API.OperationMethod<
   CreateGlobalResolverInput,
   CreateGlobalResolverOutput,
   CreateGlobalResolverError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateGlobalResolverInput,
   output: CreateGlobalResolverOutput,
@@ -3288,7 +3286,7 @@ export const deleteAccessSource: API.OperationMethod<
   DeleteAccessSourceInput,
   DeleteAccessSourceOutput,
   DeleteAccessSourceError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteAccessSourceInput,
   output: DeleteAccessSourceOutput,
@@ -3322,7 +3320,7 @@ export const deleteAccessToken: API.OperationMethod<
   DeleteAccessTokenInput,
   DeleteAccessTokenOutput,
   DeleteAccessTokenError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteAccessTokenInput,
   output: DeleteAccessTokenOutput,
@@ -3356,7 +3354,7 @@ export const deleteDNSView: API.OperationMethod<
   DeleteDNSViewInput,
   DeleteDNSViewOutput,
   DeleteDNSViewError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteDNSViewInput,
   output: DeleteDNSViewOutput,
@@ -3390,7 +3388,7 @@ export const deleteFirewallDomainList: API.OperationMethod<
   DeleteFirewallDomainListInput,
   DeleteFirewallDomainListOutput,
   DeleteFirewallDomainListError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteFirewallDomainListInput,
   output: DeleteFirewallDomainListOutput,
@@ -3424,7 +3422,7 @@ export const deleteFirewallRule: API.OperationMethod<
   DeleteFirewallRuleInput,
   DeleteFirewallRuleOutput,
   DeleteFirewallRuleError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteFirewallRuleInput,
   output: DeleteFirewallRuleOutput,
@@ -3458,7 +3456,7 @@ export const deleteGlobalResolver: API.OperationMethod<
   DeleteGlobalResolverInput,
   DeleteGlobalResolverOutput,
   DeleteGlobalResolverError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteGlobalResolverInput,
   output: DeleteGlobalResolverOutput,
@@ -3493,7 +3491,7 @@ export const disableDNSView: API.OperationMethod<
   DisableDNSViewInput,
   DisableDNSViewOutput,
   DisableDNSViewError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DisableDNSViewInput,
   output: DisableDNSViewOutput,
@@ -3528,7 +3526,7 @@ export const disassociateHostedZone: API.OperationMethod<
   DisassociateHostedZoneInput,
   DisassociateHostedZoneOutput,
   DisassociateHostedZoneError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DisassociateHostedZoneInput,
   output: DisassociateHostedZoneOutput,
@@ -3563,7 +3561,7 @@ export const enableDNSView: API.OperationMethod<
   EnableDNSViewInput,
   EnableDNSViewOutput,
   EnableDNSViewError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: EnableDNSViewInput,
   output: EnableDNSViewOutput,
@@ -3597,7 +3595,7 @@ export const getAccessSource: API.OperationMethod<
   GetAccessSourceInput,
   GetAccessSourceOutput,
   GetAccessSourceError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetAccessSourceInput,
   output: GetAccessSourceOutput,
@@ -3629,7 +3627,7 @@ export const getAccessToken: API.OperationMethod<
   GetAccessTokenInput,
   GetAccessTokenOutput,
   GetAccessTokenError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetAccessTokenInput,
   output: GetAccessTokenOutput,
@@ -3661,7 +3659,7 @@ export const getDNSView: API.OperationMethod<
   GetDNSViewInput,
   GetDNSViewOutput,
   GetDNSViewError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetDNSViewInput,
   output: GetDNSViewOutput,
@@ -3693,7 +3691,7 @@ export const getFirewallDomainList: API.OperationMethod<
   GetFirewallDomainListInput,
   GetFirewallDomainListOutput,
   GetFirewallDomainListError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetFirewallDomainListInput,
   output: GetFirewallDomainListOutput,
@@ -3725,7 +3723,7 @@ export const getFirewallRule: API.OperationMethod<
   GetFirewallRuleInput,
   GetFirewallRuleOutput,
   GetFirewallRuleError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetFirewallRuleInput,
   output: GetFirewallRuleOutput,
@@ -3757,7 +3755,7 @@ export const getGlobalResolver: API.OperationMethod<
   GetGlobalResolverInput,
   GetGlobalResolverOutput,
   GetGlobalResolverError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetGlobalResolverInput,
   output: GetGlobalResolverOutput,
@@ -3789,7 +3787,7 @@ export const getHostedZoneAssociation: API.OperationMethod<
   GetHostedZoneAssociationInput,
   GetHostedZoneAssociationOutput,
   GetHostedZoneAssociationError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetHostedZoneAssociationInput,
   output: GetHostedZoneAssociationOutput,
@@ -3821,7 +3819,7 @@ export const getManagedFirewallDomainList: API.OperationMethod<
   GetManagedFirewallDomainListInput,
   GetManagedFirewallDomainListOutput,
   GetManagedFirewallDomainListError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetManagedFirewallDomainListInput,
   output: GetManagedFirewallDomainListOutput,
@@ -3855,7 +3853,7 @@ export const importFirewallDomains: API.OperationMethod<
   ImportFirewallDomainsInput,
   ImportFirewallDomainsOutput,
   ImportFirewallDomainsError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ImportFirewallDomainsInput,
   output: ImportFirewallDomainsOutput,
@@ -3884,27 +3882,13 @@ export type ListAccessSourcesError =
  *
  * Route 53 Global Resolver is a global service that supports resolvers in multiple Amazon Web Services Regions but you must specify the US East (Ohio) Region to create, update, or otherwise work with Route 53 Global Resolver resources. That is, for example, specify `--region us-east-2` on Amazon Web Services CLI commands.
  */
-export const listAccessSources: API.OperationMethod<
+export const listAccessSources: API.PaginatedOperationMethod<
   ListAccessSourcesInput,
   ListAccessSourcesOutput,
   ListAccessSourcesError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAccessSourcesInput,
-  ) => stream.Stream<
-    ListAccessSourcesOutput,
-    ListAccessSourcesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAccessSourcesInput,
-  ) => stream.Stream<
-    AccessSourcesItem,
-    ListAccessSourcesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  AccessSourcesItem
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListAccessSourcesInput,
   output: ListAccessSourcesOutput,
   errors: [
@@ -3922,27 +3906,7 @@ export const listAccessSources: API.OperationMethod<
     items: "accessSources",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListAccessSourcesInput,
-  ListAccessSourcesOutput,
-  ListAccessSourcesError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAccessSourcesInput,
-  ) => stream.Stream<
-    ListAccessSourcesOutput,
-    ListAccessSourcesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAccessSourcesInput,
-  ) => stream.Stream<
-    AccessSourcesItem,
-    ListAccessSourcesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListAccessTokensError =
   | AccessDeniedException
@@ -3956,27 +3920,13 @@ export type ListAccessTokensError =
  *
  * Route 53 Global Resolver is a global service that supports resolvers in multiple Amazon Web Services Regions but you must specify the US East (Ohio) Region to create, update, or otherwise work with Route 53 Global Resolver resources. That is, for example, specify `--region us-east-2` on Amazon Web Services CLI commands.
  */
-export const listAccessTokens: API.OperationMethod<
+export const listAccessTokens: API.PaginatedOperationMethod<
   ListAccessTokensInput,
   ListAccessTokensOutput,
   ListAccessTokensError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAccessTokensInput,
-  ) => stream.Stream<
-    ListAccessTokensOutput,
-    ListAccessTokensError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAccessTokensInput,
-  ) => stream.Stream<
-    AccessTokenItem,
-    ListAccessTokensError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  AccessTokenItem
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListAccessTokensInput,
   output: ListAccessTokensOutput,
   errors: [
@@ -3995,27 +3945,7 @@ export const listAccessTokens: API.OperationMethod<
     items: "accessTokens",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListAccessTokensInput,
-  ListAccessTokensOutput,
-  ListAccessTokensError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAccessTokensInput,
-  ) => stream.Stream<
-    ListAccessTokensOutput,
-    ListAccessTokensError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAccessTokensInput,
-  ) => stream.Stream<
-    AccessTokenItem,
-    ListAccessTokensError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListDNSViewsError =
   | AccessDeniedException
@@ -4029,27 +3959,13 @@ export type ListDNSViewsError =
  *
  * Route 53 Global Resolver is a global service that supports resolvers in multiple Amazon Web Services Regions but you must specify the US East (Ohio) Region to create, update, or otherwise work with Route 53 Global Resolver resources. That is, for example, specify `--region us-east-2` on Amazon Web Services CLI commands.
  */
-export const listDNSViews: API.OperationMethod<
+export const listDNSViews: API.PaginatedOperationMethod<
   ListDNSViewsInput,
   ListDNSViewsOutput,
   ListDNSViewsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDNSViewsInput,
-  ) => stream.Stream<
-    ListDNSViewsOutput,
-    ListDNSViewsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDNSViewsInput,
-  ) => stream.Stream<
-    DNSViewSummary,
-    ListDNSViewsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  DNSViewSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListDNSViewsInput,
   output: ListDNSViewsOutput,
   errors: [
@@ -4068,27 +3984,7 @@ export const listDNSViews: API.OperationMethod<
     items: "dnsViews",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListDNSViewsInput,
-  ListDNSViewsOutput,
-  ListDNSViewsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDNSViewsInput,
-  ) => stream.Stream<
-    ListDNSViewsOutput,
-    ListDNSViewsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDNSViewsInput,
-  ) => stream.Stream<
-    DNSViewSummary,
-    ListDNSViewsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListFirewallDomainListsError =
   | AccessDeniedException
@@ -4102,27 +3998,13 @@ export type ListFirewallDomainListsError =
  *
  * Route 53 Global Resolver is a global service that supports resolvers in multiple Amazon Web Services Regions but you must specify the US East (Ohio) Region to create, update, or otherwise work with Route 53 Global Resolver resources. That is, for example, specify `--region us-east-2` on Amazon Web Services CLI commands.
  */
-export const listFirewallDomainLists: API.OperationMethod<
+export const listFirewallDomainLists: API.PaginatedOperationMethod<
   ListFirewallDomainListsInput,
   ListFirewallDomainListsOutput,
   ListFirewallDomainListsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListFirewallDomainListsInput,
-  ) => stream.Stream<
-    ListFirewallDomainListsOutput,
-    ListFirewallDomainListsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListFirewallDomainListsInput,
-  ) => stream.Stream<
-    FirewallDomainListsItem,
-    ListFirewallDomainListsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  FirewallDomainListsItem
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListFirewallDomainListsInput,
   output: ListFirewallDomainListsOutput,
   errors: [
@@ -4141,27 +4023,7 @@ export const listFirewallDomainLists: API.OperationMethod<
     items: "firewallDomainLists",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListFirewallDomainListsInput,
-  ListFirewallDomainListsOutput,
-  ListFirewallDomainListsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListFirewallDomainListsInput,
-  ) => stream.Stream<
-    ListFirewallDomainListsOutput,
-    ListFirewallDomainListsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListFirewallDomainListsInput,
-  ) => stream.Stream<
-    FirewallDomainListsItem,
-    ListFirewallDomainListsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListFirewallDomainsError =
   | AccessDeniedException
@@ -4175,27 +4037,13 @@ export type ListFirewallDomainsError =
  *
  * Route 53 Global Resolver is a global service that supports resolvers in multiple Amazon Web Services Regions but you must specify the US East (Ohio) Region to create, update, or otherwise work with Route 53 Global Resolver resources. That is, for example, specify `--region us-east-2` on Amazon Web Services CLI commands.
  */
-export const listFirewallDomains: API.OperationMethod<
+export const listFirewallDomains: API.PaginatedOperationMethod<
   ListFirewallDomainsInput,
   ListFirewallDomainsOutput,
   ListFirewallDomainsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListFirewallDomainsInput,
-  ) => stream.Stream<
-    ListFirewallDomainsOutput,
-    ListFirewallDomainsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListFirewallDomainsInput,
-  ) => stream.Stream<
-    Domain,
-    ListFirewallDomainsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Domain
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListFirewallDomainsInput,
   output: ListFirewallDomainsOutput,
   errors: [
@@ -4214,27 +4062,7 @@ export const listFirewallDomains: API.OperationMethod<
     items: "domains",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListFirewallDomainsInput,
-  ListFirewallDomainsOutput,
-  ListFirewallDomainsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListFirewallDomainsInput,
-  ) => stream.Stream<
-    ListFirewallDomainsOutput,
-    ListFirewallDomainsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListFirewallDomainsInput,
-  ) => stream.Stream<
-    Domain,
-    ListFirewallDomainsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListFirewallRulesError =
   | AccessDeniedException
@@ -4248,27 +4076,13 @@ export type ListFirewallRulesError =
  *
  * Route 53 Global Resolver is a global service that supports resolvers in multiple Amazon Web Services Regions but you must specify the US East (Ohio) Region to create, update, or otherwise work with Route 53 Global Resolver resources. That is, for example, specify `--region us-east-2` on Amazon Web Services CLI commands.
  */
-export const listFirewallRules: API.OperationMethod<
+export const listFirewallRules: API.PaginatedOperationMethod<
   ListFirewallRulesInput,
   ListFirewallRulesOutput,
   ListFirewallRulesError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListFirewallRulesInput,
-  ) => stream.Stream<
-    ListFirewallRulesOutput,
-    ListFirewallRulesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListFirewallRulesInput,
-  ) => stream.Stream<
-    FirewallRulesItem,
-    ListFirewallRulesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  FirewallRulesItem
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListFirewallRulesInput,
   output: ListFirewallRulesOutput,
   errors: [
@@ -4287,27 +4101,7 @@ export const listFirewallRules: API.OperationMethod<
     items: "firewallRules",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListFirewallRulesInput,
-  ListFirewallRulesOutput,
-  ListFirewallRulesError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListFirewallRulesInput,
-  ) => stream.Stream<
-    ListFirewallRulesOutput,
-    ListFirewallRulesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListFirewallRulesInput,
-  ) => stream.Stream<
-    FirewallRulesItem,
-    ListFirewallRulesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListGlobalResolversError =
   | AccessDeniedException
@@ -4320,27 +4114,13 @@ export type ListGlobalResolversError =
  *
  * Route 53 Global Resolver is a global service that supports resolvers in multiple Amazon Web Services Regions but you must specify the US East (Ohio) Region to create, update, or otherwise work with Route 53 Global Resolver resources. That is, for example, specify `--region us-east-2` on Amazon Web Services CLI commands.
  */
-export const listGlobalResolvers: API.OperationMethod<
+export const listGlobalResolvers: API.PaginatedOperationMethod<
   ListGlobalResolversInput,
   ListGlobalResolversOutput,
   ListGlobalResolversError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListGlobalResolversInput,
-  ) => stream.Stream<
-    ListGlobalResolversOutput,
-    ListGlobalResolversError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListGlobalResolversInput,
-  ) => stream.Stream<
-    GlobalResolversItem,
-    ListGlobalResolversError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  GlobalResolversItem
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListGlobalResolversInput,
   output: ListGlobalResolversOutput,
   errors: [
@@ -4358,27 +4138,7 @@ export const listGlobalResolvers: API.OperationMethod<
     items: "globalResolvers",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListGlobalResolversInput,
-  ListGlobalResolversOutput,
-  ListGlobalResolversError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListGlobalResolversInput,
-  ) => stream.Stream<
-    ListGlobalResolversOutput,
-    ListGlobalResolversError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListGlobalResolversInput,
-  ) => stream.Stream<
-    GlobalResolversItem,
-    ListGlobalResolversError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListHostedZoneAssociationsError =
   | AccessDeniedException
@@ -4392,27 +4152,13 @@ export type ListHostedZoneAssociationsError =
  *
  * Route 53 Global Resolver is a global service that supports resolvers in multiple Amazon Web Services Regions but you must specify the US East (Ohio) Region to create, update, or otherwise work with Route 53 Global Resolver resources. That is, for example, specify `--region us-east-2` on Amazon Web Services CLI commands.
  */
-export const listHostedZoneAssociations: API.OperationMethod<
+export const listHostedZoneAssociations: API.PaginatedOperationMethod<
   ListHostedZoneAssociationsInput,
   ListHostedZoneAssociationsOutput,
   ListHostedZoneAssociationsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListHostedZoneAssociationsInput,
-  ) => stream.Stream<
-    ListHostedZoneAssociationsOutput,
-    ListHostedZoneAssociationsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListHostedZoneAssociationsInput,
-  ) => stream.Stream<
-    HostedZoneAssociationSummary,
-    ListHostedZoneAssociationsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  HostedZoneAssociationSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListHostedZoneAssociationsInput,
   output: ListHostedZoneAssociationsOutput,
   errors: [
@@ -4431,27 +4177,7 @@ export const listHostedZoneAssociations: API.OperationMethod<
     items: "hostedZoneAssociations",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListHostedZoneAssociationsInput,
-  ListHostedZoneAssociationsOutput,
-  ListHostedZoneAssociationsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListHostedZoneAssociationsInput,
-  ) => stream.Stream<
-    ListHostedZoneAssociationsOutput,
-    ListHostedZoneAssociationsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListHostedZoneAssociationsInput,
-  ) => stream.Stream<
-    HostedZoneAssociationSummary,
-    ListHostedZoneAssociationsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListManagedFirewallDomainListsError =
   | AccessDeniedException
@@ -4464,27 +4190,13 @@ export type ListManagedFirewallDomainListsError =
  *
  * Route 53 Global Resolver is a global service that supports resolvers in multiple Amazon Web Services Regions but you must specify the US East (Ohio) Region to create, update, or otherwise work with Route 53 Global Resolver resources. That is, for example, specify `--region us-east-2` on Amazon Web Services CLI commands.
  */
-export const listManagedFirewallDomainLists: API.OperationMethod<
+export const listManagedFirewallDomainLists: API.PaginatedOperationMethod<
   ListManagedFirewallDomainListsInput,
   ListManagedFirewallDomainListsOutput,
   ListManagedFirewallDomainListsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListManagedFirewallDomainListsInput,
-  ) => stream.Stream<
-    ListManagedFirewallDomainListsOutput,
-    ListManagedFirewallDomainListsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListManagedFirewallDomainListsInput,
-  ) => stream.Stream<
-    ManagedFirewallDomainListsItem,
-    ListManagedFirewallDomainListsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ManagedFirewallDomainListsItem
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListManagedFirewallDomainListsInput,
   output: ListManagedFirewallDomainListsOutput,
   errors: [
@@ -4502,27 +4214,7 @@ export const listManagedFirewallDomainLists: API.OperationMethod<
     items: "managedFirewallDomainLists",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListManagedFirewallDomainListsInput,
-  ListManagedFirewallDomainListsOutput,
-  ListManagedFirewallDomainListsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListManagedFirewallDomainListsInput,
-  ) => stream.Stream<
-    ListManagedFirewallDomainListsOutput,
-    ListManagedFirewallDomainListsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListManagedFirewallDomainListsInput,
-  ) => stream.Stream<
-    ManagedFirewallDomainListsItem,
-    ListManagedFirewallDomainListsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsForResourceError = ResourceNotFoundException | CommonErrors;
 /**
@@ -4534,7 +4226,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceRequest,
   ListTagsForResourceResponse,
   ListTagsForResourceError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -4558,7 +4250,7 @@ export const tagResource: API.OperationMethod<
   TagResourceRequest,
   TagResourceResponse,
   TagResourceError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -4585,7 +4277,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceRequest,
   UntagResourceResponse,
   UntagResourceError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -4613,7 +4305,7 @@ export const updateAccessSource: API.OperationMethod<
   UpdateAccessSourceInput,
   UpdateAccessSourceOutput,
   UpdateAccessSourceError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateAccessSourceInput,
   output: UpdateAccessSourceOutput,
@@ -4649,7 +4341,7 @@ export const updateAccessToken: API.OperationMethod<
   UpdateAccessTokenInput,
   UpdateAccessTokenOutput,
   UpdateAccessTokenError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateAccessTokenInput,
   output: UpdateAccessTokenOutput,
@@ -4685,7 +4377,7 @@ export const updateDNSView: API.OperationMethod<
   UpdateDNSViewInput,
   UpdateDNSViewOutput,
   UpdateDNSViewError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateDNSViewInput,
   output: UpdateDNSViewOutput,
@@ -4721,7 +4413,7 @@ export const updateFirewallDomains: API.OperationMethod<
   UpdateFirewallDomainsInput,
   UpdateFirewallDomainsOutput,
   UpdateFirewallDomainsError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateFirewallDomainsInput,
   output: UpdateFirewallDomainsOutput,
@@ -4757,7 +4449,7 @@ export const updateFirewallRule: API.OperationMethod<
   UpdateFirewallRuleInput,
   UpdateFirewallRuleOutput,
   UpdateFirewallRuleError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateFirewallRuleInput,
   output: UpdateFirewallRuleOutput,
@@ -4793,7 +4485,7 @@ export const updateGlobalResolver: API.OperationMethod<
   UpdateGlobalResolverInput,
   UpdateGlobalResolverOutput,
   UpdateGlobalResolverError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateGlobalResolverInput,
   output: UpdateGlobalResolverOutput,
@@ -4829,7 +4521,7 @@ export const updateHostedZoneAssociation: API.OperationMethod<
   UpdateHostedZoneAssociationInput,
   UpdateHostedZoneAssociationOutput,
   UpdateHostedZoneAssociationError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateHostedZoneAssociationInput,
   output: UpdateHostedZoneAssociationOutput,

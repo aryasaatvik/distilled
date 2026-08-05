@@ -1,6 +1,5 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -8,7 +7,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 const svc = T.AwsApiService({
   sdkId: "KeyspacesStreams",
   serviceShapeName: "KeyspacesStreams",
@@ -55,7 +53,7 @@ const rules = T.EndpointResolver((p, _) => {
 export class AccessDeniedException
   extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
     "AccessDeniedException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "AccessDeniedException", httpResponseCode: 403 }),
       T.HttpError(403),
@@ -64,7 +62,7 @@ export class AccessDeniedException
 export class InternalServerException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
     "InternalServerException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "InternalServerException",
@@ -76,7 +74,7 @@ export class InternalServerException
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "ResourceNotFoundException",
@@ -88,7 +86,7 @@ export class ResourceNotFoundException
 export class ThrottlingException
   extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
     "ThrottlingException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "ThrottlingException", httpResponseCode: 429 }),
       T.HttpError(429),
@@ -98,7 +96,7 @@ export class ValidationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
     "ValidationException",
     {
-      message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       errorCode: S.optional(
         S.suspend(() => ValidationExceptionType).annotate({
           identifier: "ValidationExceptionType",
@@ -1254,7 +1252,7 @@ export const getRecords: API.OperationMethod<
   GetRecordsInput,
   GetRecordsOutput,
   GetRecordsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetRecordsInput,
   output: GetRecordsOutput,
@@ -1284,7 +1282,7 @@ export const getShardIterator: API.OperationMethod<
   GetShardIteratorInput,
   GetShardIteratorOutput,
   GetShardIteratorError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetShardIteratorInput,
   output: GetShardIteratorOutput,
@@ -1310,27 +1308,13 @@ export type GetStreamError =
 /**
  * Returns detailed information about a specific data capture stream for an Amazon Keyspaces table. The information includes the stream's Amazon Resource Name (ARN), creation time, current status, retention period, shard composition, and associated table details. This operation helps you monitor and manage the configuration of your Amazon Keyspaces data streams.
  */
-export const getStream: API.OperationMethod<
+export const getStream: API.PaginatedOperationMethod<
   GetStreamInput,
   GetStreamOutput,
   GetStreamError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetStreamInput,
-  ) => stream.Stream<
-    GetStreamOutput,
-    GetStreamError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetStreamInput,
-  ) => stream.Stream<
-    Shard,
-    GetStreamError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Shard
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetStreamInput,
   output: GetStreamOutput,
   errors: [
@@ -1349,27 +1333,7 @@ export const getStream: API.OperationMethod<
     items: "shards",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetStreamInput,
-  GetStreamOutput,
-  GetStreamError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetStreamInput,
-  ) => stream.Stream<
-    GetStreamOutput,
-    GetStreamError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetStreamInput,
-  ) => stream.Stream<
-    Shard,
-    GetStreamError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListStreamsError =
   | AccessDeniedException
@@ -1381,27 +1345,13 @@ export type ListStreamsError =
 /**
  * Returns a list of all data capture streams associated with your Amazon Keyspaces account or for a specific keyspace or table. The response includes information such as stream ARNs, table associations, creation timestamps, and current status. This operation helps you discover and manage all active data streams in your Amazon Keyspaces environment.
  */
-export const listStreams: API.OperationMethod<
+export const listStreams: API.PaginatedOperationMethod<
   ListStreamsInput,
   ListStreamsOutput,
   ListStreamsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListStreamsInput,
-  ) => stream.Stream<
-    ListStreamsOutput,
-    ListStreamsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListStreamsInput,
-  ) => stream.Stream<
-    Stream,
-    ListStreamsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Stream
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListStreamsInput,
   output: ListStreamsOutput,
   errors: [
@@ -1420,24 +1370,4 @@ export const listStreams: API.OperationMethod<
     items: "streams",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListStreamsInput,
-  ListStreamsOutput,
-  ListStreamsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListStreamsInput,
-  ) => stream.Stream<
-    ListStreamsOutput,
-    ListStreamsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListStreamsInput,
-  ) => stream.Stream<
-    Stream,
-    ListStreamsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;

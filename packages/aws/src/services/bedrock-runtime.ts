@@ -9,7 +9,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "Bedrock Runtime",
@@ -90,26 +89,26 @@ const rules = T.EndpointResolver((p, _) => {
 export class AccessDeniedException
   extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
     "AccessDeniedException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(403),
   ).pipe(C.withAuthError) {}
 export class ConflictException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
     "ConflictException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class InternalServerException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
     "InternalServerException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(500),
   ).pipe(C.withServerError) {}
 export class ModelErrorException
   extends /*@__PURE__*/ S.TaggedErrorClass<ModelErrorException>()(
     "ModelErrorException",
     {
-      message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       originalStatusCode: S.optional(S.Number),
       resourceName: S.optional(S.String),
     },
@@ -118,14 +117,14 @@ export class ModelErrorException
 export class ModelNotReadyException
   extends /*@__PURE__*/ S.TaggedErrorClass<ModelNotReadyException>()(
     "ModelNotReadyException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(T.HttpError(429), T.Retryable()),
   ).pipe(C.withThrottlingError, C.withRetryableError) {}
 export class ModelStreamErrorException
   extends /*@__PURE__*/ S.TaggedErrorClass<ModelStreamErrorException>()(
     "ModelStreamErrorException",
     {
-      message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       originalStatusCode: S.optional(S.Number),
       originalMessage: S.optional(S.String),
     },
@@ -134,37 +133,37 @@ export class ModelStreamErrorException
 export class ModelTimeoutException
   extends /*@__PURE__*/ S.TaggedErrorClass<ModelTimeoutException>()(
     "ModelTimeoutException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(408),
   ).pipe(C.withTimeoutError) {}
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class ServiceQuotaExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
     "ServiceQuotaExceededException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class ServiceUnavailableException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceUnavailableException>()(
     "ServiceUnavailableException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(503),
   ).pipe(C.withServerError) {}
 export class ThrottlingException
   extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
     "ThrottlingException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(429),
   ).pipe(C.withThrottlingError) {}
 export class ValidationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
     "ValidationException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export type GuardrailIdentifier = string;
@@ -3680,7 +3679,7 @@ export const applyGuardrail: API.OperationMethod<
   ApplyGuardrailRequest,
   ApplyGuardrailResponse,
   ApplyGuardrailError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ApplyGuardrailRequest,
   output: ApplyGuardrailResponse,
@@ -3732,7 +3731,7 @@ export const converse: API.OperationMethod<
   ConverseRequest,
   ConverseResponse,
   ConverseError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ConverseRequest,
   output: ConverseResponse,
@@ -3790,7 +3789,7 @@ export const converseStream: API.OperationMethod<
   ConverseStreamRequest,
   ConverseStreamResponse,
   ConverseStreamError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ConverseStreamRequest,
   output: ConverseStreamResponse,
@@ -3843,7 +3842,7 @@ export const countTokens: API.OperationMethod<
   CountTokensRequest,
   CountTokensResponse,
   CountTokensError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CountTokensRequest,
   output: CountTokensResponse,
@@ -3873,7 +3872,7 @@ export const getAsyncInvoke: API.OperationMethod<
   GetAsyncInvokeRequest,
   GetAsyncInvokeResponse,
   GetAsyncInvokeError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetAsyncInvokeRequest,
   output: GetAsyncInvokeResponse,
@@ -3902,7 +3901,7 @@ export const invokeGuardrailChecks: API.OperationMethod<
   InvokeGuardrailChecksRequest,
   InvokeGuardrailChecksResponse,
   InvokeGuardrailChecksError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: InvokeGuardrailChecksRequest,
   output: InvokeGuardrailChecksResponse,
@@ -3945,7 +3944,7 @@ export const invokeModel: API.OperationMethod<
   InvokeModelRequest,
   InvokeModelResponse,
   InvokeModelError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: InvokeModelRequest,
   output: InvokeModelResponse,
@@ -3988,7 +3987,7 @@ export const invokeModelWithBidirectionalStream: API.OperationMethod<
   InvokeModelWithBidirectionalStreamRequest,
   InvokeModelWithBidirectionalStreamResponse,
   InvokeModelWithBidirectionalStreamError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: InvokeModelWithBidirectionalStreamRequest,
   output: InvokeModelWithBidirectionalStreamResponse,
@@ -4042,7 +4041,7 @@ export const invokeModelWithResponseStream: API.OperationMethod<
   InvokeModelWithResponseStreamRequest,
   InvokeModelWithResponseStreamResponse,
   InvokeModelWithResponseStreamError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: InvokeModelWithResponseStreamRequest,
   output: InvokeModelWithResponseStreamResponse,
@@ -4073,27 +4072,13 @@ export type ListAsyncInvokesError =
 /**
  * Lists asynchronous invocations.
  */
-export const listAsyncInvokes: API.OperationMethod<
+export const listAsyncInvokes: API.PaginatedOperationMethod<
   ListAsyncInvokesRequest,
   ListAsyncInvokesResponse,
   ListAsyncInvokesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAsyncInvokesRequest,
-  ) => stream.Stream<
-    ListAsyncInvokesResponse,
-    ListAsyncInvokesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAsyncInvokesRequest,
-  ) => stream.Stream<
-    AsyncInvokeSummary,
-    ListAsyncInvokesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  AsyncInvokeSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListAsyncInvokesRequest,
   output: ListAsyncInvokesResponse,
   errors: [
@@ -4111,27 +4096,7 @@ export const listAsyncInvokes: API.OperationMethod<
     items: "asyncInvokeSummaries",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListAsyncInvokesRequest,
-  ListAsyncInvokesResponse,
-  ListAsyncInvokesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAsyncInvokesRequest,
-  ) => stream.Stream<
-    ListAsyncInvokesResponse,
-    ListAsyncInvokesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAsyncInvokesRequest,
-  ) => stream.Stream<
-    AsyncInvokeSummary,
-    ListAsyncInvokesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type StartAsyncInvokeError =
   | AccessDeniedException
@@ -4154,7 +4119,7 @@ export const startAsyncInvoke: API.OperationMethod<
   StartAsyncInvokeRequest,
   StartAsyncInvokeResponse,
   StartAsyncInvokeError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartAsyncInvokeRequest,
   output: StartAsyncInvokeResponse,

@@ -1,7 +1,6 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as redacted from "effect/Redacted";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -9,7 +8,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 import { SensitiveString } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "LakeFormation",
@@ -90,56 +88,56 @@ const rules = T.EndpointResolver((p, _) => {
 export class AccessDeniedException
   extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
     "AccessDeniedException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(403),
   ).pipe(C.withAuthError) {}
 export class AlreadyExistsException
   extends /*@__PURE__*/ S.TaggedErrorClass<AlreadyExistsException>()(
     "AlreadyExistsException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ).pipe(C.withAlreadyExistsError) {}
 export class ConcurrentModificationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConcurrentModificationException>()(
     "ConcurrentModificationException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class ConflictException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
     "ConflictException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class EntityNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<EntityNotFoundException>()(
     "EntityNotFoundException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class ExpiredException
   extends /*@__PURE__*/ S.TaggedErrorClass<ExpiredException>()(
     "ExpiredException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(410),
   ).pipe(C.withBadRequestError) {}
 export class GlueEncryptionException
   extends /*@__PURE__*/ S.TaggedErrorClass<GlueEncryptionException>()(
     "GlueEncryptionException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InternalServiceException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServiceException>()(
     "InternalServiceException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(500),
   ).pipe(C.withServerError) {}
 export class InvalidInputException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidInputException>()(
     "InvalidInputException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class InvalidLakeFormationPrincipal
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidLakeFormationPrincipal>()(
     "InvalidLakeFormationPrincipal",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.SyntheticError({
       from: "InvalidInputException",
       message: { includes: "Invalid principal" },
@@ -148,7 +146,7 @@ export class InvalidLakeFormationPrincipal
 export class LastServiceLinkedRoleRegistration
   extends /*@__PURE__*/ S.TaggedErrorClass<LastServiceLinkedRoleRegistration>()(
     "LastServiceLinkedRoleRegistration",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.SyntheticError({
       from: "InvalidInputException",
       message: { includes: "Must manually delete service-linked role" },
@@ -157,58 +155,58 @@ export class LastServiceLinkedRoleRegistration
 export class OperationTimeoutException
   extends /*@__PURE__*/ S.TaggedErrorClass<OperationTimeoutException>()(
     "OperationTimeoutException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class PermissionTypeMismatchException
   extends /*@__PURE__*/ S.TaggedErrorClass<PermissionTypeMismatchException>()(
     "PermissionTypeMismatchException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class ResourceNotReadyException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotReadyException>()(
     "ResourceNotReadyException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class ResourceNumberLimitExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNumberLimitExceededException>()(
     "ResourceNumberLimitExceededException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class StatisticsNotReadyYetException
   extends /*@__PURE__*/ S.TaggedErrorClass<StatisticsNotReadyYetException>()(
     "StatisticsNotReadyYetException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(420),
   ) {}
 export class ThrottledException
   extends /*@__PURE__*/ S.TaggedErrorClass<ThrottledException>()(
     "ThrottledException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(T.HttpError(429), T.Retryable({ throttling: true })),
   ).pipe(C.withThrottlingError, C.withRetryableError) {}
 export class TransactionCanceledException
   extends /*@__PURE__*/ S.TaggedErrorClass<TransactionCanceledException>()(
     "TransactionCanceledException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class TransactionCommitInProgressException
   extends /*@__PURE__*/ S.TaggedErrorClass<TransactionCommitInProgressException>()(
     "TransactionCommitInProgressException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class TransactionCommittedException
   extends /*@__PURE__*/ S.TaggedErrorClass<TransactionCommittedException>()(
     "TransactionCommittedException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class WorkUnitsNotReadyYetException
   extends /*@__PURE__*/ S.TaggedErrorClass<WorkUnitsNotReadyYetException>()(
     "WorkUnitsNotReadyYetException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(420),
   ) {}
 export type CatalogIdString = string;
@@ -3204,7 +3202,7 @@ export const addLFTagsToResource: API.OperationMethod<
   AddLFTagsToResourceRequest,
   AddLFTagsToResourceResponse,
   AddLFTagsToResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AddLFTagsToResourceRequest,
   output: AddLFTagsToResourceResponse,
@@ -3250,7 +3248,7 @@ export const assumeDecoratedRoleWithSAML: API.OperationMethod<
   AssumeDecoratedRoleWithSAMLRequest,
   AssumeDecoratedRoleWithSAMLResponse,
   AssumeDecoratedRoleWithSAMLError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AssumeDecoratedRoleWithSAMLRequest,
   output: AssumeDecoratedRoleWithSAMLResponse,
@@ -3277,7 +3275,7 @@ export const batchGrantPermissions: API.OperationMethod<
   BatchGrantPermissionsRequest,
   BatchGrantPermissionsResponse,
   BatchGrantPermissionsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchGrantPermissionsRequest,
   output: BatchGrantPermissionsResponse,
@@ -3298,7 +3296,7 @@ export const batchRevokePermissions: API.OperationMethod<
   BatchRevokePermissionsRequest,
   BatchRevokePermissionsResponse,
   BatchRevokePermissionsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchRevokePermissionsRequest,
   output: BatchRevokePermissionsResponse,
@@ -3324,7 +3322,7 @@ export const cancelTransaction: API.OperationMethod<
   CancelTransactionRequest,
   CancelTransactionResponse,
   CancelTransactionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CancelTransactionRequest,
   output: CancelTransactionResponse,
@@ -3357,7 +3355,7 @@ export const commitTransaction: API.OperationMethod<
   CommitTransactionRequest,
   CommitTransactionResponse,
   CommitTransactionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CommitTransactionRequest,
   output: CommitTransactionResponse,
@@ -3390,7 +3388,7 @@ export const createDataCellsFilter: API.OperationMethod<
   CreateDataCellsFilterRequest,
   CreateDataCellsFilterResponse,
   CreateDataCellsFilterError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateDataCellsFilterRequest,
   output: CreateDataCellsFilterResponse,
@@ -3423,7 +3421,7 @@ export const createLakeFormationIdentityCenterConfiguration: API.OperationMethod
   CreateLakeFormationIdentityCenterConfigurationRequest,
   CreateLakeFormationIdentityCenterConfigurationResponse,
   CreateLakeFormationIdentityCenterConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateLakeFormationIdentityCenterConfigurationRequest,
   output: CreateLakeFormationIdentityCenterConfigurationResponse,
@@ -3457,7 +3455,7 @@ export const createLakeFormationOptIn: API.OperationMethod<
   CreateLakeFormationOptInRequest,
   CreateLakeFormationOptInResponse,
   CreateLakeFormationOptInError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateLakeFormationOptInRequest,
   output: CreateLakeFormationOptInResponse,
@@ -3491,7 +3489,7 @@ export const createLFTag: API.OperationMethod<
   CreateLFTagRequest,
   CreateLFTagResponse,
   CreateLFTagError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateLFTagRequest,
   output: CreateLFTagResponse,
@@ -3531,7 +3529,7 @@ export const createLFTagExpression: API.OperationMethod<
   CreateLFTagExpressionRequest,
   CreateLFTagExpressionResponse,
   CreateLFTagExpressionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateLFTagExpressionRequest,
   output: CreateLFTagExpressionResponse,
@@ -3562,7 +3560,7 @@ export const deleteDataCellsFilter: API.OperationMethod<
   DeleteDataCellsFilterRequest,
   DeleteDataCellsFilterResponse,
   DeleteDataCellsFilterError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteDataCellsFilterRequest,
   output: DeleteDataCellsFilterResponse,
@@ -3593,7 +3591,7 @@ export const deleteLakeFormationIdentityCenterConfiguration: API.OperationMethod
   DeleteLakeFormationIdentityCenterConfigurationRequest,
   DeleteLakeFormationIdentityCenterConfigurationResponse,
   DeleteLakeFormationIdentityCenterConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteLakeFormationIdentityCenterConfigurationRequest,
   output: DeleteLakeFormationIdentityCenterConfigurationResponse,
@@ -3626,7 +3624,7 @@ export const deleteLakeFormationOptIn: API.OperationMethod<
   DeleteLakeFormationOptInRequest,
   DeleteLakeFormationOptInResponse,
   DeleteLakeFormationOptInError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteLakeFormationOptInRequest,
   output: DeleteLakeFormationOptInResponse,
@@ -3664,7 +3662,7 @@ export const deleteLFTag: API.OperationMethod<
   DeleteLFTagRequest,
   DeleteLFTagResponse,
   DeleteLFTagError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteLFTagRequest,
   output: DeleteLFTagResponse,
@@ -3695,7 +3693,7 @@ export const deleteLFTagExpression: API.OperationMethod<
   DeleteLFTagExpressionRequest,
   DeleteLFTagExpressionResponse,
   DeleteLFTagExpressionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteLFTagExpressionRequest,
   output: DeleteLFTagExpressionResponse,
@@ -3733,7 +3731,7 @@ export const deleteObjectsOnCancel: API.OperationMethod<
   DeleteObjectsOnCancelRequest,
   DeleteObjectsOnCancelResponse,
   DeleteObjectsOnCancelError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteObjectsOnCancelRequest,
   output: DeleteObjectsOnCancelResponse,
@@ -3768,7 +3766,7 @@ export const deregisterResource: API.OperationMethod<
   DeregisterResourceRequest,
   DeregisterResourceResponse,
   DeregisterResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeregisterResourceRequest,
   output: DeregisterResourceResponse,
@@ -3798,7 +3796,7 @@ export const describeLakeFormationIdentityCenterConfiguration: API.OperationMeth
   DescribeLakeFormationIdentityCenterConfigurationRequest,
   DescribeLakeFormationIdentityCenterConfigurationResponse,
   DescribeLakeFormationIdentityCenterConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeLakeFormationIdentityCenterConfigurationRequest,
   output: DescribeLakeFormationIdentityCenterConfigurationResponse,
@@ -3827,7 +3825,7 @@ export const describeResource: API.OperationMethod<
   DescribeResourceRequest,
   DescribeResourceResponse,
   DescribeResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeResourceRequest,
   output: DescribeResourceResponse,
@@ -3855,7 +3853,7 @@ export const describeTransaction: API.OperationMethod<
   DescribeTransactionRequest,
   DescribeTransactionResponse,
   DescribeTransactionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeTransactionRequest,
   output: DescribeTransactionResponse,
@@ -3888,7 +3886,7 @@ export const extendTransaction: API.OperationMethod<
   ExtendTransactionRequest,
   ExtendTransactionResponse,
   ExtendTransactionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ExtendTransactionRequest,
   output: ExtendTransactionResponse,
@@ -3920,7 +3918,7 @@ export const getDataCellsFilter: API.OperationMethod<
   GetDataCellsFilterRequest,
   GetDataCellsFilterResponse,
   GetDataCellsFilterError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetDataCellsFilterRequest,
   output: GetDataCellsFilterResponse,
@@ -3948,7 +3946,7 @@ export const getDataLakePrincipal: API.OperationMethod<
   GetDataLakePrincipalRequest,
   GetDataLakePrincipalResponse,
   GetDataLakePrincipalError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetDataLakePrincipalRequest,
   output: GetDataLakePrincipalResponse,
@@ -3974,7 +3972,7 @@ export const getDataLakeSettings: API.OperationMethod<
   GetDataLakeSettingsRequest,
   GetDataLakeSettingsResponse,
   GetDataLakeSettingsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetDataLakeSettingsRequest,
   output: GetDataLakeSettingsResponse,
@@ -3998,27 +3996,13 @@ export type GetEffectivePermissionsForPathError =
  * Returns the Lake Formation permissions for a specified table or database resource located
  * at a path in Amazon S3. `GetEffectivePermissionsForPath` will not return databases and tables if the catalog is encrypted.
  */
-export const getEffectivePermissionsForPath: API.OperationMethod<
+export const getEffectivePermissionsForPath: API.PaginatedOperationMethod<
   GetEffectivePermissionsForPathRequest,
   GetEffectivePermissionsForPathResponse,
   GetEffectivePermissionsForPathError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetEffectivePermissionsForPathRequest,
-  ) => stream.Stream<
-    GetEffectivePermissionsForPathResponse,
-    GetEffectivePermissionsForPathError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetEffectivePermissionsForPathRequest,
-  ) => stream.Stream<
-    unknown,
-    GetEffectivePermissionsForPathError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetEffectivePermissionsForPathRequest,
   output: GetEffectivePermissionsForPathResponse,
   errors: [
@@ -4035,27 +4019,7 @@ export const getEffectivePermissionsForPath: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetEffectivePermissionsForPathRequest,
-  GetEffectivePermissionsForPathResponse,
-  GetEffectivePermissionsForPathError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetEffectivePermissionsForPathRequest,
-  ) => stream.Stream<
-    GetEffectivePermissionsForPathResponse,
-    GetEffectivePermissionsForPathError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetEffectivePermissionsForPathRequest,
-  ) => stream.Stream<
-    unknown,
-    GetEffectivePermissionsForPathError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetLFTagError =
   | AccessDeniedException
@@ -4071,7 +4035,7 @@ export const getLFTag: API.OperationMethod<
   GetLFTagRequest,
   GetLFTagResponse,
   GetLFTagError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetLFTagRequest,
   output: GetLFTagResponse,
@@ -4101,7 +4065,7 @@ export const getLFTagExpression: API.OperationMethod<
   GetLFTagExpressionRequest,
   GetLFTagExpressionResponse,
   GetLFTagExpressionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetLFTagExpressionRequest,
   output: GetLFTagExpressionResponse,
@@ -4129,7 +4093,7 @@ export const getQueryState: API.OperationMethod<
   GetQueryStateRequest,
   GetQueryStateResponse,
   GetQueryStateError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetQueryStateRequest,
   output: GetQueryStateResponse,
@@ -4159,7 +4123,7 @@ export const getQueryStatistics: API.OperationMethod<
   GetQueryStatisticsRequest,
   GetQueryStatisticsResponse,
   GetQueryStatisticsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetQueryStatisticsRequest,
   output: GetQueryStatisticsResponse,
@@ -4192,7 +4156,7 @@ export const getResourceLFTags: API.OperationMethod<
   GetResourceLFTagsRequest,
   GetResourceLFTagsResponse,
   GetResourceLFTagsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetResourceLFTagsRequest,
   output: GetResourceLFTagsResponse,
@@ -4221,27 +4185,13 @@ export type GetTableObjectsError =
 /**
  * Returns the set of Amazon S3 objects that make up the specified governed table. A transaction ID or timestamp can be specified for time-travel queries.
  */
-export const getTableObjects: API.OperationMethod<
+export const getTableObjects: API.PaginatedOperationMethod<
   GetTableObjectsRequest,
   GetTableObjectsResponse,
   GetTableObjectsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetTableObjectsRequest,
-  ) => stream.Stream<
-    GetTableObjectsResponse,
-    GetTableObjectsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetTableObjectsRequest,
-  ) => stream.Stream<
-    unknown,
-    GetTableObjectsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetTableObjectsRequest,
   output: GetTableObjectsResponse,
   errors: [
@@ -4261,27 +4211,7 @@ export const getTableObjects: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetTableObjectsRequest,
-  GetTableObjectsResponse,
-  GetTableObjectsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetTableObjectsRequest,
-  ) => stream.Stream<
-    GetTableObjectsResponse,
-    GetTableObjectsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetTableObjectsRequest,
-  ) => stream.Stream<
-    unknown,
-    GetTableObjectsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetTemporaryDataLocationCredentialsError =
   | AccessDeniedException
@@ -4318,7 +4248,7 @@ export const getTemporaryDataLocationCredentials: API.OperationMethod<
   GetTemporaryDataLocationCredentialsRequest,
   GetTemporaryDataLocationCredentialsResponse,
   GetTemporaryDataLocationCredentialsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetTemporaryDataLocationCredentialsRequest,
   output: GetTemporaryDataLocationCredentialsResponse,
@@ -4351,7 +4281,7 @@ export const getTemporaryGluePartitionCredentials: API.OperationMethod<
   GetTemporaryGluePartitionCredentialsRequest,
   GetTemporaryGluePartitionCredentialsResponse,
   GetTemporaryGluePartitionCredentialsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetTemporaryGluePartitionCredentialsRequest,
   output: GetTemporaryGluePartitionCredentialsResponse,
@@ -4385,7 +4315,7 @@ export const getTemporaryGlueTableCredentials: API.OperationMethod<
   GetTemporaryGlueTableCredentialsRequest,
   GetTemporaryGlueTableCredentialsResponse,
   GetTemporaryGlueTableCredentialsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetTemporaryGlueTableCredentialsRequest,
   output: GetTemporaryGlueTableCredentialsResponse,
@@ -4416,7 +4346,7 @@ export const getWorkUnitResults: API.OperationMethod<
   GetWorkUnitResultsRequest,
   GetWorkUnitResultsResponse,
   GetWorkUnitResultsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetWorkUnitResultsRequest,
   output: GetWorkUnitResultsResponse,
@@ -4443,27 +4373,13 @@ export type GetWorkUnitsError =
 /**
  * Retrieves the work units generated by the `StartQueryPlanning` operation.
  */
-export const getWorkUnits: API.OperationMethod<
+export const getWorkUnits: API.PaginatedOperationMethod<
   GetWorkUnitsRequest,
   GetWorkUnitsResponse,
   GetWorkUnitsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetWorkUnitsRequest,
-  ) => stream.Stream<
-    GetWorkUnitsResponse,
-    GetWorkUnitsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetWorkUnitsRequest,
-  ) => stream.Stream<
-    WorkUnitRange,
-    GetWorkUnitsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  WorkUnitRange
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetWorkUnitsRequest,
   output: GetWorkUnitsResponse,
   errors: [
@@ -4483,27 +4399,7 @@ export const getWorkUnits: API.OperationMethod<
     items: "WorkUnitRanges",
     pageSize: "PageSize",
   } as const,
-})) as any as API.OperationMethod<
-  GetWorkUnitsRequest,
-  GetWorkUnitsResponse,
-  GetWorkUnitsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetWorkUnitsRequest,
-  ) => stream.Stream<
-    GetWorkUnitsResponse,
-    GetWorkUnitsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetWorkUnitsRequest,
-  ) => stream.Stream<
-    WorkUnitRange,
-    GetWorkUnitsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GrantPermissionsError =
   | ConcurrentModificationException
@@ -4520,7 +4416,7 @@ export const grantPermissions: API.OperationMethod<
   GrantPermissionsRequest,
   GrantPermissionsResponse,
   GrantPermissionsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GrantPermissionsRequest,
   output: GrantPermissionsResponse,
@@ -4544,27 +4440,13 @@ export type ListDataCellsFilterError =
 /**
  * Lists all the data cell filters on a table.
  */
-export const listDataCellsFilter: API.OperationMethod<
+export const listDataCellsFilter: API.PaginatedOperationMethod<
   ListDataCellsFilterRequest,
   ListDataCellsFilterResponse,
   ListDataCellsFilterError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDataCellsFilterRequest,
-  ) => stream.Stream<
-    ListDataCellsFilterResponse,
-    ListDataCellsFilterError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDataCellsFilterRequest,
-  ) => stream.Stream<
-    DataCellsFilter,
-    ListDataCellsFilterError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  DataCellsFilter
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListDataCellsFilterRequest,
   output: ListDataCellsFilterResponse,
   errors: [
@@ -4582,27 +4464,7 @@ export const listDataCellsFilter: API.OperationMethod<
     items: "DataCellsFilters",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListDataCellsFilterRequest,
-  ListDataCellsFilterResponse,
-  ListDataCellsFilterError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDataCellsFilterRequest,
-  ) => stream.Stream<
-    ListDataCellsFilterResponse,
-    ListDataCellsFilterError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDataCellsFilterRequest,
-  ) => stream.Stream<
-    DataCellsFilter,
-    ListDataCellsFilterError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListLakeFormationOptInsError =
   | AccessDeniedException
@@ -4615,27 +4477,13 @@ export type ListLakeFormationOptInsError =
 /**
  * Retrieve the current list of resources and principals that are opt in to enforce Lake Formation permissions.
  */
-export const listLakeFormationOptIns: API.OperationMethod<
+export const listLakeFormationOptIns: API.PaginatedOperationMethod<
   ListLakeFormationOptInsRequest,
   ListLakeFormationOptInsResponse,
   ListLakeFormationOptInsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListLakeFormationOptInsRequest,
-  ) => stream.Stream<
-    ListLakeFormationOptInsResponse,
-    ListLakeFormationOptInsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListLakeFormationOptInsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListLakeFormationOptInsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListLakeFormationOptInsRequest,
   output: ListLakeFormationOptInsResponse,
   errors: [
@@ -4654,27 +4502,7 @@ export const listLakeFormationOptIns: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListLakeFormationOptInsRequest,
-  ListLakeFormationOptInsResponse,
-  ListLakeFormationOptInsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListLakeFormationOptInsRequest,
-  ) => stream.Stream<
-    ListLakeFormationOptInsResponse,
-    ListLakeFormationOptInsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListLakeFormationOptInsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListLakeFormationOptInsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListLFTagExpressionsError =
   | AccessDeniedException
@@ -4686,27 +4514,13 @@ export type ListLFTagExpressionsError =
 /**
  * Returns the LF-Tag expressions in caller’s account filtered based on caller's permissions. Data Lake and read only admins implicitly can see all tag expressions in their account, else caller needs DESCRIBE permissions on tag expression.
  */
-export const listLFTagExpressions: API.OperationMethod<
+export const listLFTagExpressions: API.PaginatedOperationMethod<
   ListLFTagExpressionsRequest,
   ListLFTagExpressionsResponse,
   ListLFTagExpressionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListLFTagExpressionsRequest,
-  ) => stream.Stream<
-    ListLFTagExpressionsResponse,
-    ListLFTagExpressionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListLFTagExpressionsRequest,
-  ) => stream.Stream<
-    LFTagExpression,
-    ListLFTagExpressionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  LFTagExpression
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListLFTagExpressionsRequest,
   output: ListLFTagExpressionsResponse,
   errors: [
@@ -4725,27 +4539,7 @@ export const listLFTagExpressions: API.OperationMethod<
     items: "LFTagExpressions",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListLFTagExpressionsRequest,
-  ListLFTagExpressionsResponse,
-  ListLFTagExpressionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListLFTagExpressionsRequest,
-  ) => stream.Stream<
-    ListLFTagExpressionsResponse,
-    ListLFTagExpressionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListLFTagExpressionsRequest,
-  ) => stream.Stream<
-    LFTagExpression,
-    ListLFTagExpressionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListLFTagsError =
   | AccessDeniedException
@@ -4757,27 +4551,13 @@ export type ListLFTagsError =
 /**
  * Lists LF-tags that the requester has permission to view.
  */
-export const listLFTags: API.OperationMethod<
+export const listLFTags: API.PaginatedOperationMethod<
   ListLFTagsRequest,
   ListLFTagsResponse,
   ListLFTagsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListLFTagsRequest,
-  ) => stream.Stream<
-    ListLFTagsResponse,
-    ListLFTagsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListLFTagsRequest,
-  ) => stream.Stream<
-    LFTagPair,
-    ListLFTagsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  LFTagPair
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListLFTagsRequest,
   output: ListLFTagsResponse,
   errors: [
@@ -4796,27 +4576,7 @@ export const listLFTags: API.OperationMethod<
     items: "LFTags",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListLFTagsRequest,
-  ListLFTagsResponse,
-  ListLFTagsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListLFTagsRequest,
-  ) => stream.Stream<
-    ListLFTagsResponse,
-    ListLFTagsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListLFTagsRequest,
-  ) => stream.Stream<
-    LFTagPair,
-    ListLFTagsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListPermissionsError =
   | InternalServiceException
@@ -4833,27 +4593,13 @@ export type ListPermissionsError =
  *
  * For information about permissions, see Security and Access Control to Metadata and Data.
  */
-export const listPermissions: API.OperationMethod<
+export const listPermissions: API.PaginatedOperationMethod<
   ListPermissionsRequest,
   ListPermissionsResponse,
   ListPermissionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPermissionsRequest,
-  ) => stream.Stream<
-    ListPermissionsResponse,
-    ListPermissionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPermissionsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListPermissionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListPermissionsRequest,
   output: ListPermissionsResponse,
   errors: [
@@ -4870,27 +4616,7 @@ export const listPermissions: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListPermissionsRequest,
-  ListPermissionsResponse,
-  ListPermissionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPermissionsRequest,
-  ) => stream.Stream<
-    ListPermissionsResponse,
-    ListPermissionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPermissionsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListPermissionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListResourcesError =
   | InternalServiceException
@@ -4900,27 +4626,13 @@ export type ListResourcesError =
 /**
  * Lists the resources registered to be managed by the Data Catalog.
  */
-export const listResources: API.OperationMethod<
+export const listResources: API.PaginatedOperationMethod<
   ListResourcesRequest,
   ListResourcesResponse,
   ListResourcesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListResourcesRequest,
-  ) => stream.Stream<
-    ListResourcesResponse,
-    ListResourcesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListResourcesRequest,
-  ) => stream.Stream<
-    unknown,
-    ListResourcesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListResourcesRequest,
   output: ListResourcesResponse,
   errors: [
@@ -4936,27 +4648,7 @@ export const listResources: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListResourcesRequest,
-  ListResourcesResponse,
-  ListResourcesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListResourcesRequest,
-  ) => stream.Stream<
-    ListResourcesResponse,
-    ListResourcesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListResourcesRequest,
-  ) => stream.Stream<
-    unknown,
-    ListResourcesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTableStorageOptimizersError =
   | AccessDeniedException
@@ -4967,27 +4659,13 @@ export type ListTableStorageOptimizersError =
 /**
  * Returns the configuration of all storage optimizers associated with a specified table.
  */
-export const listTableStorageOptimizers: API.OperationMethod<
+export const listTableStorageOptimizers: API.PaginatedOperationMethod<
   ListTableStorageOptimizersRequest,
   ListTableStorageOptimizersResponse,
   ListTableStorageOptimizersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTableStorageOptimizersRequest,
-  ) => stream.Stream<
-    ListTableStorageOptimizersResponse,
-    ListTableStorageOptimizersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTableStorageOptimizersRequest,
-  ) => stream.Stream<
-    unknown,
-    ListTableStorageOptimizersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListTableStorageOptimizersRequest,
   output: ListTableStorageOptimizersResponse,
   errors: [
@@ -5004,27 +4682,7 @@ export const listTableStorageOptimizers: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListTableStorageOptimizersRequest,
-  ListTableStorageOptimizersResponse,
-  ListTableStorageOptimizersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTableStorageOptimizersRequest,
-  ) => stream.Stream<
-    ListTableStorageOptimizersResponse,
-    ListTableStorageOptimizersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTableStorageOptimizersRequest,
-  ) => stream.Stream<
-    unknown,
-    ListTableStorageOptimizersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTransactionsError =
   | InternalServiceException
@@ -5036,27 +4694,13 @@ export type ListTransactionsError =
  *
  * This operation can help you identify uncommitted transactions or to get information about transactions.
  */
-export const listTransactions: API.OperationMethod<
+export const listTransactions: API.PaginatedOperationMethod<
   ListTransactionsRequest,
   ListTransactionsResponse,
   ListTransactionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTransactionsRequest,
-  ) => stream.Stream<
-    ListTransactionsResponse,
-    ListTransactionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTransactionsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListTransactionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListTransactionsRequest,
   output: ListTransactionsResponse,
   errors: [
@@ -5072,27 +4716,7 @@ export const listTransactions: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListTransactionsRequest,
-  ListTransactionsResponse,
-  ListTransactionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTransactionsRequest,
-  ) => stream.Stream<
-    ListTransactionsResponse,
-    ListTransactionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTransactionsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListTransactionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type PutDataLakeSettingsError =
   | InternalServiceException
@@ -5108,7 +4732,7 @@ export const putDataLakeSettings: API.OperationMethod<
   PutDataLakeSettingsRequest,
   PutDataLakeSettingsResponse,
   PutDataLakeSettingsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutDataLakeSettingsRequest,
   output: PutDataLakeSettingsResponse,
@@ -5149,7 +4773,7 @@ export const registerResource: API.OperationMethod<
   RegisterResourceRequest,
   RegisterResourceResponse,
   RegisterResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RegisterResourceRequest,
   output: RegisterResourceResponse,
@@ -5183,7 +4807,7 @@ export const removeLFTagsFromResource: API.OperationMethod<
   RemoveLFTagsFromResourceRequest,
   RemoveLFTagsFromResourceResponse,
   RemoveLFTagsFromResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RemoveLFTagsFromResourceRequest,
   output: RemoveLFTagsFromResourceResponse,
@@ -5214,7 +4838,7 @@ export const revokePermissions: API.OperationMethod<
   RevokePermissionsRequest,
   RevokePermissionsResponse,
   RevokePermissionsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RevokePermissionsRequest,
   output: RevokePermissionsResponse,
@@ -5240,27 +4864,13 @@ export type SearchDatabasesByLFTagsError =
 /**
  * This operation allows a search on `DATABASE` resources by `TagCondition`. This operation is used by admins who want to grant user permissions on certain `TagConditions`. Before making a grant, the admin can use `SearchDatabasesByTags` to find all resources where the given `TagConditions` are valid to verify whether the returned resources can be shared.
  */
-export const searchDatabasesByLFTags: API.OperationMethod<
+export const searchDatabasesByLFTags: API.PaginatedOperationMethod<
   SearchDatabasesByLFTagsRequest,
   SearchDatabasesByLFTagsResponse,
   SearchDatabasesByLFTagsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: SearchDatabasesByLFTagsRequest,
-  ) => stream.Stream<
-    SearchDatabasesByLFTagsResponse,
-    SearchDatabasesByLFTagsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: SearchDatabasesByLFTagsRequest,
-  ) => stream.Stream<
-    TaggedDatabase,
-    SearchDatabasesByLFTagsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  TaggedDatabase
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: SearchDatabasesByLFTagsRequest,
   output: SearchDatabasesByLFTagsResponse,
   errors: [
@@ -5280,27 +4890,7 @@ export const searchDatabasesByLFTags: API.OperationMethod<
     items: "DatabaseList",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  SearchDatabasesByLFTagsRequest,
-  SearchDatabasesByLFTagsResponse,
-  SearchDatabasesByLFTagsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: SearchDatabasesByLFTagsRequest,
-  ) => stream.Stream<
-    SearchDatabasesByLFTagsResponse,
-    SearchDatabasesByLFTagsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: SearchDatabasesByLFTagsRequest,
-  ) => stream.Stream<
-    TaggedDatabase,
-    SearchDatabasesByLFTagsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type SearchTablesByLFTagsError =
   | AccessDeniedException
@@ -5313,27 +4903,13 @@ export type SearchTablesByLFTagsError =
 /**
  * This operation allows a search on `TABLE` resources by `LFTag`s. This will be used by admins who want to grant user permissions on certain LF-tags. Before making a grant, the admin can use `SearchTablesByLFTags` to find all resources where the given `LFTag`s are valid to verify whether the returned resources can be shared.
  */
-export const searchTablesByLFTags: API.OperationMethod<
+export const searchTablesByLFTags: API.PaginatedOperationMethod<
   SearchTablesByLFTagsRequest,
   SearchTablesByLFTagsResponse,
   SearchTablesByLFTagsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: SearchTablesByLFTagsRequest,
-  ) => stream.Stream<
-    SearchTablesByLFTagsResponse,
-    SearchTablesByLFTagsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: SearchTablesByLFTagsRequest,
-  ) => stream.Stream<
-    TaggedTable,
-    SearchTablesByLFTagsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  TaggedTable
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: SearchTablesByLFTagsRequest,
   output: SearchTablesByLFTagsResponse,
   errors: [
@@ -5353,27 +4929,7 @@ export const searchTablesByLFTags: API.OperationMethod<
     items: "TableList",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  SearchTablesByLFTagsRequest,
-  SearchTablesByLFTagsResponse,
-  SearchTablesByLFTagsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: SearchTablesByLFTagsRequest,
-  ) => stream.Stream<
-    SearchTablesByLFTagsResponse,
-    SearchTablesByLFTagsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: SearchTablesByLFTagsRequest,
-  ) => stream.Stream<
-    TaggedTable,
-    SearchTablesByLFTagsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type StartQueryPlanningError =
   | AccessDeniedException
@@ -5390,7 +4946,7 @@ export const startQueryPlanning: API.OperationMethod<
   StartQueryPlanningRequest,
   StartQueryPlanningResponse,
   StartQueryPlanningError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartQueryPlanningRequest,
   output: StartQueryPlanningResponse,
@@ -5417,7 +4973,7 @@ export const startTransaction: API.OperationMethod<
   StartTransactionRequest,
   StartTransactionResponse,
   StartTransactionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartTransactionRequest,
   output: StartTransactionResponse,
@@ -5442,7 +4998,7 @@ export const updateDataCellsFilter: API.OperationMethod<
   UpdateDataCellsFilterRequest,
   UpdateDataCellsFilterResponse,
   UpdateDataCellsFilterError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateDataCellsFilterRequest,
   output: UpdateDataCellsFilterResponse,
@@ -5474,7 +5030,7 @@ export const updateLakeFormationIdentityCenterConfiguration: API.OperationMethod
   UpdateLakeFormationIdentityCenterConfigurationRequest,
   UpdateLakeFormationIdentityCenterConfigurationResponse,
   UpdateLakeFormationIdentityCenterConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateLakeFormationIdentityCenterConfigurationRequest,
   output: UpdateLakeFormationIdentityCenterConfigurationResponse,
@@ -5506,7 +5062,7 @@ export const updateLFTag: API.OperationMethod<
   UpdateLFTagRequest,
   UpdateLFTagResponse,
   UpdateLFTagError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateLFTagRequest,
   output: UpdateLFTagResponse,
@@ -5539,7 +5095,7 @@ export const updateLFTagExpression: API.OperationMethod<
   UpdateLFTagExpressionRequest,
   UpdateLFTagExpressionResponse,
   UpdateLFTagExpressionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateLFTagExpressionRequest,
   output: UpdateLFTagExpressionResponse,
@@ -5569,7 +5125,7 @@ export const updateResource: API.OperationMethod<
   UpdateResourceRequest,
   UpdateResourceResponse,
   UpdateResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateResourceRequest,
   output: UpdateResourceResponse,
@@ -5602,7 +5158,7 @@ export const updateTableObjects: API.OperationMethod<
   UpdateTableObjectsRequest,
   UpdateTableObjectsResponse,
   UpdateTableObjectsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateTableObjectsRequest,
   output: UpdateTableObjectsResponse,
@@ -5635,7 +5191,7 @@ export const updateTableStorageOptimizer: API.OperationMethod<
   UpdateTableStorageOptimizerRequest,
   UpdateTableStorageOptimizerResponse,
   UpdateTableStorageOptimizerError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateTableStorageOptimizerRequest,
   output: UpdateTableStorageOptimizerResponse,

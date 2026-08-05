@@ -58,6 +58,65 @@ import { validatePaginated } from "./pagination.ts";
 
 const PAGINATED_TRAIT = "smithy.api#paginated";
 
+/**
+ * Error categories, derived from the STANDARD Smithy error traits.
+ *
+ * `smithy.api#httpError` and `smithy.api#retryable` are how every Smithy
+ * model — AWS's included — says what kind of failure an error is. The
+ * categories the runtime acts on (`core/category.ts`, and `isTransientError`
+ * in `core/retry.ts`) are a reading of those two traits, so the reading
+ * belongs here, once, for every provider.
+ *
+ * A model that wants its errors classified states the status the API
+ * actually returns:
+ *
+ *   "traits": { "smithy.api#error": "client", "smithy.api#httpError": 404 }
+ *
+ * and the error class is emitted with `.pipe(C.withNotFoundError)`. A model
+ * with no `httpError` gets no categories — the same as today.
+ */
+export const errorCategories = (
+  traits: Record<string, any> | undefined,
+  /** Categories a provider knows that the traits don't say (AWS's spec file). */
+  extra: readonly string[] = [],
+): string[] => {
+  const categories: string[] = [];
+  const add = (name: string) => {
+    if (!categories.includes(name)) categories.push(name);
+  };
+  const status = traits?.["smithy.api#httpError"] as number | undefined;
+  if (typeof status === "number") {
+    if (status === 401 || status === 403) add("AuthError");
+    else if (status === 402) add("QuotaError");
+    else if (
+      status === 400 ||
+      status === 404 ||
+      status === 405 ||
+      status === 406 ||
+      status === 410 ||
+      status === 413 ||
+      status === 415 ||
+      status === 422
+    ) {
+      add("BadRequestError");
+    } else if (status === 408 || status === 504) add("TimeoutError");
+    else if (status === 409) add("ConflictError");
+    else if (status === 429) add("ThrottlingError");
+    else if (status >= 500 && status < 600) add("ServerError");
+  }
+  const retryable = traits?.["smithy.api#retryable"];
+  if (retryable !== undefined) {
+    add("RetryableError");
+    if (retryable?.throttling) add("ThrottlingError");
+  }
+  for (const name of extra) add(name);
+  return categories;
+};
+
+/** `["NotFoundError"]` → `C.withNotFoundError`. */
+const categoryPipes = (traits: Record<string, any> | undefined): string[] =>
+  errorCategories(traits).map((name) => `C.with${name}`);
+
 /** A member's resolved binding. The four generic kinds plus provider extras. */
 export type MemberBinding =
   | "label"
@@ -383,14 +442,10 @@ export interface GeneratedService {
   operations: number;
 }
 
-/**
- * Compile one Smithy model into a service module. `limitRef` supports
- * partial generation (`--limit N` across models).
- */
+/** Compile one Smithy model into a service module. */
 export const generateService = (
   model: any,
   spec: SdkSpec,
-  limitRef: { remaining: number } = { remaining: Infinity },
 ): GeneratedService => {
   const shapes: ShapeMap = model.shapes;
   const pure = spec.pure ?? PURE;
@@ -411,8 +466,6 @@ export const generateService = (
 
   const selected: OpEntry[] = [];
   for (const op of operations) {
-    if (limitRef.remaining <= 0) break;
-    limitRef.remaining--;
     selected.push(op);
 
     const { input, output } = ensureNamedIo(shapes, op, ns);
@@ -627,6 +680,8 @@ export const generateService = (
   //    degrades to a plain operation.
   const paginatedOutputs = new Set<string>();
   const paginatedItemsRoot = new Map<string, string>();
+  /** Op id → its full (possibly dotted) items path, `""` when it has none. */
+  const paginatedItemsPath = new Map<string, string>();
   /** Output shape id → the pagination profile that decodes it. */
   const outputProfile = new Map<string, PaginationProfile>();
   /** Op id → its pagination profile (drives protocol/strategy emission). */
@@ -663,6 +718,10 @@ export const generateService = (
         op.def.__pagination = pg;
         paginatedOutputs.add(op.def.__output);
         paginatedItemsRoot.set(op.def.__output, itemsRoot);
+        paginatedItemsPath.set(
+          op.id,
+          String(pg.items ?? profile.itemsFallback ?? ""),
+        );
         outputProfile.set(op.def.__output, profile);
         opProfile.set(op.id, profile);
         usedProfiles.add(profile);
@@ -672,6 +731,9 @@ export const generateService = (
 
   // 4. Error classes from the operations' errors lists.
   const out: string[] = [];
+  // Set when any error carries CATEGORY_TRAIT, so the header only imports
+  // the category module when something actually uses it.
+  let usesCategories = false;
   const errorIds = collectOpErrorIds(selected, shapes);
   const errorIdSet = new Set(errorIds);
   const errorNames = new Set(errorIds.map(local));
@@ -704,10 +766,15 @@ export const generateService = (
     const matchers = spec.errorMatchersTrait
       ? d.traits?.[spec.errorMatchersTrait]
       : undefined;
+    const categories = categoryPipes(d.traits);
+    if (categories.length) usesCategories = true;
     out.push(
       errorClass({
         name,
         fields,
+        pipes: categories.length
+          ? `.pipe(${categories.join(", ")})`
+          : undefined,
         wrap:
           spec.errors?.wrap?.(d.traits ?? {}) ??
           (matchers
@@ -887,6 +954,37 @@ export const generateService = (
 
   // 6. Operations — declarative emission from the names in operationDecl,
   //    unless the provider overrides the whole shape.
+  /**
+   * The element type `.items()` yields, resolved from the pagination
+   * trait's items PATH against the response shape.
+   *
+   * `makePaginated` can't infer this — the path is a runtime string — and
+   * the structural `API.PaginatedItem` fallback only recognizes bare arrays
+   * and `{ result: […] }` envelopes, so every other envelope degrades to
+   * `unknown` (distilled #302). Resolving it here and passing it as an
+   * explicit type argument is what makes `.items()` typed.
+   *
+   * Returns undefined when the path doesn't lead to a list, which leaves
+   * the annotation on the structural fallback rather than asserting a type
+   * the shape doesn't support.
+   */
+  const paginatedItemTsType = (
+    outputId: string,
+    itemsPath: string,
+  ): string | undefined => {
+    // No items path: `.items()` is a page passthrough at runtime, so an
+    // item IS a whole response.
+    if (!itemsPath) return tsRef(outputId);
+    let def = shapes[outputId];
+    for (const segment of itemsPath.split(".")) {
+      if (def?.type !== "structure") return undefined;
+      const info = memberInfos(def).find((m) => m.tsName === segment);
+      if (!info) return undefined;
+      def = shapes[info.target];
+    }
+    return def?.type === "list" ? tsRef(def.member.target) : undefined;
+  };
+
   const emitOperation =
     spec.operation ??
     ((ctx: OperationEmit): string => {
@@ -896,12 +994,19 @@ export const generateService = (
       }
       const errList = [...ctx.errorNames, ...decl.commonErrorClasses];
       const paginated = ctx.pagination !== undefined;
+      const itemTsType = paginated
+        ? paginatedItemTsType(
+            ctx.op.def.__output,
+            paginatedItemsPath.get(ctx.op.id) ?? "",
+          )
+        : undefined;
       const typeAnnotation =
         `API.${paginated ? "PaginatedOperationMethod" : "OperationMethod"}<\n` +
         `  ${ctx.inputName},\n` +
         `  ${ctx.outputTsType},\n` +
         `  ${ctx.opName}Error,\n` +
-        `  ${decl.contextType}\n` +
+        `  ${decl.contextType}` +
+        (itemTsType ? `,\n  ${itemTsType}\n` : `\n`) +
         `>`;
       const config =
         `{\n` +
@@ -925,6 +1030,10 @@ export const generateService = (
           pure,
           extraArg: paginated ? opProfile.get(ctx.op.id)?.strategy : undefined,
           config,
+          // `makePaginated` infers the items element from the structural
+          // fallback; an explicit item type needs the same `as any as`
+          // idiom the schema consts use.
+          castToAnnotation: itemTsType !== undefined,
         }),
       ].join("\n");
     });
@@ -1004,6 +1113,9 @@ export const generateService = (
       }. Do not edit.\n` +
       `import * as S from "@distilled.cloud/core/schema";\n` +
       `import * as API from "@distilled.cloud/core/api";\n` +
+      (usesCategories
+        ? `import * as C from "@distilled.cloud/core/category";\n`
+        : "") +
       `import * as T from "../traits.ts";\n` +
       `import {\n` +
       `  ${decl.protocol},\n` +

@@ -1,6 +1,5 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -8,7 +7,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 const svc = T.AwsApiService({
   sdkId: "Cost Optimization Hub",
   serviceShapeName: "CostOptimizationHubService",
@@ -88,32 +86,32 @@ const rules = T.EndpointResolver((p, _) => {
 export class AccessDeniedException
   extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
     "AccessDeniedException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(403),
   ).pipe(C.withAuthError) {}
 export class InternalServerException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
     "InternalServerException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(500),
   ).pipe(C.withServerError) {}
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { message: S.String, resourceId: S.String },
+    { message: S.String.pipe(T.ErrorMessage()), resourceId: S.String },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class ThrottlingException
   extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
     "ThrottlingException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(429),
   ).pipe(C.withThrottlingError) {}
 export class ValidationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
     "ValidationException",
     {
-      message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       reason: S.optional(
         S.suspend(() => ValidationExceptionReason).annotate({
           identifier: "ValidationExceptionReason",
@@ -2291,7 +2289,7 @@ export const getPreferences: API.OperationMethod<
   GetPreferencesRequest,
   GetPreferencesResponse,
   GetPreferencesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetPreferencesRequest,
   output: GetPreferencesResponse,
@@ -2322,7 +2320,7 @@ export const getRecommendation: API.OperationMethod<
   GetRecommendationRequest,
   GetRecommendationResponse,
   GetRecommendationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetRecommendationRequest,
   output: GetRecommendationResponse,
@@ -2349,27 +2347,13 @@ export type ListEfficiencyMetricsError =
  *
  * The operation supports both daily and monthly time granularities and allows grouping results by account ID, Amazon Web Services Region. Results are returned as time-series data, enabling you to analyze trends in your cost optimization performance over the specified time period.
  */
-export const listEfficiencyMetrics: API.OperationMethod<
+export const listEfficiencyMetrics: API.PaginatedOperationMethod<
   ListEfficiencyMetricsRequest,
   ListEfficiencyMetricsResponse,
   ListEfficiencyMetricsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListEfficiencyMetricsRequest,
-  ) => stream.Stream<
-    ListEfficiencyMetricsResponse,
-    ListEfficiencyMetricsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListEfficiencyMetricsRequest,
-  ) => stream.Stream<
-    EfficiencyMetricsByGroup,
-    ListEfficiencyMetricsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  EfficiencyMetricsByGroup
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListEfficiencyMetricsRequest,
   output: ListEfficiencyMetricsResponse,
   errors: [
@@ -2387,27 +2371,7 @@ export const listEfficiencyMetrics: API.OperationMethod<
     items: "efficiencyMetricsByGroup",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListEfficiencyMetricsRequest,
-  ListEfficiencyMetricsResponse,
-  ListEfficiencyMetricsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListEfficiencyMetricsRequest,
-  ) => stream.Stream<
-    ListEfficiencyMetricsResponse,
-    ListEfficiencyMetricsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListEfficiencyMetricsRequest,
-  ) => stream.Stream<
-    EfficiencyMetricsByGroup,
-    ListEfficiencyMetricsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListEnrollmentStatusesError =
   | AccessDeniedException
@@ -2418,27 +2382,13 @@ export type ListEnrollmentStatusesError =
 /**
  * Retrieves the enrollment status for an account. It can also return the list of accounts that are enrolled under the organization.
  */
-export const listEnrollmentStatuses: API.OperationMethod<
+export const listEnrollmentStatuses: API.PaginatedOperationMethod<
   ListEnrollmentStatusesRequest,
   ListEnrollmentStatusesResponse,
   ListEnrollmentStatusesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListEnrollmentStatusesRequest,
-  ) => stream.Stream<
-    ListEnrollmentStatusesResponse,
-    ListEnrollmentStatusesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListEnrollmentStatusesRequest,
-  ) => stream.Stream<
-    AccountEnrollmentStatus,
-    ListEnrollmentStatusesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  AccountEnrollmentStatus
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListEnrollmentStatusesRequest,
   output: ListEnrollmentStatusesResponse,
   errors: [
@@ -2456,27 +2406,7 @@ export const listEnrollmentStatuses: API.OperationMethod<
     items: "items",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListEnrollmentStatusesRequest,
-  ListEnrollmentStatusesResponse,
-  ListEnrollmentStatusesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListEnrollmentStatusesRequest,
-  ) => stream.Stream<
-    ListEnrollmentStatusesResponse,
-    ListEnrollmentStatusesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListEnrollmentStatusesRequest,
-  ) => stream.Stream<
-    AccountEnrollmentStatus,
-    ListEnrollmentStatusesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListRecommendationsError =
   | AccessDeniedException
@@ -2487,27 +2417,13 @@ export type ListRecommendationsError =
 /**
  * Returns a list of recommendations.
  */
-export const listRecommendations: API.OperationMethod<
+export const listRecommendations: API.PaginatedOperationMethod<
   ListRecommendationsRequest,
   ListRecommendationsResponse,
   ListRecommendationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListRecommendationsRequest,
-  ) => stream.Stream<
-    ListRecommendationsResponse,
-    ListRecommendationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListRecommendationsRequest,
-  ) => stream.Stream<
-    Recommendation,
-    ListRecommendationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Recommendation
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListRecommendationsRequest,
   output: ListRecommendationsResponse,
   errors: [
@@ -2525,27 +2441,7 @@ export const listRecommendations: API.OperationMethod<
     items: "items",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListRecommendationsRequest,
-  ListRecommendationsResponse,
-  ListRecommendationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListRecommendationsRequest,
-  ) => stream.Stream<
-    ListRecommendationsResponse,
-    ListRecommendationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListRecommendationsRequest,
-  ) => stream.Stream<
-    Recommendation,
-    ListRecommendationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListRecommendationSummariesError =
   | AccessDeniedException
@@ -2558,27 +2454,13 @@ export type ListRecommendationSummariesError =
  *
  * The following filters are not supported for this API: `recommendationIds`, `resourceArns`, and `resourceIds`.
  */
-export const listRecommendationSummaries: API.OperationMethod<
+export const listRecommendationSummaries: API.PaginatedOperationMethod<
   ListRecommendationSummariesRequest,
   ListRecommendationSummariesResponse,
   ListRecommendationSummariesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListRecommendationSummariesRequest,
-  ) => stream.Stream<
-    ListRecommendationSummariesResponse,
-    ListRecommendationSummariesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListRecommendationSummariesRequest,
-  ) => stream.Stream<
-    RecommendationSummary,
-    ListRecommendationSummariesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  RecommendationSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListRecommendationSummariesRequest,
   output: ListRecommendationSummariesResponse,
   errors: [
@@ -2596,27 +2478,7 @@ export const listRecommendationSummaries: API.OperationMethod<
     items: "items",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListRecommendationSummariesRequest,
-  ListRecommendationSummariesResponse,
-  ListRecommendationSummariesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListRecommendationSummariesRequest,
-  ) => stream.Stream<
-    ListRecommendationSummariesResponse,
-    ListRecommendationSummariesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListRecommendationSummariesRequest,
-  ) => stream.Stream<
-    RecommendationSummary,
-    ListRecommendationSummariesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type UpdateEnrollmentStatusError =
   | AccessDeniedException
@@ -2635,7 +2497,7 @@ export const updateEnrollmentStatus: API.OperationMethod<
   UpdateEnrollmentStatusRequest,
   UpdateEnrollmentStatusResponse,
   UpdateEnrollmentStatusError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateEnrollmentStatusRequest,
   output: UpdateEnrollmentStatusResponse,
@@ -2663,7 +2525,7 @@ export const updatePreferences: API.OperationMethod<
   UpdatePreferencesRequest,
   UpdatePreferencesResponse,
   UpdatePreferencesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdatePreferencesRequest,
   output: UpdatePreferencesResponse,

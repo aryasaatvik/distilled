@@ -1,6 +1,5 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -8,7 +7,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 const svc = T.AwsApiService({
   sdkId: "Artifact",
   serviceShapeName: "Artifact",
@@ -104,20 +102,24 @@ const rules = T.EndpointResolver((p, _) => {
 export class AccessDeniedException
   extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
     "AccessDeniedException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(403),
   ).pipe(C.withAuthError) {}
 export class ConflictException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
     "ConflictException",
-    { message: S.String, resourceId: S.String, resourceType: S.String },
+    {
+      message: S.String.pipe(T.ErrorMessage()),
+      resourceId: S.String,
+      resourceType: S.String,
+    },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class InternalServerException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
     "InternalServerException",
     {
-      message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       retryAfterSeconds: S.optional(S.Number).pipe(T.HttpHeader("Retry-After")),
     },
     T.all(T.HttpError(500), T.Retryable()),
@@ -125,14 +127,18 @@ export class InternalServerException
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { message: S.String, resourceId: S.String, resourceType: S.String },
+    {
+      message: S.String.pipe(T.ErrorMessage()),
+      resourceId: S.String,
+      resourceType: S.String,
+    },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class ServiceQuotaExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
     "ServiceQuotaExceededException",
     {
-      message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       resourceId: S.String,
       resourceType: S.String,
       serviceCode: S.String,
@@ -144,7 +150,7 @@ export class ThrottlingException
   extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
     "ThrottlingException",
     {
-      message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       serviceCode: S.optional(S.String),
       quotaCode: S.optional(S.String),
       retryAfterSeconds: S.optional(S.Number).pipe(T.HttpHeader("Retry-After")),
@@ -155,7 +161,7 @@ export class ValidationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
     "ValidationException",
     {
-      message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       reason: S.String,
       fieldList: S.optional(
         S.suspend(() => ValidationExceptionFieldList).annotate({
@@ -628,7 +634,7 @@ export const getAccountSettings: API.OperationMethod<
   GetAccountSettingsRequest,
   GetAccountSettingsResponse,
   GetAccountSettingsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetAccountSettingsRequest,
   output: GetAccountSettingsResponse,
@@ -662,7 +668,7 @@ export const getReport: API.OperationMethod<
   GetReportRequest,
   GetReportResponse,
   GetReportError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetReportRequest,
   output: GetReportResponse,
@@ -695,7 +701,7 @@ export const getReportMetadata: API.OperationMethod<
   GetReportMetadataRequest,
   GetReportMetadataResponse,
   GetReportMetadataError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetReportMetadataRequest,
   output: GetReportMetadataResponse,
@@ -728,7 +734,7 @@ export const getTermForReport: API.OperationMethod<
   GetTermForReportRequest,
   GetTermForReportResponse,
   GetTermForReportError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetTermForReportRequest,
   output: GetTermForReportResponse,
@@ -755,27 +761,13 @@ export type ListCustomerAgreementsError =
 /**
  * List active customer-agreements applicable to calling identity.
  */
-export const listCustomerAgreements: API.OperationMethod<
+export const listCustomerAgreements: API.PaginatedOperationMethod<
   ListCustomerAgreementsRequest,
   ListCustomerAgreementsResponse,
   ListCustomerAgreementsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCustomerAgreementsRequest,
-  ) => stream.Stream<
-    ListCustomerAgreementsResponse,
-    ListCustomerAgreementsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCustomerAgreementsRequest,
-  ) => stream.Stream<
-    CustomerAgreementSummary,
-    ListCustomerAgreementsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  CustomerAgreementSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListCustomerAgreementsRequest,
   output: ListCustomerAgreementsResponse,
   errors: [
@@ -793,27 +785,7 @@ export const listCustomerAgreements: API.OperationMethod<
     items: "customerAgreements",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListCustomerAgreementsRequest,
-  ListCustomerAgreementsResponse,
-  ListCustomerAgreementsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCustomerAgreementsRequest,
-  ) => stream.Stream<
-    ListCustomerAgreementsResponse,
-    ListCustomerAgreementsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCustomerAgreementsRequest,
-  ) => stream.Stream<
-    CustomerAgreementSummary,
-    ListCustomerAgreementsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListReportsError =
   | AccessDeniedException
@@ -826,27 +798,13 @@ export type ListReportsError =
 /**
  * List available reports.
  */
-export const listReports: API.OperationMethod<
+export const listReports: API.PaginatedOperationMethod<
   ListReportsRequest,
   ListReportsResponse,
   ListReportsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListReportsRequest,
-  ) => stream.Stream<
-    ListReportsResponse,
-    ListReportsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListReportsRequest,
-  ) => stream.Stream<
-    ReportSummary,
-    ListReportsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ReportSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListReportsRequest,
   output: ListReportsResponse,
   errors: [
@@ -866,27 +824,7 @@ export const listReports: API.OperationMethod<
     items: "reports",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListReportsRequest,
-  ListReportsResponse,
-  ListReportsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListReportsRequest,
-  ) => stream.Stream<
-    ListReportsResponse,
-    ListReportsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListReportsRequest,
-  ) => stream.Stream<
-    ReportSummary,
-    ListReportsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListReportVersionsError =
   | AccessDeniedException
@@ -899,27 +837,13 @@ export type ListReportVersionsError =
 /**
  * List available report versions for a given report.
  */
-export const listReportVersions: API.OperationMethod<
+export const listReportVersions: API.PaginatedOperationMethod<
   ListReportVersionsRequest,
   ListReportVersionsResponse,
   ListReportVersionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListReportVersionsRequest,
-  ) => stream.Stream<
-    ListReportVersionsResponse,
-    ListReportVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListReportVersionsRequest,
-  ) => stream.Stream<
-    ReportSummary,
-    ListReportVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ReportSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListReportVersionsRequest,
   output: ListReportVersionsResponse,
   errors: [
@@ -939,27 +863,7 @@ export const listReportVersions: API.OperationMethod<
     items: "reports",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListReportVersionsRequest,
-  ListReportVersionsResponse,
-  ListReportVersionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListReportVersionsRequest,
-  ) => stream.Stream<
-    ListReportVersionsResponse,
-    ListReportVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListReportVersionsRequest,
-  ) => stream.Stream<
-    ReportSummary,
-    ListReportVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type PutAccountSettingsError =
   | AccessDeniedException
@@ -977,7 +881,7 @@ export const putAccountSettings: API.OperationMethod<
   PutAccountSettingsRequest,
   PutAccountSettingsResponse,
   PutAccountSettingsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutAccountSettingsRequest,
   output: PutAccountSettingsResponse,

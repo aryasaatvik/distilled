@@ -1,6 +1,5 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -8,7 +7,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 const svc = T.AwsApiService({
   sdkId: "ManagedBlockchain Query",
   serviceShapeName: "TietonChainQueryService",
@@ -88,14 +86,14 @@ const rules = T.EndpointResolver((p, _) => {
 export class AccessDeniedException
   extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
     "AccessDeniedException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(403),
   ).pipe(C.withAuthError) {}
 export class InternalServerException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
     "InternalServerException",
     {
-      message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       retryAfterSeconds: S.optional(S.Number).pipe(T.HttpHeader("Retry-After")),
     },
     T.all(T.HttpError(500), T.Retryable()),
@@ -103,14 +101,18 @@ export class InternalServerException
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { message: S.String, resourceId: S.String, resourceType: S.String },
+    {
+      message: S.String.pipe(T.ErrorMessage()),
+      resourceId: S.String,
+      resourceType: S.String,
+    },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class ServiceQuotaExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
     "ServiceQuotaExceededException",
     {
-      message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       resourceId: S.String,
       resourceType: S.String,
       serviceCode: S.String,
@@ -122,7 +124,7 @@ export class ThrottlingException
   extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
     "ThrottlingException",
     {
-      message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       serviceCode: S.String,
       quotaCode: S.String,
       retryAfterSeconds: S.optional(S.Number).pipe(T.HttpHeader("Retry-After")),
@@ -133,7 +135,7 @@ export class ValidationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
     "ValidationException",
     {
-      message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       reason: S.String,
       fieldList: S.optional(
         S.suspend(() => ValidationExceptionFieldList).annotate({
@@ -869,7 +871,7 @@ export const batchGetTokenBalance: API.OperationMethod<
   BatchGetTokenBalanceInput,
   BatchGetTokenBalanceOutput,
   BatchGetTokenBalanceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchGetTokenBalanceInput,
   output: BatchGetTokenBalanceOutput,
@@ -907,7 +909,7 @@ export const getAssetContract: API.OperationMethod<
   GetAssetContractInput,
   GetAssetContractOutput,
   GetAssetContractError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetAssetContractInput,
   output: GetAssetContractOutput,
@@ -942,7 +944,7 @@ export const getTokenBalance: API.OperationMethod<
   GetTokenBalanceInput,
   GetTokenBalanceOutput,
   GetTokenBalanceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetTokenBalanceInput,
   output: GetTokenBalanceOutput,
@@ -978,7 +980,7 @@ export const getTransaction: API.OperationMethod<
   GetTransactionInput,
   GetTransactionOutput,
   GetTransactionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetTransactionInput,
   output: GetTransactionOutput,
@@ -1009,27 +1011,13 @@ export type ListAssetContractsError =
  * The Bitcoin blockchain networks do not support this
  * operation.
  */
-export const listAssetContracts: API.OperationMethod<
+export const listAssetContracts: API.PaginatedOperationMethod<
   ListAssetContractsInput,
   ListAssetContractsOutput,
   ListAssetContractsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAssetContractsInput,
-  ) => stream.Stream<
-    ListAssetContractsOutput,
-    ListAssetContractsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAssetContractsInput,
-  ) => stream.Stream<
-    AssetContract,
-    ListAssetContractsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  AssetContract
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListAssetContractsInput,
   output: ListAssetContractsOutput,
   errors: [
@@ -1048,27 +1036,7 @@ export const listAssetContracts: API.OperationMethod<
     items: "contracts",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListAssetContractsInput,
-  ListAssetContractsOutput,
-  ListAssetContractsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAssetContractsInput,
-  ) => stream.Stream<
-    ListAssetContractsOutput,
-    ListAssetContractsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAssetContractsInput,
-  ) => stream.Stream<
-    AssetContract,
-    ListAssetContractsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListFilteredTransactionEventsError =
   | AccessDeniedException
@@ -1082,27 +1050,13 @@ export type ListFilteredTransactionEventsError =
  *
  * This operation is only supported on the Bitcoin networks.
  */
-export const listFilteredTransactionEvents: API.OperationMethod<
+export const listFilteredTransactionEvents: API.PaginatedOperationMethod<
   ListFilteredTransactionEventsInput,
   ListFilteredTransactionEventsOutput,
   ListFilteredTransactionEventsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListFilteredTransactionEventsInput,
-  ) => stream.Stream<
-    ListFilteredTransactionEventsOutput,
-    ListFilteredTransactionEventsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListFilteredTransactionEventsInput,
-  ) => stream.Stream<
-    TransactionEvent,
-    ListFilteredTransactionEventsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  TransactionEvent
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListFilteredTransactionEventsInput,
   output: ListFilteredTransactionEventsOutput,
   errors: [
@@ -1121,27 +1075,7 @@ export const listFilteredTransactionEvents: API.OperationMethod<
     items: "events",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListFilteredTransactionEventsInput,
-  ListFilteredTransactionEventsOutput,
-  ListFilteredTransactionEventsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListFilteredTransactionEventsInput,
-  ) => stream.Stream<
-    ListFilteredTransactionEventsOutput,
-    ListFilteredTransactionEventsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListFilteredTransactionEventsInput,
-  ) => stream.Stream<
-    TransactionEvent,
-    ListFilteredTransactionEventsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTokenBalancesError =
   | AccessDeniedException
@@ -1163,27 +1097,13 @@ export type ListTokenBalancesError =
  * You must always specify the network property of
  * the `tokenFilter` when using this operation.
  */
-export const listTokenBalances: API.OperationMethod<
+export const listTokenBalances: API.PaginatedOperationMethod<
   ListTokenBalancesInput,
   ListTokenBalancesOutput,
   ListTokenBalancesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTokenBalancesInput,
-  ) => stream.Stream<
-    ListTokenBalancesOutput,
-    ListTokenBalancesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTokenBalancesInput,
-  ) => stream.Stream<
-    TokenBalance,
-    ListTokenBalancesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  TokenBalance
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListTokenBalancesInput,
   output: ListTokenBalancesOutput,
   errors: [
@@ -1202,27 +1122,7 @@ export const listTokenBalances: API.OperationMethod<
     items: "tokenBalances",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListTokenBalancesInput,
-  ListTokenBalancesOutput,
-  ListTokenBalancesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTokenBalancesInput,
-  ) => stream.Stream<
-    ListTokenBalancesOutput,
-    ListTokenBalancesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTokenBalancesInput,
-  ) => stream.Stream<
-    TokenBalance,
-    ListTokenBalancesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTransactionEventsError =
   | AccessDeniedException
@@ -1238,27 +1138,13 @@ export type ListTransactionEventsError =
  * that are *confirmed* on the blockchain, even if they have not reached
  * finality.
  */
-export const listTransactionEvents: API.OperationMethod<
+export const listTransactionEvents: API.PaginatedOperationMethod<
   ListTransactionEventsInput,
   ListTransactionEventsOutput,
   ListTransactionEventsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTransactionEventsInput,
-  ) => stream.Stream<
-    ListTransactionEventsOutput,
-    ListTransactionEventsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTransactionEventsInput,
-  ) => stream.Stream<
-    TransactionEvent,
-    ListTransactionEventsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  TransactionEvent
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListTransactionEventsInput,
   output: ListTransactionEventsOutput,
   errors: [
@@ -1277,27 +1163,7 @@ export const listTransactionEvents: API.OperationMethod<
     items: "events",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListTransactionEventsInput,
-  ListTransactionEventsOutput,
-  ListTransactionEventsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTransactionEventsInput,
-  ) => stream.Stream<
-    ListTransactionEventsOutput,
-    ListTransactionEventsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTransactionEventsInput,
-  ) => stream.Stream<
-    TransactionEvent,
-    ListTransactionEventsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTransactionsError =
   | AccessDeniedException
@@ -1309,27 +1175,13 @@ export type ListTransactionsError =
 /**
  * Lists all the transaction events for a transaction.
  */
-export const listTransactions: API.OperationMethod<
+export const listTransactions: API.PaginatedOperationMethod<
   ListTransactionsInput,
   ListTransactionsOutput,
   ListTransactionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTransactionsInput,
-  ) => stream.Stream<
-    ListTransactionsOutput,
-    ListTransactionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTransactionsInput,
-  ) => stream.Stream<
-    TransactionOutputItem,
-    ListTransactionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  TransactionOutputItem
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListTransactionsInput,
   output: ListTransactionsOutput,
   errors: [
@@ -1348,24 +1200,4 @@ export const listTransactions: API.OperationMethod<
     items: "transactions",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListTransactionsInput,
-  ListTransactionsOutput,
-  ListTransactionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTransactionsInput,
-  ) => stream.Stream<
-    ListTransactionsOutput,
-    ListTransactionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTransactionsInput,
-  ) => stream.Stream<
-    TransactionOutputItem,
-    ListTransactionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;

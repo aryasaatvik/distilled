@@ -1,7 +1,6 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as redacted from "effect/Redacted";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -9,7 +8,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 import { SensitiveString } from "../sensitive.ts";
 const ns = T.XmlNamespace("http://swf.amazonaws.com/doc/2015-07-20/");
 const svc = T.AwsApiService({
@@ -109,94 +107,94 @@ const rules = T.EndpointResolver((p, _) => {
 export class ActivityAlreadyExists
   extends /*@__PURE__*/ S.TaggedErrorClass<ActivityAlreadyExists>()(
     "ActivityAlreadyExists",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ).pipe(C.withAlreadyExistsError) {}
 export class ActivityDoesNotExist
   extends /*@__PURE__*/ S.TaggedErrorClass<ActivityDoesNotExist>()(
     "ActivityDoesNotExist",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class ActivityLimitExceeded
   extends /*@__PURE__*/ S.TaggedErrorClass<ActivityLimitExceeded>()(
     "ActivityLimitExceeded",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ).pipe(C.withThrottlingError) {}
 export class ActivityWorkerLimitExceeded
   extends /*@__PURE__*/ S.TaggedErrorClass<ActivityWorkerLimitExceeded>()(
     "ActivityWorkerLimitExceeded",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ).pipe(C.withThrottlingError) {}
 export class ConflictException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
     "ConflictException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class ExecutionAlreadyExists
   extends /*@__PURE__*/ S.TaggedErrorClass<ExecutionAlreadyExists>()(
     "ExecutionAlreadyExists",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ).pipe(C.withAlreadyExistsError) {}
 export class ExecutionDoesNotExist
   extends /*@__PURE__*/ S.TaggedErrorClass<ExecutionDoesNotExist>()(
     "ExecutionDoesNotExist",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class ExecutionLimitExceeded
   extends /*@__PURE__*/ S.TaggedErrorClass<ExecutionLimitExceeded>()(
     "ExecutionLimitExceeded",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ).pipe(C.withThrottlingError) {}
 export class ExecutionNotRedrivable
   extends /*@__PURE__*/ S.TaggedErrorClass<ExecutionNotRedrivable>()(
     "ExecutionNotRedrivable",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidArn
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidArn>()("InvalidArn", {
-    message: S.optional(S.String),
+    message: S.optional(S.String).pipe(T.ErrorMessage()),
   }) {}
 export class InvalidDefinition
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidDefinition>()(
     "InvalidDefinition",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidEncryptionConfiguration
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidEncryptionConfiguration>()(
     "InvalidEncryptionConfiguration",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidExecutionInput
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidExecutionInput>()(
     "InvalidExecutionInput",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidLoggingConfiguration
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidLoggingConfiguration>()(
     "InvalidLoggingConfiguration",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidName
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidName>()("InvalidName", {
-    message: S.optional(S.String),
+    message: S.optional(S.String).pipe(T.ErrorMessage()),
   }) {}
 export class InvalidOutput
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidOutput>()("InvalidOutput", {
-    message: S.optional(S.String),
+    message: S.optional(S.String).pipe(T.ErrorMessage()),
   }) {}
 export class InvalidToken
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidToken>()("InvalidToken", {
-    message: S.optional(S.String),
+    message: S.optional(S.String).pipe(T.ErrorMessage()),
   }) {}
 export class InvalidTracingConfiguration
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidTracingConfiguration>()(
     "InvalidTracingConfiguration",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class KmsAccessDeniedException
   extends /*@__PURE__*/ S.TaggedErrorClass<KmsAccessDeniedException>()(
     "KmsAccessDeniedException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ).pipe(C.withAuthError) {}
 export class KmsInvalidStateException
   extends /*@__PURE__*/ S.TaggedErrorClass<KmsInvalidStateException>()(
@@ -205,76 +203,82 @@ export class KmsInvalidStateException
       kmsKeyState: S.optional(
         S.suspend(() => KmsKeyState).annotate({ identifier: "KmsKeyState" }),
       ),
-      message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
     },
   ) {}
 export class KmsThrottlingException
   extends /*@__PURE__*/ S.TaggedErrorClass<KmsThrottlingException>()(
     "KmsThrottlingException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class MissingRequiredParameter
   extends /*@__PURE__*/ S.TaggedErrorClass<MissingRequiredParameter>()(
     "MissingRequiredParameter",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class ResourceNotFound
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFound>()(
     "ResourceNotFound",
-    { message: S.optional(S.String), resourceName: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      resourceName: S.optional(S.String),
+    },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class ServiceQuotaExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
     "ServiceQuotaExceededException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(402),
   ).pipe(C.withQuotaError) {}
 export class StateMachineAlreadyExists
   extends /*@__PURE__*/ S.TaggedErrorClass<StateMachineAlreadyExists>()(
     "StateMachineAlreadyExists",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ).pipe(C.withAlreadyExistsError) {}
 export class StateMachineDeleting
   extends /*@__PURE__*/ S.TaggedErrorClass<StateMachineDeleting>()(
     "StateMachineDeleting",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class StateMachineDoesNotExist
   extends /*@__PURE__*/ S.TaggedErrorClass<StateMachineDoesNotExist>()(
     "StateMachineDoesNotExist",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class StateMachineLimitExceeded
   extends /*@__PURE__*/ S.TaggedErrorClass<StateMachineLimitExceeded>()(
     "StateMachineLimitExceeded",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ).pipe(C.withThrottlingError) {}
 export class StateMachineTypeNotSupported
   extends /*@__PURE__*/ S.TaggedErrorClass<StateMachineTypeNotSupported>()(
     "StateMachineTypeNotSupported",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class TaskDoesNotExist
   extends /*@__PURE__*/ S.TaggedErrorClass<TaskDoesNotExist>()(
     "TaskDoesNotExist",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class TaskTimedOut
   extends /*@__PURE__*/ S.TaggedErrorClass<TaskTimedOut>()("TaskTimedOut", {
-    message: S.optional(S.String),
+    message: S.optional(S.String).pipe(T.ErrorMessage()),
   }) {}
 export class TooManyTags
   extends /*@__PURE__*/ S.TaggedErrorClass<TooManyTags>()(
     "TooManyTags",
-    { message: S.optional(S.String), resourceName: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      resourceName: S.optional(S.String),
+    },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class ValidationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
     "ValidationException",
     {
-      message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       reason: S.optional(
         S.suspend(() => ValidationExceptionReason).annotate({
           identifier: "ValidationExceptionReason",
@@ -2959,7 +2963,7 @@ export const createActivity: API.OperationMethod<
   CreateActivityInput,
   CreateActivityOutput,
   CreateActivityError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateActivityInput,
   output: CreateActivityOutput,
@@ -3022,7 +3026,7 @@ export const createStateMachine: API.OperationMethod<
   CreateStateMachineInput,
   CreateStateMachineOutput,
   CreateStateMachineError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateStateMachineInput,
   output: CreateStateMachineOutput,
@@ -3092,7 +3096,7 @@ export const createStateMachineAlias: API.OperationMethod<
   CreateStateMachineAliasInput,
   CreateStateMachineAliasOutput,
   CreateStateMachineAliasError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateStateMachineAliasInput,
   output: CreateStateMachineAliasOutput,
@@ -3118,7 +3122,7 @@ export const deleteActivity: API.OperationMethod<
   DeleteActivityInput,
   DeleteActivityOutput,
   DeleteActivityError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteActivityInput,
   output: DeleteActivityOutput,
@@ -3160,7 +3164,7 @@ export const deleteStateMachine: API.OperationMethod<
   DeleteStateMachineInput,
   DeleteStateMachineOutput,
   DeleteStateMachineError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteStateMachineInput,
   output: DeleteStateMachineOutput,
@@ -3197,7 +3201,7 @@ export const deleteStateMachineAlias: API.OperationMethod<
   DeleteStateMachineAliasInput,
   DeleteStateMachineAliasOutput,
   DeleteStateMachineAliasError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteStateMachineAliasInput,
   output: DeleteStateMachineAliasOutput,
@@ -3236,7 +3240,7 @@ export const deleteStateMachineVersion: API.OperationMethod<
   DeleteStateMachineVersionInput,
   DeleteStateMachineVersionOutput,
   DeleteStateMachineVersionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteStateMachineVersionInput,
   output: DeleteStateMachineVersionOutput,
@@ -3259,7 +3263,7 @@ export const describeActivity: API.OperationMethod<
   DescribeActivityInput,
   DescribeActivityOutput,
   DescribeActivityError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeActivityInput,
   output: DescribeActivityOutput,
@@ -3290,7 +3294,7 @@ export const describeExecution: API.OperationMethod<
   DescribeExecutionInput,
   DescribeExecutionOutput,
   DescribeExecutionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeExecutionInput,
   output: DescribeExecutionOutput,
@@ -3314,7 +3318,7 @@ export const describeMapRun: API.OperationMethod<
   DescribeMapRunInput,
   DescribeMapRunOutput,
   DescribeMapRunError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeMapRunInput,
   output: DescribeMapRunOutput,
@@ -3363,7 +3367,7 @@ export const describeStateMachine: API.OperationMethod<
   DescribeStateMachineInput,
   DescribeStateMachineOutput,
   DescribeStateMachineError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeStateMachineInput,
   output: DescribeStateMachineOutput,
@@ -3401,7 +3405,7 @@ export const describeStateMachineAlias: API.OperationMethod<
   DescribeStateMachineAliasInput,
   DescribeStateMachineAliasOutput,
   DescribeStateMachineAliasError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeStateMachineAliasInput,
   output: DescribeStateMachineAliasOutput,
@@ -3432,7 +3436,7 @@ export const describeStateMachineForExecution: API.OperationMethod<
   DescribeStateMachineForExecutionInput,
   DescribeStateMachineForExecutionOutput,
   DescribeStateMachineForExecutionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeStateMachineForExecutionInput,
   output: DescribeStateMachineForExecutionOutput,
@@ -3477,7 +3481,7 @@ export const getActivityTask: API.OperationMethod<
   GetActivityTaskInput,
   GetActivityTaskOutput,
   GetActivityTaskError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetActivityTaskInput,
   output: GetActivityTaskOutput,
@@ -3512,27 +3516,13 @@ export type GetExecutionHistoryError =
  *
  * This API action is not supported by `EXPRESS` state machines.
  */
-export const getExecutionHistory: API.OperationMethod<
+export const getExecutionHistory: API.PaginatedOperationMethod<
   GetExecutionHistoryInput,
   GetExecutionHistoryOutput,
   GetExecutionHistoryError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetExecutionHistoryInput,
-  ) => stream.Stream<
-    GetExecutionHistoryOutput,
-    GetExecutionHistoryError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetExecutionHistoryInput,
-  ) => stream.Stream<
-    HistoryEvent,
-    GetExecutionHistoryError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  HistoryEvent
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetExecutionHistoryInput,
   output: GetExecutionHistoryOutput,
   errors: [
@@ -3552,27 +3542,7 @@ export const getExecutionHistory: API.OperationMethod<
     items: "events",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetExecutionHistoryInput,
-  GetExecutionHistoryOutput,
-  GetExecutionHistoryError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetExecutionHistoryInput,
-  ) => stream.Stream<
-    GetExecutionHistoryOutput,
-    GetExecutionHistoryError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetExecutionHistoryInput,
-  ) => stream.Stream<
-    HistoryEvent,
-    GetExecutionHistoryError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListActivitiesError = InvalidToken | CommonErrors;
 /**
@@ -3583,27 +3553,13 @@ export type ListActivitiesError = InvalidToken | CommonErrors;
  *
  * This operation is eventually consistent. The results are best effort and may not reflect very recent updates and changes.
  */
-export const listActivities: API.OperationMethod<
+export const listActivities: API.PaginatedOperationMethod<
   ListActivitiesInput,
   ListActivitiesOutput,
   ListActivitiesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListActivitiesInput,
-  ) => stream.Stream<
-    ListActivitiesOutput,
-    ListActivitiesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListActivitiesInput,
-  ) => stream.Stream<
-    ActivityListItem,
-    ListActivitiesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ActivityListItem
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListActivitiesInput,
   output: ListActivitiesOutput,
   errors: [InvalidToken],
@@ -3616,27 +3572,7 @@ export const listActivities: API.OperationMethod<
     items: "activities",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListActivitiesInput,
-  ListActivitiesOutput,
-  ListActivitiesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListActivitiesInput,
-  ) => stream.Stream<
-    ListActivitiesOutput,
-    ListActivitiesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListActivitiesInput,
-  ) => stream.Stream<
-    ActivityListItem,
-    ListActivitiesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListExecutionsError =
   | InvalidArn
@@ -3661,27 +3597,13 @@ export type ListExecutionsError =
  *
  * This API action is not supported by `EXPRESS` state machines.
  */
-export const listExecutions: API.OperationMethod<
+export const listExecutions: API.PaginatedOperationMethod<
   ListExecutionsInput,
   ListExecutionsOutput,
   ListExecutionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListExecutionsInput,
-  ) => stream.Stream<
-    ListExecutionsOutput,
-    ListExecutionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListExecutionsInput,
-  ) => stream.Stream<
-    ExecutionListItem,
-    ListExecutionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ExecutionListItem
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListExecutionsInput,
   output: ListExecutionsOutput,
   errors: [
@@ -3701,27 +3623,7 @@ export const listExecutions: API.OperationMethod<
     items: "executions",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListExecutionsInput,
-  ListExecutionsOutput,
-  ListExecutionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListExecutionsInput,
-  ) => stream.Stream<
-    ListExecutionsOutput,
-    ListExecutionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListExecutionsInput,
-  ) => stream.Stream<
-    ExecutionListItem,
-    ListExecutionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListMapRunsError =
   | ExecutionDoesNotExist
@@ -3731,27 +3633,13 @@ export type ListMapRunsError =
 /**
  * Lists all Map Runs that were started by a given state machine execution. Use this API action to obtain Map Run ARNs, and then call `DescribeMapRun` to obtain more information, if needed.
  */
-export const listMapRuns: API.OperationMethod<
+export const listMapRuns: API.PaginatedOperationMethod<
   ListMapRunsInput,
   ListMapRunsOutput,
   ListMapRunsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListMapRunsInput,
-  ) => stream.Stream<
-    ListMapRunsOutput,
-    ListMapRunsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListMapRunsInput,
-  ) => stream.Stream<
-    MapRunListItem,
-    ListMapRunsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  MapRunListItem
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListMapRunsInput,
   output: ListMapRunsOutput,
   errors: [ExecutionDoesNotExist, InvalidArn, InvalidToken],
@@ -3764,27 +3652,7 @@ export const listMapRuns: API.OperationMethod<
     items: "mapRuns",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListMapRunsInput,
-  ListMapRunsOutput,
-  ListMapRunsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListMapRunsInput,
-  ) => stream.Stream<
-    ListMapRunsOutput,
-    ListMapRunsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListMapRunsInput,
-  ) => stream.Stream<
-    MapRunListItem,
-    ListMapRunsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListStateMachineAliasesError =
   | InvalidArn
@@ -3815,7 +3683,7 @@ export const listStateMachineAliases: API.OperationMethod<
   ListStateMachineAliasesInput,
   ListStateMachineAliasesOutput,
   ListStateMachineAliasesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListStateMachineAliasesInput,
   output: ListStateMachineAliasesOutput,
@@ -3840,27 +3708,13 @@ export type ListStateMachinesError = InvalidToken | CommonErrors;
  *
  * This operation is eventually consistent. The results are best effort and may not reflect very recent updates and changes.
  */
-export const listStateMachines: API.OperationMethod<
+export const listStateMachines: API.PaginatedOperationMethod<
   ListStateMachinesInput,
   ListStateMachinesOutput,
   ListStateMachinesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListStateMachinesInput,
-  ) => stream.Stream<
-    ListStateMachinesOutput,
-    ListStateMachinesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListStateMachinesInput,
-  ) => stream.Stream<
-    StateMachineListItem,
-    ListStateMachinesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  StateMachineListItem
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListStateMachinesInput,
   output: ListStateMachinesOutput,
   errors: [InvalidToken],
@@ -3873,27 +3727,7 @@ export const listStateMachines: API.OperationMethod<
     items: "stateMachines",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListStateMachinesInput,
-  ListStateMachinesOutput,
-  ListStateMachinesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListStateMachinesInput,
-  ) => stream.Stream<
-    ListStateMachinesOutput,
-    ListStateMachinesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListStateMachinesInput,
-  ) => stream.Stream<
-    StateMachineListItem,
-    ListStateMachinesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListStateMachineVersionsError =
   | InvalidArn
@@ -3918,7 +3752,7 @@ export const listStateMachineVersions: API.OperationMethod<
   ListStateMachineVersionsInput,
   ListStateMachineVersionsOutput,
   ListStateMachineVersionsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListStateMachineVersionsInput,
   output: ListStateMachineVersionsOutput,
@@ -3941,7 +3775,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceInput,
   ListTagsForResourceOutput,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceInput,
   output: ListTagsForResourceOutput,
@@ -3984,7 +3818,7 @@ export const publishStateMachineVersion: API.OperationMethod<
   PublishStateMachineVersionInput,
   PublishStateMachineVersionOutput,
   PublishStateMachineVersionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PublishStateMachineVersionInput,
   output: PublishStateMachineVersionOutput,
@@ -4033,7 +3867,7 @@ export const redriveExecution: API.OperationMethod<
   RedriveExecutionInput,
   RedriveExecutionOutput,
   RedriveExecutionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RedriveExecutionInput,
   output: RedriveExecutionOutput,
@@ -4069,7 +3903,7 @@ export const sendTaskFailure: API.OperationMethod<
   SendTaskFailureInput,
   SendTaskFailureOutput,
   SendTaskFailureError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: SendTaskFailureInput,
   output: SendTaskFailureOutput,
@@ -4111,7 +3945,7 @@ export const sendTaskHeartbeat: API.OperationMethod<
   SendTaskHeartbeatInput,
   SendTaskHeartbeatOutput,
   SendTaskHeartbeatError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: SendTaskHeartbeatInput,
   output: SendTaskHeartbeatOutput,
@@ -4139,7 +3973,7 @@ export const sendTaskSuccess: API.OperationMethod<
   SendTaskSuccessInput,
   SendTaskSuccessOutput,
   SendTaskSuccessError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: SendTaskSuccessInput,
   output: SendTaskSuccessOutput,
@@ -4210,7 +4044,7 @@ export const startExecution: API.OperationMethod<
   StartExecutionInput,
   StartExecutionOutput,
   StartExecutionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartExecutionInput,
   output: StartExecutionOutput,
@@ -4259,7 +4093,7 @@ export const startSyncExecution: API.OperationMethod<
   StartSyncExecutionInput,
   StartSyncExecutionOutput,
   StartSyncExecutionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartSyncExecutionInput,
   output: StartSyncExecutionOutput,
@@ -4301,7 +4135,7 @@ export const stopExecution: API.OperationMethod<
   StopExecutionInput,
   StopExecutionOutput,
   StopExecutionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StopExecutionInput,
   output: StopExecutionOutput,
@@ -4337,7 +4171,7 @@ export const tagResource: API.OperationMethod<
   TagResourceInput,
   TagResourceOutput,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceInput,
   output: TagResourceOutput,
@@ -4387,7 +4221,7 @@ export const testState: API.OperationMethod<
   TestStateInput,
   TestStateOutput,
   TestStateError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TestStateInput,
   output: TestStateOutput,
@@ -4411,7 +4245,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceInput,
   UntagResourceOutput,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceInput,
   output: UntagResourceOutput,
@@ -4433,7 +4267,7 @@ export const updateMapRun: API.OperationMethod<
   UpdateMapRunInput,
   UpdateMapRunOutput,
   UpdateMapRunError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateMapRunInput,
   output: UpdateMapRunOutput,
@@ -4502,7 +4336,7 @@ export const updateStateMachine: API.OperationMethod<
   UpdateStateMachineInput,
   UpdateStateMachineOutput,
   UpdateStateMachineError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateStateMachineInput,
   output: UpdateStateMachineOutput,
@@ -4562,7 +4396,7 @@ export const updateStateMachineAlias: API.OperationMethod<
   UpdateStateMachineAliasInput,
   UpdateStateMachineAliasOutput,
   UpdateStateMachineAliasError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateStateMachineAliasInput,
   output: UpdateStateMachineAliasOutput,
@@ -4619,7 +4453,7 @@ export const validateStateMachineDefinition: API.OperationMethod<
   ValidateStateMachineDefinitionInput,
   ValidateStateMachineDefinitionOutput,
   ValidateStateMachineDefinitionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ValidateStateMachineDefinitionInput,
   output: ValidateStateMachineDefinitionOutput,

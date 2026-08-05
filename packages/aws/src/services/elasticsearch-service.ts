@@ -1,7 +1,6 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as redacted from "effect/Redacted";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -9,7 +8,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region as Rgn } from "../region.ts";
 import { SensitiveString } from "../sensitive.ts";
 const ns = T.XmlNamespace("http://es.amazonaws.com/doc/2015-01-01/");
 const svc = T.AwsApiService({
@@ -100,65 +98,65 @@ const rules = T.EndpointResolver((p, _) => {
 export class AccessDeniedException
   extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
     "AccessDeniedException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(403),
   ).pipe(C.withAuthError) {}
 export class BaseException
   extends /*@__PURE__*/ S.TaggedErrorClass<BaseException>()("BaseException", {
-    message: S.optional(S.String),
+    message: S.optional(S.String).pipe(T.ErrorMessage()),
   }) {}
 export class ConflictException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
     "ConflictException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class DisabledOperationException
   extends /*@__PURE__*/ S.TaggedErrorClass<DisabledOperationException>()(
     "DisabledOperationException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class InternalException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalException>()(
     "InternalException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(500),
   ).pipe(C.withServerError) {}
 export class InvalidPaginationTokenException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidPaginationTokenException>()(
     "InvalidPaginationTokenException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class InvalidTypeException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidTypeException>()(
     "InvalidTypeException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class LimitExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<LimitExceededException>()(
     "LimitExceededException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class ResourceAlreadyExistsException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceAlreadyExistsException>()(
     "ResourceAlreadyExistsException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(409),
   ).pipe(C.withConflictError, C.withAlreadyExistsError) {}
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class ValidationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
     "ValidationException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export type CrossClusterSearchConnectionId = string;
@@ -3755,7 +3753,7 @@ export const acceptInboundCrossClusterSearchConnection: API.OperationMethod<
   AcceptInboundCrossClusterSearchConnectionRequest,
   AcceptInboundCrossClusterSearchConnectionResponse,
   AcceptInboundCrossClusterSearchConnectionError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AcceptInboundCrossClusterSearchConnectionRequest,
   output: AcceptInboundCrossClusterSearchConnectionResponse,
@@ -3783,7 +3781,7 @@ export const addTags: API.OperationMethod<
   AddTagsRequest,
   AddTagsResponse,
   AddTagsError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AddTagsRequest,
   output: AddTagsResponse,
@@ -3813,7 +3811,7 @@ export const associatePackage: API.OperationMethod<
   AssociatePackageRequest,
   AssociatePackageResponse,
   AssociatePackageError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AssociatePackageRequest,
   output: AssociatePackageResponse,
@@ -3845,7 +3843,7 @@ export const authorizeVpcEndpointAccess: API.OperationMethod<
   AuthorizeVpcEndpointAccessRequest,
   AuthorizeVpcEndpointAccessResponse,
   AuthorizeVpcEndpointAccessError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AuthorizeVpcEndpointAccessRequest,
   output: AuthorizeVpcEndpointAccessResponse,
@@ -3876,7 +3874,7 @@ export const cancelDomainConfigChange: API.OperationMethod<
   CancelDomainConfigChangeRequest,
   CancelDomainConfigChangeResponse,
   CancelDomainConfigChangeError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CancelDomainConfigChangeRequest,
   output: CancelDomainConfigChangeResponse,
@@ -3905,7 +3903,7 @@ export const cancelElasticsearchServiceSoftwareUpdate: API.OperationMethod<
   CancelElasticsearchServiceSoftwareUpdateRequest,
   CancelElasticsearchServiceSoftwareUpdateResponse,
   CancelElasticsearchServiceSoftwareUpdateError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CancelElasticsearchServiceSoftwareUpdateRequest,
   output: CancelElasticsearchServiceSoftwareUpdateResponse,
@@ -3937,7 +3935,7 @@ export const createElasticsearchDomain: API.OperationMethod<
   CreateElasticsearchDomainRequest,
   CreateElasticsearchDomainResponse,
   CreateElasticsearchDomainError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateElasticsearchDomainRequest,
   output: CreateElasticsearchDomainResponse,
@@ -3968,7 +3966,7 @@ export const createOutboundCrossClusterSearchConnection: API.OperationMethod<
   CreateOutboundCrossClusterSearchConnectionRequest,
   CreateOutboundCrossClusterSearchConnectionResponse,
   CreateOutboundCrossClusterSearchConnectionError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateOutboundCrossClusterSearchConnectionRequest,
   output: CreateOutboundCrossClusterSearchConnectionResponse,
@@ -3999,7 +3997,7 @@ export const createPackage: API.OperationMethod<
   CreatePackageRequest,
   CreatePackageResponse,
   CreatePackageError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreatePackageRequest,
   output: CreatePackageResponse,
@@ -4032,7 +4030,7 @@ export const createVpcEndpoint: API.OperationMethod<
   CreateVpcEndpointRequest,
   CreateVpcEndpointResponse,
   CreateVpcEndpointError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateVpcEndpointRequest,
   output: CreateVpcEndpointResponse,
@@ -4062,7 +4060,7 @@ export const deleteElasticsearchDomain: API.OperationMethod<
   DeleteElasticsearchDomainRequest,
   DeleteElasticsearchDomainResponse,
   DeleteElasticsearchDomainError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteElasticsearchDomainRequest,
   output: DeleteElasticsearchDomainResponse,
@@ -4089,7 +4087,7 @@ export const deleteElasticsearchServiceRole: API.OperationMethod<
   DeleteElasticsearchServiceRoleRequest,
   DeleteElasticsearchServiceRoleResponse,
   DeleteElasticsearchServiceRoleError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteElasticsearchServiceRoleRequest,
   output: DeleteElasticsearchServiceRoleResponse,
@@ -4110,7 +4108,7 @@ export const deleteInboundCrossClusterSearchConnection: API.OperationMethod<
   DeleteInboundCrossClusterSearchConnectionRequest,
   DeleteInboundCrossClusterSearchConnectionResponse,
   DeleteInboundCrossClusterSearchConnectionError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteInboundCrossClusterSearchConnectionRequest,
   output: DeleteInboundCrossClusterSearchConnectionResponse,
@@ -4131,7 +4129,7 @@ export const deleteOutboundCrossClusterSearchConnection: API.OperationMethod<
   DeleteOutboundCrossClusterSearchConnectionRequest,
   DeleteOutboundCrossClusterSearchConnectionResponse,
   DeleteOutboundCrossClusterSearchConnectionError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteOutboundCrossClusterSearchConnectionRequest,
   output: DeleteOutboundCrossClusterSearchConnectionResponse,
@@ -4156,7 +4154,7 @@ export const deletePackage: API.OperationMethod<
   DeletePackageRequest,
   DeletePackageResponse,
   DeletePackageError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeletePackageRequest,
   output: DeletePackageResponse,
@@ -4186,7 +4184,7 @@ export const deleteVpcEndpoint: API.OperationMethod<
   DeleteVpcEndpointRequest,
   DeleteVpcEndpointResponse,
   DeleteVpcEndpointError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteVpcEndpointRequest,
   output: DeleteVpcEndpointResponse,
@@ -4210,27 +4208,13 @@ export type DescribeDomainAutoTunesError =
 /**
  * Provides scheduled Auto-Tune action details for the Elasticsearch domain, such as Auto-Tune action type, description, severity, and scheduled date.
  */
-export const describeDomainAutoTunes: API.OperationMethod<
+export const describeDomainAutoTunes: API.PaginatedOperationMethod<
   DescribeDomainAutoTunesRequest,
   DescribeDomainAutoTunesResponse,
   DescribeDomainAutoTunesError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeDomainAutoTunesRequest,
-  ) => stream.Stream<
-    DescribeDomainAutoTunesResponse,
-    DescribeDomainAutoTunesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeDomainAutoTunesRequest,
-  ) => stream.Stream<
-    unknown,
-    DescribeDomainAutoTunesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeDomainAutoTunesRequest,
   output: DescribeDomainAutoTunesResponse,
   errors: [
@@ -4247,27 +4231,7 @@ export const describeDomainAutoTunes: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeDomainAutoTunesRequest,
-  DescribeDomainAutoTunesResponse,
-  DescribeDomainAutoTunesError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeDomainAutoTunesRequest,
-  ) => stream.Stream<
-    DescribeDomainAutoTunesResponse,
-    DescribeDomainAutoTunesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeDomainAutoTunesRequest,
-  ) => stream.Stream<
-    unknown,
-    DescribeDomainAutoTunesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeDomainChangeProgressError =
   | BaseException
@@ -4283,7 +4247,7 @@ export const describeDomainChangeProgress: API.OperationMethod<
   DescribeDomainChangeProgressRequest,
   DescribeDomainChangeProgressResponse,
   DescribeDomainChangeProgressError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeDomainChangeProgressRequest,
   output: DescribeDomainChangeProgressResponse,
@@ -4311,7 +4275,7 @@ export const describeElasticsearchDomain: API.OperationMethod<
   DescribeElasticsearchDomainRequest,
   DescribeElasticsearchDomainResponse,
   DescribeElasticsearchDomainError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeElasticsearchDomainRequest,
   output: DescribeElasticsearchDomainResponse,
@@ -4339,7 +4303,7 @@ export const describeElasticsearchDomainConfig: API.OperationMethod<
   DescribeElasticsearchDomainConfigRequest,
   DescribeElasticsearchDomainConfigResponse,
   DescribeElasticsearchDomainConfigError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeElasticsearchDomainConfigRequest,
   output: DescribeElasticsearchDomainConfigResponse,
@@ -4366,7 +4330,7 @@ export const describeElasticsearchDomains: API.OperationMethod<
   DescribeElasticsearchDomainsRequest,
   DescribeElasticsearchDomainsResponse,
   DescribeElasticsearchDomainsError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeElasticsearchDomainsRequest,
   output: DescribeElasticsearchDomainsResponse,
@@ -4396,7 +4360,7 @@ export const describeElasticsearchInstanceTypeLimits: API.OperationMethod<
   DescribeElasticsearchInstanceTypeLimitsRequest,
   DescribeElasticsearchInstanceTypeLimitsResponse,
   DescribeElasticsearchInstanceTypeLimitsError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeElasticsearchInstanceTypeLimitsRequest,
   output: DescribeElasticsearchInstanceTypeLimitsResponse,
@@ -4420,27 +4384,13 @@ export type DescribeInboundCrossClusterSearchConnectionsError =
 /**
  * Lists all the inbound cross-cluster search connections for a destination domain.
  */
-export const describeInboundCrossClusterSearchConnections: API.OperationMethod<
+export const describeInboundCrossClusterSearchConnections: API.PaginatedOperationMethod<
   DescribeInboundCrossClusterSearchConnectionsRequest,
   DescribeInboundCrossClusterSearchConnectionsResponse,
   DescribeInboundCrossClusterSearchConnectionsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeInboundCrossClusterSearchConnectionsRequest,
-  ) => stream.Stream<
-    DescribeInboundCrossClusterSearchConnectionsResponse,
-    DescribeInboundCrossClusterSearchConnectionsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeInboundCrossClusterSearchConnectionsRequest,
-  ) => stream.Stream<
-    unknown,
-    DescribeInboundCrossClusterSearchConnectionsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeInboundCrossClusterSearchConnectionsRequest,
   output: DescribeInboundCrossClusterSearchConnectionsResponse,
   errors: [DisabledOperationException, InvalidPaginationTokenException],
@@ -4452,27 +4402,7 @@ export const describeInboundCrossClusterSearchConnections: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeInboundCrossClusterSearchConnectionsRequest,
-  DescribeInboundCrossClusterSearchConnectionsResponse,
-  DescribeInboundCrossClusterSearchConnectionsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeInboundCrossClusterSearchConnectionsRequest,
-  ) => stream.Stream<
-    DescribeInboundCrossClusterSearchConnectionsResponse,
-    DescribeInboundCrossClusterSearchConnectionsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeInboundCrossClusterSearchConnectionsRequest,
-  ) => stream.Stream<
-    unknown,
-    DescribeInboundCrossClusterSearchConnectionsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeOutboundCrossClusterSearchConnectionsError =
   | DisabledOperationException
@@ -4481,27 +4411,13 @@ export type DescribeOutboundCrossClusterSearchConnectionsError =
 /**
  * Lists all the outbound cross-cluster search connections for a source domain.
  */
-export const describeOutboundCrossClusterSearchConnections: API.OperationMethod<
+export const describeOutboundCrossClusterSearchConnections: API.PaginatedOperationMethod<
   DescribeOutboundCrossClusterSearchConnectionsRequest,
   DescribeOutboundCrossClusterSearchConnectionsResponse,
   DescribeOutboundCrossClusterSearchConnectionsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeOutboundCrossClusterSearchConnectionsRequest,
-  ) => stream.Stream<
-    DescribeOutboundCrossClusterSearchConnectionsResponse,
-    DescribeOutboundCrossClusterSearchConnectionsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeOutboundCrossClusterSearchConnectionsRequest,
-  ) => stream.Stream<
-    unknown,
-    DescribeOutboundCrossClusterSearchConnectionsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeOutboundCrossClusterSearchConnectionsRequest,
   output: DescribeOutboundCrossClusterSearchConnectionsResponse,
   errors: [DisabledOperationException, InvalidPaginationTokenException],
@@ -4513,27 +4429,7 @@ export const describeOutboundCrossClusterSearchConnections: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeOutboundCrossClusterSearchConnectionsRequest,
-  DescribeOutboundCrossClusterSearchConnectionsResponse,
-  DescribeOutboundCrossClusterSearchConnectionsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeOutboundCrossClusterSearchConnectionsRequest,
-  ) => stream.Stream<
-    DescribeOutboundCrossClusterSearchConnectionsResponse,
-    DescribeOutboundCrossClusterSearchConnectionsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeOutboundCrossClusterSearchConnectionsRequest,
-  ) => stream.Stream<
-    unknown,
-    DescribeOutboundCrossClusterSearchConnectionsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribePackagesError =
   | AccessDeniedException
@@ -4545,27 +4441,13 @@ export type DescribePackagesError =
 /**
  * Describes all packages available to Amazon ES. Includes options for filtering, limiting the number of results, and pagination.
  */
-export const describePackages: API.OperationMethod<
+export const describePackages: API.PaginatedOperationMethod<
   DescribePackagesRequest,
   DescribePackagesResponse,
   DescribePackagesError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribePackagesRequest,
-  ) => stream.Stream<
-    DescribePackagesResponse,
-    DescribePackagesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribePackagesRequest,
-  ) => stream.Stream<
-    unknown,
-    DescribePackagesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribePackagesRequest,
   output: DescribePackagesResponse,
   errors: [
@@ -4583,27 +4465,7 @@ export const describePackages: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  DescribePackagesRequest,
-  DescribePackagesResponse,
-  DescribePackagesError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribePackagesRequest,
-  ) => stream.Stream<
-    DescribePackagesResponse,
-    DescribePackagesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribePackagesRequest,
-  ) => stream.Stream<
-    unknown,
-    DescribePackagesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeReservedElasticsearchInstanceOfferingsError =
   | DisabledOperationException
@@ -4614,27 +4476,13 @@ export type DescribeReservedElasticsearchInstanceOfferingsError =
 /**
  * Lists available reserved Elasticsearch instance offerings.
  */
-export const describeReservedElasticsearchInstanceOfferings: API.OperationMethod<
+export const describeReservedElasticsearchInstanceOfferings: API.PaginatedOperationMethod<
   DescribeReservedElasticsearchInstanceOfferingsRequest,
   DescribeReservedElasticsearchInstanceOfferingsResponse,
   DescribeReservedElasticsearchInstanceOfferingsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeReservedElasticsearchInstanceOfferingsRequest,
-  ) => stream.Stream<
-    DescribeReservedElasticsearchInstanceOfferingsResponse,
-    DescribeReservedElasticsearchInstanceOfferingsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeReservedElasticsearchInstanceOfferingsRequest,
-  ) => stream.Stream<
-    unknown,
-    DescribeReservedElasticsearchInstanceOfferingsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeReservedElasticsearchInstanceOfferingsRequest,
   output: DescribeReservedElasticsearchInstanceOfferingsResponse,
   errors: [
@@ -4651,27 +4499,7 @@ export const describeReservedElasticsearchInstanceOfferings: API.OperationMethod
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeReservedElasticsearchInstanceOfferingsRequest,
-  DescribeReservedElasticsearchInstanceOfferingsResponse,
-  DescribeReservedElasticsearchInstanceOfferingsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeReservedElasticsearchInstanceOfferingsRequest,
-  ) => stream.Stream<
-    DescribeReservedElasticsearchInstanceOfferingsResponse,
-    DescribeReservedElasticsearchInstanceOfferingsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeReservedElasticsearchInstanceOfferingsRequest,
-  ) => stream.Stream<
-    unknown,
-    DescribeReservedElasticsearchInstanceOfferingsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeReservedElasticsearchInstancesError =
   | DisabledOperationException
@@ -4682,27 +4510,13 @@ export type DescribeReservedElasticsearchInstancesError =
 /**
  * Returns information about reserved Elasticsearch instances for this account.
  */
-export const describeReservedElasticsearchInstances: API.OperationMethod<
+export const describeReservedElasticsearchInstances: API.PaginatedOperationMethod<
   DescribeReservedElasticsearchInstancesRequest,
   DescribeReservedElasticsearchInstancesResponse,
   DescribeReservedElasticsearchInstancesError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeReservedElasticsearchInstancesRequest,
-  ) => stream.Stream<
-    DescribeReservedElasticsearchInstancesResponse,
-    DescribeReservedElasticsearchInstancesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeReservedElasticsearchInstancesRequest,
-  ) => stream.Stream<
-    unknown,
-    DescribeReservedElasticsearchInstancesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeReservedElasticsearchInstancesRequest,
   output: DescribeReservedElasticsearchInstancesResponse,
   errors: [
@@ -4719,27 +4533,7 @@ export const describeReservedElasticsearchInstances: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeReservedElasticsearchInstancesRequest,
-  DescribeReservedElasticsearchInstancesResponse,
-  DescribeReservedElasticsearchInstancesError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeReservedElasticsearchInstancesRequest,
-  ) => stream.Stream<
-    DescribeReservedElasticsearchInstancesResponse,
-    DescribeReservedElasticsearchInstancesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeReservedElasticsearchInstancesRequest,
-  ) => stream.Stream<
-    unknown,
-    DescribeReservedElasticsearchInstancesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeVpcEndpointsError =
   | BaseException
@@ -4754,7 +4548,7 @@ export const describeVpcEndpoints: API.OperationMethod<
   DescribeVpcEndpointsRequest,
   DescribeVpcEndpointsResponse,
   DescribeVpcEndpointsError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeVpcEndpointsRequest,
   output: DescribeVpcEndpointsResponse,
@@ -4784,7 +4578,7 @@ export const dissociatePackage: API.OperationMethod<
   DissociatePackageRequest,
   DissociatePackageResponse,
   DissociatePackageError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DissociatePackageRequest,
   output: DissociatePackageResponse,
@@ -4820,7 +4614,7 @@ export const getCompatibleElasticsearchVersions: API.OperationMethod<
   GetCompatibleElasticsearchVersionsRequest,
   GetCompatibleElasticsearchVersionsResponse,
   GetCompatibleElasticsearchVersionsError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetCompatibleElasticsearchVersionsRequest,
   output: GetCompatibleElasticsearchVersionsResponse,
@@ -4846,27 +4640,13 @@ export type GetPackageVersionHistoryError =
 /**
  * Returns a list of versions of the package, along with their creation time and commit message.
  */
-export const getPackageVersionHistory: API.OperationMethod<
+export const getPackageVersionHistory: API.PaginatedOperationMethod<
   GetPackageVersionHistoryRequest,
   GetPackageVersionHistoryResponse,
   GetPackageVersionHistoryError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetPackageVersionHistoryRequest,
-  ) => stream.Stream<
-    GetPackageVersionHistoryResponse,
-    GetPackageVersionHistoryError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetPackageVersionHistoryRequest,
-  ) => stream.Stream<
-    unknown,
-    GetPackageVersionHistoryError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetPackageVersionHistoryRequest,
   output: GetPackageVersionHistoryResponse,
   errors: [
@@ -4884,27 +4664,7 @@ export const getPackageVersionHistory: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetPackageVersionHistoryRequest,
-  GetPackageVersionHistoryResponse,
-  GetPackageVersionHistoryError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetPackageVersionHistoryRequest,
-  ) => stream.Stream<
-    GetPackageVersionHistoryResponse,
-    GetPackageVersionHistoryError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetPackageVersionHistoryRequest,
-  ) => stream.Stream<
-    unknown,
-    GetPackageVersionHistoryError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetUpgradeHistoryError =
   | BaseException
@@ -4916,27 +4676,13 @@ export type GetUpgradeHistoryError =
 /**
  * Retrieves the complete history of the last 10 upgrades that were performed on the domain.
  */
-export const getUpgradeHistory: API.OperationMethod<
+export const getUpgradeHistory: API.PaginatedOperationMethod<
   GetUpgradeHistoryRequest,
   GetUpgradeHistoryResponse,
   GetUpgradeHistoryError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetUpgradeHistoryRequest,
-  ) => stream.Stream<
-    GetUpgradeHistoryResponse,
-    GetUpgradeHistoryError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetUpgradeHistoryRequest,
-  ) => stream.Stream<
-    unknown,
-    GetUpgradeHistoryError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetUpgradeHistoryRequest,
   output: GetUpgradeHistoryResponse,
   errors: [
@@ -4954,27 +4700,7 @@ export const getUpgradeHistory: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetUpgradeHistoryRequest,
-  GetUpgradeHistoryResponse,
-  GetUpgradeHistoryError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetUpgradeHistoryRequest,
-  ) => stream.Stream<
-    GetUpgradeHistoryResponse,
-    GetUpgradeHistoryError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetUpgradeHistoryRequest,
-  ) => stream.Stream<
-    unknown,
-    GetUpgradeHistoryError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetUpgradeStatusError =
   | BaseException
@@ -4990,7 +4716,7 @@ export const getUpgradeStatus: API.OperationMethod<
   GetUpgradeStatusRequest,
   GetUpgradeStatusResponse,
   GetUpgradeStatusError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetUpgradeStatusRequest,
   output: GetUpgradeStatusResponse,
@@ -5017,7 +4743,7 @@ export const listDomainNames: API.OperationMethod<
   ListDomainNamesRequest,
   ListDomainNamesResponse,
   ListDomainNamesError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListDomainNamesRequest,
   output: ListDomainNamesResponse,
@@ -5037,27 +4763,13 @@ export type ListDomainsForPackageError =
 /**
  * Lists all Amazon ES domains associated with the package.
  */
-export const listDomainsForPackage: API.OperationMethod<
+export const listDomainsForPackage: API.PaginatedOperationMethod<
   ListDomainsForPackageRequest,
   ListDomainsForPackageResponse,
   ListDomainsForPackageError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDomainsForPackageRequest,
-  ) => stream.Stream<
-    ListDomainsForPackageResponse,
-    ListDomainsForPackageError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDomainsForPackageRequest,
-  ) => stream.Stream<
-    unknown,
-    ListDomainsForPackageError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListDomainsForPackageRequest,
   output: ListDomainsForPackageResponse,
   errors: [
@@ -5075,27 +4787,7 @@ export const listDomainsForPackage: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListDomainsForPackageRequest,
-  ListDomainsForPackageResponse,
-  ListDomainsForPackageError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDomainsForPackageRequest,
-  ) => stream.Stream<
-    ListDomainsForPackageResponse,
-    ListDomainsForPackageError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDomainsForPackageRequest,
-  ) => stream.Stream<
-    unknown,
-    ListDomainsForPackageError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListElasticsearchInstanceTypesError =
   | BaseException
@@ -5106,27 +4798,13 @@ export type ListElasticsearchInstanceTypesError =
 /**
  * List all Elasticsearch instance types that are supported for given ElasticsearchVersion
  */
-export const listElasticsearchInstanceTypes: API.OperationMethod<
+export const listElasticsearchInstanceTypes: API.PaginatedOperationMethod<
   ListElasticsearchInstanceTypesRequest,
   ListElasticsearchInstanceTypesResponse,
   ListElasticsearchInstanceTypesError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListElasticsearchInstanceTypesRequest,
-  ) => stream.Stream<
-    ListElasticsearchInstanceTypesResponse,
-    ListElasticsearchInstanceTypesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListElasticsearchInstanceTypesRequest,
-  ) => stream.Stream<
-    unknown,
-    ListElasticsearchInstanceTypesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListElasticsearchInstanceTypesRequest,
   output: ListElasticsearchInstanceTypesResponse,
   errors: [
@@ -5143,27 +4821,7 @@ export const listElasticsearchInstanceTypes: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListElasticsearchInstanceTypesRequest,
-  ListElasticsearchInstanceTypesResponse,
-  ListElasticsearchInstanceTypesError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListElasticsearchInstanceTypesRequest,
-  ) => stream.Stream<
-    ListElasticsearchInstanceTypesResponse,
-    ListElasticsearchInstanceTypesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListElasticsearchInstanceTypesRequest,
-  ) => stream.Stream<
-    unknown,
-    ListElasticsearchInstanceTypesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListElasticsearchVersionsError =
   | BaseException
@@ -5174,27 +4832,13 @@ export type ListElasticsearchVersionsError =
 /**
  * List all supported Elasticsearch versions
  */
-export const listElasticsearchVersions: API.OperationMethod<
+export const listElasticsearchVersions: API.PaginatedOperationMethod<
   ListElasticsearchVersionsRequest,
   ListElasticsearchVersionsResponse,
   ListElasticsearchVersionsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListElasticsearchVersionsRequest,
-  ) => stream.Stream<
-    ListElasticsearchVersionsResponse,
-    ListElasticsearchVersionsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListElasticsearchVersionsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListElasticsearchVersionsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListElasticsearchVersionsRequest,
   output: ListElasticsearchVersionsResponse,
   errors: [
@@ -5211,27 +4855,7 @@ export const listElasticsearchVersions: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListElasticsearchVersionsRequest,
-  ListElasticsearchVersionsResponse,
-  ListElasticsearchVersionsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListElasticsearchVersionsRequest,
-  ) => stream.Stream<
-    ListElasticsearchVersionsResponse,
-    ListElasticsearchVersionsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListElasticsearchVersionsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListElasticsearchVersionsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListPackagesForDomainError =
   | AccessDeniedException
@@ -5243,27 +4867,13 @@ export type ListPackagesForDomainError =
 /**
  * Lists all packages associated with the Amazon ES domain.
  */
-export const listPackagesForDomain: API.OperationMethod<
+export const listPackagesForDomain: API.PaginatedOperationMethod<
   ListPackagesForDomainRequest,
   ListPackagesForDomainResponse,
   ListPackagesForDomainError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPackagesForDomainRequest,
-  ) => stream.Stream<
-    ListPackagesForDomainResponse,
-    ListPackagesForDomainError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPackagesForDomainRequest,
-  ) => stream.Stream<
-    unknown,
-    ListPackagesForDomainError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListPackagesForDomainRequest,
   output: ListPackagesForDomainResponse,
   errors: [
@@ -5281,27 +4891,7 @@ export const listPackagesForDomain: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListPackagesForDomainRequest,
-  ListPackagesForDomainResponse,
-  ListPackagesForDomainError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPackagesForDomainRequest,
-  ) => stream.Stream<
-    ListPackagesForDomainResponse,
-    ListPackagesForDomainError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPackagesForDomainRequest,
-  ) => stream.Stream<
-    unknown,
-    ListPackagesForDomainError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsError =
   | BaseException
@@ -5316,7 +4906,7 @@ export const listTags: API.OperationMethod<
   ListTagsRequest,
   ListTagsResponse,
   ListTagsError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsRequest,
   output: ListTagsResponse,
@@ -5345,7 +4935,7 @@ export const listVpcEndpointAccess: API.OperationMethod<
   ListVpcEndpointAccessRequest,
   ListVpcEndpointAccessResponse,
   ListVpcEndpointAccessError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListVpcEndpointAccessRequest,
   output: ListVpcEndpointAccessResponse,
@@ -5372,7 +4962,7 @@ export const listVpcEndpoints: API.OperationMethod<
   ListVpcEndpointsRequest,
   ListVpcEndpointsResponse,
   ListVpcEndpointsError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListVpcEndpointsRequest,
   output: ListVpcEndpointsResponse,
@@ -5395,7 +4985,7 @@ export const listVpcEndpointsForDomain: API.OperationMethod<
   ListVpcEndpointsForDomainRequest,
   ListVpcEndpointsForDomainResponse,
   ListVpcEndpointsForDomainError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListVpcEndpointsForDomainRequest,
   output: ListVpcEndpointsForDomainResponse,
@@ -5425,7 +5015,7 @@ export const purchaseReservedElasticsearchInstanceOffering: API.OperationMethod<
   PurchaseReservedElasticsearchInstanceOfferingRequest,
   PurchaseReservedElasticsearchInstanceOfferingResponse,
   PurchaseReservedElasticsearchInstanceOfferingError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PurchaseReservedElasticsearchInstanceOfferingRequest,
   output: PurchaseReservedElasticsearchInstanceOfferingResponse,
@@ -5453,7 +5043,7 @@ export const rejectInboundCrossClusterSearchConnection: API.OperationMethod<
   RejectInboundCrossClusterSearchConnectionRequest,
   RejectInboundCrossClusterSearchConnectionResponse,
   RejectInboundCrossClusterSearchConnectionError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RejectInboundCrossClusterSearchConnectionRequest,
   output: RejectInboundCrossClusterSearchConnectionResponse,
@@ -5475,7 +5065,7 @@ export const removeTags: API.OperationMethod<
   RemoveTagsRequest,
   RemoveTagsResponse,
   RemoveTagsError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RemoveTagsRequest,
   output: RemoveTagsResponse,
@@ -5500,7 +5090,7 @@ export const revokeVpcEndpointAccess: API.OperationMethod<
   RevokeVpcEndpointAccessRequest,
   RevokeVpcEndpointAccessResponse,
   RevokeVpcEndpointAccessError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RevokeVpcEndpointAccessRequest,
   output: RevokeVpcEndpointAccessResponse,
@@ -5529,7 +5119,7 @@ export const startElasticsearchServiceSoftwareUpdate: API.OperationMethod<
   StartElasticsearchServiceSoftwareUpdateRequest,
   StartElasticsearchServiceSoftwareUpdateResponse,
   StartElasticsearchServiceSoftwareUpdateError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartElasticsearchServiceSoftwareUpdateRequest,
   output: StartElasticsearchServiceSoftwareUpdateResponse,
@@ -5559,7 +5149,7 @@ export const updateElasticsearchDomainConfig: API.OperationMethod<
   UpdateElasticsearchDomainConfigRequest,
   UpdateElasticsearchDomainConfigResponse,
   UpdateElasticsearchDomainConfigError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateElasticsearchDomainConfigRequest,
   output: UpdateElasticsearchDomainConfigResponse,
@@ -5591,7 +5181,7 @@ export const updatePackage: API.OperationMethod<
   UpdatePackageRequest,
   UpdatePackageResponse,
   UpdatePackageError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdatePackageRequest,
   output: UpdatePackageResponse,
@@ -5623,7 +5213,7 @@ export const updateVpcEndpoint: API.OperationMethod<
   UpdateVpcEndpointRequest,
   UpdateVpcEndpointResponse,
   UpdateVpcEndpointError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateVpcEndpointRequest,
   output: UpdateVpcEndpointResponse,
@@ -5655,7 +5245,7 @@ export const upgradeElasticsearchDomain: API.OperationMethod<
   UpgradeElasticsearchDomainRequest,
   UpgradeElasticsearchDomainResponse,
   UpgradeElasticsearchDomainError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpgradeElasticsearchDomainRequest,
   output: UpgradeElasticsearchDomainResponse,

@@ -1,7 +1,6 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as redacted from "effect/Redacted";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -9,7 +8,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 import { SensitiveString } from "../sensitive.ts";
 const svc = T.AwsApiService({ sdkId: "Signin", serviceShapeName: "Signin" });
 const auth = T.AwsAuthSigv4({ name: "signin" });
@@ -299,7 +297,7 @@ export class AccessDeniedException
       error: S.suspend(() => OAuth2ErrorCode).annotate({
         identifier: "OAuth2ErrorCode",
       }),
-      message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
     },
   ).pipe(C.withAuthError) {}
 export class ConflictException
@@ -309,7 +307,7 @@ export class ConflictException
       error: S.suspend(() => OAuth2ErrorCode).annotate({
         identifier: "OAuth2ErrorCode",
       }),
-      message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
     },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
@@ -320,7 +318,7 @@ export class InternalServerException
       error: S.suspend(() => OAuth2ErrorCode).annotate({
         identifier: "OAuth2ErrorCode",
       }),
-      message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
     },
     T.HttpError(500),
   ).pipe(C.withServerError) {}
@@ -331,7 +329,7 @@ export class ResourceNotFoundException
       error: S.suspend(() => OAuth2ErrorCode).annotate({
         identifier: "OAuth2ErrorCode",
       }),
-      message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
     },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
@@ -342,7 +340,7 @@ export class ServiceQuotaExceededException
       error: S.suspend(() => OAuth2ErrorCode).annotate({
         identifier: "OAuth2ErrorCode",
       }),
-      message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
     },
     T.HttpError(402),
   ).pipe(C.withQuotaError) {}
@@ -353,7 +351,7 @@ export class TooManyRequestsError
       error: S.suspend(() => OAuth2ErrorCode).annotate({
         identifier: "OAuth2ErrorCode",
       }),
-      message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
     },
     T.HttpError(429),
   ).pipe(C.withThrottlingError) {}
@@ -364,7 +362,7 @@ export class ValidationException
       error: S.suspend(() => OAuth2ErrorCode).annotate({
         identifier: "OAuth2ErrorCode",
       }),
-      message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
     },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
@@ -849,7 +847,7 @@ export const createOAuth2Token: API.OperationMethod<
   CreateOAuth2TokenRequest,
   CreateOAuth2TokenResponse,
   CreateOAuth2TokenError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateOAuth2TokenRequest,
   output: CreateOAuth2TokenResponse,
@@ -878,7 +876,7 @@ export const deleteConsoleAuthorizationConfiguration: API.OperationMethod<
   DeleteConsoleAuthorizationConfigurationInput,
   DeleteConsoleAuthorizationConfigurationOutput,
   DeleteConsoleAuthorizationConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteConsoleAuthorizationConfigurationInput,
   output: DeleteConsoleAuthorizationConfigurationOutput,
@@ -908,7 +906,7 @@ export const deleteResourcePermissionStatement: API.OperationMethod<
   DeleteResourcePermissionStatementInput,
   DeleteResourcePermissionStatementOutput,
   DeleteResourcePermissionStatementError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteResourcePermissionStatementInput,
   output: DeleteResourcePermissionStatementOutput,
@@ -938,7 +936,7 @@ export const getConsoleAuthorizationConfiguration: API.OperationMethod<
   GetConsoleAuthorizationConfigurationInput,
   GetConsoleAuthorizationConfigurationOutput,
   GetConsoleAuthorizationConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetConsoleAuthorizationConfigurationInput,
   output: GetConsoleAuthorizationConfigurationOutput,
@@ -967,7 +965,7 @@ export const getResourcePolicy: API.OperationMethod<
   GetResourcePolicyInput,
   GetResourcePolicyOutput,
   GetResourcePolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetResourcePolicyInput,
   output: GetResourcePolicyOutput,
@@ -992,27 +990,13 @@ export type ListResourcePermissionStatementsError =
 /**
  * Retrieve all permission statements in the account's SignIn resource-based policy
  */
-export const listResourcePermissionStatements: API.OperationMethod<
+export const listResourcePermissionStatements: API.PaginatedOperationMethod<
   ListResourcePermissionStatementsInput,
   ListResourcePermissionStatementsOutput,
   ListResourcePermissionStatementsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListResourcePermissionStatementsInput,
-  ) => stream.Stream<
-    ListResourcePermissionStatementsOutput,
-    ListResourcePermissionStatementsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListResourcePermissionStatementsInput,
-  ) => stream.Stream<
-    PermissionStatementSummary,
-    ListResourcePermissionStatementsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  PermissionStatementSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListResourcePermissionStatementsInput,
   output: ListResourcePermissionStatementsOutput,
   errors: [
@@ -1031,27 +1015,7 @@ export const listResourcePermissionStatements: API.OperationMethod<
     items: "permissionStatements",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListResourcePermissionStatementsInput,
-  ListResourcePermissionStatementsOutput,
-  ListResourcePermissionStatementsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListResourcePermissionStatementsInput,
-  ) => stream.Stream<
-    ListResourcePermissionStatementsOutput,
-    ListResourcePermissionStatementsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListResourcePermissionStatementsInput,
-  ) => stream.Stream<
-    PermissionStatementSummary,
-    ListResourcePermissionStatementsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type PutConsoleAuthorizationConfigurationError =
   | AccessDeniedException
@@ -1068,7 +1032,7 @@ export const putConsoleAuthorizationConfiguration: API.OperationMethod<
   PutConsoleAuthorizationConfigurationInput,
   PutConsoleAuthorizationConfigurationOutput,
   PutConsoleAuthorizationConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutConsoleAuthorizationConfigurationInput,
   output: PutConsoleAuthorizationConfigurationOutput,
@@ -1100,7 +1064,7 @@ export const putResourcePermissionStatement: API.OperationMethod<
   PutResourcePermissionStatementInput,
   PutResourcePermissionStatementOutput,
   PutResourcePermissionStatementError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutResourcePermissionStatementInput,
   output: PutResourcePermissionStatementOutput,

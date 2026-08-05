@@ -1,6 +1,5 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -8,7 +7,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 const svc = T.AwsApiService({
   sdkId: "IoTThingsGraph",
   serviceShapeName: "IotThingsGraphFrontEndService",
@@ -91,43 +89,43 @@ const rules = T.EndpointResolver((p, _) => {
 export class InternalFailureException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalFailureException>()(
     "InternalFailureException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(500),
   ).pipe(C.withServerError) {}
 export class InvalidRequestException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidRequestException>()(
     "InvalidRequestException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class LimitExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<LimitExceededException>()(
     "LimitExceededException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(410),
   ).pipe(C.withBadRequestError) {}
 export class ResourceAlreadyExistsException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceAlreadyExistsException>()(
     "ResourceAlreadyExistsException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(409),
   ).pipe(C.withConflictError, C.withAlreadyExistsError) {}
 export class ResourceInUseException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceInUseException>()(
     "ResourceInUseException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(412),
   ) {}
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class ThrottlingException
   extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
     "ThrottlingException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(429),
   ).pipe(C.withThrottlingError) {}
 export type ThingName = string;
@@ -1383,7 +1381,7 @@ export const associateEntityToThing: API.OperationMethod<
   AssociateEntityToThingRequest,
   AssociateEntityToThingResponse,
   AssociateEntityToThingError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AssociateEntityToThingRequest,
   output: AssociateEntityToThingResponse,
@@ -1414,7 +1412,7 @@ export const createFlowTemplate: API.OperationMethod<
   CreateFlowTemplateRequest,
   CreateFlowTemplateResponse,
   CreateFlowTemplateError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateFlowTemplateRequest,
   output: CreateFlowTemplateResponse,
@@ -1456,7 +1454,7 @@ export const createSystemInstance: API.OperationMethod<
   CreateSystemInstanceRequest,
   CreateSystemInstanceResponse,
   CreateSystemInstanceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateSystemInstanceRequest,
   output: CreateSystemInstanceResponse,
@@ -1486,7 +1484,7 @@ export const createSystemTemplate: API.OperationMethod<
   CreateSystemTemplateRequest,
   CreateSystemTemplateResponse,
   CreateSystemTemplateError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateSystemTemplateRequest,
   output: CreateSystemTemplateResponse,
@@ -1515,7 +1513,7 @@ export const deleteFlowTemplate: API.OperationMethod<
   DeleteFlowTemplateRequest,
   DeleteFlowTemplateResponse,
   DeleteFlowTemplateError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteFlowTemplateRequest,
   output: DeleteFlowTemplateResponse,
@@ -1542,7 +1540,7 @@ export const deleteNamespace: API.OperationMethod<
   DeleteNamespaceRequest,
   DeleteNamespaceResponse,
   DeleteNamespaceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteNamespaceRequest,
   output: DeleteNamespaceResponse,
@@ -1568,7 +1566,7 @@ export const deleteSystemInstance: API.OperationMethod<
   DeleteSystemInstanceRequest,
   DeleteSystemInstanceResponse,
   DeleteSystemInstanceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteSystemInstanceRequest,
   output: DeleteSystemInstanceResponse,
@@ -1597,7 +1595,7 @@ export const deleteSystemTemplate: API.OperationMethod<
   DeleteSystemTemplateRequest,
   DeleteSystemTemplateResponse,
   DeleteSystemTemplateError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteSystemTemplateRequest,
   output: DeleteSystemTemplateResponse,
@@ -1638,7 +1636,7 @@ export const deploySystemInstance: API.OperationMethod<
   DeploySystemInstanceRequest,
   DeploySystemInstanceResponse,
   DeploySystemInstanceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeploySystemInstanceRequest,
   output: DeploySystemInstanceResponse,
@@ -1667,7 +1665,7 @@ export const deprecateFlowTemplate: API.OperationMethod<
   DeprecateFlowTemplateRequest,
   DeprecateFlowTemplateResponse,
   DeprecateFlowTemplateError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeprecateFlowTemplateRequest,
   output: DeprecateFlowTemplateResponse,
@@ -1695,7 +1693,7 @@ export const deprecateSystemTemplate: API.OperationMethod<
   DeprecateSystemTemplateRequest,
   DeprecateSystemTemplateResponse,
   DeprecateSystemTemplateError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeprecateSystemTemplateRequest,
   output: DeprecateSystemTemplateResponse,
@@ -1723,7 +1721,7 @@ export const describeNamespace: API.OperationMethod<
   DescribeNamespaceRequest,
   DescribeNamespaceResponse,
   DescribeNamespaceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeNamespaceRequest,
   output: DescribeNamespaceResponse,
@@ -1752,7 +1750,7 @@ export const dissociateEntityFromThing: API.OperationMethod<
   DissociateEntityFromThingRequest,
   DissociateEntityFromThingResponse,
   DissociateEntityFromThingError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DissociateEntityFromThingRequest,
   output: DissociateEntityFromThingResponse,
@@ -1801,7 +1799,7 @@ export const getEntities: API.OperationMethod<
   GetEntitiesRequest,
   GetEntitiesResponse,
   GetEntitiesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetEntitiesRequest,
   output: GetEntitiesResponse,
@@ -1829,7 +1827,7 @@ export const getFlowTemplate: API.OperationMethod<
   GetFlowTemplateRequest,
   GetFlowTemplateResponse,
   GetFlowTemplateError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetFlowTemplateRequest,
   output: GetFlowTemplateResponse,
@@ -1854,27 +1852,13 @@ export type GetFlowTemplateRevisionsError =
  * Gets revisions of the specified workflow. Only the last 100 revisions are stored. If the workflow has been deprecated,
  * this action will return revisions that occurred before the deprecation. This action won't work for workflows that have been deleted.
  */
-export const getFlowTemplateRevisions: API.OperationMethod<
+export const getFlowTemplateRevisions: API.PaginatedOperationMethod<
   GetFlowTemplateRevisionsRequest,
   GetFlowTemplateRevisionsResponse,
   GetFlowTemplateRevisionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetFlowTemplateRevisionsRequest,
-  ) => stream.Stream<
-    GetFlowTemplateRevisionsResponse,
-    GetFlowTemplateRevisionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetFlowTemplateRevisionsRequest,
-  ) => stream.Stream<
-    FlowTemplateSummary,
-    GetFlowTemplateRevisionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  FlowTemplateSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetFlowTemplateRevisionsRequest,
   output: GetFlowTemplateRevisionsResponse,
   errors: [
@@ -1892,27 +1876,7 @@ export const getFlowTemplateRevisions: API.OperationMethod<
     items: "summaries",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetFlowTemplateRevisionsRequest,
-  GetFlowTemplateRevisionsResponse,
-  GetFlowTemplateRevisionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetFlowTemplateRevisionsRequest,
-  ) => stream.Stream<
-    GetFlowTemplateRevisionsResponse,
-    GetFlowTemplateRevisionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetFlowTemplateRevisionsRequest,
-  ) => stream.Stream<
-    FlowTemplateSummary,
-    GetFlowTemplateRevisionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetNamespaceDeletionStatusError =
   | InternalFailureException
@@ -1926,7 +1890,7 @@ export const getNamespaceDeletionStatus: API.OperationMethod<
   GetNamespaceDeletionStatusRequest,
   GetNamespaceDeletionStatusResponse,
   GetNamespaceDeletionStatusError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetNamespaceDeletionStatusRequest,
   output: GetNamespaceDeletionStatusResponse,
@@ -1953,7 +1917,7 @@ export const getSystemInstance: API.OperationMethod<
   GetSystemInstanceRequest,
   GetSystemInstanceResponse,
   GetSystemInstanceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetSystemInstanceRequest,
   output: GetSystemInstanceResponse,
@@ -1981,7 +1945,7 @@ export const getSystemTemplate: API.OperationMethod<
   GetSystemTemplateRequest,
   GetSystemTemplateResponse,
   GetSystemTemplateError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetSystemTemplateRequest,
   output: GetSystemTemplateResponse,
@@ -2006,27 +1970,13 @@ export type GetSystemTemplateRevisionsError =
  * Gets revisions made to the specified system template. Only the previous 100 revisions are stored. If the system has been deprecated, this action will return
  * the revisions that occurred before its deprecation. This action won't work with systems that have been deleted.
  */
-export const getSystemTemplateRevisions: API.OperationMethod<
+export const getSystemTemplateRevisions: API.PaginatedOperationMethod<
   GetSystemTemplateRevisionsRequest,
   GetSystemTemplateRevisionsResponse,
   GetSystemTemplateRevisionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetSystemTemplateRevisionsRequest,
-  ) => stream.Stream<
-    GetSystemTemplateRevisionsResponse,
-    GetSystemTemplateRevisionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetSystemTemplateRevisionsRequest,
-  ) => stream.Stream<
-    SystemTemplateSummary,
-    GetSystemTemplateRevisionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  SystemTemplateSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetSystemTemplateRevisionsRequest,
   output: GetSystemTemplateRevisionsResponse,
   errors: [
@@ -2044,27 +1994,7 @@ export const getSystemTemplateRevisions: API.OperationMethod<
     items: "summaries",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetSystemTemplateRevisionsRequest,
-  GetSystemTemplateRevisionsResponse,
-  GetSystemTemplateRevisionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetSystemTemplateRevisionsRequest,
-  ) => stream.Stream<
-    GetSystemTemplateRevisionsResponse,
-    GetSystemTemplateRevisionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetSystemTemplateRevisionsRequest,
-  ) => stream.Stream<
-    SystemTemplateSummary,
-    GetSystemTemplateRevisionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetUploadStatusError =
   | InternalFailureException
@@ -2079,7 +2009,7 @@ export const getUploadStatus: API.OperationMethod<
   GetUploadStatusRequest,
   GetUploadStatusResponse,
   GetUploadStatusError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetUploadStatusRequest,
   output: GetUploadStatusResponse,
@@ -2103,27 +2033,13 @@ export type ListFlowExecutionMessagesError =
 /**
  * Returns a list of objects that contain information about events in a flow execution.
  */
-export const listFlowExecutionMessages: API.OperationMethod<
+export const listFlowExecutionMessages: API.PaginatedOperationMethod<
   ListFlowExecutionMessagesRequest,
   ListFlowExecutionMessagesResponse,
   ListFlowExecutionMessagesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListFlowExecutionMessagesRequest,
-  ) => stream.Stream<
-    ListFlowExecutionMessagesResponse,
-    ListFlowExecutionMessagesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListFlowExecutionMessagesRequest,
-  ) => stream.Stream<
-    FlowExecutionMessage,
-    ListFlowExecutionMessagesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  FlowExecutionMessage
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListFlowExecutionMessagesRequest,
   output: ListFlowExecutionMessagesResponse,
   errors: [
@@ -2141,27 +2057,7 @@ export const listFlowExecutionMessages: API.OperationMethod<
     items: "messages",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListFlowExecutionMessagesRequest,
-  ListFlowExecutionMessagesResponse,
-  ListFlowExecutionMessagesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListFlowExecutionMessagesRequest,
-  ) => stream.Stream<
-    ListFlowExecutionMessagesResponse,
-    ListFlowExecutionMessagesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListFlowExecutionMessagesRequest,
-  ) => stream.Stream<
-    FlowExecutionMessage,
-    ListFlowExecutionMessagesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsForResourceError =
   | InternalFailureException
@@ -2172,27 +2068,13 @@ export type ListTagsForResourceError =
 /**
  * Lists all tags on an AWS IoT Things Graph resource.
  */
-export const listTagsForResource: API.OperationMethod<
+export const listTagsForResource: API.PaginatedOperationMethod<
   ListTagsForResourceRequest,
   ListTagsForResourceResponse,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTagsForResourceRequest,
-  ) => stream.Stream<
-    ListTagsForResourceResponse,
-    ListTagsForResourceError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTagsForResourceRequest,
-  ) => stream.Stream<
-    Tag,
-    ListTagsForResourceError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Tag
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
   errors: [
@@ -2210,27 +2092,7 @@ export const listTagsForResource: API.OperationMethod<
     items: "tags",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListTagsForResourceRequest,
-  ListTagsForResourceResponse,
-  ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTagsForResourceRequest,
-  ) => stream.Stream<
-    ListTagsForResourceResponse,
-    ListTagsForResourceError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTagsForResourceRequest,
-  ) => stream.Stream<
-    Tag,
-    ListTagsForResourceError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type SearchEntitiesError =
   | InternalFailureException
@@ -2240,27 +2102,13 @@ export type SearchEntitiesError =
 /**
  * Searches for entities of the specified type. You can search for entities in your namespace and the public namespace that you're tracking.
  */
-export const searchEntities: API.OperationMethod<
+export const searchEntities: API.PaginatedOperationMethod<
   SearchEntitiesRequest,
   SearchEntitiesResponse,
   SearchEntitiesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: SearchEntitiesRequest,
-  ) => stream.Stream<
-    SearchEntitiesResponse,
-    SearchEntitiesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: SearchEntitiesRequest,
-  ) => stream.Stream<
-    EntityDescription,
-    SearchEntitiesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  EntityDescription
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: SearchEntitiesRequest,
   output: SearchEntitiesResponse,
   errors: [
@@ -2277,27 +2125,7 @@ export const searchEntities: API.OperationMethod<
     items: "descriptions",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  SearchEntitiesRequest,
-  SearchEntitiesResponse,
-  SearchEntitiesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: SearchEntitiesRequest,
-  ) => stream.Stream<
-    SearchEntitiesResponse,
-    SearchEntitiesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: SearchEntitiesRequest,
-  ) => stream.Stream<
-    EntityDescription,
-    SearchEntitiesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type SearchFlowExecutionsError =
   | InternalFailureException
@@ -2308,27 +2136,13 @@ export type SearchFlowExecutionsError =
 /**
  * Searches for AWS IoT Things Graph workflow execution instances.
  */
-export const searchFlowExecutions: API.OperationMethod<
+export const searchFlowExecutions: API.PaginatedOperationMethod<
   SearchFlowExecutionsRequest,
   SearchFlowExecutionsResponse,
   SearchFlowExecutionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: SearchFlowExecutionsRequest,
-  ) => stream.Stream<
-    SearchFlowExecutionsResponse,
-    SearchFlowExecutionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: SearchFlowExecutionsRequest,
-  ) => stream.Stream<
-    FlowExecutionSummary,
-    SearchFlowExecutionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  FlowExecutionSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: SearchFlowExecutionsRequest,
   output: SearchFlowExecutionsResponse,
   errors: [
@@ -2346,27 +2160,7 @@ export const searchFlowExecutions: API.OperationMethod<
     items: "summaries",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  SearchFlowExecutionsRequest,
-  SearchFlowExecutionsResponse,
-  SearchFlowExecutionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: SearchFlowExecutionsRequest,
-  ) => stream.Stream<
-    SearchFlowExecutionsResponse,
-    SearchFlowExecutionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: SearchFlowExecutionsRequest,
-  ) => stream.Stream<
-    FlowExecutionSummary,
-    SearchFlowExecutionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type SearchFlowTemplatesError =
   | InternalFailureException
@@ -2376,27 +2170,13 @@ export type SearchFlowTemplatesError =
 /**
  * Searches for summary information about workflows.
  */
-export const searchFlowTemplates: API.OperationMethod<
+export const searchFlowTemplates: API.PaginatedOperationMethod<
   SearchFlowTemplatesRequest,
   SearchFlowTemplatesResponse,
   SearchFlowTemplatesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: SearchFlowTemplatesRequest,
-  ) => stream.Stream<
-    SearchFlowTemplatesResponse,
-    SearchFlowTemplatesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: SearchFlowTemplatesRequest,
-  ) => stream.Stream<
-    FlowTemplateSummary,
-    SearchFlowTemplatesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  FlowTemplateSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: SearchFlowTemplatesRequest,
   output: SearchFlowTemplatesResponse,
   errors: [
@@ -2413,27 +2193,7 @@ export const searchFlowTemplates: API.OperationMethod<
     items: "summaries",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  SearchFlowTemplatesRequest,
-  SearchFlowTemplatesResponse,
-  SearchFlowTemplatesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: SearchFlowTemplatesRequest,
-  ) => stream.Stream<
-    SearchFlowTemplatesResponse,
-    SearchFlowTemplatesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: SearchFlowTemplatesRequest,
-  ) => stream.Stream<
-    FlowTemplateSummary,
-    SearchFlowTemplatesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type SearchSystemInstancesError =
   | InternalFailureException
@@ -2443,27 +2203,13 @@ export type SearchSystemInstancesError =
 /**
  * Searches for system instances in the user's account.
  */
-export const searchSystemInstances: API.OperationMethod<
+export const searchSystemInstances: API.PaginatedOperationMethod<
   SearchSystemInstancesRequest,
   SearchSystemInstancesResponse,
   SearchSystemInstancesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: SearchSystemInstancesRequest,
-  ) => stream.Stream<
-    SearchSystemInstancesResponse,
-    SearchSystemInstancesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: SearchSystemInstancesRequest,
-  ) => stream.Stream<
-    SystemInstanceSummary,
-    SearchSystemInstancesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  SystemInstanceSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: SearchSystemInstancesRequest,
   output: SearchSystemInstancesResponse,
   errors: [
@@ -2480,27 +2226,7 @@ export const searchSystemInstances: API.OperationMethod<
     items: "summaries",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  SearchSystemInstancesRequest,
-  SearchSystemInstancesResponse,
-  SearchSystemInstancesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: SearchSystemInstancesRequest,
-  ) => stream.Stream<
-    SearchSystemInstancesResponse,
-    SearchSystemInstancesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: SearchSystemInstancesRequest,
-  ) => stream.Stream<
-    SystemInstanceSummary,
-    SearchSystemInstancesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type SearchSystemTemplatesError =
   | InternalFailureException
@@ -2510,27 +2236,13 @@ export type SearchSystemTemplatesError =
 /**
  * Searches for summary information about systems in the user's account. You can filter by the ID of a workflow to return only systems that use the specified workflow.
  */
-export const searchSystemTemplates: API.OperationMethod<
+export const searchSystemTemplates: API.PaginatedOperationMethod<
   SearchSystemTemplatesRequest,
   SearchSystemTemplatesResponse,
   SearchSystemTemplatesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: SearchSystemTemplatesRequest,
-  ) => stream.Stream<
-    SearchSystemTemplatesResponse,
-    SearchSystemTemplatesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: SearchSystemTemplatesRequest,
-  ) => stream.Stream<
-    SystemTemplateSummary,
-    SearchSystemTemplatesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  SystemTemplateSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: SearchSystemTemplatesRequest,
   output: SearchSystemTemplatesResponse,
   errors: [
@@ -2547,27 +2259,7 @@ export const searchSystemTemplates: API.OperationMethod<
     items: "summaries",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  SearchSystemTemplatesRequest,
-  SearchSystemTemplatesResponse,
-  SearchSystemTemplatesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: SearchSystemTemplatesRequest,
-  ) => stream.Stream<
-    SearchSystemTemplatesResponse,
-    SearchSystemTemplatesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: SearchSystemTemplatesRequest,
-  ) => stream.Stream<
-    SystemTemplateSummary,
-    SearchSystemTemplatesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type SearchThingsError =
   | InternalFailureException
@@ -2583,27 +2275,13 @@ export type SearchThingsError =
  *
  * This action searches for exact matches and doesn't perform partial text matching.
  */
-export const searchThings: API.OperationMethod<
+export const searchThings: API.PaginatedOperationMethod<
   SearchThingsRequest,
   SearchThingsResponse,
   SearchThingsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: SearchThingsRequest,
-  ) => stream.Stream<
-    SearchThingsResponse,
-    SearchThingsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: SearchThingsRequest,
-  ) => stream.Stream<
-    Thing,
-    SearchThingsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Thing
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: SearchThingsRequest,
   output: SearchThingsResponse,
   errors: [
@@ -2621,27 +2299,7 @@ export const searchThings: API.OperationMethod<
     items: "things",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  SearchThingsRequest,
-  SearchThingsResponse,
-  SearchThingsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: SearchThingsRequest,
-  ) => stream.Stream<
-    SearchThingsResponse,
-    SearchThingsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: SearchThingsRequest,
-  ) => stream.Stream<
-    Thing,
-    SearchThingsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type TagResourceError =
   | InternalFailureException
@@ -2656,7 +2314,7 @@ export const tagResource: API.OperationMethod<
   TagResourceRequest,
   TagResourceResponse,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -2685,7 +2343,7 @@ export const undeploySystemInstance: API.OperationMethod<
   UndeploySystemInstanceRequest,
   UndeploySystemInstanceResponse,
   UndeploySystemInstanceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UndeploySystemInstanceRequest,
   output: UndeploySystemInstanceResponse,
@@ -2714,7 +2372,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceRequest,
   UntagResourceResponse,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -2743,7 +2401,7 @@ export const updateFlowTemplate: API.OperationMethod<
   UpdateFlowTemplateRequest,
   UpdateFlowTemplateResponse,
   UpdateFlowTemplateError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateFlowTemplateRequest,
   output: UpdateFlowTemplateResponse,
@@ -2771,7 +2429,7 @@ export const updateSystemTemplate: API.OperationMethod<
   UpdateSystemTemplateRequest,
   UpdateSystemTemplateResponse,
   UpdateSystemTemplateError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateSystemTemplateRequest,
   output: UpdateSystemTemplateResponse,
@@ -2810,7 +2468,7 @@ export const uploadEntityDefinitions: API.OperationMethod<
   UploadEntityDefinitionsRequest,
   UploadEntityDefinitionsResponse,
   UploadEntityDefinitionsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UploadEntityDefinitionsRequest,
   output: UploadEntityDefinitionsResponse,

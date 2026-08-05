@@ -1,6 +1,5 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -8,7 +7,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 const svc = T.AwsApiService({
   sdkId: "Route53 Recovery Readiness",
   serviceShapeName: "Route53RecoveryReadiness",
@@ -88,37 +86,37 @@ const rules = T.EndpointResolver((p, _) => {
 export class AccessDeniedException
   extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
     "AccessDeniedException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(403),
   ).pipe(C.withAuthError) {}
 export class ConflictException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
     "ConflictException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class InternalServerException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
     "InternalServerException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(500),
   ).pipe(C.withServerError) {}
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class ThrottlingException
   extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
     "ThrottlingException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(429),
   ).pipe(C.withThrottlingError) {}
 export class ValidationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
     "ValidationException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export type __listOf__string = string[];
@@ -1779,7 +1777,7 @@ export const createCell: API.OperationMethod<
   CreateCellRequest,
   CreateCellResponse,
   CreateCellError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateCellRequest,
   output: CreateCellResponse,
@@ -1809,7 +1807,7 @@ export const createCrossAccountAuthorization: API.OperationMethod<
   CreateCrossAccountAuthorizationRequest,
   CreateCrossAccountAuthorizationResponse,
   CreateCrossAccountAuthorizationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateCrossAccountAuthorizationRequest,
   output: CreateCrossAccountAuthorizationResponse,
@@ -1839,7 +1837,7 @@ export const createReadinessCheck: API.OperationMethod<
   CreateReadinessCheckRequest,
   CreateReadinessCheckResponse,
   CreateReadinessCheckError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateReadinessCheckRequest,
   output: CreateReadinessCheckResponse,
@@ -1869,7 +1867,7 @@ export const createRecoveryGroup: API.OperationMethod<
   CreateRecoveryGroupRequest,
   CreateRecoveryGroupResponse,
   CreateRecoveryGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateRecoveryGroupRequest,
   output: CreateRecoveryGroupResponse,
@@ -1899,7 +1897,7 @@ export const createResourceSet: API.OperationMethod<
   CreateResourceSetRequest,
   CreateResourceSetResponse,
   CreateResourceSetError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateResourceSetRequest,
   output: CreateResourceSetResponse,
@@ -1929,7 +1927,7 @@ export const deleteCell: API.OperationMethod<
   DeleteCellRequest,
   DeleteCellResponse,
   DeleteCellError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteCellRequest,
   output: DeleteCellResponse,
@@ -1958,7 +1956,7 @@ export const deleteCrossAccountAuthorization: API.OperationMethod<
   DeleteCrossAccountAuthorizationRequest,
   DeleteCrossAccountAuthorizationResponse,
   DeleteCrossAccountAuthorizationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteCrossAccountAuthorizationRequest,
   output: DeleteCrossAccountAuthorizationResponse,
@@ -1987,7 +1985,7 @@ export const deleteReadinessCheck: API.OperationMethod<
   DeleteReadinessCheckRequest,
   DeleteReadinessCheckResponse,
   DeleteReadinessCheckError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteReadinessCheckRequest,
   output: DeleteReadinessCheckResponse,
@@ -2017,7 +2015,7 @@ export const deleteRecoveryGroup: API.OperationMethod<
   DeleteRecoveryGroupRequest,
   DeleteRecoveryGroupResponse,
   DeleteRecoveryGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteRecoveryGroupRequest,
   output: DeleteRecoveryGroupResponse,
@@ -2047,7 +2045,7 @@ export const deleteResourceSet: API.OperationMethod<
   DeleteResourceSetRequest,
   DeleteResourceSetResponse,
   DeleteResourceSetError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteResourceSetRequest,
   output: DeleteResourceSetResponse,
@@ -2077,7 +2075,7 @@ export const getArchitectureRecommendations: API.OperationMethod<
   GetArchitectureRecommendationsRequest,
   GetArchitectureRecommendationsResponse,
   GetArchitectureRecommendationsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetArchitectureRecommendationsRequest,
   output: GetArchitectureRecommendationsResponse,
@@ -2107,7 +2105,7 @@ export const getCell: API.OperationMethod<
   GetCellRequest,
   GetCellResponse,
   GetCellError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetCellRequest,
   output: GetCellResponse,
@@ -2133,27 +2131,13 @@ export type GetCellReadinessSummaryError =
 /**
  * Gets readiness for a cell. Aggregates the readiness of all the resources that are associated with the cell into a single value.
  */
-export const getCellReadinessSummary: API.OperationMethod<
+export const getCellReadinessSummary: API.PaginatedOperationMethod<
   GetCellReadinessSummaryRequest,
   GetCellReadinessSummaryResponse,
   GetCellReadinessSummaryError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetCellReadinessSummaryRequest,
-  ) => stream.Stream<
-    GetCellReadinessSummaryResponse,
-    GetCellReadinessSummaryError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetCellReadinessSummaryRequest,
-  ) => stream.Stream<
-    ReadinessCheckSummary,
-    GetCellReadinessSummaryError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ReadinessCheckSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetCellReadinessSummaryRequest,
   output: GetCellReadinessSummaryResponse,
   errors: [
@@ -2172,27 +2156,7 @@ export const getCellReadinessSummary: API.OperationMethod<
     items: "ReadinessChecks",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetCellReadinessSummaryRequest,
-  GetCellReadinessSummaryResponse,
-  GetCellReadinessSummaryError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetCellReadinessSummaryRequest,
-  ) => stream.Stream<
-    GetCellReadinessSummaryResponse,
-    GetCellReadinessSummaryError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetCellReadinessSummaryRequest,
-  ) => stream.Stream<
-    ReadinessCheckSummary,
-    GetCellReadinessSummaryError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetReadinessCheckError =
   | AccessDeniedException
@@ -2208,7 +2172,7 @@ export const getReadinessCheck: API.OperationMethod<
   GetReadinessCheckRequest,
   GetReadinessCheckResponse,
   GetReadinessCheckError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetReadinessCheckRequest,
   output: GetReadinessCheckResponse,
@@ -2234,27 +2198,13 @@ export type GetReadinessCheckResourceStatusError =
 /**
  * Gets individual readiness status for a readiness check. To see the overall readiness status for a recovery group, that considers the readiness status for all the readiness checks in the recovery group, use GetRecoveryGroupReadinessSummary.
  */
-export const getReadinessCheckResourceStatus: API.OperationMethod<
+export const getReadinessCheckResourceStatus: API.PaginatedOperationMethod<
   GetReadinessCheckResourceStatusRequest,
   GetReadinessCheckResourceStatusResponse,
   GetReadinessCheckResourceStatusError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetReadinessCheckResourceStatusRequest,
-  ) => stream.Stream<
-    GetReadinessCheckResourceStatusResponse,
-    GetReadinessCheckResourceStatusError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetReadinessCheckResourceStatusRequest,
-  ) => stream.Stream<
-    RuleResult,
-    GetReadinessCheckResourceStatusError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  RuleResult
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetReadinessCheckResourceStatusRequest,
   output: GetReadinessCheckResourceStatusResponse,
   errors: [
@@ -2273,27 +2223,7 @@ export const getReadinessCheckResourceStatus: API.OperationMethod<
     items: "Rules",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetReadinessCheckResourceStatusRequest,
-  GetReadinessCheckResourceStatusResponse,
-  GetReadinessCheckResourceStatusError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetReadinessCheckResourceStatusRequest,
-  ) => stream.Stream<
-    GetReadinessCheckResourceStatusResponse,
-    GetReadinessCheckResourceStatusError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetReadinessCheckResourceStatusRequest,
-  ) => stream.Stream<
-    RuleResult,
-    GetReadinessCheckResourceStatusError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetReadinessCheckStatusError =
   | AccessDeniedException
@@ -2305,27 +2235,13 @@ export type GetReadinessCheckStatusError =
 /**
  * Gets the readiness status for an individual readiness check. To see the overall readiness status for a recovery group, that considers the readiness status for all the readiness checks in a recovery group, use GetRecoveryGroupReadinessSummary.
  */
-export const getReadinessCheckStatus: API.OperationMethod<
+export const getReadinessCheckStatus: API.PaginatedOperationMethod<
   GetReadinessCheckStatusRequest,
   GetReadinessCheckStatusResponse,
   GetReadinessCheckStatusError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetReadinessCheckStatusRequest,
-  ) => stream.Stream<
-    GetReadinessCheckStatusResponse,
-    GetReadinessCheckStatusError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetReadinessCheckStatusRequest,
-  ) => stream.Stream<
-    ResourceResult,
-    GetReadinessCheckStatusError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ResourceResult
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetReadinessCheckStatusRequest,
   output: GetReadinessCheckStatusResponse,
   errors: [
@@ -2344,27 +2260,7 @@ export const getReadinessCheckStatus: API.OperationMethod<
     items: "Resources",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetReadinessCheckStatusRequest,
-  GetReadinessCheckStatusResponse,
-  GetReadinessCheckStatusError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetReadinessCheckStatusRequest,
-  ) => stream.Stream<
-    GetReadinessCheckStatusResponse,
-    GetReadinessCheckStatusError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetReadinessCheckStatusRequest,
-  ) => stream.Stream<
-    ResourceResult,
-    GetReadinessCheckStatusError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetRecoveryGroupError =
   | AccessDeniedException
@@ -2380,7 +2276,7 @@ export const getRecoveryGroup: API.OperationMethod<
   GetRecoveryGroupRequest,
   GetRecoveryGroupResponse,
   GetRecoveryGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetRecoveryGroupRequest,
   output: GetRecoveryGroupResponse,
@@ -2406,27 +2302,13 @@ export type GetRecoveryGroupReadinessSummaryError =
 /**
  * Displays a summary of information about a recovery group's readiness status. Includes the readiness checks for resources in the recovery group and the readiness status of each one.
  */
-export const getRecoveryGroupReadinessSummary: API.OperationMethod<
+export const getRecoveryGroupReadinessSummary: API.PaginatedOperationMethod<
   GetRecoveryGroupReadinessSummaryRequest,
   GetRecoveryGroupReadinessSummaryResponse,
   GetRecoveryGroupReadinessSummaryError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetRecoveryGroupReadinessSummaryRequest,
-  ) => stream.Stream<
-    GetRecoveryGroupReadinessSummaryResponse,
-    GetRecoveryGroupReadinessSummaryError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetRecoveryGroupReadinessSummaryRequest,
-  ) => stream.Stream<
-    ReadinessCheckSummary,
-    GetRecoveryGroupReadinessSummaryError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ReadinessCheckSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetRecoveryGroupReadinessSummaryRequest,
   output: GetRecoveryGroupReadinessSummaryResponse,
   errors: [
@@ -2445,27 +2327,7 @@ export const getRecoveryGroupReadinessSummary: API.OperationMethod<
     items: "ReadinessChecks",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetRecoveryGroupReadinessSummaryRequest,
-  GetRecoveryGroupReadinessSummaryResponse,
-  GetRecoveryGroupReadinessSummaryError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetRecoveryGroupReadinessSummaryRequest,
-  ) => stream.Stream<
-    GetRecoveryGroupReadinessSummaryResponse,
-    GetRecoveryGroupReadinessSummaryError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetRecoveryGroupReadinessSummaryRequest,
-  ) => stream.Stream<
-    ReadinessCheckSummary,
-    GetRecoveryGroupReadinessSummaryError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetResourceSetError =
   | AccessDeniedException
@@ -2481,7 +2343,7 @@ export const getResourceSet: API.OperationMethod<
   GetResourceSetRequest,
   GetResourceSetResponse,
   GetResourceSetError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetResourceSetRequest,
   output: GetResourceSetResponse,
@@ -2506,27 +2368,13 @@ export type ListCellsError =
 /**
  * Lists the cells for an account.
  */
-export const listCells: API.OperationMethod<
+export const listCells: API.PaginatedOperationMethod<
   ListCellsRequest,
   ListCellsResponse,
   ListCellsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCellsRequest,
-  ) => stream.Stream<
-    ListCellsResponse,
-    ListCellsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCellsRequest,
-  ) => stream.Stream<
-    CellOutput,
-    ListCellsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  CellOutput
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListCellsRequest,
   output: ListCellsResponse,
   errors: [
@@ -2544,27 +2392,7 @@ export const listCells: API.OperationMethod<
     items: "Cells",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListCellsRequest,
-  ListCellsResponse,
-  ListCellsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCellsRequest,
-  ) => stream.Stream<
-    ListCellsResponse,
-    ListCellsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCellsRequest,
-  ) => stream.Stream<
-    CellOutput,
-    ListCellsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListCrossAccountAuthorizationsError =
   | AccessDeniedException
@@ -2575,27 +2403,13 @@ export type ListCrossAccountAuthorizationsError =
 /**
  * Lists the cross-account readiness authorizations that are in place for an account.
  */
-export const listCrossAccountAuthorizations: API.OperationMethod<
+export const listCrossAccountAuthorizations: API.PaginatedOperationMethod<
   ListCrossAccountAuthorizationsRequest,
   ListCrossAccountAuthorizationsResponse,
   ListCrossAccountAuthorizationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCrossAccountAuthorizationsRequest,
-  ) => stream.Stream<
-    ListCrossAccountAuthorizationsResponse,
-    ListCrossAccountAuthorizationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCrossAccountAuthorizationsRequest,
-  ) => stream.Stream<
-    CrossAccountAuthorization,
-    ListCrossAccountAuthorizationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  CrossAccountAuthorization
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListCrossAccountAuthorizationsRequest,
   output: ListCrossAccountAuthorizationsResponse,
   errors: [
@@ -2613,27 +2427,7 @@ export const listCrossAccountAuthorizations: API.OperationMethod<
     items: "CrossAccountAuthorizations",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListCrossAccountAuthorizationsRequest,
-  ListCrossAccountAuthorizationsResponse,
-  ListCrossAccountAuthorizationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCrossAccountAuthorizationsRequest,
-  ) => stream.Stream<
-    ListCrossAccountAuthorizationsResponse,
-    ListCrossAccountAuthorizationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCrossAccountAuthorizationsRequest,
-  ) => stream.Stream<
-    CrossAccountAuthorization,
-    ListCrossAccountAuthorizationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListReadinessChecksError =
   | AccessDeniedException
@@ -2644,27 +2438,13 @@ export type ListReadinessChecksError =
 /**
  * Lists the readiness checks for an account.
  */
-export const listReadinessChecks: API.OperationMethod<
+export const listReadinessChecks: API.PaginatedOperationMethod<
   ListReadinessChecksRequest,
   ListReadinessChecksResponse,
   ListReadinessChecksError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListReadinessChecksRequest,
-  ) => stream.Stream<
-    ListReadinessChecksResponse,
-    ListReadinessChecksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListReadinessChecksRequest,
-  ) => stream.Stream<
-    ReadinessCheckOutput,
-    ListReadinessChecksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ReadinessCheckOutput
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListReadinessChecksRequest,
   output: ListReadinessChecksResponse,
   errors: [
@@ -2682,27 +2462,7 @@ export const listReadinessChecks: API.OperationMethod<
     items: "ReadinessChecks",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListReadinessChecksRequest,
-  ListReadinessChecksResponse,
-  ListReadinessChecksError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListReadinessChecksRequest,
-  ) => stream.Stream<
-    ListReadinessChecksResponse,
-    ListReadinessChecksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListReadinessChecksRequest,
-  ) => stream.Stream<
-    ReadinessCheckOutput,
-    ListReadinessChecksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListRecoveryGroupsError =
   | AccessDeniedException
@@ -2713,27 +2473,13 @@ export type ListRecoveryGroupsError =
 /**
  * Lists the recovery groups in an account.
  */
-export const listRecoveryGroups: API.OperationMethod<
+export const listRecoveryGroups: API.PaginatedOperationMethod<
   ListRecoveryGroupsRequest,
   ListRecoveryGroupsResponse,
   ListRecoveryGroupsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListRecoveryGroupsRequest,
-  ) => stream.Stream<
-    ListRecoveryGroupsResponse,
-    ListRecoveryGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListRecoveryGroupsRequest,
-  ) => stream.Stream<
-    RecoveryGroupOutput,
-    ListRecoveryGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  RecoveryGroupOutput
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListRecoveryGroupsRequest,
   output: ListRecoveryGroupsResponse,
   errors: [
@@ -2751,27 +2497,7 @@ export const listRecoveryGroups: API.OperationMethod<
     items: "RecoveryGroups",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListRecoveryGroupsRequest,
-  ListRecoveryGroupsResponse,
-  ListRecoveryGroupsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListRecoveryGroupsRequest,
-  ) => stream.Stream<
-    ListRecoveryGroupsResponse,
-    ListRecoveryGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListRecoveryGroupsRequest,
-  ) => stream.Stream<
-    RecoveryGroupOutput,
-    ListRecoveryGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListResourceSetsError =
   | AccessDeniedException
@@ -2782,27 +2508,13 @@ export type ListResourceSetsError =
 /**
  * Lists the resource sets in an account.
  */
-export const listResourceSets: API.OperationMethod<
+export const listResourceSets: API.PaginatedOperationMethod<
   ListResourceSetsRequest,
   ListResourceSetsResponse,
   ListResourceSetsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListResourceSetsRequest,
-  ) => stream.Stream<
-    ListResourceSetsResponse,
-    ListResourceSetsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListResourceSetsRequest,
-  ) => stream.Stream<
-    ResourceSetOutput,
-    ListResourceSetsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ResourceSetOutput
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListResourceSetsRequest,
   output: ListResourceSetsResponse,
   errors: [
@@ -2820,27 +2532,7 @@ export const listResourceSets: API.OperationMethod<
     items: "ResourceSets",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListResourceSetsRequest,
-  ListResourceSetsResponse,
-  ListResourceSetsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListResourceSetsRequest,
-  ) => stream.Stream<
-    ListResourceSetsResponse,
-    ListResourceSetsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListResourceSetsRequest,
-  ) => stream.Stream<
-    ResourceSetOutput,
-    ListResourceSetsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListRulesError =
   | AccessDeniedException
@@ -2851,27 +2543,13 @@ export type ListRulesError =
 /**
  * Lists all readiness rules, or lists the readiness rules for a specific resource type.
  */
-export const listRules: API.OperationMethod<
+export const listRules: API.PaginatedOperationMethod<
   ListRulesRequest,
   ListRulesResponse,
   ListRulesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListRulesRequest,
-  ) => stream.Stream<
-    ListRulesResponse,
-    ListRulesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListRulesRequest,
-  ) => stream.Stream<
-    ListRulesOutput,
-    ListRulesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ListRulesOutput
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListRulesRequest,
   output: ListRulesResponse,
   errors: [
@@ -2889,27 +2567,7 @@ export const listRules: API.OperationMethod<
     items: "Rules",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListRulesRequest,
-  ListRulesResponse,
-  ListRulesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListRulesRequest,
-  ) => stream.Stream<
-    ListRulesResponse,
-    ListRulesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListRulesRequest,
-  ) => stream.Stream<
-    ListRulesOutput,
-    ListRulesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsForResourcesError =
   | InternalServerException
@@ -2923,7 +2581,7 @@ export const listTagsForResources: API.OperationMethod<
   ListTagsForResourcesRequest,
   ListTagsForResourcesResponse,
   ListTagsForResourcesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourcesRequest,
   output: ListTagsForResourcesResponse,
@@ -2949,7 +2607,7 @@ export const tagResource: API.OperationMethod<
   TagResourceRequest,
   TagResourceResponse,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -2975,7 +2633,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceRequest,
   UntagResourceResponse,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -3003,7 +2661,7 @@ export const updateCell: API.OperationMethod<
   UpdateCellRequest,
   UpdateCellResponse,
   UpdateCellError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateCellRequest,
   output: UpdateCellResponse,
@@ -3033,7 +2691,7 @@ export const updateReadinessCheck: API.OperationMethod<
   UpdateReadinessCheckRequest,
   UpdateReadinessCheckResponse,
   UpdateReadinessCheckError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateReadinessCheckRequest,
   output: UpdateReadinessCheckResponse,
@@ -3063,7 +2721,7 @@ export const updateRecoveryGroup: API.OperationMethod<
   UpdateRecoveryGroupRequest,
   UpdateRecoveryGroupResponse,
   UpdateRecoveryGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateRecoveryGroupRequest,
   output: UpdateRecoveryGroupResponse,
@@ -3093,7 +2751,7 @@ export const updateResourceSet: API.OperationMethod<
   UpdateResourceSetRequest,
   UpdateResourceSetResponse,
   UpdateResourceSetError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateResourceSetRequest,
   output: UpdateResourceSetResponse,

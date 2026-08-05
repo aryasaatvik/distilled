@@ -1,7 +1,6 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as redacted from "effect/Redacted";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -9,7 +8,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 import { SensitiveString } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "MigrationHubStrategy",
@@ -90,55 +88,55 @@ const rules = T.EndpointResolver((p, _) => {
 export class AccessDeniedException
   extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
     "AccessDeniedException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(403),
   ).pipe(C.withAuthError) {}
 export class ConflictException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
     "ConflictException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class DependencyException
   extends /*@__PURE__*/ S.TaggedErrorClass<DependencyException>()(
     "DependencyException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(500),
   ).pipe(C.withServerError) {}
 export class InternalServerException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
     "InternalServerException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(500),
   ).pipe(C.withServerError) {}
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class ServiceLinkedRoleLockClientException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceLinkedRoleLockClientException>()(
     "ServiceLinkedRoleLockClientException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class ServiceQuotaExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
     "ServiceQuotaExceededException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(402),
   ).pipe(C.withQuotaError) {}
 export class ThrottlingException
   extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
     "ThrottlingException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(429),
   ).pipe(C.withThrottlingError) {}
 export class ValidationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
     "ValidationException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export type ApplicationComponentId = string;
@@ -1806,7 +1804,7 @@ export const getApplicationComponentDetails: API.OperationMethod<
   GetApplicationComponentDetailsRequest,
   GetApplicationComponentDetailsResponse,
   GetApplicationComponentDetailsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetApplicationComponentDetailsRequest,
   output: GetApplicationComponentDetailsResponse,
@@ -1833,7 +1831,7 @@ export const getApplicationComponentStrategies: API.OperationMethod<
   GetApplicationComponentStrategiesRequest,
   GetApplicationComponentStrategiesResponse,
   GetApplicationComponentStrategiesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetApplicationComponentStrategiesRequest,
   output: GetApplicationComponentStrategiesResponse,
@@ -1860,7 +1858,7 @@ export const getAssessment: API.OperationMethod<
   GetAssessmentRequest,
   GetAssessmentResponse,
   GetAssessmentError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetAssessmentRequest,
   output: GetAssessmentResponse,
@@ -1889,7 +1887,7 @@ export const getImportFileTask: API.OperationMethod<
   GetImportFileTaskRequest,
   GetImportFileTaskResponse,
   GetImportFileTaskError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetImportFileTaskRequest,
   output: GetImportFileTaskResponse,
@@ -1918,7 +1916,7 @@ export const getLatestAssessmentId: API.OperationMethod<
   GetLatestAssessmentIdRequest,
   GetLatestAssessmentIdResponse,
   GetLatestAssessmentIdError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetLatestAssessmentIdRequest,
   output: GetLatestAssessmentIdResponse,
@@ -1946,7 +1944,7 @@ export const getPortfolioPreferences: API.OperationMethod<
   GetPortfolioPreferencesRequest,
   GetPortfolioPreferencesResponse,
   GetPortfolioPreferencesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetPortfolioPreferencesRequest,
   output: GetPortfolioPreferencesResponse,
@@ -1974,7 +1972,7 @@ export const getPortfolioSummary: API.OperationMethod<
   GetPortfolioSummaryRequest,
   GetPortfolioSummaryResponse,
   GetPortfolioSummaryError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetPortfolioSummaryRequest,
   output: GetPortfolioSummaryResponse,
@@ -1998,7 +1996,7 @@ export const getRecommendationReportDetails: API.OperationMethod<
   GetRecommendationReportDetailsRequest,
   GetRecommendationReportDetailsResponse,
   GetRecommendationReportDetailsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetRecommendationReportDetailsRequest,
   output: GetRecommendationReportDetailsResponse,
@@ -2024,27 +2022,13 @@ export type GetServerDetailsError =
 /**
  * Retrieves detailed information about a specified server.
  */
-export const getServerDetails: API.OperationMethod<
+export const getServerDetails: API.PaginatedOperationMethod<
   GetServerDetailsRequest,
   GetServerDetailsResponse,
   GetServerDetailsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetServerDetailsRequest,
-  ) => stream.Stream<
-    GetServerDetailsResponse,
-    GetServerDetailsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetServerDetailsRequest,
-  ) => stream.Stream<
-    AssociatedApplication,
-    GetServerDetailsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  AssociatedApplication
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetServerDetailsRequest,
   output: GetServerDetailsResponse,
   errors: [
@@ -2063,27 +2047,7 @@ export const getServerDetails: API.OperationMethod<
     items: "associatedApplications",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetServerDetailsRequest,
-  GetServerDetailsResponse,
-  GetServerDetailsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetServerDetailsRequest,
-  ) => stream.Stream<
-    GetServerDetailsResponse,
-    GetServerDetailsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetServerDetailsRequest,
-  ) => stream.Stream<
-    AssociatedApplication,
-    GetServerDetailsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetServerStrategiesError =
   | AccessDeniedException
@@ -2099,7 +2063,7 @@ export const getServerStrategies: API.OperationMethod<
   GetServerStrategiesRequest,
   GetServerStrategiesResponse,
   GetServerStrategiesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetServerStrategiesRequest,
   output: GetServerStrategiesResponse,
@@ -2124,27 +2088,13 @@ export type ListAnalyzableServersError =
 /**
  * Retrieves a list of all the servers fetched from customer vCenter using Strategy Recommendation Collector.
  */
-export const listAnalyzableServers: API.OperationMethod<
+export const listAnalyzableServers: API.PaginatedOperationMethod<
   ListAnalyzableServersRequest,
   ListAnalyzableServersResponse,
   ListAnalyzableServersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAnalyzableServersRequest,
-  ) => stream.Stream<
-    ListAnalyzableServersResponse,
-    ListAnalyzableServersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAnalyzableServersRequest,
-  ) => stream.Stream<
-    AnalyzableServerSummary,
-    ListAnalyzableServersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  AnalyzableServerSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListAnalyzableServersRequest,
   output: ListAnalyzableServersResponse,
   errors: [
@@ -2162,27 +2112,7 @@ export const listAnalyzableServers: API.OperationMethod<
     items: "analyzableServers",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListAnalyzableServersRequest,
-  ListAnalyzableServersResponse,
-  ListAnalyzableServersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAnalyzableServersRequest,
-  ) => stream.Stream<
-    ListAnalyzableServersResponse,
-    ListAnalyzableServersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAnalyzableServersRequest,
-  ) => stream.Stream<
-    AnalyzableServerSummary,
-    ListAnalyzableServersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListApplicationComponentsError =
   | AccessDeniedException
@@ -2193,27 +2123,13 @@ export type ListApplicationComponentsError =
 /**
  * Retrieves a list of all the application components (processes).
  */
-export const listApplicationComponents: API.OperationMethod<
+export const listApplicationComponents: API.PaginatedOperationMethod<
   ListApplicationComponentsRequest,
   ListApplicationComponentsResponse,
   ListApplicationComponentsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListApplicationComponentsRequest,
-  ) => stream.Stream<
-    ListApplicationComponentsResponse,
-    ListApplicationComponentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListApplicationComponentsRequest,
-  ) => stream.Stream<
-    ApplicationComponentDetail,
-    ListApplicationComponentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ApplicationComponentDetail
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListApplicationComponentsRequest,
   output: ListApplicationComponentsResponse,
   errors: [
@@ -2231,27 +2147,7 @@ export const listApplicationComponents: API.OperationMethod<
     items: "applicationComponentInfos",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListApplicationComponentsRequest,
-  ListApplicationComponentsResponse,
-  ListApplicationComponentsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListApplicationComponentsRequest,
-  ) => stream.Stream<
-    ListApplicationComponentsResponse,
-    ListApplicationComponentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListApplicationComponentsRequest,
-  ) => stream.Stream<
-    ApplicationComponentDetail,
-    ListApplicationComponentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListCollectorsError =
   | AccessDeniedException
@@ -2262,27 +2158,13 @@ export type ListCollectorsError =
 /**
  * Retrieves a list of all the installed collectors.
  */
-export const listCollectors: API.OperationMethod<
+export const listCollectors: API.PaginatedOperationMethod<
   ListCollectorsRequest,
   ListCollectorsResponse,
   ListCollectorsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCollectorsRequest,
-  ) => stream.Stream<
-    ListCollectorsResponse,
-    ListCollectorsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCollectorsRequest,
-  ) => stream.Stream<
-    Collector,
-    ListCollectorsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Collector
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListCollectorsRequest,
   output: ListCollectorsResponse,
   errors: [
@@ -2300,27 +2182,7 @@ export const listCollectors: API.OperationMethod<
     items: "Collectors",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListCollectorsRequest,
-  ListCollectorsResponse,
-  ListCollectorsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCollectorsRequest,
-  ) => stream.Stream<
-    ListCollectorsResponse,
-    ListCollectorsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCollectorsRequest,
-  ) => stream.Stream<
-    Collector,
-    ListCollectorsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListImportFileTaskError =
   | AccessDeniedException
@@ -2331,27 +2193,13 @@ export type ListImportFileTaskError =
 /**
  * Retrieves a list of all the imports performed.
  */
-export const listImportFileTask: API.OperationMethod<
+export const listImportFileTask: API.PaginatedOperationMethod<
   ListImportFileTaskRequest,
   ListImportFileTaskResponse,
   ListImportFileTaskError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListImportFileTaskRequest,
-  ) => stream.Stream<
-    ListImportFileTaskResponse,
-    ListImportFileTaskError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListImportFileTaskRequest,
-  ) => stream.Stream<
-    ImportFileTaskInformation,
-    ListImportFileTaskError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ImportFileTaskInformation
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListImportFileTaskRequest,
   output: ListImportFileTaskResponse,
   errors: [
@@ -2369,27 +2217,7 @@ export const listImportFileTask: API.OperationMethod<
     items: "taskInfos",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListImportFileTaskRequest,
-  ListImportFileTaskResponse,
-  ListImportFileTaskError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListImportFileTaskRequest,
-  ) => stream.Stream<
-    ListImportFileTaskResponse,
-    ListImportFileTaskError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListImportFileTaskRequest,
-  ) => stream.Stream<
-    ImportFileTaskInformation,
-    ListImportFileTaskError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListServersError =
   | AccessDeniedException
@@ -2400,27 +2228,13 @@ export type ListServersError =
 /**
  * Returns a list of all the servers.
  */
-export const listServers: API.OperationMethod<
+export const listServers: API.PaginatedOperationMethod<
   ListServersRequest,
   ListServersResponse,
   ListServersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListServersRequest,
-  ) => stream.Stream<
-    ListServersResponse,
-    ListServersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListServersRequest,
-  ) => stream.Stream<
-    ServerDetail,
-    ListServersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ServerDetail
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListServersRequest,
   output: ListServersResponse,
   errors: [
@@ -2438,27 +2252,7 @@ export const listServers: API.OperationMethod<
     items: "serverInfos",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListServersRequest,
-  ListServersResponse,
-  ListServersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListServersRequest,
-  ) => stream.Stream<
-    ListServersResponse,
-    ListServersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListServersRequest,
-  ) => stream.Stream<
-    ServerDetail,
-    ListServersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type PutPortfolioPreferencesError =
   | AccessDeniedException
@@ -2474,7 +2268,7 @@ export const putPortfolioPreferences: API.OperationMethod<
   PutPortfolioPreferencesRequest,
   PutPortfolioPreferencesResponse,
   PutPortfolioPreferencesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutPortfolioPreferencesRequest,
   output: PutPortfolioPreferencesResponse,
@@ -2503,7 +2297,7 @@ export const startAssessment: API.OperationMethod<
   StartAssessmentRequest,
   StartAssessmentResponse,
   StartAssessmentError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartAssessmentRequest,
   output: StartAssessmentResponse,
@@ -2532,7 +2326,7 @@ export const startImportFileTask: API.OperationMethod<
   StartImportFileTaskRequest,
   StartImportFileTaskResponse,
   StartImportFileTaskError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartImportFileTaskRequest,
   output: StartImportFileTaskResponse,
@@ -2562,7 +2356,7 @@ export const startRecommendationReportGeneration: API.OperationMethod<
   StartRecommendationReportGenerationRequest,
   StartRecommendationReportGenerationResponse,
   StartRecommendationReportGenerationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartRecommendationReportGenerationRequest,
   output: StartRecommendationReportGenerationResponse,
@@ -2591,7 +2385,7 @@ export const stopAssessment: API.OperationMethod<
   StopAssessmentRequest,
   StopAssessmentResponse,
   StopAssessmentError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StopAssessmentRequest,
   output: StopAssessmentResponse,
@@ -2619,7 +2413,7 @@ export const updateApplicationComponentConfig: API.OperationMethod<
   UpdateApplicationComponentConfigRequest,
   UpdateApplicationComponentConfigResponse,
   UpdateApplicationComponentConfigError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateApplicationComponentConfigRequest,
   output: UpdateApplicationComponentConfigResponse,
@@ -2647,7 +2441,7 @@ export const updateServerConfig: API.OperationMethod<
   UpdateServerConfigRequest,
   UpdateServerConfigResponse,
   UpdateServerConfigError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateServerConfigRequest,
   output: UpdateServerConfigResponse,

@@ -1,6 +1,5 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -8,7 +7,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 const svc = T.AwsApiService({
   sdkId: "CodeStar connections",
   serviceShapeName: "CodeStar_connections_20191201",
@@ -88,103 +86,103 @@ const rules = T.EndpointResolver((p, _) => {
 export class AccessDeniedException
   extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
     "AccessDeniedException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(403),
   ).pipe(C.withAuthError) {}
 export class ConcurrentModificationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConcurrentModificationException>()(
     "ConcurrentModificationException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class ConditionalCheckFailedException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConditionalCheckFailedException>()(
     "ConditionalCheckFailedException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class ConflictException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
     "ConflictException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class InternalServerException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
     "InternalServerException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(503),
   ).pipe(C.withServerError) {}
 export class InvalidInputException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidInputException>()(
     "InvalidInputException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class LimitExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<LimitExceededException>()(
     "LimitExceededException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(429),
   ).pipe(C.withThrottlingError) {}
 export class ResourceAlreadyExistsException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceAlreadyExistsException>()(
     "ResourceAlreadyExistsException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(409),
   ).pipe(C.withConflictError, C.withAlreadyExistsError) {}
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class ResourceUnavailableException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceUnavailableException>()(
     "ResourceUnavailableException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class RetryLatestCommitFailedException
   extends /*@__PURE__*/ S.TaggedErrorClass<RetryLatestCommitFailedException>()(
     "RetryLatestCommitFailedException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(503),
   ).pipe(C.withServerError) {}
 export class SyncBlockerDoesNotExistException
   extends /*@__PURE__*/ S.TaggedErrorClass<SyncBlockerDoesNotExistException>()(
     "SyncBlockerDoesNotExistException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class SyncConfigurationStillExistsException
   extends /*@__PURE__*/ S.TaggedErrorClass<SyncConfigurationStillExistsException>()(
     "SyncConfigurationStillExistsException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class ThrottlingException
   extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
     "ThrottlingException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(429),
   ).pipe(C.withThrottlingError) {}
 export class UnsupportedOperationException
   extends /*@__PURE__*/ S.TaggedErrorClass<UnsupportedOperationException>()(
     "UnsupportedOperationException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class UnsupportedProviderTypeException
   extends /*@__PURE__*/ S.TaggedErrorClass<UnsupportedProviderTypeException>()(
     "UnsupportedProviderTypeException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class UpdateOutOfSyncException
   extends /*@__PURE__*/ S.TaggedErrorClass<UpdateOutOfSyncException>()(
     "UpdateOutOfSyncException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export type ProviderType =
@@ -1206,7 +1204,7 @@ export const createConnection: API.OperationMethod<
   CreateConnectionInput,
   CreateConnectionOutput,
   CreateConnectionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateConnectionInput,
   output: CreateConnectionOutput,
@@ -1234,7 +1232,7 @@ export const createHost: API.OperationMethod<
   CreateHostInput,
   CreateHostOutput,
   CreateHostError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateHostInput,
   output: CreateHostOutput,
@@ -1260,7 +1258,7 @@ export const createRepositoryLink: API.OperationMethod<
   CreateRepositoryLinkInput,
   CreateRepositoryLinkOutput,
   CreateRepositoryLinkError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateRepositoryLinkInput,
   output: CreateRepositoryLinkOutput,
@@ -1296,7 +1294,7 @@ export const createSyncConfiguration: API.OperationMethod<
   CreateSyncConfigurationInput,
   CreateSyncConfigurationOutput,
   CreateSyncConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateSyncConfigurationInput,
   output: CreateSyncConfigurationOutput,
@@ -1322,7 +1320,7 @@ export const deleteConnection: API.OperationMethod<
   DeleteConnectionInput,
   DeleteConnectionOutput,
   DeleteConnectionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteConnectionInput,
   output: DeleteConnectionOutput,
@@ -1345,7 +1343,7 @@ export const deleteHost: API.OperationMethod<
   DeleteHostInput,
   DeleteHostOutput,
   DeleteHostError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteHostInput,
   output: DeleteHostOutput,
@@ -1372,7 +1370,7 @@ export const deleteRepositoryLink: API.OperationMethod<
   DeleteRepositoryLinkInput,
   DeleteRepositoryLinkOutput,
   DeleteRepositoryLinkError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteRepositoryLinkInput,
   output: DeleteRepositoryLinkOutput,
@@ -1406,7 +1404,7 @@ export const deleteSyncConfiguration: API.OperationMethod<
   DeleteSyncConfigurationInput,
   DeleteSyncConfigurationOutput,
   DeleteSyncConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteSyncConfigurationInput,
   output: DeleteSyncConfigurationOutput,
@@ -1434,7 +1432,7 @@ export const getConnection: API.OperationMethod<
   GetConnectionInput,
   GetConnectionOutput,
   GetConnectionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetConnectionInput,
   output: GetConnectionOutput,
@@ -1456,7 +1454,7 @@ export const getHost: API.OperationMethod<
   GetHostInput,
   GetHostOutput,
   GetHostError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetHostInput,
   output: GetHostOutput,
@@ -1482,7 +1480,7 @@ export const getRepositoryLink: API.OperationMethod<
   GetRepositoryLinkInput,
   GetRepositoryLinkOutput,
   GetRepositoryLinkError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetRepositoryLinkInput,
   output: GetRepositoryLinkOutput,
@@ -1514,7 +1512,7 @@ export const getRepositorySyncStatus: API.OperationMethod<
   GetRepositorySyncStatusInput,
   GetRepositorySyncStatusOutput,
   GetRepositorySyncStatusError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetRepositorySyncStatusInput,
   output: GetRepositorySyncStatusOutput,
@@ -1545,7 +1543,7 @@ export const getResourceSyncStatus: API.OperationMethod<
   GetResourceSyncStatusInput,
   GetResourceSyncStatusOutput,
   GetResourceSyncStatusError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetResourceSyncStatusInput,
   output: GetResourceSyncStatusOutput,
@@ -1575,7 +1573,7 @@ export const getSyncBlockerSummary: API.OperationMethod<
   GetSyncBlockerSummaryInput,
   GetSyncBlockerSummaryOutput,
   GetSyncBlockerSummaryError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetSyncBlockerSummaryInput,
   output: GetSyncBlockerSummaryOutput,
@@ -1605,7 +1603,7 @@ export const getSyncConfiguration: API.OperationMethod<
   GetSyncConfigurationInput,
   GetSyncConfigurationOutput,
   GetSyncConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetSyncConfigurationInput,
   output: GetSyncConfigurationOutput,
@@ -1625,27 +1623,13 @@ export type ListConnectionsError = ResourceNotFoundException | CommonErrors;
 /**
  * Lists the connections associated with your account.
  */
-export const listConnections: API.OperationMethod<
+export const listConnections: API.PaginatedOperationMethod<
   ListConnectionsInput,
   ListConnectionsOutput,
   ListConnectionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListConnectionsInput,
-  ) => stream.Stream<
-    ListConnectionsOutput,
-    ListConnectionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListConnectionsInput,
-  ) => stream.Stream<
-    unknown,
-    ListConnectionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListConnectionsInput,
   output: ListConnectionsOutput,
   errors: [ResourceNotFoundException],
@@ -1657,53 +1641,19 @@ export const listConnections: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListConnectionsInput,
-  ListConnectionsOutput,
-  ListConnectionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListConnectionsInput,
-  ) => stream.Stream<
-    ListConnectionsOutput,
-    ListConnectionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListConnectionsInput,
-  ) => stream.Stream<
-    unknown,
-    ListConnectionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListHostsError = CommonErrors;
 /**
  * Lists the hosts associated with your account.
  */
-export const listHosts: API.OperationMethod<
+export const listHosts: API.PaginatedOperationMethod<
   ListHostsInput,
   ListHostsOutput,
   ListHostsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListHostsInput,
-  ) => stream.Stream<
-    ListHostsOutput,
-    ListHostsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListHostsInput,
-  ) => stream.Stream<
-    unknown,
-    ListHostsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListHostsInput,
   output: ListHostsOutput,
   errors: [],
@@ -1715,27 +1665,7 @@ export const listHosts: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListHostsInput,
-  ListHostsOutput,
-  ListHostsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListHostsInput,
-  ) => stream.Stream<
-    ListHostsOutput,
-    ListHostsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListHostsInput,
-  ) => stream.Stream<
-    unknown,
-    ListHostsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListRepositoryLinksError =
   | AccessDeniedException
@@ -1748,27 +1678,13 @@ export type ListRepositoryLinksError =
 /**
  * Lists the repository links created for connections in your account.
  */
-export const listRepositoryLinks: API.OperationMethod<
+export const listRepositoryLinks: API.PaginatedOperationMethod<
   ListRepositoryLinksInput,
   ListRepositoryLinksOutput,
   ListRepositoryLinksError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListRepositoryLinksInput,
-  ) => stream.Stream<
-    ListRepositoryLinksOutput,
-    ListRepositoryLinksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListRepositoryLinksInput,
-  ) => stream.Stream<
-    unknown,
-    ListRepositoryLinksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListRepositoryLinksInput,
   output: ListRepositoryLinksOutput,
   errors: [
@@ -1787,27 +1703,7 @@ export const listRepositoryLinks: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListRepositoryLinksInput,
-  ListRepositoryLinksOutput,
-  ListRepositoryLinksError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListRepositoryLinksInput,
-  ) => stream.Stream<
-    ListRepositoryLinksOutput,
-    ListRepositoryLinksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListRepositoryLinksInput,
-  ) => stream.Stream<
-    unknown,
-    ListRepositoryLinksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListRepositorySyncDefinitionsError =
   | AccessDeniedException
@@ -1823,7 +1719,7 @@ export const listRepositorySyncDefinitions: API.OperationMethod<
   ListRepositorySyncDefinitionsInput,
   ListRepositorySyncDefinitionsOutput,
   ListRepositorySyncDefinitionsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListRepositorySyncDefinitionsInput,
   output: ListRepositorySyncDefinitionsOutput,
@@ -1849,27 +1745,13 @@ export type ListSyncConfigurationsError =
 /**
  * Returns a list of sync configurations for a specified repository.
  */
-export const listSyncConfigurations: API.OperationMethod<
+export const listSyncConfigurations: API.PaginatedOperationMethod<
   ListSyncConfigurationsInput,
   ListSyncConfigurationsOutput,
   ListSyncConfigurationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSyncConfigurationsInput,
-  ) => stream.Stream<
-    ListSyncConfigurationsOutput,
-    ListSyncConfigurationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSyncConfigurationsInput,
-  ) => stream.Stream<
-    unknown,
-    ListSyncConfigurationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListSyncConfigurationsInput,
   output: ListSyncConfigurationsOutput,
   errors: [
@@ -1887,27 +1769,7 @@ export const listSyncConfigurations: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListSyncConfigurationsInput,
-  ListSyncConfigurationsOutput,
-  ListSyncConfigurationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSyncConfigurationsInput,
-  ) => stream.Stream<
-    ListSyncConfigurationsOutput,
-    ListSyncConfigurationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSyncConfigurationsInput,
-  ) => stream.Stream<
-    unknown,
-    ListSyncConfigurationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsForResourceError = ResourceNotFoundException | CommonErrors;
 /**
@@ -1917,7 +1779,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceInput,
   ListTagsForResourceOutput,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceInput,
   output: ListTagsForResourceOutput,
@@ -1939,7 +1801,7 @@ export const tagResource: API.OperationMethod<
   TagResourceInput,
   TagResourceOutput,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceInput,
   output: TagResourceOutput,
@@ -1957,7 +1819,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceInput,
   UntagResourceOutput,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceInput,
   output: UntagResourceOutput,
@@ -1980,7 +1842,7 @@ export const updateHost: API.OperationMethod<
   UpdateHostInput,
   UpdateHostOutput,
   UpdateHostError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateHostInput,
   output: UpdateHostOutput,
@@ -2013,7 +1875,7 @@ export const updateRepositoryLink: API.OperationMethod<
   UpdateRepositoryLinkInput,
   UpdateRepositoryLinkOutput,
   UpdateRepositoryLinkError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateRepositoryLinkInput,
   output: UpdateRepositoryLinkOutput,
@@ -2047,7 +1909,7 @@ export const updateSyncBlocker: API.OperationMethod<
   UpdateSyncBlockerInput,
   UpdateSyncBlockerOutput,
   UpdateSyncBlockerError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateSyncBlockerInput,
   output: UpdateSyncBlockerOutput,
@@ -2081,7 +1943,7 @@ export const updateSyncConfiguration: API.OperationMethod<
   UpdateSyncConfigurationInput,
   UpdateSyncConfigurationOutput,
   UpdateSyncConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateSyncConfigurationInput,
   output: UpdateSyncConfigurationOutput,

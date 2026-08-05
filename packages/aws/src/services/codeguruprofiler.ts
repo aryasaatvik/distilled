@@ -1,6 +1,5 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -8,7 +7,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 const svc = T.AwsApiService({
   sdkId: "CodeGuruProfiler",
   serviceShapeName: "CodeGuruProfiler",
@@ -88,37 +86,37 @@ const rules = T.EndpointResolver((p, _) => {
 export class ConflictException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
     "ConflictException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class InternalServerException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
     "InternalServerException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.all(T.HttpError(500), T.Retryable()),
   ).pipe(C.withServerError, C.withRetryableError) {}
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class ServiceQuotaExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
     "ServiceQuotaExceededException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.all(T.HttpError(402), T.Retryable()),
   ).pipe(C.withQuotaError, C.withRetryableError) {}
 export class ThrottlingException
   extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
     "ThrottlingException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.all(T.HttpError(429), T.Retryable()),
   ).pipe(C.withThrottlingError, C.withRetryableError) {}
 export class ValidationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
     "ValidationException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export type ProfilingGroupName = string;
@@ -1329,7 +1327,7 @@ export const addNotificationChannels: API.OperationMethod<
   AddNotificationChannelsRequest,
   AddNotificationChannelsResponse,
   AddNotificationChannelsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AddNotificationChannelsRequest,
   output: AddNotificationChannelsResponse,
@@ -1360,7 +1358,7 @@ export const batchGetFrameMetricData: API.OperationMethod<
   BatchGetFrameMetricDataRequest,
   BatchGetFrameMetricDataResponse,
   BatchGetFrameMetricDataError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchGetFrameMetricDataRequest,
   output: BatchGetFrameMetricDataResponse,
@@ -1390,7 +1388,7 @@ export const configureAgent: API.OperationMethod<
   ConfigureAgentRequest,
   ConfigureAgentResponse,
   ConfigureAgentError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ConfigureAgentRequest,
   output: ConfigureAgentResponse,
@@ -1419,7 +1417,7 @@ export const createProfilingGroup: API.OperationMethod<
   CreateProfilingGroupRequest,
   CreateProfilingGroupResponse,
   CreateProfilingGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateProfilingGroupRequest,
   output: CreateProfilingGroupResponse,
@@ -1449,7 +1447,7 @@ export const deleteProfilingGroup: API.OperationMethod<
   DeleteProfilingGroupRequest,
   DeleteProfilingGroupResponse,
   DeleteProfilingGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteProfilingGroupRequest,
   output: DeleteProfilingGroupResponse,
@@ -1481,7 +1479,7 @@ export const describeProfilingGroup: API.OperationMethod<
   DescribeProfilingGroupRequest,
   DescribeProfilingGroupResponse,
   DescribeProfilingGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeProfilingGroupRequest,
   output: DescribeProfilingGroupResponse,
@@ -1508,27 +1506,13 @@ export type GetFindingsReportAccountSummaryError =
  *
  * objects that contain analysis results for all profiling groups in your AWS account.
  */
-export const getFindingsReportAccountSummary: API.OperationMethod<
+export const getFindingsReportAccountSummary: API.PaginatedOperationMethod<
   GetFindingsReportAccountSummaryRequest,
   GetFindingsReportAccountSummaryResponse,
   GetFindingsReportAccountSummaryError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetFindingsReportAccountSummaryRequest,
-  ) => stream.Stream<
-    GetFindingsReportAccountSummaryResponse,
-    GetFindingsReportAccountSummaryError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetFindingsReportAccountSummaryRequest,
-  ) => stream.Stream<
-    unknown,
-    GetFindingsReportAccountSummaryError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetFindingsReportAccountSummaryRequest,
   output: GetFindingsReportAccountSummaryResponse,
   errors: [InternalServerException, ThrottlingException, ValidationException],
@@ -1540,27 +1524,7 @@ export const getFindingsReportAccountSummary: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetFindingsReportAccountSummaryRequest,
-  GetFindingsReportAccountSummaryResponse,
-  GetFindingsReportAccountSummaryError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetFindingsReportAccountSummaryRequest,
-  ) => stream.Stream<
-    GetFindingsReportAccountSummaryResponse,
-    GetFindingsReportAccountSummaryError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetFindingsReportAccountSummaryRequest,
-  ) => stream.Stream<
-    unknown,
-    GetFindingsReportAccountSummaryError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetNotificationConfigurationError =
   | InternalServerException
@@ -1575,7 +1539,7 @@ export const getNotificationConfiguration: API.OperationMethod<
   GetNotificationConfigurationRequest,
   GetNotificationConfigurationResponse,
   GetNotificationConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetNotificationConfigurationRequest,
   output: GetNotificationConfigurationResponse,
@@ -1602,7 +1566,7 @@ export const getPolicy: API.OperationMethod<
   GetPolicyRequest,
   GetPolicyResponse,
   GetPolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetPolicyRequest,
   output: GetPolicyResponse,
@@ -1668,7 +1632,7 @@ export const getProfile: API.OperationMethod<
   GetProfileRequest,
   GetProfileResponse,
   GetProfileError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetProfileRequest,
   output: GetProfileResponse,
@@ -1705,7 +1669,7 @@ export const getRecommendations: API.OperationMethod<
   GetRecommendationsRequest,
   GetRecommendationsResponse,
   GetRecommendationsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetRecommendationsRequest,
   output: GetRecommendationsResponse,
@@ -1729,27 +1693,13 @@ export type ListFindingsReportsError =
 /**
  * List the available reports for a given profiling group and time range.
  */
-export const listFindingsReports: API.OperationMethod<
+export const listFindingsReports: API.PaginatedOperationMethod<
   ListFindingsReportsRequest,
   ListFindingsReportsResponse,
   ListFindingsReportsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListFindingsReportsRequest,
-  ) => stream.Stream<
-    ListFindingsReportsResponse,
-    ListFindingsReportsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListFindingsReportsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListFindingsReportsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListFindingsReportsRequest,
   output: ListFindingsReportsResponse,
   errors: [
@@ -1766,27 +1716,7 @@ export const listFindingsReports: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListFindingsReportsRequest,
-  ListFindingsReportsResponse,
-  ListFindingsReportsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListFindingsReportsRequest,
-  ) => stream.Stream<
-    ListFindingsReportsResponse,
-    ListFindingsReportsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListFindingsReportsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListFindingsReportsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListProfileTimesError =
   | InternalServerException
@@ -1798,27 +1728,13 @@ export type ListProfileTimesError =
  * Lists the start times of the available aggregated profiles of a profiling group
  * for an aggregation period within the specified time range.
  */
-export const listProfileTimes: API.OperationMethod<
+export const listProfileTimes: API.PaginatedOperationMethod<
   ListProfileTimesRequest,
   ListProfileTimesResponse,
   ListProfileTimesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListProfileTimesRequest,
-  ) => stream.Stream<
-    ListProfileTimesResponse,
-    ListProfileTimesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListProfileTimesRequest,
-  ) => stream.Stream<
-    ProfileTime,
-    ListProfileTimesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ProfileTime
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListProfileTimesRequest,
   output: ListProfileTimesResponse,
   errors: [
@@ -1836,27 +1752,7 @@ export const listProfileTimes: API.OperationMethod<
     items: "profileTimes",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListProfileTimesRequest,
-  ListProfileTimesResponse,
-  ListProfileTimesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListProfileTimesRequest,
-  ) => stream.Stream<
-    ListProfileTimesResponse,
-    ListProfileTimesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListProfileTimesRequest,
-  ) => stream.Stream<
-    ProfileTime,
-    ListProfileTimesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListProfilingGroupsError =
   | InternalServerException
@@ -1869,27 +1765,13 @@ export type ListProfilingGroupsError =
  *
  * objects.
  */
-export const listProfilingGroups: API.OperationMethod<
+export const listProfilingGroups: API.PaginatedOperationMethod<
   ListProfilingGroupsRequest,
   ListProfilingGroupsResponse,
   ListProfilingGroupsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListProfilingGroupsRequest,
-  ) => stream.Stream<
-    ListProfilingGroupsResponse,
-    ListProfilingGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListProfilingGroupsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListProfilingGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListProfilingGroupsRequest,
   output: ListProfilingGroupsResponse,
   errors: [InternalServerException, ThrottlingException],
@@ -1901,27 +1783,7 @@ export const listProfilingGroups: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListProfilingGroupsRequest,
-  ListProfilingGroupsResponse,
-  ListProfilingGroupsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListProfilingGroupsRequest,
-  ) => stream.Stream<
-    ListProfilingGroupsResponse,
-    ListProfilingGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListProfilingGroupsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListProfilingGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsForResourceError =
   | InternalServerException
@@ -1935,7 +1797,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceRequest,
   ListTagsForResourceResponse,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -1966,7 +1828,7 @@ export const postAgentProfile: API.OperationMethod<
   PostAgentProfileRequest,
   PostAgentProfileResponse,
   PostAgentProfileError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PostAgentProfileRequest,
   output: PostAgentProfileResponse,
@@ -2014,7 +1876,7 @@ export const putPermission: API.OperationMethod<
   PutPermissionRequest,
   PutPermissionResponse,
   PutPermissionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutPermissionRequest,
   output: PutPermissionResponse,
@@ -2043,7 +1905,7 @@ export const removeNotificationChannel: API.OperationMethod<
   RemoveNotificationChannelRequest,
   RemoveNotificationChannelResponse,
   RemoveNotificationChannelError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RemoveNotificationChannelRequest,
   output: RemoveNotificationChannelResponse,
@@ -2080,7 +1942,7 @@ export const removePermission: API.OperationMethod<
   RemovePermissionRequest,
   RemovePermissionResponse,
   RemovePermissionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RemovePermissionRequest,
   output: RemovePermissionResponse,
@@ -2110,7 +1972,7 @@ export const submitFeedback: API.OperationMethod<
   SubmitFeedbackRequest,
   SubmitFeedbackResponse,
   SubmitFeedbackError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: SubmitFeedbackRequest,
   output: SubmitFeedbackResponse,
@@ -2137,7 +1999,7 @@ export const tagResource: API.OperationMethod<
   TagResourceRequest,
   TagResourceResponse,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -2163,7 +2025,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceRequest,
   UntagResourceResponse,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -2191,7 +2053,7 @@ export const updateProfilingGroup: API.OperationMethod<
   UpdateProfilingGroupRequest,
   UpdateProfilingGroupResponse,
   UpdateProfilingGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateProfilingGroupRequest,
   output: UpdateProfilingGroupResponse,

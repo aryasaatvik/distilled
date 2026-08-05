@@ -1,7 +1,6 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as redacted from "effect/Redacted";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -9,7 +8,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region as Rgn } from "../region.ts";
 import { SensitiveString } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "Payment Cryptography",
@@ -90,55 +88,58 @@ const rules = T.EndpointResolver((p, _) => {
 export class AccessDeniedException
   extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
     "AccessDeniedException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(403),
   ).pipe(C.withAuthError) {}
 export class ConflictException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
     "ConflictException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class InternalServerException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
     "InternalServerException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(500),
   ).pipe(C.withServerError) {}
 export class PublicPolicyException
   extends /*@__PURE__*/ S.TaggedErrorClass<PublicPolicyException>()(
     "PublicPolicyException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { ResourceId: S.optional(S.String) },
+    {
+      ResourceId: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class ServiceQuotaExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
     "ServiceQuotaExceededException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(402),
   ).pipe(C.withQuotaError) {}
 export class ServiceUnavailableException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceUnavailableException>()(
     "ServiceUnavailableException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(503),
   ).pipe(C.withServerError) {}
 export class ThrottlingException
   extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
     "ThrottlingException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(429),
   ).pipe(C.withThrottlingError) {}
 export class ValidationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
     "ValidationException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export type KeyArnOrKeyAliasType = string;
@@ -1510,7 +1511,7 @@ export const addKeyReplicationRegions: API.OperationMethod<
   AddKeyReplicationRegionsInput,
   AddKeyReplicationRegionsOutput,
   AddKeyReplicationRegionsError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AddKeyReplicationRegionsInput,
   output: AddKeyReplicationRegionsOutput,
@@ -1553,7 +1554,7 @@ export const associateMpaTeam: API.OperationMethod<
   AssociateMpaTeamInput,
   AssociateMpaTeamOutput,
   AssociateMpaTeamError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AssociateMpaTeamInput,
   output: AssociateMpaTeamOutput,
@@ -1605,7 +1606,7 @@ export const createAlias: API.OperationMethod<
   CreateAliasInput,
   CreateAliasOutput,
   CreateAliasError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateAliasInput,
   output: CreateAliasOutput,
@@ -1661,7 +1662,7 @@ export const createKey: API.OperationMethod<
   CreateKeyInput,
   CreateKeyOutput,
   CreateKeyError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateKeyInput,
   output: CreateKeyOutput,
@@ -1710,7 +1711,7 @@ export const deleteAlias: API.OperationMethod<
   DeleteAliasInput,
   DeleteAliasOutput,
   DeleteAliasError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteAliasInput,
   output: DeleteAliasOutput,
@@ -1758,7 +1759,7 @@ export const deleteKey: API.OperationMethod<
   DeleteKeyInput,
   DeleteKeyOutput,
   DeleteKeyError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteKeyInput,
   output: DeleteKeyOutput,
@@ -1800,7 +1801,7 @@ export const deleteResourcePolicy: API.OperationMethod<
   DeleteResourcePolicyInput,
   DeleteResourcePolicyOutput,
   DeleteResourcePolicyError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteResourcePolicyInput,
   output: DeleteResourcePolicyOutput,
@@ -1846,7 +1847,7 @@ export const disableDefaultKeyReplicationRegions: API.OperationMethod<
   DisableDefaultKeyReplicationRegionsInput,
   DisableDefaultKeyReplicationRegionsOutput,
   DisableDefaultKeyReplicationRegionsError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DisableDefaultKeyReplicationRegionsInput,
   output: DisableDefaultKeyReplicationRegionsOutput,
@@ -1889,7 +1890,7 @@ export const disassociateMpaTeam: API.OperationMethod<
   DisassociateMpaTeamInput,
   DisassociateMpaTeamOutput,
   DisassociateMpaTeamError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DisassociateMpaTeamInput,
   output: DisassociateMpaTeamOutput,
@@ -1936,7 +1937,7 @@ export const enableDefaultKeyReplicationRegions: API.OperationMethod<
   EnableDefaultKeyReplicationRegionsInput,
   EnableDefaultKeyReplicationRegionsOutput,
   EnableDefaultKeyReplicationRegionsError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: EnableDefaultKeyReplicationRegionsInput,
   output: EnableDefaultKeyReplicationRegionsOutput,
@@ -2058,7 +2059,7 @@ export const exportKey: API.OperationMethod<
   ExportKeyInput,
   ExportKeyOutput,
   ExportKeyError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ExportKeyInput,
   output: ExportKeyOutput,
@@ -2103,7 +2104,7 @@ export const getAlias: API.OperationMethod<
   GetAliasInput,
   GetAliasOutput,
   GetAliasError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetAliasInput,
   output: GetAliasOutput,
@@ -2135,7 +2136,7 @@ export const getCertificateSigningRequest: API.OperationMethod<
   GetCertificateSigningRequestInput,
   GetCertificateSigningRequestOutput,
   GetCertificateSigningRequestError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetCertificateSigningRequestInput,
   output: GetCertificateSigningRequestOutput,
@@ -2178,7 +2179,7 @@ export const getDefaultKeyReplicationRegions: API.OperationMethod<
   GetDefaultKeyReplicationRegionsInput,
   GetDefaultKeyReplicationRegionsOutput,
   GetDefaultKeyReplicationRegionsError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetDefaultKeyReplicationRegionsInput,
   output: GetDefaultKeyReplicationRegionsOutput,
@@ -2221,7 +2222,7 @@ export const getKey: API.OperationMethod<
   GetKeyInput,
   GetKeyOutput,
   GetKeyError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetKeyInput,
   output: GetKeyOutput,
@@ -2263,7 +2264,7 @@ export const getMpaTeamAssociation: API.OperationMethod<
   GetMpaTeamAssociationInput,
   GetMpaTeamAssociationOutput,
   GetMpaTeamAssociationError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetMpaTeamAssociationInput,
   output: GetMpaTeamAssociationOutput,
@@ -2311,7 +2312,7 @@ export const getParametersForExport: API.OperationMethod<
   GetParametersForExportInput,
   GetParametersForExportOutput,
   GetParametersForExportError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetParametersForExportInput,
   output: GetParametersForExportOutput,
@@ -2359,7 +2360,7 @@ export const getParametersForImport: API.OperationMethod<
   GetParametersForImportInput,
   GetParametersForImportOutput,
   GetParametersForImportError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetParametersForImportInput,
   output: GetParametersForImportOutput,
@@ -2397,7 +2398,7 @@ export const getPublicKeyCertificate: API.OperationMethod<
   GetPublicKeyCertificateInput,
   GetPublicKeyCertificateOutput,
   GetPublicKeyCertificateError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetPublicKeyCertificateInput,
   output: GetPublicKeyCertificateOutput,
@@ -2437,7 +2438,7 @@ export const getResourcePolicy: API.OperationMethod<
   GetResourcePolicyInput,
   GetResourcePolicyOutput,
   GetResourcePolicyError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetResourcePolicyInput,
   output: GetResourcePolicyOutput,
@@ -2565,7 +2566,7 @@ export const importKey: API.OperationMethod<
   ImportKeyInput,
   ImportKeyOutput,
   ImportKeyError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ImportKeyInput,
   output: ImportKeyOutput,
@@ -2609,27 +2610,13 @@ export type ListAliasesError =
  *
  * - UpdateAlias
  */
-export const listAliases: API.OperationMethod<
+export const listAliases: API.PaginatedOperationMethod<
   ListAliasesInput,
   ListAliasesOutput,
   ListAliasesError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAliasesInput,
-  ) => stream.Stream<
-    ListAliasesOutput,
-    ListAliasesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAliasesInput,
-  ) => stream.Stream<
-    Alias,
-    ListAliasesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Alias
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListAliasesInput,
   output: ListAliasesOutput,
   errors: [
@@ -2649,27 +2636,7 @@ export const listAliases: API.OperationMethod<
     items: "Aliases",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListAliasesInput,
-  ListAliasesOutput,
-  ListAliasesError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAliasesInput,
-  ) => stream.Stream<
-    ListAliasesOutput,
-    ListAliasesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAliasesInput,
-  ) => stream.Stream<
-    Alias,
-    ListAliasesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListKeysError =
   | AccessDeniedException
@@ -2694,27 +2661,13 @@ export type ListKeysError =
  *
  * - GetKey
  */
-export const listKeys: API.OperationMethod<
+export const listKeys: API.PaginatedOperationMethod<
   ListKeysInput,
   ListKeysOutput,
   ListKeysError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListKeysInput,
-  ) => stream.Stream<
-    ListKeysOutput,
-    ListKeysError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListKeysInput,
-  ) => stream.Stream<
-    KeySummary,
-    ListKeysError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  KeySummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListKeysInput,
   output: ListKeysOutput,
   errors: [
@@ -2734,27 +2687,7 @@ export const listKeys: API.OperationMethod<
     items: "Keys",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListKeysInput,
-  ListKeysOutput,
-  ListKeysError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListKeysInput,
-  ) => stream.Stream<
-    ListKeysOutput,
-    ListKeysError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListKeysInput,
-  ) => stream.Stream<
-    KeySummary,
-    ListKeysError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsForResourceError =
   | AccessDeniedException
@@ -2777,27 +2710,13 @@ export type ListTagsForResourceError =
  *
  * - UntagResource
  */
-export const listTagsForResource: API.OperationMethod<
+export const listTagsForResource: API.PaginatedOperationMethod<
   ListTagsForResourceInput,
   ListTagsForResourceOutput,
   ListTagsForResourceError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTagsForResourceInput,
-  ) => stream.Stream<
-    ListTagsForResourceOutput,
-    ListTagsForResourceError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTagsForResourceInput,
-  ) => stream.Stream<
-    Tag,
-    ListTagsForResourceError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Tag
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListTagsForResourceInput,
   output: ListTagsForResourceOutput,
   errors: [
@@ -2817,27 +2736,7 @@ export const listTagsForResource: API.OperationMethod<
     items: "Tags",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListTagsForResourceInput,
-  ListTagsForResourceOutput,
-  ListTagsForResourceError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTagsForResourceInput,
-  ) => stream.Stream<
-    ListTagsForResourceOutput,
-    ListTagsForResourceError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTagsForResourceInput,
-  ) => stream.Stream<
-    Tag,
-    ListTagsForResourceError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type PutResourcePolicyError =
   | AccessDeniedException
@@ -2869,7 +2768,7 @@ export const putResourcePolicy: API.OperationMethod<
   PutResourcePolicyInput,
   PutResourcePolicyOutput,
   PutResourcePolicyError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutResourcePolicyInput,
   output: PutResourcePolicyOutput,
@@ -2917,7 +2816,7 @@ export const removeKeyReplicationRegions: API.OperationMethod<
   RemoveKeyReplicationRegionsInput,
   RemoveKeyReplicationRegionsOutput,
   RemoveKeyReplicationRegionsError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RemoveKeyReplicationRegionsInput,
   output: RemoveKeyReplicationRegionsOutput,
@@ -2964,7 +2863,7 @@ export const restoreKey: API.OperationMethod<
   RestoreKeyInput,
   RestoreKeyOutput,
   RestoreKeyError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RestoreKeyInput,
   output: RestoreKeyOutput,
@@ -3006,7 +2905,7 @@ export const startKeyUsage: API.OperationMethod<
   StartKeyUsageInput,
   StartKeyUsageOutput,
   StartKeyUsageError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartKeyUsageInput,
   output: StartKeyUsageOutput,
@@ -3052,7 +2951,7 @@ export const stopKeyUsage: API.OperationMethod<
   StopKeyUsageInput,
   StopKeyUsageOutput,
   StopKeyUsageError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StopKeyUsageInput,
   output: StopKeyUsageOutput,
@@ -3100,7 +2999,7 @@ export const tagResource: API.OperationMethod<
   TagResourceInput,
   TagResourceOutput,
   TagResourceError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceInput,
   output: TagResourceOutput,
@@ -3145,7 +3044,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceInput,
   UntagResourceOutput,
   UntagResourceError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceInput,
   output: UntagResourceOutput,
@@ -3191,7 +3090,7 @@ export const updateAlias: API.OperationMethod<
   UpdateAliasInput,
   UpdateAliasOutput,
   UpdateAliasError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateAliasInput,
   output: UpdateAliasOutput,

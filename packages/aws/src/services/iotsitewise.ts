@@ -9,7 +9,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 import { SensitiveString } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "IoTSiteWise",
@@ -90,85 +89,100 @@ const rules = T.EndpointResolver((p, _) => {
 export class AccessDeniedException
   extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
     "AccessDeniedException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(403),
   ).pipe(C.withAuthError) {}
 export class ConflictingOperationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConflictingOperationException>()(
     "ConflictingOperationException",
-    { message: S.String, resourceId: S.String, resourceArn: S.String },
+    {
+      message: S.String.pipe(T.ErrorMessage()),
+      resourceId: S.String,
+      resourceArn: S.String,
+    },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class InternalFailureException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalFailureException>()(
     "InternalFailureException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(500),
   ).pipe(C.withServerError) {}
 export class InvalidRequestException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidRequestException>()(
     "InvalidRequestException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class LimitExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<LimitExceededException>()(
     "LimitExceededException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(410),
   ).pipe(C.withBadRequestError) {}
 export class PreconditionFailedException
   extends /*@__PURE__*/ S.TaggedErrorClass<PreconditionFailedException>()(
     "PreconditionFailedException",
-    { message: S.String, resourceId: S.String, resourceArn: S.String },
+    {
+      message: S.String.pipe(T.ErrorMessage()),
+      resourceId: S.String,
+      resourceArn: S.String,
+    },
     T.HttpError(412),
   ) {}
 export class QueryTimeoutException
   extends /*@__PURE__*/ S.TaggedErrorClass<QueryTimeoutException>()(
     "QueryTimeoutException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class ResourceAlreadyExistsException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceAlreadyExistsException>()(
     "ResourceAlreadyExistsException",
-    { message: S.String, resourceId: S.String, resourceArn: S.String },
+    {
+      message: S.String.pipe(T.ErrorMessage()),
+      resourceId: S.String,
+      resourceArn: S.String,
+    },
     T.HttpError(409),
   ).pipe(C.withConflictError, C.withAlreadyExistsError) {}
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class ServiceUnavailableException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceUnavailableException>()(
     "ServiceUnavailableException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(503),
   ).pipe(C.withServerError) {}
 export class ThrottlingException
   extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
     "ThrottlingException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(429),
   ).pipe(C.withThrottlingError) {}
 export class TooManyTagsException
   extends /*@__PURE__*/ S.TaggedErrorClass<TooManyTagsException>()(
     "TooManyTagsException",
-    { message: S.optional(S.String), resourceName: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      resourceName: S.optional(S.String),
+    },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class UnauthorizedException
   extends /*@__PURE__*/ S.TaggedErrorClass<UnauthorizedException>()(
     "UnauthorizedException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(401),
   ).pipe(C.withAuthError) {}
 export class ValidationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
     "ValidationException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export type CustomID = string;
@@ -7117,7 +7131,7 @@ export const associateAssets: API.OperationMethod<
   AssociateAssetsRequest,
   AssociateAssetsResponse,
   AssociateAssetsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AssociateAssetsRequest,
   output: AssociateAssetsResponse,
@@ -7150,7 +7164,7 @@ export const associateTimeSeriesToAssetProperty: API.OperationMethod<
   AssociateTimeSeriesToAssetPropertyRequest,
   AssociateTimeSeriesToAssetPropertyResponse,
   AssociateTimeSeriesToAssetPropertyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AssociateTimeSeriesToAssetPropertyRequest,
   output: AssociateTimeSeriesToAssetPropertyResponse,
@@ -7181,7 +7195,7 @@ export const batchAssociateProjectAssets: API.OperationMethod<
   BatchAssociateProjectAssetsRequest,
   BatchAssociateProjectAssetsResponse,
   BatchAssociateProjectAssetsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchAssociateProjectAssetsRequest,
   output: BatchAssociateProjectAssetsResponse,
@@ -7211,7 +7225,7 @@ export const batchDisassociateProjectAssets: API.OperationMethod<
   BatchDisassociateProjectAssetsRequest,
   BatchDisassociateProjectAssetsResponse,
   BatchDisassociateProjectAssetsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchDisassociateProjectAssetsRequest,
   output: BatchDisassociateProjectAssetsResponse,
@@ -7238,27 +7252,13 @@ export type BatchGetAssetPropertyAggregatesError =
  * properties. For more information, see Querying aggregates in the
  * *IoT SiteWise User Guide*.
  */
-export const batchGetAssetPropertyAggregates: API.OperationMethod<
+export const batchGetAssetPropertyAggregates: API.PaginatedOperationMethod<
   BatchGetAssetPropertyAggregatesRequest,
   BatchGetAssetPropertyAggregatesResponse,
   BatchGetAssetPropertyAggregatesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: BatchGetAssetPropertyAggregatesRequest,
-  ) => stream.Stream<
-    BatchGetAssetPropertyAggregatesResponse,
-    BatchGetAssetPropertyAggregatesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: BatchGetAssetPropertyAggregatesRequest,
-  ) => stream.Stream<
-    unknown,
-    BatchGetAssetPropertyAggregatesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: BatchGetAssetPropertyAggregatesRequest,
   output: BatchGetAssetPropertyAggregatesResponse,
   errors: [
@@ -7276,27 +7276,7 @@ export const batchGetAssetPropertyAggregates: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  BatchGetAssetPropertyAggregatesRequest,
-  BatchGetAssetPropertyAggregatesResponse,
-  BatchGetAssetPropertyAggregatesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: BatchGetAssetPropertyAggregatesRequest,
-  ) => stream.Stream<
-    BatchGetAssetPropertyAggregatesResponse,
-    BatchGetAssetPropertyAggregatesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: BatchGetAssetPropertyAggregatesRequest,
-  ) => stream.Stream<
-    unknown,
-    BatchGetAssetPropertyAggregatesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type BatchGetAssetPropertyValueError =
   | InternalFailureException
@@ -7308,27 +7288,13 @@ export type BatchGetAssetPropertyValueError =
  * Gets the current value for one or more asset properties. For more information, see Querying
  * current values in the *IoT SiteWise User Guide*.
  */
-export const batchGetAssetPropertyValue: API.OperationMethod<
+export const batchGetAssetPropertyValue: API.PaginatedOperationMethod<
   BatchGetAssetPropertyValueRequest,
   BatchGetAssetPropertyValueResponse,
   BatchGetAssetPropertyValueError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: BatchGetAssetPropertyValueRequest,
-  ) => stream.Stream<
-    BatchGetAssetPropertyValueResponse,
-    BatchGetAssetPropertyValueError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: BatchGetAssetPropertyValueRequest,
-  ) => stream.Stream<
-    unknown,
-    BatchGetAssetPropertyValueError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: BatchGetAssetPropertyValueRequest,
   output: BatchGetAssetPropertyValueResponse,
   errors: [
@@ -7342,27 +7308,7 @@ export const batchGetAssetPropertyValue: API.OperationMethod<
   operationName: "BatchGetAssetPropertyValue",
   endpointHostPrefix: "data.",
   pagination: { inputToken: "nextToken", outputToken: "nextToken" } as const,
-})) as any as API.OperationMethod<
-  BatchGetAssetPropertyValueRequest,
-  BatchGetAssetPropertyValueResponse,
-  BatchGetAssetPropertyValueError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: BatchGetAssetPropertyValueRequest,
-  ) => stream.Stream<
-    BatchGetAssetPropertyValueResponse,
-    BatchGetAssetPropertyValueError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: BatchGetAssetPropertyValueRequest,
-  ) => stream.Stream<
-    unknown,
-    BatchGetAssetPropertyValueError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type BatchGetAssetPropertyValueHistoryError =
   | InternalFailureException
@@ -7374,27 +7320,13 @@ export type BatchGetAssetPropertyValueHistoryError =
  * Gets the historical values for one or more asset properties. For more information, see
  * Querying historical values in the *IoT SiteWise User Guide*.
  */
-export const batchGetAssetPropertyValueHistory: API.OperationMethod<
+export const batchGetAssetPropertyValueHistory: API.PaginatedOperationMethod<
   BatchGetAssetPropertyValueHistoryRequest,
   BatchGetAssetPropertyValueHistoryResponse,
   BatchGetAssetPropertyValueHistoryError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: BatchGetAssetPropertyValueHistoryRequest,
-  ) => stream.Stream<
-    BatchGetAssetPropertyValueHistoryResponse,
-    BatchGetAssetPropertyValueHistoryError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: BatchGetAssetPropertyValueHistoryRequest,
-  ) => stream.Stream<
-    unknown,
-    BatchGetAssetPropertyValueHistoryError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: BatchGetAssetPropertyValueHistoryRequest,
   output: BatchGetAssetPropertyValueHistoryResponse,
   errors: [
@@ -7412,27 +7344,7 @@ export const batchGetAssetPropertyValueHistory: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  BatchGetAssetPropertyValueHistoryRequest,
-  BatchGetAssetPropertyValueHistoryResponse,
-  BatchGetAssetPropertyValueHistoryError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: BatchGetAssetPropertyValueHistoryRequest,
-  ) => stream.Stream<
-    BatchGetAssetPropertyValueHistoryResponse,
-    BatchGetAssetPropertyValueHistoryError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: BatchGetAssetPropertyValueHistoryRequest,
-  ) => stream.Stream<
-    unknown,
-    BatchGetAssetPropertyValueHistoryError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type BatchPutAssetPropertyValueError =
   | ConflictingOperationException
@@ -7472,7 +7384,7 @@ export const batchPutAssetPropertyValue: API.OperationMethod<
   BatchPutAssetPropertyValueRequest,
   BatchPutAssetPropertyValueResponse,
   BatchPutAssetPropertyValueError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchPutAssetPropertyValueRequest,
   output: BatchPutAssetPropertyValueResponse,
@@ -7508,7 +7420,7 @@ export const createAccessPolicy: API.OperationMethod<
   CreateAccessPolicyRequest,
   CreateAccessPolicyResponse,
   CreateAccessPolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateAccessPolicyRequest,
   output: CreateAccessPolicyResponse,
@@ -7542,7 +7454,7 @@ export const createAsset: API.OperationMethod<
   CreateAssetRequest,
   CreateAssetResponse,
   CreateAssetError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateAssetRequest,
   output: CreateAssetResponse,
@@ -7595,7 +7507,7 @@ export const createAssetModel: API.OperationMethod<
   CreateAssetModelRequest,
   CreateAssetModelResponse,
   CreateAssetModelError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateAssetModelRequest,
   output: CreateAssetModelResponse,
@@ -7651,7 +7563,7 @@ export const createAssetModelCompositeModel: API.OperationMethod<
   CreateAssetModelCompositeModelRequest,
   CreateAssetModelCompositeModelResponse,
   CreateAssetModelCompositeModelError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateAssetModelCompositeModelRequest,
   output: CreateAssetModelCompositeModelResponse,
@@ -7700,7 +7612,7 @@ export const createBulkImportJob: API.OperationMethod<
   CreateBulkImportJobRequest,
   CreateBulkImportJobResponse,
   CreateBulkImportJobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateBulkImportJobRequest,
   output: CreateBulkImportJobResponse,
@@ -7735,7 +7647,7 @@ export const createComputationModel: API.OperationMethod<
   CreateComputationModelRequest,
   CreateComputationModelResponse,
   CreateComputationModelError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateComputationModelRequest,
   output: CreateComputationModelResponse,
@@ -7768,7 +7680,7 @@ export const createDashboard: API.OperationMethod<
   CreateDashboardRequest,
   CreateDashboardResponse,
   CreateDashboardError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateDashboardRequest,
   output: CreateDashboardResponse,
@@ -7801,7 +7713,7 @@ export const createDataset: API.OperationMethod<
   CreateDatasetRequest,
   CreateDatasetResponse,
   CreateDatasetError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateDatasetRequest,
   output: CreateDatasetResponse,
@@ -7836,7 +7748,7 @@ export const createGateway: API.OperationMethod<
   CreateGatewayRequest,
   CreateGatewayResponse,
   CreateGatewayError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateGatewayRequest,
   output: CreateGatewayResponse,
@@ -7872,7 +7784,7 @@ export const createPortal: API.OperationMethod<
   CreatePortalRequest,
   CreatePortalResponse,
   CreatePortalError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreatePortalRequest,
   output: CreatePortalResponse,
@@ -7906,7 +7818,7 @@ export const createProject: API.OperationMethod<
   CreateProjectRequest,
   CreateProjectResponse,
   CreateProjectError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateProjectRequest,
   output: CreateProjectResponse,
@@ -7938,7 +7850,7 @@ export const deleteAccessPolicy: API.OperationMethod<
   DeleteAccessPolicyRequest,
   DeleteAccessPolicyResponse,
   DeleteAccessPolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteAccessPolicyRequest,
   output: DeleteAccessPolicyResponse,
@@ -7972,7 +7884,7 @@ export const deleteAsset: API.OperationMethod<
   DeleteAssetRequest,
   DeleteAssetResponse,
   DeleteAssetError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteAssetRequest,
   output: DeleteAssetResponse,
@@ -8008,7 +7920,7 @@ export const deleteAssetModel: API.OperationMethod<
   DeleteAssetModelRequest,
   DeleteAssetModelResponse,
   DeleteAssetModelError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteAssetModelRequest,
   output: DeleteAssetModelResponse,
@@ -8045,7 +7957,7 @@ export const deleteAssetModelCompositeModel: API.OperationMethod<
   DeleteAssetModelCompositeModelRequest,
   DeleteAssetModelCompositeModelResponse,
   DeleteAssetModelCompositeModelError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteAssetModelCompositeModelRequest,
   output: DeleteAssetModelCompositeModelResponse,
@@ -8078,7 +7990,7 @@ export const deleteAssetModelInterfaceRelationship: API.OperationMethod<
   DeleteAssetModelInterfaceRelationshipRequest,
   DeleteAssetModelInterfaceRelationshipResponse,
   DeleteAssetModelInterfaceRelationshipError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteAssetModelInterfaceRelationshipRequest,
   output: DeleteAssetModelInterfaceRelationshipResponse,
@@ -8109,7 +8021,7 @@ export const deleteComputationModel: API.OperationMethod<
   DeleteComputationModelRequest,
   DeleteComputationModelResponse,
   DeleteComputationModelError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteComputationModelRequest,
   output: DeleteComputationModelResponse,
@@ -8139,7 +8051,7 @@ export const deleteDashboard: API.OperationMethod<
   DeleteDashboardRequest,
   DeleteDashboardResponse,
   DeleteDashboardError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteDashboardRequest,
   output: DeleteDashboardResponse,
@@ -8169,7 +8081,7 @@ export const deleteDataset: API.OperationMethod<
   DeleteDatasetRequest,
   DeleteDatasetResponse,
   DeleteDatasetError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteDatasetRequest,
   output: DeleteDatasetResponse,
@@ -8201,7 +8113,7 @@ export const deleteGateway: API.OperationMethod<
   DeleteGatewayRequest,
   DeleteGatewayResponse,
   DeleteGatewayError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteGatewayRequest,
   output: DeleteGatewayResponse,
@@ -8232,7 +8144,7 @@ export const deletePortal: API.OperationMethod<
   DeletePortalRequest,
   DeletePortalResponse,
   DeletePortalError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeletePortalRequest,
   output: DeletePortalResponse,
@@ -8262,7 +8174,7 @@ export const deleteProject: API.OperationMethod<
   DeleteProjectRequest,
   DeleteProjectResponse,
   DeleteProjectError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteProjectRequest,
   output: DeleteProjectResponse,
@@ -8306,7 +8218,7 @@ export const deleteTimeSeries: API.OperationMethod<
   DeleteTimeSeriesRequest,
   DeleteTimeSeriesResponse,
   DeleteTimeSeriesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteTimeSeriesRequest,
   output: DeleteTimeSeriesResponse,
@@ -8337,7 +8249,7 @@ export const describeAccessPolicy: API.OperationMethod<
   DescribeAccessPolicyRequest,
   DescribeAccessPolicyResponse,
   DescribeAccessPolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeAccessPolicyRequest,
   output: DescribeAccessPolicyResponse,
@@ -8366,7 +8278,7 @@ export const describeAction: API.OperationMethod<
   DescribeActionRequest,
   DescribeActionResponse,
   DescribeActionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeActionRequest,
   output: DescribeActionResponse,
@@ -8395,7 +8307,7 @@ export const describeAsset: API.OperationMethod<
   DescribeAssetRequest,
   DescribeAssetResponse,
   DescribeAssetError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeAssetRequest,
   output: DescribeAssetResponse,
@@ -8427,7 +8339,7 @@ export const describeAssetCompositeModel: API.OperationMethod<
   DescribeAssetCompositeModelRequest,
   DescribeAssetCompositeModelResponse,
   DescribeAssetCompositeModelError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeAssetCompositeModelRequest,
   output: DescribeAssetCompositeModelResponse,
@@ -8458,7 +8370,7 @@ export const describeAssetModel: API.OperationMethod<
   DescribeAssetModelRequest,
   DescribeAssetModelResponse,
   DescribeAssetModelError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeAssetModelRequest,
   output: DescribeAssetModelResponse,
@@ -8489,7 +8401,7 @@ export const describeAssetModelCompositeModel: API.OperationMethod<
   DescribeAssetModelCompositeModelRequest,
   DescribeAssetModelCompositeModelResponse,
   DescribeAssetModelCompositeModelError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeAssetModelCompositeModelRequest,
   output: DescribeAssetModelCompositeModelResponse,
@@ -8519,7 +8431,7 @@ export const describeAssetModelInterfaceRelationship: API.OperationMethod<
   DescribeAssetModelInterfaceRelationshipRequest,
   DescribeAssetModelInterfaceRelationshipResponse,
   DescribeAssetModelInterfaceRelationshipError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeAssetModelInterfaceRelationshipRequest,
   output: DescribeAssetModelInterfaceRelationshipResponse,
@@ -8555,7 +8467,7 @@ export const describeAssetProperty: API.OperationMethod<
   DescribeAssetPropertyRequest,
   DescribeAssetPropertyResponse,
   DescribeAssetPropertyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeAssetPropertyRequest,
   output: DescribeAssetPropertyResponse,
@@ -8585,7 +8497,7 @@ export const describeBulkImportJob: API.OperationMethod<
   DescribeBulkImportJobRequest,
   DescribeBulkImportJobResponse,
   DescribeBulkImportJobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeBulkImportJobRequest,
   output: DescribeBulkImportJobResponse,
@@ -8614,7 +8526,7 @@ export const describeComputationModel: API.OperationMethod<
   DescribeComputationModelRequest,
   DescribeComputationModelResponse,
   DescribeComputationModelError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeComputationModelRequest,
   output: DescribeComputationModelResponse,
@@ -8643,7 +8555,7 @@ export const describeComputationModelExecutionSummary: API.OperationMethod<
   DescribeComputationModelExecutionSummaryRequest,
   DescribeComputationModelExecutionSummaryResponse,
   DescribeComputationModelExecutionSummaryError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeComputationModelExecutionSummaryRequest,
   output: DescribeComputationModelExecutionSummaryResponse,
@@ -8672,7 +8584,7 @@ export const describeDashboard: API.OperationMethod<
   DescribeDashboardRequest,
   DescribeDashboardResponse,
   DescribeDashboardError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeDashboardRequest,
   output: DescribeDashboardResponse,
@@ -8701,7 +8613,7 @@ export const describeDataset: API.OperationMethod<
   DescribeDatasetRequest,
   DescribeDatasetResponse,
   DescribeDatasetError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeDatasetRequest,
   output: DescribeDatasetResponse,
@@ -8731,7 +8643,7 @@ export const describeDefaultEncryptionConfiguration: API.OperationMethod<
   DescribeDefaultEncryptionConfigurationRequest,
   DescribeDefaultEncryptionConfigurationResponse,
   DescribeDefaultEncryptionConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeDefaultEncryptionConfigurationRequest,
   output: DescribeDefaultEncryptionConfigurationResponse,
@@ -8759,7 +8671,7 @@ export const describeExecution: API.OperationMethod<
   DescribeExecutionRequest,
   DescribeExecutionResponse,
   DescribeExecutionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeExecutionRequest,
   output: DescribeExecutionResponse,
@@ -8788,7 +8700,7 @@ export const describeGateway: API.OperationMethod<
   DescribeGatewayRequest,
   DescribeGatewayResponse,
   DescribeGatewayError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeGatewayRequest,
   output: DescribeGatewayResponse,
@@ -8829,7 +8741,7 @@ export const describeGatewayCapabilityConfiguration: API.OperationMethod<
   DescribeGatewayCapabilityConfigurationRequest,
   DescribeGatewayCapabilityConfigurationResponse,
   DescribeGatewayCapabilityConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeGatewayCapabilityConfigurationRequest,
   output: DescribeGatewayCapabilityConfigurationResponse,
@@ -8858,7 +8770,7 @@ export const describeLoggingOptions: API.OperationMethod<
   DescribeLoggingOptionsRequest,
   DescribeLoggingOptionsResponse,
   DescribeLoggingOptionsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeLoggingOptionsRequest,
   output: DescribeLoggingOptionsResponse,
@@ -8887,7 +8799,7 @@ export const describePortal: API.OperationMethod<
   DescribePortalRequest,
   DescribePortalResponse,
   DescribePortalError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribePortalRequest,
   output: DescribePortalResponse,
@@ -8916,7 +8828,7 @@ export const describeProject: API.OperationMethod<
   DescribeProjectRequest,
   DescribeProjectResponse,
   DescribeProjectError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeProjectRequest,
   output: DescribeProjectResponse,
@@ -8947,7 +8859,7 @@ export const describeStorageConfiguration: API.OperationMethod<
   DescribeStorageConfigurationRequest,
   DescribeStorageConfigurationResponse,
   DescribeStorageConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeStorageConfigurationRequest,
   output: DescribeStorageConfigurationResponse,
@@ -8990,7 +8902,7 @@ export const describeTimeSeries: API.OperationMethod<
   DescribeTimeSeriesRequest,
   DescribeTimeSeriesResponse,
   DescribeTimeSeriesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeTimeSeriesRequest,
   output: DescribeTimeSeriesResponse,
@@ -9021,7 +8933,7 @@ export const disassociateAssets: API.OperationMethod<
   DisassociateAssetsRequest,
   DisassociateAssetsResponse,
   DisassociateAssetsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DisassociateAssetsRequest,
   output: DisassociateAssetsResponse,
@@ -9052,7 +8964,7 @@ export const disassociateTimeSeriesFromAssetProperty: API.OperationMethod<
   DisassociateTimeSeriesFromAssetPropertyRequest,
   DisassociateTimeSeriesFromAssetPropertyResponse,
   DisassociateTimeSeriesFromAssetPropertyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DisassociateTimeSeriesFromAssetPropertyRequest,
   output: DisassociateTimeSeriesFromAssetPropertyResponse,
@@ -9084,7 +8996,7 @@ export const executeAction: API.OperationMethod<
   ExecuteActionRequest,
   ExecuteActionResponse,
   ExecuteActionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ExecuteActionRequest,
   output: ExecuteActionResponse,
@@ -9115,27 +9027,13 @@ export type ExecuteQueryError =
  * Run SQL queries to retrieve metadata and time-series data from asset models, assets,
  * measurements, metrics, transforms, and aggregates.
  */
-export const executeQuery: API.OperationMethod<
+export const executeQuery: API.PaginatedOperationMethod<
   ExecuteQueryRequest,
   ExecuteQueryResponse,
   ExecuteQueryError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ExecuteQueryRequest,
-  ) => stream.Stream<
-    ExecuteQueryResponse,
-    ExecuteQueryError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ExecuteQueryRequest,
-  ) => stream.Stream<
-    Row,
-    ExecuteQueryError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Row
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ExecuteQueryRequest,
   output: ExecuteQueryResponse,
   errors: [
@@ -9157,27 +9055,7 @@ export const executeQuery: API.OperationMethod<
     items: "rows",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ExecuteQueryRequest,
-  ExecuteQueryResponse,
-  ExecuteQueryError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ExecuteQueryRequest,
-  ) => stream.Stream<
-    ExecuteQueryResponse,
-    ExecuteQueryError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ExecuteQueryRequest,
-  ) => stream.Stream<
-    Row,
-    ExecuteQueryError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetAssetPropertyAggregatesError =
   | InternalFailureException
@@ -9197,27 +9075,13 @@ export type GetAssetPropertyAggregatesError =
  * - A `propertyAlias`, which is a data stream alias (for example,
  * `/company/windfarm/3/turbine/7/temperature`). To define an asset property's alias, see UpdateAssetProperty.
  */
-export const getAssetPropertyAggregates: API.OperationMethod<
+export const getAssetPropertyAggregates: API.PaginatedOperationMethod<
   GetAssetPropertyAggregatesRequest,
   GetAssetPropertyAggregatesResponse,
   GetAssetPropertyAggregatesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetAssetPropertyAggregatesRequest,
-  ) => stream.Stream<
-    GetAssetPropertyAggregatesResponse,
-    GetAssetPropertyAggregatesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetAssetPropertyAggregatesRequest,
-  ) => stream.Stream<
-    AggregatedValue,
-    GetAssetPropertyAggregatesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  AggregatedValue
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetAssetPropertyAggregatesRequest,
   output: GetAssetPropertyAggregatesResponse,
   errors: [
@@ -9237,27 +9101,7 @@ export const getAssetPropertyAggregates: API.OperationMethod<
     items: "aggregatedValues",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetAssetPropertyAggregatesRequest,
-  GetAssetPropertyAggregatesResponse,
-  GetAssetPropertyAggregatesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetAssetPropertyAggregatesRequest,
-  ) => stream.Stream<
-    GetAssetPropertyAggregatesResponse,
-    GetAssetPropertyAggregatesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetAssetPropertyAggregatesRequest,
-  ) => stream.Stream<
-    AggregatedValue,
-    GetAssetPropertyAggregatesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetAssetPropertyValueError =
   | InternalFailureException
@@ -9281,7 +9125,7 @@ export const getAssetPropertyValue: API.OperationMethod<
   GetAssetPropertyValueRequest,
   GetAssetPropertyValueResponse,
   GetAssetPropertyValueError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetAssetPropertyValueRequest,
   output: GetAssetPropertyValueResponse,
@@ -9316,27 +9160,13 @@ export type GetAssetPropertyValueHistoryError =
  * - A `propertyAlias`, which is a data stream alias (for example,
  * `/company/windfarm/3/turbine/7/temperature`). To define an asset property's alias, see UpdateAssetProperty.
  */
-export const getAssetPropertyValueHistory: API.OperationMethod<
+export const getAssetPropertyValueHistory: API.PaginatedOperationMethod<
   GetAssetPropertyValueHistoryRequest,
   GetAssetPropertyValueHistoryResponse,
   GetAssetPropertyValueHistoryError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetAssetPropertyValueHistoryRequest,
-  ) => stream.Stream<
-    GetAssetPropertyValueHistoryResponse,
-    GetAssetPropertyValueHistoryError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetAssetPropertyValueHistoryRequest,
-  ) => stream.Stream<
-    AssetPropertyValue,
-    GetAssetPropertyValueHistoryError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  AssetPropertyValue
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetAssetPropertyValueHistoryRequest,
   output: GetAssetPropertyValueHistoryResponse,
   errors: [
@@ -9356,27 +9186,7 @@ export const getAssetPropertyValueHistory: API.OperationMethod<
     items: "assetPropertyValueHistory",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetAssetPropertyValueHistoryRequest,
-  GetAssetPropertyValueHistoryResponse,
-  GetAssetPropertyValueHistoryError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetAssetPropertyValueHistoryRequest,
-  ) => stream.Stream<
-    GetAssetPropertyValueHistoryResponse,
-    GetAssetPropertyValueHistoryError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetAssetPropertyValueHistoryRequest,
-  ) => stream.Stream<
-    AssetPropertyValue,
-    GetAssetPropertyValueHistoryError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetInterpolatedAssetPropertyValuesError =
   | InternalFailureException
@@ -9400,27 +9210,13 @@ export type GetInterpolatedAssetPropertyValuesError =
  * - A `propertyAlias`, which is a data stream alias (for example,
  * `/company/windfarm/3/turbine/7/temperature`). To define an asset property's alias, see UpdateAssetProperty.
  */
-export const getInterpolatedAssetPropertyValues: API.OperationMethod<
+export const getInterpolatedAssetPropertyValues: API.PaginatedOperationMethod<
   GetInterpolatedAssetPropertyValuesRequest,
   GetInterpolatedAssetPropertyValuesResponse,
   GetInterpolatedAssetPropertyValuesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetInterpolatedAssetPropertyValuesRequest,
-  ) => stream.Stream<
-    GetInterpolatedAssetPropertyValuesResponse,
-    GetInterpolatedAssetPropertyValuesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetInterpolatedAssetPropertyValuesRequest,
-  ) => stream.Stream<
-    InterpolatedAssetPropertyValue,
-    GetInterpolatedAssetPropertyValuesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  InterpolatedAssetPropertyValue
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetInterpolatedAssetPropertyValuesRequest,
   output: GetInterpolatedAssetPropertyValuesResponse,
   errors: [
@@ -9440,27 +9236,7 @@ export const getInterpolatedAssetPropertyValues: API.OperationMethod<
     items: "interpolatedAssetPropertyValues",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetInterpolatedAssetPropertyValuesRequest,
-  GetInterpolatedAssetPropertyValuesResponse,
-  GetInterpolatedAssetPropertyValuesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetInterpolatedAssetPropertyValuesRequest,
-  ) => stream.Stream<
-    GetInterpolatedAssetPropertyValuesResponse,
-    GetInterpolatedAssetPropertyValuesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetInterpolatedAssetPropertyValuesRequest,
-  ) => stream.Stream<
-    InterpolatedAssetPropertyValue,
-    GetInterpolatedAssetPropertyValuesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type InvokeAssistantError =
   | AccessDeniedException
@@ -9478,7 +9254,7 @@ export const invokeAssistant: API.OperationMethod<
   InvokeAssistantRequest,
   InvokeAssistantResponse,
   InvokeAssistantError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: InvokeAssistantRequest,
   output: InvokeAssistantResponse,
@@ -9506,27 +9282,13 @@ export type ListAccessPoliciesError =
  * Retrieves a paginated list of access policies for an identity (an IAM Identity Center user, an IAM Identity Center
  * group, or an IAM user) or an IoT SiteWise Monitor resource (a portal or project).
  */
-export const listAccessPolicies: API.OperationMethod<
+export const listAccessPolicies: API.PaginatedOperationMethod<
   ListAccessPoliciesRequest,
   ListAccessPoliciesResponse,
   ListAccessPoliciesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAccessPoliciesRequest,
-  ) => stream.Stream<
-    ListAccessPoliciesResponse,
-    ListAccessPoliciesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAccessPoliciesRequest,
-  ) => stream.Stream<
-    AccessPolicySummary,
-    ListAccessPoliciesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  AccessPolicySummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListAccessPoliciesRequest,
   output: ListAccessPoliciesResponse,
   errors: [
@@ -9544,27 +9306,7 @@ export const listAccessPolicies: API.OperationMethod<
     items: "accessPolicySummaries",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListAccessPoliciesRequest,
-  ListAccessPoliciesResponse,
-  ListAccessPoliciesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAccessPoliciesRequest,
-  ) => stream.Stream<
-    ListAccessPoliciesResponse,
-    ListAccessPoliciesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAccessPoliciesRequest,
-  ) => stream.Stream<
-    AccessPolicySummary,
-    ListAccessPoliciesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListActionsError =
   | InternalFailureException
@@ -9575,27 +9317,13 @@ export type ListActionsError =
 /**
  * Retrieves a paginated list of actions for a specific target resource.
  */
-export const listActions: API.OperationMethod<
+export const listActions: API.PaginatedOperationMethod<
   ListActionsRequest,
   ListActionsResponse,
   ListActionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListActionsRequest,
-  ) => stream.Stream<
-    ListActionsResponse,
-    ListActionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListActionsRequest,
-  ) => stream.Stream<
-    ActionSummary,
-    ListActionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ActionSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListActionsRequest,
   output: ListActionsResponse,
   errors: [
@@ -9614,27 +9342,7 @@ export const listActions: API.OperationMethod<
     items: "actionSummaries",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListActionsRequest,
-  ListActionsResponse,
-  ListActionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListActionsRequest,
-  ) => stream.Stream<
-    ListActionsResponse,
-    ListActionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListActionsRequest,
-  ) => stream.Stream<
-    ActionSummary,
-    ListActionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListAssetModelCompositeModelsError =
   | InternalFailureException
@@ -9645,27 +9353,13 @@ export type ListAssetModelCompositeModelsError =
 /**
  * Retrieves a paginated list of composite models associated with the asset model
  */
-export const listAssetModelCompositeModels: API.OperationMethod<
+export const listAssetModelCompositeModels: API.PaginatedOperationMethod<
   ListAssetModelCompositeModelsRequest,
   ListAssetModelCompositeModelsResponse,
   ListAssetModelCompositeModelsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAssetModelCompositeModelsRequest,
-  ) => stream.Stream<
-    ListAssetModelCompositeModelsResponse,
-    ListAssetModelCompositeModelsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAssetModelCompositeModelsRequest,
-  ) => stream.Stream<
-    AssetModelCompositeModelSummary,
-    ListAssetModelCompositeModelsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  AssetModelCompositeModelSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListAssetModelCompositeModelsRequest,
   output: ListAssetModelCompositeModelsResponse,
   errors: [
@@ -9684,27 +9378,7 @@ export const listAssetModelCompositeModels: API.OperationMethod<
     items: "assetModelCompositeModelSummaries",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListAssetModelCompositeModelsRequest,
-  ListAssetModelCompositeModelsResponse,
-  ListAssetModelCompositeModelsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAssetModelCompositeModelsRequest,
-  ) => stream.Stream<
-    ListAssetModelCompositeModelsResponse,
-    ListAssetModelCompositeModelsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAssetModelCompositeModelsRequest,
-  ) => stream.Stream<
-    AssetModelCompositeModelSummary,
-    ListAssetModelCompositeModelsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListAssetModelPropertiesError =
   | InternalFailureException
@@ -9717,27 +9391,13 @@ export type ListAssetModelPropertiesError =
  * If you update properties associated with the model before you finish listing all the properties,
  * you need to start all over again.
  */
-export const listAssetModelProperties: API.OperationMethod<
+export const listAssetModelProperties: API.PaginatedOperationMethod<
   ListAssetModelPropertiesRequest,
   ListAssetModelPropertiesResponse,
   ListAssetModelPropertiesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAssetModelPropertiesRequest,
-  ) => stream.Stream<
-    ListAssetModelPropertiesResponse,
-    ListAssetModelPropertiesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAssetModelPropertiesRequest,
-  ) => stream.Stream<
-    AssetModelPropertySummary,
-    ListAssetModelPropertiesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  AssetModelPropertySummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListAssetModelPropertiesRequest,
   output: ListAssetModelPropertiesResponse,
   errors: [
@@ -9756,27 +9416,7 @@ export const listAssetModelProperties: API.OperationMethod<
     items: "assetModelPropertySummaries",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListAssetModelPropertiesRequest,
-  ListAssetModelPropertiesResponse,
-  ListAssetModelPropertiesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAssetModelPropertiesRequest,
-  ) => stream.Stream<
-    ListAssetModelPropertiesResponse,
-    ListAssetModelPropertiesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAssetModelPropertiesRequest,
-  ) => stream.Stream<
-    AssetModelPropertySummary,
-    ListAssetModelPropertiesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListAssetModelsError =
   | InternalFailureException
@@ -9786,27 +9426,13 @@ export type ListAssetModelsError =
 /**
  * Retrieves a paginated list of summaries of all asset models.
  */
-export const listAssetModels: API.OperationMethod<
+export const listAssetModels: API.PaginatedOperationMethod<
   ListAssetModelsRequest,
   ListAssetModelsResponse,
   ListAssetModelsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAssetModelsRequest,
-  ) => stream.Stream<
-    ListAssetModelsResponse,
-    ListAssetModelsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAssetModelsRequest,
-  ) => stream.Stream<
-    AssetModelSummary,
-    ListAssetModelsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  AssetModelSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListAssetModelsRequest,
   output: ListAssetModelsResponse,
   errors: [
@@ -9824,27 +9450,7 @@ export const listAssetModels: API.OperationMethod<
     items: "assetModelSummaries",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListAssetModelsRequest,
-  ListAssetModelsResponse,
-  ListAssetModelsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAssetModelsRequest,
-  ) => stream.Stream<
-    ListAssetModelsResponse,
-    ListAssetModelsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAssetModelsRequest,
-  ) => stream.Stream<
-    AssetModelSummary,
-    ListAssetModelsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListAssetPropertiesError =
   | InternalFailureException
@@ -9857,27 +9463,13 @@ export type ListAssetPropertiesError =
  * If you update properties associated with the model before you finish listing all the properties,
  * you need to start all over again.
  */
-export const listAssetProperties: API.OperationMethod<
+export const listAssetProperties: API.PaginatedOperationMethod<
   ListAssetPropertiesRequest,
   ListAssetPropertiesResponse,
   ListAssetPropertiesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAssetPropertiesRequest,
-  ) => stream.Stream<
-    ListAssetPropertiesResponse,
-    ListAssetPropertiesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAssetPropertiesRequest,
-  ) => stream.Stream<
-    AssetPropertySummary,
-    ListAssetPropertiesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  AssetPropertySummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListAssetPropertiesRequest,
   output: ListAssetPropertiesResponse,
   errors: [
@@ -9896,27 +9488,7 @@ export const listAssetProperties: API.OperationMethod<
     items: "assetPropertySummaries",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListAssetPropertiesRequest,
-  ListAssetPropertiesResponse,
-  ListAssetPropertiesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAssetPropertiesRequest,
-  ) => stream.Stream<
-    ListAssetPropertiesResponse,
-    ListAssetPropertiesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAssetPropertiesRequest,
-  ) => stream.Stream<
-    AssetPropertySummary,
-    ListAssetPropertiesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListAssetRelationshipsError =
   | InternalFailureException
@@ -9929,27 +9501,13 @@ export type ListAssetRelationshipsError =
  * to identify an asset's root asset and all associated assets between that asset and its
  * root.
  */
-export const listAssetRelationships: API.OperationMethod<
+export const listAssetRelationships: API.PaginatedOperationMethod<
   ListAssetRelationshipsRequest,
   ListAssetRelationshipsResponse,
   ListAssetRelationshipsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAssetRelationshipsRequest,
-  ) => stream.Stream<
-    ListAssetRelationshipsResponse,
-    ListAssetRelationshipsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAssetRelationshipsRequest,
-  ) => stream.Stream<
-    AssetRelationshipSummary,
-    ListAssetRelationshipsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  AssetRelationshipSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListAssetRelationshipsRequest,
   output: ListAssetRelationshipsResponse,
   errors: [
@@ -9968,27 +9526,7 @@ export const listAssetRelationships: API.OperationMethod<
     items: "assetRelationshipSummaries",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListAssetRelationshipsRequest,
-  ListAssetRelationshipsResponse,
-  ListAssetRelationshipsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAssetRelationshipsRequest,
-  ) => stream.Stream<
-    ListAssetRelationshipsResponse,
-    ListAssetRelationshipsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAssetRelationshipsRequest,
-  ) => stream.Stream<
-    AssetRelationshipSummary,
-    ListAssetRelationshipsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListAssetsError =
   | InternalFailureException
@@ -10009,27 +9547,13 @@ export type ListAssetsError =
  * assets, use ListAssetModels to get all of your asset model IDs. Then, use ListAssets to get all
  * assets for each asset model.
  */
-export const listAssets: API.OperationMethod<
+export const listAssets: API.PaginatedOperationMethod<
   ListAssetsRequest,
   ListAssetsResponse,
   ListAssetsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAssetsRequest,
-  ) => stream.Stream<
-    ListAssetsResponse,
-    ListAssetsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAssetsRequest,
-  ) => stream.Stream<
-    AssetSummary,
-    ListAssetsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  AssetSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListAssetsRequest,
   output: ListAssetsResponse,
   errors: [
@@ -10048,27 +9572,7 @@ export const listAssets: API.OperationMethod<
     items: "assetSummaries",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListAssetsRequest,
-  ListAssetsResponse,
-  ListAssetsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAssetsRequest,
-  ) => stream.Stream<
-    ListAssetsResponse,
-    ListAssetsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAssetsRequest,
-  ) => stream.Stream<
-    AssetSummary,
-    ListAssetsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListAssociatedAssetsError =
   | InternalFailureException
@@ -10085,27 +9589,13 @@ export type ListAssociatedAssetsError =
  *
  * - `PARENT` - List the asset's parent asset.
  */
-export const listAssociatedAssets: API.OperationMethod<
+export const listAssociatedAssets: API.PaginatedOperationMethod<
   ListAssociatedAssetsRequest,
   ListAssociatedAssetsResponse,
   ListAssociatedAssetsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAssociatedAssetsRequest,
-  ) => stream.Stream<
-    ListAssociatedAssetsResponse,
-    ListAssociatedAssetsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAssociatedAssetsRequest,
-  ) => stream.Stream<
-    AssociatedAssetsSummary,
-    ListAssociatedAssetsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  AssociatedAssetsSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListAssociatedAssetsRequest,
   output: ListAssociatedAssetsResponse,
   errors: [
@@ -10124,27 +9614,7 @@ export const listAssociatedAssets: API.OperationMethod<
     items: "assetSummaries",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListAssociatedAssetsRequest,
-  ListAssociatedAssetsResponse,
-  ListAssociatedAssetsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAssociatedAssetsRequest,
-  ) => stream.Stream<
-    ListAssociatedAssetsResponse,
-    ListAssociatedAssetsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAssociatedAssetsRequest,
-  ) => stream.Stream<
-    AssociatedAssetsSummary,
-    ListAssociatedAssetsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListBulkImportJobsError =
   | InternalFailureException
@@ -10156,27 +9626,13 @@ export type ListBulkImportJobsError =
  * Retrieves a paginated list of bulk import job requests. For more information, see List bulk
  * import jobs (CLI) in the *IoT SiteWise User Guide*.
  */
-export const listBulkImportJobs: API.OperationMethod<
+export const listBulkImportJobs: API.PaginatedOperationMethod<
   ListBulkImportJobsRequest,
   ListBulkImportJobsResponse,
   ListBulkImportJobsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListBulkImportJobsRequest,
-  ) => stream.Stream<
-    ListBulkImportJobsResponse,
-    ListBulkImportJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListBulkImportJobsRequest,
-  ) => stream.Stream<
-    JobSummary,
-    ListBulkImportJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  JobSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListBulkImportJobsRequest,
   output: ListBulkImportJobsResponse,
   errors: [
@@ -10195,27 +9651,7 @@ export const listBulkImportJobs: API.OperationMethod<
     items: "jobSummaries",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListBulkImportJobsRequest,
-  ListBulkImportJobsResponse,
-  ListBulkImportJobsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListBulkImportJobsRequest,
-  ) => stream.Stream<
-    ListBulkImportJobsResponse,
-    ListBulkImportJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListBulkImportJobsRequest,
-  ) => stream.Stream<
-    JobSummary,
-    ListBulkImportJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListCompositionRelationshipsError =
   | InternalFailureException
@@ -10227,27 +9663,13 @@ export type ListCompositionRelationshipsError =
  * Retrieves a paginated list of composition relationships for an asset model of type
  * `COMPONENT_MODEL`.
  */
-export const listCompositionRelationships: API.OperationMethod<
+export const listCompositionRelationships: API.PaginatedOperationMethod<
   ListCompositionRelationshipsRequest,
   ListCompositionRelationshipsResponse,
   ListCompositionRelationshipsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCompositionRelationshipsRequest,
-  ) => stream.Stream<
-    ListCompositionRelationshipsResponse,
-    ListCompositionRelationshipsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCompositionRelationshipsRequest,
-  ) => stream.Stream<
-    CompositionRelationshipSummary,
-    ListCompositionRelationshipsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  CompositionRelationshipSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListCompositionRelationshipsRequest,
   output: ListCompositionRelationshipsResponse,
   errors: [
@@ -10266,27 +9688,7 @@ export const listCompositionRelationships: API.OperationMethod<
     items: "compositionRelationshipSummaries",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListCompositionRelationshipsRequest,
-  ListCompositionRelationshipsResponse,
-  ListCompositionRelationshipsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCompositionRelationshipsRequest,
-  ) => stream.Stream<
-    ListCompositionRelationshipsResponse,
-    ListCompositionRelationshipsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCompositionRelationshipsRequest,
-  ) => stream.Stream<
-    CompositionRelationshipSummary,
-    ListCompositionRelationshipsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListComputationModelDataBindingUsagesError =
   | InternalFailureException
@@ -10298,27 +9700,13 @@ export type ListComputationModelDataBindingUsagesError =
  * specific data bindings are being utilized across the computation models. This track
  * dependencies between data sources and computation models.
  */
-export const listComputationModelDataBindingUsages: API.OperationMethod<
+export const listComputationModelDataBindingUsages: API.PaginatedOperationMethod<
   ListComputationModelDataBindingUsagesRequest,
   ListComputationModelDataBindingUsagesResponse,
   ListComputationModelDataBindingUsagesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListComputationModelDataBindingUsagesRequest,
-  ) => stream.Stream<
-    ListComputationModelDataBindingUsagesResponse,
-    ListComputationModelDataBindingUsagesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListComputationModelDataBindingUsagesRequest,
-  ) => stream.Stream<
-    ComputationModelDataBindingUsageSummary,
-    ListComputationModelDataBindingUsagesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ComputationModelDataBindingUsageSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListComputationModelDataBindingUsagesRequest,
   output: ListComputationModelDataBindingUsagesResponse,
   errors: [
@@ -10336,27 +9724,7 @@ export const listComputationModelDataBindingUsages: API.OperationMethod<
     items: "dataBindingUsageSummaries",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListComputationModelDataBindingUsagesRequest,
-  ListComputationModelDataBindingUsagesResponse,
-  ListComputationModelDataBindingUsagesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListComputationModelDataBindingUsagesRequest,
-  ) => stream.Stream<
-    ListComputationModelDataBindingUsagesResponse,
-    ListComputationModelDataBindingUsagesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListComputationModelDataBindingUsagesRequest,
-  ) => stream.Stream<
-    ComputationModelDataBindingUsageSummary,
-    ListComputationModelDataBindingUsagesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListComputationModelResolveToResourcesError =
   | InternalFailureException
@@ -10368,27 +9736,13 @@ export type ListComputationModelResolveToResourcesError =
  * Lists all distinct resources that are resolved from the executed actions of the
  * computation model.
  */
-export const listComputationModelResolveToResources: API.OperationMethod<
+export const listComputationModelResolveToResources: API.PaginatedOperationMethod<
   ListComputationModelResolveToResourcesRequest,
   ListComputationModelResolveToResourcesResponse,
   ListComputationModelResolveToResourcesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListComputationModelResolveToResourcesRequest,
-  ) => stream.Stream<
-    ListComputationModelResolveToResourcesResponse,
-    ListComputationModelResolveToResourcesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListComputationModelResolveToResourcesRequest,
-  ) => stream.Stream<
-    ComputationModelResolveToResourceSummary,
-    ListComputationModelResolveToResourcesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ComputationModelResolveToResourceSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListComputationModelResolveToResourcesRequest,
   output: ListComputationModelResolveToResourcesResponse,
   errors: [
@@ -10407,27 +9761,7 @@ export const listComputationModelResolveToResources: API.OperationMethod<
     items: "computationModelResolveToResourceSummaries",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListComputationModelResolveToResourcesRequest,
-  ListComputationModelResolveToResourcesResponse,
-  ListComputationModelResolveToResourcesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListComputationModelResolveToResourcesRequest,
-  ) => stream.Stream<
-    ListComputationModelResolveToResourcesResponse,
-    ListComputationModelResolveToResourcesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListComputationModelResolveToResourcesRequest,
-  ) => stream.Stream<
-    ComputationModelResolveToResourceSummary,
-    ListComputationModelResolveToResourcesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListComputationModelsError =
   | InternalFailureException
@@ -10437,27 +9771,13 @@ export type ListComputationModelsError =
 /**
  * Retrieves a paginated list of summaries of all computation models.
  */
-export const listComputationModels: API.OperationMethod<
+export const listComputationModels: API.PaginatedOperationMethod<
   ListComputationModelsRequest,
   ListComputationModelsResponse,
   ListComputationModelsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListComputationModelsRequest,
-  ) => stream.Stream<
-    ListComputationModelsResponse,
-    ListComputationModelsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListComputationModelsRequest,
-  ) => stream.Stream<
-    ComputationModelSummary,
-    ListComputationModelsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ComputationModelSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListComputationModelsRequest,
   output: ListComputationModelsResponse,
   errors: [
@@ -10475,27 +9795,7 @@ export const listComputationModels: API.OperationMethod<
     items: "computationModelSummaries",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListComputationModelsRequest,
-  ListComputationModelsResponse,
-  ListComputationModelsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListComputationModelsRequest,
-  ) => stream.Stream<
-    ListComputationModelsResponse,
-    ListComputationModelsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListComputationModelsRequest,
-  ) => stream.Stream<
-    ComputationModelSummary,
-    ListComputationModelsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListDashboardsError =
   | InternalFailureException
@@ -10505,27 +9805,13 @@ export type ListDashboardsError =
 /**
  * Retrieves a paginated list of dashboards for an IoT SiteWise Monitor project.
  */
-export const listDashboards: API.OperationMethod<
+export const listDashboards: API.PaginatedOperationMethod<
   ListDashboardsRequest,
   ListDashboardsResponse,
   ListDashboardsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDashboardsRequest,
-  ) => stream.Stream<
-    ListDashboardsResponse,
-    ListDashboardsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDashboardsRequest,
-  ) => stream.Stream<
-    DashboardSummary,
-    ListDashboardsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  DashboardSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListDashboardsRequest,
   output: ListDashboardsResponse,
   errors: [
@@ -10543,27 +9829,7 @@ export const listDashboards: API.OperationMethod<
     items: "dashboardSummaries",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListDashboardsRequest,
-  ListDashboardsResponse,
-  ListDashboardsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDashboardsRequest,
-  ) => stream.Stream<
-    ListDashboardsResponse,
-    ListDashboardsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDashboardsRequest,
-  ) => stream.Stream<
-    DashboardSummary,
-    ListDashboardsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListDatasetsError =
   | InternalFailureException
@@ -10573,27 +9839,13 @@ export type ListDatasetsError =
 /**
  * Retrieves a paginated list of datasets for a specific target resource.
  */
-export const listDatasets: API.OperationMethod<
+export const listDatasets: API.PaginatedOperationMethod<
   ListDatasetsRequest,
   ListDatasetsResponse,
   ListDatasetsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDatasetsRequest,
-  ) => stream.Stream<
-    ListDatasetsResponse,
-    ListDatasetsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDatasetsRequest,
-  ) => stream.Stream<
-    DatasetSummary,
-    ListDatasetsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  DatasetSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListDatasetsRequest,
   output: ListDatasetsResponse,
   errors: [
@@ -10611,27 +9863,7 @@ export const listDatasets: API.OperationMethod<
     items: "datasetSummaries",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListDatasetsRequest,
-  ListDatasetsResponse,
-  ListDatasetsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDatasetsRequest,
-  ) => stream.Stream<
-    ListDatasetsResponse,
-    ListDatasetsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDatasetsRequest,
-  ) => stream.Stream<
-    DatasetSummary,
-    ListDatasetsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListExecutionsError =
   | InternalFailureException
@@ -10642,27 +9874,13 @@ export type ListExecutionsError =
 /**
  * Retrieves a paginated list of summaries of all executions.
  */
-export const listExecutions: API.OperationMethod<
+export const listExecutions: API.PaginatedOperationMethod<
   ListExecutionsRequest,
   ListExecutionsResponse,
   ListExecutionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListExecutionsRequest,
-  ) => stream.Stream<
-    ListExecutionsResponse,
-    ListExecutionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListExecutionsRequest,
-  ) => stream.Stream<
-    ExecutionSummary,
-    ListExecutionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ExecutionSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListExecutionsRequest,
   output: ListExecutionsResponse,
   errors: [
@@ -10681,27 +9899,7 @@ export const listExecutions: API.OperationMethod<
     items: "executionSummaries",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListExecutionsRequest,
-  ListExecutionsResponse,
-  ListExecutionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListExecutionsRequest,
-  ) => stream.Stream<
-    ListExecutionsResponse,
-    ListExecutionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListExecutionsRequest,
-  ) => stream.Stream<
-    ExecutionSummary,
-    ListExecutionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListGatewaysError =
   | InternalFailureException
@@ -10711,27 +9909,13 @@ export type ListGatewaysError =
 /**
  * Retrieves a paginated list of gateways.
  */
-export const listGateways: API.OperationMethod<
+export const listGateways: API.PaginatedOperationMethod<
   ListGatewaysRequest,
   ListGatewaysResponse,
   ListGatewaysError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListGatewaysRequest,
-  ) => stream.Stream<
-    ListGatewaysResponse,
-    ListGatewaysError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListGatewaysRequest,
-  ) => stream.Stream<
-    GatewaySummary,
-    ListGatewaysError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  GatewaySummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListGatewaysRequest,
   output: ListGatewaysResponse,
   errors: [
@@ -10749,27 +9933,7 @@ export const listGateways: API.OperationMethod<
     items: "gatewaySummaries",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListGatewaysRequest,
-  ListGatewaysResponse,
-  ListGatewaysError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListGatewaysRequest,
-  ) => stream.Stream<
-    ListGatewaysResponse,
-    ListGatewaysError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListGatewaysRequest,
-  ) => stream.Stream<
-    GatewaySummary,
-    ListGatewaysError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListInterfaceRelationshipsError =
   | InternalFailureException
@@ -10781,27 +9945,13 @@ export type ListInterfaceRelationshipsError =
  * Retrieves a paginated list of asset models that have a specific interface asset model
  * applied to them.
  */
-export const listInterfaceRelationships: API.OperationMethod<
+export const listInterfaceRelationships: API.PaginatedOperationMethod<
   ListInterfaceRelationshipsRequest,
   ListInterfaceRelationshipsResponse,
   ListInterfaceRelationshipsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListInterfaceRelationshipsRequest,
-  ) => stream.Stream<
-    ListInterfaceRelationshipsResponse,
-    ListInterfaceRelationshipsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListInterfaceRelationshipsRequest,
-  ) => stream.Stream<
-    InterfaceRelationshipSummary,
-    ListInterfaceRelationshipsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  InterfaceRelationshipSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListInterfaceRelationshipsRequest,
   output: ListInterfaceRelationshipsResponse,
   errors: [
@@ -10820,27 +9970,7 @@ export const listInterfaceRelationships: API.OperationMethod<
     items: "interfaceRelationshipSummaries",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListInterfaceRelationshipsRequest,
-  ListInterfaceRelationshipsResponse,
-  ListInterfaceRelationshipsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListInterfaceRelationshipsRequest,
-  ) => stream.Stream<
-    ListInterfaceRelationshipsResponse,
-    ListInterfaceRelationshipsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListInterfaceRelationshipsRequest,
-  ) => stream.Stream<
-    InterfaceRelationshipSummary,
-    ListInterfaceRelationshipsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListPortalsError =
   | InternalFailureException
@@ -10850,27 +9980,13 @@ export type ListPortalsError =
 /**
  * Retrieves a paginated list of IoT SiteWise Monitor portals.
  */
-export const listPortals: API.OperationMethod<
+export const listPortals: API.PaginatedOperationMethod<
   ListPortalsRequest,
   ListPortalsResponse,
   ListPortalsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPortalsRequest,
-  ) => stream.Stream<
-    ListPortalsResponse,
-    ListPortalsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPortalsRequest,
-  ) => stream.Stream<
-    PortalSummary,
-    ListPortalsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  PortalSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListPortalsRequest,
   output: ListPortalsResponse,
   errors: [
@@ -10888,27 +10004,7 @@ export const listPortals: API.OperationMethod<
     items: "portalSummaries",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListPortalsRequest,
-  ListPortalsResponse,
-  ListPortalsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPortalsRequest,
-  ) => stream.Stream<
-    ListPortalsResponse,
-    ListPortalsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPortalsRequest,
-  ) => stream.Stream<
-    PortalSummary,
-    ListPortalsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListProjectAssetsError =
   | InternalFailureException
@@ -10918,27 +10014,13 @@ export type ListProjectAssetsError =
 /**
  * Retrieves a paginated list of assets associated with an IoT SiteWise Monitor project.
  */
-export const listProjectAssets: API.OperationMethod<
+export const listProjectAssets: API.PaginatedOperationMethod<
   ListProjectAssetsRequest,
   ListProjectAssetsResponse,
   ListProjectAssetsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListProjectAssetsRequest,
-  ) => stream.Stream<
-    ListProjectAssetsResponse,
-    ListProjectAssetsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListProjectAssetsRequest,
-  ) => stream.Stream<
-    ID,
-    ListProjectAssetsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ID
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListProjectAssetsRequest,
   output: ListProjectAssetsResponse,
   errors: [
@@ -10956,27 +10038,7 @@ export const listProjectAssets: API.OperationMethod<
     items: "assetIds",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListProjectAssetsRequest,
-  ListProjectAssetsResponse,
-  ListProjectAssetsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListProjectAssetsRequest,
-  ) => stream.Stream<
-    ListProjectAssetsResponse,
-    ListProjectAssetsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListProjectAssetsRequest,
-  ) => stream.Stream<
-    ID,
-    ListProjectAssetsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListProjectsError =
   | InternalFailureException
@@ -10986,27 +10048,13 @@ export type ListProjectsError =
 /**
  * Retrieves a paginated list of projects for an IoT SiteWise Monitor portal.
  */
-export const listProjects: API.OperationMethod<
+export const listProjects: API.PaginatedOperationMethod<
   ListProjectsRequest,
   ListProjectsResponse,
   ListProjectsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListProjectsRequest,
-  ) => stream.Stream<
-    ListProjectsResponse,
-    ListProjectsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListProjectsRequest,
-  ) => stream.Stream<
-    ProjectSummary,
-    ListProjectsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ProjectSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListProjectsRequest,
   output: ListProjectsResponse,
   errors: [
@@ -11024,27 +10072,7 @@ export const listProjects: API.OperationMethod<
     items: "projectSummaries",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListProjectsRequest,
-  ListProjectsResponse,
-  ListProjectsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListProjectsRequest,
-  ) => stream.Stream<
-    ListProjectsResponse,
-    ListProjectsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListProjectsRequest,
-  ) => stream.Stream<
-    ProjectSummary,
-    ListProjectsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsForResourceError =
   | ConflictingOperationException
@@ -11062,7 +10090,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceRequest,
   ListTagsForResourceResponse,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -11090,27 +10118,13 @@ export type ListTimeSeriesError =
 /**
  * Retrieves a paginated list of time series (data streams).
  */
-export const listTimeSeries: API.OperationMethod<
+export const listTimeSeries: API.PaginatedOperationMethod<
   ListTimeSeriesRequest,
   ListTimeSeriesResponse,
   ListTimeSeriesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTimeSeriesRequest,
-  ) => stream.Stream<
-    ListTimeSeriesResponse,
-    ListTimeSeriesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTimeSeriesRequest,
-  ) => stream.Stream<
-    TimeSeriesSummary,
-    ListTimeSeriesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  TimeSeriesSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListTimeSeriesRequest,
   output: ListTimeSeriesResponse,
   errors: [
@@ -11129,27 +10143,7 @@ export const listTimeSeries: API.OperationMethod<
     items: "TimeSeriesSummaries",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListTimeSeriesRequest,
-  ListTimeSeriesResponse,
-  ListTimeSeriesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTimeSeriesRequest,
-  ) => stream.Stream<
-    ListTimeSeriesResponse,
-    ListTimeSeriesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTimeSeriesRequest,
-  ) => stream.Stream<
-    TimeSeriesSummary,
-    ListTimeSeriesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type PutAssetModelInterfaceRelationshipError =
   | ConflictingOperationException
@@ -11167,7 +10161,7 @@ export const putAssetModelInterfaceRelationship: API.OperationMethod<
   PutAssetModelInterfaceRelationshipRequest,
   PutAssetModelInterfaceRelationshipResponse,
   PutAssetModelInterfaceRelationshipError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutAssetModelInterfaceRelationshipRequest,
   output: PutAssetModelInterfaceRelationshipResponse,
@@ -11201,7 +10195,7 @@ export const putDefaultEncryptionConfiguration: API.OperationMethod<
   PutDefaultEncryptionConfigurationRequest,
   PutDefaultEncryptionConfigurationResponse,
   PutDefaultEncryptionConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutDefaultEncryptionConfigurationRequest,
   output: PutDefaultEncryptionConfigurationResponse,
@@ -11232,7 +10226,7 @@ export const putLoggingOptions: API.OperationMethod<
   PutLoggingOptionsRequest,
   PutLoggingOptionsResponse,
   PutLoggingOptionsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutLoggingOptionsRequest,
   output: PutLoggingOptionsResponse,
@@ -11265,7 +10259,7 @@ export const putStorageConfiguration: API.OperationMethod<
   PutStorageConfigurationRequest,
   PutStorageConfigurationResponse,
   PutStorageConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutStorageConfigurationRequest,
   output: PutStorageConfigurationResponse,
@@ -11302,7 +10296,7 @@ export const tagResource: API.OperationMethod<
   TagResourceRequest,
   TagResourceResponse,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -11338,7 +10332,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceRequest,
   UntagResourceResponse,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -11371,7 +10365,7 @@ export const updateAccessPolicy: API.OperationMethod<
   UpdateAccessPolicyRequest,
   UpdateAccessPolicyResponse,
   UpdateAccessPolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateAccessPolicyRequest,
   output: UpdateAccessPolicyResponse,
@@ -11403,7 +10397,7 @@ export const updateAsset: API.OperationMethod<
   UpdateAssetRequest,
   UpdateAssetResponse,
   UpdateAssetError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateAssetRequest,
   output: UpdateAssetResponse,
@@ -11454,7 +10448,7 @@ export const updateAssetModel: API.OperationMethod<
   UpdateAssetModelRequest,
   UpdateAssetModelResponse,
   UpdateAssetModelError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateAssetModelRequest,
   output: UpdateAssetModelResponse,
@@ -11507,7 +10501,7 @@ export const updateAssetModelCompositeModel: API.OperationMethod<
   UpdateAssetModelCompositeModelRequest,
   UpdateAssetModelCompositeModelResponse,
   UpdateAssetModelCompositeModelError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateAssetModelCompositeModelRequest,
   output: UpdateAssetModelCompositeModelResponse,
@@ -11545,7 +10539,7 @@ export const updateAssetProperty: API.OperationMethod<
   UpdateAssetPropertyRequest,
   UpdateAssetPropertyResponse,
   UpdateAssetPropertyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateAssetPropertyRequest,
   output: UpdateAssetPropertyResponse,
@@ -11578,7 +10572,7 @@ export const updateComputationModel: API.OperationMethod<
   UpdateComputationModelRequest,
   UpdateComputationModelResponse,
   UpdateComputationModelError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateComputationModelRequest,
   output: UpdateComputationModelResponse,
@@ -11610,7 +10604,7 @@ export const updateDashboard: API.OperationMethod<
   UpdateDashboardRequest,
   UpdateDashboardResponse,
   UpdateDashboardError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateDashboardRequest,
   output: UpdateDashboardResponse,
@@ -11641,7 +10635,7 @@ export const updateDataset: API.OperationMethod<
   UpdateDatasetRequest,
   UpdateDatasetResponse,
   UpdateDatasetError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateDatasetRequest,
   output: UpdateDatasetResponse,
@@ -11673,7 +10667,7 @@ export const updateGateway: API.OperationMethod<
   UpdateGatewayRequest,
   UpdateGatewayResponse,
   UpdateGatewayError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateGatewayRequest,
   output: UpdateGatewayResponse,
@@ -11721,7 +10715,7 @@ export const updateGatewayCapabilityConfiguration: API.OperationMethod<
   UpdateGatewayCapabilityConfigurationRequest,
   UpdateGatewayCapabilityConfigurationResponse,
   UpdateGatewayCapabilityConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateGatewayCapabilityConfigurationRequest,
   output: UpdateGatewayCapabilityConfigurationResponse,
@@ -11753,7 +10747,7 @@ export const updatePortal: API.OperationMethod<
   UpdatePortalRequest,
   UpdatePortalResponse,
   UpdatePortalError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdatePortalRequest,
   output: UpdatePortalResponse,
@@ -11783,7 +10777,7 @@ export const updateProject: API.OperationMethod<
   UpdateProjectRequest,
   UpdateProjectResponse,
   UpdateProjectError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateProjectRequest,
   output: UpdateProjectResponse,

@@ -1,6 +1,5 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -8,7 +7,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 const svc = T.AwsApiService({
   sdkId: "S3Vectors",
   serviceShapeName: "S3Vectors",
@@ -55,55 +53,55 @@ const rules = T.EndpointResolver((p, _) => {
 export class AccessDeniedException
   extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
     "AccessDeniedException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(403),
   ).pipe(C.withAuthError) {}
 export class ConflictException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
     "ConflictException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class KmsDisabledException
   extends /*@__PURE__*/ S.TaggedErrorClass<KmsDisabledException>()(
     "KmsDisabledException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class KmsInvalidKeyUsageException
   extends /*@__PURE__*/ S.TaggedErrorClass<KmsInvalidKeyUsageException>()(
     "KmsInvalidKeyUsageException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class KmsInvalidStateException
   extends /*@__PURE__*/ S.TaggedErrorClass<KmsInvalidStateException>()(
     "KmsInvalidStateException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class KmsNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<KmsNotFoundException>()(
     "KmsNotFoundException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class NotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<NotFoundException>()(
     "NotFoundException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class ServiceQuotaExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
     "ServiceQuotaExceededException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(402),
   ).pipe(C.withQuotaError) {}
 export class ServiceUnavailableException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceUnavailableException>()(
     "ServiceUnavailableException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.all(T.HttpError(503), T.Retryable()),
   ).pipe(C.withServerError, C.withRetryableError) {}
 export type VectorBucketName = string;
@@ -938,7 +936,7 @@ export const createIndex: API.OperationMethod<
   CreateIndexInput,
   CreateIndexOutput,
   CreateIndexError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateIndexInput,
   output: CreateIndexOutput,
@@ -971,7 +969,7 @@ export const createVectorBucket: API.OperationMethod<
   CreateVectorBucketInput,
   CreateVectorBucketOutput,
   CreateVectorBucketError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateVectorBucketInput,
   output: CreateVectorBucketOutput,
@@ -1000,7 +998,7 @@ export const deleteIndex: API.OperationMethod<
   DeleteIndexInput,
   DeleteIndexOutput,
   DeleteIndexError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteIndexInput,
   output: DeleteIndexOutput,
@@ -1026,7 +1024,7 @@ export const deleteVectorBucket: API.OperationMethod<
   DeleteVectorBucketInput,
   DeleteVectorBucketOutput,
   DeleteVectorBucketError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteVectorBucketInput,
   output: DeleteVectorBucketOutput,
@@ -1051,7 +1049,7 @@ export const deleteVectorBucketPolicy: API.OperationMethod<
   DeleteVectorBucketPolicyInput,
   DeleteVectorBucketPolicyOutput,
   DeleteVectorBucketPolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteVectorBucketPolicyInput,
   output: DeleteVectorBucketPolicyOutput,
@@ -1081,7 +1079,7 @@ export const deleteVectors: API.OperationMethod<
   DeleteVectorsInput,
   DeleteVectorsOutput,
   DeleteVectorsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteVectorsInput,
   output: DeleteVectorsOutput,
@@ -1114,7 +1112,7 @@ export const getIndex: API.OperationMethod<
   GetIndexInput,
   GetIndexOutput,
   GetIndexError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetIndexInput,
   output: GetIndexOutput,
@@ -1139,7 +1137,7 @@ export const getVectorBucket: API.OperationMethod<
   GetVectorBucketInput,
   GetVectorBucketOutput,
   GetVectorBucketError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetVectorBucketInput,
   output: GetVectorBucketOutput,
@@ -1164,7 +1162,7 @@ export const getVectorBucketPolicy: API.OperationMethod<
   GetVectorBucketPolicyInput,
   GetVectorBucketPolicyOutput,
   GetVectorBucketPolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetVectorBucketPolicyInput,
   output: GetVectorBucketPolicyOutput,
@@ -1193,7 +1191,7 @@ export const getVectors: API.OperationMethod<
   GetVectorsInput,
   GetVectorsOutput,
   GetVectorsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetVectorsInput,
   output: GetVectorsOutput,
@@ -1221,27 +1219,13 @@ export type ListIndexesError =
  *
  * You must have the `s3vectors:ListIndexes` permission to use this operation.
  */
-export const listIndexes: API.OperationMethod<
+export const listIndexes: API.PaginatedOperationMethod<
   ListIndexesInput,
   ListIndexesOutput,
   ListIndexesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListIndexesInput,
-  ) => stream.Stream<
-    ListIndexesOutput,
-    ListIndexesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListIndexesInput,
-  ) => stream.Stream<
-    IndexSummary,
-    ListIndexesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  IndexSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListIndexesInput,
   output: ListIndexesOutput,
   errors: [NotFoundException, ServiceUnavailableException],
@@ -1254,27 +1238,7 @@ export const listIndexes: API.OperationMethod<
     items: "indexes",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListIndexesInput,
-  ListIndexesOutput,
-  ListIndexesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListIndexesInput,
-  ) => stream.Stream<
-    ListIndexesOutput,
-    ListIndexesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListIndexesInput,
-  ) => stream.Stream<
-    IndexSummary,
-    ListIndexesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsForResourceError =
   | NotFoundException
@@ -1293,7 +1257,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceInput,
   ListTagsForResourceOutput,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceInput,
   output: ListTagsForResourceOutput,
@@ -1311,27 +1275,13 @@ export type ListVectorBucketsError = ServiceUnavailableException | CommonErrors;
  *
  * You must have the `s3vectors:ListVectorBuckets` permission to use this operation.
  */
-export const listVectorBuckets: API.OperationMethod<
+export const listVectorBuckets: API.PaginatedOperationMethod<
   ListVectorBucketsInput,
   ListVectorBucketsOutput,
   ListVectorBucketsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListVectorBucketsInput,
-  ) => stream.Stream<
-    ListVectorBucketsOutput,
-    ListVectorBucketsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListVectorBucketsInput,
-  ) => stream.Stream<
-    VectorBucketSummary,
-    ListVectorBucketsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  VectorBucketSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListVectorBucketsInput,
   output: ListVectorBucketsOutput,
   errors: [ServiceUnavailableException],
@@ -1344,27 +1294,7 @@ export const listVectorBuckets: API.OperationMethod<
     items: "vectorBuckets",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListVectorBucketsInput,
-  ListVectorBucketsOutput,
-  ListVectorBucketsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListVectorBucketsInput,
-  ) => stream.Stream<
-    ListVectorBucketsOutput,
-    ListVectorBucketsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListVectorBucketsInput,
-  ) => stream.Stream<
-    VectorBucketSummary,
-    ListVectorBucketsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListVectorsError =
   | AccessDeniedException
@@ -1384,27 +1314,13 @@ export type ListVectorsError =
  *
  * - If you set `returnData` or `returnMetadata` to true, you must have both `s3vectors:ListVectors` and `s3vectors:GetVectors` permissions. The request fails with a `403 Forbidden` error if you request vector data or metadata without the `s3vectors:GetVectors` permission.
  */
-export const listVectors: API.OperationMethod<
+export const listVectors: API.PaginatedOperationMethod<
   ListVectorsInput,
   ListVectorsOutput,
   ListVectorsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListVectorsInput,
-  ) => stream.Stream<
-    ListVectorsOutput,
-    ListVectorsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListVectorsInput,
-  ) => stream.Stream<
-    ListOutputVector,
-    ListVectorsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ListOutputVector
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListVectorsInput,
   output: ListVectorsOutput,
   errors: [
@@ -1421,27 +1337,7 @@ export const listVectors: API.OperationMethod<
     items: "vectors",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListVectorsInput,
-  ListVectorsOutput,
-  ListVectorsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListVectorsInput,
-  ) => stream.Stream<
-    ListVectorsOutput,
-    ListVectorsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListVectorsInput,
-  ) => stream.Stream<
-    ListOutputVector,
-    ListVectorsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type PutVectorBucketPolicyError =
   | NotFoundException
@@ -1458,7 +1354,7 @@ export const putVectorBucketPolicy: API.OperationMethod<
   PutVectorBucketPolicyInput,
   PutVectorBucketPolicyOutput,
   PutVectorBucketPolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutVectorBucketPolicyInput,
   output: PutVectorBucketPolicyOutput,
@@ -1493,7 +1389,7 @@ export const putVectors: API.OperationMethod<
   PutVectorsInput,
   PutVectorsOutput,
   PutVectorsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutVectorsInput,
   output: PutVectorsOutput,
@@ -1533,27 +1429,13 @@ export type QueryVectorsError =
  *
  * - If you specify a metadata filter or set `returnMetadata` to true, you must have both `s3vectors:QueryVectors` and `s3vectors:GetVectors` permissions. The request fails with a `403 Forbidden error` if you request metadata filtering or metadata without the `s3vectors:GetVectors` permission.
  */
-export const queryVectors: API.OperationMethod<
+export const queryVectors: API.PaginatedOperationMethod<
   QueryVectorsInput,
   QueryVectorsOutput,
   QueryVectorsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: QueryVectorsInput,
-  ) => stream.Stream<
-    QueryVectorsOutput,
-    QueryVectorsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: QueryVectorsInput,
-  ) => stream.Stream<
-    QueryOutputVector,
-    QueryVectorsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  QueryOutputVector
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: QueryVectorsInput,
   output: QueryVectorsOutput,
   errors: [
@@ -1572,27 +1454,7 @@ export const queryVectors: API.OperationMethod<
     outputToken: "nextToken",
     items: "vectors",
   } as const,
-})) as any as API.OperationMethod<
-  QueryVectorsInput,
-  QueryVectorsOutput,
-  QueryVectorsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: QueryVectorsInput,
-  ) => stream.Stream<
-    QueryVectorsOutput,
-    QueryVectorsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: QueryVectorsInput,
-  ) => stream.Stream<
-    QueryOutputVector,
-    QueryVectorsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type TagResourceError =
   | ConflictException
@@ -1612,7 +1474,7 @@ export const tagResource: API.OperationMethod<
   TagResourceInput,
   TagResourceOutput,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceInput,
   output: TagResourceOutput,
@@ -1640,7 +1502,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceInput,
   UntagResourceOutput,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceInput,
   output: UntagResourceOutput,

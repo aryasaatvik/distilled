@@ -1,7 +1,6 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as redacted from "effect/Redacted";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -9,7 +8,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 import { SensitiveString } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "PartnerCentral Selling",
@@ -58,7 +56,7 @@ export class AccessDeniedException
   extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
     "AccessDeniedException",
     {
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       Reason: S.optional(
         S.suspend(() => AccessDeniedExceptionErrorCode).annotate({
           identifier: "AccessDeniedExceptionErrorCode",
@@ -70,38 +68,38 @@ export class AccessDeniedException
 export class ConflictException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
     "ConflictException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class InternalServerException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
     "InternalServerException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(500),
   ).pipe(C.withServerError) {}
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class ServiceQuotaExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
     "ServiceQuotaExceededException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(402),
   ).pipe(C.withQuotaError) {}
 export class ThrottlingException
   extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
     "ThrottlingException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(429),
   ).pipe(C.withThrottlingError) {}
 export class ValidationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
     "ValidationException",
     {
-      Message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       Reason: S.suspend(() => ValidationExceptionReason).annotate({
         identifier: "ValidationExceptionReason",
       }),
@@ -4633,7 +4631,7 @@ export const acceptEngagementInvitation: API.OperationMethod<
   AcceptEngagementInvitationRequest,
   AcceptEngagementInvitationResponse,
   AcceptEngagementInvitationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AcceptEngagementInvitationRequest,
   output: AcceptEngagementInvitationResponse,
@@ -4666,7 +4664,7 @@ export const assignOpportunity: API.OperationMethod<
   AssignOpportunityRequest,
   AssignOpportunityResponse,
   AssignOpportunityError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AssignOpportunityRequest,
   output: AssignOpportunityResponse,
@@ -4710,7 +4708,7 @@ export const associateOpportunity: API.OperationMethod<
   AssociateOpportunityRequest,
   AssociateOpportunityResponse,
   AssociateOpportunityError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AssociateOpportunityRequest,
   output: AssociateOpportunityResponse,
@@ -4742,7 +4740,7 @@ export const createEngagement: API.OperationMethod<
   CreateEngagementRequest,
   CreateEngagementResponse,
   CreateEngagementError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateEngagementRequest,
   output: CreateEngagementResponse,
@@ -4776,7 +4774,7 @@ export const createEngagementContext: API.OperationMethod<
   CreateEngagementContextRequest,
   CreateEngagementContextResponse,
   CreateEngagementContextError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateEngagementContextRequest,
   output: CreateEngagementContextResponse,
@@ -4810,7 +4808,7 @@ export const createEngagementInvitation: API.OperationMethod<
   CreateEngagementInvitationRequest,
   CreateEngagementInvitationResponse,
   CreateEngagementInvitationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateEngagementInvitationRequest,
   output: CreateEngagementInvitationResponse,
@@ -4855,7 +4853,7 @@ export const createOpportunity: API.OperationMethod<
   CreateOpportunityRequest,
   CreateOpportunityResponse,
   CreateOpportunityError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateOpportunityRequest,
   output: CreateOpportunityResponse,
@@ -4888,7 +4886,7 @@ export const createResourceSnapshot: API.OperationMethod<
   CreateResourceSnapshotRequest,
   CreateResourceSnapshotResponse,
   CreateResourceSnapshotError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateResourceSnapshotRequest,
   output: CreateResourceSnapshotResponse,
@@ -4922,7 +4920,7 @@ export const createResourceSnapshotJob: API.OperationMethod<
   CreateResourceSnapshotJobRequest,
   CreateResourceSnapshotJobResponse,
   CreateResourceSnapshotJobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateResourceSnapshotJobRequest,
   output: CreateResourceSnapshotJobResponse,
@@ -4955,7 +4953,7 @@ export const deleteResourceSnapshotJob: API.OperationMethod<
   DeleteResourceSnapshotJobRequest,
   DeleteResourceSnapshotJobResponse,
   DeleteResourceSnapshotJobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteResourceSnapshotJobRequest,
   output: DeleteResourceSnapshotJobResponse,
@@ -4988,7 +4986,7 @@ export const disassociateOpportunity: API.OperationMethod<
   DisassociateOpportunityRequest,
   DisassociateOpportunityResponse,
   DisassociateOpportunityError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DisassociateOpportunityRequest,
   output: DisassociateOpportunityResponse,
@@ -5018,7 +5016,7 @@ export const getAwsOpportunitySummary: API.OperationMethod<
   GetAwsOpportunitySummaryRequest,
   GetAwsOpportunitySummaryResponse,
   GetAwsOpportunitySummaryError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetAwsOpportunitySummaryRequest,
   output: GetAwsOpportunitySummaryResponse,
@@ -5048,7 +5046,7 @@ export const getEngagement: API.OperationMethod<
   GetEngagementRequest,
   GetEngagementResponse,
   GetEngagementError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetEngagementRequest,
   output: GetEngagementResponse,
@@ -5078,7 +5076,7 @@ export const getEngagementInvitation: API.OperationMethod<
   GetEngagementInvitationRequest,
   GetEngagementInvitationResponse,
   GetEngagementInvitationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetEngagementInvitationRequest,
   output: GetEngagementInvitationResponse,
@@ -5110,7 +5108,7 @@ export const getOpportunity: API.OperationMethod<
   GetOpportunityRequest,
   GetOpportunityResponse,
   GetOpportunityError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetOpportunityRequest,
   output: GetOpportunityResponse,
@@ -5140,7 +5138,7 @@ export const getProspectingFromEngagementTask: API.OperationMethod<
   GetProspectingFromEngagementTaskRequest,
   GetProspectingFromEngagementTaskResponse,
   GetProspectingFromEngagementTaskError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetProspectingFromEngagementTaskRequest,
   output: GetProspectingFromEngagementTaskResponse,
@@ -5170,7 +5168,7 @@ export const getResourceSnapshot: API.OperationMethod<
   GetResourceSnapshotRequest,
   GetResourceSnapshotResponse,
   GetResourceSnapshotError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetResourceSnapshotRequest,
   output: GetResourceSnapshotResponse,
@@ -5200,7 +5198,7 @@ export const getResourceSnapshotJob: API.OperationMethod<
   GetResourceSnapshotJobRequest,
   GetResourceSnapshotJobResponse,
   GetResourceSnapshotJobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetResourceSnapshotJobRequest,
   output: GetResourceSnapshotJobResponse,
@@ -5230,7 +5228,7 @@ export const getSellingSystemSettings: API.OperationMethod<
   GetSellingSystemSettingsRequest,
   GetSellingSystemSettingsResponse,
   GetSellingSystemSettingsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetSellingSystemSettingsRequest,
   output: GetSellingSystemSettingsResponse,
@@ -5256,27 +5254,13 @@ export type ListEngagementByAcceptingInvitationTasksError =
 /**
  * Lists all in-progress, completed, or failed StartEngagementByAcceptingInvitationTask tasks that were initiated by the caller's account.
  */
-export const listEngagementByAcceptingInvitationTasks: API.OperationMethod<
+export const listEngagementByAcceptingInvitationTasks: API.PaginatedOperationMethod<
   ListEngagementByAcceptingInvitationTasksRequest,
   ListEngagementByAcceptingInvitationTasksResponse,
   ListEngagementByAcceptingInvitationTasksError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListEngagementByAcceptingInvitationTasksRequest,
-  ) => stream.Stream<
-    ListEngagementByAcceptingInvitationTasksResponse,
-    ListEngagementByAcceptingInvitationTasksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListEngagementByAcceptingInvitationTasksRequest,
-  ) => stream.Stream<
-    ListEngagementByAcceptingInvitationTaskSummary,
-    ListEngagementByAcceptingInvitationTasksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ListEngagementByAcceptingInvitationTaskSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListEngagementByAcceptingInvitationTasksRequest,
   output: ListEngagementByAcceptingInvitationTasksResponse,
   errors: [
@@ -5295,27 +5279,7 @@ export const listEngagementByAcceptingInvitationTasks: API.OperationMethod<
     items: "TaskSummaries",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListEngagementByAcceptingInvitationTasksRequest,
-  ListEngagementByAcceptingInvitationTasksResponse,
-  ListEngagementByAcceptingInvitationTasksError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListEngagementByAcceptingInvitationTasksRequest,
-  ) => stream.Stream<
-    ListEngagementByAcceptingInvitationTasksResponse,
-    ListEngagementByAcceptingInvitationTasksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListEngagementByAcceptingInvitationTasksRequest,
-  ) => stream.Stream<
-    ListEngagementByAcceptingInvitationTaskSummary,
-    ListEngagementByAcceptingInvitationTasksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListEngagementFromOpportunityTasksError =
   | AccessDeniedException
@@ -5327,27 +5291,13 @@ export type ListEngagementFromOpportunityTasksError =
 /**
  * Lists all in-progress, completed, or failed `EngagementFromOpportunity` tasks that were initiated by the caller's account.
  */
-export const listEngagementFromOpportunityTasks: API.OperationMethod<
+export const listEngagementFromOpportunityTasks: API.PaginatedOperationMethod<
   ListEngagementFromOpportunityTasksRequest,
   ListEngagementFromOpportunityTasksResponse,
   ListEngagementFromOpportunityTasksError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListEngagementFromOpportunityTasksRequest,
-  ) => stream.Stream<
-    ListEngagementFromOpportunityTasksResponse,
-    ListEngagementFromOpportunityTasksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListEngagementFromOpportunityTasksRequest,
-  ) => stream.Stream<
-    ListEngagementFromOpportunityTaskSummary,
-    ListEngagementFromOpportunityTasksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ListEngagementFromOpportunityTaskSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListEngagementFromOpportunityTasksRequest,
   output: ListEngagementFromOpportunityTasksResponse,
   errors: [
@@ -5366,27 +5316,7 @@ export const listEngagementFromOpportunityTasks: API.OperationMethod<
     items: "TaskSummaries",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListEngagementFromOpportunityTasksRequest,
-  ListEngagementFromOpportunityTasksResponse,
-  ListEngagementFromOpportunityTasksError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListEngagementFromOpportunityTasksRequest,
-  ) => stream.Stream<
-    ListEngagementFromOpportunityTasksResponse,
-    ListEngagementFromOpportunityTasksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListEngagementFromOpportunityTasksRequest,
-  ) => stream.Stream<
-    ListEngagementFromOpportunityTaskSummary,
-    ListEngagementFromOpportunityTasksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListEngagementInvitationsError =
   | AccessDeniedException
@@ -5398,27 +5328,13 @@ export type ListEngagementInvitationsError =
 /**
  * Retrieves a list of engagement invitations sent to the partner. This allows partners to view all pending or past engagement invitations, helping them track opportunities shared by AWS.
  */
-export const listEngagementInvitations: API.OperationMethod<
+export const listEngagementInvitations: API.PaginatedOperationMethod<
   ListEngagementInvitationsRequest,
   ListEngagementInvitationsResponse,
   ListEngagementInvitationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListEngagementInvitationsRequest,
-  ) => stream.Stream<
-    ListEngagementInvitationsResponse,
-    ListEngagementInvitationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListEngagementInvitationsRequest,
-  ) => stream.Stream<
-    EngagementInvitationSummary,
-    ListEngagementInvitationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  EngagementInvitationSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListEngagementInvitationsRequest,
   output: ListEngagementInvitationsResponse,
   errors: [
@@ -5437,27 +5353,7 @@ export const listEngagementInvitations: API.OperationMethod<
     items: "EngagementInvitationSummaries",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListEngagementInvitationsRequest,
-  ListEngagementInvitationsResponse,
-  ListEngagementInvitationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListEngagementInvitationsRequest,
-  ) => stream.Stream<
-    ListEngagementInvitationsResponse,
-    ListEngagementInvitationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListEngagementInvitationsRequest,
-  ) => stream.Stream<
-    EngagementInvitationSummary,
-    ListEngagementInvitationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListEngagementMembersError =
   | AccessDeniedException
@@ -5469,27 +5365,13 @@ export type ListEngagementMembersError =
 /**
  * Retrieves the details of member partners in an Engagement. This operation can only be invoked by members of the Engagement. The `ListEngagementMembers` operation allows you to fetch information about the members of a specific Engagement. This action is restricted to members of the Engagement being queried.
  */
-export const listEngagementMembers: API.OperationMethod<
+export const listEngagementMembers: API.PaginatedOperationMethod<
   ListEngagementMembersRequest,
   ListEngagementMembersResponse,
   ListEngagementMembersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListEngagementMembersRequest,
-  ) => stream.Stream<
-    ListEngagementMembersResponse,
-    ListEngagementMembersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListEngagementMembersRequest,
-  ) => stream.Stream<
-    EngagementMember,
-    ListEngagementMembersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  EngagementMember
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListEngagementMembersRequest,
   output: ListEngagementMembersResponse,
   errors: [
@@ -5508,27 +5390,7 @@ export const listEngagementMembers: API.OperationMethod<
     items: "EngagementMemberList",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListEngagementMembersRequest,
-  ListEngagementMembersResponse,
-  ListEngagementMembersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListEngagementMembersRequest,
-  ) => stream.Stream<
-    ListEngagementMembersResponse,
-    ListEngagementMembersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListEngagementMembersRequest,
-  ) => stream.Stream<
-    EngagementMember,
-    ListEngagementMembersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListEngagementResourceAssociationsError =
   | AccessDeniedException
@@ -5540,27 +5402,13 @@ export type ListEngagementResourceAssociationsError =
 /**
  * Lists the associations between resources and engagements where the caller is a member and has at least one snapshot in the engagement.
  */
-export const listEngagementResourceAssociations: API.OperationMethod<
+export const listEngagementResourceAssociations: API.PaginatedOperationMethod<
   ListEngagementResourceAssociationsRequest,
   ListEngagementResourceAssociationsResponse,
   ListEngagementResourceAssociationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListEngagementResourceAssociationsRequest,
-  ) => stream.Stream<
-    ListEngagementResourceAssociationsResponse,
-    ListEngagementResourceAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListEngagementResourceAssociationsRequest,
-  ) => stream.Stream<
-    EngagementResourceAssociationSummary,
-    ListEngagementResourceAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  EngagementResourceAssociationSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListEngagementResourceAssociationsRequest,
   output: ListEngagementResourceAssociationsResponse,
   errors: [
@@ -5579,27 +5427,7 @@ export const listEngagementResourceAssociations: API.OperationMethod<
     items: "EngagementResourceAssociationSummaries",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListEngagementResourceAssociationsRequest,
-  ListEngagementResourceAssociationsResponse,
-  ListEngagementResourceAssociationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListEngagementResourceAssociationsRequest,
-  ) => stream.Stream<
-    ListEngagementResourceAssociationsResponse,
-    ListEngagementResourceAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListEngagementResourceAssociationsRequest,
-  ) => stream.Stream<
-    EngagementResourceAssociationSummary,
-    ListEngagementResourceAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListEngagementsError =
   | AccessDeniedException
@@ -5611,27 +5439,13 @@ export type ListEngagementsError =
 /**
  * This action allows users to retrieve a list of Engagement records from Partner Central. This action can be used to manage and track various engagements across different stages of the partner selling process.
  */
-export const listEngagements: API.OperationMethod<
+export const listEngagements: API.PaginatedOperationMethod<
   ListEngagementsRequest,
   ListEngagementsResponse,
   ListEngagementsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListEngagementsRequest,
-  ) => stream.Stream<
-    ListEngagementsResponse,
-    ListEngagementsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListEngagementsRequest,
-  ) => stream.Stream<
-    EngagementSummary,
-    ListEngagementsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  EngagementSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListEngagementsRequest,
   output: ListEngagementsResponse,
   errors: [
@@ -5650,27 +5464,7 @@ export const listEngagements: API.OperationMethod<
     items: "EngagementSummaryList",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListEngagementsRequest,
-  ListEngagementsResponse,
-  ListEngagementsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListEngagementsRequest,
-  ) => stream.Stream<
-    ListEngagementsResponse,
-    ListEngagementsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListEngagementsRequest,
-  ) => stream.Stream<
-    EngagementSummary,
-    ListEngagementsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListOpportunitiesError =
   | AccessDeniedException
@@ -5692,27 +5486,13 @@ export type ListOpportunitiesError =
  *
  * - Amazon Web Services only returns opportunities created or updated on or after that date and time. Use `NextToken` to iterate over all pages.
  */
-export const listOpportunities: API.OperationMethod<
+export const listOpportunities: API.PaginatedOperationMethod<
   ListOpportunitiesRequest,
   ListOpportunitiesResponse,
   ListOpportunitiesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListOpportunitiesRequest,
-  ) => stream.Stream<
-    ListOpportunitiesResponse,
-    ListOpportunitiesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListOpportunitiesRequest,
-  ) => stream.Stream<
-    OpportunitySummary,
-    ListOpportunitiesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  OpportunitySummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListOpportunitiesRequest,
   output: ListOpportunitiesResponse,
   errors: [
@@ -5731,27 +5511,7 @@ export const listOpportunities: API.OperationMethod<
     items: "OpportunitySummaries",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListOpportunitiesRequest,
-  ListOpportunitiesResponse,
-  ListOpportunitiesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListOpportunitiesRequest,
-  ) => stream.Stream<
-    ListOpportunitiesResponse,
-    ListOpportunitiesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListOpportunitiesRequest,
-  ) => stream.Stream<
-    OpportunitySummary,
-    ListOpportunitiesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListOpportunityFromEngagementTasksError =
   | AccessDeniedException
@@ -5763,27 +5523,13 @@ export type ListOpportunityFromEngagementTasksError =
 /**
  * Lists all in-progress, completed, or failed opportunity creation tasks from engagements that were initiated by the caller's account.
  */
-export const listOpportunityFromEngagementTasks: API.OperationMethod<
+export const listOpportunityFromEngagementTasks: API.PaginatedOperationMethod<
   ListOpportunityFromEngagementTasksRequest,
   ListOpportunityFromEngagementTasksResponse,
   ListOpportunityFromEngagementTasksError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListOpportunityFromEngagementTasksRequest,
-  ) => stream.Stream<
-    ListOpportunityFromEngagementTasksResponse,
-    ListOpportunityFromEngagementTasksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListOpportunityFromEngagementTasksRequest,
-  ) => stream.Stream<
-    ListOpportunityFromEngagementTaskSummary,
-    ListOpportunityFromEngagementTasksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ListOpportunityFromEngagementTaskSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListOpportunityFromEngagementTasksRequest,
   output: ListOpportunityFromEngagementTasksResponse,
   errors: [
@@ -5802,27 +5548,7 @@ export const listOpportunityFromEngagementTasks: API.OperationMethod<
     items: "TaskSummaries",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListOpportunityFromEngagementTasksRequest,
-  ListOpportunityFromEngagementTasksResponse,
-  ListOpportunityFromEngagementTasksError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListOpportunityFromEngagementTasksRequest,
-  ) => stream.Stream<
-    ListOpportunityFromEngagementTasksResponse,
-    ListOpportunityFromEngagementTasksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListOpportunityFromEngagementTasksRequest,
-  ) => stream.Stream<
-    ListOpportunityFromEngagementTaskSummary,
-    ListOpportunityFromEngagementTasksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListProspectingFromEngagementTasksError =
   | AccessDeniedException
@@ -5833,27 +5559,13 @@ export type ListProspectingFromEngagementTasksError =
 /**
  * Lists all prospecting tasks initiated by the caller's account. Supports optional filters by task identifier, task name, or start time range. Results can be sorted using configurable options. The response is paginated. Use the `NextToken` value from each response to retrieve subsequent pages.
  */
-export const listProspectingFromEngagementTasks: API.OperationMethod<
+export const listProspectingFromEngagementTasks: API.PaginatedOperationMethod<
   ListProspectingFromEngagementTasksRequest,
   ListProspectingFromEngagementTasksResponse,
   ListProspectingFromEngagementTasksError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListProspectingFromEngagementTasksRequest,
-  ) => stream.Stream<
-    ListProspectingFromEngagementTasksResponse,
-    ListProspectingFromEngagementTasksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListProspectingFromEngagementTasksRequest,
-  ) => stream.Stream<
-    ProspectingTaskSummary,
-    ListProspectingFromEngagementTasksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ProspectingTaskSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListProspectingFromEngagementTasksRequest,
   output: ListProspectingFromEngagementTasksResponse,
   errors: [
@@ -5871,27 +5583,7 @@ export const listProspectingFromEngagementTasks: API.OperationMethod<
     items: "TaskSummaries",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListProspectingFromEngagementTasksRequest,
-  ListProspectingFromEngagementTasksResponse,
-  ListProspectingFromEngagementTasksError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListProspectingFromEngagementTasksRequest,
-  ) => stream.Stream<
-    ListProspectingFromEngagementTasksResponse,
-    ListProspectingFromEngagementTasksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListProspectingFromEngagementTasksRequest,
-  ) => stream.Stream<
-    ProspectingTaskSummary,
-    ListProspectingFromEngagementTasksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListResourceSnapshotJobsError =
   | AccessDeniedException
@@ -5903,27 +5595,13 @@ export type ListResourceSnapshotJobsError =
 /**
  * Lists resource snapshot jobs owned by the customer. This operation supports various filtering scenarios, including listing all jobs owned by the caller, jobs for a specific engagement, jobs with a specific status, or any combination of these filters.
  */
-export const listResourceSnapshotJobs: API.OperationMethod<
+export const listResourceSnapshotJobs: API.PaginatedOperationMethod<
   ListResourceSnapshotJobsRequest,
   ListResourceSnapshotJobsResponse,
   ListResourceSnapshotJobsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListResourceSnapshotJobsRequest,
-  ) => stream.Stream<
-    ListResourceSnapshotJobsResponse,
-    ListResourceSnapshotJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListResourceSnapshotJobsRequest,
-  ) => stream.Stream<
-    ResourceSnapshotJobSummary,
-    ListResourceSnapshotJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ResourceSnapshotJobSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListResourceSnapshotJobsRequest,
   output: ListResourceSnapshotJobsResponse,
   errors: [
@@ -5942,27 +5620,7 @@ export const listResourceSnapshotJobs: API.OperationMethod<
     items: "ResourceSnapshotJobSummaries",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListResourceSnapshotJobsRequest,
-  ListResourceSnapshotJobsResponse,
-  ListResourceSnapshotJobsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListResourceSnapshotJobsRequest,
-  ) => stream.Stream<
-    ListResourceSnapshotJobsResponse,
-    ListResourceSnapshotJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListResourceSnapshotJobsRequest,
-  ) => stream.Stream<
-    ResourceSnapshotJobSummary,
-    ListResourceSnapshotJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListResourceSnapshotsError =
   | AccessDeniedException
@@ -5984,27 +5642,13 @@ export type ListResourceSnapshotsError =
  *
  * - Filtering snapshots by resource owner.
  */
-export const listResourceSnapshots: API.OperationMethod<
+export const listResourceSnapshots: API.PaginatedOperationMethod<
   ListResourceSnapshotsRequest,
   ListResourceSnapshotsResponse,
   ListResourceSnapshotsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListResourceSnapshotsRequest,
-  ) => stream.Stream<
-    ListResourceSnapshotsResponse,
-    ListResourceSnapshotsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListResourceSnapshotsRequest,
-  ) => stream.Stream<
-    ResourceSnapshotSummary,
-    ListResourceSnapshotsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ResourceSnapshotSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListResourceSnapshotsRequest,
   output: ListResourceSnapshotsResponse,
   errors: [
@@ -6023,27 +5667,7 @@ export const listResourceSnapshots: API.OperationMethod<
     items: "ResourceSnapshotSummaries",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListResourceSnapshotsRequest,
-  ListResourceSnapshotsResponse,
-  ListResourceSnapshotsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListResourceSnapshotsRequest,
-  ) => stream.Stream<
-    ListResourceSnapshotsResponse,
-    ListResourceSnapshotsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListResourceSnapshotsRequest,
-  ) => stream.Stream<
-    ResourceSnapshotSummary,
-    ListResourceSnapshotsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListSolutionsError =
   | AccessDeniedException
@@ -6055,27 +5679,13 @@ export type ListSolutionsError =
 /**
  * Retrieves a list of Partner Solutions that the partner registered on Partner Central. This API is used to generate a list of solutions that an end user selects from for association with an opportunity.
  */
-export const listSolutions: API.OperationMethod<
+export const listSolutions: API.PaginatedOperationMethod<
   ListSolutionsRequest,
   ListSolutionsResponse,
   ListSolutionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSolutionsRequest,
-  ) => stream.Stream<
-    ListSolutionsResponse,
-    ListSolutionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSolutionsRequest,
-  ) => stream.Stream<
-    SolutionBase,
-    ListSolutionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  SolutionBase
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListSolutionsRequest,
   output: ListSolutionsResponse,
   errors: [
@@ -6094,27 +5704,7 @@ export const listSolutions: API.OperationMethod<
     items: "SolutionSummaries",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListSolutionsRequest,
-  ListSolutionsResponse,
-  ListSolutionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSolutionsRequest,
-  ) => stream.Stream<
-    ListSolutionsResponse,
-    ListSolutionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSolutionsRequest,
-  ) => stream.Stream<
-    SolutionBase,
-    ListSolutionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsForResourceError =
   | AccessDeniedException
@@ -6130,7 +5720,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceRequest,
   ListTagsForResourceResponse,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -6160,7 +5750,7 @@ export const putSellingSystemSettings: API.OperationMethod<
   PutSellingSystemSettingsRequest,
   PutSellingSystemSettingsResponse,
   PutSellingSystemSettingsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutSellingSystemSettingsRequest,
   output: PutSellingSystemSettingsResponse,
@@ -6191,7 +5781,7 @@ export const rejectEngagementInvitation: API.OperationMethod<
   RejectEngagementInvitationRequest,
   RejectEngagementInvitationResponse,
   RejectEngagementInvitationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RejectEngagementInvitationRequest,
   output: RejectEngagementInvitationResponse,
@@ -6224,7 +5814,7 @@ export const startEngagementByAcceptingInvitationTask: API.OperationMethod<
   StartEngagementByAcceptingInvitationTaskRequest,
   StartEngagementByAcceptingInvitationTaskResponse,
   StartEngagementByAcceptingInvitationTaskError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartEngagementByAcceptingInvitationTaskRequest,
   output: StartEngagementByAcceptingInvitationTaskResponse,
@@ -6258,7 +5848,7 @@ export const startEngagementFromOpportunityTask: API.OperationMethod<
   StartEngagementFromOpportunityTaskRequest,
   StartEngagementFromOpportunityTaskResponse,
   StartEngagementFromOpportunityTaskError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartEngagementFromOpportunityTaskRequest,
   output: StartEngagementFromOpportunityTaskResponse,
@@ -6292,7 +5882,7 @@ export const startOpportunityFromEngagementTask: API.OperationMethod<
   StartOpportunityFromEngagementTaskRequest,
   StartOpportunityFromEngagementTaskResponse,
   StartOpportunityFromEngagementTaskError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartOpportunityFromEngagementTaskRequest,
   output: StartOpportunityFromEngagementTaskResponse,
@@ -6325,7 +5915,7 @@ export const startProspectingFromEngagementTask: API.OperationMethod<
   StartProspectingFromEngagementTaskRequest,
   StartProspectingFromEngagementTaskResponse,
   StartProspectingFromEngagementTaskError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartProspectingFromEngagementTaskRequest,
   output: StartProspectingFromEngagementTaskResponse,
@@ -6356,7 +5946,7 @@ export const startResourceSnapshotJob: API.OperationMethod<
   StartResourceSnapshotJobRequest,
   StartResourceSnapshotJobResponse,
   StartResourceSnapshotJobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartResourceSnapshotJobRequest,
   output: StartResourceSnapshotJobResponse,
@@ -6386,7 +5976,7 @@ export const stopResourceSnapshotJob: API.OperationMethod<
   StopResourceSnapshotJobRequest,
   StopResourceSnapshotJobResponse,
   StopResourceSnapshotJobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StopResourceSnapshotJobRequest,
   output: StopResourceSnapshotJobResponse,
@@ -6416,7 +6006,7 @@ export const submitOpportunity: API.OperationMethod<
   SubmitOpportunityRequest,
   SubmitOpportunityResponse,
   SubmitOpportunityError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: SubmitOpportunityRequest,
   output: SubmitOpportunityResponse,
@@ -6447,7 +6037,7 @@ export const tagResource: API.OperationMethod<
   TagResourceRequest,
   TagResourceResponse,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -6479,7 +6069,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceRequest,
   UntagResourceResponse,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -6512,7 +6102,7 @@ export const updateEngagementContext: API.OperationMethod<
   UpdateEngagementContextRequest,
   UpdateEngagementContextResponse,
   UpdateEngagementContextError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateEngagementContextRequest,
   output: UpdateEngagementContextResponse,
@@ -6547,7 +6137,7 @@ export const updateOpportunity: API.OperationMethod<
   UpdateOpportunityRequest,
   UpdateOpportunityResponse,
   UpdateOpportunityError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateOpportunityRequest,
   output: UpdateOpportunityResponse,

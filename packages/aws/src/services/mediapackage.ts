@@ -1,7 +1,6 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as redacted from "effect/Redacted";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -9,7 +8,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 import { SensitiveString } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "MediaPackage",
@@ -90,37 +88,37 @@ const rules = T.EndpointResolver((p, _) => {
 export class ForbiddenException
   extends /*@__PURE__*/ S.TaggedErrorClass<ForbiddenException>()(
     "ForbiddenException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(403),
   ).pipe(C.withAuthError) {}
 export class InternalServerErrorException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerErrorException>()(
     "InternalServerErrorException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(500),
   ).pipe(C.withServerError) {}
 export class NotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<NotFoundException>()(
     "NotFoundException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class ServiceUnavailableException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceUnavailableException>()(
     "ServiceUnavailableException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(503),
   ).pipe(C.withServerError) {}
 export class TooManyRequestsException
   extends /*@__PURE__*/ S.TaggedErrorClass<TooManyRequestsException>()(
     "TooManyRequestsException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(429),
   ).pipe(C.withThrottlingError) {}
 export class UnprocessableEntityException
   extends /*@__PURE__*/ S.TaggedErrorClass<UnprocessableEntityException>()(
     "UnprocessableEntityException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(422),
   ).pipe(C.withBadRequestError) {}
 export interface EgressAccessLogs {
@@ -2159,7 +2157,7 @@ export const configureLogs: API.OperationMethod<
   ConfigureLogsRequest,
   ConfigureLogsResponse,
   ConfigureLogsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ConfigureLogsRequest,
   output: ConfigureLogsResponse,
@@ -2191,7 +2189,7 @@ export const createChannel: API.OperationMethod<
   CreateChannelRequest,
   CreateChannelResponse,
   CreateChannelError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateChannelRequest,
   output: CreateChannelResponse,
@@ -2223,7 +2221,7 @@ export const createHarvestJob: API.OperationMethod<
   CreateHarvestJobRequest,
   CreateHarvestJobResponse,
   CreateHarvestJobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateHarvestJobRequest,
   output: CreateHarvestJobResponse,
@@ -2255,7 +2253,7 @@ export const createOriginEndpoint: API.OperationMethod<
   CreateOriginEndpointRequest,
   CreateOriginEndpointResponse,
   CreateOriginEndpointError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateOriginEndpointRequest,
   output: CreateOriginEndpointResponse,
@@ -2287,7 +2285,7 @@ export const deleteChannel: API.OperationMethod<
   DeleteChannelRequest,
   DeleteChannelResponse,
   DeleteChannelError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteChannelRequest,
   output: DeleteChannelResponse,
@@ -2319,7 +2317,7 @@ export const deleteOriginEndpoint: API.OperationMethod<
   DeleteOriginEndpointRequest,
   DeleteOriginEndpointResponse,
   DeleteOriginEndpointError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteOriginEndpointRequest,
   output: DeleteOriginEndpointResponse,
@@ -2351,7 +2349,7 @@ export const describeChannel: API.OperationMethod<
   DescribeChannelRequest,
   DescribeChannelResponse,
   DescribeChannelError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeChannelRequest,
   output: DescribeChannelResponse,
@@ -2383,7 +2381,7 @@ export const describeHarvestJob: API.OperationMethod<
   DescribeHarvestJobRequest,
   DescribeHarvestJobResponse,
   DescribeHarvestJobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeHarvestJobRequest,
   output: DescribeHarvestJobResponse,
@@ -2415,7 +2413,7 @@ export const describeOriginEndpoint: API.OperationMethod<
   DescribeOriginEndpointRequest,
   DescribeOriginEndpointResponse,
   DescribeOriginEndpointError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeOriginEndpointRequest,
   output: DescribeOriginEndpointResponse,
@@ -2443,27 +2441,13 @@ export type ListChannelsError =
 /**
  * Returns a collection of Channels.
  */
-export const listChannels: API.OperationMethod<
+export const listChannels: API.PaginatedOperationMethod<
   ListChannelsRequest,
   ListChannelsResponse,
   ListChannelsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListChannelsRequest,
-  ) => stream.Stream<
-    ListChannelsResponse,
-    ListChannelsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListChannelsRequest,
-  ) => stream.Stream<
-    Channel,
-    ListChannelsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Channel
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListChannelsRequest,
   output: ListChannelsResponse,
   errors: [
@@ -2483,27 +2467,7 @@ export const listChannels: API.OperationMethod<
     items: "Channels",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListChannelsRequest,
-  ListChannelsResponse,
-  ListChannelsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListChannelsRequest,
-  ) => stream.Stream<
-    ListChannelsResponse,
-    ListChannelsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListChannelsRequest,
-  ) => stream.Stream<
-    Channel,
-    ListChannelsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListHarvestJobsError =
   | ForbiddenException
@@ -2516,27 +2480,13 @@ export type ListHarvestJobsError =
 /**
  * Returns a collection of HarvestJob records.
  */
-export const listHarvestJobs: API.OperationMethod<
+export const listHarvestJobs: API.PaginatedOperationMethod<
   ListHarvestJobsRequest,
   ListHarvestJobsResponse,
   ListHarvestJobsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListHarvestJobsRequest,
-  ) => stream.Stream<
-    ListHarvestJobsResponse,
-    ListHarvestJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListHarvestJobsRequest,
-  ) => stream.Stream<
-    HarvestJob,
-    ListHarvestJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  HarvestJob
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListHarvestJobsRequest,
   output: ListHarvestJobsResponse,
   errors: [
@@ -2556,27 +2506,7 @@ export const listHarvestJobs: API.OperationMethod<
     items: "HarvestJobs",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListHarvestJobsRequest,
-  ListHarvestJobsResponse,
-  ListHarvestJobsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListHarvestJobsRequest,
-  ) => stream.Stream<
-    ListHarvestJobsResponse,
-    ListHarvestJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListHarvestJobsRequest,
-  ) => stream.Stream<
-    HarvestJob,
-    ListHarvestJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListOriginEndpointsError =
   | ForbiddenException
@@ -2589,27 +2519,13 @@ export type ListOriginEndpointsError =
 /**
  * Returns a collection of OriginEndpoint records.
  */
-export const listOriginEndpoints: API.OperationMethod<
+export const listOriginEndpoints: API.PaginatedOperationMethod<
   ListOriginEndpointsRequest,
   ListOriginEndpointsResponse,
   ListOriginEndpointsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListOriginEndpointsRequest,
-  ) => stream.Stream<
-    ListOriginEndpointsResponse,
-    ListOriginEndpointsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListOriginEndpointsRequest,
-  ) => stream.Stream<
-    OriginEndpoint,
-    ListOriginEndpointsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  OriginEndpoint
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListOriginEndpointsRequest,
   output: ListOriginEndpointsResponse,
   errors: [
@@ -2629,27 +2545,7 @@ export const listOriginEndpoints: API.OperationMethod<
     items: "OriginEndpoints",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListOriginEndpointsRequest,
-  ListOriginEndpointsResponse,
-  ListOriginEndpointsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListOriginEndpointsRequest,
-  ) => stream.Stream<
-    ListOriginEndpointsResponse,
-    ListOriginEndpointsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListOriginEndpointsRequest,
-  ) => stream.Stream<
-    OriginEndpoint,
-    ListOriginEndpointsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsForResourceError = CommonErrors;
 /**
@@ -2659,7 +2555,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceRequest,
   ListTagsForResourceResponse,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -2684,7 +2580,7 @@ export const rotateChannelCredentials: API.OperationMethod<
   RotateChannelCredentialsRequest,
   RotateChannelCredentialsResponse,
   RotateChannelCredentialsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RotateChannelCredentialsRequest,
   output: RotateChannelCredentialsResponse,
@@ -2716,7 +2612,7 @@ export const rotateIngestEndpointCredentials: API.OperationMethod<
   RotateIngestEndpointCredentialsRequest,
   RotateIngestEndpointCredentialsResponse,
   RotateIngestEndpointCredentialsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RotateIngestEndpointCredentialsRequest,
   output: RotateIngestEndpointCredentialsResponse,
@@ -2741,7 +2637,7 @@ export const tagResource: API.OperationMethod<
   TagResourceRequest,
   TagResourceResponse,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -2759,7 +2655,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceRequest,
   UntagResourceResponse,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -2784,7 +2680,7 @@ export const updateChannel: API.OperationMethod<
   UpdateChannelRequest,
   UpdateChannelResponse,
   UpdateChannelError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateChannelRequest,
   output: UpdateChannelResponse,
@@ -2816,7 +2712,7 @@ export const updateOriginEndpoint: API.OperationMethod<
   UpdateOriginEndpointRequest,
   UpdateOriginEndpointResponse,
   UpdateOriginEndpointError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateOriginEndpointRequest,
   output: UpdateOriginEndpointResponse,

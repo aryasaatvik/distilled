@@ -1,6 +1,5 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -8,7 +7,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 const svc = T.AwsApiService({
   sdkId: "CodeGuru Reviewer",
   serviceShapeName: "AWSGuruFrontendService",
@@ -88,43 +86,43 @@ const rules = T.EndpointResolver((p, _) => {
 export class AccessDeniedException
   extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
     "AccessDeniedException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(403),
   ).pipe(C.withAuthError) {}
 export class ConflictException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
     "ConflictException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class InternalServerException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
     "InternalServerException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(500),
   ).pipe(C.withServerError) {}
 export class NotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<NotFoundException>()(
     "NotFoundException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class ThrottlingException
   extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
     "ThrottlingException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(429),
   ).pipe(C.withThrottlingError) {}
 export class ValidationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
     "ValidationException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export type Name = string;
@@ -1199,7 +1197,7 @@ export const associateRepository: API.OperationMethod<
   AssociateRepositoryRequest,
   AssociateRepositoryResponse,
   AssociateRepositoryError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AssociateRepositoryRequest,
   output: AssociateRepositoryResponse,
@@ -1233,7 +1231,7 @@ export const createCodeReview: API.OperationMethod<
   CreateCodeReviewRequest,
   CreateCodeReviewResponse,
   CreateCodeReviewError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateCodeReviewRequest,
   output: CreateCodeReviewResponse,
@@ -1264,7 +1262,7 @@ export const describeCodeReview: API.OperationMethod<
   DescribeCodeReviewRequest,
   DescribeCodeReviewResponse,
   DescribeCodeReviewError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeCodeReviewRequest,
   output: DescribeCodeReviewResponse,
@@ -1294,7 +1292,7 @@ export const describeRecommendationFeedback: API.OperationMethod<
   DescribeRecommendationFeedbackRequest,
   DescribeRecommendationFeedbackResponse,
   DescribeRecommendationFeedbackError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeRecommendationFeedbackRequest,
   output: DescribeRecommendationFeedbackResponse,
@@ -1325,7 +1323,7 @@ export const describeRepositoryAssociation: API.OperationMethod<
   DescribeRepositoryAssociationRequest,
   DescribeRepositoryAssociationResponse,
   DescribeRepositoryAssociationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeRepositoryAssociationRequest,
   output: DescribeRepositoryAssociationResponse,
@@ -1356,7 +1354,7 @@ export const disassociateRepository: API.OperationMethod<
   DisassociateRepositoryRequest,
   DisassociateRepositoryResponse,
   DisassociateRepositoryError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DisassociateRepositoryRequest,
   output: DisassociateRepositoryResponse,
@@ -1382,27 +1380,13 @@ export type ListCodeReviewsError =
 /**
  * Lists all the code reviews that the customer has created in the past 90 days.
  */
-export const listCodeReviews: API.OperationMethod<
+export const listCodeReviews: API.PaginatedOperationMethod<
   ListCodeReviewsRequest,
   ListCodeReviewsResponse,
   ListCodeReviewsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCodeReviewsRequest,
-  ) => stream.Stream<
-    ListCodeReviewsResponse,
-    ListCodeReviewsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCodeReviewsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListCodeReviewsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListCodeReviewsRequest,
   output: ListCodeReviewsResponse,
   errors: [
@@ -1419,27 +1403,7 @@ export const listCodeReviews: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListCodeReviewsRequest,
-  ListCodeReviewsResponse,
-  ListCodeReviewsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCodeReviewsRequest,
-  ) => stream.Stream<
-    ListCodeReviewsResponse,
-    ListCodeReviewsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCodeReviewsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListCodeReviewsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListRecommendationFeedbackError =
   | AccessDeniedException
@@ -1452,27 +1416,13 @@ export type ListRecommendationFeedbackError =
  * Returns a list of RecommendationFeedbackSummary objects that contain customer recommendation
  * feedback for all CodeGuru Reviewer users.
  */
-export const listRecommendationFeedback: API.OperationMethod<
+export const listRecommendationFeedback: API.PaginatedOperationMethod<
   ListRecommendationFeedbackRequest,
   ListRecommendationFeedbackResponse,
   ListRecommendationFeedbackError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListRecommendationFeedbackRequest,
-  ) => stream.Stream<
-    ListRecommendationFeedbackResponse,
-    ListRecommendationFeedbackError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListRecommendationFeedbackRequest,
-  ) => stream.Stream<
-    unknown,
-    ListRecommendationFeedbackError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListRecommendationFeedbackRequest,
   output: ListRecommendationFeedbackResponse,
   errors: [
@@ -1490,27 +1440,7 @@ export const listRecommendationFeedback: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListRecommendationFeedbackRequest,
-  ListRecommendationFeedbackResponse,
-  ListRecommendationFeedbackError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListRecommendationFeedbackRequest,
-  ) => stream.Stream<
-    ListRecommendationFeedbackResponse,
-    ListRecommendationFeedbackError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListRecommendationFeedbackRequest,
-  ) => stream.Stream<
-    unknown,
-    ListRecommendationFeedbackError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListRecommendationsError =
   | AccessDeniedException
@@ -1522,27 +1452,13 @@ export type ListRecommendationsError =
 /**
  * Returns the list of all recommendations for a completed code review.
  */
-export const listRecommendations: API.OperationMethod<
+export const listRecommendations: API.PaginatedOperationMethod<
   ListRecommendationsRequest,
   ListRecommendationsResponse,
   ListRecommendationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListRecommendationsRequest,
-  ) => stream.Stream<
-    ListRecommendationsResponse,
-    ListRecommendationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListRecommendationsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListRecommendationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListRecommendationsRequest,
   output: ListRecommendationsResponse,
   errors: [
@@ -1560,27 +1476,7 @@ export const listRecommendations: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListRecommendationsRequest,
-  ListRecommendationsResponse,
-  ListRecommendationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListRecommendationsRequest,
-  ) => stream.Stream<
-    ListRecommendationsResponse,
-    ListRecommendationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListRecommendationsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListRecommendationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListRepositoryAssociationsError =
   | InternalServerException
@@ -1591,27 +1487,13 @@ export type ListRepositoryAssociationsError =
  * Returns a list of RepositoryAssociationSummary objects that contain summary information about a
  * repository association. You can filter the returned list by ProviderType, Name, State, and Owner.
  */
-export const listRepositoryAssociations: API.OperationMethod<
+export const listRepositoryAssociations: API.PaginatedOperationMethod<
   ListRepositoryAssociationsRequest,
   ListRepositoryAssociationsResponse,
   ListRepositoryAssociationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListRepositoryAssociationsRequest,
-  ) => stream.Stream<
-    ListRepositoryAssociationsResponse,
-    ListRepositoryAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListRepositoryAssociationsRequest,
-  ) => stream.Stream<
-    RepositoryAssociationSummary,
-    ListRepositoryAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  RepositoryAssociationSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListRepositoryAssociationsRequest,
   output: ListRepositoryAssociationsResponse,
   errors: [InternalServerException, ThrottlingException, ValidationException],
@@ -1624,27 +1506,7 @@ export const listRepositoryAssociations: API.OperationMethod<
     items: "RepositoryAssociationSummaries",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListRepositoryAssociationsRequest,
-  ListRepositoryAssociationsResponse,
-  ListRepositoryAssociationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListRepositoryAssociationsRequest,
-  ) => stream.Stream<
-    ListRepositoryAssociationsResponse,
-    ListRepositoryAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListRepositoryAssociationsRequest,
-  ) => stream.Stream<
-    RepositoryAssociationSummary,
-    ListRepositoryAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsForResourceError =
   | InternalServerException
@@ -1658,7 +1520,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceRequest,
   ListTagsForResourceResponse,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -1687,7 +1549,7 @@ export const putRecommendationFeedback: API.OperationMethod<
   PutRecommendationFeedbackRequest,
   PutRecommendationFeedbackResponse,
   PutRecommendationFeedbackError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutRecommendationFeedbackRequest,
   output: PutRecommendationFeedbackResponse,
@@ -1715,7 +1577,7 @@ export const tagResource: API.OperationMethod<
   TagResourceRequest,
   TagResourceResponse,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -1741,7 +1603,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceRequest,
   UntagResourceResponse,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,

@@ -1,6 +1,5 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -8,7 +7,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 const svc = T.AwsApiService({
   sdkId: "BCM Recommended Actions",
   serviceShapeName: "AWSBillingAndCostManagementRecommendedActions",
@@ -67,7 +65,7 @@ const rules = T.EndpointResolver((p, _) => {
 export class AccessDeniedException
   extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
     "AccessDeniedException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "BCMRecommendedActionsAccessDenied",
@@ -79,7 +77,7 @@ export class AccessDeniedException
 export class InternalServerException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
     "InternalServerException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "BCMRecommendedActionsInternalServer",
@@ -91,7 +89,7 @@ export class InternalServerException
 export class ThrottlingException
   extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
     "ThrottlingException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "BCMRecommendedActionsThrottling",
@@ -104,7 +102,7 @@ export class ValidationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
     "ValidationException",
     {
-      message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       reason: S.suspend(() => ValidationExceptionReason).annotate({
         identifier: "ValidationExceptionReason",
       }),
@@ -283,27 +281,13 @@ export type ListRecommendedActionsError =
 /**
  * Returns a list of recommended actions that match the filter criteria.
  */
-export const listRecommendedActions: API.OperationMethod<
+export const listRecommendedActions: API.PaginatedOperationMethod<
   ListRecommendedActionsRequest,
   ListRecommendedActionsResponse,
   ListRecommendedActionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListRecommendedActionsRequest,
-  ) => stream.Stream<
-    ListRecommendedActionsResponse,
-    ListRecommendedActionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListRecommendedActionsRequest,
-  ) => stream.Stream<
-    RecommendedAction,
-    ListRecommendedActionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  RecommendedAction
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListRecommendedActionsRequest,
   output: ListRecommendedActionsResponse,
   errors: [
@@ -321,24 +305,4 @@ export const listRecommendedActions: API.OperationMethod<
     items: "recommendedActions",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListRecommendedActionsRequest,
-  ListRecommendedActionsResponse,
-  ListRecommendedActionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListRecommendedActionsRequest,
-  ) => stream.Stream<
-    ListRecommendedActionsResponse,
-    ListRecommendedActionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListRecommendedActionsRequest,
-  ) => stream.Stream<
-    RecommendedAction,
-    ListRecommendedActionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;

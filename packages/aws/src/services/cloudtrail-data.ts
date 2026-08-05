@@ -6,7 +6,6 @@ import { Retry } from "../retry.ts";
 import * as T from "../traits.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 const svc = T.AwsApiService({
   sdkId: "CloudTrail Data",
   serviceShapeName: "CloudTrailDataService",
@@ -86,32 +85,32 @@ const rules = T.EndpointResolver((p, _) => {
 export class ChannelInsufficientPermission
   extends /*@__PURE__*/ S.TaggedErrorClass<ChannelInsufficientPermission>()(
     "ChannelInsufficientPermission",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class ChannelNotFound
   extends /*@__PURE__*/ S.TaggedErrorClass<ChannelNotFound>()(
     "ChannelNotFound",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class ChannelUnsupportedSchema
   extends /*@__PURE__*/ S.TaggedErrorClass<ChannelUnsupportedSchema>()(
     "ChannelUnsupportedSchema",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class DuplicatedAuditEventId
   extends /*@__PURE__*/ S.TaggedErrorClass<DuplicatedAuditEventId>()(
     "DuplicatedAuditEventId",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidChannelARN
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidChannelARN>()(
     "InvalidChannelARN",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class UnsupportedOperationException
   extends /*@__PURE__*/ S.TaggedErrorClass<UnsupportedOperationException>()(
     "UnsupportedOperationException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export type Uuid = string;
 export interface AuditEvent {
@@ -208,7 +207,7 @@ export const putAuditEvents: API.OperationMethod<
   PutAuditEventsRequest,
   PutAuditEventsResponse,
   PutAuditEventsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutAuditEventsRequest,
   output: PutAuditEventsResponse,

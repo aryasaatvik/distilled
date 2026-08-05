@@ -7,7 +7,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 const ns = T.XmlNamespace("http://cloudsearch.amazonaws.com/doc/2013-01-01/");
 const svc = T.AwsApiService({
   sdkId: "CloudSearch",
@@ -88,12 +87,15 @@ const rules = T.EndpointResolver((p, _) => {
 export class BaseException
   extends /*@__PURE__*/ S.TaggedErrorClass<BaseException>()("BaseException", {
     Code: S.optional(S.String),
-    Message: S.optional(S.String),
+    message: S.optional(S.String).pipe(T.ErrorMessage()),
   }) {}
 export class DisabledOperationException
   extends /*@__PURE__*/ S.TaggedErrorClass<DisabledOperationException>()(
     "DisabledOperationException",
-    { Code: S.optional(S.String), Message: S.optional(S.String) },
+    {
+      Code: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.all(
       T.AwsQueryError({ code: "DisabledAction", httpResponseCode: 409 }),
       T.HttpError(409),
@@ -102,7 +104,10 @@ export class DisabledOperationException
 export class InternalException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalException>()(
     "InternalException",
-    { Code: S.optional(S.String), Message: S.optional(S.String) },
+    {
+      Code: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.all(
       T.AwsQueryError({ code: "InternalException", httpResponseCode: 500 }),
       T.HttpError(500),
@@ -111,7 +116,10 @@ export class InternalException
 export class InvalidTypeException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidTypeException>()(
     "InvalidTypeException",
-    { Code: S.optional(S.String), Message: S.optional(S.String) },
+    {
+      Code: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.all(
       T.AwsQueryError({ code: "InvalidType", httpResponseCode: 409 }),
       T.HttpError(409),
@@ -120,7 +128,10 @@ export class InvalidTypeException
 export class LimitExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<LimitExceededException>()(
     "LimitExceededException",
-    { Code: S.optional(S.String), Message: S.optional(S.String) },
+    {
+      Code: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.all(
       T.AwsQueryError({ code: "LimitExceeded", httpResponseCode: 409 }),
       T.HttpError(409),
@@ -129,7 +140,10 @@ export class LimitExceededException
 export class ResourceAlreadyExistsException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceAlreadyExistsException>()(
     "ResourceAlreadyExistsException",
-    { Code: S.optional(S.String), Message: S.optional(S.String) },
+    {
+      Code: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.all(
       T.AwsQueryError({ code: "ResourceAlreadyExists", httpResponseCode: 409 }),
       T.HttpError(409),
@@ -138,7 +152,10 @@ export class ResourceAlreadyExistsException
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { Code: S.optional(S.String), Message: S.optional(S.String) },
+    {
+      Code: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.all(
       T.AwsQueryError({ code: "ResourceNotFound", httpResponseCode: 409 }),
       T.HttpError(409),
@@ -147,7 +164,10 @@ export class ResourceNotFoundException
 export class ValidationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
     "ValidationException",
-    { Code: S.optional(S.String), Message: S.optional(S.String) },
+    {
+      Code: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export type DomainName = string;
@@ -1492,7 +1512,7 @@ export const buildSuggesters: API.OperationMethod<
   BuildSuggestersRequest,
   BuildSuggestersResponse,
   BuildSuggestersError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BuildSuggestersRequest,
   output: BuildSuggestersResponse,
@@ -1522,7 +1542,7 @@ export const createDomain: API.OperationMethod<
   CreateDomainRequest,
   CreateDomainResponse,
   CreateDomainError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateDomainRequest,
   output: CreateDomainResponse,
@@ -1553,7 +1573,7 @@ export const defineAnalysisScheme: API.OperationMethod<
   DefineAnalysisSchemeRequest,
   DefineAnalysisSchemeResponse,
   DefineAnalysisSchemeError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DefineAnalysisSchemeRequest,
   output: DefineAnalysisSchemeResponse,
@@ -1585,7 +1605,7 @@ export const defineExpression: API.OperationMethod<
   DefineExpressionRequest,
   DefineExpressionResponse,
   DefineExpressionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DefineExpressionRequest,
   output: DefineExpressionResponse,
@@ -1617,7 +1637,7 @@ export const defineIndexField: API.OperationMethod<
   DefineIndexFieldRequest,
   DefineIndexFieldResponse,
   DefineIndexFieldError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DefineIndexFieldRequest,
   output: DefineIndexFieldResponse,
@@ -1649,7 +1669,7 @@ export const defineSuggester: API.OperationMethod<
   DefineSuggesterRequest,
   DefineSuggesterResponse,
   DefineSuggesterError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DefineSuggesterRequest,
   output: DefineSuggesterResponse,
@@ -1680,7 +1700,7 @@ export const deleteAnalysisScheme: API.OperationMethod<
   DeleteAnalysisSchemeRequest,
   DeleteAnalysisSchemeResponse,
   DeleteAnalysisSchemeError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteAnalysisSchemeRequest,
   output: DeleteAnalysisSchemeResponse,
@@ -1708,7 +1728,7 @@ export const deleteDomain: API.OperationMethod<
   DeleteDomainRequest,
   DeleteDomainResponse,
   DeleteDomainError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteDomainRequest,
   output: DeleteDomainResponse,
@@ -1732,7 +1752,7 @@ export const deleteExpression: API.OperationMethod<
   DeleteExpressionRequest,
   DeleteExpressionResponse,
   DeleteExpressionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteExpressionRequest,
   output: DeleteExpressionResponse,
@@ -1762,7 +1782,7 @@ export const deleteIndexField: API.OperationMethod<
   DeleteIndexFieldRequest,
   DeleteIndexFieldResponse,
   DeleteIndexFieldError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteIndexFieldRequest,
   output: DeleteIndexFieldResponse,
@@ -1792,7 +1812,7 @@ export const deleteSuggester: API.OperationMethod<
   DeleteSuggesterRequest,
   DeleteSuggesterResponse,
   DeleteSuggesterError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteSuggesterRequest,
   output: DeleteSuggesterResponse,
@@ -1820,7 +1840,7 @@ export const describeAnalysisSchemes: API.OperationMethod<
   DescribeAnalysisSchemesRequest,
   DescribeAnalysisSchemesResponse,
   DescribeAnalysisSchemesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeAnalysisSchemesRequest,
   output: DescribeAnalysisSchemesResponse,
@@ -1845,7 +1865,7 @@ export const describeAvailabilityOptions: API.OperationMethod<
   DescribeAvailabilityOptionsRequest,
   DescribeAvailabilityOptionsResponse,
   DescribeAvailabilityOptionsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeAvailabilityOptionsRequest,
   output: DescribeAvailabilityOptionsResponse,
@@ -1876,7 +1896,7 @@ export const describeDomainEndpointOptions: API.OperationMethod<
   DescribeDomainEndpointOptionsRequest,
   DescribeDomainEndpointOptionsResponse,
   DescribeDomainEndpointOptionsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeDomainEndpointOptionsRequest,
   output: DescribeDomainEndpointOptionsResponse,
@@ -1905,7 +1925,7 @@ export const describeDomains: API.OperationMethod<
   DescribeDomainsRequest,
   DescribeDomainsResponse,
   DescribeDomainsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeDomainsRequest,
   output: DescribeDomainsResponse,
@@ -1927,7 +1947,7 @@ export const describeExpressions: API.OperationMethod<
   DescribeExpressionsRequest,
   DescribeExpressionsResponse,
   DescribeExpressionsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeExpressionsRequest,
   output: DescribeExpressionsResponse,
@@ -1951,7 +1971,7 @@ export const describeIndexFields: API.OperationMethod<
   DescribeIndexFieldsRequest,
   DescribeIndexFieldsResponse,
   DescribeIndexFieldsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeIndexFieldsRequest,
   output: DescribeIndexFieldsResponse,
@@ -1973,7 +1993,7 @@ export const describeScalingParameters: API.OperationMethod<
   DescribeScalingParametersRequest,
   DescribeScalingParametersResponse,
   DescribeScalingParametersError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeScalingParametersRequest,
   output: DescribeScalingParametersResponse,
@@ -1996,7 +2016,7 @@ export const describeServiceAccessPolicies: API.OperationMethod<
   DescribeServiceAccessPoliciesRequest,
   DescribeServiceAccessPoliciesResponse,
   DescribeServiceAccessPoliciesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeServiceAccessPoliciesRequest,
   output: DescribeServiceAccessPoliciesResponse,
@@ -2018,7 +2038,7 @@ export const describeSuggesters: API.OperationMethod<
   DescribeSuggestersRequest,
   DescribeSuggestersResponse,
   DescribeSuggestersError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeSuggestersRequest,
   output: DescribeSuggestersResponse,
@@ -2041,7 +2061,7 @@ export const indexDocuments: API.OperationMethod<
   IndexDocumentsRequest,
   IndexDocumentsResponse,
   IndexDocumentsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: IndexDocumentsRequest,
   output: IndexDocumentsResponse,
@@ -2064,7 +2084,7 @@ export const listDomainNames: API.OperationMethod<
   ListDomainNamesRequest,
   ListDomainNamesResponse,
   ListDomainNamesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListDomainNamesRequest,
   output: ListDomainNamesResponse,
@@ -2090,7 +2110,7 @@ export const updateAvailabilityOptions: API.OperationMethod<
   UpdateAvailabilityOptionsRequest,
   UpdateAvailabilityOptionsResponse,
   UpdateAvailabilityOptionsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateAvailabilityOptionsRequest,
   output: UpdateAvailabilityOptionsResponse,
@@ -2124,7 +2144,7 @@ export const updateDomainEndpointOptions: API.OperationMethod<
   UpdateDomainEndpointOptionsRequest,
   UpdateDomainEndpointOptionsResponse,
   UpdateDomainEndpointOptionsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateDomainEndpointOptionsRequest,
   output: UpdateDomainEndpointOptionsResponse,
@@ -2157,7 +2177,7 @@ export const updateScalingParameters: API.OperationMethod<
   UpdateScalingParametersRequest,
   UpdateScalingParametersResponse,
   UpdateScalingParametersError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateScalingParametersRequest,
   output: UpdateScalingParametersResponse,
@@ -2191,7 +2211,7 @@ export const updateServiceAccessPolicies: API.OperationMethod<
   UpdateServiceAccessPoliciesRequest,
   UpdateServiceAccessPoliciesResponse,
   UpdateServiceAccessPoliciesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateServiceAccessPoliciesRequest,
   output: UpdateServiceAccessPoliciesResponse,

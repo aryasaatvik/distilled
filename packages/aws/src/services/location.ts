@@ -1,7 +1,6 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as redacted from "effect/Redacted";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -9,7 +8,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "Location",
@@ -90,44 +88,44 @@ const rules = T.EndpointResolver((p, _) => {
 export class AccessDeniedException
   extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
     "AccessDeniedException",
-    { Message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(403),
   ).pipe(C.withAuthError) {}
 export class ConflictException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
     "ConflictException",
-    { Message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class InternalServerException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
     "InternalServerException",
-    { Message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.all(T.HttpError(500), T.Retryable()),
   ).pipe(C.withServerError, C.withRetryableError) {}
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { Message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class ServiceQuotaExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
     "ServiceQuotaExceededException",
-    { Message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(402),
   ).pipe(C.withQuotaError) {}
 export class ThrottlingException
   extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
     "ThrottlingException",
-    { Message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.all(T.HttpError(429), T.Retryable()),
   ).pipe(C.withThrottlingError, C.withRetryableError) {}
 export class ValidationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
     "ValidationException",
     {
-      Message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       Reason: S.String,
       FieldList: S.suspend(() => ValidationExceptionFieldList).annotate({
         identifier: "ValidationExceptionFieldList",
@@ -3829,7 +3827,7 @@ export const associateTrackerConsumer: API.OperationMethod<
   AssociateTrackerConsumerRequest,
   AssociateTrackerConsumerResponse,
   AssociateTrackerConsumerError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AssociateTrackerConsumerRequest,
   output: AssociateTrackerConsumerResponse,
@@ -3862,7 +3860,7 @@ export const batchDeleteDevicePositionHistory: API.OperationMethod<
   BatchDeleteDevicePositionHistoryRequest,
   BatchDeleteDevicePositionHistoryResponse,
   BatchDeleteDevicePositionHistoryError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchDeleteDevicePositionHistoryRequest,
   output: BatchDeleteDevicePositionHistoryResponse,
@@ -3895,7 +3893,7 @@ export const batchDeleteGeofence: API.OperationMethod<
   BatchDeleteGeofenceRequest,
   BatchDeleteGeofenceResponse,
   BatchDeleteGeofenceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchDeleteGeofenceRequest,
   output: BatchDeleteGeofenceResponse,
@@ -3938,7 +3936,7 @@ export const batchEvaluateGeofences: API.OperationMethod<
   BatchEvaluateGeofencesRequest,
   BatchEvaluateGeofencesResponse,
   BatchEvaluateGeofencesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchEvaluateGeofencesRequest,
   output: BatchEvaluateGeofencesResponse,
@@ -3969,7 +3967,7 @@ export const batchGetDevicePosition: API.OperationMethod<
   BatchGetDevicePositionRequest,
   BatchGetDevicePositionResponse,
   BatchGetDevicePositionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchGetDevicePositionRequest,
   output: BatchGetDevicePositionResponse,
@@ -4000,7 +3998,7 @@ export const batchPutGeofence: API.OperationMethod<
   BatchPutGeofenceRequest,
   BatchPutGeofenceResponse,
   BatchPutGeofenceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchPutGeofenceRequest,
   output: BatchPutGeofenceResponse,
@@ -4037,7 +4035,7 @@ export const batchUpdateDevicePosition: API.OperationMethod<
   BatchUpdateDevicePositionRequest,
   BatchUpdateDevicePositionResponse,
   BatchUpdateDevicePositionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchUpdateDevicePositionRequest,
   output: BatchUpdateDevicePositionResponse,
@@ -4090,7 +4088,7 @@ export const calculateRoute: API.OperationMethod<
   CalculateRouteRequest,
   CalculateRouteResponse,
   CalculateRouteError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CalculateRouteRequest,
   output: CalculateRouteResponse,
@@ -4147,7 +4145,7 @@ export const calculateRouteMatrix: API.OperationMethod<
   CalculateRouteMatrixRequest,
   CalculateRouteMatrixResponse,
   CalculateRouteMatrixError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CalculateRouteMatrixRequest,
   output: CalculateRouteMatrixResponse,
@@ -4180,7 +4178,7 @@ export const cancelJob: API.OperationMethod<
   CancelJobRequest,
   CancelJobResponse,
   CancelJobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CancelJobRequest,
   output: CancelJobResponse,
@@ -4212,7 +4210,7 @@ export const createGeofenceCollection: API.OperationMethod<
   CreateGeofenceCollectionRequest,
   CreateGeofenceCollectionResponse,
   CreateGeofenceCollectionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateGeofenceCollectionRequest,
   output: CreateGeofenceCollectionResponse,
@@ -4247,7 +4245,7 @@ export const createKey: API.OperationMethod<
   CreateKeyRequest,
   CreateKeyResponse,
   CreateKeyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateKeyRequest,
   output: CreateKeyResponse,
@@ -4294,7 +4292,7 @@ export const createMap: API.OperationMethod<
   CreateMapRequest,
   CreateMapResponse,
   CreateMapError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateMapRequest,
   output: CreateMapResponse,
@@ -4341,7 +4339,7 @@ export const createPlaceIndex: API.OperationMethod<
   CreatePlaceIndexRequest,
   CreatePlaceIndexResponse,
   CreatePlaceIndexError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreatePlaceIndexRequest,
   output: CreatePlaceIndexResponse,
@@ -4390,7 +4388,7 @@ export const createRouteCalculator: API.OperationMethod<
   CreateRouteCalculatorRequest,
   CreateRouteCalculatorResponse,
   CreateRouteCalculatorError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateRouteCalculatorRequest,
   output: CreateRouteCalculatorResponse,
@@ -4423,7 +4421,7 @@ export const createTracker: API.OperationMethod<
   CreateTrackerRequest,
   CreateTrackerResponse,
   CreateTrackerError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateTrackerRequest,
   output: CreateTrackerResponse,
@@ -4457,7 +4455,7 @@ export const deleteGeofenceCollection: API.OperationMethod<
   DeleteGeofenceCollectionRequest,
   DeleteGeofenceCollectionResponse,
   DeleteGeofenceCollectionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteGeofenceCollectionRequest,
   output: DeleteGeofenceCollectionResponse,
@@ -4490,7 +4488,7 @@ export const deleteKey: API.OperationMethod<
   DeleteKeyRequest,
   DeleteKeyResponse,
   DeleteKeyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteKeyRequest,
   output: DeleteKeyResponse,
@@ -4535,7 +4533,7 @@ export const deleteMap: API.OperationMethod<
   DeleteMapRequest,
   DeleteMapResponse,
   DeleteMapError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteMapRequest,
   output: DeleteMapResponse,
@@ -4580,7 +4578,7 @@ export const deletePlaceIndex: API.OperationMethod<
   DeletePlaceIndexRequest,
   DeletePlaceIndexResponse,
   DeletePlaceIndexError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeletePlaceIndexRequest,
   output: DeletePlaceIndexResponse,
@@ -4625,7 +4623,7 @@ export const deleteRouteCalculator: API.OperationMethod<
   DeleteRouteCalculatorRequest,
   DeleteRouteCalculatorResponse,
   DeleteRouteCalculatorError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteRouteCalculatorRequest,
   output: DeleteRouteCalculatorResponse,
@@ -4658,7 +4656,7 @@ export const deleteTracker: API.OperationMethod<
   DeleteTrackerRequest,
   DeleteTrackerResponse,
   DeleteTrackerError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteTrackerRequest,
   output: DeleteTrackerResponse,
@@ -4689,7 +4687,7 @@ export const describeGeofenceCollection: API.OperationMethod<
   DescribeGeofenceCollectionRequest,
   DescribeGeofenceCollectionResponse,
   DescribeGeofenceCollectionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeGeofenceCollectionRequest,
   output: DescribeGeofenceCollectionResponse,
@@ -4722,7 +4720,7 @@ export const describeKey: API.OperationMethod<
   DescribeKeyRequest,
   DescribeKeyResponse,
   DescribeKeyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeKeyRequest,
   output: DescribeKeyResponse,
@@ -4765,7 +4763,7 @@ export const describeMap: API.OperationMethod<
   DescribeMapRequest,
   DescribeMapResponse,
   DescribeMapError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeMapRequest,
   output: DescribeMapResponse,
@@ -4808,7 +4806,7 @@ export const describePlaceIndex: API.OperationMethod<
   DescribePlaceIndexRequest,
   DescribePlaceIndexResponse,
   DescribePlaceIndexError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribePlaceIndexRequest,
   output: DescribePlaceIndexResponse,
@@ -4851,7 +4849,7 @@ export const describeRouteCalculator: API.OperationMethod<
   DescribeRouteCalculatorRequest,
   DescribeRouteCalculatorResponse,
   DescribeRouteCalculatorError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeRouteCalculatorRequest,
   output: DescribeRouteCalculatorResponse,
@@ -4882,7 +4880,7 @@ export const describeTracker: API.OperationMethod<
   DescribeTrackerRequest,
   DescribeTrackerResponse,
   DescribeTrackerError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeTrackerRequest,
   output: DescribeTrackerResponse,
@@ -4915,7 +4913,7 @@ export const disassociateTrackerConsumer: API.OperationMethod<
   DisassociateTrackerConsumerRequest,
   DisassociateTrackerConsumerResponse,
   DisassociateTrackerConsumerError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DisassociateTrackerConsumerRequest,
   output: DisassociateTrackerConsumerResponse,
@@ -4950,27 +4948,13 @@ export type ForecastGeofenceEventsError =
  *
  * Heading direction is not considered in the current version. The API takes a conservative approach and includes events that can occur for any heading.
  */
-export const forecastGeofenceEvents: API.OperationMethod<
+export const forecastGeofenceEvents: API.PaginatedOperationMethod<
   ForecastGeofenceEventsRequest,
   ForecastGeofenceEventsResponse,
   ForecastGeofenceEventsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ForecastGeofenceEventsRequest,
-  ) => stream.Stream<
-    ForecastGeofenceEventsResponse,
-    ForecastGeofenceEventsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ForecastGeofenceEventsRequest,
-  ) => stream.Stream<
-    ForecastedEvent,
-    ForecastGeofenceEventsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ForecastedEvent
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ForecastGeofenceEventsRequest,
   output: ForecastGeofenceEventsResponse,
   errors: [
@@ -4990,27 +4974,7 @@ export const forecastGeofenceEvents: API.OperationMethod<
     items: "ForecastedEvents",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ForecastGeofenceEventsRequest,
-  ForecastGeofenceEventsResponse,
-  ForecastGeofenceEventsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ForecastGeofenceEventsRequest,
-  ) => stream.Stream<
-    ForecastGeofenceEventsResponse,
-    ForecastGeofenceEventsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ForecastGeofenceEventsRequest,
-  ) => stream.Stream<
-    ForecastedEvent,
-    ForecastGeofenceEventsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetDevicePositionError =
   | AccessDeniedException
@@ -5028,7 +4992,7 @@ export const getDevicePosition: API.OperationMethod<
   GetDevicePositionRequest,
   GetDevicePositionResponse,
   GetDevicePositionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetDevicePositionRequest,
   output: GetDevicePositionResponse,
@@ -5057,27 +5021,13 @@ export type GetDevicePositionHistoryError =
  *
  * Device positions are deleted after 30 days.
  */
-export const getDevicePositionHistory: API.OperationMethod<
+export const getDevicePositionHistory: API.PaginatedOperationMethod<
   GetDevicePositionHistoryRequest,
   GetDevicePositionHistoryResponse,
   GetDevicePositionHistoryError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetDevicePositionHistoryRequest,
-  ) => stream.Stream<
-    GetDevicePositionHistoryResponse,
-    GetDevicePositionHistoryError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetDevicePositionHistoryRequest,
-  ) => stream.Stream<
-    DevicePosition,
-    GetDevicePositionHistoryError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  DevicePosition
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetDevicePositionHistoryRequest,
   output: GetDevicePositionHistoryResponse,
   errors: [
@@ -5097,27 +5047,7 @@ export const getDevicePositionHistory: API.OperationMethod<
     items: "DevicePositions",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetDevicePositionHistoryRequest,
-  GetDevicePositionHistoryResponse,
-  GetDevicePositionHistoryError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetDevicePositionHistoryRequest,
-  ) => stream.Stream<
-    GetDevicePositionHistoryResponse,
-    GetDevicePositionHistoryError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetDevicePositionHistoryRequest,
-  ) => stream.Stream<
-    DevicePosition,
-    GetDevicePositionHistoryError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetGeofenceError =
   | AccessDeniedException
@@ -5135,7 +5065,7 @@ export const getGeofence: API.OperationMethod<
   GetGeofenceRequest,
   GetGeofenceResponse,
   GetGeofenceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetGeofenceRequest,
   output: GetGeofenceResponse,
@@ -5168,7 +5098,7 @@ export const getJob: API.OperationMethod<
   GetJobRequest,
   GetJobResponse,
   GetJobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetJobRequest,
   output: GetJobResponse,
@@ -5211,7 +5141,7 @@ export const getMapGlyphs: API.OperationMethod<
   GetMapGlyphsRequest,
   GetMapGlyphsResponse,
   GetMapGlyphsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetMapGlyphsRequest,
   output: GetMapGlyphsResponse,
@@ -5254,7 +5184,7 @@ export const getMapSprites: API.OperationMethod<
   GetMapSpritesRequest,
   GetMapSpritesResponse,
   GetMapSpritesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetMapSpritesRequest,
   output: GetMapSpritesResponse,
@@ -5299,7 +5229,7 @@ export const getMapStyleDescriptor: API.OperationMethod<
   GetMapStyleDescriptorRequest,
   GetMapStyleDescriptorResponse,
   GetMapStyleDescriptorError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetMapStyleDescriptorRequest,
   output: GetMapStyleDescriptorResponse,
@@ -5344,7 +5274,7 @@ export const getMapTile: API.OperationMethod<
   GetMapTileRequest,
   GetMapTileResponse,
   GetMapTileError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetMapTileRequest,
   output: GetMapTileResponse,
@@ -5397,7 +5327,7 @@ export const getPlace: API.OperationMethod<
   GetPlaceRequest,
   GetPlaceResponse,
   GetPlaceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetPlaceRequest,
   output: GetPlaceResponse,
@@ -5423,27 +5353,13 @@ export type ListDevicePositionsError =
 /**
  * A batch request to retrieve all device positions.
  */
-export const listDevicePositions: API.OperationMethod<
+export const listDevicePositions: API.PaginatedOperationMethod<
   ListDevicePositionsRequest,
   ListDevicePositionsResponse,
   ListDevicePositionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDevicePositionsRequest,
-  ) => stream.Stream<
-    ListDevicePositionsResponse,
-    ListDevicePositionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDevicePositionsRequest,
-  ) => stream.Stream<
-    ListDevicePositionsResponseEntry,
-    ListDevicePositionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ListDevicePositionsResponseEntry
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListDevicePositionsRequest,
   output: ListDevicePositionsResponse,
   errors: [
@@ -5462,27 +5378,7 @@ export const listDevicePositions: API.OperationMethod<
     items: "Entries",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListDevicePositionsRequest,
-  ListDevicePositionsResponse,
-  ListDevicePositionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDevicePositionsRequest,
-  ) => stream.Stream<
-    ListDevicePositionsResponse,
-    ListDevicePositionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDevicePositionsRequest,
-  ) => stream.Stream<
-    ListDevicePositionsResponseEntry,
-    ListDevicePositionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListGeofenceCollectionsError =
   | AccessDeniedException
@@ -5493,27 +5389,13 @@ export type ListGeofenceCollectionsError =
 /**
  * Lists geofence collections in your Amazon Web Services account.
  */
-export const listGeofenceCollections: API.OperationMethod<
+export const listGeofenceCollections: API.PaginatedOperationMethod<
   ListGeofenceCollectionsRequest,
   ListGeofenceCollectionsResponse,
   ListGeofenceCollectionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListGeofenceCollectionsRequest,
-  ) => stream.Stream<
-    ListGeofenceCollectionsResponse,
-    ListGeofenceCollectionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListGeofenceCollectionsRequest,
-  ) => stream.Stream<
-    ListGeofenceCollectionsResponseEntry,
-    ListGeofenceCollectionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ListGeofenceCollectionsResponseEntry
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListGeofenceCollectionsRequest,
   output: ListGeofenceCollectionsResponse,
   errors: [
@@ -5532,27 +5414,7 @@ export const listGeofenceCollections: API.OperationMethod<
     items: "Entries",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListGeofenceCollectionsRequest,
-  ListGeofenceCollectionsResponse,
-  ListGeofenceCollectionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListGeofenceCollectionsRequest,
-  ) => stream.Stream<
-    ListGeofenceCollectionsResponse,
-    ListGeofenceCollectionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListGeofenceCollectionsRequest,
-  ) => stream.Stream<
-    ListGeofenceCollectionsResponseEntry,
-    ListGeofenceCollectionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListGeofencesError =
   | AccessDeniedException
@@ -5564,27 +5426,13 @@ export type ListGeofencesError =
 /**
  * Lists geofences stored in a given geofence collection.
  */
-export const listGeofences: API.OperationMethod<
+export const listGeofences: API.PaginatedOperationMethod<
   ListGeofencesRequest,
   ListGeofencesResponse,
   ListGeofencesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListGeofencesRequest,
-  ) => stream.Stream<
-    ListGeofencesResponse,
-    ListGeofencesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListGeofencesRequest,
-  ) => stream.Stream<
-    ListGeofenceResponseEntry,
-    ListGeofencesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ListGeofenceResponseEntry
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListGeofencesRequest,
   output: ListGeofencesResponse,
   errors: [
@@ -5604,27 +5452,7 @@ export const listGeofences: API.OperationMethod<
     items: "Entries",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListGeofencesRequest,
-  ListGeofencesResponse,
-  ListGeofencesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListGeofencesRequest,
-  ) => stream.Stream<
-    ListGeofencesResponse,
-    ListGeofencesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListGeofencesRequest,
-  ) => stream.Stream<
-    ListGeofenceResponseEntry,
-    ListGeofencesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListJobsError =
   | AccessDeniedException
@@ -5637,27 +5465,13 @@ export type ListJobsError =
  *
  * For more information, see Job concepts in the *Amazon Location Service Developer Guide*.
  */
-export const listJobs: API.OperationMethod<
+export const listJobs: API.PaginatedOperationMethod<
   ListJobsRequest,
   ListJobsResponse,
   ListJobsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListJobsRequest,
-  ) => stream.Stream<
-    ListJobsResponse,
-    ListJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListJobsRequest,
-  ) => stream.Stream<
-    ListJobsResponseEntry,
-    ListJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ListJobsResponseEntry
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListJobsRequest,
   output: ListJobsResponse,
   errors: [
@@ -5676,27 +5490,7 @@ export const listJobs: API.OperationMethod<
     items: "Entries",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListJobsRequest,
-  ListJobsResponse,
-  ListJobsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListJobsRequest,
-  ) => stream.Stream<
-    ListJobsResponse,
-    ListJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListJobsRequest,
-  ) => stream.Stream<
-    ListJobsResponseEntry,
-    ListJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListKeysError =
   | AccessDeniedException
@@ -5709,27 +5503,13 @@ export type ListKeysError =
  *
  * For more information, see Use API keys to authenticate in the *Amazon Location Service Developer Guide*.
  */
-export const listKeys: API.OperationMethod<
+export const listKeys: API.PaginatedOperationMethod<
   ListKeysRequest,
   ListKeysResponse,
   ListKeysError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListKeysRequest,
-  ) => stream.Stream<
-    ListKeysResponse,
-    ListKeysError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListKeysRequest,
-  ) => stream.Stream<
-    ListKeysResponseEntry,
-    ListKeysError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ListKeysResponseEntry
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListKeysRequest,
   output: ListKeysResponse,
   errors: [
@@ -5748,27 +5528,7 @@ export const listKeys: API.OperationMethod<
     items: "Entries",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListKeysRequest,
-  ListKeysResponse,
-  ListKeysError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListKeysRequest,
-  ) => stream.Stream<
-    ListKeysResponse,
-    ListKeysError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListKeysRequest,
-  ) => stream.Stream<
-    ListKeysResponseEntry,
-    ListKeysError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListMapsError =
   | AccessDeniedException
@@ -5791,27 +5551,13 @@ export type ListMapsError =
  *
  * Lists map resources in your Amazon Web Services account.
  */
-export const listMaps: API.OperationMethod<
+export const listMaps: API.PaginatedOperationMethod<
   ListMapsRequest,
   ListMapsResponse,
   ListMapsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListMapsRequest,
-  ) => stream.Stream<
-    ListMapsResponse,
-    ListMapsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListMapsRequest,
-  ) => stream.Stream<
-    ListMapsResponseEntry,
-    ListMapsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ListMapsResponseEntry
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListMapsRequest,
   output: ListMapsResponse,
   errors: [
@@ -5830,27 +5576,7 @@ export const listMaps: API.OperationMethod<
     items: "Entries",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListMapsRequest,
-  ListMapsResponse,
-  ListMapsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListMapsRequest,
-  ) => stream.Stream<
-    ListMapsResponse,
-    ListMapsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListMapsRequest,
-  ) => stream.Stream<
-    ListMapsResponseEntry,
-    ListMapsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListPlaceIndexesError =
   | AccessDeniedException
@@ -5873,27 +5599,13 @@ export type ListPlaceIndexesError =
  *
  * Lists place index resources in your Amazon Web Services account.
  */
-export const listPlaceIndexes: API.OperationMethod<
+export const listPlaceIndexes: API.PaginatedOperationMethod<
   ListPlaceIndexesRequest,
   ListPlaceIndexesResponse,
   ListPlaceIndexesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPlaceIndexesRequest,
-  ) => stream.Stream<
-    ListPlaceIndexesResponse,
-    ListPlaceIndexesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPlaceIndexesRequest,
-  ) => stream.Stream<
-    ListPlaceIndexesResponseEntry,
-    ListPlaceIndexesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ListPlaceIndexesResponseEntry
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListPlaceIndexesRequest,
   output: ListPlaceIndexesResponse,
   errors: [
@@ -5912,27 +5624,7 @@ export const listPlaceIndexes: API.OperationMethod<
     items: "Entries",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListPlaceIndexesRequest,
-  ListPlaceIndexesResponse,
-  ListPlaceIndexesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPlaceIndexesRequest,
-  ) => stream.Stream<
-    ListPlaceIndexesResponse,
-    ListPlaceIndexesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPlaceIndexesRequest,
-  ) => stream.Stream<
-    ListPlaceIndexesResponseEntry,
-    ListPlaceIndexesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListRouteCalculatorsError =
   | AccessDeniedException
@@ -5955,27 +5647,13 @@ export type ListRouteCalculatorsError =
  *
  * Lists route calculator resources in your Amazon Web Services account.
  */
-export const listRouteCalculators: API.OperationMethod<
+export const listRouteCalculators: API.PaginatedOperationMethod<
   ListRouteCalculatorsRequest,
   ListRouteCalculatorsResponse,
   ListRouteCalculatorsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListRouteCalculatorsRequest,
-  ) => stream.Stream<
-    ListRouteCalculatorsResponse,
-    ListRouteCalculatorsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListRouteCalculatorsRequest,
-  ) => stream.Stream<
-    ListRouteCalculatorsResponseEntry,
-    ListRouteCalculatorsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ListRouteCalculatorsResponseEntry
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListRouteCalculatorsRequest,
   output: ListRouteCalculatorsResponse,
   errors: [
@@ -5994,27 +5672,7 @@ export const listRouteCalculators: API.OperationMethod<
     items: "Entries",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListRouteCalculatorsRequest,
-  ListRouteCalculatorsResponse,
-  ListRouteCalculatorsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListRouteCalculatorsRequest,
-  ) => stream.Stream<
-    ListRouteCalculatorsResponse,
-    ListRouteCalculatorsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListRouteCalculatorsRequest,
-  ) => stream.Stream<
-    ListRouteCalculatorsResponseEntry,
-    ListRouteCalculatorsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsForResourceError =
   | AccessDeniedException
@@ -6030,7 +5688,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceRequest,
   ListTagsForResourceResponse,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -6057,27 +5715,13 @@ export type ListTrackerConsumersError =
 /**
  * Lists geofence collections currently associated to the given tracker resource.
  */
-export const listTrackerConsumers: API.OperationMethod<
+export const listTrackerConsumers: API.PaginatedOperationMethod<
   ListTrackerConsumersRequest,
   ListTrackerConsumersResponse,
   ListTrackerConsumersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTrackerConsumersRequest,
-  ) => stream.Stream<
-    ListTrackerConsumersResponse,
-    ListTrackerConsumersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTrackerConsumersRequest,
-  ) => stream.Stream<
-    Arn,
-    ListTrackerConsumersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Arn
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListTrackerConsumersRequest,
   output: ListTrackerConsumersResponse,
   errors: [
@@ -6097,27 +5741,7 @@ export const listTrackerConsumers: API.OperationMethod<
     items: "ConsumerArns",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListTrackerConsumersRequest,
-  ListTrackerConsumersResponse,
-  ListTrackerConsumersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTrackerConsumersRequest,
-  ) => stream.Stream<
-    ListTrackerConsumersResponse,
-    ListTrackerConsumersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTrackerConsumersRequest,
-  ) => stream.Stream<
-    Arn,
-    ListTrackerConsumersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTrackersError =
   | AccessDeniedException
@@ -6128,27 +5752,13 @@ export type ListTrackersError =
 /**
  * Lists tracker resources in your Amazon Web Services account.
  */
-export const listTrackers: API.OperationMethod<
+export const listTrackers: API.PaginatedOperationMethod<
   ListTrackersRequest,
   ListTrackersResponse,
   ListTrackersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTrackersRequest,
-  ) => stream.Stream<
-    ListTrackersResponse,
-    ListTrackersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTrackersRequest,
-  ) => stream.Stream<
-    ListTrackersResponseEntry,
-    ListTrackersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ListTrackersResponseEntry
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListTrackersRequest,
   output: ListTrackersResponse,
   errors: [
@@ -6167,27 +5777,7 @@ export const listTrackers: API.OperationMethod<
     items: "Entries",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListTrackersRequest,
-  ListTrackersResponse,
-  ListTrackersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTrackersRequest,
-  ) => stream.Stream<
-    ListTrackersResponse,
-    ListTrackersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTrackersRequest,
-  ) => stream.Stream<
-    ListTrackersResponseEntry,
-    ListTrackersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type PutGeofenceError =
   | AccessDeniedException
@@ -6204,7 +5794,7 @@ export const putGeofence: API.OperationMethod<
   PutGeofenceRequest,
   PutGeofenceResponse,
   PutGeofenceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutGeofenceRequest,
   output: PutGeofenceResponse,
@@ -6246,7 +5836,7 @@ export const searchPlaceIndexForPosition: API.OperationMethod<
   SearchPlaceIndexForPositionRequest,
   SearchPlaceIndexForPositionResponse,
   SearchPlaceIndexForPositionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: SearchPlaceIndexForPositionRequest,
   output: SearchPlaceIndexForPositionResponse,
@@ -6291,7 +5881,7 @@ export const searchPlaceIndexForSuggestions: API.OperationMethod<
   SearchPlaceIndexForSuggestionsRequest,
   SearchPlaceIndexForSuggestionsResponse,
   SearchPlaceIndexForSuggestionsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: SearchPlaceIndexForSuggestionsRequest,
   output: SearchPlaceIndexForSuggestionsResponse,
@@ -6338,7 +5928,7 @@ export const searchPlaceIndexForText: API.OperationMethod<
   SearchPlaceIndexForTextRequest,
   SearchPlaceIndexForTextResponse,
   SearchPlaceIndexForTextError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: SearchPlaceIndexForTextRequest,
   output: SearchPlaceIndexForTextResponse,
@@ -6370,7 +5960,7 @@ export const startJob: API.OperationMethod<
   StartJobRequest,
   StartJobResponse,
   StartJobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartJobRequest,
   output: StartJobResponse,
@@ -6406,7 +5996,7 @@ export const tagResource: API.OperationMethod<
   TagResourceRequest,
   TagResourceResponse,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -6437,7 +6027,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceRequest,
   UntagResourceResponse,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -6468,7 +6058,7 @@ export const updateGeofenceCollection: API.OperationMethod<
   UpdateGeofenceCollectionRequest,
   UpdateGeofenceCollectionResponse,
   UpdateGeofenceCollectionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateGeofenceCollectionRequest,
   output: UpdateGeofenceCollectionResponse,
@@ -6499,7 +6089,7 @@ export const updateKey: API.OperationMethod<
   UpdateKeyRequest,
   UpdateKeyResponse,
   UpdateKeyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateKeyRequest,
   output: UpdateKeyResponse,
@@ -6542,7 +6132,7 @@ export const updateMap: API.OperationMethod<
   UpdateMapRequest,
   UpdateMapResponse,
   UpdateMapError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateMapRequest,
   output: UpdateMapResponse,
@@ -6585,7 +6175,7 @@ export const updatePlaceIndex: API.OperationMethod<
   UpdatePlaceIndexRequest,
   UpdatePlaceIndexResponse,
   UpdatePlaceIndexError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdatePlaceIndexRequest,
   output: UpdatePlaceIndexResponse,
@@ -6628,7 +6218,7 @@ export const updateRouteCalculator: API.OperationMethod<
   UpdateRouteCalculatorRequest,
   UpdateRouteCalculatorResponse,
   UpdateRouteCalculatorError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateRouteCalculatorRequest,
   output: UpdateRouteCalculatorResponse,
@@ -6659,7 +6249,7 @@ export const updateTracker: API.OperationMethod<
   UpdateTrackerRequest,
   UpdateTrackerResponse,
   UpdateTrackerError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateTrackerRequest,
   output: UpdateTrackerResponse,
@@ -6692,7 +6282,7 @@ export const verifyDevicePosition: API.OperationMethod<
   VerifyDevicePositionRequest,
   VerifyDevicePositionResponse,
   VerifyDevicePositionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: VerifyDevicePositionRequest,
   output: VerifyDevicePositionResponse,

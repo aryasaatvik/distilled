@@ -1,7 +1,6 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as redacted from "effect/Redacted";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -9,7 +8,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 import { SensitiveString } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "Redshift Serverless",
@@ -90,73 +88,85 @@ const rules = T.EndpointResolver((p, _) => {
 export class AccessDeniedException
   extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
     "AccessDeniedException",
-    { code: S.optional(S.String), message: S.optional(S.String) },
+    {
+      code: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(403),
   ).pipe(C.withAuthError) {}
 export class ConflictException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
     "ConflictException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class DryRunException
   extends /*@__PURE__*/ S.TaggedErrorClass<DryRunException>()(
     "DryRunException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class InsufficientCapacityException
   extends /*@__PURE__*/ S.TaggedErrorClass<InsufficientCapacityException>()(
     "InsufficientCapacityException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.all(T.HttpError(400), T.Retryable()),
   ).pipe(C.withBadRequestError, C.withRetryableError) {}
 export class InternalServerException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
     "InternalServerException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.all(T.HttpError(500), T.Retryable()),
   ).pipe(C.withServerError, C.withRetryableError) {}
 export class InvalidPaginationException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidPaginationException>()(
     "InvalidPaginationException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class Ipv6CidrBlockNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<Ipv6CidrBlockNotFoundException>()(
     "Ipv6CidrBlockNotFoundException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { message: S.String, resourceName: S.optional(S.String) },
+    {
+      message: S.String.pipe(T.ErrorMessage()),
+      resourceName: S.optional(S.String),
+    },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class ServiceQuotaExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
     "ServiceQuotaExceededException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(402),
   ).pipe(C.withQuotaError) {}
 export class ThrottlingException
   extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
     "ThrottlingException",
-    { code: S.optional(S.String), message: S.optional(S.String) },
+    {
+      code: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.all(T.HttpError(429), T.Retryable()),
   ).pipe(C.withThrottlingError, C.withRetryableError) {}
 export class TooManyTagsException
   extends /*@__PURE__*/ S.TaggedErrorClass<TooManyTagsException>()(
     "TooManyTagsException",
-    { message: S.optional(S.String), resourceName: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      resourceName: S.optional(S.String),
+    },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class ValidationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
     "ValidationException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export type TagKey = string;
@@ -2539,7 +2549,7 @@ export const convertRecoveryPointToSnapshot: API.OperationMethod<
   ConvertRecoveryPointToSnapshotRequest,
   ConvertRecoveryPointToSnapshotResponse,
   ConvertRecoveryPointToSnapshotError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ConvertRecoveryPointToSnapshotRequest,
   output: ConvertRecoveryPointToSnapshotResponse,
@@ -2571,7 +2581,7 @@ export const createCustomDomainAssociation: API.OperationMethod<
   CreateCustomDomainAssociationRequest,
   CreateCustomDomainAssociationResponse,
   CreateCustomDomainAssociationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateCustomDomainAssociationRequest,
   output: CreateCustomDomainAssociationResponse,
@@ -2603,7 +2613,7 @@ export const createEndpointAccess: API.OperationMethod<
   CreateEndpointAccessRequest,
   CreateEndpointAccessResponse,
   CreateEndpointAccessError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateEndpointAccessRequest,
   output: CreateEndpointAccessResponse,
@@ -2633,7 +2643,7 @@ export const createNamespace: API.OperationMethod<
   CreateNamespaceRequest,
   CreateNamespaceResponse,
   CreateNamespaceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateNamespaceRequest,
   output: CreateNamespaceResponse,
@@ -2664,7 +2674,7 @@ export const createReservation: API.OperationMethod<
   CreateReservationRequest,
   CreateReservationResponse,
   CreateReservationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateReservationRequest,
   output: CreateReservationResponse,
@@ -2695,7 +2705,7 @@ export const createScheduledAction: API.OperationMethod<
   CreateScheduledActionRequest,
   CreateScheduledActionResponse,
   CreateScheduledActionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateScheduledActionRequest,
   output: CreateScheduledActionResponse,
@@ -2725,7 +2735,7 @@ export const createSnapshot: API.OperationMethod<
   CreateSnapshotRequest,
   CreateSnapshotResponse,
   CreateSnapshotError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateSnapshotRequest,
   output: CreateSnapshotResponse,
@@ -2757,7 +2767,7 @@ export const createSnapshotCopyConfiguration: API.OperationMethod<
   CreateSnapshotCopyConfigurationRequest,
   CreateSnapshotCopyConfigurationResponse,
   CreateSnapshotCopyConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateSnapshotCopyConfigurationRequest,
   output: CreateSnapshotCopyConfigurationResponse,
@@ -2788,7 +2798,7 @@ export const createUsageLimit: API.OperationMethod<
   CreateUsageLimitRequest,
   CreateUsageLimitResponse,
   CreateUsageLimitError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateUsageLimitRequest,
   output: CreateUsageLimitResponse,
@@ -2830,7 +2840,7 @@ export const createWorkgroup: API.OperationMethod<
   CreateWorkgroupRequest,
   CreateWorkgroupResponse,
   CreateWorkgroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateWorkgroupRequest,
   output: CreateWorkgroupResponse,
@@ -2863,7 +2873,7 @@ export const deleteCustomDomainAssociation: API.OperationMethod<
   DeleteCustomDomainAssociationRequest,
   DeleteCustomDomainAssociationResponse,
   DeleteCustomDomainAssociationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteCustomDomainAssociationRequest,
   output: DeleteCustomDomainAssociationResponse,
@@ -2893,7 +2903,7 @@ export const deleteEndpointAccess: API.OperationMethod<
   DeleteEndpointAccessRequest,
   DeleteEndpointAccessResponse,
   DeleteEndpointAccessError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteEndpointAccessRequest,
   output: DeleteEndpointAccessResponse,
@@ -2921,7 +2931,7 @@ export const deleteNamespace: API.OperationMethod<
   DeleteNamespaceRequest,
   DeleteNamespaceResponse,
   DeleteNamespaceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteNamespaceRequest,
   output: DeleteNamespaceResponse,
@@ -2948,7 +2958,7 @@ export const deleteResourcePolicy: API.OperationMethod<
   DeleteResourcePolicyRequest,
   DeleteResourcePolicyResponse,
   DeleteResourcePolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteResourcePolicyRequest,
   output: DeleteResourcePolicyResponse,
@@ -2974,7 +2984,7 @@ export const deleteScheduledAction: API.OperationMethod<
   DeleteScheduledActionRequest,
   DeleteScheduledActionResponse,
   DeleteScheduledActionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteScheduledActionRequest,
   output: DeleteScheduledActionResponse,
@@ -3001,7 +3011,7 @@ export const deleteSnapshot: API.OperationMethod<
   DeleteSnapshotRequest,
   DeleteSnapshotResponse,
   DeleteSnapshotError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteSnapshotRequest,
   output: DeleteSnapshotResponse,
@@ -3030,7 +3040,7 @@ export const deleteSnapshotCopyConfiguration: API.OperationMethod<
   DeleteSnapshotCopyConfigurationRequest,
   DeleteSnapshotCopyConfigurationResponse,
   DeleteSnapshotCopyConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteSnapshotCopyConfigurationRequest,
   output: DeleteSnapshotCopyConfigurationResponse,
@@ -3059,7 +3069,7 @@ export const deleteUsageLimit: API.OperationMethod<
   DeleteUsageLimitRequest,
   DeleteUsageLimitResponse,
   DeleteUsageLimitError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteUsageLimitRequest,
   output: DeleteUsageLimitResponse,
@@ -3087,7 +3097,7 @@ export const deleteWorkgroup: API.OperationMethod<
   DeleteWorkgroupRequest,
   DeleteWorkgroupResponse,
   DeleteWorkgroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteWorkgroupRequest,
   output: DeleteWorkgroupResponse,
@@ -3120,7 +3130,7 @@ export const getCredentials: API.OperationMethod<
   GetCredentialsRequest,
   GetCredentialsResponse,
   GetCredentialsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetCredentialsRequest,
   output: GetCredentialsResponse,
@@ -3149,7 +3159,7 @@ export const getCustomDomainAssociation: API.OperationMethod<
   GetCustomDomainAssociationRequest,
   GetCustomDomainAssociationResponse,
   GetCustomDomainAssociationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetCustomDomainAssociationRequest,
   output: GetCustomDomainAssociationResponse,
@@ -3179,7 +3189,7 @@ export const getEndpointAccess: API.OperationMethod<
   GetEndpointAccessRequest,
   GetEndpointAccessResponse,
   GetEndpointAccessError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetEndpointAccessRequest,
   output: GetEndpointAccessResponse,
@@ -3214,7 +3224,7 @@ export const getIdentityCenterAuthToken: API.OperationMethod<
   GetIdentityCenterAuthTokenRequest,
   GetIdentityCenterAuthTokenResponse,
   GetIdentityCenterAuthTokenError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetIdentityCenterAuthTokenRequest,
   output: GetIdentityCenterAuthTokenResponse,
@@ -3244,7 +3254,7 @@ export const getNamespace: API.OperationMethod<
   GetNamespaceRequest,
   GetNamespaceResponse,
   GetNamespaceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetNamespaceRequest,
   output: GetNamespaceResponse,
@@ -3271,7 +3281,7 @@ export const getRecoveryPoint: API.OperationMethod<
   GetRecoveryPointRequest,
   GetRecoveryPointResponse,
   GetRecoveryPointError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetRecoveryPointRequest,
   output: GetRecoveryPointResponse,
@@ -3299,7 +3309,7 @@ export const getReservation: API.OperationMethod<
   GetReservationRequest,
   GetReservationResponse,
   GetReservationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetReservationRequest,
   output: GetReservationResponse,
@@ -3327,7 +3337,7 @@ export const getReservationOffering: API.OperationMethod<
   GetReservationOfferingRequest,
   GetReservationOfferingResponse,
   GetReservationOfferingError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetReservationOfferingRequest,
   output: GetReservationOfferingResponse,
@@ -3354,7 +3364,7 @@ export const getResourcePolicy: API.OperationMethod<
   GetResourcePolicyRequest,
   GetResourcePolicyResponse,
   GetResourcePolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetResourcePolicyRequest,
   output: GetResourcePolicyResponse,
@@ -3380,7 +3390,7 @@ export const getScheduledAction: API.OperationMethod<
   GetScheduledActionRequest,
   GetScheduledActionResponse,
   GetScheduledActionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetScheduledActionRequest,
   output: GetScheduledActionResponse,
@@ -3406,7 +3416,7 @@ export const getSnapshot: API.OperationMethod<
   GetSnapshotRequest,
   GetSnapshotResponse,
   GetSnapshotError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetSnapshotRequest,
   output: GetSnapshotResponse,
@@ -3431,7 +3441,7 @@ export const getTableRestoreStatus: API.OperationMethod<
   GetTableRestoreStatusRequest,
   GetTableRestoreStatusResponse,
   GetTableRestoreStatusError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetTableRestoreStatusRequest,
   output: GetTableRestoreStatusResponse,
@@ -3457,7 +3467,7 @@ export const getTrack: API.OperationMethod<
   GetTrackRequest,
   GetTrackResponse,
   GetTrackError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetTrackRequest,
   output: GetTrackResponse,
@@ -3488,7 +3498,7 @@ export const getUsageLimit: API.OperationMethod<
   GetUsageLimitRequest,
   GetUsageLimitResponse,
   GetUsageLimitError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetUsageLimitRequest,
   output: GetUsageLimitResponse,
@@ -3515,7 +3525,7 @@ export const getWorkgroup: API.OperationMethod<
   GetWorkgroupRequest,
   GetWorkgroupResponse,
   GetWorkgroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetWorkgroupRequest,
   output: GetWorkgroupResponse,
@@ -3539,27 +3549,13 @@ export type ListCustomDomainAssociationsError =
 /**
  * Lists custom domain associations for Amazon Redshift Serverless.
  */
-export const listCustomDomainAssociations: API.OperationMethod<
+export const listCustomDomainAssociations: API.PaginatedOperationMethod<
   ListCustomDomainAssociationsRequest,
   ListCustomDomainAssociationsResponse,
   ListCustomDomainAssociationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCustomDomainAssociationsRequest,
-  ) => stream.Stream<
-    ListCustomDomainAssociationsResponse,
-    ListCustomDomainAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCustomDomainAssociationsRequest,
-  ) => stream.Stream<
-    Association,
-    ListCustomDomainAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Association
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListCustomDomainAssociationsRequest,
   output: ListCustomDomainAssociationsResponse,
   errors: [
@@ -3578,27 +3574,7 @@ export const listCustomDomainAssociations: API.OperationMethod<
     items: "associations",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListCustomDomainAssociationsRequest,
-  ListCustomDomainAssociationsResponse,
-  ListCustomDomainAssociationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCustomDomainAssociationsRequest,
-  ) => stream.Stream<
-    ListCustomDomainAssociationsResponse,
-    ListCustomDomainAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCustomDomainAssociationsRequest,
-  ) => stream.Stream<
-    Association,
-    ListCustomDomainAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListEndpointAccessError =
   | ConflictException
@@ -3609,27 +3585,13 @@ export type ListEndpointAccessError =
 /**
  * Returns an array of `EndpointAccess` objects and relevant information.
  */
-export const listEndpointAccess: API.OperationMethod<
+export const listEndpointAccess: API.PaginatedOperationMethod<
   ListEndpointAccessRequest,
   ListEndpointAccessResponse,
   ListEndpointAccessError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListEndpointAccessRequest,
-  ) => stream.Stream<
-    ListEndpointAccessResponse,
-    ListEndpointAccessError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListEndpointAccessRequest,
-  ) => stream.Stream<
-    EndpointAccess,
-    ListEndpointAccessError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  EndpointAccess
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListEndpointAccessRequest,
   output: ListEndpointAccessResponse,
   errors: [
@@ -3647,27 +3609,7 @@ export const listEndpointAccess: API.OperationMethod<
     items: "endpoints",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListEndpointAccessRequest,
-  ListEndpointAccessResponse,
-  ListEndpointAccessError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListEndpointAccessRequest,
-  ) => stream.Stream<
-    ListEndpointAccessResponse,
-    ListEndpointAccessError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListEndpointAccessRequest,
-  ) => stream.Stream<
-    EndpointAccess,
-    ListEndpointAccessError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListManagedWorkgroupsError =
   | AccessDeniedException
@@ -3676,27 +3618,13 @@ export type ListManagedWorkgroupsError =
 /**
  * Returns information about a list of specified managed workgroups in your account.
  */
-export const listManagedWorkgroups: API.OperationMethod<
+export const listManagedWorkgroups: API.PaginatedOperationMethod<
   ListManagedWorkgroupsRequest,
   ListManagedWorkgroupsResponse,
   ListManagedWorkgroupsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListManagedWorkgroupsRequest,
-  ) => stream.Stream<
-    ListManagedWorkgroupsResponse,
-    ListManagedWorkgroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListManagedWorkgroupsRequest,
-  ) => stream.Stream<
-    ManagedWorkgroupListItem,
-    ListManagedWorkgroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ManagedWorkgroupListItem
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListManagedWorkgroupsRequest,
   output: ListManagedWorkgroupsResponse,
   errors: [AccessDeniedException, InternalServerException],
@@ -3709,27 +3637,7 @@ export const listManagedWorkgroups: API.OperationMethod<
     items: "managedWorkgroups",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListManagedWorkgroupsRequest,
-  ListManagedWorkgroupsResponse,
-  ListManagedWorkgroupsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListManagedWorkgroupsRequest,
-  ) => stream.Stream<
-    ListManagedWorkgroupsResponse,
-    ListManagedWorkgroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListManagedWorkgroupsRequest,
-  ) => stream.Stream<
-    ManagedWorkgroupListItem,
-    ListManagedWorkgroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListNamespacesError =
   | InternalServerException
@@ -3738,27 +3646,13 @@ export type ListNamespacesError =
 /**
  * Returns information about a list of specified namespaces.
  */
-export const listNamespaces: API.OperationMethod<
+export const listNamespaces: API.PaginatedOperationMethod<
   ListNamespacesRequest,
   ListNamespacesResponse,
   ListNamespacesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListNamespacesRequest,
-  ) => stream.Stream<
-    ListNamespacesResponse,
-    ListNamespacesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListNamespacesRequest,
-  ) => stream.Stream<
-    Namespace,
-    ListNamespacesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Namespace
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListNamespacesRequest,
   output: ListNamespacesResponse,
   errors: [InternalServerException, ValidationException],
@@ -3771,27 +3665,7 @@ export const listNamespaces: API.OperationMethod<
     items: "namespaces",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListNamespacesRequest,
-  ListNamespacesResponse,
-  ListNamespacesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListNamespacesRequest,
-  ) => stream.Stream<
-    ListNamespacesResponse,
-    ListNamespacesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListNamespacesRequest,
-  ) => stream.Stream<
-    Namespace,
-    ListNamespacesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListRecoveryPointsError =
   | InternalServerException
@@ -3800,27 +3674,13 @@ export type ListRecoveryPointsError =
 /**
  * Returns an array of recovery points.
  */
-export const listRecoveryPoints: API.OperationMethod<
+export const listRecoveryPoints: API.PaginatedOperationMethod<
   ListRecoveryPointsRequest,
   ListRecoveryPointsResponse,
   ListRecoveryPointsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListRecoveryPointsRequest,
-  ) => stream.Stream<
-    ListRecoveryPointsResponse,
-    ListRecoveryPointsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListRecoveryPointsRequest,
-  ) => stream.Stream<
-    RecoveryPoint,
-    ListRecoveryPointsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  RecoveryPoint
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListRecoveryPointsRequest,
   output: ListRecoveryPointsResponse,
   errors: [InternalServerException, ValidationException],
@@ -3833,27 +3693,7 @@ export const listRecoveryPoints: API.OperationMethod<
     items: "recoveryPoints",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListRecoveryPointsRequest,
-  ListRecoveryPointsResponse,
-  ListRecoveryPointsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListRecoveryPointsRequest,
-  ) => stream.Stream<
-    ListRecoveryPointsResponse,
-    ListRecoveryPointsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListRecoveryPointsRequest,
-  ) => stream.Stream<
-    RecoveryPoint,
-    ListRecoveryPointsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListReservationOfferingsError =
   | InternalServerException
@@ -3863,27 +3703,13 @@ export type ListReservationOfferingsError =
 /**
  * Returns the current reservation offerings in your account.
  */
-export const listReservationOfferings: API.OperationMethod<
+export const listReservationOfferings: API.PaginatedOperationMethod<
   ListReservationOfferingsRequest,
   ListReservationOfferingsResponse,
   ListReservationOfferingsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListReservationOfferingsRequest,
-  ) => stream.Stream<
-    ListReservationOfferingsResponse,
-    ListReservationOfferingsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListReservationOfferingsRequest,
-  ) => stream.Stream<
-    ReservationOffering,
-    ListReservationOfferingsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ReservationOffering
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListReservationOfferingsRequest,
   output: ListReservationOfferingsResponse,
   errors: [InternalServerException, ThrottlingException, ValidationException],
@@ -3896,27 +3722,7 @@ export const listReservationOfferings: API.OperationMethod<
     items: "reservationOfferingsList",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListReservationOfferingsRequest,
-  ListReservationOfferingsResponse,
-  ListReservationOfferingsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListReservationOfferingsRequest,
-  ) => stream.Stream<
-    ListReservationOfferingsResponse,
-    ListReservationOfferingsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListReservationOfferingsRequest,
-  ) => stream.Stream<
-    ReservationOffering,
-    ListReservationOfferingsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListReservationsError =
   | InternalServerException
@@ -3926,27 +3732,13 @@ export type ListReservationsError =
 /**
  * Returns a list of Reservation objects.
  */
-export const listReservations: API.OperationMethod<
+export const listReservations: API.PaginatedOperationMethod<
   ListReservationsRequest,
   ListReservationsResponse,
   ListReservationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListReservationsRequest,
-  ) => stream.Stream<
-    ListReservationsResponse,
-    ListReservationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListReservationsRequest,
-  ) => stream.Stream<
-    Reservation,
-    ListReservationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Reservation
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListReservationsRequest,
   output: ListReservationsResponse,
   errors: [InternalServerException, ThrottlingException, ValidationException],
@@ -3959,27 +3751,7 @@ export const listReservations: API.OperationMethod<
     items: "reservationsList",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListReservationsRequest,
-  ListReservationsResponse,
-  ListReservationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListReservationsRequest,
-  ) => stream.Stream<
-    ListReservationsResponse,
-    ListReservationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListReservationsRequest,
-  ) => stream.Stream<
-    Reservation,
-    ListReservationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListScheduledActionsError =
   | InternalServerException
@@ -3990,27 +3762,13 @@ export type ListScheduledActionsError =
 /**
  * Returns a list of scheduled actions. You can use the flags to filter the list of returned scheduled actions.
  */
-export const listScheduledActions: API.OperationMethod<
+export const listScheduledActions: API.PaginatedOperationMethod<
   ListScheduledActionsRequest,
   ListScheduledActionsResponse,
   ListScheduledActionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListScheduledActionsRequest,
-  ) => stream.Stream<
-    ListScheduledActionsResponse,
-    ListScheduledActionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListScheduledActionsRequest,
-  ) => stream.Stream<
-    ScheduledActionAssociation,
-    ListScheduledActionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ScheduledActionAssociation
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListScheduledActionsRequest,
   output: ListScheduledActionsResponse,
   errors: [
@@ -4028,27 +3786,7 @@ export const listScheduledActions: API.OperationMethod<
     items: "scheduledActions",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListScheduledActionsRequest,
-  ListScheduledActionsResponse,
-  ListScheduledActionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListScheduledActionsRequest,
-  ) => stream.Stream<
-    ListScheduledActionsResponse,
-    ListScheduledActionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListScheduledActionsRequest,
-  ) => stream.Stream<
-    ScheduledActionAssociation,
-    ListScheduledActionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListSnapshotCopyConfigurationsError =
   | ConflictException
@@ -4060,27 +3798,13 @@ export type ListSnapshotCopyConfigurationsError =
 /**
  * Returns a list of snapshot copy configurations.
  */
-export const listSnapshotCopyConfigurations: API.OperationMethod<
+export const listSnapshotCopyConfigurations: API.PaginatedOperationMethod<
   ListSnapshotCopyConfigurationsRequest,
   ListSnapshotCopyConfigurationsResponse,
   ListSnapshotCopyConfigurationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSnapshotCopyConfigurationsRequest,
-  ) => stream.Stream<
-    ListSnapshotCopyConfigurationsResponse,
-    ListSnapshotCopyConfigurationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSnapshotCopyConfigurationsRequest,
-  ) => stream.Stream<
-    SnapshotCopyConfiguration,
-    ListSnapshotCopyConfigurationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  SnapshotCopyConfiguration
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListSnapshotCopyConfigurationsRequest,
   output: ListSnapshotCopyConfigurationsResponse,
   errors: [
@@ -4099,27 +3823,7 @@ export const listSnapshotCopyConfigurations: API.OperationMethod<
     items: "snapshotCopyConfigurations",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListSnapshotCopyConfigurationsRequest,
-  ListSnapshotCopyConfigurationsResponse,
-  ListSnapshotCopyConfigurationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSnapshotCopyConfigurationsRequest,
-  ) => stream.Stream<
-    ListSnapshotCopyConfigurationsResponse,
-    ListSnapshotCopyConfigurationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSnapshotCopyConfigurationsRequest,
-  ) => stream.Stream<
-    SnapshotCopyConfiguration,
-    ListSnapshotCopyConfigurationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListSnapshotsError =
   | InternalServerException
@@ -4129,27 +3833,13 @@ export type ListSnapshotsError =
 /**
  * Returns a list of snapshots.
  */
-export const listSnapshots: API.OperationMethod<
+export const listSnapshots: API.PaginatedOperationMethod<
   ListSnapshotsRequest,
   ListSnapshotsResponse,
   ListSnapshotsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSnapshotsRequest,
-  ) => stream.Stream<
-    ListSnapshotsResponse,
-    ListSnapshotsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSnapshotsRequest,
-  ) => stream.Stream<
-    Snapshot,
-    ListSnapshotsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Snapshot
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListSnapshotsRequest,
   output: ListSnapshotsResponse,
   errors: [
@@ -4166,27 +3856,7 @@ export const listSnapshots: API.OperationMethod<
     items: "snapshots",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListSnapshotsRequest,
-  ListSnapshotsResponse,
-  ListSnapshotsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSnapshotsRequest,
-  ) => stream.Stream<
-    ListSnapshotsResponse,
-    ListSnapshotsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSnapshotsRequest,
-  ) => stream.Stream<
-    Snapshot,
-    ListSnapshotsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTableRestoreStatusError =
   | InvalidPaginationException
@@ -4196,27 +3866,13 @@ export type ListTableRestoreStatusError =
 /**
  * Returns information about an array of `TableRestoreStatus` objects.
  */
-export const listTableRestoreStatus: API.OperationMethod<
+export const listTableRestoreStatus: API.PaginatedOperationMethod<
   ListTableRestoreStatusRequest,
   ListTableRestoreStatusResponse,
   ListTableRestoreStatusError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTableRestoreStatusRequest,
-  ) => stream.Stream<
-    ListTableRestoreStatusResponse,
-    ListTableRestoreStatusError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTableRestoreStatusRequest,
-  ) => stream.Stream<
-    TableRestoreStatus,
-    ListTableRestoreStatusError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  TableRestoreStatus
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListTableRestoreStatusRequest,
   output: ListTableRestoreStatusResponse,
   errors: [
@@ -4233,27 +3889,7 @@ export const listTableRestoreStatus: API.OperationMethod<
     items: "tableRestoreStatuses",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListTableRestoreStatusRequest,
-  ListTableRestoreStatusResponse,
-  ListTableRestoreStatusError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTableRestoreStatusRequest,
-  ) => stream.Stream<
-    ListTableRestoreStatusResponse,
-    ListTableRestoreStatusError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTableRestoreStatusRequest,
-  ) => stream.Stream<
-    TableRestoreStatus,
-    ListTableRestoreStatusError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsForResourceError =
   | InternalServerException
@@ -4268,7 +3904,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceRequest,
   ListTagsForResourceResponse,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -4293,27 +3929,13 @@ export type ListTracksError =
 /**
  * List the Amazon Redshift Serverless versions.
  */
-export const listTracks: API.OperationMethod<
+export const listTracks: API.PaginatedOperationMethod<
   ListTracksRequest,
   ListTracksResponse,
   ListTracksError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTracksRequest,
-  ) => stream.Stream<
-    ListTracksResponse,
-    ListTracksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTracksRequest,
-  ) => stream.Stream<
-    ServerlessTrack,
-    ListTracksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ServerlessTrack
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListTracksRequest,
   output: ListTracksResponse,
   errors: [
@@ -4332,27 +3954,7 @@ export const listTracks: API.OperationMethod<
     items: "tracks",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListTracksRequest,
-  ListTracksResponse,
-  ListTracksError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTracksRequest,
-  ) => stream.Stream<
-    ListTracksResponse,
-    ListTracksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTracksRequest,
-  ) => stream.Stream<
-    ServerlessTrack,
-    ListTracksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListUsageLimitsError =
   | ConflictException
@@ -4364,27 +3966,13 @@ export type ListUsageLimitsError =
 /**
  * Lists all usage limits within Amazon Redshift Serverless.
  */
-export const listUsageLimits: API.OperationMethod<
+export const listUsageLimits: API.PaginatedOperationMethod<
   ListUsageLimitsRequest,
   ListUsageLimitsResponse,
   ListUsageLimitsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListUsageLimitsRequest,
-  ) => stream.Stream<
-    ListUsageLimitsResponse,
-    ListUsageLimitsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListUsageLimitsRequest,
-  ) => stream.Stream<
-    UsageLimit,
-    ListUsageLimitsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  UsageLimit
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListUsageLimitsRequest,
   output: ListUsageLimitsResponse,
   errors: [
@@ -4403,27 +3991,7 @@ export const listUsageLimits: API.OperationMethod<
     items: "usageLimits",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListUsageLimitsRequest,
-  ListUsageLimitsResponse,
-  ListUsageLimitsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListUsageLimitsRequest,
-  ) => stream.Stream<
-    ListUsageLimitsResponse,
-    ListUsageLimitsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListUsageLimitsRequest,
-  ) => stream.Stream<
-    UsageLimit,
-    ListUsageLimitsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListWorkgroupsError =
   | InternalServerException
@@ -4432,27 +4000,13 @@ export type ListWorkgroupsError =
 /**
  * Returns information about a list of specified workgroups.
  */
-export const listWorkgroups: API.OperationMethod<
+export const listWorkgroups: API.PaginatedOperationMethod<
   ListWorkgroupsRequest,
   ListWorkgroupsResponse,
   ListWorkgroupsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListWorkgroupsRequest,
-  ) => stream.Stream<
-    ListWorkgroupsResponse,
-    ListWorkgroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListWorkgroupsRequest,
-  ) => stream.Stream<
-    Workgroup,
-    ListWorkgroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Workgroup
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListWorkgroupsRequest,
   output: ListWorkgroupsResponse,
   errors: [InternalServerException, ValidationException],
@@ -4465,27 +4019,7 @@ export const listWorkgroups: API.OperationMethod<
     items: "workgroups",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListWorkgroupsRequest,
-  ListWorkgroupsResponse,
-  ListWorkgroupsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListWorkgroupsRequest,
-  ) => stream.Stream<
-    ListWorkgroupsResponse,
-    ListWorkgroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListWorkgroupsRequest,
-  ) => stream.Stream<
-    Workgroup,
-    ListWorkgroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type PutResourcePolicyError =
   | ConflictException
@@ -4501,7 +4035,7 @@ export const putResourcePolicy: API.OperationMethod<
   PutResourcePolicyRequest,
   PutResourcePolicyResponse,
   PutResourcePolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutResourcePolicyRequest,
   output: PutResourcePolicyResponse,
@@ -4530,7 +4064,7 @@ export const restoreFromRecoveryPoint: API.OperationMethod<
   RestoreFromRecoveryPointRequest,
   RestoreFromRecoveryPointResponse,
   RestoreFromRecoveryPointError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RestoreFromRecoveryPointRequest,
   output: RestoreFromRecoveryPointResponse,
@@ -4559,7 +4093,7 @@ export const restoreFromSnapshot: API.OperationMethod<
   RestoreFromSnapshotRequest,
   RestoreFromSnapshotResponse,
   RestoreFromSnapshotError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RestoreFromSnapshotRequest,
   output: RestoreFromSnapshotResponse,
@@ -4588,7 +4122,7 @@ export const restoreTableFromRecoveryPoint: API.OperationMethod<
   RestoreTableFromRecoveryPointRequest,
   RestoreTableFromRecoveryPointResponse,
   RestoreTableFromRecoveryPointError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RestoreTableFromRecoveryPointRequest,
   output: RestoreTableFromRecoveryPointResponse,
@@ -4616,7 +4150,7 @@ export const restoreTableFromSnapshot: API.OperationMethod<
   RestoreTableFromSnapshotRequest,
   RestoreTableFromSnapshotResponse,
   RestoreTableFromSnapshotError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RestoreTableFromSnapshotRequest,
   output: RestoreTableFromSnapshotResponse,
@@ -4645,7 +4179,7 @@ export const tagResource: API.OperationMethod<
   TagResourceRequest,
   TagResourceResponse,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -4674,7 +4208,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceRequest,
   UntagResourceResponse,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -4704,7 +4238,7 @@ export const updateCustomDomainAssociation: API.OperationMethod<
   UpdateCustomDomainAssociationRequest,
   UpdateCustomDomainAssociationResponse,
   UpdateCustomDomainAssociationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateCustomDomainAssociationRequest,
   output: UpdateCustomDomainAssociationResponse,
@@ -4735,7 +4269,7 @@ export const updateEndpointAccess: API.OperationMethod<
   UpdateEndpointAccessRequest,
   UpdateEndpointAccessResponse,
   UpdateEndpointAccessError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateEndpointAccessRequest,
   output: UpdateEndpointAccessResponse,
@@ -4765,7 +4299,7 @@ export const updateLakehouseConfiguration: API.OperationMethod<
   UpdateLakehouseConfigurationRequest,
   UpdateLakehouseConfigurationResponse,
   UpdateLakehouseConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateLakehouseConfigurationRequest,
   output: UpdateLakehouseConfigurationResponse,
@@ -4794,7 +4328,7 @@ export const updateNamespace: API.OperationMethod<
   UpdateNamespaceRequest,
   UpdateNamespaceResponse,
   UpdateNamespaceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateNamespaceRequest,
   output: UpdateNamespaceResponse,
@@ -4822,7 +4356,7 @@ export const updateScheduledAction: API.OperationMethod<
   UpdateScheduledActionRequest,
   UpdateScheduledActionResponse,
   UpdateScheduledActionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateScheduledActionRequest,
   output: UpdateScheduledActionResponse,
@@ -4850,7 +4384,7 @@ export const updateSnapshot: API.OperationMethod<
   UpdateSnapshotRequest,
   UpdateSnapshotResponse,
   UpdateSnapshotError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateSnapshotRequest,
   output: UpdateSnapshotResponse,
@@ -4879,7 +4413,7 @@ export const updateSnapshotCopyConfiguration: API.OperationMethod<
   UpdateSnapshotCopyConfigurationRequest,
   UpdateSnapshotCopyConfigurationResponse,
   UpdateSnapshotCopyConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateSnapshotCopyConfigurationRequest,
   output: UpdateSnapshotCopyConfigurationResponse,
@@ -4908,7 +4442,7 @@ export const updateUsageLimit: API.OperationMethod<
   UpdateUsageLimitRequest,
   UpdateUsageLimitResponse,
   UpdateUsageLimitError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateUsageLimitRequest,
   output: UpdateUsageLimitResponse,
@@ -4948,7 +4482,7 @@ export const updateWorkgroup: API.OperationMethod<
   UpdateWorkgroupRequest,
   UpdateWorkgroupResponse,
   UpdateWorkgroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateWorkgroupRequest,
   output: UpdateWorkgroupResponse,

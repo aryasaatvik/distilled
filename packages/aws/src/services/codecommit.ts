@@ -1,6 +1,5 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -8,7 +7,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 const ns = T.XmlNamespace("http://codecommit.amazonaws.com/doc/2015-04-13");
 const svc = T.AwsApiService({
   sdkId: "CodeCommit",
@@ -89,947 +87,947 @@ const rules = T.EndpointResolver((p, _) => {
 export class ActorDoesNotExistException
   extends /*@__PURE__*/ S.TaggedErrorClass<ActorDoesNotExistException>()(
     "ActorDoesNotExistException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class ApprovalRuleContentRequiredException
   extends /*@__PURE__*/ S.TaggedErrorClass<ApprovalRuleContentRequiredException>()(
     "ApprovalRuleContentRequiredException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class ApprovalRuleDoesNotExistException
   extends /*@__PURE__*/ S.TaggedErrorClass<ApprovalRuleDoesNotExistException>()(
     "ApprovalRuleDoesNotExistException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class ApprovalRuleNameAlreadyExistsException
   extends /*@__PURE__*/ S.TaggedErrorClass<ApprovalRuleNameAlreadyExistsException>()(
     "ApprovalRuleNameAlreadyExistsException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ).pipe(C.withAlreadyExistsError) {}
 export class ApprovalRuleNameRequiredException
   extends /*@__PURE__*/ S.TaggedErrorClass<ApprovalRuleNameRequiredException>()(
     "ApprovalRuleNameRequiredException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class ApprovalRuleTemplateContentRequiredException
   extends /*@__PURE__*/ S.TaggedErrorClass<ApprovalRuleTemplateContentRequiredException>()(
     "ApprovalRuleTemplateContentRequiredException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class ApprovalRuleTemplateDoesNotExistException
   extends /*@__PURE__*/ S.TaggedErrorClass<ApprovalRuleTemplateDoesNotExistException>()(
     "ApprovalRuleTemplateDoesNotExistException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class ApprovalRuleTemplateInUseException
   extends /*@__PURE__*/ S.TaggedErrorClass<ApprovalRuleTemplateInUseException>()(
     "ApprovalRuleTemplateInUseException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class ApprovalRuleTemplateNameAlreadyExistsException
   extends /*@__PURE__*/ S.TaggedErrorClass<ApprovalRuleTemplateNameAlreadyExistsException>()(
     "ApprovalRuleTemplateNameAlreadyExistsException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ).pipe(C.withAlreadyExistsError) {}
 export class ApprovalRuleTemplateNameRequiredException
   extends /*@__PURE__*/ S.TaggedErrorClass<ApprovalRuleTemplateNameRequiredException>()(
     "ApprovalRuleTemplateNameRequiredException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class ApprovalStateRequiredException
   extends /*@__PURE__*/ S.TaggedErrorClass<ApprovalStateRequiredException>()(
     "ApprovalStateRequiredException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class AuthorDoesNotExistException
   extends /*@__PURE__*/ S.TaggedErrorClass<AuthorDoesNotExistException>()(
     "AuthorDoesNotExistException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class BeforeCommitIdAndAfterCommitIdAreSameException
   extends /*@__PURE__*/ S.TaggedErrorClass<BeforeCommitIdAndAfterCommitIdAreSameException>()(
     "BeforeCommitIdAndAfterCommitIdAreSameException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class BlobIdDoesNotExistException
   extends /*@__PURE__*/ S.TaggedErrorClass<BlobIdDoesNotExistException>()(
     "BlobIdDoesNotExistException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class BlobIdRequiredException
   extends /*@__PURE__*/ S.TaggedErrorClass<BlobIdRequiredException>()(
     "BlobIdRequiredException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class BranchDoesNotExistException
   extends /*@__PURE__*/ S.TaggedErrorClass<BranchDoesNotExistException>()(
     "BranchDoesNotExistException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class BranchNameExistsException
   extends /*@__PURE__*/ S.TaggedErrorClass<BranchNameExistsException>()(
     "BranchNameExistsException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class BranchNameIsTagNameException
   extends /*@__PURE__*/ S.TaggedErrorClass<BranchNameIsTagNameException>()(
     "BranchNameIsTagNameException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class BranchNameRequiredException
   extends /*@__PURE__*/ S.TaggedErrorClass<BranchNameRequiredException>()(
     "BranchNameRequiredException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class CannotDeleteApprovalRuleFromTemplateException
   extends /*@__PURE__*/ S.TaggedErrorClass<CannotDeleteApprovalRuleFromTemplateException>()(
     "CannotDeleteApprovalRuleFromTemplateException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class CannotModifyApprovalRuleFromTemplateException
   extends /*@__PURE__*/ S.TaggedErrorClass<CannotModifyApprovalRuleFromTemplateException>()(
     "CannotModifyApprovalRuleFromTemplateException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class ClientRequestTokenRequiredException
   extends /*@__PURE__*/ S.TaggedErrorClass<ClientRequestTokenRequiredException>()(
     "ClientRequestTokenRequiredException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class CommentContentRequiredException
   extends /*@__PURE__*/ S.TaggedErrorClass<CommentContentRequiredException>()(
     "CommentContentRequiredException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class CommentContentSizeLimitExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<CommentContentSizeLimitExceededException>()(
     "CommentContentSizeLimitExceededException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class CommentDeletedException
   extends /*@__PURE__*/ S.TaggedErrorClass<CommentDeletedException>()(
     "CommentDeletedException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class CommentDoesNotExistException
   extends /*@__PURE__*/ S.TaggedErrorClass<CommentDoesNotExistException>()(
     "CommentDoesNotExistException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class CommentIdRequiredException
   extends /*@__PURE__*/ S.TaggedErrorClass<CommentIdRequiredException>()(
     "CommentIdRequiredException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class CommentNotCreatedByCallerException
   extends /*@__PURE__*/ S.TaggedErrorClass<CommentNotCreatedByCallerException>()(
     "CommentNotCreatedByCallerException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class CommitDoesNotExistException
   extends /*@__PURE__*/ S.TaggedErrorClass<CommitDoesNotExistException>()(
     "CommitDoesNotExistException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class CommitIdDoesNotExistException
   extends /*@__PURE__*/ S.TaggedErrorClass<CommitIdDoesNotExistException>()(
     "CommitIdDoesNotExistException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class CommitIdRequiredException
   extends /*@__PURE__*/ S.TaggedErrorClass<CommitIdRequiredException>()(
     "CommitIdRequiredException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class CommitIdsLimitExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<CommitIdsLimitExceededException>()(
     "CommitIdsLimitExceededException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class CommitIdsListRequiredException
   extends /*@__PURE__*/ S.TaggedErrorClass<CommitIdsListRequiredException>()(
     "CommitIdsListRequiredException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class CommitMessageLengthExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<CommitMessageLengthExceededException>()(
     "CommitMessageLengthExceededException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class CommitRequiredException
   extends /*@__PURE__*/ S.TaggedErrorClass<CommitRequiredException>()(
     "CommitRequiredException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class ConcurrentReferenceUpdateException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConcurrentReferenceUpdateException>()(
     "ConcurrentReferenceUpdateException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class DefaultBranchCannotBeDeletedException
   extends /*@__PURE__*/ S.TaggedErrorClass<DefaultBranchCannotBeDeletedException>()(
     "DefaultBranchCannotBeDeletedException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class DirectoryNameConflictsWithFileNameException
   extends /*@__PURE__*/ S.TaggedErrorClass<DirectoryNameConflictsWithFileNameException>()(
     "DirectoryNameConflictsWithFileNameException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class EncryptionIntegrityChecksFailedException
   extends /*@__PURE__*/ S.TaggedErrorClass<EncryptionIntegrityChecksFailedException>()(
     "EncryptionIntegrityChecksFailedException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class EncryptionKeyAccessDeniedException
   extends /*@__PURE__*/ S.TaggedErrorClass<EncryptionKeyAccessDeniedException>()(
     "EncryptionKeyAccessDeniedException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ).pipe(C.withAuthError) {}
 export class EncryptionKeyDisabledException
   extends /*@__PURE__*/ S.TaggedErrorClass<EncryptionKeyDisabledException>()(
     "EncryptionKeyDisabledException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class EncryptionKeyInvalidIdException
   extends /*@__PURE__*/ S.TaggedErrorClass<EncryptionKeyInvalidIdException>()(
     "EncryptionKeyInvalidIdException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class EncryptionKeyInvalidUsageException
   extends /*@__PURE__*/ S.TaggedErrorClass<EncryptionKeyInvalidUsageException>()(
     "EncryptionKeyInvalidUsageException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class EncryptionKeyNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<EncryptionKeyNotFoundException>()(
     "EncryptionKeyNotFoundException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class EncryptionKeyRequiredException
   extends /*@__PURE__*/ S.TaggedErrorClass<EncryptionKeyRequiredException>()(
     "EncryptionKeyRequiredException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class EncryptionKeyUnavailableException
   extends /*@__PURE__*/ S.TaggedErrorClass<EncryptionKeyUnavailableException>()(
     "EncryptionKeyUnavailableException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class FileContentAndSourceFileSpecifiedException
   extends /*@__PURE__*/ S.TaggedErrorClass<FileContentAndSourceFileSpecifiedException>()(
     "FileContentAndSourceFileSpecifiedException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class FileContentRequiredException
   extends /*@__PURE__*/ S.TaggedErrorClass<FileContentRequiredException>()(
     "FileContentRequiredException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class FileContentSizeLimitExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<FileContentSizeLimitExceededException>()(
     "FileContentSizeLimitExceededException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class FileDoesNotExistException
   extends /*@__PURE__*/ S.TaggedErrorClass<FileDoesNotExistException>()(
     "FileDoesNotExistException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class FileEntryRequiredException
   extends /*@__PURE__*/ S.TaggedErrorClass<FileEntryRequiredException>()(
     "FileEntryRequiredException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class FileModeRequiredException
   extends /*@__PURE__*/ S.TaggedErrorClass<FileModeRequiredException>()(
     "FileModeRequiredException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class FileNameConflictsWithDirectoryNameException
   extends /*@__PURE__*/ S.TaggedErrorClass<FileNameConflictsWithDirectoryNameException>()(
     "FileNameConflictsWithDirectoryNameException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class FilePathConflictsWithSubmodulePathException
   extends /*@__PURE__*/ S.TaggedErrorClass<FilePathConflictsWithSubmodulePathException>()(
     "FilePathConflictsWithSubmodulePathException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class FileTooLargeException
   extends /*@__PURE__*/ S.TaggedErrorClass<FileTooLargeException>()(
     "FileTooLargeException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class FolderContentSizeLimitExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<FolderContentSizeLimitExceededException>()(
     "FolderContentSizeLimitExceededException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class FolderDoesNotExistException
   extends /*@__PURE__*/ S.TaggedErrorClass<FolderDoesNotExistException>()(
     "FolderDoesNotExistException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class IdempotencyParameterMismatchException
   extends /*@__PURE__*/ S.TaggedErrorClass<IdempotencyParameterMismatchException>()(
     "IdempotencyParameterMismatchException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidActorArnException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidActorArnException>()(
     "InvalidActorArnException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidApprovalRuleContentException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidApprovalRuleContentException>()(
     "InvalidApprovalRuleContentException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidApprovalRuleNameException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidApprovalRuleNameException>()(
     "InvalidApprovalRuleNameException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidApprovalRuleTemplateContentException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidApprovalRuleTemplateContentException>()(
     "InvalidApprovalRuleTemplateContentException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidApprovalRuleTemplateDescriptionException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidApprovalRuleTemplateDescriptionException>()(
     "InvalidApprovalRuleTemplateDescriptionException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidApprovalRuleTemplateNameException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidApprovalRuleTemplateNameException>()(
     "InvalidApprovalRuleTemplateNameException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidApprovalStateException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidApprovalStateException>()(
     "InvalidApprovalStateException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidAuthorArnException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidAuthorArnException>()(
     "InvalidAuthorArnException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidBlobIdException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidBlobIdException>()(
     "InvalidBlobIdException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidBranchNameException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidBranchNameException>()(
     "InvalidBranchNameException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidClientRequestTokenException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidClientRequestTokenException>()(
     "InvalidClientRequestTokenException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidCommentIdException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidCommentIdException>()(
     "InvalidCommentIdException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidCommitException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidCommitException>()(
     "InvalidCommitException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidCommitIdException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidCommitIdException>()(
     "InvalidCommitIdException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidConflictDetailLevelException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidConflictDetailLevelException>()(
     "InvalidConflictDetailLevelException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidConflictResolutionException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidConflictResolutionException>()(
     "InvalidConflictResolutionException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidConflictResolutionStrategyException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidConflictResolutionStrategyException>()(
     "InvalidConflictResolutionStrategyException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidContinuationTokenException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidContinuationTokenException>()(
     "InvalidContinuationTokenException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidDeletionParameterException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidDeletionParameterException>()(
     "InvalidDeletionParameterException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidDescriptionException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidDescriptionException>()(
     "InvalidDescriptionException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidDestinationCommitSpecifierException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidDestinationCommitSpecifierException>()(
     "InvalidDestinationCommitSpecifierException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidEmailException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidEmailException>()(
     "InvalidEmailException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidFileLocationException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidFileLocationException>()(
     "InvalidFileLocationException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidFileModeException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidFileModeException>()(
     "InvalidFileModeException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidFilePositionException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidFilePositionException>()(
     "InvalidFilePositionException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidMaxConflictFilesException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidMaxConflictFilesException>()(
     "InvalidMaxConflictFilesException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidMaxMergeHunksException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidMaxMergeHunksException>()(
     "InvalidMaxMergeHunksException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidMaxResultsException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidMaxResultsException>()(
     "InvalidMaxResultsException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidMergeOptionException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidMergeOptionException>()(
     "InvalidMergeOptionException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidOrderException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidOrderException>()(
     "InvalidOrderException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidOverrideStatusException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidOverrideStatusException>()(
     "InvalidOverrideStatusException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidParentCommitIdException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidParentCommitIdException>()(
     "InvalidParentCommitIdException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidPathException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidPathException>()(
     "InvalidPathException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidPullRequestEventTypeException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidPullRequestEventTypeException>()(
     "InvalidPullRequestEventTypeException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidPullRequestIdException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidPullRequestIdException>()(
     "InvalidPullRequestIdException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidPullRequestStatusException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidPullRequestStatusException>()(
     "InvalidPullRequestStatusException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidPullRequestStatusUpdateException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidPullRequestStatusUpdateException>()(
     "InvalidPullRequestStatusUpdateException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidReactionUserArnException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidReactionUserArnException>()(
     "InvalidReactionUserArnException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidReactionValueException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidReactionValueException>()(
     "InvalidReactionValueException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidReferenceNameException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidReferenceNameException>()(
     "InvalidReferenceNameException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidRelativeFileVersionEnumException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidRelativeFileVersionEnumException>()(
     "InvalidRelativeFileVersionEnumException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidReplacementContentException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidReplacementContentException>()(
     "InvalidReplacementContentException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidReplacementTypeException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidReplacementTypeException>()(
     "InvalidReplacementTypeException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidRepositoryDescriptionException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidRepositoryDescriptionException>()(
     "InvalidRepositoryDescriptionException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidRepositoryNameException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidRepositoryNameException>()(
     "InvalidRepositoryNameException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidRepositoryTriggerBranchNameException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidRepositoryTriggerBranchNameException>()(
     "InvalidRepositoryTriggerBranchNameException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidRepositoryTriggerCustomDataException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidRepositoryTriggerCustomDataException>()(
     "InvalidRepositoryTriggerCustomDataException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidRepositoryTriggerDestinationArnException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidRepositoryTriggerDestinationArnException>()(
     "InvalidRepositoryTriggerDestinationArnException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidRepositoryTriggerEventsException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidRepositoryTriggerEventsException>()(
     "InvalidRepositoryTriggerEventsException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidRepositoryTriggerNameException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidRepositoryTriggerNameException>()(
     "InvalidRepositoryTriggerNameException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidRepositoryTriggerRegionException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidRepositoryTriggerRegionException>()(
     "InvalidRepositoryTriggerRegionException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidResourceArnException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidResourceArnException>()(
     "InvalidResourceArnException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidRevisionIdException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidRevisionIdException>()(
     "InvalidRevisionIdException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidRuleContentSha256Exception
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidRuleContentSha256Exception>()(
     "InvalidRuleContentSha256Exception",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidSortByException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidSortByException>()(
     "InvalidSortByException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidSourceCommitSpecifierException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidSourceCommitSpecifierException>()(
     "InvalidSourceCommitSpecifierException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidSystemTagUsageException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidSystemTagUsageException>()(
     "InvalidSystemTagUsageException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidTagKeysListException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidTagKeysListException>()(
     "InvalidTagKeysListException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidTagsMapException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidTagsMapException>()(
     "InvalidTagsMapException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidTargetBranchException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidTargetBranchException>()(
     "InvalidTargetBranchException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidTargetException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidTargetException>()(
     "InvalidTargetException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidTargetsException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidTargetsException>()(
     "InvalidTargetsException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidTitleException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidTitleException>()(
     "InvalidTitleException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class ManualMergeRequiredException
   extends /*@__PURE__*/ S.TaggedErrorClass<ManualMergeRequiredException>()(
     "ManualMergeRequiredException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class MaximumBranchesExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<MaximumBranchesExceededException>()(
     "MaximumBranchesExceededException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class MaximumConflictResolutionEntriesExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<MaximumConflictResolutionEntriesExceededException>()(
     "MaximumConflictResolutionEntriesExceededException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class MaximumFileContentToLoadExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<MaximumFileContentToLoadExceededException>()(
     "MaximumFileContentToLoadExceededException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class MaximumFileEntriesExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<MaximumFileEntriesExceededException>()(
     "MaximumFileEntriesExceededException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class MaximumItemsToCompareExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<MaximumItemsToCompareExceededException>()(
     "MaximumItemsToCompareExceededException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class MaximumNumberOfApprovalsExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<MaximumNumberOfApprovalsExceededException>()(
     "MaximumNumberOfApprovalsExceededException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class MaximumOpenPullRequestsExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<MaximumOpenPullRequestsExceededException>()(
     "MaximumOpenPullRequestsExceededException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class MaximumRepositoryNamesExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<MaximumRepositoryNamesExceededException>()(
     "MaximumRepositoryNamesExceededException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class MaximumRepositoryTriggersExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<MaximumRepositoryTriggersExceededException>()(
     "MaximumRepositoryTriggersExceededException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class MaximumRuleTemplatesAssociatedWithRepositoryException
   extends /*@__PURE__*/ S.TaggedErrorClass<MaximumRuleTemplatesAssociatedWithRepositoryException>()(
     "MaximumRuleTemplatesAssociatedWithRepositoryException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class MergeOptionRequiredException
   extends /*@__PURE__*/ S.TaggedErrorClass<MergeOptionRequiredException>()(
     "MergeOptionRequiredException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class MultipleConflictResolutionEntriesException
   extends /*@__PURE__*/ S.TaggedErrorClass<MultipleConflictResolutionEntriesException>()(
     "MultipleConflictResolutionEntriesException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class MultipleRepositoriesInPullRequestException
   extends /*@__PURE__*/ S.TaggedErrorClass<MultipleRepositoriesInPullRequestException>()(
     "MultipleRepositoriesInPullRequestException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class NameLengthExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<NameLengthExceededException>()(
     "NameLengthExceededException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class NoChangeException
   extends /*@__PURE__*/ S.TaggedErrorClass<NoChangeException>()(
     "NoChangeException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class NumberOfRulesExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<NumberOfRulesExceededException>()(
     "NumberOfRulesExceededException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class NumberOfRuleTemplatesExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<NumberOfRuleTemplatesExceededException>()(
     "NumberOfRuleTemplatesExceededException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class OperationNotAllowedException
   extends /*@__PURE__*/ S.TaggedErrorClass<OperationNotAllowedException>()(
     "OperationNotAllowedException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class OverrideAlreadySetException
   extends /*@__PURE__*/ S.TaggedErrorClass<OverrideAlreadySetException>()(
     "OverrideAlreadySetException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class OverrideStatusRequiredException
   extends /*@__PURE__*/ S.TaggedErrorClass<OverrideStatusRequiredException>()(
     "OverrideStatusRequiredException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class ParentCommitDoesNotExistException
   extends /*@__PURE__*/ S.TaggedErrorClass<ParentCommitDoesNotExistException>()(
     "ParentCommitDoesNotExistException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class ParentCommitIdOutdatedException
   extends /*@__PURE__*/ S.TaggedErrorClass<ParentCommitIdOutdatedException>()(
     "ParentCommitIdOutdatedException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class ParentCommitIdRequiredException
   extends /*@__PURE__*/ S.TaggedErrorClass<ParentCommitIdRequiredException>()(
     "ParentCommitIdRequiredException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class PathDoesNotExistException
   extends /*@__PURE__*/ S.TaggedErrorClass<PathDoesNotExistException>()(
     "PathDoesNotExistException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class PathRequiredException
   extends /*@__PURE__*/ S.TaggedErrorClass<PathRequiredException>()(
     "PathRequiredException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class PullRequestAlreadyClosedException
   extends /*@__PURE__*/ S.TaggedErrorClass<PullRequestAlreadyClosedException>()(
     "PullRequestAlreadyClosedException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class PullRequestApprovalRulesNotSatisfiedException
   extends /*@__PURE__*/ S.TaggedErrorClass<PullRequestApprovalRulesNotSatisfiedException>()(
     "PullRequestApprovalRulesNotSatisfiedException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class PullRequestCannotBeApprovedByAuthorException
   extends /*@__PURE__*/ S.TaggedErrorClass<PullRequestCannotBeApprovedByAuthorException>()(
     "PullRequestCannotBeApprovedByAuthorException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class PullRequestDoesNotExistException
   extends /*@__PURE__*/ S.TaggedErrorClass<PullRequestDoesNotExistException>()(
     "PullRequestDoesNotExistException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class PullRequestIdRequiredException
   extends /*@__PURE__*/ S.TaggedErrorClass<PullRequestIdRequiredException>()(
     "PullRequestIdRequiredException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class PullRequestStatusRequiredException
   extends /*@__PURE__*/ S.TaggedErrorClass<PullRequestStatusRequiredException>()(
     "PullRequestStatusRequiredException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class PutFileEntryConflictException
   extends /*@__PURE__*/ S.TaggedErrorClass<PutFileEntryConflictException>()(
     "PutFileEntryConflictException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class ReactionLimitExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<ReactionLimitExceededException>()(
     "ReactionLimitExceededException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class ReactionValueRequiredException
   extends /*@__PURE__*/ S.TaggedErrorClass<ReactionValueRequiredException>()(
     "ReactionValueRequiredException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class ReferenceDoesNotExistException
   extends /*@__PURE__*/ S.TaggedErrorClass<ReferenceDoesNotExistException>()(
     "ReferenceDoesNotExistException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class ReferenceNameRequiredException
   extends /*@__PURE__*/ S.TaggedErrorClass<ReferenceNameRequiredException>()(
     "ReferenceNameRequiredException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class ReferenceTypeNotSupportedException
   extends /*@__PURE__*/ S.TaggedErrorClass<ReferenceTypeNotSupportedException>()(
     "ReferenceTypeNotSupportedException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class ReplacementContentRequiredException
   extends /*@__PURE__*/ S.TaggedErrorClass<ReplacementContentRequiredException>()(
     "ReplacementContentRequiredException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class ReplacementTypeRequiredException
   extends /*@__PURE__*/ S.TaggedErrorClass<ReplacementTypeRequiredException>()(
     "ReplacementTypeRequiredException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class RepositoryDoesNotExistException
   extends /*@__PURE__*/ S.TaggedErrorClass<RepositoryDoesNotExistException>()(
     "RepositoryDoesNotExistException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class RepositoryLimitExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<RepositoryLimitExceededException>()(
     "RepositoryLimitExceededException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class RepositoryNameExistsException
   extends /*@__PURE__*/ S.TaggedErrorClass<RepositoryNameExistsException>()(
     "RepositoryNameExistsException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class RepositoryNameRequiredException
   extends /*@__PURE__*/ S.TaggedErrorClass<RepositoryNameRequiredException>()(
     "RepositoryNameRequiredException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class RepositoryNamesRequiredException
   extends /*@__PURE__*/ S.TaggedErrorClass<RepositoryNamesRequiredException>()(
     "RepositoryNamesRequiredException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class RepositoryNotAssociatedWithPullRequestException
   extends /*@__PURE__*/ S.TaggedErrorClass<RepositoryNotAssociatedWithPullRequestException>()(
     "RepositoryNotAssociatedWithPullRequestException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class RepositoryTriggerBranchNameListRequiredException
   extends /*@__PURE__*/ S.TaggedErrorClass<RepositoryTriggerBranchNameListRequiredException>()(
     "RepositoryTriggerBranchNameListRequiredException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class RepositoryTriggerDestinationArnRequiredException
   extends /*@__PURE__*/ S.TaggedErrorClass<RepositoryTriggerDestinationArnRequiredException>()(
     "RepositoryTriggerDestinationArnRequiredException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class RepositoryTriggerEventsListRequiredException
   extends /*@__PURE__*/ S.TaggedErrorClass<RepositoryTriggerEventsListRequiredException>()(
     "RepositoryTriggerEventsListRequiredException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class RepositoryTriggerNameRequiredException
   extends /*@__PURE__*/ S.TaggedErrorClass<RepositoryTriggerNameRequiredException>()(
     "RepositoryTriggerNameRequiredException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class RepositoryTriggersListRequiredException
   extends /*@__PURE__*/ S.TaggedErrorClass<RepositoryTriggersListRequiredException>()(
     "RepositoryTriggersListRequiredException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class ResourceArnRequiredException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceArnRequiredException>()(
     "ResourceArnRequiredException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class RestrictedSourceFileException
   extends /*@__PURE__*/ S.TaggedErrorClass<RestrictedSourceFileException>()(
     "RestrictedSourceFileException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class RevisionIdRequiredException
   extends /*@__PURE__*/ S.TaggedErrorClass<RevisionIdRequiredException>()(
     "RevisionIdRequiredException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class RevisionNotCurrentException
   extends /*@__PURE__*/ S.TaggedErrorClass<RevisionNotCurrentException>()(
     "RevisionNotCurrentException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class SameFileContentException
   extends /*@__PURE__*/ S.TaggedErrorClass<SameFileContentException>()(
     "SameFileContentException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class SamePathRequestException
   extends /*@__PURE__*/ S.TaggedErrorClass<SamePathRequestException>()(
     "SamePathRequestException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class SourceAndDestinationAreSameException
   extends /*@__PURE__*/ S.TaggedErrorClass<SourceAndDestinationAreSameException>()(
     "SourceAndDestinationAreSameException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class SourceFileOrContentRequiredException
   extends /*@__PURE__*/ S.TaggedErrorClass<SourceFileOrContentRequiredException>()(
     "SourceFileOrContentRequiredException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class TagKeysListRequiredException
   extends /*@__PURE__*/ S.TaggedErrorClass<TagKeysListRequiredException>()(
     "TagKeysListRequiredException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class TagPolicyException
   extends /*@__PURE__*/ S.TaggedErrorClass<TagPolicyException>()(
     "TagPolicyException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class TagsMapRequiredException
   extends /*@__PURE__*/ S.TaggedErrorClass<TagsMapRequiredException>()(
     "TagsMapRequiredException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class TargetRequiredException
   extends /*@__PURE__*/ S.TaggedErrorClass<TargetRequiredException>()(
     "TargetRequiredException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class TargetsRequiredException
   extends /*@__PURE__*/ S.TaggedErrorClass<TargetsRequiredException>()(
     "TargetsRequiredException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class TipOfSourceReferenceIsDifferentException
   extends /*@__PURE__*/ S.TaggedErrorClass<TipOfSourceReferenceIsDifferentException>()(
     "TipOfSourceReferenceIsDifferentException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class TipsDivergenceExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<TipsDivergenceExceededException>()(
     "TipsDivergenceExceededException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class TitleRequiredException
   extends /*@__PURE__*/ S.TaggedErrorClass<TitleRequiredException>()(
     "TitleRequiredException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class TooManyTagsException
   extends /*@__PURE__*/ S.TaggedErrorClass<TooManyTagsException>()(
     "TooManyTagsException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export type ApprovalRuleTemplateName = string;
 export type RepositoryName = string;
@@ -5026,7 +5024,7 @@ export const associateApprovalRuleTemplateWithRepository: API.OperationMethod<
   AssociateApprovalRuleTemplateWithRepositoryInput,
   AssociateApprovalRuleTemplateWithRepositoryResponse,
   AssociateApprovalRuleTemplateWithRepositoryError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AssociateApprovalRuleTemplateWithRepositoryInput,
   output: AssociateApprovalRuleTemplateWithRepositoryResponse,
@@ -5068,7 +5066,7 @@ export const batchAssociateApprovalRuleTemplateWithRepositories: API.OperationMe
   BatchAssociateApprovalRuleTemplateWithRepositoriesInput,
   BatchAssociateApprovalRuleTemplateWithRepositoriesOutput,
   BatchAssociateApprovalRuleTemplateWithRepositoriesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchAssociateApprovalRuleTemplateWithRepositoriesInput,
   output: BatchAssociateApprovalRuleTemplateWithRepositoriesOutput,
@@ -5119,7 +5117,7 @@ export const batchDescribeMergeConflicts: API.OperationMethod<
   BatchDescribeMergeConflictsInput,
   BatchDescribeMergeConflictsOutput,
   BatchDescribeMergeConflictsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchDescribeMergeConflictsInput,
   output: BatchDescribeMergeConflictsOutput,
@@ -5170,7 +5168,7 @@ export const batchDisassociateApprovalRuleTemplateFromRepositories: API.Operatio
   BatchDisassociateApprovalRuleTemplateFromRepositoriesInput,
   BatchDisassociateApprovalRuleTemplateFromRepositoriesOutput,
   BatchDisassociateApprovalRuleTemplateFromRepositoriesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchDisassociateApprovalRuleTemplateFromRepositoriesInput,
   output: BatchDisassociateApprovalRuleTemplateFromRepositoriesOutput,
@@ -5210,7 +5208,7 @@ export const batchGetCommits: API.OperationMethod<
   BatchGetCommitsInput,
   BatchGetCommitsOutput,
   BatchGetCommitsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchGetCommitsInput,
   output: BatchGetCommitsOutput,
@@ -5254,7 +5252,7 @@ export const batchGetRepositories: API.OperationMethod<
   BatchGetRepositoriesInput,
   BatchGetRepositoriesOutput,
   BatchGetRepositoriesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchGetRepositoriesInput,
   output: BatchGetRepositoriesOutput,
@@ -5293,7 +5291,7 @@ export const createApprovalRuleTemplate: API.OperationMethod<
   CreateApprovalRuleTemplateInput,
   CreateApprovalRuleTemplateOutput,
   CreateApprovalRuleTemplateError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateApprovalRuleTemplateInput,
   output: CreateApprovalRuleTemplateOutput,
@@ -5336,7 +5334,7 @@ export const createBranch: API.OperationMethod<
   CreateBranchInput,
   CreateBranchResponse,
   CreateBranchError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateBranchInput,
   output: CreateBranchResponse,
@@ -5408,7 +5406,7 @@ export const createCommit: API.OperationMethod<
   CreateCommitInput,
   CreateCommitOutput,
   CreateCommitError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateCommitInput,
   output: CreateCommitOutput,
@@ -5491,7 +5489,7 @@ export const createPullRequest: API.OperationMethod<
   CreatePullRequestInput,
   CreatePullRequestOutput,
   CreatePullRequestError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreatePullRequestInput,
   output: CreatePullRequestOutput,
@@ -5551,7 +5549,7 @@ export const createPullRequestApprovalRule: API.OperationMethod<
   CreatePullRequestApprovalRuleInput,
   CreatePullRequestApprovalRuleOutput,
   CreatePullRequestApprovalRuleError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreatePullRequestApprovalRuleInput,
   output: CreatePullRequestApprovalRuleOutput,
@@ -5603,7 +5601,7 @@ export const createRepository: API.OperationMethod<
   CreateRepositoryInput,
   CreateRepositoryOutput,
   CreateRepositoryError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateRepositoryInput,
   output: CreateRepositoryOutput,
@@ -5682,7 +5680,7 @@ export const createUnreferencedMergeCommit: API.OperationMethod<
   CreateUnreferencedMergeCommitInput,
   CreateUnreferencedMergeCommitOutput,
   CreateUnreferencedMergeCommitError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateUnreferencedMergeCommitInput,
   output: CreateUnreferencedMergeCommitOutput,
@@ -5741,7 +5739,7 @@ export const deleteApprovalRuleTemplate: API.OperationMethod<
   DeleteApprovalRuleTemplateInput,
   DeleteApprovalRuleTemplateOutput,
   DeleteApprovalRuleTemplateError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteApprovalRuleTemplateInput,
   output: DeleteApprovalRuleTemplateOutput,
@@ -5775,7 +5773,7 @@ export const deleteBranch: API.OperationMethod<
   DeleteBranchInput,
   DeleteBranchOutput,
   DeleteBranchError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteBranchInput,
   output: DeleteBranchOutput,
@@ -5810,7 +5808,7 @@ export const deleteCommentContent: API.OperationMethod<
   DeleteCommentContentInput,
   DeleteCommentContentOutput,
   DeleteCommentContentError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteCommentContentInput,
   output: DeleteCommentContentOutput,
@@ -5858,7 +5856,7 @@ export const deleteFile: API.OperationMethod<
   DeleteFileInput,
   DeleteFileOutput,
   DeleteFileError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteFileInput,
   output: DeleteFileOutput,
@@ -5914,7 +5912,7 @@ export const deletePullRequestApprovalRule: API.OperationMethod<
   DeletePullRequestApprovalRuleInput,
   DeletePullRequestApprovalRuleOutput,
   DeletePullRequestApprovalRuleError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeletePullRequestApprovalRuleInput,
   output: DeletePullRequestApprovalRuleOutput,
@@ -5957,7 +5955,7 @@ export const deleteRepository: API.OperationMethod<
   DeleteRepositoryInput,
   DeleteRepositoryOutput,
   DeleteRepositoryError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteRepositoryInput,
   output: DeleteRepositoryOutput,
@@ -6005,27 +6003,13 @@ export type DescribeMergeConflictsError =
  * commit specifiers using the squash or three-way merge strategy. If the merge option for
  * the attempted merge is specified as FAST_FORWARD_MERGE, an exception is thrown.
  */
-export const describeMergeConflicts: API.OperationMethod<
+export const describeMergeConflicts: API.PaginatedOperationMethod<
   DescribeMergeConflictsInput,
   DescribeMergeConflictsOutput,
   DescribeMergeConflictsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeMergeConflictsInput,
-  ) => stream.Stream<
-    DescribeMergeConflictsOutput,
-    DescribeMergeConflictsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeMergeConflictsInput,
-  ) => stream.Stream<
-    unknown,
-    DescribeMergeConflictsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeMergeConflictsInput,
   output: DescribeMergeConflictsOutput,
   errors: [
@@ -6061,27 +6045,7 @@ export const describeMergeConflicts: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxMergeHunks",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeMergeConflictsInput,
-  DescribeMergeConflictsOutput,
-  DescribeMergeConflictsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeMergeConflictsInput,
-  ) => stream.Stream<
-    DescribeMergeConflictsOutput,
-    DescribeMergeConflictsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeMergeConflictsInput,
-  ) => stream.Stream<
-    unknown,
-    DescribeMergeConflictsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribePullRequestEventsError =
   | ActorDoesNotExistException
@@ -6101,27 +6065,13 @@ export type DescribePullRequestEventsError =
 /**
  * Returns information about one or more pull request events.
  */
-export const describePullRequestEvents: API.OperationMethod<
+export const describePullRequestEvents: API.PaginatedOperationMethod<
   DescribePullRequestEventsInput,
   DescribePullRequestEventsOutput,
   DescribePullRequestEventsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribePullRequestEventsInput,
-  ) => stream.Stream<
-    DescribePullRequestEventsOutput,
-    DescribePullRequestEventsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribePullRequestEventsInput,
-  ) => stream.Stream<
-    unknown,
-    DescribePullRequestEventsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribePullRequestEventsInput,
   output: DescribePullRequestEventsOutput,
   errors: [
@@ -6147,27 +6097,7 @@ export const describePullRequestEvents: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  DescribePullRequestEventsInput,
-  DescribePullRequestEventsOutput,
-  DescribePullRequestEventsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribePullRequestEventsInput,
-  ) => stream.Stream<
-    DescribePullRequestEventsOutput,
-    DescribePullRequestEventsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribePullRequestEventsInput,
-  ) => stream.Stream<
-    unknown,
-    DescribePullRequestEventsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DisassociateApprovalRuleTemplateFromRepositoryError =
   | ApprovalRuleTemplateDoesNotExistException
@@ -6192,7 +6122,7 @@ export const disassociateApprovalRuleTemplateFromRepository: API.OperationMethod
   DisassociateApprovalRuleTemplateFromRepositoryInput,
   DisassociateApprovalRuleTemplateFromRepositoryResponse,
   DisassociateApprovalRuleTemplateFromRepositoryError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DisassociateApprovalRuleTemplateFromRepositoryInput,
   output: DisassociateApprovalRuleTemplateFromRepositoryResponse,
@@ -6234,7 +6164,7 @@ export const evaluatePullRequestApprovalRules: API.OperationMethod<
   EvaluatePullRequestApprovalRulesInput,
   EvaluatePullRequestApprovalRulesOutput,
   EvaluatePullRequestApprovalRulesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: EvaluatePullRequestApprovalRulesInput,
   output: EvaluatePullRequestApprovalRulesOutput,
@@ -6268,7 +6198,7 @@ export const getApprovalRuleTemplate: API.OperationMethod<
   GetApprovalRuleTemplateInput,
   GetApprovalRuleTemplateOutput,
   GetApprovalRuleTemplateError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetApprovalRuleTemplateInput,
   output: GetApprovalRuleTemplateOutput,
@@ -6303,7 +6233,7 @@ export const getBlob: API.OperationMethod<
   GetBlobInput,
   GetBlobOutput,
   GetBlobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetBlobInput,
   output: GetBlobOutput,
@@ -6346,7 +6276,7 @@ export const getBranch: API.OperationMethod<
   GetBranchInput,
   GetBranchOutput,
   GetBranchError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetBranchInput,
   output: GetBranchOutput,
@@ -6389,7 +6319,7 @@ export const getComment: API.OperationMethod<
   GetCommentInput,
   GetCommentOutput,
   GetCommentError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetCommentInput,
   output: GetCommentOutput,
@@ -6421,27 +6351,13 @@ export type GetCommentReactionsError =
 /**
  * Returns information about reactions to a specified comment ID. Reactions from users who have been deleted will not be included in the count.
  */
-export const getCommentReactions: API.OperationMethod<
+export const getCommentReactions: API.PaginatedOperationMethod<
   GetCommentReactionsInput,
   GetCommentReactionsOutput,
   GetCommentReactionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetCommentReactionsInput,
-  ) => stream.Stream<
-    GetCommentReactionsOutput,
-    GetCommentReactionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetCommentReactionsInput,
-  ) => stream.Stream<
-    unknown,
-    GetCommentReactionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetCommentReactionsInput,
   output: GetCommentReactionsOutput,
   errors: [
@@ -6461,27 +6377,7 @@ export const getCommentReactions: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetCommentReactionsInput,
-  GetCommentReactionsOutput,
-  GetCommentReactionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetCommentReactionsInput,
-  ) => stream.Stream<
-    GetCommentReactionsOutput,
-    GetCommentReactionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetCommentReactionsInput,
-  ) => stream.Stream<
-    unknown,
-    GetCommentReactionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetCommentsForComparedCommitError =
   | CommitDoesNotExistException
@@ -6504,27 +6400,13 @@ export type GetCommentsForComparedCommitError =
  * Reaction counts might include numbers from user identities who were deleted after the reaction was made. For a count of
  * reactions from active identities, use GetCommentReactions.
  */
-export const getCommentsForComparedCommit: API.OperationMethod<
+export const getCommentsForComparedCommit: API.PaginatedOperationMethod<
   GetCommentsForComparedCommitInput,
   GetCommentsForComparedCommitOutput,
   GetCommentsForComparedCommitError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetCommentsForComparedCommitInput,
-  ) => stream.Stream<
-    GetCommentsForComparedCommitOutput,
-    GetCommentsForComparedCommitError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetCommentsForComparedCommitInput,
-  ) => stream.Stream<
-    unknown,
-    GetCommentsForComparedCommitError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetCommentsForComparedCommitInput,
   output: GetCommentsForComparedCommitOutput,
   errors: [
@@ -6550,27 +6432,7 @@ export const getCommentsForComparedCommit: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetCommentsForComparedCommitInput,
-  GetCommentsForComparedCommitOutput,
-  GetCommentsForComparedCommitError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetCommentsForComparedCommitInput,
-  ) => stream.Stream<
-    GetCommentsForComparedCommitOutput,
-    GetCommentsForComparedCommitError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetCommentsForComparedCommitInput,
-  ) => stream.Stream<
-    unknown,
-    GetCommentsForComparedCommitError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetCommentsForPullRequestError =
   | CommitDoesNotExistException
@@ -6597,27 +6459,13 @@ export type GetCommentsForPullRequestError =
  * Reaction counts might include numbers from user identities who were deleted after the reaction was made. For a count of
  * reactions from active identities, use GetCommentReactions.
  */
-export const getCommentsForPullRequest: API.OperationMethod<
+export const getCommentsForPullRequest: API.PaginatedOperationMethod<
   GetCommentsForPullRequestInput,
   GetCommentsForPullRequestOutput,
   GetCommentsForPullRequestError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetCommentsForPullRequestInput,
-  ) => stream.Stream<
-    GetCommentsForPullRequestOutput,
-    GetCommentsForPullRequestError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetCommentsForPullRequestInput,
-  ) => stream.Stream<
-    unknown,
-    GetCommentsForPullRequestError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetCommentsForPullRequestInput,
   output: GetCommentsForPullRequestOutput,
   errors: [
@@ -6647,27 +6495,7 @@ export const getCommentsForPullRequest: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetCommentsForPullRequestInput,
-  GetCommentsForPullRequestOutput,
-  GetCommentsForPullRequestError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetCommentsForPullRequestInput,
-  ) => stream.Stream<
-    GetCommentsForPullRequestOutput,
-    GetCommentsForPullRequestError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetCommentsForPullRequestInput,
-  ) => stream.Stream<
-    unknown,
-    GetCommentsForPullRequestError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetCommitError =
   | CommitIdDoesNotExistException
@@ -6689,7 +6517,7 @@ export const getCommit: API.OperationMethod<
   GetCommitInput,
   GetCommitOutput,
   GetCommitError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetCommitInput,
   output: GetCommitOutput,
@@ -6734,27 +6562,13 @@ export type GetDifferencesError =
  * branch, tag, HEAD, commit ID, or other fully qualified reference). Results can be
  * limited to a specified path.
  */
-export const getDifferences: API.OperationMethod<
+export const getDifferences: API.PaginatedOperationMethod<
   GetDifferencesInput,
   GetDifferencesOutput,
   GetDifferencesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetDifferencesInput,
-  ) => stream.Stream<
-    GetDifferencesOutput,
-    GetDifferencesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetDifferencesInput,
-  ) => stream.Stream<
-    unknown,
-    GetDifferencesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetDifferencesInput,
   output: GetDifferencesOutput,
   errors: [
@@ -6783,27 +6597,7 @@ export const getDifferences: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetDifferencesInput,
-  GetDifferencesOutput,
-  GetDifferencesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetDifferencesInput,
-  ) => stream.Stream<
-    GetDifferencesOutput,
-    GetDifferencesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetDifferencesInput,
-  ) => stream.Stream<
-    unknown,
-    GetDifferencesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetFileError =
   | CommitDoesNotExistException
@@ -6828,7 +6622,7 @@ export const getFile: API.OperationMethod<
   GetFileInput,
   GetFileOutput,
   GetFileError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetFileInput,
   output: GetFileOutput,
@@ -6875,7 +6669,7 @@ export const getFolder: API.OperationMethod<
   GetFolderInput,
   GetFolderOutput,
   GetFolderError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetFolderInput,
   output: GetFolderOutput,
@@ -6921,7 +6715,7 @@ export const getMergeCommit: API.OperationMethod<
   GetMergeCommitInput,
   GetMergeCommitOutput,
   GetMergeCommitError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetMergeCommitInput,
   output: GetMergeCommitOutput,
@@ -6972,27 +6766,13 @@ export type GetMergeConflictsError =
 /**
  * Returns information about merge conflicts between the before and after commit IDs for a pull request in a repository.
  */
-export const getMergeConflicts: API.OperationMethod<
+export const getMergeConflicts: API.PaginatedOperationMethod<
   GetMergeConflictsInput,
   GetMergeConflictsOutput,
   GetMergeConflictsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetMergeConflictsInput,
-  ) => stream.Stream<
-    GetMergeConflictsOutput,
-    GetMergeConflictsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetMergeConflictsInput,
-  ) => stream.Stream<
-    unknown,
-    GetMergeConflictsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetMergeConflictsInput,
   output: GetMergeConflictsOutput,
   errors: [
@@ -7027,27 +6807,7 @@ export const getMergeConflicts: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxConflictFiles",
   } as const,
-})) as any as API.OperationMethod<
-  GetMergeConflictsInput,
-  GetMergeConflictsOutput,
-  GetMergeConflictsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetMergeConflictsInput,
-  ) => stream.Stream<
-    GetMergeConflictsOutput,
-    GetMergeConflictsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetMergeConflictsInput,
-  ) => stream.Stream<
-    unknown,
-    GetMergeConflictsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetMergeOptionsError =
   | CommitDoesNotExistException
@@ -7076,7 +6836,7 @@ export const getMergeOptions: API.OperationMethod<
   GetMergeOptionsInput,
   GetMergeOptionsOutput,
   GetMergeOptionsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetMergeOptionsInput,
   output: GetMergeOptionsOutput,
@@ -7120,7 +6880,7 @@ export const getPullRequest: API.OperationMethod<
   GetPullRequestInput,
   GetPullRequestOutput,
   GetPullRequestError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetPullRequestInput,
   output: GetPullRequestOutput,
@@ -7159,7 +6919,7 @@ export const getPullRequestApprovalStates: API.OperationMethod<
   GetPullRequestApprovalStatesInput,
   GetPullRequestApprovalStatesOutput,
   GetPullRequestApprovalStatesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetPullRequestApprovalStatesInput,
   output: GetPullRequestApprovalStatesOutput,
@@ -7200,7 +6960,7 @@ export const getPullRequestOverrideState: API.OperationMethod<
   GetPullRequestOverrideStateInput,
   GetPullRequestOverrideStateOutput,
   GetPullRequestOverrideStateError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetPullRequestOverrideStateInput,
   output: GetPullRequestOverrideStateOutput,
@@ -7244,7 +7004,7 @@ export const getRepository: API.OperationMethod<
   GetRepositoryInput,
   GetRepositoryOutput,
   GetRepositoryError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetRepositoryInput,
   output: GetRepositoryOutput,
@@ -7280,7 +7040,7 @@ export const getRepositoryTriggers: API.OperationMethod<
   GetRepositoryTriggersInput,
   GetRepositoryTriggersOutput,
   GetRepositoryTriggersError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetRepositoryTriggersInput,
   output: GetRepositoryTriggersOutput,
@@ -7307,27 +7067,13 @@ export type ListApprovalRuleTemplatesError =
  * Lists all approval rule templates in the specified Amazon Web Services Region in your Amazon Web Services account. If
  * an Amazon Web Services Region is not specified, the Amazon Web Services Region where you are signed in is used.
  */
-export const listApprovalRuleTemplates: API.OperationMethod<
+export const listApprovalRuleTemplates: API.PaginatedOperationMethod<
   ListApprovalRuleTemplatesInput,
   ListApprovalRuleTemplatesOutput,
   ListApprovalRuleTemplatesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListApprovalRuleTemplatesInput,
-  ) => stream.Stream<
-    ListApprovalRuleTemplatesOutput,
-    ListApprovalRuleTemplatesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListApprovalRuleTemplatesInput,
-  ) => stream.Stream<
-    unknown,
-    ListApprovalRuleTemplatesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListApprovalRuleTemplatesInput,
   output: ListApprovalRuleTemplatesOutput,
   errors: [InvalidContinuationTokenException, InvalidMaxResultsException],
@@ -7339,27 +7085,7 @@ export const listApprovalRuleTemplates: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListApprovalRuleTemplatesInput,
-  ListApprovalRuleTemplatesOutput,
-  ListApprovalRuleTemplatesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListApprovalRuleTemplatesInput,
-  ) => stream.Stream<
-    ListApprovalRuleTemplatesOutput,
-    ListApprovalRuleTemplatesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListApprovalRuleTemplatesInput,
-  ) => stream.Stream<
-    unknown,
-    ListApprovalRuleTemplatesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListAssociatedApprovalRuleTemplatesForRepositoryError =
   | EncryptionIntegrityChecksFailedException
@@ -7376,27 +7102,13 @@ export type ListAssociatedApprovalRuleTemplatesForRepositoryError =
 /**
  * Lists all approval rule templates that are associated with a specified repository.
  */
-export const listAssociatedApprovalRuleTemplatesForRepository: API.OperationMethod<
+export const listAssociatedApprovalRuleTemplatesForRepository: API.PaginatedOperationMethod<
   ListAssociatedApprovalRuleTemplatesForRepositoryInput,
   ListAssociatedApprovalRuleTemplatesForRepositoryOutput,
   ListAssociatedApprovalRuleTemplatesForRepositoryError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAssociatedApprovalRuleTemplatesForRepositoryInput,
-  ) => stream.Stream<
-    ListAssociatedApprovalRuleTemplatesForRepositoryOutput,
-    ListAssociatedApprovalRuleTemplatesForRepositoryError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAssociatedApprovalRuleTemplatesForRepositoryInput,
-  ) => stream.Stream<
-    unknown,
-    ListAssociatedApprovalRuleTemplatesForRepositoryError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListAssociatedApprovalRuleTemplatesForRepositoryInput,
   output: ListAssociatedApprovalRuleTemplatesForRepositoryOutput,
   errors: [
@@ -7419,27 +7131,7 @@ export const listAssociatedApprovalRuleTemplatesForRepository: API.OperationMeth
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListAssociatedApprovalRuleTemplatesForRepositoryInput,
-  ListAssociatedApprovalRuleTemplatesForRepositoryOutput,
-  ListAssociatedApprovalRuleTemplatesForRepositoryError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAssociatedApprovalRuleTemplatesForRepositoryInput,
-  ) => stream.Stream<
-    ListAssociatedApprovalRuleTemplatesForRepositoryOutput,
-    ListAssociatedApprovalRuleTemplatesForRepositoryError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAssociatedApprovalRuleTemplatesForRepositoryInput,
-  ) => stream.Stream<
-    unknown,
-    ListAssociatedApprovalRuleTemplatesForRepositoryError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListBranchesError =
   | EncryptionIntegrityChecksFailedException
@@ -7455,27 +7147,13 @@ export type ListBranchesError =
 /**
  * Gets information about one or more branches in a repository.
  */
-export const listBranches: API.OperationMethod<
+export const listBranches: API.PaginatedOperationMethod<
   ListBranchesInput,
   ListBranchesOutput,
   ListBranchesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListBranchesInput,
-  ) => stream.Stream<
-    ListBranchesOutput,
-    ListBranchesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListBranchesInput,
-  ) => stream.Stream<
-    BranchName,
-    ListBranchesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  BranchName
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListBranchesInput,
   output: ListBranchesOutput,
   errors: [
@@ -7497,27 +7175,7 @@ export const listBranches: API.OperationMethod<
     outputToken: "nextToken",
     items: "branches",
   } as const,
-})) as any as API.OperationMethod<
-  ListBranchesInput,
-  ListBranchesOutput,
-  ListBranchesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListBranchesInput,
-  ) => stream.Stream<
-    ListBranchesOutput,
-    ListBranchesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListBranchesInput,
-  ) => stream.Stream<
-    BranchName,
-    ListBranchesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListFileCommitHistoryError =
   | CommitDoesNotExistException
@@ -7538,27 +7196,13 @@ export type ListFileCommitHistoryError =
 /**
  * Retrieves a list of commits and changes to a specified file.
  */
-export const listFileCommitHistory: API.OperationMethod<
+export const listFileCommitHistory: API.PaginatedOperationMethod<
   ListFileCommitHistoryRequest,
   ListFileCommitHistoryResponse,
   ListFileCommitHistoryError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListFileCommitHistoryRequest,
-  ) => stream.Stream<
-    ListFileCommitHistoryResponse,
-    ListFileCommitHistoryError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListFileCommitHistoryRequest,
-  ) => stream.Stream<
-    unknown,
-    ListFileCommitHistoryError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListFileCommitHistoryRequest,
   output: ListFileCommitHistoryResponse,
   errors: [
@@ -7585,27 +7229,7 @@ export const listFileCommitHistory: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListFileCommitHistoryRequest,
-  ListFileCommitHistoryResponse,
-  ListFileCommitHistoryError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListFileCommitHistoryRequest,
-  ) => stream.Stream<
-    ListFileCommitHistoryResponse,
-    ListFileCommitHistoryError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListFileCommitHistoryRequest,
-  ) => stream.Stream<
-    unknown,
-    ListFileCommitHistoryError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListPullRequestsError =
   | AuthorDoesNotExistException
@@ -7626,27 +7250,13 @@ export type ListPullRequestsError =
  * Returns a list of pull requests for a specified repository. The return list can be refined by pull request
  * status or pull request author ARN.
  */
-export const listPullRequests: API.OperationMethod<
+export const listPullRequests: API.PaginatedOperationMethod<
   ListPullRequestsInput,
   ListPullRequestsOutput,
   ListPullRequestsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPullRequestsInput,
-  ) => stream.Stream<
-    ListPullRequestsOutput,
-    ListPullRequestsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPullRequestsInput,
-  ) => stream.Stream<
-    unknown,
-    ListPullRequestsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListPullRequestsInput,
   output: ListPullRequestsOutput,
   errors: [
@@ -7672,27 +7282,7 @@ export const listPullRequests: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListPullRequestsInput,
-  ListPullRequestsOutput,
-  ListPullRequestsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPullRequestsInput,
-  ) => stream.Stream<
-    ListPullRequestsOutput,
-    ListPullRequestsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPullRequestsInput,
-  ) => stream.Stream<
-    unknown,
-    ListPullRequestsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListRepositoriesError =
   | InvalidContinuationTokenException
@@ -7702,27 +7292,13 @@ export type ListRepositoriesError =
 /**
  * Gets information about one or more repositories.
  */
-export const listRepositories: API.OperationMethod<
+export const listRepositories: API.PaginatedOperationMethod<
   ListRepositoriesInput,
   ListRepositoriesOutput,
   ListRepositoriesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListRepositoriesInput,
-  ) => stream.Stream<
-    ListRepositoriesOutput,
-    ListRepositoriesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListRepositoriesInput,
-  ) => stream.Stream<
-    RepositoryNameIdPair,
-    ListRepositoriesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  RepositoryNameIdPair
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListRepositoriesInput,
   output: ListRepositoriesOutput,
   errors: [
@@ -7738,27 +7314,7 @@ export const listRepositories: API.OperationMethod<
     outputToken: "nextToken",
     items: "repositories",
   } as const,
-})) as any as API.OperationMethod<
-  ListRepositoriesInput,
-  ListRepositoriesOutput,
-  ListRepositoriesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListRepositoriesInput,
-  ) => stream.Stream<
-    ListRepositoriesOutput,
-    ListRepositoriesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListRepositoriesInput,
-  ) => stream.Stream<
-    RepositoryNameIdPair,
-    ListRepositoriesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListRepositoriesForApprovalRuleTemplateError =
   | ApprovalRuleTemplateDoesNotExistException
@@ -7775,27 +7331,13 @@ export type ListRepositoriesForApprovalRuleTemplateError =
 /**
  * Lists all repositories associated with the specified approval rule template.
  */
-export const listRepositoriesForApprovalRuleTemplate: API.OperationMethod<
+export const listRepositoriesForApprovalRuleTemplate: API.PaginatedOperationMethod<
   ListRepositoriesForApprovalRuleTemplateInput,
   ListRepositoriesForApprovalRuleTemplateOutput,
   ListRepositoriesForApprovalRuleTemplateError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListRepositoriesForApprovalRuleTemplateInput,
-  ) => stream.Stream<
-    ListRepositoriesForApprovalRuleTemplateOutput,
-    ListRepositoriesForApprovalRuleTemplateError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListRepositoriesForApprovalRuleTemplateInput,
-  ) => stream.Stream<
-    unknown,
-    ListRepositoriesForApprovalRuleTemplateError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListRepositoriesForApprovalRuleTemplateInput,
   output: ListRepositoriesForApprovalRuleTemplateOutput,
   errors: [
@@ -7818,27 +7360,7 @@ export const listRepositoriesForApprovalRuleTemplate: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListRepositoriesForApprovalRuleTemplateInput,
-  ListRepositoriesForApprovalRuleTemplateOutput,
-  ListRepositoriesForApprovalRuleTemplateError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListRepositoriesForApprovalRuleTemplateInput,
-  ) => stream.Stream<
-    ListRepositoriesForApprovalRuleTemplateOutput,
-    ListRepositoriesForApprovalRuleTemplateError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListRepositoriesForApprovalRuleTemplateInput,
-  ) => stream.Stream<
-    unknown,
-    ListRepositoriesForApprovalRuleTemplateError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsForResourceError =
   | InvalidRepositoryNameException
@@ -7854,7 +7376,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceInput,
   ListTagsForResourceOutput,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceInput,
   output: ListTagsForResourceOutput,
@@ -7897,7 +7419,7 @@ export const mergeBranchesByFastForward: API.OperationMethod<
   MergeBranchesByFastForwardInput,
   MergeBranchesByFastForwardOutput,
   MergeBranchesByFastForwardError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: MergeBranchesByFastForwardInput,
   output: MergeBranchesByFastForwardOutput,
@@ -7975,7 +7497,7 @@ export const mergeBranchesBySquash: API.OperationMethod<
   MergeBranchesBySquashInput,
   MergeBranchesBySquashOutput,
   MergeBranchesBySquashError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: MergeBranchesBySquashInput,
   output: MergeBranchesBySquashOutput,
@@ -8073,7 +7595,7 @@ export const mergeBranchesByThreeWay: API.OperationMethod<
   MergeBranchesByThreeWayInput,
   MergeBranchesByThreeWayOutput,
   MergeBranchesByThreeWayError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: MergeBranchesByThreeWayInput,
   output: MergeBranchesByThreeWayOutput,
@@ -8152,7 +7674,7 @@ export const mergePullRequestByFastForward: API.OperationMethod<
   MergePullRequestByFastForwardInput,
   MergePullRequestByFastForwardOutput,
   MergePullRequestByFastForwardError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: MergePullRequestByFastForwardInput,
   output: MergePullRequestByFastForwardOutput,
@@ -8230,7 +7752,7 @@ export const mergePullRequestBySquash: API.OperationMethod<
   MergePullRequestBySquashInput,
   MergePullRequestBySquashOutput,
   MergePullRequestBySquashError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: MergePullRequestBySquashInput,
   output: MergePullRequestBySquashOutput,
@@ -8327,7 +7849,7 @@ export const mergePullRequestByThreeWay: API.OperationMethod<
   MergePullRequestByThreeWayInput,
   MergePullRequestByThreeWayOutput,
   MergePullRequestByThreeWayError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: MergePullRequestByThreeWayInput,
   output: MergePullRequestByThreeWayOutput,
@@ -8400,7 +7922,7 @@ export const overridePullRequestApprovalRules: API.OperationMethod<
   OverridePullRequestApprovalRulesInput,
   OverridePullRequestApprovalRulesResponse,
   OverridePullRequestApprovalRulesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: OverridePullRequestApprovalRulesInput,
   output: OverridePullRequestApprovalRulesResponse,
@@ -8458,7 +7980,7 @@ export const postCommentForComparedCommit: API.OperationMethod<
   PostCommentForComparedCommitInput,
   PostCommentForComparedCommitOutput,
   PostCommentForComparedCommitError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PostCommentForComparedCommitInput,
   output: PostCommentForComparedCommitOutput,
@@ -8528,7 +8050,7 @@ export const postCommentForPullRequest: API.OperationMethod<
   PostCommentForPullRequestInput,
   PostCommentForPullRequestOutput,
   PostCommentForPullRequestError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PostCommentForPullRequestInput,
   output: PostCommentForPullRequestOutput,
@@ -8583,7 +8105,7 @@ export const postCommentReply: API.OperationMethod<
   PostCommentReplyInput,
   PostCommentReplyOutput,
   PostCommentReplyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PostCommentReplyInput,
   output: PostCommentReplyOutput,
@@ -8619,7 +8141,7 @@ export const putCommentReaction: API.OperationMethod<
   PutCommentReactionInput,
   PutCommentReactionResponse,
   PutCommentReactionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutCommentReactionInput,
   output: PutCommentReactionResponse,
@@ -8676,7 +8198,7 @@ export const putFile: API.OperationMethod<
   PutFileInput,
   PutFileOutput,
   PutFileError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutFileInput,
   output: PutFileOutput,
@@ -8747,7 +8269,7 @@ export const putRepositoryTriggers: API.OperationMethod<
   PutRepositoryTriggersInput,
   PutRepositoryTriggersOutput,
   PutRepositoryTriggersError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutRepositoryTriggersInput,
   output: PutRepositoryTriggersOutput,
@@ -8799,7 +8321,7 @@ export const tagResource: API.OperationMethod<
   TagResourceInput,
   TagResourceResponse,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceInput,
   output: TagResourceResponse,
@@ -8851,7 +8373,7 @@ export const testRepositoryTriggers: API.OperationMethod<
   TestRepositoryTriggersInput,
   TestRepositoryTriggersOutput,
   TestRepositoryTriggersError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TestRepositoryTriggersInput,
   output: TestRepositoryTriggersOutput,
@@ -8902,7 +8424,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceInput,
   UntagResourceResponse,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceInput,
   output: UntagResourceResponse,
@@ -8939,7 +8461,7 @@ export const updateApprovalRuleTemplateContent: API.OperationMethod<
   UpdateApprovalRuleTemplateContentInput,
   UpdateApprovalRuleTemplateContentOutput,
   UpdateApprovalRuleTemplateContentError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateApprovalRuleTemplateContentInput,
   output: UpdateApprovalRuleTemplateContentOutput,
@@ -8969,7 +8491,7 @@ export const updateApprovalRuleTemplateDescription: API.OperationMethod<
   UpdateApprovalRuleTemplateDescriptionInput,
   UpdateApprovalRuleTemplateDescriptionOutput,
   UpdateApprovalRuleTemplateDescriptionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateApprovalRuleTemplateDescriptionInput,
   output: UpdateApprovalRuleTemplateDescriptionOutput,
@@ -8997,7 +8519,7 @@ export const updateApprovalRuleTemplateName: API.OperationMethod<
   UpdateApprovalRuleTemplateNameInput,
   UpdateApprovalRuleTemplateNameOutput,
   UpdateApprovalRuleTemplateNameError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateApprovalRuleTemplateNameInput,
   output: UpdateApprovalRuleTemplateNameOutput,
@@ -9028,7 +8550,7 @@ export const updateComment: API.OperationMethod<
   UpdateCommentInput,
   UpdateCommentOutput,
   UpdateCommentError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateCommentInput,
   output: UpdateCommentOutput,
@@ -9068,7 +8590,7 @@ export const updateDefaultBranch: API.OperationMethod<
   UpdateDefaultBranchInput,
   UpdateDefaultBranchResponse,
   UpdateDefaultBranchError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateDefaultBranchInput,
   output: UpdateDefaultBranchResponse,
@@ -9116,7 +8638,7 @@ export const updatePullRequestApprovalRuleContent: API.OperationMethod<
   UpdatePullRequestApprovalRuleContentInput,
   UpdatePullRequestApprovalRuleContentOutput,
   UpdatePullRequestApprovalRuleContentError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdatePullRequestApprovalRuleContentInput,
   output: UpdatePullRequestApprovalRuleContentOutput,
@@ -9168,7 +8690,7 @@ export const updatePullRequestApprovalState: API.OperationMethod<
   UpdatePullRequestApprovalStateInput,
   UpdatePullRequestApprovalStateResponse,
   UpdatePullRequestApprovalStateError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdatePullRequestApprovalStateInput,
   output: UpdatePullRequestApprovalStateResponse,
@@ -9209,7 +8731,7 @@ export const updatePullRequestDescription: API.OperationMethod<
   UpdatePullRequestDescriptionInput,
   UpdatePullRequestDescriptionOutput,
   UpdatePullRequestDescriptionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdatePullRequestDescriptionInput,
   output: UpdatePullRequestDescriptionOutput,
@@ -9245,7 +8767,7 @@ export const updatePullRequestStatus: API.OperationMethod<
   UpdatePullRequestStatusInput,
   UpdatePullRequestStatusOutput,
   UpdatePullRequestStatusError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdatePullRequestStatusInput,
   output: UpdatePullRequestStatusOutput,
@@ -9282,7 +8804,7 @@ export const updatePullRequestTitle: API.OperationMethod<
   UpdatePullRequestTitleInput,
   UpdatePullRequestTitleOutput,
   UpdatePullRequestTitleError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdatePullRequestTitleInput,
   output: UpdatePullRequestTitleOutput,
@@ -9323,7 +8845,7 @@ export const updateRepositoryDescription: API.OperationMethod<
   UpdateRepositoryDescriptionInput,
   UpdateRepositoryDescriptionResponse,
   UpdateRepositoryDescriptionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateRepositoryDescriptionInput,
   output: UpdateRepositoryDescriptionResponse,
@@ -9363,7 +8885,7 @@ export const updateRepositoryEncryptionKey: API.OperationMethod<
   UpdateRepositoryEncryptionKeyInput,
   UpdateRepositoryEncryptionKeyOutput,
   UpdateRepositoryEncryptionKeyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateRepositoryEncryptionKeyInput,
   output: UpdateRepositoryEncryptionKeyOutput,
@@ -9402,7 +8924,7 @@ export const updateRepositoryName: API.OperationMethod<
   UpdateRepositoryNameInput,
   UpdateRepositoryNameResponse,
   UpdateRepositoryNameError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateRepositoryNameInput,
   output: UpdateRepositoryNameResponse,

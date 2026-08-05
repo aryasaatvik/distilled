@@ -1,7 +1,6 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as redacted from "effect/Redacted";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -9,7 +8,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region as Rgn } from "../region.ts";
 import { SensitiveString } from "../sensitive.ts";
 const svc = T.AwsApiService({ sdkId: "Account", serviceShapeName: "Account" });
 const auth = T.AwsAuthSigv4({ name: "account" });
@@ -104,7 +102,7 @@ export class AccessDeniedException
   extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
     "AccessDeniedException",
     {
-      message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       errorType: S.optional(S.String).pipe(T.HttpHeader("x-amzn-ErrorType")),
     },
     T.HttpError(403),
@@ -113,7 +111,7 @@ export class ConflictException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
     "ConflictException",
     {
-      message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       errorType: S.optional(S.String).pipe(T.HttpHeader("x-amzn-ErrorType")),
     },
     T.HttpError(409),
@@ -122,7 +120,7 @@ export class InternalServerException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
     "InternalServerException",
     {
-      message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       errorType: S.optional(S.String).pipe(T.HttpHeader("x-amzn-ErrorType")),
     },
     T.all(T.HttpError(500), T.Retryable()),
@@ -131,7 +129,7 @@ export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
     {
-      message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       errorType: S.optional(S.String).pipe(T.HttpHeader("x-amzn-ErrorType")),
     },
     T.HttpError(404),
@@ -140,7 +138,7 @@ export class ResourceUnavailableException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceUnavailableException>()(
     "ResourceUnavailableException",
     {
-      message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       errorType: S.optional(S.String).pipe(T.HttpHeader("x-amzn-ErrorType")),
     },
     T.HttpError(424),
@@ -149,7 +147,7 @@ export class TooManyRequestsException
   extends /*@__PURE__*/ S.TaggedErrorClass<TooManyRequestsException>()(
     "TooManyRequestsException",
     {
-      message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       errorType: S.optional(S.String).pipe(T.HttpHeader("x-amzn-ErrorType")),
     },
     T.all(T.HttpError(429), T.Retryable({ throttling: true })),
@@ -158,7 +156,7 @@ export class ValidationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
     "ValidationException",
     {
-      message: SensitiveString,
+      message: SensitiveString.pipe(T.ErrorMessage()),
       reason: S.optional(S.String),
       fieldList: S.optional(
         S.suspend(() => ValidationExceptionFieldList).annotate({
@@ -716,7 +714,7 @@ export const acceptPrimaryEmailUpdate: API.OperationMethod<
   AcceptPrimaryEmailUpdateRequest,
   AcceptPrimaryEmailUpdateResponse,
   AcceptPrimaryEmailUpdateError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AcceptPrimaryEmailUpdateRequest,
   output: AcceptPrimaryEmailUpdateResponse,
@@ -751,7 +749,7 @@ export const deleteAlternateContact: API.OperationMethod<
   DeleteAlternateContactRequest,
   DeleteAlternateContactResponse,
   DeleteAlternateContactError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteAlternateContactRequest,
   output: DeleteAlternateContactResponse,
@@ -783,7 +781,7 @@ export const disableRegion: API.OperationMethod<
   DisableRegionRequest,
   DisableRegionResponse,
   DisableRegionError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DisableRegionRequest,
   output: DisableRegionResponse,
@@ -813,7 +811,7 @@ export const enableRegion: API.OperationMethod<
   EnableRegionRequest,
   EnableRegionResponse,
   EnableRegionError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: EnableRegionRequest,
   output: EnableRegionResponse,
@@ -842,7 +840,7 @@ export const getAccountInformation: API.OperationMethod<
   GetAccountInformationRequest,
   GetAccountInformationResponse,
   GetAccountInformationError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetAccountInformationRequest,
   output: GetAccountInformationResponse,
@@ -875,7 +873,7 @@ export const getAlternateContact: API.OperationMethod<
   GetAlternateContactRequest,
   GetAlternateContactResponse,
   GetAlternateContactError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetAlternateContactRequest,
   output: GetAlternateContactResponse,
@@ -907,7 +905,7 @@ export const getContactInformation: API.OperationMethod<
   GetContactInformationRequest,
   GetContactInformationResponse,
   GetContactInformationError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetContactInformationRequest,
   output: GetContactInformationResponse,
@@ -938,7 +936,7 @@ export const getGovCloudAccountInformation: API.OperationMethod<
   GetGovCloudAccountInformationRequest,
   GetGovCloudAccountInformationResponse,
   GetGovCloudAccountInformationError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetGovCloudAccountInformationRequest,
   output: GetGovCloudAccountInformationResponse,
@@ -969,7 +967,7 @@ export const getPrimaryEmail: API.OperationMethod<
   GetPrimaryEmailRequest,
   GetPrimaryEmailResponse,
   GetPrimaryEmailError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetPrimaryEmailRequest,
   output: GetPrimaryEmailResponse,
@@ -998,7 +996,7 @@ export const getRegionOptStatus: API.OperationMethod<
   GetRegionOptStatusRequest,
   GetRegionOptStatusResponse,
   GetRegionOptStatusError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetRegionOptStatusRequest,
   output: GetRegionOptStatusResponse,
@@ -1022,27 +1020,13 @@ export type ListRegionsError =
 /**
  * Lists all the Regions for a given account and their respective opt-in statuses. Optionally, this list can be filtered by the `region-opt-status-contains` parameter.
  */
-export const listRegions: API.OperationMethod<
+export const listRegions: API.PaginatedOperationMethod<
   ListRegionsRequest,
   ListRegionsResponse,
   ListRegionsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListRegionsRequest,
-  ) => stream.Stream<
-    ListRegionsResponse,
-    ListRegionsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListRegionsRequest,
-  ) => stream.Stream<
-    Region,
-    ListRegionsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Region
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListRegionsRequest,
   output: ListRegionsResponse,
   errors: [
@@ -1060,27 +1044,7 @@ export const listRegions: API.OperationMethod<
     items: "Regions",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListRegionsRequest,
-  ListRegionsResponse,
-  ListRegionsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListRegionsRequest,
-  ) => stream.Stream<
-    ListRegionsResponse,
-    ListRegionsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListRegionsRequest,
-  ) => stream.Stream<
-    Region,
-    ListRegionsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type PutAccountNameError =
   | AccessDeniedException
@@ -1095,7 +1059,7 @@ export const putAccountName: API.OperationMethod<
   PutAccountNameRequest,
   PutAccountNameResponse,
   PutAccountNameError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutAccountNameRequest,
   output: PutAccountNameResponse,
@@ -1127,7 +1091,7 @@ export const putAlternateContact: API.OperationMethod<
   PutAlternateContactRequest,
   PutAlternateContactResponse,
   PutAlternateContactError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutAlternateContactRequest,
   output: PutAlternateContactResponse,
@@ -1157,7 +1121,7 @@ export const putContactInformation: API.OperationMethod<
   PutContactInformationRequest,
   PutContactInformationResponse,
   PutContactInformationError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutContactInformationRequest,
   output: PutContactInformationResponse,
@@ -1187,7 +1151,7 @@ export const startPrimaryEmailUpdate: API.OperationMethod<
   StartPrimaryEmailUpdateRequest,
   StartPrimaryEmailUpdateResponse,
   StartPrimaryEmailUpdateError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartPrimaryEmailUpdateRequest,
   output: StartPrimaryEmailUpdateResponse,

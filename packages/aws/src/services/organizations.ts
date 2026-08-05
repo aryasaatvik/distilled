@@ -1,7 +1,6 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as redacted from "effect/Redacted";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -9,7 +8,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 import { SensitiveString } from "../sensitive.ts";
 const ns = T.XmlNamespace("http://organizations.amazonaws.com/doc/2016-11-28/");
 const svc = T.AwsApiService({
@@ -225,14 +223,14 @@ const rules = T.EndpointResolver((p, _) => {
 export class AccessDeniedException
   extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
     "AccessDeniedException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(403),
   ).pipe(C.withAuthError) {}
 export class AccessDeniedForDependencyException
   extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedForDependencyException>()(
     "AccessDeniedForDependencyException",
     {
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       Reason: S.optional(
         S.suspend(() => AccessDeniedForDependencyExceptionReason).annotate({
           identifier: "AccessDeniedForDependencyExceptionReason",
@@ -244,68 +242,68 @@ export class AccessDeniedForDependencyException
 export class AccountAlreadyClosedException
   extends /*@__PURE__*/ S.TaggedErrorClass<AccountAlreadyClosedException>()(
     "AccountAlreadyClosedException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class AccountAlreadyRegisteredException
   extends /*@__PURE__*/ S.TaggedErrorClass<AccountAlreadyRegisteredException>()(
     "AccountAlreadyRegisteredException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class AccountNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<AccountNotFoundException>()(
     "AccountNotFoundException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class AccountNotRegisteredException
   extends /*@__PURE__*/ S.TaggedErrorClass<AccountNotRegisteredException>()(
     "AccountNotRegisteredException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class AccountOwnerNotVerifiedException
   extends /*@__PURE__*/ S.TaggedErrorClass<AccountOwnerNotVerifiedException>()(
     "AccountOwnerNotVerifiedException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(403),
   ).pipe(C.withAuthError) {}
 export class AlreadyInOrganizationException
   extends /*@__PURE__*/ S.TaggedErrorClass<AlreadyInOrganizationException>()(
     "AlreadyInOrganizationException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class AWSOrganizationsNotInUseException
   extends /*@__PURE__*/ S.TaggedErrorClass<AWSOrganizationsNotInUseException>()(
     "AWSOrganizationsNotInUseException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class ChildNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ChildNotFoundException>()(
     "ChildNotFoundException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class ConcurrentModificationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConcurrentModificationException>()(
     "ConcurrentModificationException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class ConflictException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
     "ConflictException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class ConstraintViolationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConstraintViolationException>()(
     "ConstraintViolationException",
     {
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       Reason: S.optional(
         S.suspend(() => ConstraintViolationExceptionReason).annotate({
           identifier: "ConstraintViolationExceptionReason",
@@ -317,67 +315,67 @@ export class ConstraintViolationException
 export class CreateAccountStatusNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<CreateAccountStatusNotFoundException>()(
     "CreateAccountStatusNotFoundException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class DestinationParentNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<DestinationParentNotFoundException>()(
     "DestinationParentNotFoundException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class DuplicateAccountException
   extends /*@__PURE__*/ S.TaggedErrorClass<DuplicateAccountException>()(
     "DuplicateAccountException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class DuplicateHandshakeException
   extends /*@__PURE__*/ S.TaggedErrorClass<DuplicateHandshakeException>()(
     "DuplicateHandshakeException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class DuplicateOrganizationalUnitException
   extends /*@__PURE__*/ S.TaggedErrorClass<DuplicateOrganizationalUnitException>()(
     "DuplicateOrganizationalUnitException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class DuplicatePolicyAttachmentException
   extends /*@__PURE__*/ S.TaggedErrorClass<DuplicatePolicyAttachmentException>()(
     "DuplicatePolicyAttachmentException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class DuplicatePolicyException
   extends /*@__PURE__*/ S.TaggedErrorClass<DuplicatePolicyException>()(
     "DuplicatePolicyException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class EffectivePolicyNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<EffectivePolicyNotFoundException>()(
     "EffectivePolicyNotFoundException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class FinalizingOrganizationException
   extends /*@__PURE__*/ S.TaggedErrorClass<FinalizingOrganizationException>()(
     "FinalizingOrganizationException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class HandshakeAlreadyInStateException
   extends /*@__PURE__*/ S.TaggedErrorClass<HandshakeAlreadyInStateException>()(
     "HandshakeAlreadyInStateException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class HandshakeConstraintViolationException
   extends /*@__PURE__*/ S.TaggedErrorClass<HandshakeConstraintViolationException>()(
     "HandshakeConstraintViolationException",
     {
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       Reason: S.optional(
         S.suspend(() => HandshakeConstraintViolationExceptionReason).annotate({
           identifier: "HandshakeConstraintViolationExceptionReason",
@@ -389,20 +387,20 @@ export class HandshakeConstraintViolationException
 export class HandshakeNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<HandshakeNotFoundException>()(
     "HandshakeNotFoundException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class InvalidHandshakeTransitionException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidHandshakeTransitionException>()(
     "InvalidHandshakeTransitionException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class InvalidInputException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidInputException>()(
     "InvalidInputException",
     {
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       Reason: S.optional(
         S.suspend(() => InvalidInputExceptionReason).annotate({
           identifier: "InvalidInputExceptionReason",
@@ -414,138 +412,141 @@ export class InvalidInputException
 export class InvalidResponsibilityTransferTransitionException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidResponsibilityTransferTransitionException>()(
     "InvalidResponsibilityTransferTransitionException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class MalformedPolicyDocumentException
   extends /*@__PURE__*/ S.TaggedErrorClass<MalformedPolicyDocumentException>()(
     "MalformedPolicyDocumentException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class MasterCannotLeaveOrganizationException
   extends /*@__PURE__*/ S.TaggedErrorClass<MasterCannotLeaveOrganizationException>()(
     "MasterCannotLeaveOrganizationException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class OrganizationalUnitNotEmptyException
   extends /*@__PURE__*/ S.TaggedErrorClass<OrganizationalUnitNotEmptyException>()(
     "OrganizationalUnitNotEmptyException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class OrganizationalUnitNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<OrganizationalUnitNotFoundException>()(
     "OrganizationalUnitNotFoundException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class OrganizationNotEmptyException
   extends /*@__PURE__*/ S.TaggedErrorClass<OrganizationNotEmptyException>()(
     "OrganizationNotEmptyException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class ParentNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ParentNotFoundException>()(
     "ParentNotFoundException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class PolicyChangesInProgressException
   extends /*@__PURE__*/ S.TaggedErrorClass<PolicyChangesInProgressException>()(
     "PolicyChangesInProgressException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class PolicyInUseException
   extends /*@__PURE__*/ S.TaggedErrorClass<PolicyInUseException>()(
     "PolicyInUseException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class PolicyNotAttachedException
   extends /*@__PURE__*/ S.TaggedErrorClass<PolicyNotAttachedException>()(
     "PolicyNotAttachedException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class PolicyNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<PolicyNotFoundException>()(
     "PolicyNotFoundException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class PolicyTypeAlreadyEnabledException
   extends /*@__PURE__*/ S.TaggedErrorClass<PolicyTypeAlreadyEnabledException>()(
     "PolicyTypeAlreadyEnabledException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class PolicyTypeNotAvailableForOrganizationException
   extends /*@__PURE__*/ S.TaggedErrorClass<PolicyTypeNotAvailableForOrganizationException>()(
     "PolicyTypeNotAvailableForOrganizationException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class PolicyTypeNotEnabledException
   extends /*@__PURE__*/ S.TaggedErrorClass<PolicyTypeNotEnabledException>()(
     "PolicyTypeNotEnabledException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class ResourcePolicyNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourcePolicyNotFoundException>()(
     "ResourcePolicyNotFoundException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class ResponsibilityTransferAlreadyInStatusException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResponsibilityTransferAlreadyInStatusException>()(
     "ResponsibilityTransferAlreadyInStatusException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class ResponsibilityTransferNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResponsibilityTransferNotFoundException>()(
     "ResponsibilityTransferNotFoundException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class RootNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<RootNotFoundException>()(
     "RootNotFoundException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class ServiceException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceException>()(
     "ServiceException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(500),
   ).pipe(C.withServerError) {}
 export class SourceParentNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<SourceParentNotFoundException>()(
     "SourceParentNotFoundException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class TargetNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<TargetNotFoundException>()(
     "TargetNotFoundException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class TooManyRequestsException
   extends /*@__PURE__*/ S.TaggedErrorClass<TooManyRequestsException>()(
     "TooManyRequestsException",
-    { Type: S.optional(S.String), Message: S.optional(S.String) },
+    {
+      Type: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(429),
   ).pipe(C.withThrottlingError) {}
 export class UnsupportedAPIEndpointException
   extends /*@__PURE__*/ S.TaggedErrorClass<UnsupportedAPIEndpointException>()(
     "UnsupportedAPIEndpointException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(403),
   ).pipe(C.withAuthError) {}
 export type HandshakeId = string;
@@ -3298,7 +3299,7 @@ export const acceptHandshake: API.OperationMethod<
   AcceptHandshakeRequest,
   AcceptHandshakeResponse,
   AcceptHandshakeError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AcceptHandshakeRequest,
   output: AcceptHandshakeResponse,
@@ -3374,7 +3375,7 @@ export const attachPolicy: API.OperationMethod<
   AttachPolicyRequest,
   AttachPolicyResponse,
   AttachPolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AttachPolicyRequest,
   output: AttachPolicyResponse,
@@ -3421,7 +3422,7 @@ export const cancelHandshake: API.OperationMethod<
   CancelHandshakeRequest,
   CancelHandshakeResponse,
   CancelHandshakeError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CancelHandshakeRequest,
   output: CancelHandshakeResponse,
@@ -3506,7 +3507,7 @@ export const closeAccount: API.OperationMethod<
   CloseAccountRequest,
   CloseAccountResponse,
   CloseAccountError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CloseAccountRequest,
   output: CloseAccountResponse,
@@ -3615,7 +3616,7 @@ export const createAccount: API.OperationMethod<
   CreateAccountRequest,
   CreateAccountResponse,
   CreateAccountError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateAccountRequest,
   output: CreateAccountResponse,
@@ -3766,7 +3767,7 @@ export const createGovCloudAccount: API.OperationMethod<
   CreateGovCloudAccountRequest,
   CreateGovCloudAccountResponse,
   CreateGovCloudAccountError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateGovCloudAccountRequest,
   output: CreateGovCloudAccountResponse,
@@ -3820,7 +3821,7 @@ export const createOrganization: API.OperationMethod<
   CreateOrganizationRequest,
   CreateOrganizationResponse,
   CreateOrganizationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateOrganizationRequest,
   output: CreateOrganizationResponse,
@@ -3869,7 +3870,7 @@ export const createOrganizationalUnit: API.OperationMethod<
   CreateOrganizationalUnitRequest,
   CreateOrganizationalUnitResponse,
   CreateOrganizationalUnitError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateOrganizationalUnitRequest,
   output: CreateOrganizationalUnitResponse,
@@ -3918,7 +3919,7 @@ export const createPolicy: API.OperationMethod<
   CreatePolicyRequest,
   CreatePolicyResponse,
   CreatePolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreatePolicyRequest,
   output: CreatePolicyResponse,
@@ -3963,7 +3964,7 @@ export const declineHandshake: API.OperationMethod<
   DeclineHandshakeRequest,
   DeclineHandshakeResponse,
   DeclineHandshakeError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeclineHandshakeRequest,
   output: DeclineHandshakeResponse,
@@ -4005,7 +4006,7 @@ export const deleteOrganization: API.OperationMethod<
   DeleteOrganizationRequest,
   DeleteOrganizationResponse,
   DeleteOrganizationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteOrganizationRequest,
   output: DeleteOrganizationResponse,
@@ -4044,7 +4045,7 @@ export const deleteOrganizationalUnit: API.OperationMethod<
   DeleteOrganizationalUnitRequest,
   DeleteOrganizationalUnitResponse,
   DeleteOrganizationalUnitError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteOrganizationalUnitRequest,
   output: DeleteOrganizationalUnitResponse,
@@ -4085,7 +4086,7 @@ export const deletePolicy: API.OperationMethod<
   DeletePolicyRequest,
   DeletePolicyResponse,
   DeletePolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeletePolicyRequest,
   output: DeletePolicyResponse,
@@ -4124,7 +4125,7 @@ export const deleteResourcePolicy: API.OperationMethod<
   DeleteResourcePolicyRequest,
   DeleteResourcePolicyResponse,
   DeleteResourcePolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteResourcePolicyRequest,
   output: DeleteResourcePolicyResponse,
@@ -4175,7 +4176,7 @@ export const deregisterDelegatedAdministrator: API.OperationMethod<
   DeregisterDelegatedAdministratorRequest,
   DeregisterDelegatedAdministratorResponse,
   DeregisterDelegatedAdministratorError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeregisterDelegatedAdministratorRequest,
   output: DeregisterDelegatedAdministratorResponse,
@@ -4213,7 +4214,7 @@ export const describeAccount: API.OperationMethod<
   DescribeAccountRequest,
   DescribeAccountResponse,
   DescribeAccountError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeAccountRequest,
   output: DescribeAccountResponse,
@@ -4248,7 +4249,7 @@ export const describeCreateAccountStatus: API.OperationMethod<
   DescribeCreateAccountStatusRequest,
   DescribeCreateAccountStatusResponse,
   DescribeCreateAccountStatusError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeCreateAccountStatusRequest,
   output: DescribeCreateAccountStatusResponse,
@@ -4296,7 +4297,7 @@ export const describeEffectivePolicy: API.OperationMethod<
   DescribeEffectivePolicyRequest,
   DescribeEffectivePolicyResponse,
   DescribeEffectivePolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeEffectivePolicyRequest,
   output: DescribeEffectivePolicyResponse,
@@ -4337,7 +4338,7 @@ export const describeHandshake: API.OperationMethod<
   DescribeHandshakeRequest,
   DescribeHandshakeResponse,
   DescribeHandshakeError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeHandshakeRequest,
   output: DescribeHandshakeResponse,
@@ -4375,7 +4376,7 @@ export const describeOrganization: API.OperationMethod<
   DescribeOrganizationRequest,
   DescribeOrganizationResponse,
   DescribeOrganizationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeOrganizationRequest,
   output: DescribeOrganizationResponse,
@@ -4408,7 +4409,7 @@ export const describeOrganizationalUnit: API.OperationMethod<
   DescribeOrganizationalUnitRequest,
   DescribeOrganizationalUnitResponse,
   DescribeOrganizationalUnitError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeOrganizationalUnitRequest,
   output: DescribeOrganizationalUnitResponse,
@@ -4443,7 +4444,7 @@ export const describePolicy: API.OperationMethod<
   DescribePolicyRequest,
   DescribePolicyResponse,
   DescribePolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribePolicyRequest,
   output: DescribePolicyResponse,
@@ -4479,7 +4480,7 @@ export const describeResourcePolicy: API.OperationMethod<
   DescribeResourcePolicyRequest,
   DescribeResourcePolicyResponse,
   DescribeResourcePolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeResourcePolicyRequest,
   output: DescribeResourcePolicyResponse,
@@ -4515,7 +4516,7 @@ export const describeResponsibilityTransfer: API.OperationMethod<
   DescribeResponsibilityTransferRequest,
   DescribeResponsibilityTransferResponse,
   DescribeResponsibilityTransferError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeResponsibilityTransferRequest,
   output: DescribeResponsibilityTransferResponse,
@@ -4569,7 +4570,7 @@ export const detachPolicy: API.OperationMethod<
   DetachPolicyRequest,
   DetachPolicyResponse,
   DetachPolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DetachPolicyRequest,
   output: DetachPolicyResponse,
@@ -4663,7 +4664,7 @@ export const disableAWSServiceAccess: API.OperationMethod<
   DisableAWSServiceAccessRequest,
   DisableAWSServiceAccessResponse,
   DisableAWSServiceAccessError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DisableAWSServiceAccessRequest,
   output: DisableAWSServiceAccessResponse,
@@ -4715,7 +4716,7 @@ export const disablePolicyType: API.OperationMethod<
   DisablePolicyTypeRequest,
   DisablePolicyTypeResponse,
   DisablePolicyTypeError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DisablePolicyTypeRequest,
   output: DisablePolicyTypeResponse,
@@ -4781,7 +4782,7 @@ export const enableAllFeatures: API.OperationMethod<
   EnableAllFeaturesRequest,
   EnableAllFeaturesResponse,
   EnableAllFeaturesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: EnableAllFeaturesRequest,
   output: EnableAllFeaturesResponse,
@@ -4835,7 +4836,7 @@ export const enableAWSServiceAccess: API.OperationMethod<
   EnableAWSServiceAccessRequest,
   EnableAWSServiceAccessResponse,
   EnableAWSServiceAccessError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: EnableAWSServiceAccessRequest,
   output: EnableAWSServiceAccessResponse,
@@ -4888,7 +4889,7 @@ export const enablePolicyType: API.OperationMethod<
   EnablePolicyTypeRequest,
   EnablePolicyTypeResponse,
   EnablePolicyTypeError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: EnablePolicyTypeRequest,
   output: EnablePolicyTypeResponse,
@@ -4945,7 +4946,7 @@ export const inviteAccountToOrganization: API.OperationMethod<
   InviteAccountToOrganizationRequest,
   InviteAccountToOrganizationResponse,
   InviteAccountToOrganizationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: InviteAccountToOrganizationRequest,
   output: InviteAccountToOrganizationResponse,
@@ -4990,7 +4991,7 @@ export const inviteOrganizationToTransferResponsibility: API.OperationMethod<
   InviteOrganizationToTransferResponsibilityRequest,
   InviteOrganizationToTransferResponsibilityResponse,
   InviteOrganizationToTransferResponsibilityError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: InviteOrganizationToTransferResponsibilityRequest,
   output: InviteOrganizationToTransferResponsibilityResponse,
@@ -5082,7 +5083,7 @@ export const leaveOrganization: API.OperationMethod<
   LeaveOrganizationRequest,
   LeaveOrganizationResponse,
   LeaveOrganizationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: LeaveOrganizationRequest,
   output: LeaveOrganizationResponse,
@@ -5119,27 +5120,13 @@ export type ListAccountsError =
  *
  * You can only call this operation from the management account or a member account that is a delegated administrator.
  */
-export const listAccounts: API.OperationMethod<
+export const listAccounts: API.PaginatedOperationMethod<
   ListAccountsRequest,
   ListAccountsResponse,
   ListAccountsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAccountsRequest,
-  ) => stream.Stream<
-    ListAccountsResponse,
-    ListAccountsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAccountsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListAccountsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListAccountsRequest,
   output: ListAccountsResponse,
   errors: [
@@ -5157,27 +5144,7 @@ export const listAccounts: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListAccountsRequest,
-  ListAccountsResponse,
-  ListAccountsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAccountsRequest,
-  ) => stream.Stream<
-    ListAccountsResponse,
-    ListAccountsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAccountsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListAccountsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListAccountsForParentError =
   | AccessDeniedException
@@ -5200,27 +5167,13 @@ export type ListAccountsForParentError =
  *
  * You can only call this operation from the management account or a member account that is a delegated administrator.
  */
-export const listAccountsForParent: API.OperationMethod<
+export const listAccountsForParent: API.PaginatedOperationMethod<
   ListAccountsForParentRequest,
   ListAccountsForParentResponse,
   ListAccountsForParentError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAccountsForParentRequest,
-  ) => stream.Stream<
-    ListAccountsForParentResponse,
-    ListAccountsForParentError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAccountsForParentRequest,
-  ) => stream.Stream<
-    unknown,
-    ListAccountsForParentError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListAccountsForParentRequest,
   output: ListAccountsForParentResponse,
   errors: [
@@ -5239,27 +5192,7 @@ export const listAccountsForParent: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListAccountsForParentRequest,
-  ListAccountsForParentResponse,
-  ListAccountsForParentError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAccountsForParentRequest,
-  ) => stream.Stream<
-    ListAccountsForParentResponse,
-    ListAccountsForParentError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAccountsForParentRequest,
-  ) => stream.Stream<
-    unknown,
-    ListAccountsForParentError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListAccountsWithInvalidEffectivePolicyError =
   | AccessDeniedException
@@ -5279,27 +5212,13 @@ export type ListAccountsWithInvalidEffectivePolicyError =
  *
  * You can only call this operation from the management account or a member account that is a delegated administrator.
  */
-export const listAccountsWithInvalidEffectivePolicy: API.OperationMethod<
+export const listAccountsWithInvalidEffectivePolicy: API.PaginatedOperationMethod<
   ListAccountsWithInvalidEffectivePolicyRequest,
   ListAccountsWithInvalidEffectivePolicyResponse,
   ListAccountsWithInvalidEffectivePolicyError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAccountsWithInvalidEffectivePolicyRequest,
-  ) => stream.Stream<
-    ListAccountsWithInvalidEffectivePolicyResponse,
-    ListAccountsWithInvalidEffectivePolicyError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAccountsWithInvalidEffectivePolicyRequest,
-  ) => stream.Stream<
-    Account,
-    ListAccountsWithInvalidEffectivePolicyError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Account
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListAccountsWithInvalidEffectivePolicyRequest,
   output: ListAccountsWithInvalidEffectivePolicyResponse,
   errors: [
@@ -5321,27 +5240,7 @@ export const listAccountsWithInvalidEffectivePolicy: API.OperationMethod<
     items: "Accounts",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListAccountsWithInvalidEffectivePolicyRequest,
-  ListAccountsWithInvalidEffectivePolicyResponse,
-  ListAccountsWithInvalidEffectivePolicyError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAccountsWithInvalidEffectivePolicyRequest,
-  ) => stream.Stream<
-    ListAccountsWithInvalidEffectivePolicyResponse,
-    ListAccountsWithInvalidEffectivePolicyError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAccountsWithInvalidEffectivePolicyRequest,
-  ) => stream.Stream<
-    Account,
-    ListAccountsWithInvalidEffectivePolicyError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListAWSServiceAccessForOrganizationError =
   | AccessDeniedException
@@ -5363,27 +5262,13 @@ export type ListAWSServiceAccessForOrganizationError =
  *
  * You can only call this operation from the management account or a member account that is a delegated administrator.
  */
-export const listAWSServiceAccessForOrganization: API.OperationMethod<
+export const listAWSServiceAccessForOrganization: API.PaginatedOperationMethod<
   ListAWSServiceAccessForOrganizationRequest,
   ListAWSServiceAccessForOrganizationResponse,
   ListAWSServiceAccessForOrganizationError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAWSServiceAccessForOrganizationRequest,
-  ) => stream.Stream<
-    ListAWSServiceAccessForOrganizationResponse,
-    ListAWSServiceAccessForOrganizationError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAWSServiceAccessForOrganizationRequest,
-  ) => stream.Stream<
-    unknown,
-    ListAWSServiceAccessForOrganizationError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListAWSServiceAccessForOrganizationRequest,
   output: ListAWSServiceAccessForOrganizationResponse,
   errors: [
@@ -5403,27 +5288,7 @@ export const listAWSServiceAccessForOrganization: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListAWSServiceAccessForOrganizationRequest,
-  ListAWSServiceAccessForOrganizationResponse,
-  ListAWSServiceAccessForOrganizationError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAWSServiceAccessForOrganizationRequest,
-  ) => stream.Stream<
-    ListAWSServiceAccessForOrganizationResponse,
-    ListAWSServiceAccessForOrganizationError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAWSServiceAccessForOrganizationRequest,
-  ) => stream.Stream<
-    unknown,
-    ListAWSServiceAccessForOrganizationError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListChildrenError =
   | AccessDeniedException
@@ -5444,27 +5309,13 @@ export type ListChildrenError =
  *
  * You can only call this operation from the management account or a member account that is a delegated administrator.
  */
-export const listChildren: API.OperationMethod<
+export const listChildren: API.PaginatedOperationMethod<
   ListChildrenRequest,
   ListChildrenResponse,
   ListChildrenError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListChildrenRequest,
-  ) => stream.Stream<
-    ListChildrenResponse,
-    ListChildrenError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListChildrenRequest,
-  ) => stream.Stream<
-    unknown,
-    ListChildrenError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListChildrenRequest,
   output: ListChildrenResponse,
   errors: [
@@ -5483,27 +5334,7 @@ export const listChildren: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListChildrenRequest,
-  ListChildrenResponse,
-  ListChildrenError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListChildrenRequest,
-  ) => stream.Stream<
-    ListChildrenResponse,
-    ListChildrenError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListChildrenRequest,
-  ) => stream.Stream<
-    unknown,
-    ListChildrenError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListCreateAccountStatusError =
   | AccessDeniedException
@@ -5523,27 +5354,13 @@ export type ListCreateAccountStatusError =
  *
  * You can only call this operation from the management account or a member account that is a delegated administrator.
  */
-export const listCreateAccountStatus: API.OperationMethod<
+export const listCreateAccountStatus: API.PaginatedOperationMethod<
   ListCreateAccountStatusRequest,
   ListCreateAccountStatusResponse,
   ListCreateAccountStatusError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCreateAccountStatusRequest,
-  ) => stream.Stream<
-    ListCreateAccountStatusResponse,
-    ListCreateAccountStatusError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCreateAccountStatusRequest,
-  ) => stream.Stream<
-    unknown,
-    ListCreateAccountStatusError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListCreateAccountStatusRequest,
   output: ListCreateAccountStatusResponse,
   errors: [
@@ -5562,27 +5379,7 @@ export const listCreateAccountStatus: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListCreateAccountStatusRequest,
-  ListCreateAccountStatusResponse,
-  ListCreateAccountStatusError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCreateAccountStatusRequest,
-  ) => stream.Stream<
-    ListCreateAccountStatusResponse,
-    ListCreateAccountStatusError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCreateAccountStatusRequest,
-  ) => stream.Stream<
-    unknown,
-    ListCreateAccountStatusError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListDelegatedAdministratorsError =
   | AccessDeniedException
@@ -5599,27 +5396,13 @@ export type ListDelegatedAdministratorsError =
  *
  * You can only call this operation from the management account or a member account that is a delegated administrator.
  */
-export const listDelegatedAdministrators: API.OperationMethod<
+export const listDelegatedAdministrators: API.PaginatedOperationMethod<
   ListDelegatedAdministratorsRequest,
   ListDelegatedAdministratorsResponse,
   ListDelegatedAdministratorsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDelegatedAdministratorsRequest,
-  ) => stream.Stream<
-    ListDelegatedAdministratorsResponse,
-    ListDelegatedAdministratorsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDelegatedAdministratorsRequest,
-  ) => stream.Stream<
-    DelegatedAdministrator,
-    ListDelegatedAdministratorsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  DelegatedAdministrator
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListDelegatedAdministratorsRequest,
   output: ListDelegatedAdministratorsResponse,
   errors: [
@@ -5640,27 +5423,7 @@ export const listDelegatedAdministrators: API.OperationMethod<
     items: "DelegatedAdministrators",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListDelegatedAdministratorsRequest,
-  ListDelegatedAdministratorsResponse,
-  ListDelegatedAdministratorsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDelegatedAdministratorsRequest,
-  ) => stream.Stream<
-    ListDelegatedAdministratorsResponse,
-    ListDelegatedAdministratorsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDelegatedAdministratorsRequest,
-  ) => stream.Stream<
-    DelegatedAdministrator,
-    ListDelegatedAdministratorsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListDelegatedServicesForAccountError =
   | AccessDeniedException
@@ -5679,27 +5442,13 @@ export type ListDelegatedServicesForAccountError =
  *
  * You can only call this operation from the management account or a member account that is a delegated administrator.
  */
-export const listDelegatedServicesForAccount: API.OperationMethod<
+export const listDelegatedServicesForAccount: API.PaginatedOperationMethod<
   ListDelegatedServicesForAccountRequest,
   ListDelegatedServicesForAccountResponse,
   ListDelegatedServicesForAccountError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDelegatedServicesForAccountRequest,
-  ) => stream.Stream<
-    ListDelegatedServicesForAccountResponse,
-    ListDelegatedServicesForAccountError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDelegatedServicesForAccountRequest,
-  ) => stream.Stream<
-    DelegatedService,
-    ListDelegatedServicesForAccountError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  DelegatedService
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListDelegatedServicesForAccountRequest,
   output: ListDelegatedServicesForAccountResponse,
   errors: [
@@ -5722,27 +5471,7 @@ export const listDelegatedServicesForAccount: API.OperationMethod<
     items: "DelegatedServices",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListDelegatedServicesForAccountRequest,
-  ListDelegatedServicesForAccountResponse,
-  ListDelegatedServicesForAccountError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDelegatedServicesForAccountRequest,
-  ) => stream.Stream<
-    ListDelegatedServicesForAccountResponse,
-    ListDelegatedServicesForAccountError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDelegatedServicesForAccountRequest,
-  ) => stream.Stream<
-    DelegatedService,
-    ListDelegatedServicesForAccountError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListEffectivePolicyValidationErrorsError =
   | AccessDeniedException
@@ -5761,27 +5490,13 @@ export type ListEffectivePolicyValidationErrorsError =
  *
  * You can only call this operation from the management account or a member account that is a delegated administrator.
  */
-export const listEffectivePolicyValidationErrors: API.OperationMethod<
+export const listEffectivePolicyValidationErrors: API.PaginatedOperationMethod<
   ListEffectivePolicyValidationErrorsRequest,
   ListEffectivePolicyValidationErrorsResponse,
   ListEffectivePolicyValidationErrorsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListEffectivePolicyValidationErrorsRequest,
-  ) => stream.Stream<
-    ListEffectivePolicyValidationErrorsResponse,
-    ListEffectivePolicyValidationErrorsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListEffectivePolicyValidationErrorsRequest,
-  ) => stream.Stream<
-    EffectivePolicyValidationError,
-    ListEffectivePolicyValidationErrorsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  EffectivePolicyValidationError
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListEffectivePolicyValidationErrorsRequest,
   output: ListEffectivePolicyValidationErrorsResponse,
   errors: [
@@ -5804,27 +5519,7 @@ export const listEffectivePolicyValidationErrors: API.OperationMethod<
     items: "EffectivePolicyValidationErrors",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListEffectivePolicyValidationErrorsRequest,
-  ListEffectivePolicyValidationErrorsResponse,
-  ListEffectivePolicyValidationErrorsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListEffectivePolicyValidationErrorsRequest,
-  ) => stream.Stream<
-    ListEffectivePolicyValidationErrorsResponse,
-    ListEffectivePolicyValidationErrorsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListEffectivePolicyValidationErrorsRequest,
-  ) => stream.Stream<
-    EffectivePolicyValidationError,
-    ListEffectivePolicyValidationErrorsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListHandshakesForAccountError =
   | AccessDeniedException
@@ -5846,27 +5541,13 @@ export type ListHandshakesForAccountError =
  * These operations can occasionally return an empty set of results even when more results are available.
  * Continue making requests until `NextToken` returns null. A null `NextToken` value indicates that you have retrieved all available results.
  */
-export const listHandshakesForAccount: API.OperationMethod<
+export const listHandshakesForAccount: API.PaginatedOperationMethod<
   ListHandshakesForAccountRequest,
   ListHandshakesForAccountResponse,
   ListHandshakesForAccountError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListHandshakesForAccountRequest,
-  ) => stream.Stream<
-    ListHandshakesForAccountResponse,
-    ListHandshakesForAccountError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListHandshakesForAccountRequest,
-  ) => stream.Stream<
-    unknown,
-    ListHandshakesForAccountError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListHandshakesForAccountRequest,
   output: ListHandshakesForAccountResponse,
   errors: [
@@ -5884,27 +5565,7 @@ export const listHandshakesForAccount: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListHandshakesForAccountRequest,
-  ListHandshakesForAccountResponse,
-  ListHandshakesForAccountError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListHandshakesForAccountRequest,
-  ) => stream.Stream<
-    ListHandshakesForAccountResponse,
-    ListHandshakesForAccountError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListHandshakesForAccountRequest,
-  ) => stream.Stream<
-    unknown,
-    ListHandshakesForAccountError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListHandshakesForOrganizationError =
   | AccessDeniedException
@@ -5927,27 +5588,13 @@ export type ListHandshakesForOrganizationError =
  * These operations can occasionally return an empty set of results even when more results are available.
  * Continue making requests until `NextToken` returns null. A null `NextToken` value indicates that you have retrieved all available results.
  */
-export const listHandshakesForOrganization: API.OperationMethod<
+export const listHandshakesForOrganization: API.PaginatedOperationMethod<
   ListHandshakesForOrganizationRequest,
   ListHandshakesForOrganizationResponse,
   ListHandshakesForOrganizationError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListHandshakesForOrganizationRequest,
-  ) => stream.Stream<
-    ListHandshakesForOrganizationResponse,
-    ListHandshakesForOrganizationError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListHandshakesForOrganizationRequest,
-  ) => stream.Stream<
-    unknown,
-    ListHandshakesForOrganizationError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListHandshakesForOrganizationRequest,
   output: ListHandshakesForOrganizationResponse,
   errors: [
@@ -5966,27 +5613,7 @@ export const listHandshakesForOrganization: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListHandshakesForOrganizationRequest,
-  ListHandshakesForOrganizationResponse,
-  ListHandshakesForOrganizationError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListHandshakesForOrganizationRequest,
-  ) => stream.Stream<
-    ListHandshakesForOrganizationResponse,
-    ListHandshakesForOrganizationError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListHandshakesForOrganizationRequest,
-  ) => stream.Stream<
-    unknown,
-    ListHandshakesForOrganizationError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListInboundResponsibilityTransfersError =
   | AccessDeniedException
@@ -6010,7 +5637,7 @@ export const listInboundResponsibilityTransfers: API.OperationMethod<
   ListInboundResponsibilityTransfersRequest,
   ListInboundResponsibilityTransfersResponse,
   ListInboundResponsibilityTransfersError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListInboundResponsibilityTransfersRequest,
   output: ListInboundResponsibilityTransfersResponse,
@@ -6046,27 +5673,13 @@ export type ListOrganizationalUnitsForParentError =
  *
  * You can only call this operation from the management account or a member account that is a delegated administrator.
  */
-export const listOrganizationalUnitsForParent: API.OperationMethod<
+export const listOrganizationalUnitsForParent: API.PaginatedOperationMethod<
   ListOrganizationalUnitsForParentRequest,
   ListOrganizationalUnitsForParentResponse,
   ListOrganizationalUnitsForParentError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListOrganizationalUnitsForParentRequest,
-  ) => stream.Stream<
-    ListOrganizationalUnitsForParentResponse,
-    ListOrganizationalUnitsForParentError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListOrganizationalUnitsForParentRequest,
-  ) => stream.Stream<
-    unknown,
-    ListOrganizationalUnitsForParentError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListOrganizationalUnitsForParentRequest,
   output: ListOrganizationalUnitsForParentResponse,
   errors: [
@@ -6085,27 +5698,7 @@ export const listOrganizationalUnitsForParent: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListOrganizationalUnitsForParentRequest,
-  ListOrganizationalUnitsForParentResponse,
-  ListOrganizationalUnitsForParentError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListOrganizationalUnitsForParentRequest,
-  ) => stream.Stream<
-    ListOrganizationalUnitsForParentResponse,
-    ListOrganizationalUnitsForParentError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListOrganizationalUnitsForParentRequest,
-  ) => stream.Stream<
-    unknown,
-    ListOrganizationalUnitsForParentError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListOutboundResponsibilityTransfersError =
   | AccessDeniedException
@@ -6129,7 +5722,7 @@ export const listOutboundResponsibilityTransfers: API.OperationMethod<
   ListOutboundResponsibilityTransfersRequest,
   ListOutboundResponsibilityTransfersResponse,
   ListOutboundResponsibilityTransfersError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListOutboundResponsibilityTransfersRequest,
   output: ListOutboundResponsibilityTransfersResponse,
@@ -6168,27 +5761,13 @@ export type ListParentsError =
  *
  * In the current release, a child can have only a single parent.
  */
-export const listParents: API.OperationMethod<
+export const listParents: API.PaginatedOperationMethod<
   ListParentsRequest,
   ListParentsResponse,
   ListParentsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListParentsRequest,
-  ) => stream.Stream<
-    ListParentsResponse,
-    ListParentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListParentsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListParentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListParentsRequest,
   output: ListParentsResponse,
   errors: [
@@ -6207,27 +5786,7 @@ export const listParents: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListParentsRequest,
-  ListParentsResponse,
-  ListParentsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListParentsRequest,
-  ) => stream.Stream<
-    ListParentsResponse,
-    ListParentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListParentsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListParentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListPoliciesError =
   | AccessDeniedException
@@ -6246,27 +5805,13 @@ export type ListPoliciesError =
  *
  * You can only call this operation from the management account or a member account that is a delegated administrator.
  */
-export const listPolicies: API.OperationMethod<
+export const listPolicies: API.PaginatedOperationMethod<
   ListPoliciesRequest,
   ListPoliciesResponse,
   ListPoliciesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPoliciesRequest,
-  ) => stream.Stream<
-    ListPoliciesResponse,
-    ListPoliciesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPoliciesRequest,
-  ) => stream.Stream<
-    unknown,
-    ListPoliciesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListPoliciesRequest,
   output: ListPoliciesResponse,
   errors: [
@@ -6285,27 +5830,7 @@ export const listPolicies: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListPoliciesRequest,
-  ListPoliciesResponse,
-  ListPoliciesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPoliciesRequest,
-  ) => stream.Stream<
-    ListPoliciesResponse,
-    ListPoliciesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPoliciesRequest,
-  ) => stream.Stream<
-    unknown,
-    ListPoliciesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListPoliciesForTargetError =
   | AccessDeniedException
@@ -6327,27 +5852,13 @@ export type ListPoliciesForTargetError =
  *
  * You can only call this operation from the management account or a member account that is a delegated administrator.
  */
-export const listPoliciesForTarget: API.OperationMethod<
+export const listPoliciesForTarget: API.PaginatedOperationMethod<
   ListPoliciesForTargetRequest,
   ListPoliciesForTargetResponse,
   ListPoliciesForTargetError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPoliciesForTargetRequest,
-  ) => stream.Stream<
-    ListPoliciesForTargetResponse,
-    ListPoliciesForTargetError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPoliciesForTargetRequest,
-  ) => stream.Stream<
-    unknown,
-    ListPoliciesForTargetError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListPoliciesForTargetRequest,
   output: ListPoliciesForTargetResponse,
   errors: [
@@ -6367,27 +5878,7 @@ export const listPoliciesForTarget: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListPoliciesForTargetRequest,
-  ListPoliciesForTargetResponse,
-  ListPoliciesForTargetError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPoliciesForTargetRequest,
-  ) => stream.Stream<
-    ListPoliciesForTargetResponse,
-    ListPoliciesForTargetError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPoliciesForTargetRequest,
-  ) => stream.Stream<
-    unknown,
-    ListPoliciesForTargetError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListRootsError =
   | AccessDeniedException
@@ -6411,27 +5902,13 @@ export type ListRootsError =
  * enabled and disabled in a root. To see the availability of a policy type in an
  * organization, use DescribeOrganization.
  */
-export const listRoots: API.OperationMethod<
+export const listRoots: API.PaginatedOperationMethod<
   ListRootsRequest,
   ListRootsResponse,
   ListRootsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListRootsRequest,
-  ) => stream.Stream<
-    ListRootsResponse,
-    ListRootsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListRootsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListRootsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListRootsRequest,
   output: ListRootsResponse,
   errors: [
@@ -6449,27 +5926,7 @@ export const listRoots: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListRootsRequest,
-  ListRootsResponse,
-  ListRootsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListRootsRequest,
-  ) => stream.Stream<
-    ListRootsResponse,
-    ListRootsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListRootsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListRootsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsForResourceError =
   | AccessDeniedException
@@ -6494,27 +5951,13 @@ export type ListTagsForResourceError =
  *
  * You can only call this operation from the management account or a member account that is a delegated administrator.
  */
-export const listTagsForResource: API.OperationMethod<
+export const listTagsForResource: API.PaginatedOperationMethod<
   ListTagsForResourceRequest,
   ListTagsForResourceResponse,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTagsForResourceRequest,
-  ) => stream.Stream<
-    ListTagsForResourceResponse,
-    ListTagsForResourceError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTagsForResourceRequest,
-  ) => stream.Stream<
-    Tag,
-    ListTagsForResourceError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Tag
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
   errors: [
@@ -6533,27 +5976,7 @@ export const listTagsForResource: API.OperationMethod<
     outputToken: "NextToken",
     items: "Tags",
   } as const,
-})) as any as API.OperationMethod<
-  ListTagsForResourceRequest,
-  ListTagsForResourceResponse,
-  ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTagsForResourceRequest,
-  ) => stream.Stream<
-    ListTagsForResourceResponse,
-    ListTagsForResourceError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTagsForResourceRequest,
-  ) => stream.Stream<
-    Tag,
-    ListTagsForResourceError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTargetsForPolicyError =
   | AccessDeniedException
@@ -6574,27 +5997,13 @@ export type ListTargetsForPolicyError =
  *
  * You can only call this operation from the management account or a member account that is a delegated administrator.
  */
-export const listTargetsForPolicy: API.OperationMethod<
+export const listTargetsForPolicy: API.PaginatedOperationMethod<
   ListTargetsForPolicyRequest,
   ListTargetsForPolicyResponse,
   ListTargetsForPolicyError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTargetsForPolicyRequest,
-  ) => stream.Stream<
-    ListTargetsForPolicyResponse,
-    ListTargetsForPolicyError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTargetsForPolicyRequest,
-  ) => stream.Stream<
-    unknown,
-    ListTargetsForPolicyError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListTargetsForPolicyRequest,
   output: ListTargetsForPolicyResponse,
   errors: [
@@ -6614,27 +6023,7 @@ export const listTargetsForPolicy: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListTargetsForPolicyRequest,
-  ListTargetsForPolicyResponse,
-  ListTargetsForPolicyError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTargetsForPolicyRequest,
-  ) => stream.Stream<
-    ListTargetsForPolicyResponse,
-    ListTargetsForPolicyError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTargetsForPolicyRequest,
-  ) => stream.Stream<
-    unknown,
-    ListTargetsForPolicyError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type MoveAccountError =
   | AccessDeniedException
@@ -6658,7 +6047,7 @@ export const moveAccount: API.OperationMethod<
   MoveAccountRequest,
   MoveAccountResponse,
   MoveAccountError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: MoveAccountRequest,
   output: MoveAccountResponse,
@@ -6698,7 +6087,7 @@ export const putResourcePolicy: API.OperationMethod<
   PutResourcePolicyRequest,
   PutResourcePolicyResponse,
   PutResourcePolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutResourcePolicyRequest,
   output: PutResourcePolicyResponse,
@@ -6745,7 +6134,7 @@ export const registerDelegatedAdministrator: API.OperationMethod<
   RegisterDelegatedAdministratorRequest,
   RegisterDelegatedAdministratorResponse,
   RegisterDelegatedAdministratorError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RegisterDelegatedAdministratorRequest,
   output: RegisterDelegatedAdministratorResponse,
@@ -6815,7 +6204,7 @@ export const removeAccountFromOrganization: API.OperationMethod<
   RemoveAccountFromOrganizationRequest,
   RemoveAccountFromOrganizationResponse,
   RemoveAccountFromOrganizationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RemoveAccountFromOrganizationRequest,
   output: RemoveAccountFromOrganizationResponse,
@@ -6864,7 +6253,7 @@ export const tagResource: API.OperationMethod<
   TagResourceRequest,
   TagResourceResponse,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -6905,7 +6294,7 @@ export const terminateResponsibilityTransfer: API.OperationMethod<
   TerminateResponsibilityTransferRequest,
   TerminateResponsibilityTransferResponse,
   TerminateResponsibilityTransferError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TerminateResponsibilityTransferRequest,
   output: TerminateResponsibilityTransferResponse,
@@ -6956,7 +6345,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceRequest,
   UntagResourceResponse,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -6996,7 +6385,7 @@ export const updateOrganizationalUnit: API.OperationMethod<
   UpdateOrganizationalUnitRequest,
   UpdateOrganizationalUnitResponse,
   UpdateOrganizationalUnitError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateOrganizationalUnitRequest,
   output: UpdateOrganizationalUnitResponse,
@@ -7040,7 +6429,7 @@ export const updatePolicy: API.OperationMethod<
   UpdatePolicyRequest,
   UpdatePolicyResponse,
   UpdatePolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdatePolicyRequest,
   output: UpdatePolicyResponse,
@@ -7084,7 +6473,7 @@ export const updateResponsibilityTransfer: API.OperationMethod<
   UpdateResponsibilityTransferRequest,
   UpdateResponsibilityTransferResponse,
   UpdateResponsibilityTransferError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateResponsibilityTransferRequest,
   output: UpdateResponsibilityTransferResponse,

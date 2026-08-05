@@ -1,6 +1,5 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -8,7 +7,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 const svc = T.AwsApiService({
   sdkId: "ARC Zonal Shift",
   serviceShapeName: "PercDataPlane",
@@ -88,14 +86,14 @@ const rules = T.EndpointResolver((p, _) => {
 export class AccessDeniedException
   extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
     "AccessDeniedException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(403),
   ).pipe(C.withAuthError) {}
 export class ConflictException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
     "ConflictException",
     {
-      message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       reason: S.suspend(() => ConflictExceptionReason).annotate({
         identifier: "ConflictExceptionReason",
       }),
@@ -106,26 +104,26 @@ export class ConflictException
 export class InternalServerException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
     "InternalServerException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(500),
   ).pipe(C.withServerError) {}
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class ThrottlingException
   extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
     "ThrottlingException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(429),
   ).pipe(C.withThrottlingError) {}
 export class ValidationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
     "ValidationException",
     {
-      message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       reason: S.suspend(() => ValidationExceptionReason).annotate({
         identifier: "ValidationExceptionReason",
       }),
@@ -944,7 +942,7 @@ export const cancelPracticeRun: API.OperationMethod<
   CancelPracticeRunRequest,
   CancelPracticeRunResponse,
   CancelPracticeRunError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CancelPracticeRunRequest,
   output: CancelPracticeRunResponse,
@@ -978,7 +976,7 @@ export const cancelZonalShift: API.OperationMethod<
   CancelZonalShiftRequest,
   ZonalShift,
   CancelZonalShiftError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CancelZonalShiftRequest,
   output: ZonalShift,
@@ -1014,7 +1012,7 @@ export const createPracticeRunConfiguration: API.OperationMethod<
   CreatePracticeRunConfigurationRequest,
   CreatePracticeRunConfigurationResponse,
   CreatePracticeRunConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreatePracticeRunConfigurationRequest,
   output: CreatePracticeRunConfigurationResponse,
@@ -1046,7 +1044,7 @@ export const deletePracticeRunConfiguration: API.OperationMethod<
   DeletePracticeRunConfigurationRequest,
   DeletePracticeRunConfigurationResponse,
   DeletePracticeRunConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeletePracticeRunConfigurationRequest,
   output: DeletePracticeRunConfigurationResponse,
@@ -1075,7 +1073,7 @@ export const getAutoshiftObserverNotificationStatus: API.OperationMethod<
   GetAutoshiftObserverNotificationStatusRequest,
   GetAutoshiftObserverNotificationStatusResponse,
   GetAutoshiftObserverNotificationStatusError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetAutoshiftObserverNotificationStatusRequest,
   output: GetAutoshiftObserverNotificationStatusResponse,
@@ -1099,7 +1097,7 @@ export const getManagedResource: API.OperationMethod<
   GetManagedResourceRequest,
   GetManagedResourceResponse,
   GetManagedResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetManagedResourceRequest,
   output: GetManagedResourceResponse,
@@ -1124,27 +1122,13 @@ export type ListAutoshiftsError =
 /**
  * Returns the autoshifts for an Amazon Web Services Region. By default, the call returns only `ACTIVE` autoshifts. Optionally, you can specify the `status` parameter to return `COMPLETED` autoshifts.
  */
-export const listAutoshifts: API.OperationMethod<
+export const listAutoshifts: API.PaginatedOperationMethod<
   ListAutoshiftsRequest,
   ListAutoshiftsResponse,
   ListAutoshiftsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAutoshiftsRequest,
-  ) => stream.Stream<
-    ListAutoshiftsResponse,
-    ListAutoshiftsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAutoshiftsRequest,
-  ) => stream.Stream<
-    AutoshiftSummary,
-    ListAutoshiftsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  AutoshiftSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListAutoshiftsRequest,
   output: ListAutoshiftsResponse,
   errors: [
@@ -1162,27 +1146,7 @@ export const listAutoshifts: API.OperationMethod<
     items: "items",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListAutoshiftsRequest,
-  ListAutoshiftsResponse,
-  ListAutoshiftsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAutoshiftsRequest,
-  ) => stream.Stream<
-    ListAutoshiftsResponse,
-    ListAutoshiftsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAutoshiftsRequest,
-  ) => stream.Stream<
-    AutoshiftSummary,
-    ListAutoshiftsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListManagedResourcesError =
   | AccessDeniedException
@@ -1193,27 +1157,13 @@ export type ListManagedResourcesError =
 /**
  * Lists all the resources in your Amazon Web Services account in this Amazon Web Services Region that are managed for zonal shifts in Amazon Application Recovery Controller, and information about them. The information includes the zonal autoshift status for the resource, as well as the Amazon Resource Name (ARN), the Availability Zones that each resource is deployed in, and the resource name.
  */
-export const listManagedResources: API.OperationMethod<
+export const listManagedResources: API.PaginatedOperationMethod<
   ListManagedResourcesRequest,
   ListManagedResourcesResponse,
   ListManagedResourcesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListManagedResourcesRequest,
-  ) => stream.Stream<
-    ListManagedResourcesResponse,
-    ListManagedResourcesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListManagedResourcesRequest,
-  ) => stream.Stream<
-    ManagedResourceSummary,
-    ListManagedResourcesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ManagedResourceSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListManagedResourcesRequest,
   output: ListManagedResourcesResponse,
   errors: [
@@ -1231,27 +1181,7 @@ export const listManagedResources: API.OperationMethod<
     items: "items",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListManagedResourcesRequest,
-  ListManagedResourcesResponse,
-  ListManagedResourcesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListManagedResourcesRequest,
-  ) => stream.Stream<
-    ListManagedResourcesResponse,
-    ListManagedResourcesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListManagedResourcesRequest,
-  ) => stream.Stream<
-    ManagedResourceSummary,
-    ListManagedResourcesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListZonalShiftsError =
   | AccessDeniedException
@@ -1264,27 +1194,13 @@ export type ListZonalShiftsError =
  *
  * For more information about listing autoshifts, see ">ListAutoshifts.
  */
-export const listZonalShifts: API.OperationMethod<
+export const listZonalShifts: API.PaginatedOperationMethod<
   ListZonalShiftsRequest,
   ListZonalShiftsResponse,
   ListZonalShiftsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListZonalShiftsRequest,
-  ) => stream.Stream<
-    ListZonalShiftsResponse,
-    ListZonalShiftsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListZonalShiftsRequest,
-  ) => stream.Stream<
-    ZonalShiftSummary,
-    ListZonalShiftsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ZonalShiftSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListZonalShiftsRequest,
   output: ListZonalShiftsResponse,
   errors: [
@@ -1302,27 +1218,7 @@ export const listZonalShifts: API.OperationMethod<
     items: "items",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListZonalShiftsRequest,
-  ListZonalShiftsResponse,
-  ListZonalShiftsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListZonalShiftsRequest,
-  ) => stream.Stream<
-    ListZonalShiftsResponse,
-    ListZonalShiftsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListZonalShiftsRequest,
-  ) => stream.Stream<
-    ZonalShiftSummary,
-    ListZonalShiftsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type StartPracticeRunError =
   | AccessDeniedException
@@ -1341,7 +1237,7 @@ export const startPracticeRun: API.OperationMethod<
   StartPracticeRunRequest,
   StartPracticeRunResponse,
   StartPracticeRunError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartPracticeRunRequest,
   output: StartPracticeRunResponse,
@@ -1387,7 +1283,7 @@ export const startZonalShift: API.OperationMethod<
   StartZonalShiftRequest,
   ZonalShift,
   StartZonalShiftError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartZonalShiftRequest,
   output: ZonalShift,
@@ -1421,7 +1317,7 @@ export const updateAutoshiftObserverNotificationStatus: API.OperationMethod<
   UpdateAutoshiftObserverNotificationStatusRequest,
   UpdateAutoshiftObserverNotificationStatusResponse,
   UpdateAutoshiftObserverNotificationStatusError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateAutoshiftObserverNotificationStatusRequest,
   output: UpdateAutoshiftObserverNotificationStatusResponse,
@@ -1451,7 +1347,7 @@ export const updatePracticeRunConfiguration: API.OperationMethod<
   UpdatePracticeRunConfigurationRequest,
   UpdatePracticeRunConfigurationResponse,
   UpdatePracticeRunConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdatePracticeRunConfigurationRequest,
   output: UpdatePracticeRunConfigurationResponse,
@@ -1485,7 +1381,7 @@ export const updateZonalAutoshiftConfiguration: API.OperationMethod<
   UpdateZonalAutoshiftConfigurationRequest,
   UpdateZonalAutoshiftConfigurationResponse,
   UpdateZonalAutoshiftConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateZonalAutoshiftConfigurationRequest,
   output: UpdateZonalAutoshiftConfigurationResponse,
@@ -1517,7 +1413,7 @@ export const updateZonalShift: API.OperationMethod<
   UpdateZonalShiftRequest,
   ZonalShift,
   UpdateZonalShiftError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateZonalShiftRequest,
   output: ZonalShift,

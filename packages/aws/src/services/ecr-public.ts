@@ -1,7 +1,6 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as redacted from "effect/Redacted";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -9,7 +8,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 import { SensitiveString } from "../sensitive.ts";
 const ns = T.XmlNamespace("http://ecr-public.amazonaws.com/doc/2020-12-02/");
 const svc = T.AwsApiService({
@@ -94,32 +92,32 @@ const rules = T.EndpointResolver((p, _) => {
 export class EmptyUploadException
   extends /*@__PURE__*/ S.TaggedErrorClass<EmptyUploadException>()(
     "EmptyUploadException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class ImageAlreadyExistsException
   extends /*@__PURE__*/ S.TaggedErrorClass<ImageAlreadyExistsException>()(
     "ImageAlreadyExistsException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ).pipe(C.withAlreadyExistsError) {}
 export class ImageDigestDoesNotMatchException
   extends /*@__PURE__*/ S.TaggedErrorClass<ImageDigestDoesNotMatchException>()(
     "ImageDigestDoesNotMatchException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class ImageNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ImageNotFoundException>()(
     "ImageNotFoundException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class ImageTagAlreadyExistsException
   extends /*@__PURE__*/ S.TaggedErrorClass<ImageTagAlreadyExistsException>()(
     "ImageTagAlreadyExistsException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ).pipe(C.withAlreadyExistsError) {}
 export class InvalidLayerException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidLayerException>()(
     "InvalidLayerException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidLayerPartException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidLayerPartException>()(
@@ -129,93 +127,93 @@ export class InvalidLayerPartException
       repositoryName: S.optional(S.String),
       uploadId: S.optional(S.String),
       lastValidByteReceived: S.optional(S.Number),
-      message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
     },
   ) {}
 export class InvalidParameterException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidParameterException>()(
     "InvalidParameterException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidTagParameterException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidTagParameterException>()(
     "InvalidTagParameterException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class LayerAlreadyExistsException
   extends /*@__PURE__*/ S.TaggedErrorClass<LayerAlreadyExistsException>()(
     "LayerAlreadyExistsException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ).pipe(C.withAlreadyExistsError) {}
 export class LayerPartTooSmallException
   extends /*@__PURE__*/ S.TaggedErrorClass<LayerPartTooSmallException>()(
     "LayerPartTooSmallException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class LayersNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<LayersNotFoundException>()(
     "LayersNotFoundException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class LimitExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<LimitExceededException>()(
     "LimitExceededException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class ReferencedImagesNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ReferencedImagesNotFoundException>()(
     "ReferencedImagesNotFoundException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class RegistryNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<RegistryNotFoundException>()(
     "RegistryNotFoundException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class RepositoryAlreadyExistsException
   extends /*@__PURE__*/ S.TaggedErrorClass<RepositoryAlreadyExistsException>()(
     "RepositoryAlreadyExistsException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ).pipe(C.withAlreadyExistsError) {}
 export class RepositoryCatalogDataNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<RepositoryCatalogDataNotFoundException>()(
     "RepositoryCatalogDataNotFoundException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class RepositoryNotEmptyException
   extends /*@__PURE__*/ S.TaggedErrorClass<RepositoryNotEmptyException>()(
     "RepositoryNotEmptyException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class RepositoryNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<RepositoryNotFoundException>()(
     "RepositoryNotFoundException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class RepositoryPolicyNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<RepositoryPolicyNotFoundException>()(
     "RepositoryPolicyNotFoundException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class ServerException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServerException>()(
     "ServerException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class TooManyTagsException
   extends /*@__PURE__*/ S.TaggedErrorClass<TooManyTagsException>()(
     "TooManyTagsException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class UnsupportedCommandException
   extends /*@__PURE__*/ S.TaggedErrorClass<UnsupportedCommandException>()(
     "UnsupportedCommandException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class UploadNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<UploadNotFoundException>()(
     "UploadNotFoundException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export type RegistryIdOrAlias = string;
 export type RepositoryName = string;
@@ -1333,7 +1331,7 @@ export const batchCheckLayerAvailability: API.OperationMethod<
   BatchCheckLayerAvailabilityRequest,
   BatchCheckLayerAvailabilityResponse,
   BatchCheckLayerAvailabilityError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchCheckLayerAvailabilityRequest,
   output: BatchCheckLayerAvailabilityResponse,
@@ -1370,7 +1368,7 @@ export const batchDeleteImage: API.OperationMethod<
   BatchDeleteImageRequest,
   BatchDeleteImageResponse,
   BatchDeleteImageError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchDeleteImageRequest,
   output: BatchDeleteImageResponse,
@@ -1411,7 +1409,7 @@ export const completeLayerUpload: API.OperationMethod<
   CompleteLayerUploadRequest,
   CompleteLayerUploadResponse,
   CompleteLayerUploadError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CompleteLayerUploadRequest,
   output: CompleteLayerUploadResponse,
@@ -1449,7 +1447,7 @@ export const createRepository: API.OperationMethod<
   CreateRepositoryRequest,
   CreateRepositoryResponse,
   CreateRepositoryError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateRepositoryRequest,
   output: CreateRepositoryResponse,
@@ -1483,7 +1481,7 @@ export const deleteRepository: API.OperationMethod<
   DeleteRepositoryRequest,
   DeleteRepositoryResponse,
   DeleteRepositoryError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteRepositoryRequest,
   output: DeleteRepositoryResponse,
@@ -1513,7 +1511,7 @@ export const deleteRepositoryPolicy: API.OperationMethod<
   DeleteRepositoryPolicyRequest,
   DeleteRepositoryPolicyResponse,
   DeleteRepositoryPolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteRepositoryPolicyRequest,
   output: DeleteRepositoryPolicyResponse,
@@ -1545,27 +1543,13 @@ export type DescribeImagesError =
  * command shows the uncompressed image size. Therefore, it might return a larger image
  * size than the image sizes that are returned by DescribeImages.
  */
-export const describeImages: API.OperationMethod<
+export const describeImages: API.PaginatedOperationMethod<
   DescribeImagesRequest,
   DescribeImagesResponse,
   DescribeImagesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeImagesRequest,
-  ) => stream.Stream<
-    DescribeImagesResponse,
-    DescribeImagesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeImagesRequest,
-  ) => stream.Stream<
-    ImageDetail,
-    DescribeImagesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ImageDetail
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeImagesRequest,
   output: DescribeImagesResponse,
   errors: [
@@ -1584,27 +1568,7 @@ export const describeImages: API.OperationMethod<
     items: "imageDetails",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeImagesRequest,
-  DescribeImagesResponse,
-  DescribeImagesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeImagesRequest,
-  ) => stream.Stream<
-    DescribeImagesResponse,
-    DescribeImagesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeImagesRequest,
-  ) => stream.Stream<
-    ImageDetail,
-    DescribeImagesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeImageTagsError =
   | InvalidParameterException
@@ -1615,27 +1579,13 @@ export type DescribeImageTagsError =
 /**
  * Returns the image tag details for a repository in a public registry.
  */
-export const describeImageTags: API.OperationMethod<
+export const describeImageTags: API.PaginatedOperationMethod<
   DescribeImageTagsRequest,
   DescribeImageTagsResponse,
   DescribeImageTagsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeImageTagsRequest,
-  ) => stream.Stream<
-    DescribeImageTagsResponse,
-    DescribeImageTagsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeImageTagsRequest,
-  ) => stream.Stream<
-    ImageTagDetail,
-    DescribeImageTagsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ImageTagDetail
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeImageTagsRequest,
   output: DescribeImageTagsResponse,
   errors: [
@@ -1653,27 +1603,7 @@ export const describeImageTags: API.OperationMethod<
     items: "imageTagDetails",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeImageTagsRequest,
-  DescribeImageTagsResponse,
-  DescribeImageTagsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeImageTagsRequest,
-  ) => stream.Stream<
-    DescribeImageTagsResponse,
-    DescribeImageTagsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeImageTagsRequest,
-  ) => stream.Stream<
-    ImageTagDetail,
-    DescribeImageTagsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeRegistriesError =
   | InvalidParameterException
@@ -1683,27 +1613,13 @@ export type DescribeRegistriesError =
 /**
  * Returns details for a public registry.
  */
-export const describeRegistries: API.OperationMethod<
+export const describeRegistries: API.PaginatedOperationMethod<
   DescribeRegistriesRequest,
   DescribeRegistriesResponse,
   DescribeRegistriesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeRegistriesRequest,
-  ) => stream.Stream<
-    DescribeRegistriesResponse,
-    DescribeRegistriesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeRegistriesRequest,
-  ) => stream.Stream<
-    Registry,
-    DescribeRegistriesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Registry
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeRegistriesRequest,
   output: DescribeRegistriesResponse,
   errors: [
@@ -1720,27 +1636,7 @@ export const describeRegistries: API.OperationMethod<
     items: "registries",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeRegistriesRequest,
-  DescribeRegistriesResponse,
-  DescribeRegistriesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeRegistriesRequest,
-  ) => stream.Stream<
-    DescribeRegistriesResponse,
-    DescribeRegistriesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeRegistriesRequest,
-  ) => stream.Stream<
-    Registry,
-    DescribeRegistriesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeRepositoriesError =
   | InvalidParameterException
@@ -1751,27 +1647,13 @@ export type DescribeRepositoriesError =
 /**
  * Describes repositories that are in a public registry.
  */
-export const describeRepositories: API.OperationMethod<
+export const describeRepositories: API.PaginatedOperationMethod<
   DescribeRepositoriesRequest,
   DescribeRepositoriesResponse,
   DescribeRepositoriesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeRepositoriesRequest,
-  ) => stream.Stream<
-    DescribeRepositoriesResponse,
-    DescribeRepositoriesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeRepositoriesRequest,
-  ) => stream.Stream<
-    Repository,
-    DescribeRepositoriesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Repository
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeRepositoriesRequest,
   output: DescribeRepositoriesResponse,
   errors: [
@@ -1789,27 +1671,7 @@ export const describeRepositories: API.OperationMethod<
     items: "repositories",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeRepositoriesRequest,
-  DescribeRepositoriesResponse,
-  DescribeRepositoriesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeRepositoriesRequest,
-  ) => stream.Stream<
-    DescribeRepositoriesResponse,
-    DescribeRepositoriesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeRepositoriesRequest,
-  ) => stream.Stream<
-    Repository,
-    DescribeRepositoriesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetAuthorizationTokenError =
   | InvalidParameterException
@@ -1827,7 +1689,7 @@ export const getAuthorizationToken: API.OperationMethod<
   GetAuthorizationTokenRequest,
   GetAuthorizationTokenResponse,
   GetAuthorizationTokenError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetAuthorizationTokenRequest,
   output: GetAuthorizationTokenResponse,
@@ -1852,7 +1714,7 @@ export const getRegistryCatalogData: API.OperationMethod<
   GetRegistryCatalogDataRequest,
   GetRegistryCatalogDataResponse,
   GetRegistryCatalogDataError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetRegistryCatalogDataRequest,
   output: GetRegistryCatalogDataResponse,
@@ -1877,7 +1739,7 @@ export const getRepositoryCatalogData: API.OperationMethod<
   GetRepositoryCatalogDataRequest,
   GetRepositoryCatalogDataResponse,
   GetRepositoryCatalogDataError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetRepositoryCatalogDataRequest,
   output: GetRepositoryCatalogDataResponse,
@@ -1907,7 +1769,7 @@ export const getRepositoryPolicy: API.OperationMethod<
   GetRepositoryPolicyRequest,
   GetRepositoryPolicyResponse,
   GetRepositoryPolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetRepositoryPolicyRequest,
   output: GetRepositoryPolicyResponse,
@@ -1943,7 +1805,7 @@ export const initiateLayerUpload: API.OperationMethod<
   InitiateLayerUploadRequest,
   InitiateLayerUploadResponse,
   InitiateLayerUploadError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: InitiateLayerUploadRequest,
   output: InitiateLayerUploadResponse,
@@ -1972,7 +1834,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceRequest,
   ListTagsForResourceResponse,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -2013,7 +1875,7 @@ export const putImage: API.OperationMethod<
   PutImageRequest,
   PutImageResponse,
   PutImageError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutImageRequest,
   output: PutImageResponse,
@@ -2047,7 +1909,7 @@ export const putRegistryCatalogData: API.OperationMethod<
   PutRegistryCatalogDataRequest,
   PutRegistryCatalogDataResponse,
   PutRegistryCatalogDataError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutRegistryCatalogDataRequest,
   output: PutRegistryCatalogDataResponse,
@@ -2074,7 +1936,7 @@ export const putRepositoryCatalogData: API.OperationMethod<
   PutRepositoryCatalogDataRequest,
   PutRepositoryCatalogDataResponse,
   PutRepositoryCatalogDataError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutRepositoryCatalogDataRequest,
   output: PutRepositoryCatalogDataResponse,
@@ -2104,7 +1966,7 @@ export const setRepositoryPolicy: API.OperationMethod<
   SetRepositoryPolicyRequest,
   SetRepositoryPolicyResponse,
   SetRepositoryPolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: SetRepositoryPolicyRequest,
   output: SetRepositoryPolicyResponse,
@@ -2137,7 +1999,7 @@ export const tagResource: API.OperationMethod<
   TagResourceRequest,
   TagResourceResponse,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -2169,7 +2031,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceRequest,
   UntagResourceResponse,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -2209,7 +2071,7 @@ export const uploadLayerPart: API.OperationMethod<
   UploadLayerPartRequest,
   UploadLayerPartResponse,
   UploadLayerPartError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UploadLayerPartRequest,
   output: UploadLayerPartResponse,

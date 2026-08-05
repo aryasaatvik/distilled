@@ -1,6 +1,5 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -8,7 +7,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 const svc = T.AwsApiService({
   sdkId: "Compute Optimizer Automation",
   serviceShapeName: "ComputeOptimizerAutomationService",
@@ -88,73 +86,73 @@ const rules = T.EndpointResolver((p, _) => {
 export class AccessDeniedException
   extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
     "AccessDeniedException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(403),
   ).pipe(C.withAuthError) {}
 export class ForbiddenException
   extends /*@__PURE__*/ S.TaggedErrorClass<ForbiddenException>()(
     "ForbiddenException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(403),
   ).pipe(C.withAuthError) {}
 export class IdempotencyTokenInUseException
   extends /*@__PURE__*/ S.TaggedErrorClass<IdempotencyTokenInUseException>()(
     "IdempotencyTokenInUseException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class IdempotentParameterMismatchException
   extends /*@__PURE__*/ S.TaggedErrorClass<IdempotentParameterMismatchException>()(
     "IdempotentParameterMismatchException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class InternalServerException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
     "InternalServerException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(500),
   ).pipe(C.withServerError) {}
 export class InvalidParameterValueException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidParameterValueException>()(
     "InvalidParameterValueException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class NotManagementAccountException
   extends /*@__PURE__*/ S.TaggedErrorClass<NotManagementAccountException>()(
     "NotManagementAccountException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class OptInRequiredException
   extends /*@__PURE__*/ S.TaggedErrorClass<OptInRequiredException>()(
     "OptInRequiredException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(403),
   ).pipe(C.withAuthError) {}
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class ServiceQuotaExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
     "ServiceQuotaExceededException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(402),
   ).pipe(C.withQuotaError) {}
 export class ServiceUnavailableException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceUnavailableException>()(
     "ServiceUnavailableException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(503),
   ).pipe(C.withServerError) {}
 export class ThrottlingException
   extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
     "ThrottlingException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(429),
   ).pipe(C.withThrottlingError) {}
 export type AccountId = string;
@@ -1613,7 +1611,7 @@ export const associateAccounts: API.OperationMethod<
   AssociateAccountsRequest,
   AssociateAccountsResponse,
   AssociateAccountsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AssociateAccountsRequest,
   output: AssociateAccountsResponse,
@@ -1654,7 +1652,7 @@ export const createAutomationRule: API.OperationMethod<
   CreateAutomationRuleRequest,
   CreateAutomationRuleResponse,
   CreateAutomationRuleError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateAutomationRuleRequest,
   output: CreateAutomationRuleResponse,
@@ -1695,7 +1693,7 @@ export const deleteAutomationRule: API.OperationMethod<
   DeleteAutomationRuleRequest,
   DeleteAutomationRuleResponse,
   DeleteAutomationRuleError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteAutomationRuleRequest,
   output: DeleteAutomationRuleResponse,
@@ -1737,7 +1735,7 @@ export const disassociateAccounts: API.OperationMethod<
   DisassociateAccountsRequest,
   DisassociateAccountsResponse,
   DisassociateAccountsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DisassociateAccountsRequest,
   output: DisassociateAccountsResponse,
@@ -1775,7 +1773,7 @@ export const getAutomationEvent: API.OperationMethod<
   GetAutomationEventRequest,
   GetAutomationEventResponse,
   GetAutomationEventError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetAutomationEventRequest,
   output: GetAutomationEventResponse,
@@ -1811,7 +1809,7 @@ export const getAutomationRule: API.OperationMethod<
   GetAutomationRuleRequest,
   GetAutomationRuleResponse,
   GetAutomationRuleError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetAutomationRuleRequest,
   output: GetAutomationRuleResponse,
@@ -1847,7 +1845,7 @@ export const getEnrollmentConfiguration: API.OperationMethod<
   GetEnrollmentConfigurationRequest,
   GetEnrollmentConfigurationResponse,
   GetEnrollmentConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetEnrollmentConfigurationRequest,
   output: GetEnrollmentConfigurationResponse,
@@ -1881,27 +1879,13 @@ export type ListAccountsError =
  *
  * Only the management account or a delegated administrator can perform this action.
  */
-export const listAccounts: API.OperationMethod<
+export const listAccounts: API.PaginatedOperationMethod<
   ListAccountsRequest,
   ListAccountsResponse,
   ListAccountsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAccountsRequest,
-  ) => stream.Stream<
-    ListAccountsResponse,
-    ListAccountsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAccountsRequest,
-  ) => stream.Stream<
-    AccountInfo,
-    ListAccountsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  AccountInfo
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListAccountsRequest,
   output: ListAccountsResponse,
   errors: [
@@ -1923,27 +1907,7 @@ export const listAccounts: API.OperationMethod<
     items: "accounts",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListAccountsRequest,
-  ListAccountsResponse,
-  ListAccountsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAccountsRequest,
-  ) => stream.Stream<
-    ListAccountsResponse,
-    ListAccountsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAccountsRequest,
-  ) => stream.Stream<
-    AccountInfo,
-    ListAccountsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListAutomationEventsError =
   | AccessDeniedException
@@ -1957,27 +1921,13 @@ export type ListAutomationEventsError =
 /**
  * Lists automation events based on specified filters. You can retrieve events that were created within the past year.
  */
-export const listAutomationEvents: API.OperationMethod<
+export const listAutomationEvents: API.PaginatedOperationMethod<
   ListAutomationEventsRequest,
   ListAutomationEventsResponse,
   ListAutomationEventsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAutomationEventsRequest,
-  ) => stream.Stream<
-    ListAutomationEventsResponse,
-    ListAutomationEventsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAutomationEventsRequest,
-  ) => stream.Stream<
-    AutomationEvent,
-    ListAutomationEventsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  AutomationEvent
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListAutomationEventsRequest,
   output: ListAutomationEventsResponse,
   errors: [
@@ -1998,27 +1948,7 @@ export const listAutomationEvents: API.OperationMethod<
     items: "automationEvents",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListAutomationEventsRequest,
-  ListAutomationEventsResponse,
-  ListAutomationEventsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAutomationEventsRequest,
-  ) => stream.Stream<
-    ListAutomationEventsResponse,
-    ListAutomationEventsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAutomationEventsRequest,
-  ) => stream.Stream<
-    AutomationEvent,
-    ListAutomationEventsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListAutomationEventStepsError =
   | AccessDeniedException
@@ -2033,27 +1963,13 @@ export type ListAutomationEventStepsError =
 /**
  * Lists the steps for a specific automation event. You can only list steps for events created within the past year.
  */
-export const listAutomationEventSteps: API.OperationMethod<
+export const listAutomationEventSteps: API.PaginatedOperationMethod<
   ListAutomationEventStepsRequest,
   ListAutomationEventStepsResponse,
   ListAutomationEventStepsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAutomationEventStepsRequest,
-  ) => stream.Stream<
-    ListAutomationEventStepsResponse,
-    ListAutomationEventStepsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAutomationEventStepsRequest,
-  ) => stream.Stream<
-    AutomationEventStep,
-    ListAutomationEventStepsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  AutomationEventStep
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListAutomationEventStepsRequest,
   output: ListAutomationEventStepsResponse,
   errors: [
@@ -2075,27 +1991,7 @@ export const listAutomationEventSteps: API.OperationMethod<
     items: "automationEventSteps",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListAutomationEventStepsRequest,
-  ListAutomationEventStepsResponse,
-  ListAutomationEventStepsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAutomationEventStepsRequest,
-  ) => stream.Stream<
-    ListAutomationEventStepsResponse,
-    ListAutomationEventStepsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAutomationEventStepsRequest,
-  ) => stream.Stream<
-    AutomationEventStep,
-    ListAutomationEventStepsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListAutomationEventSummariesError =
   | AccessDeniedException
@@ -2109,27 +2005,13 @@ export type ListAutomationEventSummariesError =
 /**
  * Provides a summary of automation events based on specified filters. Only events created within the past year will be included in the summary.
  */
-export const listAutomationEventSummaries: API.OperationMethod<
+export const listAutomationEventSummaries: API.PaginatedOperationMethod<
   ListAutomationEventSummariesRequest,
   ListAutomationEventSummariesResponse,
   ListAutomationEventSummariesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAutomationEventSummariesRequest,
-  ) => stream.Stream<
-    ListAutomationEventSummariesResponse,
-    ListAutomationEventSummariesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAutomationEventSummariesRequest,
-  ) => stream.Stream<
-    AutomationEventSummary,
-    ListAutomationEventSummariesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  AutomationEventSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListAutomationEventSummariesRequest,
   output: ListAutomationEventSummariesResponse,
   errors: [
@@ -2150,27 +2032,7 @@ export const listAutomationEventSummaries: API.OperationMethod<
     items: "automationEventSummaries",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListAutomationEventSummariesRequest,
-  ListAutomationEventSummariesResponse,
-  ListAutomationEventSummariesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAutomationEventSummariesRequest,
-  ) => stream.Stream<
-    ListAutomationEventSummariesResponse,
-    ListAutomationEventSummariesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAutomationEventSummariesRequest,
-  ) => stream.Stream<
-    AutomationEventSummary,
-    ListAutomationEventSummariesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListAutomationRulePreviewError =
   | AccessDeniedException
@@ -2184,27 +2046,13 @@ export type ListAutomationRulePreviewError =
 /**
  * Returns a preview of the recommended actions that match your Automation rule's configuration and criteria.
  */
-export const listAutomationRulePreview: API.OperationMethod<
+export const listAutomationRulePreview: API.PaginatedOperationMethod<
   ListAutomationRulePreviewRequest,
   ListAutomationRulePreviewResponse,
   ListAutomationRulePreviewError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAutomationRulePreviewRequest,
-  ) => stream.Stream<
-    ListAutomationRulePreviewResponse,
-    ListAutomationRulePreviewError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAutomationRulePreviewRequest,
-  ) => stream.Stream<
-    PreviewResult,
-    ListAutomationRulePreviewError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  PreviewResult
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListAutomationRulePreviewRequest,
   output: ListAutomationRulePreviewResponse,
   errors: [
@@ -2225,27 +2073,7 @@ export const listAutomationRulePreview: API.OperationMethod<
     items: "previewResults",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListAutomationRulePreviewRequest,
-  ListAutomationRulePreviewResponse,
-  ListAutomationRulePreviewError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAutomationRulePreviewRequest,
-  ) => stream.Stream<
-    ListAutomationRulePreviewResponse,
-    ListAutomationRulePreviewError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAutomationRulePreviewRequest,
-  ) => stream.Stream<
-    PreviewResult,
-    ListAutomationRulePreviewError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListAutomationRulePreviewSummariesError =
   | AccessDeniedException
@@ -2259,27 +2087,13 @@ export type ListAutomationRulePreviewSummariesError =
 /**
  * Returns a summary of the recommended actions that match your rule preview configuration and criteria.
  */
-export const listAutomationRulePreviewSummaries: API.OperationMethod<
+export const listAutomationRulePreviewSummaries: API.PaginatedOperationMethod<
   ListAutomationRulePreviewSummariesRequest,
   ListAutomationRulePreviewSummariesResponse,
   ListAutomationRulePreviewSummariesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAutomationRulePreviewSummariesRequest,
-  ) => stream.Stream<
-    ListAutomationRulePreviewSummariesResponse,
-    ListAutomationRulePreviewSummariesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAutomationRulePreviewSummariesRequest,
-  ) => stream.Stream<
-    PreviewResultSummary,
-    ListAutomationRulePreviewSummariesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  PreviewResultSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListAutomationRulePreviewSummariesRequest,
   output: ListAutomationRulePreviewSummariesResponse,
   errors: [
@@ -2300,27 +2114,7 @@ export const listAutomationRulePreviewSummaries: API.OperationMethod<
     items: "previewResultSummaries",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListAutomationRulePreviewSummariesRequest,
-  ListAutomationRulePreviewSummariesResponse,
-  ListAutomationRulePreviewSummariesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAutomationRulePreviewSummariesRequest,
-  ) => stream.Stream<
-    ListAutomationRulePreviewSummariesResponse,
-    ListAutomationRulePreviewSummariesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAutomationRulePreviewSummariesRequest,
-  ) => stream.Stream<
-    PreviewResultSummary,
-    ListAutomationRulePreviewSummariesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListAutomationRulesError =
   | AccessDeniedException
@@ -2334,27 +2128,13 @@ export type ListAutomationRulesError =
 /**
  * Lists the automation rules that match specified filters.
  */
-export const listAutomationRules: API.OperationMethod<
+export const listAutomationRules: API.PaginatedOperationMethod<
   ListAutomationRulesRequest,
   ListAutomationRulesResponse,
   ListAutomationRulesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAutomationRulesRequest,
-  ) => stream.Stream<
-    ListAutomationRulesResponse,
-    ListAutomationRulesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAutomationRulesRequest,
-  ) => stream.Stream<
-    AutomationRule,
-    ListAutomationRulesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  AutomationRule
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListAutomationRulesRequest,
   output: ListAutomationRulesResponse,
   errors: [
@@ -2375,27 +2155,7 @@ export const listAutomationRules: API.OperationMethod<
     items: "automationRules",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListAutomationRulesRequest,
-  ListAutomationRulesResponse,
-  ListAutomationRulesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAutomationRulesRequest,
-  ) => stream.Stream<
-    ListAutomationRulesResponse,
-    ListAutomationRulesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAutomationRulesRequest,
-  ) => stream.Stream<
-    AutomationRule,
-    ListAutomationRulesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListRecommendedActionsError =
   | AccessDeniedException
@@ -2411,27 +2171,13 @@ export type ListRecommendedActionsError =
  *
  * Management accounts and delegated administrators can retrieve recommended actions that include associated member accounts. You can associate a member account using `AssociateAccounts`.
  */
-export const listRecommendedActions: API.OperationMethod<
+export const listRecommendedActions: API.PaginatedOperationMethod<
   ListRecommendedActionsRequest,
   ListRecommendedActionsResponse,
   ListRecommendedActionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListRecommendedActionsRequest,
-  ) => stream.Stream<
-    ListRecommendedActionsResponse,
-    ListRecommendedActionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListRecommendedActionsRequest,
-  ) => stream.Stream<
-    RecommendedAction,
-    ListRecommendedActionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  RecommendedAction
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListRecommendedActionsRequest,
   output: ListRecommendedActionsResponse,
   errors: [
@@ -2452,27 +2198,7 @@ export const listRecommendedActions: API.OperationMethod<
     items: "recommendedActions",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListRecommendedActionsRequest,
-  ListRecommendedActionsResponse,
-  ListRecommendedActionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListRecommendedActionsRequest,
-  ) => stream.Stream<
-    ListRecommendedActionsResponse,
-    ListRecommendedActionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListRecommendedActionsRequest,
-  ) => stream.Stream<
-    RecommendedAction,
-    ListRecommendedActionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListRecommendedActionSummariesError =
   | AccessDeniedException
@@ -2488,27 +2214,13 @@ export type ListRecommendedActionSummariesError =
  *
  * Management accounts and delegated administrators can retrieve recommended actions that include associated member accounts. You can associate a member account using `AssociateAccounts`.
  */
-export const listRecommendedActionSummaries: API.OperationMethod<
+export const listRecommendedActionSummaries: API.PaginatedOperationMethod<
   ListRecommendedActionSummariesRequest,
   ListRecommendedActionSummariesResponse,
   ListRecommendedActionSummariesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListRecommendedActionSummariesRequest,
-  ) => stream.Stream<
-    ListRecommendedActionSummariesResponse,
-    ListRecommendedActionSummariesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListRecommendedActionSummariesRequest,
-  ) => stream.Stream<
-    RecommendedActionSummary,
-    ListRecommendedActionSummariesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  RecommendedActionSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListRecommendedActionSummariesRequest,
   output: ListRecommendedActionSummariesResponse,
   errors: [
@@ -2529,27 +2241,7 @@ export const listRecommendedActionSummaries: API.OperationMethod<
     items: "recommendedActionSummaries",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListRecommendedActionSummariesRequest,
-  ListRecommendedActionSummariesResponse,
-  ListRecommendedActionSummariesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListRecommendedActionSummariesRequest,
-  ) => stream.Stream<
-    ListRecommendedActionSummariesResponse,
-    ListRecommendedActionSummariesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListRecommendedActionSummariesRequest,
-  ) => stream.Stream<
-    RecommendedActionSummary,
-    ListRecommendedActionSummariesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsForResourceError =
   | AccessDeniedException
@@ -2568,7 +2260,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceRequest,
   ListTagsForResourceResponse,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -2608,7 +2300,7 @@ export const rollbackAutomationEvent: API.OperationMethod<
   RollbackAutomationEventRequest,
   RollbackAutomationEventResponse,
   RollbackAutomationEventError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RollbackAutomationEventRequest,
   output: RollbackAutomationEventResponse,
@@ -2651,7 +2343,7 @@ export const startAutomationEvent: API.OperationMethod<
   StartAutomationEventRequest,
   StartAutomationEventResponse,
   StartAutomationEventError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartAutomationEventRequest,
   output: StartAutomationEventResponse,
@@ -2692,7 +2384,7 @@ export const tagResource: API.OperationMethod<
   TagResourceRequest,
   TagResourceResponse,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -2732,7 +2424,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceRequest,
   UntagResourceResponse,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -2772,7 +2464,7 @@ export const updateAutomationRule: API.OperationMethod<
   UpdateAutomationRuleRequest,
   UpdateAutomationRuleResponse,
   UpdateAutomationRuleError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateAutomationRuleRequest,
   output: UpdateAutomationRuleResponse,
@@ -2813,7 +2505,7 @@ export const updateEnrollmentConfiguration: API.OperationMethod<
   UpdateEnrollmentConfigurationRequest,
   UpdateEnrollmentConfigurationResponse,
   UpdateEnrollmentConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateEnrollmentConfigurationRequest,
   output: UpdateEnrollmentConfigurationResponse,

@@ -1,7 +1,6 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as redacted from "effect/Redacted";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -9,7 +8,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 import { SensitiveString } from "../sensitive.ts";
 const ns = T.XmlNamespace("https://kinesisvideo.amazonaws.com/doc/2017-09-30/");
 const svc = T.AwsApiService({
@@ -91,85 +89,85 @@ const rules = T.EndpointResolver((p, _) => {
 export class AccessDeniedException
   extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
     "AccessDeniedException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(401),
   ).pipe(C.withAuthError) {}
 export class AccountChannelLimitExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<AccountChannelLimitExceededException>()(
     "AccountChannelLimitExceededException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class AccountStreamLimitExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<AccountStreamLimitExceededException>()(
     "AccountStreamLimitExceededException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class ClientLimitExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<ClientLimitExceededException>()(
     "ClientLimitExceededException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class DeviceStreamLimitExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<DeviceStreamLimitExceededException>()(
     "DeviceStreamLimitExceededException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class InvalidArgumentException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidArgumentException>()(
     "InvalidArgumentException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class InvalidDeviceException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidDeviceException>()(
     "InvalidDeviceException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class InvalidResourceFormatException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidResourceFormatException>()(
     "InvalidResourceFormatException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class NoDataRetentionException
   extends /*@__PURE__*/ S.TaggedErrorClass<NoDataRetentionException>()(
     "NoDataRetentionException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class NotAuthorizedException
   extends /*@__PURE__*/ S.TaggedErrorClass<NotAuthorizedException>()(
     "NotAuthorizedException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(401),
   ).pipe(C.withAuthError) {}
 export class ResourceInUseException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceInUseException>()(
     "ResourceInUseException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class StreamEdgeConfigurationNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<StreamEdgeConfigurationNotFoundException>()(
     "StreamEdgeConfigurationNotFoundException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class StreamNotActive
   extends /*@__PURE__*/ S.TaggedErrorClass<StreamNotActive>()(
     "StreamNotActive",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.SyntheticError({
       from: "ResourceNotFoundException",
       message: { includes: "not active" },
@@ -178,13 +176,13 @@ export class StreamNotActive
 export class TagsPerResourceExceededLimitException
   extends /*@__PURE__*/ S.TaggedErrorClass<TagsPerResourceExceededLimitException>()(
     "TagsPerResourceExceededLimitException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class VersionMismatchException
   extends /*@__PURE__*/ S.TaggedErrorClass<VersionMismatchException>()(
     "VersionMismatchException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export type ChannelName = string;
@@ -1770,7 +1768,7 @@ export const createSignalingChannel: API.OperationMethod<
   CreateSignalingChannelInput,
   CreateSignalingChannelOutput,
   CreateSignalingChannelError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateSignalingChannelInput,
   output: CreateSignalingChannelOutput,
@@ -1813,7 +1811,7 @@ export const createStream: API.OperationMethod<
   CreateStreamInput,
   CreateStreamOutput,
   CreateStreamError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateStreamInput,
   output: CreateStreamOutput,
@@ -1849,7 +1847,7 @@ export const deleteEdgeConfiguration: API.OperationMethod<
   DeleteEdgeConfigurationInput,
   DeleteEdgeConfigurationOutput,
   DeleteEdgeConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteEdgeConfigurationInput,
   output: DeleteEdgeConfigurationOutput,
@@ -1882,7 +1880,7 @@ export const deleteSignalingChannel: API.OperationMethod<
   DeleteSignalingChannelInput,
   DeleteSignalingChannelOutput,
   DeleteSignalingChannelError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteSignalingChannelInput,
   output: DeleteSignalingChannelOutput,
@@ -1925,7 +1923,7 @@ export const deleteStream: API.OperationMethod<
   DeleteStreamInput,
   DeleteStreamOutput,
   DeleteStreamError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteStreamInput,
   output: DeleteStreamOutput,
@@ -1960,7 +1958,7 @@ export const describeEdgeConfiguration: API.OperationMethod<
   DescribeEdgeConfigurationInput,
   DescribeEdgeConfigurationOutput,
   DescribeEdgeConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeEdgeConfigurationInput,
   output: DescribeEdgeConfigurationOutput,
@@ -1989,7 +1987,7 @@ export const describeImageGenerationConfiguration: API.OperationMethod<
   DescribeImageGenerationConfigurationInput,
   DescribeImageGenerationConfigurationOutput,
   DescribeImageGenerationConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeImageGenerationConfigurationInput,
   output: DescribeImageGenerationConfigurationOutput,
@@ -2014,27 +2012,13 @@ export type DescribeMappedResourceConfigurationError =
  * Returns the most current information about the stream. The `streamName`
  * or `streamARN` should be provided in the input.
  */
-export const describeMappedResourceConfiguration: API.OperationMethod<
+export const describeMappedResourceConfiguration: API.PaginatedOperationMethod<
   DescribeMappedResourceConfigurationInput,
   DescribeMappedResourceConfigurationOutput,
   DescribeMappedResourceConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeMappedResourceConfigurationInput,
-  ) => stream.Stream<
-    DescribeMappedResourceConfigurationOutput,
-    DescribeMappedResourceConfigurationError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeMappedResourceConfigurationInput,
-  ) => stream.Stream<
-    MappedResourceConfigurationListItem,
-    DescribeMappedResourceConfigurationError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  MappedResourceConfigurationListItem
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeMappedResourceConfigurationInput,
   output: DescribeMappedResourceConfigurationOutput,
   errors: [
@@ -2052,27 +2036,7 @@ export const describeMappedResourceConfiguration: API.OperationMethod<
     items: "MappedResourceConfigurationList",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeMappedResourceConfigurationInput,
-  DescribeMappedResourceConfigurationOutput,
-  DescribeMappedResourceConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeMappedResourceConfigurationInput,
-  ) => stream.Stream<
-    DescribeMappedResourceConfigurationOutput,
-    DescribeMappedResourceConfigurationError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeMappedResourceConfigurationInput,
-  ) => stream.Stream<
-    MappedResourceConfigurationListItem,
-    DescribeMappedResourceConfigurationError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeMediaStorageConfigurationError =
   | AccessDeniedException
@@ -2088,7 +2052,7 @@ export const describeMediaStorageConfiguration: API.OperationMethod<
   DescribeMediaStorageConfigurationInput,
   DescribeMediaStorageConfigurationOutput,
   DescribeMediaStorageConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeMediaStorageConfigurationInput,
   output: DescribeMediaStorageConfigurationOutput,
@@ -2116,7 +2080,7 @@ export const describeNotificationConfiguration: API.OperationMethod<
   DescribeNotificationConfigurationInput,
   DescribeNotificationConfigurationOutput,
   DescribeNotificationConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeNotificationConfigurationInput,
   output: DescribeNotificationConfigurationOutput,
@@ -2146,7 +2110,7 @@ export const describeSignalingChannel: API.OperationMethod<
   DescribeSignalingChannelInput,
   DescribeSignalingChannelOutput,
   DescribeSignalingChannelError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeSignalingChannelInput,
   output: DescribeSignalingChannelOutput,
@@ -2175,7 +2139,7 @@ export const describeStream: API.OperationMethod<
   DescribeStreamInput,
   DescribeStreamOutput,
   DescribeStreamError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeStreamInput,
   output: DescribeStreamOutput,
@@ -2207,7 +2171,7 @@ export const describeStreamStorageConfiguration: API.OperationMethod<
   DescribeStreamStorageConfigurationInput,
   DescribeStreamStorageConfigurationOutput,
   DescribeStreamStorageConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeStreamStorageConfigurationInput,
   output: DescribeStreamStorageConfigurationOutput,
@@ -2244,7 +2208,7 @@ export const getDataEndpoint: API.OperationMethod<
   GetDataEndpointInput,
   GetDataEndpointOutput,
   GetDataEndpointError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetDataEndpointInput,
   output: GetDataEndpointOutput,
@@ -2287,7 +2251,7 @@ export const getSignalingChannelEndpoint: API.OperationMethod<
   GetSignalingChannelEndpointInput,
   GetSignalingChannelEndpointOutput,
   GetSignalingChannelEndpointError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetSignalingChannelEndpointInput,
   output: GetSignalingChannelEndpointOutput,
@@ -2313,27 +2277,13 @@ export type ListEdgeAgentConfigurationsError =
  *
  * In the request, you must specify the Edge Agent `HubDeviceArn`.
  */
-export const listEdgeAgentConfigurations: API.OperationMethod<
+export const listEdgeAgentConfigurations: API.PaginatedOperationMethod<
   ListEdgeAgentConfigurationsInput,
   ListEdgeAgentConfigurationsOutput,
   ListEdgeAgentConfigurationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListEdgeAgentConfigurationsInput,
-  ) => stream.Stream<
-    ListEdgeAgentConfigurationsOutput,
-    ListEdgeAgentConfigurationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListEdgeAgentConfigurationsInput,
-  ) => stream.Stream<
-    ListEdgeAgentConfigurationsEdgeConfig,
-    ListEdgeAgentConfigurationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ListEdgeAgentConfigurationsEdgeConfig
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListEdgeAgentConfigurationsInput,
   output: ListEdgeAgentConfigurationsOutput,
   errors: [
@@ -2350,27 +2300,7 @@ export const listEdgeAgentConfigurations: API.OperationMethod<
     items: "EdgeConfigs",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListEdgeAgentConfigurationsInput,
-  ListEdgeAgentConfigurationsOutput,
-  ListEdgeAgentConfigurationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListEdgeAgentConfigurationsInput,
-  ) => stream.Stream<
-    ListEdgeAgentConfigurationsOutput,
-    ListEdgeAgentConfigurationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListEdgeAgentConfigurationsInput,
-  ) => stream.Stream<
-    ListEdgeAgentConfigurationsEdgeConfig,
-    ListEdgeAgentConfigurationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListSignalingChannelsError =
   | AccessDeniedException
@@ -2382,27 +2312,13 @@ export type ListSignalingChannelsError =
  * signaling channel. To retrieve only those channels that satisfy a specific condition,
  * you can specify a `ChannelNameCondition`.
  */
-export const listSignalingChannels: API.OperationMethod<
+export const listSignalingChannels: API.PaginatedOperationMethod<
   ListSignalingChannelsInput,
   ListSignalingChannelsOutput,
   ListSignalingChannelsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSignalingChannelsInput,
-  ) => stream.Stream<
-    ListSignalingChannelsOutput,
-    ListSignalingChannelsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSignalingChannelsInput,
-  ) => stream.Stream<
-    ChannelInfo,
-    ListSignalingChannelsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ChannelInfo
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListSignalingChannelsInput,
   output: ListSignalingChannelsOutput,
   errors: [
@@ -2419,27 +2335,7 @@ export const listSignalingChannels: API.OperationMethod<
     items: "ChannelInfoList",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListSignalingChannelsInput,
-  ListSignalingChannelsOutput,
-  ListSignalingChannelsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSignalingChannelsInput,
-  ) => stream.Stream<
-    ListSignalingChannelsOutput,
-    ListSignalingChannelsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSignalingChannelsInput,
-  ) => stream.Stream<
-    ChannelInfo,
-    ListSignalingChannelsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListStreamsError =
   | ClientLimitExceededException
@@ -2450,27 +2346,13 @@ export type ListStreamsError =
  * stream. To retrieve only streams that satisfy a specific condition, you can specify a
  * `StreamNameCondition`.
  */
-export const listStreams: API.OperationMethod<
+export const listStreams: API.PaginatedOperationMethod<
   ListStreamsInput,
   ListStreamsOutput,
   ListStreamsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListStreamsInput,
-  ) => stream.Stream<
-    ListStreamsOutput,
-    ListStreamsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListStreamsInput,
-  ) => stream.Stream<
-    StreamInfo,
-    ListStreamsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  StreamInfo
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListStreamsInput,
   output: ListStreamsOutput,
   errors: [ClientLimitExceededException, InvalidArgumentException],
@@ -2483,27 +2365,7 @@ export const listStreams: API.OperationMethod<
     items: "StreamInfoList",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListStreamsInput,
-  ListStreamsOutput,
-  ListStreamsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListStreamsInput,
-  ) => stream.Stream<
-    ListStreamsOutput,
-    ListStreamsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListStreamsInput,
-  ) => stream.Stream<
-    StreamInfo,
-    ListStreamsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsForResourceError =
   | AccessDeniedException
@@ -2518,7 +2380,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceInput,
   ListTagsForResourceOutput,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceInput,
   output: ListTagsForResourceOutput,
@@ -2550,7 +2412,7 @@ export const listTagsForStream: API.OperationMethod<
   ListTagsForStreamInput,
   ListTagsForStreamOutput,
   ListTagsForStreamError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForStreamInput,
   output: ListTagsForStreamOutput,
@@ -2596,7 +2458,7 @@ export const startEdgeConfigurationUpdate: API.OperationMethod<
   StartEdgeConfigurationUpdateInput,
   StartEdgeConfigurationUpdateOutput,
   StartEdgeConfigurationUpdateError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartEdgeConfigurationUpdateInput,
   output: StartEdgeConfigurationUpdateOutput,
@@ -2633,7 +2495,7 @@ export const tagResource: API.OperationMethod<
   TagResourceInput,
   TagResourceOutput,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceInput,
   output: TagResourceOutput,
@@ -2678,7 +2540,7 @@ export const tagStream: API.OperationMethod<
   TagStreamInput,
   TagStreamOutput,
   TagStreamError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagStreamInput,
   output: TagStreamOutput,
@@ -2712,7 +2574,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceInput,
   UntagResourceOutput,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceInput,
   output: UntagResourceOutput,
@@ -2748,7 +2610,7 @@ export const untagStream: API.OperationMethod<
   UntagStreamInput,
   UntagStreamOutput,
   UntagStreamError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagStreamInput,
   output: UntagStreamOutput,
@@ -2800,7 +2662,7 @@ export const updateDataRetention: API.OperationMethod<
   UpdateDataRetentionInput,
   UpdateDataRetentionOutput,
   UpdateDataRetentionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateDataRetentionInput,
   output: UpdateDataRetentionOutput,
@@ -2833,7 +2695,7 @@ export const updateImageGenerationConfiguration: API.OperationMethod<
   UpdateImageGenerationConfigurationInput,
   UpdateImageGenerationConfigurationOutput,
   UpdateImageGenerationConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateImageGenerationConfigurationInput,
   output: UpdateImageGenerationConfigurationOutput,
@@ -2878,7 +2740,7 @@ export const updateMediaStorageConfiguration: API.OperationMethod<
   UpdateMediaStorageConfigurationInput,
   UpdateMediaStorageConfigurationOutput,
   UpdateMediaStorageConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateMediaStorageConfigurationInput,
   output: UpdateMediaStorageConfigurationOutput,
@@ -2910,7 +2772,7 @@ export const updateNotificationConfiguration: API.OperationMethod<
   UpdateNotificationConfigurationInput,
   UpdateNotificationConfigurationOutput,
   UpdateNotificationConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateNotificationConfigurationInput,
   output: UpdateNotificationConfigurationOutput,
@@ -2949,7 +2811,7 @@ export const updateSignalingChannel: API.OperationMethod<
   UpdateSignalingChannelInput,
   UpdateSignalingChannelOutput,
   UpdateSignalingChannelError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateSignalingChannelInput,
   output: UpdateSignalingChannelOutput,
@@ -2994,7 +2856,7 @@ export const updateStream: API.OperationMethod<
   UpdateStreamInput,
   UpdateStreamOutput,
   UpdateStreamError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateStreamInput,
   output: UpdateStreamOutput,
@@ -3033,7 +2895,7 @@ export const updateStreamStorageConfiguration: API.OperationMethod<
   UpdateStreamStorageConfigurationInput,
   UpdateStreamStorageConfigurationOutput,
   UpdateStreamStorageConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateStreamStorageConfigurationInput,
   output: UpdateStreamStorageConfigurationOutput,

@@ -1,6 +1,5 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -8,7 +7,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 const svc = T.AwsApiService({
   sdkId: "LookoutEquipment",
   serviceShapeName: "AWSLookoutEquipmentFrontendService",
@@ -88,43 +86,43 @@ const rules = T.EndpointResolver((p, _) => {
 export class AccessDeniedException
   extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
     "AccessDeniedException",
-    { Message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(403),
   ).pipe(C.withAuthError) {}
 export class ConflictException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
     "ConflictException",
-    { Message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class InternalServerException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
     "InternalServerException",
-    { Message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(500),
   ).pipe(C.withServerError) {}
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { Message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class ServiceQuotaExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
     "ServiceQuotaExceededException",
-    { Message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(402),
   ).pipe(C.withQuotaError) {}
 export class ThrottlingException
   extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
     "ThrottlingException",
-    { Message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(429),
   ).pipe(C.withThrottlingError) {}
 export class ValidationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
     "ValidationException",
-    { Message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export type DatasetName = string;
@@ -2611,7 +2609,7 @@ export const createDataset: API.OperationMethod<
   CreateDatasetRequest,
   CreateDatasetResponse,
   CreateDatasetError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateDatasetRequest,
   output: CreateDatasetResponse,
@@ -2648,7 +2646,7 @@ export const createInferenceScheduler: API.OperationMethod<
   CreateInferenceSchedulerRequest,
   CreateInferenceSchedulerResponse,
   CreateInferenceSchedulerError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateInferenceSchedulerRequest,
   output: CreateInferenceSchedulerResponse,
@@ -2682,7 +2680,7 @@ export const createLabel: API.OperationMethod<
   CreateLabelRequest,
   CreateLabelResponse,
   CreateLabelError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateLabelRequest,
   output: CreateLabelResponse,
@@ -2715,7 +2713,7 @@ export const createLabelGroup: API.OperationMethod<
   CreateLabelGroupRequest,
   CreateLabelGroupResponse,
   CreateLabelGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateLabelGroupRequest,
   output: CreateLabelGroupResponse,
@@ -2758,7 +2756,7 @@ export const createModel: API.OperationMethod<
   CreateModelRequest,
   CreateModelResponse,
   CreateModelError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateModelRequest,
   output: CreateModelResponse,
@@ -2791,7 +2789,7 @@ export const createRetrainingScheduler: API.OperationMethod<
   CreateRetrainingSchedulerRequest,
   CreateRetrainingSchedulerResponse,
   CreateRetrainingSchedulerError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateRetrainingSchedulerRequest,
   output: CreateRetrainingSchedulerResponse,
@@ -2827,7 +2825,7 @@ export const deleteDataset: API.OperationMethod<
   DeleteDatasetRequest,
   DeleteDatasetResponse,
   DeleteDatasetError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteDatasetRequest,
   output: DeleteDatasetResponse,
@@ -2860,7 +2858,7 @@ export const deleteInferenceScheduler: API.OperationMethod<
   DeleteInferenceSchedulerRequest,
   DeleteInferenceSchedulerResponse,
   DeleteInferenceSchedulerError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteInferenceSchedulerRequest,
   output: DeleteInferenceSchedulerResponse,
@@ -2892,7 +2890,7 @@ export const deleteLabel: API.OperationMethod<
   DeleteLabelRequest,
   DeleteLabelResponse,
   DeleteLabelError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteLabelRequest,
   output: DeleteLabelResponse,
@@ -2924,7 +2922,7 @@ export const deleteLabelGroup: API.OperationMethod<
   DeleteLabelGroupRequest,
   DeleteLabelGroupResponse,
   DeleteLabelGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteLabelGroupRequest,
   output: DeleteLabelGroupResponse,
@@ -2957,7 +2955,7 @@ export const deleteModel: API.OperationMethod<
   DeleteModelRequest,
   DeleteModelResponse,
   DeleteModelError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteModelRequest,
   output: DeleteModelResponse,
@@ -2989,7 +2987,7 @@ export const deleteResourcePolicy: API.OperationMethod<
   DeleteResourcePolicyRequest,
   DeleteResourcePolicyResponse,
   DeleteResourcePolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteResourcePolicyRequest,
   output: DeleteResourcePolicyResponse,
@@ -3022,7 +3020,7 @@ export const deleteRetrainingScheduler: API.OperationMethod<
   DeleteRetrainingSchedulerRequest,
   DeleteRetrainingSchedulerResponse,
   DeleteRetrainingSchedulerError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteRetrainingSchedulerRequest,
   output: DeleteRetrainingSchedulerResponse,
@@ -3054,7 +3052,7 @@ export const describeDataIngestionJob: API.OperationMethod<
   DescribeDataIngestionJobRequest,
   DescribeDataIngestionJobResponse,
   DescribeDataIngestionJobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeDataIngestionJobRequest,
   output: DescribeDataIngestionJobResponse,
@@ -3085,7 +3083,7 @@ export const describeDataset: API.OperationMethod<
   DescribeDatasetRequest,
   DescribeDatasetResponse,
   DescribeDatasetError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeDatasetRequest,
   output: DescribeDatasetResponse,
@@ -3116,7 +3114,7 @@ export const describeInferenceScheduler: API.OperationMethod<
   DescribeInferenceSchedulerRequest,
   DescribeInferenceSchedulerResponse,
   DescribeInferenceSchedulerError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeInferenceSchedulerRequest,
   output: DescribeInferenceSchedulerResponse,
@@ -3146,7 +3144,7 @@ export const describeLabel: API.OperationMethod<
   DescribeLabelRequest,
   DescribeLabelResponse,
   DescribeLabelError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeLabelRequest,
   output: DescribeLabelResponse,
@@ -3176,7 +3174,7 @@ export const describeLabelGroup: API.OperationMethod<
   DescribeLabelGroupRequest,
   DescribeLabelGroupResponse,
   DescribeLabelGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeLabelGroupRequest,
   output: DescribeLabelGroupResponse,
@@ -3208,7 +3206,7 @@ export const describeModel: API.OperationMethod<
   DescribeModelRequest,
   DescribeModelResponse,
   DescribeModelError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeModelRequest,
   output: DescribeModelResponse,
@@ -3238,7 +3236,7 @@ export const describeModelVersion: API.OperationMethod<
   DescribeModelVersionRequest,
   DescribeModelVersionResponse,
   DescribeModelVersionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeModelVersionRequest,
   output: DescribeModelVersionResponse,
@@ -3268,7 +3266,7 @@ export const describeResourcePolicy: API.OperationMethod<
   DescribeResourcePolicyRequest,
   DescribeResourcePolicyResponse,
   DescribeResourcePolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeResourcePolicyRequest,
   output: DescribeResourcePolicyResponse,
@@ -3299,7 +3297,7 @@ export const describeRetrainingScheduler: API.OperationMethod<
   DescribeRetrainingSchedulerRequest,
   DescribeRetrainingSchedulerResponse,
   DescribeRetrainingSchedulerError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeRetrainingSchedulerRequest,
   output: DescribeRetrainingSchedulerResponse,
@@ -3331,7 +3329,7 @@ export const importDataset: API.OperationMethod<
   ImportDatasetRequest,
   ImportDatasetResponse,
   ImportDatasetError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ImportDatasetRequest,
   output: ImportDatasetResponse,
@@ -3365,7 +3363,7 @@ export const importModelVersion: API.OperationMethod<
   ImportModelVersionRequest,
   ImportModelVersionResponse,
   ImportModelVersionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ImportModelVersionRequest,
   output: ImportModelVersionResponse,
@@ -3393,27 +3391,13 @@ export type ListDataIngestionJobsError =
  * Provides a list of all data ingestion jobs, including dataset name and ARN, S3 location
  * of the input data, status, and so on.
  */
-export const listDataIngestionJobs: API.OperationMethod<
+export const listDataIngestionJobs: API.PaginatedOperationMethod<
   ListDataIngestionJobsRequest,
   ListDataIngestionJobsResponse,
   ListDataIngestionJobsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDataIngestionJobsRequest,
-  ) => stream.Stream<
-    ListDataIngestionJobsResponse,
-    ListDataIngestionJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDataIngestionJobsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListDataIngestionJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListDataIngestionJobsRequest,
   output: ListDataIngestionJobsResponse,
   errors: [
@@ -3430,27 +3414,7 @@ export const listDataIngestionJobs: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListDataIngestionJobsRequest,
-  ListDataIngestionJobsResponse,
-  ListDataIngestionJobsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDataIngestionJobsRequest,
-  ) => stream.Stream<
-    ListDataIngestionJobsResponse,
-    ListDataIngestionJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDataIngestionJobsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListDataIngestionJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListDatasetsError =
   | AccessDeniedException
@@ -3461,27 +3425,13 @@ export type ListDatasetsError =
 /**
  * Lists all datasets currently available in your account, filtering on the dataset name.
  */
-export const listDatasets: API.OperationMethod<
+export const listDatasets: API.PaginatedOperationMethod<
   ListDatasetsRequest,
   ListDatasetsResponse,
   ListDatasetsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDatasetsRequest,
-  ) => stream.Stream<
-    ListDatasetsResponse,
-    ListDatasetsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDatasetsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListDatasetsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListDatasetsRequest,
   output: ListDatasetsResponse,
   errors: [
@@ -3498,27 +3448,7 @@ export const listDatasets: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListDatasetsRequest,
-  ListDatasetsResponse,
-  ListDatasetsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDatasetsRequest,
-  ) => stream.Stream<
-    ListDatasetsResponse,
-    ListDatasetsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDatasetsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListDatasetsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListInferenceEventsError =
   | AccessDeniedException
@@ -3530,27 +3460,13 @@ export type ListInferenceEventsError =
 /**
  * Lists all inference events that have been found for the specified inference scheduler.
  */
-export const listInferenceEvents: API.OperationMethod<
+export const listInferenceEvents: API.PaginatedOperationMethod<
   ListInferenceEventsRequest,
   ListInferenceEventsResponse,
   ListInferenceEventsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListInferenceEventsRequest,
-  ) => stream.Stream<
-    ListInferenceEventsResponse,
-    ListInferenceEventsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListInferenceEventsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListInferenceEventsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListInferenceEventsRequest,
   output: ListInferenceEventsResponse,
   errors: [
@@ -3568,27 +3484,7 @@ export const listInferenceEvents: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListInferenceEventsRequest,
-  ListInferenceEventsResponse,
-  ListInferenceEventsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListInferenceEventsRequest,
-  ) => stream.Stream<
-    ListInferenceEventsResponse,
-    ListInferenceEventsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListInferenceEventsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListInferenceEventsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListInferenceExecutionsError =
   | AccessDeniedException
@@ -3601,27 +3497,13 @@ export type ListInferenceExecutionsError =
  * Lists all inference executions that have been performed by the specified inference
  * scheduler.
  */
-export const listInferenceExecutions: API.OperationMethod<
+export const listInferenceExecutions: API.PaginatedOperationMethod<
   ListInferenceExecutionsRequest,
   ListInferenceExecutionsResponse,
   ListInferenceExecutionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListInferenceExecutionsRequest,
-  ) => stream.Stream<
-    ListInferenceExecutionsResponse,
-    ListInferenceExecutionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListInferenceExecutionsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListInferenceExecutionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListInferenceExecutionsRequest,
   output: ListInferenceExecutionsResponse,
   errors: [
@@ -3639,27 +3521,7 @@ export const listInferenceExecutions: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListInferenceExecutionsRequest,
-  ListInferenceExecutionsResponse,
-  ListInferenceExecutionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListInferenceExecutionsRequest,
-  ) => stream.Stream<
-    ListInferenceExecutionsResponse,
-    ListInferenceExecutionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListInferenceExecutionsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListInferenceExecutionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListInferenceSchedulersError =
   | AccessDeniedException
@@ -3670,27 +3532,13 @@ export type ListInferenceSchedulersError =
 /**
  * Retrieves a list of all inference schedulers currently available for your account.
  */
-export const listInferenceSchedulers: API.OperationMethod<
+export const listInferenceSchedulers: API.PaginatedOperationMethod<
   ListInferenceSchedulersRequest,
   ListInferenceSchedulersResponse,
   ListInferenceSchedulersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListInferenceSchedulersRequest,
-  ) => stream.Stream<
-    ListInferenceSchedulersResponse,
-    ListInferenceSchedulersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListInferenceSchedulersRequest,
-  ) => stream.Stream<
-    unknown,
-    ListInferenceSchedulersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListInferenceSchedulersRequest,
   output: ListInferenceSchedulersResponse,
   errors: [
@@ -3707,27 +3555,7 @@ export const listInferenceSchedulers: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListInferenceSchedulersRequest,
-  ListInferenceSchedulersResponse,
-  ListInferenceSchedulersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListInferenceSchedulersRequest,
-  ) => stream.Stream<
-    ListInferenceSchedulersResponse,
-    ListInferenceSchedulersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListInferenceSchedulersRequest,
-  ) => stream.Stream<
-    unknown,
-    ListInferenceSchedulersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListLabelGroupsError =
   | AccessDeniedException
@@ -3738,27 +3566,13 @@ export type ListLabelGroupsError =
 /**
  * Returns a list of the label groups.
  */
-export const listLabelGroups: API.OperationMethod<
+export const listLabelGroups: API.PaginatedOperationMethod<
   ListLabelGroupsRequest,
   ListLabelGroupsResponse,
   ListLabelGroupsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListLabelGroupsRequest,
-  ) => stream.Stream<
-    ListLabelGroupsResponse,
-    ListLabelGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListLabelGroupsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListLabelGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListLabelGroupsRequest,
   output: ListLabelGroupsResponse,
   errors: [
@@ -3775,27 +3589,7 @@ export const listLabelGroups: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListLabelGroupsRequest,
-  ListLabelGroupsResponse,
-  ListLabelGroupsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListLabelGroupsRequest,
-  ) => stream.Stream<
-    ListLabelGroupsResponse,
-    ListLabelGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListLabelGroupsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListLabelGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListLabelsError =
   | AccessDeniedException
@@ -3806,27 +3600,13 @@ export type ListLabelsError =
 /**
  * Provides a list of labels.
  */
-export const listLabels: API.OperationMethod<
+export const listLabels: API.PaginatedOperationMethod<
   ListLabelsRequest,
   ListLabelsResponse,
   ListLabelsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListLabelsRequest,
-  ) => stream.Stream<
-    ListLabelsResponse,
-    ListLabelsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListLabelsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListLabelsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListLabelsRequest,
   output: ListLabelsResponse,
   errors: [
@@ -3843,27 +3623,7 @@ export const listLabels: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListLabelsRequest,
-  ListLabelsResponse,
-  ListLabelsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListLabelsRequest,
-  ) => stream.Stream<
-    ListLabelsResponse,
-    ListLabelsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListLabelsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListLabelsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListModelsError =
   | AccessDeniedException
@@ -3875,27 +3635,13 @@ export type ListModelsError =
  * Generates a list of all models in the account, including model name and ARN, dataset,
  * and status.
  */
-export const listModels: API.OperationMethod<
+export const listModels: API.PaginatedOperationMethod<
   ListModelsRequest,
   ListModelsResponse,
   ListModelsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListModelsRequest,
-  ) => stream.Stream<
-    ListModelsResponse,
-    ListModelsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListModelsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListModelsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListModelsRequest,
   output: ListModelsResponse,
   errors: [
@@ -3912,27 +3658,7 @@ export const listModels: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListModelsRequest,
-  ListModelsResponse,
-  ListModelsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListModelsRequest,
-  ) => stream.Stream<
-    ListModelsResponse,
-    ListModelsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListModelsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListModelsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListModelVersionsError =
   | AccessDeniedException
@@ -3946,27 +3672,13 @@ export type ListModelVersionsError =
  * model version ARN, and status. To list a subset of versions, use the
  * `MaxModelVersion` and `MinModelVersion` fields.
  */
-export const listModelVersions: API.OperationMethod<
+export const listModelVersions: API.PaginatedOperationMethod<
   ListModelVersionsRequest,
   ListModelVersionsResponse,
   ListModelVersionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListModelVersionsRequest,
-  ) => stream.Stream<
-    ListModelVersionsResponse,
-    ListModelVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListModelVersionsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListModelVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListModelVersionsRequest,
   output: ListModelVersionsResponse,
   errors: [
@@ -3984,27 +3696,7 @@ export const listModelVersions: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListModelVersionsRequest,
-  ListModelVersionsResponse,
-  ListModelVersionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListModelVersionsRequest,
-  ) => stream.Stream<
-    ListModelVersionsResponse,
-    ListModelVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListModelVersionsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListModelVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListRetrainingSchedulersError =
   | AccessDeniedException
@@ -4016,27 +3708,13 @@ export type ListRetrainingSchedulersError =
  * Lists all retraining schedulers in your account, filtering by model name prefix and
  * status.
  */
-export const listRetrainingSchedulers: API.OperationMethod<
+export const listRetrainingSchedulers: API.PaginatedOperationMethod<
   ListRetrainingSchedulersRequest,
   ListRetrainingSchedulersResponse,
   ListRetrainingSchedulersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListRetrainingSchedulersRequest,
-  ) => stream.Stream<
-    ListRetrainingSchedulersResponse,
-    ListRetrainingSchedulersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListRetrainingSchedulersRequest,
-  ) => stream.Stream<
-    unknown,
-    ListRetrainingSchedulersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListRetrainingSchedulersRequest,
   output: ListRetrainingSchedulersResponse,
   errors: [
@@ -4053,27 +3731,7 @@ export const listRetrainingSchedulers: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListRetrainingSchedulersRequest,
-  ListRetrainingSchedulersResponse,
-  ListRetrainingSchedulersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListRetrainingSchedulersRequest,
-  ) => stream.Stream<
-    ListRetrainingSchedulersResponse,
-    ListRetrainingSchedulersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListRetrainingSchedulersRequest,
-  ) => stream.Stream<
-    unknown,
-    ListRetrainingSchedulersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListSensorStatisticsError =
   | AccessDeniedException
@@ -4087,27 +3745,13 @@ export type ListSensorStatisticsError =
  * successfully ingested in the particular dataset. Can also be used to retreive Sensor
  * Statistics for a previous ingestion job.
  */
-export const listSensorStatistics: API.OperationMethod<
+export const listSensorStatistics: API.PaginatedOperationMethod<
   ListSensorStatisticsRequest,
   ListSensorStatisticsResponse,
   ListSensorStatisticsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSensorStatisticsRequest,
-  ) => stream.Stream<
-    ListSensorStatisticsResponse,
-    ListSensorStatisticsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSensorStatisticsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListSensorStatisticsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListSensorStatisticsRequest,
   output: ListSensorStatisticsResponse,
   errors: [
@@ -4125,27 +3769,7 @@ export const listSensorStatistics: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListSensorStatisticsRequest,
-  ListSensorStatisticsResponse,
-  ListSensorStatisticsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSensorStatisticsRequest,
-  ) => stream.Stream<
-    ListSensorStatisticsResponse,
-    ListSensorStatisticsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSensorStatisticsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListSensorStatisticsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsForResourceError =
   | AccessDeniedException
@@ -4161,7 +3785,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceRequest,
   ListTagsForResourceResponse,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -4193,7 +3817,7 @@ export const putResourcePolicy: API.OperationMethod<
   PutResourcePolicyRequest,
   PutResourcePolicyResponse,
   PutResourcePolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutResourcePolicyRequest,
   output: PutResourcePolicyResponse,
@@ -4227,7 +3851,7 @@ export const startDataIngestionJob: API.OperationMethod<
   StartDataIngestionJobRequest,
   StartDataIngestionJobResponse,
   StartDataIngestionJobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartDataIngestionJobRequest,
   output: StartDataIngestionJobResponse,
@@ -4260,7 +3884,7 @@ export const startInferenceScheduler: API.OperationMethod<
   StartInferenceSchedulerRequest,
   StartInferenceSchedulerResponse,
   StartInferenceSchedulerError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartInferenceSchedulerRequest,
   output: StartInferenceSchedulerResponse,
@@ -4292,7 +3916,7 @@ export const startRetrainingScheduler: API.OperationMethod<
   StartRetrainingSchedulerRequest,
   StartRetrainingSchedulerResponse,
   StartRetrainingSchedulerError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartRetrainingSchedulerRequest,
   output: StartRetrainingSchedulerResponse,
@@ -4324,7 +3948,7 @@ export const stopInferenceScheduler: API.OperationMethod<
   StopInferenceSchedulerRequest,
   StopInferenceSchedulerResponse,
   StopInferenceSchedulerError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StopInferenceSchedulerRequest,
   output: StopInferenceSchedulerResponse,
@@ -4356,7 +3980,7 @@ export const stopRetrainingScheduler: API.OperationMethod<
   StopRetrainingSchedulerRequest,
   StopRetrainingSchedulerResponse,
   StopRetrainingSchedulerError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StopRetrainingSchedulerRequest,
   output: StopRetrainingSchedulerResponse,
@@ -4392,7 +4016,7 @@ export const tagResource: API.OperationMethod<
   TagResourceRequest,
   TagResourceResponse,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -4423,7 +4047,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceRequest,
   UntagResourceResponse,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -4454,7 +4078,7 @@ export const updateActiveModelVersion: API.OperationMethod<
   UpdateActiveModelVersionRequest,
   UpdateActiveModelVersionResponse,
   UpdateActiveModelVersionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateActiveModelVersionRequest,
   output: UpdateActiveModelVersionResponse,
@@ -4486,7 +4110,7 @@ export const updateInferenceScheduler: API.OperationMethod<
   UpdateInferenceSchedulerRequest,
   UpdateInferenceSchedulerResponse,
   UpdateInferenceSchedulerError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateInferenceSchedulerRequest,
   output: UpdateInferenceSchedulerResponse,
@@ -4518,7 +4142,7 @@ export const updateLabelGroup: API.OperationMethod<
   UpdateLabelGroupRequest,
   UpdateLabelGroupResponse,
   UpdateLabelGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateLabelGroupRequest,
   output: UpdateLabelGroupResponse,
@@ -4550,7 +4174,7 @@ export const updateModel: API.OperationMethod<
   UpdateModelRequest,
   UpdateModelResponse,
   UpdateModelError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateModelRequest,
   output: UpdateModelResponse,
@@ -4582,7 +4206,7 @@ export const updateRetrainingScheduler: API.OperationMethod<
   UpdateRetrainingSchedulerRequest,
   UpdateRetrainingSchedulerResponse,
   UpdateRetrainingSchedulerError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateRetrainingSchedulerRequest,
   output: UpdateRetrainingSchedulerResponse,

@@ -1,6 +1,5 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -8,7 +7,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 const svc = T.AwsApiService({
   sdkId: "Marketplace Discovery",
   serviceShapeName: "AWSMarketplaceDiscovery",
@@ -55,7 +53,7 @@ const rules = T.EndpointResolver((p, _) => {
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export type ListingId = string;
@@ -2151,7 +2149,7 @@ export const getListing: API.OperationMethod<
   GetListingInput,
   GetListingOutput,
   GetListingError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetListingInput,
   output: GetListingOutput,
@@ -2169,7 +2167,7 @@ export const getOffer: API.OperationMethod<
   GetOfferInput,
   GetOfferOutput,
   GetOfferError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetOfferInput,
   output: GetOfferOutput,
@@ -2187,7 +2185,7 @@ export const getOfferSet: API.OperationMethod<
   GetOfferSetInput,
   GetOfferSetOutput,
   GetOfferSetError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetOfferSetInput,
   output: GetOfferSetOutput,
@@ -2201,27 +2199,13 @@ export type GetOfferTermsError = ResourceNotFoundException | CommonErrors;
 /**
  * Returns the terms attached to an offer, such as pricing terms (usage-based, contract, BYOL, free trial), legal terms, payment schedules, validity terms, support terms, and renewal terms.
  */
-export const getOfferTerms: API.OperationMethod<
+export const getOfferTerms: API.PaginatedOperationMethod<
   GetOfferTermsInput,
   GetOfferTermsOutput,
   GetOfferTermsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetOfferTermsInput,
-  ) => stream.Stream<
-    GetOfferTermsOutput,
-    GetOfferTermsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetOfferTermsInput,
-  ) => stream.Stream<
-    OfferTerm,
-    GetOfferTermsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  OfferTerm
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetOfferTermsInput,
   output: GetOfferTermsOutput,
   errors: [ResourceNotFoundException],
@@ -2233,27 +2217,7 @@ export const getOfferTerms: API.OperationMethod<
     outputToken: "nextToken",
     items: "offerTerms",
   } as const,
-})) as any as API.OperationMethod<
-  GetOfferTermsInput,
-  GetOfferTermsOutput,
-  GetOfferTermsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetOfferTermsInput,
-  ) => stream.Stream<
-    GetOfferTermsOutput,
-    GetOfferTermsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetOfferTermsInput,
-  ) => stream.Stream<
-    OfferTerm,
-    GetOfferTermsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetProductError = ResourceNotFoundException | CommonErrors;
 /**
@@ -2263,7 +2227,7 @@ export const getProduct: API.OperationMethod<
   GetProductInput,
   GetProductOutput,
   GetProductError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetProductInput,
   output: GetProductOutput,
@@ -2279,27 +2243,13 @@ export type ListFulfillmentOptionsError =
 /**
  * Returns the fulfillment options available for a product, including deployment details such as version information, operating systems, usage instructions, and release notes.
  */
-export const listFulfillmentOptions: API.OperationMethod<
+export const listFulfillmentOptions: API.PaginatedOperationMethod<
   ListFulfillmentOptionsInput,
   ListFulfillmentOptionsOutput,
   ListFulfillmentOptionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListFulfillmentOptionsInput,
-  ) => stream.Stream<
-    ListFulfillmentOptionsOutput,
-    ListFulfillmentOptionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListFulfillmentOptionsInput,
-  ) => stream.Stream<
-    FulfillmentOption,
-    ListFulfillmentOptionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  FulfillmentOption
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListFulfillmentOptionsInput,
   output: ListFulfillmentOptionsOutput,
   errors: [ResourceNotFoundException],
@@ -2312,27 +2262,7 @@ export const listFulfillmentOptions: API.OperationMethod<
     items: "fulfillmentOptions",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListFulfillmentOptionsInput,
-  ListFulfillmentOptionsOutput,
-  ListFulfillmentOptionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListFulfillmentOptionsInput,
-  ) => stream.Stream<
-    ListFulfillmentOptionsOutput,
-    ListFulfillmentOptionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListFulfillmentOptionsInput,
-  ) => stream.Stream<
-    FulfillmentOption,
-    ListFulfillmentOptionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListPurchaseOptionsError = CommonErrors;
 /**
@@ -2340,27 +2270,13 @@ export type ListPurchaseOptionsError = CommonErrors;
  *
  * You must include at least one of the following filters in the request: a `PRODUCT_ID` filter to specify the product for which to retrieve purchase options, or a `VISIBILITY_SCOPE` filter to retrieve purchase options by visibility.
  */
-export const listPurchaseOptions: API.OperationMethod<
+export const listPurchaseOptions: API.PaginatedOperationMethod<
   ListPurchaseOptionsInput,
   ListPurchaseOptionsOutput,
   ListPurchaseOptionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPurchaseOptionsInput,
-  ) => stream.Stream<
-    ListPurchaseOptionsOutput,
-    ListPurchaseOptionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPurchaseOptionsInput,
-  ) => stream.Stream<
-    PurchaseOptionSummary,
-    ListPurchaseOptionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  PurchaseOptionSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListPurchaseOptionsInput,
   output: ListPurchaseOptionsOutput,
   errors: [],
@@ -2372,53 +2288,19 @@ export const listPurchaseOptions: API.OperationMethod<
     outputToken: "nextToken",
     items: "purchaseOptions",
   } as const,
-})) as any as API.OperationMethod<
-  ListPurchaseOptionsInput,
-  ListPurchaseOptionsOutput,
-  ListPurchaseOptionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPurchaseOptionsInput,
-  ) => stream.Stream<
-    ListPurchaseOptionsOutput,
-    ListPurchaseOptionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPurchaseOptionsInput,
-  ) => stream.Stream<
-    PurchaseOptionSummary,
-    ListPurchaseOptionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type SearchFacetsError = CommonErrors;
 /**
  * Returns available facet values for filtering listings, such as categories, pricing models, fulfillment option types, publishers, and customer ratings. Each facet value includes a count of matching listings.
  */
-export const searchFacets: API.OperationMethod<
+export const searchFacets: API.PaginatedOperationMethod<
   SearchFacetsInput,
   SearchFacetsOutput,
   SearchFacetsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: SearchFacetsInput,
-  ) => stream.Stream<
-    SearchFacetsOutput,
-    SearchFacetsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: SearchFacetsInput,
-  ) => stream.Stream<
-    unknown,
-    SearchFacetsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: SearchFacetsInput,
   output: SearchFacetsOutput,
   errors: [],
@@ -2430,53 +2312,19 @@ export const searchFacets: API.OperationMethod<
     outputToken: "nextToken",
     items: "listingFacets",
   } as const,
-})) as any as API.OperationMethod<
-  SearchFacetsInput,
-  SearchFacetsOutput,
-  SearchFacetsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: SearchFacetsInput,
-  ) => stream.Stream<
-    SearchFacetsOutput,
-    SearchFacetsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: SearchFacetsInput,
-  ) => stream.Stream<
-    unknown,
-    SearchFacetsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type SearchListingsError = CommonErrors;
 /**
  * Returns a list of product listings based on search criteria and filters. You can search by keyword, filter by category, pricing model, fulfillment type, and other attributes, and sort results by relevance or customer rating.
  */
-export const searchListings: API.OperationMethod<
+export const searchListings: API.PaginatedOperationMethod<
   SearchListingsInput,
   SearchListingsOutput,
   SearchListingsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: SearchListingsInput,
-  ) => stream.Stream<
-    SearchListingsOutput,
-    SearchListingsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: SearchListingsInput,
-  ) => stream.Stream<
-    ListingSummary,
-    SearchListingsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ListingSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: SearchListingsInput,
   output: SearchListingsOutput,
   errors: [],
@@ -2489,24 +2337,4 @@ export const searchListings: API.OperationMethod<
     items: "listingSummaries",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  SearchListingsInput,
-  SearchListingsOutput,
-  SearchListingsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: SearchListingsInput,
-  ) => stream.Stream<
-    SearchListingsOutput,
-    SearchListingsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: SearchListingsInput,
-  ) => stream.Stream<
-    ListingSummary,
-    SearchListingsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;

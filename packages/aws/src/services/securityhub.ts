@@ -1,6 +1,5 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -8,7 +7,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 const svc = T.AwsApiService({
   sdkId: "SecurityHub",
   serviceShapeName: "SecurityHubAPIService",
@@ -88,91 +86,136 @@ const rules = T.EndpointResolver((p, _) => {
 export class AccessDeniedException
   extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
     "AccessDeniedException",
-    { Message: S.optional(S.String), Code: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      Code: S.optional(S.String),
+    },
     T.HttpError(403),
   ).pipe(C.withAuthError) {}
 export class ConflictException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
     "ConflictException",
-    { Message: S.optional(S.String), Code: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      Code: S.optional(S.String),
+    },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class InternalException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalException>()(
     "InternalException",
-    { Message: S.optional(S.String), Code: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      Code: S.optional(S.String),
+    },
     T.HttpError(500),
   ).pipe(C.withServerError) {}
 export class InternalServerException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
     "InternalServerException",
-    { Message: S.optional(S.String), Code: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      Code: S.optional(S.String),
+    },
     T.HttpError(500),
   ).pipe(C.withServerError) {}
 export class InvalidAccessException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidAccessException>()(
     "InvalidAccessException",
-    { Message: S.optional(S.String), Code: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      Code: S.optional(S.String),
+    },
     T.HttpError(401),
   ).pipe(C.withAuthError) {}
 export class InvalidInputException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidInputException>()(
     "InvalidInputException",
-    { Message: S.optional(S.String), Code: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      Code: S.optional(S.String),
+    },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class LimitExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<LimitExceededException>()(
     "LimitExceededException",
-    { Message: S.optional(S.String), Code: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      Code: S.optional(S.String),
+    },
     T.HttpError(429),
   ).pipe(C.withThrottlingError) {}
 export class OrganizationalUnitNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<OrganizationalUnitNotFoundException>()(
     "OrganizationalUnitNotFoundException",
-    { Message: S.optional(S.String), Code: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      Code: S.optional(S.String),
+    },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class OrganizationNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<OrganizationNotFoundException>()(
     "OrganizationNotFoundException",
-    { Message: S.optional(S.String), Code: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      Code: S.optional(S.String),
+    },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class ResourceConflictException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceConflictException>()(
     "ResourceConflictException",
-    { Message: S.optional(S.String), Code: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      Code: S.optional(S.String),
+    },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class ResourceInUseException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceInUseException>()(
     "ResourceInUseException",
-    { Message: S.optional(S.String), Code: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      Code: S.optional(S.String),
+    },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { Message: S.optional(S.String), Code: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      Code: S.optional(S.String),
+    },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class ServiceQuotaExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
     "ServiceQuotaExceededException",
-    { Message: S.optional(S.String), Code: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      Code: S.optional(S.String),
+    },
     T.HttpError(402),
   ).pipe(C.withQuotaError) {}
 export class ThrottlingException
   extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
     "ThrottlingException",
-    { Message: S.optional(S.String), Code: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      Code: S.optional(S.String),
+    },
     T.HttpError(429),
   ).pipe(C.withThrottlingError) {}
 export class ValidationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
     "ValidationException",
-    { Message: S.optional(S.String), Code: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      Code: S.optional(S.String),
+    },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export type NonEmptyString = string;
@@ -18900,7 +18943,7 @@ export const acceptAdministratorInvitation: API.OperationMethod<
   AcceptAdministratorInvitationRequest,
   AcceptAdministratorInvitationResponse,
   AcceptAdministratorInvitationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AcceptAdministratorInvitationRequest,
   output: AcceptAdministratorInvitationResponse,
@@ -18941,7 +18984,7 @@ export const acceptInvitation: API.OperationMethod<
   AcceptInvitationRequest,
   AcceptInvitationResponse,
   AcceptInvitationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AcceptInvitationRequest,
   output: AcceptInvitationResponse,
@@ -18971,7 +19014,7 @@ export const batchDeleteAutomationRules: API.OperationMethod<
   BatchDeleteAutomationRulesRequest,
   BatchDeleteAutomationRulesResponse,
   BatchDeleteAutomationRulesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchDeleteAutomationRulesRequest,
   output: BatchDeleteAutomationRulesResponse,
@@ -19005,7 +19048,7 @@ export const batchDisableStandards: API.OperationMethod<
   BatchDisableStandardsRequest,
   BatchDisableStandardsResponse,
   BatchDisableStandardsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchDisableStandardsRequest,
   output: BatchDisableStandardsResponse,
@@ -19040,7 +19083,7 @@ export const batchEnableStandards: API.OperationMethod<
   BatchEnableStandardsRequest,
   BatchEnableStandardsResponse,
   BatchEnableStandardsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchEnableStandardsRequest,
   output: BatchEnableStandardsResponse,
@@ -19072,7 +19115,7 @@ export const batchGetAutomationRules: API.OperationMethod<
   BatchGetAutomationRulesRequest,
   BatchGetAutomationRulesResponse,
   BatchGetAutomationRulesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchGetAutomationRulesRequest,
   output: BatchGetAutomationRulesResponse,
@@ -19106,7 +19149,7 @@ export const batchGetConfigurationPolicyAssociations: API.OperationMethod<
   BatchGetConfigurationPolicyAssociationsRequest,
   BatchGetConfigurationPolicyAssociationsResponse,
   BatchGetConfigurationPolicyAssociationsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchGetConfigurationPolicyAssociationsRequest,
   output: BatchGetConfigurationPolicyAssociationsResponse,
@@ -19136,7 +19179,7 @@ export const batchGetSecurityControls: API.OperationMethod<
   BatchGetSecurityControlsRequest,
   BatchGetSecurityControlsResponse,
   BatchGetSecurityControlsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchGetSecurityControlsRequest,
   output: BatchGetSecurityControlsResponse,
@@ -19166,7 +19209,7 @@ export const batchGetStandardsControlAssociations: API.OperationMethod<
   BatchGetStandardsControlAssociationsRequest,
   BatchGetStandardsControlAssociationsResponse,
   BatchGetStandardsControlAssociationsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchGetStandardsControlAssociationsRequest,
   output: BatchGetStandardsControlAssociationsResponse,
@@ -19237,7 +19280,7 @@ export const batchImportFindings: API.OperationMethod<
   BatchImportFindingsRequest,
   BatchImportFindingsResponse,
   BatchImportFindingsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchImportFindingsRequest,
   output: BatchImportFindingsResponse,
@@ -19267,7 +19310,7 @@ export const batchUpdateAutomationRules: API.OperationMethod<
   BatchUpdateAutomationRulesRequest,
   BatchUpdateAutomationRulesResponse,
   BatchUpdateAutomationRulesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchUpdateAutomationRulesRequest,
   output: BatchUpdateAutomationRulesResponse,
@@ -19325,7 +19368,7 @@ export const batchUpdateFindings: API.OperationMethod<
   BatchUpdateFindingsRequest,
   BatchUpdateFindingsResponse,
   BatchUpdateFindingsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchUpdateFindingsRequest,
   output: BatchUpdateFindingsResponse,
@@ -19363,7 +19406,7 @@ export const batchUpdateFindingsV2: API.OperationMethod<
   BatchUpdateFindingsV2Request,
   BatchUpdateFindingsV2Response,
   BatchUpdateFindingsV2Error,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchUpdateFindingsV2Request,
   output: BatchUpdateFindingsV2Response,
@@ -19393,7 +19436,7 @@ export const batchUpdateStandardsControlAssociations: API.OperationMethod<
   BatchUpdateStandardsControlAssociationsRequest,
   BatchUpdateStandardsControlAssociationsResponse,
   BatchUpdateStandardsControlAssociationsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchUpdateStandardsControlAssociationsRequest,
   output: BatchUpdateStandardsControlAssociationsResponse,
@@ -19426,7 +19469,7 @@ export const createActionTarget: API.OperationMethod<
   CreateActionTargetRequest,
   CreateActionTargetResponse,
   CreateActionTargetError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateActionTargetRequest,
   output: CreateActionTargetResponse,
@@ -19458,7 +19501,7 @@ export const createAggregatorV2: API.OperationMethod<
   CreateAggregatorV2Request,
   CreateAggregatorV2Response,
   CreateAggregatorV2Error,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateAggregatorV2Request,
   output: CreateAggregatorV2Response,
@@ -19490,7 +19533,7 @@ export const createAutomationRule: API.OperationMethod<
   CreateAutomationRuleRequest,
   CreateAutomationRuleResponse,
   CreateAutomationRuleError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateAutomationRuleRequest,
   output: CreateAutomationRuleResponse,
@@ -19521,7 +19564,7 @@ export const createAutomationRuleV2: API.OperationMethod<
   CreateAutomationRuleV2Request,
   CreateAutomationRuleV2Response,
   CreateAutomationRuleV2Error,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateAutomationRuleV2Request,
   output: CreateAutomationRuleV2Response,
@@ -19554,7 +19597,7 @@ export const createConfigurationPolicy: API.OperationMethod<
   CreateConfigurationPolicyRequest,
   CreateConfigurationPolicyResponse,
   CreateConfigurationPolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateConfigurationPolicyRequest,
   output: CreateConfigurationPolicyResponse,
@@ -19587,7 +19630,7 @@ export const createConnectorV2: API.OperationMethod<
   CreateConnectorV2Request,
   CreateConnectorV2Response,
   CreateConnectorV2Error,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateConnectorV2Request,
   output: CreateConnectorV2Response,
@@ -19623,7 +19666,7 @@ export const createFindingAggregator: API.OperationMethod<
   CreateFindingAggregatorRequest,
   CreateFindingAggregatorResponse,
   CreateFindingAggregatorError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateFindingAggregatorRequest,
   output: CreateFindingAggregatorResponse,
@@ -19657,7 +19700,7 @@ export const createInsight: API.OperationMethod<
   CreateInsightRequest,
   CreateInsightResponse,
   CreateInsightError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateInsightRequest,
   output: CreateInsightResponse,
@@ -19720,7 +19763,7 @@ export const createMembers: API.OperationMethod<
   CreateMembersRequest,
   CreateMembersResponse,
   CreateMembersError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateMembersRequest,
   output: CreateMembersResponse,
@@ -19752,7 +19795,7 @@ export const createTicketV2: API.OperationMethod<
   CreateTicketV2Request,
   CreateTicketV2Response,
   CreateTicketV2Error,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateTicketV2Request,
   output: CreateTicketV2Response,
@@ -19791,7 +19834,7 @@ export const declineInvitations: API.OperationMethod<
   DeclineInvitationsRequest,
   DeclineInvitationsResponse,
   DeclineInvitationsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeclineInvitationsRequest,
   output: DeclineInvitationsResponse,
@@ -19822,7 +19865,7 @@ export const deleteActionTarget: API.OperationMethod<
   DeleteActionTargetRequest,
   DeleteActionTargetResponse,
   DeleteActionTargetError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteActionTargetRequest,
   output: DeleteActionTargetResponse,
@@ -19852,7 +19895,7 @@ export const deleteAggregatorV2: API.OperationMethod<
   DeleteAggregatorV2Request,
   DeleteAggregatorV2Response,
   DeleteAggregatorV2Error,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteAggregatorV2Request,
   output: DeleteAggregatorV2Response,
@@ -19884,7 +19927,7 @@ export const deleteAutomationRuleV2: API.OperationMethod<
   DeleteAutomationRuleV2Request,
   DeleteAutomationRuleV2Response,
   DeleteAutomationRuleV2Error,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteAutomationRuleV2Request,
   output: DeleteAutomationRuleV2Response,
@@ -19919,7 +19962,7 @@ export const deleteConfigurationPolicy: API.OperationMethod<
   DeleteConfigurationPolicyRequest,
   DeleteConfigurationPolicyResponse,
   DeleteConfigurationPolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteConfigurationPolicyRequest,
   output: DeleteConfigurationPolicyResponse,
@@ -19952,7 +19995,7 @@ export const deleteConnectorV2: API.OperationMethod<
   DeleteConnectorV2Request,
   DeleteConnectorV2Response,
   DeleteConnectorV2Error,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteConnectorV2Request,
   output: DeleteConnectorV2Response,
@@ -19990,7 +20033,7 @@ export const deleteFindingAggregator: API.OperationMethod<
   DeleteFindingAggregatorRequest,
   DeleteFindingAggregatorResponse,
   DeleteFindingAggregatorError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteFindingAggregatorRequest,
   output: DeleteFindingAggregatorResponse,
@@ -20021,7 +20064,7 @@ export const deleteInsight: API.OperationMethod<
   DeleteInsightRequest,
   DeleteInsightResponse,
   DeleteInsightError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteInsightRequest,
   output: DeleteInsightResponse,
@@ -20060,7 +20103,7 @@ export const deleteInvitations: API.OperationMethod<
   DeleteInvitationsRequest,
   DeleteInvitationsResponse,
   DeleteInvitationsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteInvitationsRequest,
   output: DeleteInvitationsResponse,
@@ -20093,7 +20136,7 @@ export const deleteMembers: API.OperationMethod<
   DeleteMembersRequest,
   DeleteMembersResponse,
   DeleteMembersError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteMembersRequest,
   output: DeleteMembersResponse,
@@ -20118,27 +20161,13 @@ export type DescribeActionTargetsError =
 /**
  * Returns a list of the custom action targets in Security Hub CSPM in your account.
  */
-export const describeActionTargets: API.OperationMethod<
+export const describeActionTargets: API.PaginatedOperationMethod<
   DescribeActionTargetsRequest,
   DescribeActionTargetsResponse,
   DescribeActionTargetsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeActionTargetsRequest,
-  ) => stream.Stream<
-    DescribeActionTargetsResponse,
-    DescribeActionTargetsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeActionTargetsRequest,
-  ) => stream.Stream<
-    ActionTarget,
-    DescribeActionTargetsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ActionTarget
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeActionTargetsRequest,
   output: DescribeActionTargetsResponse,
   errors: [
@@ -20156,27 +20185,7 @@ export const describeActionTargets: API.OperationMethod<
     items: "ActionTargets",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeActionTargetsRequest,
-  DescribeActionTargetsResponse,
-  DescribeActionTargetsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeActionTargetsRequest,
-  ) => stream.Stream<
-    DescribeActionTargetsResponse,
-    DescribeActionTargetsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeActionTargetsRequest,
-  ) => stream.Stream<
-    ActionTarget,
-    DescribeActionTargetsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeHubError =
   | InternalException
@@ -20193,7 +20202,7 @@ export const describeHub: API.OperationMethod<
   DescribeHubRequest,
   DescribeHubResponse,
   DescribeHubError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeHubRequest,
   output: DescribeHubResponse,
@@ -20223,7 +20232,7 @@ export const describeOrganizationConfiguration: API.OperationMethod<
   DescribeOrganizationConfigurationRequest,
   DescribeOrganizationConfigurationResponse,
   DescribeOrganizationConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeOrganizationConfigurationRequest,
   output: DescribeOrganizationConfigurationResponse,
@@ -20253,27 +20262,13 @@ export type DescribeProductsError =
  * If you don't provide an integration ARN, then the results include all of the available
  * product integrations.
  */
-export const describeProducts: API.OperationMethod<
+export const describeProducts: API.PaginatedOperationMethod<
   DescribeProductsRequest,
   DescribeProductsResponse,
   DescribeProductsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeProductsRequest,
-  ) => stream.Stream<
-    DescribeProductsResponse,
-    DescribeProductsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeProductsRequest,
-  ) => stream.Stream<
-    Product,
-    DescribeProductsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Product
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeProductsRequest,
   output: DescribeProductsResponse,
   errors: [
@@ -20291,27 +20286,7 @@ export const describeProducts: API.OperationMethod<
     items: "Products",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeProductsRequest,
-  DescribeProductsResponse,
-  DescribeProductsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeProductsRequest,
-  ) => stream.Stream<
-    DescribeProductsResponse,
-    DescribeProductsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeProductsRequest,
-  ) => stream.Stream<
-    Product,
-    DescribeProductsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeProductsV2Error =
   | AccessDeniedException
@@ -20323,27 +20298,13 @@ export type DescribeProductsV2Error =
 /**
  * Gets information about the product integration.
  */
-export const describeProductsV2: API.OperationMethod<
+export const describeProductsV2: API.PaginatedOperationMethod<
   DescribeProductsV2Request,
   DescribeProductsV2Response,
   DescribeProductsV2Error,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeProductsV2Request,
-  ) => stream.Stream<
-    DescribeProductsV2Response,
-    DescribeProductsV2Error,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeProductsV2Request,
-  ) => stream.Stream<
-    ProductV2,
-    DescribeProductsV2Error,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ProductV2
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeProductsV2Request,
   output: DescribeProductsV2Response,
   errors: [
@@ -20362,27 +20323,7 @@ export const describeProductsV2: API.OperationMethod<
     items: "ProductsV2",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeProductsV2Request,
-  DescribeProductsV2Response,
-  DescribeProductsV2Error,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeProductsV2Request,
-  ) => stream.Stream<
-    DescribeProductsV2Response,
-    DescribeProductsV2Error,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeProductsV2Request,
-  ) => stream.Stream<
-    ProductV2,
-    DescribeProductsV2Error,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeSecurityHubV2Error =
   | InternalServerException
@@ -20397,7 +20338,7 @@ export const describeSecurityHubV2: API.OperationMethod<
   DescribeSecurityHubV2Request,
   DescribeSecurityHubV2Response,
   DescribeSecurityHubV2Error,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeSecurityHubV2Request,
   output: DescribeSecurityHubV2Response,
@@ -20422,27 +20363,13 @@ export type DescribeStandardsError =
  *
  * For each standard, the results include the standard ARN, the name, and a description.
  */
-export const describeStandards: API.OperationMethod<
+export const describeStandards: API.PaginatedOperationMethod<
   DescribeStandardsRequest,
   DescribeStandardsResponse,
   DescribeStandardsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeStandardsRequest,
-  ) => stream.Stream<
-    DescribeStandardsResponse,
-    DescribeStandardsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeStandardsRequest,
-  ) => stream.Stream<
-    Standard,
-    DescribeStandardsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Standard
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeStandardsRequest,
   output: DescribeStandardsResponse,
   errors: [InternalException, InvalidAccessException, InvalidInputException],
@@ -20455,27 +20382,7 @@ export const describeStandards: API.OperationMethod<
     items: "Standards",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeStandardsRequest,
-  DescribeStandardsResponse,
-  DescribeStandardsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeStandardsRequest,
-  ) => stream.Stream<
-    DescribeStandardsResponse,
-    DescribeStandardsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeStandardsRequest,
-  ) => stream.Stream<
-    Standard,
-    DescribeStandardsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeStandardsControlsError =
   | InternalException
@@ -20491,27 +20398,13 @@ export type DescribeStandardsControlsError =
  *
  * This operation returns an empty list for standard subscriptions where `StandardsControlsUpdatable` has value `NOT_READY_FOR_UPDATES`.
  */
-export const describeStandardsControls: API.OperationMethod<
+export const describeStandardsControls: API.PaginatedOperationMethod<
   DescribeStandardsControlsRequest,
   DescribeStandardsControlsResponse,
   DescribeStandardsControlsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeStandardsControlsRequest,
-  ) => stream.Stream<
-    DescribeStandardsControlsResponse,
-    DescribeStandardsControlsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeStandardsControlsRequest,
-  ) => stream.Stream<
-    StandardsControl,
-    DescribeStandardsControlsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  StandardsControl
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeStandardsControlsRequest,
   output: DescribeStandardsControlsResponse,
   errors: [
@@ -20529,27 +20422,7 @@ export const describeStandardsControls: API.OperationMethod<
     items: "Controls",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeStandardsControlsRequest,
-  DescribeStandardsControlsResponse,
-  DescribeStandardsControlsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeStandardsControlsRequest,
-  ) => stream.Stream<
-    DescribeStandardsControlsResponse,
-    DescribeStandardsControlsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeStandardsControlsRequest,
-  ) => stream.Stream<
-    StandardsControl,
-    DescribeStandardsControlsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DisableImportFindingsForProductError =
   | InternalException
@@ -20566,7 +20439,7 @@ export const disableImportFindingsForProduct: API.OperationMethod<
   DisableImportFindingsForProductRequest,
   DisableImportFindingsForProductResponse,
   DisableImportFindingsForProductError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DisableImportFindingsForProductRequest,
   output: DisableImportFindingsForProductResponse,
@@ -20597,7 +20470,7 @@ export const disableOrganizationAdminAccount: API.OperationMethod<
   DisableOrganizationAdminAccountRequest,
   DisableOrganizationAdminAccountResponse,
   DisableOrganizationAdminAccountError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DisableOrganizationAdminAccountRequest,
   output: DisableOrganizationAdminAccountResponse,
@@ -20637,7 +20510,7 @@ export const disableSecurityHub: API.OperationMethod<
   DisableSecurityHubRequest,
   DisableSecurityHubResponse,
   DisableSecurityHubError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DisableSecurityHubRequest,
   output: DisableSecurityHubResponse,
@@ -20666,7 +20539,7 @@ export const disableSecurityHubV2: API.OperationMethod<
   DisableSecurityHubV2Request,
   DisableSecurityHubV2Response,
   DisableSecurityHubV2Error,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DisableSecurityHubV2Request,
   output: DisableSecurityHubV2Response,
@@ -20700,7 +20573,7 @@ export const disassociateFromAdministratorAccount: API.OperationMethod<
   DisassociateFromAdministratorAccountRequest,
   DisassociateFromAdministratorAccountResponse,
   DisassociateFromAdministratorAccountError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DisassociateFromAdministratorAccountRequest,
   output: DisassociateFromAdministratorAccountResponse,
@@ -20739,7 +20612,7 @@ export const disassociateFromMasterAccount: API.OperationMethod<
   DisassociateFromMasterAccountRequest,
   DisassociateFromMasterAccountResponse,
   DisassociateFromMasterAccountError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DisassociateFromMasterAccountRequest,
   output: DisassociateFromMasterAccountResponse,
@@ -20773,7 +20646,7 @@ export const disassociateMembers: API.OperationMethod<
   DisassociateMembersRequest,
   DisassociateMembersResponse,
   DisassociateMembersError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DisassociateMembersRequest,
   output: DisassociateMembersResponse,
@@ -20808,7 +20681,7 @@ export const enableImportFindingsForProduct: API.OperationMethod<
   EnableImportFindingsForProductRequest,
   EnableImportFindingsForProductResponse,
   EnableImportFindingsForProductError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: EnableImportFindingsForProductRequest,
   output: EnableImportFindingsForProductResponse,
@@ -20839,7 +20712,7 @@ export const enableOrganizationAdminAccount: API.OperationMethod<
   EnableOrganizationAdminAccountRequest,
   EnableOrganizationAdminAccountResponse,
   EnableOrganizationAdminAccountError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: EnableOrganizationAdminAccountRequest,
   output: EnableOrganizationAdminAccountResponse,
@@ -20890,7 +20763,7 @@ export const enableSecurityHub: API.OperationMethod<
   EnableSecurityHubRequest,
   EnableSecurityHubResponse,
   EnableSecurityHubError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: EnableSecurityHubRequest,
   output: EnableSecurityHubResponse,
@@ -20919,7 +20792,7 @@ export const enableSecurityHubV2: API.OperationMethod<
   EnableSecurityHubV2Request,
   EnableSecurityHubV2Response,
   EnableSecurityHubV2Error,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: EnableSecurityHubV2Request,
   output: EnableSecurityHubV2Response,
@@ -20950,7 +20823,7 @@ export const generateRecommendedPolicyV2: API.OperationMethod<
   GenerateRecommendedPolicyV2Request,
   GenerateRecommendedPolicyV2Response,
   GenerateRecommendedPolicyV2Error,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GenerateRecommendedPolicyV2Request,
   output: GenerateRecommendedPolicyV2Response,
@@ -20984,7 +20857,7 @@ export const getAdministratorAccount: API.OperationMethod<
   GetAdministratorAccountRequest,
   GetAdministratorAccountResponse,
   GetAdministratorAccountError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetAdministratorAccountRequest,
   output: GetAdministratorAccountResponse,
@@ -21015,7 +20888,7 @@ export const getAggregatorV2: API.OperationMethod<
   GetAggregatorV2Request,
   GetAggregatorV2Response,
   GetAggregatorV2Error,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetAggregatorV2Request,
   output: GetAggregatorV2Response,
@@ -21047,7 +20920,7 @@ export const getAutomationRuleV2: API.OperationMethod<
   GetAutomationRuleV2Request,
   GetAutomationRuleV2Response,
   GetAutomationRuleV2Error,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetAutomationRuleV2Request,
   output: GetAutomationRuleV2Response,
@@ -21080,7 +20953,7 @@ export const getConfigurationPolicy: API.OperationMethod<
   GetConfigurationPolicyRequest,
   GetConfigurationPolicyResponse,
   GetConfigurationPolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetConfigurationPolicyRequest,
   output: GetConfigurationPolicyResponse,
@@ -21114,7 +20987,7 @@ export const getConfigurationPolicyAssociation: API.OperationMethod<
   GetConfigurationPolicyAssociationRequest,
   GetConfigurationPolicyAssociationResponse,
   GetConfigurationPolicyAssociationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetConfigurationPolicyAssociationRequest,
   output: GetConfigurationPolicyAssociationResponse,
@@ -21146,7 +21019,7 @@ export const getConnectorV2: API.OperationMethod<
   GetConnectorV2Request,
   GetConnectorV2Response,
   GetConnectorV2Error,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetConnectorV2Request,
   output: GetConnectorV2Response,
@@ -21172,27 +21045,13 @@ export type GetEnabledStandardsError =
 /**
  * Returns a list of the standards that are currently enabled.
  */
-export const getEnabledStandards: API.OperationMethod<
+export const getEnabledStandards: API.PaginatedOperationMethod<
   GetEnabledStandardsRequest,
   GetEnabledStandardsResponse,
   GetEnabledStandardsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetEnabledStandardsRequest,
-  ) => stream.Stream<
-    GetEnabledStandardsResponse,
-    GetEnabledStandardsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetEnabledStandardsRequest,
-  ) => stream.Stream<
-    StandardsSubscription,
-    GetEnabledStandardsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  StandardsSubscription
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetEnabledStandardsRequest,
   output: GetEnabledStandardsResponse,
   errors: [
@@ -21210,27 +21069,7 @@ export const getEnabledStandards: API.OperationMethod<
     items: "StandardsSubscriptions",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetEnabledStandardsRequest,
-  GetEnabledStandardsResponse,
-  GetEnabledStandardsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetEnabledStandardsRequest,
-  ) => stream.Stream<
-    GetEnabledStandardsResponse,
-    GetEnabledStandardsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetEnabledStandardsRequest,
-  ) => stream.Stream<
-    StandardsSubscription,
-    GetEnabledStandardsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetFindingAggregatorError =
   | AccessDeniedException
@@ -21250,7 +21089,7 @@ export const getFindingAggregator: API.OperationMethod<
   GetFindingAggregatorRequest,
   GetFindingAggregatorResponse,
   GetFindingAggregatorError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetFindingAggregatorRequest,
   output: GetFindingAggregatorResponse,
@@ -21284,27 +21123,13 @@ export type GetFindingHistoryError =
  * that the results are incomplete. However, you should continue to specify a `NextToken` value until you receive a
  * response that doesn't include this value.
  */
-export const getFindingHistory: API.OperationMethod<
+export const getFindingHistory: API.PaginatedOperationMethod<
   GetFindingHistoryRequest,
   GetFindingHistoryResponse,
   GetFindingHistoryError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetFindingHistoryRequest,
-  ) => stream.Stream<
-    GetFindingHistoryResponse,
-    GetFindingHistoryError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetFindingHistoryRequest,
-  ) => stream.Stream<
-    FindingHistoryRecord,
-    GetFindingHistoryError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  FindingHistoryRecord
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetFindingHistoryRequest,
   output: GetFindingHistoryResponse,
   errors: [
@@ -21322,27 +21147,7 @@ export const getFindingHistory: API.OperationMethod<
     items: "Records",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetFindingHistoryRequest,
-  GetFindingHistoryResponse,
-  GetFindingHistoryError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetFindingHistoryRequest,
-  ) => stream.Stream<
-    GetFindingHistoryResponse,
-    GetFindingHistoryError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetFindingHistoryRequest,
-  ) => stream.Stream<
-    FindingHistoryRecord,
-    GetFindingHistoryError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetFindingsError =
   | InternalException
@@ -21355,27 +21160,13 @@ export type GetFindingsError =
  *
  * If cross-Region aggregation is enabled, then when you call `GetFindings` from the home Region, the results include all of the matching findings from both the home Region and linked Regions.
  */
-export const getFindings: API.OperationMethod<
+export const getFindings: API.PaginatedOperationMethod<
   GetFindingsRequest,
   GetFindingsResponse,
   GetFindingsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetFindingsRequest,
-  ) => stream.Stream<
-    GetFindingsResponse,
-    GetFindingsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetFindingsRequest,
-  ) => stream.Stream<
-    AwsSecurityFinding,
-    GetFindingsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  AwsSecurityFinding
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetFindingsRequest,
   output: GetFindingsResponse,
   errors: [
@@ -21393,27 +21184,7 @@ export const getFindings: API.OperationMethod<
     items: "Findings",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetFindingsRequest,
-  GetFindingsResponse,
-  GetFindingsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetFindingsRequest,
-  ) => stream.Stream<
-    GetFindingsResponse,
-    GetFindingsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetFindingsRequest,
-  ) => stream.Stream<
-    AwsSecurityFinding,
-    GetFindingsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetFindingStatisticsV2Error =
   | AccessDeniedException
@@ -21436,7 +21207,7 @@ export const getFindingStatisticsV2: API.OperationMethod<
   GetFindingStatisticsV2Request,
   GetFindingStatisticsV2Response,
   GetFindingStatisticsV2Error,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetFindingStatisticsV2Request,
   output: GetFindingStatisticsV2Response,
@@ -21463,27 +21234,13 @@ export type GetFindingsTrendsV2Error =
 /**
  * Returns findings trend data based on the specified criteria. This operation helps you analyze patterns and changes in findings over time.
  */
-export const getFindingsTrendsV2: API.OperationMethod<
+export const getFindingsTrendsV2: API.PaginatedOperationMethod<
   GetFindingsTrendsV2Request,
   GetFindingsTrendsV2Response,
   GetFindingsTrendsV2Error,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetFindingsTrendsV2Request,
-  ) => stream.Stream<
-    GetFindingsTrendsV2Response,
-    GetFindingsTrendsV2Error,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetFindingsTrendsV2Request,
-  ) => stream.Stream<
-    TrendsMetricsResult,
-    GetFindingsTrendsV2Error,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  TrendsMetricsResult
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetFindingsTrendsV2Request,
   output: GetFindingsTrendsV2Response,
   errors: [
@@ -21501,27 +21258,7 @@ export const getFindingsTrendsV2: API.OperationMethod<
     items: "TrendsMetrics",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetFindingsTrendsV2Request,
-  GetFindingsTrendsV2Response,
-  GetFindingsTrendsV2Error,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetFindingsTrendsV2Request,
-  ) => stream.Stream<
-    GetFindingsTrendsV2Response,
-    GetFindingsTrendsV2Error,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetFindingsTrendsV2Request,
-  ) => stream.Stream<
-    TrendsMetricsResult,
-    GetFindingsTrendsV2Error,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetFindingsV2Error =
   | AccessDeniedException
@@ -21542,27 +21279,13 @@ export type GetFindingsV2Error =
  * `GetFindings` and `GetFindingsV2` both use `securityhub:GetFindings` in the `Action` element of an IAM policy statement.
  * You must have permission to perform the `securityhub:GetFindings` action.
  */
-export const getFindingsV2: API.OperationMethod<
+export const getFindingsV2: API.PaginatedOperationMethod<
   GetFindingsV2Request,
   GetFindingsV2Response,
   GetFindingsV2Error,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetFindingsV2Request,
-  ) => stream.Stream<
-    GetFindingsV2Response,
-    GetFindingsV2Error,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetFindingsV2Request,
-  ) => stream.Stream<
-    unknown,
-    GetFindingsV2Error,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetFindingsV2Request,
   output: GetFindingsV2Response,
   errors: [
@@ -21583,27 +21306,7 @@ export const getFindingsV2: API.OperationMethod<
     items: "Findings",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetFindingsV2Request,
-  GetFindingsV2Response,
-  GetFindingsV2Error,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetFindingsV2Request,
-  ) => stream.Stream<
-    GetFindingsV2Response,
-    GetFindingsV2Error,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetFindingsV2Request,
-  ) => stream.Stream<
-    unknown,
-    GetFindingsV2Error,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetInsightResultsError =
   | InternalException
@@ -21619,7 +21322,7 @@ export const getInsightResults: API.OperationMethod<
   GetInsightResultsRequest,
   GetInsightResultsResponse,
   GetInsightResultsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetInsightResultsRequest,
   output: GetInsightResultsResponse,
@@ -21645,27 +21348,13 @@ export type GetInsightsError =
 /**
  * Lists and describes insights for the specified insight ARNs.
  */
-export const getInsights: API.OperationMethod<
+export const getInsights: API.PaginatedOperationMethod<
   GetInsightsRequest,
   GetInsightsResponse,
   GetInsightsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetInsightsRequest,
-  ) => stream.Stream<
-    GetInsightsResponse,
-    GetInsightsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetInsightsRequest,
-  ) => stream.Stream<
-    Insight,
-    GetInsightsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Insight
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetInsightsRequest,
   output: GetInsightsResponse,
   errors: [
@@ -21684,27 +21373,7 @@ export const getInsights: API.OperationMethod<
     items: "Insights",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetInsightsRequest,
-  GetInsightsResponse,
-  GetInsightsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetInsightsRequest,
-  ) => stream.Stream<
-    GetInsightsResponse,
-    GetInsightsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetInsightsRequest,
-  ) => stream.Stream<
-    Insight,
-    GetInsightsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetInvitationsCountError =
   | InternalException
@@ -21724,7 +21393,7 @@ export const getInvitationsCount: API.OperationMethod<
   GetInvitationsCountRequest,
   GetInvitationsCountResponse,
   GetInvitationsCountError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetInvitationsCountRequest,
   output: GetInvitationsCountResponse,
@@ -21760,7 +21429,7 @@ export const getMasterAccount: API.OperationMethod<
   GetMasterAccountRequest,
   GetMasterAccountResponse,
   GetMasterAccountError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetMasterAccountRequest,
   output: GetMasterAccountResponse,
@@ -21796,7 +21465,7 @@ export const getMembers: API.OperationMethod<
   GetMembersRequest,
   GetMembersResponse,
   GetMembersError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetMembersRequest,
   output: GetMembersResponse,
@@ -21824,27 +21493,13 @@ export type GetRecommendedPolicyV2Error =
  * Retrieves the recommended policy to remediate a Security Hub finding.
  * `GetRecommendedPolicyV2` only supports findings for unused permissions.
  */
-export const getRecommendedPolicyV2: API.OperationMethod<
+export const getRecommendedPolicyV2: API.PaginatedOperationMethod<
   GetRecommendedPolicyV2Request,
   GetRecommendedPolicyV2Response,
   GetRecommendedPolicyV2Error,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetRecommendedPolicyV2Request,
-  ) => stream.Stream<
-    GetRecommendedPolicyV2Response,
-    GetRecommendedPolicyV2Error,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetRecommendedPolicyV2Request,
-  ) => stream.Stream<
-    RecommendationStep,
-    GetRecommendedPolicyV2Error,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  RecommendationStep
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetRecommendedPolicyV2Request,
   output: GetRecommendedPolicyV2Response,
   errors: [
@@ -21864,27 +21519,7 @@ export const getRecommendedPolicyV2: API.OperationMethod<
     items: "RecommendationSteps",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetRecommendedPolicyV2Request,
-  GetRecommendedPolicyV2Response,
-  GetRecommendedPolicyV2Error,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetRecommendedPolicyV2Request,
-  ) => stream.Stream<
-    GetRecommendedPolicyV2Response,
-    GetRecommendedPolicyV2Error,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetRecommendedPolicyV2Request,
-  ) => stream.Stream<
-    RecommendationStep,
-    GetRecommendedPolicyV2Error,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetResourcesStatisticsV2Error =
   | AccessDeniedException
@@ -21905,7 +21540,7 @@ export const getResourcesStatisticsV2: API.OperationMethod<
   GetResourcesStatisticsV2Request,
   GetResourcesStatisticsV2Response,
   GetResourcesStatisticsV2Error,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetResourcesStatisticsV2Request,
   output: GetResourcesStatisticsV2Response,
@@ -21933,27 +21568,13 @@ export type GetResourcesTrendsV2Error =
 /**
  * Returns resource trend data based on the specified criteria. This operation helps you analyze patterns and changes in resource compliance over time.
  */
-export const getResourcesTrendsV2: API.OperationMethod<
+export const getResourcesTrendsV2: API.PaginatedOperationMethod<
   GetResourcesTrendsV2Request,
   GetResourcesTrendsV2Response,
   GetResourcesTrendsV2Error,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetResourcesTrendsV2Request,
-  ) => stream.Stream<
-    GetResourcesTrendsV2Response,
-    GetResourcesTrendsV2Error,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetResourcesTrendsV2Request,
-  ) => stream.Stream<
-    ResourcesTrendsMetricsResult,
-    GetResourcesTrendsV2Error,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ResourcesTrendsMetricsResult
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetResourcesTrendsV2Request,
   output: GetResourcesTrendsV2Response,
   errors: [
@@ -21971,27 +21592,7 @@ export const getResourcesTrendsV2: API.OperationMethod<
     items: "TrendsMetrics",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetResourcesTrendsV2Request,
-  GetResourcesTrendsV2Response,
-  GetResourcesTrendsV2Error,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetResourcesTrendsV2Request,
-  ) => stream.Stream<
-    GetResourcesTrendsV2Response,
-    GetResourcesTrendsV2Error,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetResourcesTrendsV2Request,
-  ) => stream.Stream<
-    ResourcesTrendsMetricsResult,
-    GetResourcesTrendsV2Error,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetResourcesV2Error =
   | AccessDeniedException
@@ -22010,27 +21611,13 @@ export type GetResourcesV2Error =
  *
  * You can use the `Filters` parameter to refine results based on resource attributes. You can use `Scopes` and `Filters` independently or together. When both are provided, `Scopes` narrows the data set first, and then `Filters` refines results within that scoped data set.
  */
-export const getResourcesV2: API.OperationMethod<
+export const getResourcesV2: API.PaginatedOperationMethod<
   GetResourcesV2Request,
   GetResourcesV2Response,
   GetResourcesV2Error,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetResourcesV2Request,
-  ) => stream.Stream<
-    GetResourcesV2Response,
-    GetResourcesV2Error,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetResourcesV2Request,
-  ) => stream.Stream<
-    ResourceResult,
-    GetResourcesV2Error,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ResourceResult
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetResourcesV2Request,
   output: GetResourcesV2Response,
   errors: [
@@ -22052,27 +21639,7 @@ export const getResourcesV2: API.OperationMethod<
     items: "Resources",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetResourcesV2Request,
-  GetResourcesV2Response,
-  GetResourcesV2Error,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetResourcesV2Request,
-  ) => stream.Stream<
-    GetResourcesV2Response,
-    GetResourcesV2Error,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetResourcesV2Request,
-  ) => stream.Stream<
-    ResourceResult,
-    GetResourcesV2Error,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetSecurityControlDefinitionError =
   | InternalException
@@ -22088,7 +21655,7 @@ export const getSecurityControlDefinition: API.OperationMethod<
   GetSecurityControlDefinitionRequest,
   GetSecurityControlDefinitionResponse,
   GetSecurityControlDefinitionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetSecurityControlDefinitionRequest,
   output: GetSecurityControlDefinitionResponse,
@@ -22131,7 +21698,7 @@ export const inviteMembers: API.OperationMethod<
   InviteMembersRequest,
   InviteMembersResponse,
   InviteMembersError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: InviteMembersRequest,
   output: InviteMembersResponse,
@@ -22158,27 +21725,13 @@ export type ListAggregatorsV2Error =
 /**
  * Retrieves a list of V2 aggregators.
  */
-export const listAggregatorsV2: API.OperationMethod<
+export const listAggregatorsV2: API.PaginatedOperationMethod<
   ListAggregatorsV2Request,
   ListAggregatorsV2Response,
   ListAggregatorsV2Error,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAggregatorsV2Request,
-  ) => stream.Stream<
-    ListAggregatorsV2Response,
-    ListAggregatorsV2Error,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAggregatorsV2Request,
-  ) => stream.Stream<
-    AggregatorV2,
-    ListAggregatorsV2Error,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  AggregatorV2
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListAggregatorsV2Request,
   output: ListAggregatorsV2Response,
   errors: [
@@ -22198,27 +21751,7 @@ export const listAggregatorsV2: API.OperationMethod<
     items: "AggregatorsV2",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListAggregatorsV2Request,
-  ListAggregatorsV2Response,
-  ListAggregatorsV2Error,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAggregatorsV2Request,
-  ) => stream.Stream<
-    ListAggregatorsV2Response,
-    ListAggregatorsV2Error,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAggregatorsV2Request,
-  ) => stream.Stream<
-    AggregatorV2,
-    ListAggregatorsV2Error,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListAutomationRulesError =
   | AccessDeniedException
@@ -22234,7 +21767,7 @@ export const listAutomationRules: API.OperationMethod<
   ListAutomationRulesRequest,
   ListAutomationRulesResponse,
   ListAutomationRulesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListAutomationRulesRequest,
   output: ListAutomationRulesResponse,
@@ -22264,7 +21797,7 @@ export const listAutomationRulesV2: API.OperationMethod<
   ListAutomationRulesV2Request,
   ListAutomationRulesV2Response,
   ListAutomationRulesV2Error,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListAutomationRulesV2Request,
   output: ListAutomationRulesV2Response,
@@ -22291,27 +21824,13 @@ export type ListConfigurationPoliciesError =
  * Lists the configuration policies that the Security Hub CSPM delegated administrator has created for your
  * organization. Only the delegated administrator can invoke this operation from the home Region.
  */
-export const listConfigurationPolicies: API.OperationMethod<
+export const listConfigurationPolicies: API.PaginatedOperationMethod<
   ListConfigurationPoliciesRequest,
   ListConfigurationPoliciesResponse,
   ListConfigurationPoliciesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListConfigurationPoliciesRequest,
-  ) => stream.Stream<
-    ListConfigurationPoliciesResponse,
-    ListConfigurationPoliciesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListConfigurationPoliciesRequest,
-  ) => stream.Stream<
-    ConfigurationPolicySummary,
-    ListConfigurationPoliciesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ConfigurationPolicySummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListConfigurationPoliciesRequest,
   output: ListConfigurationPoliciesResponse,
   errors: [
@@ -22330,27 +21849,7 @@ export const listConfigurationPolicies: API.OperationMethod<
     items: "ConfigurationPolicySummaries",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListConfigurationPoliciesRequest,
-  ListConfigurationPoliciesResponse,
-  ListConfigurationPoliciesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListConfigurationPoliciesRequest,
-  ) => stream.Stream<
-    ListConfigurationPoliciesResponse,
-    ListConfigurationPoliciesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListConfigurationPoliciesRequest,
-  ) => stream.Stream<
-    ConfigurationPolicySummary,
-    ListConfigurationPoliciesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListConfigurationPolicyAssociationsError =
   | AccessDeniedException
@@ -22363,27 +21862,13 @@ export type ListConfigurationPolicyAssociationsError =
  * Provides information about the associations for your configuration policies and self-managed behavior. Only the
  * Security Hub CSPM delegated administrator can invoke this operation from the home Region.
  */
-export const listConfigurationPolicyAssociations: API.OperationMethod<
+export const listConfigurationPolicyAssociations: API.PaginatedOperationMethod<
   ListConfigurationPolicyAssociationsRequest,
   ListConfigurationPolicyAssociationsResponse,
   ListConfigurationPolicyAssociationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListConfigurationPolicyAssociationsRequest,
-  ) => stream.Stream<
-    ListConfigurationPolicyAssociationsResponse,
-    ListConfigurationPolicyAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListConfigurationPolicyAssociationsRequest,
-  ) => stream.Stream<
-    ConfigurationPolicyAssociationSummary,
-    ListConfigurationPolicyAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ConfigurationPolicyAssociationSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListConfigurationPolicyAssociationsRequest,
   output: ListConfigurationPolicyAssociationsResponse,
   errors: [
@@ -22402,27 +21887,7 @@ export const listConfigurationPolicyAssociations: API.OperationMethod<
     items: "ConfigurationPolicyAssociationSummaries",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListConfigurationPolicyAssociationsRequest,
-  ListConfigurationPolicyAssociationsResponse,
-  ListConfigurationPolicyAssociationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListConfigurationPolicyAssociationsRequest,
-  ) => stream.Stream<
-    ListConfigurationPolicyAssociationsResponse,
-    ListConfigurationPolicyAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListConfigurationPolicyAssociationsRequest,
-  ) => stream.Stream<
-    ConfigurationPolicyAssociationSummary,
-    ListConfigurationPolicyAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListConnectorsV2Error =
   | AccessDeniedException
@@ -22439,7 +21904,7 @@ export const listConnectorsV2: API.OperationMethod<
   ListConnectorsV2Request,
   ListConnectorsV2Response,
   ListConnectorsV2Error,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListConnectorsV2Request,
   output: ListConnectorsV2Response,
@@ -22465,27 +21930,13 @@ export type ListEnabledProductsForImportError =
  * Lists all findings-generating solutions (products) that you are subscribed to receive
  * findings from in Security Hub CSPM.
  */
-export const listEnabledProductsForImport: API.OperationMethod<
+export const listEnabledProductsForImport: API.PaginatedOperationMethod<
   ListEnabledProductsForImportRequest,
   ListEnabledProductsForImportResponse,
   ListEnabledProductsForImportError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListEnabledProductsForImportRequest,
-  ) => stream.Stream<
-    ListEnabledProductsForImportResponse,
-    ListEnabledProductsForImportError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListEnabledProductsForImportRequest,
-  ) => stream.Stream<
-    NonEmptyString,
-    ListEnabledProductsForImportError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  NonEmptyString
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListEnabledProductsForImportRequest,
   output: ListEnabledProductsForImportResponse,
   errors: [InternalException, InvalidAccessException, LimitExceededException],
@@ -22498,27 +21949,7 @@ export const listEnabledProductsForImport: API.OperationMethod<
     items: "ProductSubscriptions",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListEnabledProductsForImportRequest,
-  ListEnabledProductsForImportResponse,
-  ListEnabledProductsForImportError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListEnabledProductsForImportRequest,
-  ) => stream.Stream<
-    ListEnabledProductsForImportResponse,
-    ListEnabledProductsForImportError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListEnabledProductsForImportRequest,
-  ) => stream.Stream<
-    NonEmptyString,
-    ListEnabledProductsForImportError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListFindingAggregatorsError =
   | AccessDeniedException
@@ -22531,27 +21962,13 @@ export type ListFindingAggregatorsError =
  * If cross-Region aggregation is enabled, then `ListFindingAggregators` returns the Amazon Resource Name (ARN)
  * of the finding aggregator. You can run this operation from any Amazon Web Services Region.
  */
-export const listFindingAggregators: API.OperationMethod<
+export const listFindingAggregators: API.PaginatedOperationMethod<
   ListFindingAggregatorsRequest,
   ListFindingAggregatorsResponse,
   ListFindingAggregatorsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListFindingAggregatorsRequest,
-  ) => stream.Stream<
-    ListFindingAggregatorsResponse,
-    ListFindingAggregatorsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListFindingAggregatorsRequest,
-  ) => stream.Stream<
-    FindingAggregator,
-    ListFindingAggregatorsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  FindingAggregator
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListFindingAggregatorsRequest,
   output: ListFindingAggregatorsResponse,
   errors: [
@@ -22570,27 +21987,7 @@ export const listFindingAggregators: API.OperationMethod<
     items: "FindingAggregators",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListFindingAggregatorsRequest,
-  ListFindingAggregatorsResponse,
-  ListFindingAggregatorsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListFindingAggregatorsRequest,
-  ) => stream.Stream<
-    ListFindingAggregatorsResponse,
-    ListFindingAggregatorsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListFindingAggregatorsRequest,
-  ) => stream.Stream<
-    FindingAggregator,
-    ListFindingAggregatorsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListInvitationsError =
   | InternalException
@@ -22608,27 +22005,13 @@ export type ListInvitationsError =
  * Only accounts that are managed by invitation can use this operation.
  * Accounts that are managed using the integration with Organizations don't receive invitations.
  */
-export const listInvitations: API.OperationMethod<
+export const listInvitations: API.PaginatedOperationMethod<
   ListInvitationsRequest,
   ListInvitationsResponse,
   ListInvitationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListInvitationsRequest,
-  ) => stream.Stream<
-    ListInvitationsResponse,
-    ListInvitationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListInvitationsRequest,
-  ) => stream.Stream<
-    Invitation,
-    ListInvitationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Invitation
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListInvitationsRequest,
   output: ListInvitationsResponse,
   errors: [
@@ -22646,27 +22029,7 @@ export const listInvitations: API.OperationMethod<
     items: "Invitations",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListInvitationsRequest,
-  ListInvitationsResponse,
-  ListInvitationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListInvitationsRequest,
-  ) => stream.Stream<
-    ListInvitationsResponse,
-    ListInvitationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListInvitationsRequest,
-  ) => stream.Stream<
-    Invitation,
-    ListInvitationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListMembersError =
   | InternalException
@@ -22681,27 +22044,13 @@ export type ListMembersError =
  * The results include both member accounts that belong to an organization and member
  * accounts that were invited manually.
  */
-export const listMembers: API.OperationMethod<
+export const listMembers: API.PaginatedOperationMethod<
   ListMembersRequest,
   ListMembersResponse,
   ListMembersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListMembersRequest,
-  ) => stream.Stream<
-    ListMembersResponse,
-    ListMembersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListMembersRequest,
-  ) => stream.Stream<
-    Member,
-    ListMembersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Member
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListMembersRequest,
   output: ListMembersResponse,
   errors: [
@@ -22719,27 +22068,7 @@ export const listMembers: API.OperationMethod<
     items: "Members",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListMembersRequest,
-  ListMembersResponse,
-  ListMembersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListMembersRequest,
-  ) => stream.Stream<
-    ListMembersResponse,
-    ListMembersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListMembersRequest,
-  ) => stream.Stream<
-    Member,
-    ListMembersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListOrganizationAdminAccountsError =
   | InternalException
@@ -22751,27 +22080,13 @@ export type ListOrganizationAdminAccountsError =
  * Lists the Security Hub CSPM administrator accounts. Can only be called by the organization
  * management account.
  */
-export const listOrganizationAdminAccounts: API.OperationMethod<
+export const listOrganizationAdminAccounts: API.PaginatedOperationMethod<
   ListOrganizationAdminAccountsRequest,
   ListOrganizationAdminAccountsResponse,
   ListOrganizationAdminAccountsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListOrganizationAdminAccountsRequest,
-  ) => stream.Stream<
-    ListOrganizationAdminAccountsResponse,
-    ListOrganizationAdminAccountsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListOrganizationAdminAccountsRequest,
-  ) => stream.Stream<
-    AdminAccount,
-    ListOrganizationAdminAccountsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  AdminAccount
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListOrganizationAdminAccountsRequest,
   output: ListOrganizationAdminAccountsResponse,
   errors: [
@@ -22789,27 +22104,7 @@ export const listOrganizationAdminAccounts: API.OperationMethod<
     items: "AdminAccounts",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListOrganizationAdminAccountsRequest,
-  ListOrganizationAdminAccountsResponse,
-  ListOrganizationAdminAccountsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListOrganizationAdminAccountsRequest,
-  ) => stream.Stream<
-    ListOrganizationAdminAccountsResponse,
-    ListOrganizationAdminAccountsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListOrganizationAdminAccountsRequest,
-  ) => stream.Stream<
-    AdminAccount,
-    ListOrganizationAdminAccountsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListSecurityControlDefinitionsError =
   | InternalException
@@ -22820,27 +22115,13 @@ export type ListSecurityControlDefinitionsError =
 /**
  * Lists all of the security controls that apply to a specified standard.
  */
-export const listSecurityControlDefinitions: API.OperationMethod<
+export const listSecurityControlDefinitions: API.PaginatedOperationMethod<
   ListSecurityControlDefinitionsRequest,
   ListSecurityControlDefinitionsResponse,
   ListSecurityControlDefinitionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSecurityControlDefinitionsRequest,
-  ) => stream.Stream<
-    ListSecurityControlDefinitionsResponse,
-    ListSecurityControlDefinitionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSecurityControlDefinitionsRequest,
-  ) => stream.Stream<
-    SecurityControlDefinition,
-    ListSecurityControlDefinitionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  SecurityControlDefinition
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListSecurityControlDefinitionsRequest,
   output: ListSecurityControlDefinitionsResponse,
   errors: [
@@ -22858,27 +22139,7 @@ export const listSecurityControlDefinitions: API.OperationMethod<
     items: "SecurityControlDefinitions",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListSecurityControlDefinitionsRequest,
-  ListSecurityControlDefinitionsResponse,
-  ListSecurityControlDefinitionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSecurityControlDefinitionsRequest,
-  ) => stream.Stream<
-    ListSecurityControlDefinitionsResponse,
-    ListSecurityControlDefinitionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSecurityControlDefinitionsRequest,
-  ) => stream.Stream<
-    SecurityControlDefinition,
-    ListSecurityControlDefinitionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListStandardsControlAssociationsError =
   | InternalException
@@ -22891,27 +22152,13 @@ export type ListStandardsControlAssociationsError =
  *
  * This operation omits standards control associations for standard subscriptions where `StandardsControlsUpdatable` has value `NOT_READY_FOR_UPDATES`.
  */
-export const listStandardsControlAssociations: API.OperationMethod<
+export const listStandardsControlAssociations: API.PaginatedOperationMethod<
   ListStandardsControlAssociationsRequest,
   ListStandardsControlAssociationsResponse,
   ListStandardsControlAssociationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListStandardsControlAssociationsRequest,
-  ) => stream.Stream<
-    ListStandardsControlAssociationsResponse,
-    ListStandardsControlAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListStandardsControlAssociationsRequest,
-  ) => stream.Stream<
-    StandardsControlAssociationSummary,
-    ListStandardsControlAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  StandardsControlAssociationSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListStandardsControlAssociationsRequest,
   output: ListStandardsControlAssociationsResponse,
   errors: [
@@ -22929,27 +22176,7 @@ export const listStandardsControlAssociations: API.OperationMethod<
     items: "StandardsControlAssociationSummaries",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListStandardsControlAssociationsRequest,
-  ListStandardsControlAssociationsResponse,
-  ListStandardsControlAssociationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListStandardsControlAssociationsRequest,
-  ) => stream.Stream<
-    ListStandardsControlAssociationsResponse,
-    ListStandardsControlAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListStandardsControlAssociationsRequest,
-  ) => stream.Stream<
-    StandardsControlAssociationSummary,
-    ListStandardsControlAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsForResourceError =
   | InternalException
@@ -22963,7 +22190,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceRequest,
   ListTagsForResourceResponse,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -22988,7 +22215,7 @@ export const registerConnectorV2: API.OperationMethod<
   RegisterConnectorV2Request,
   RegisterConnectorV2Response,
   RegisterConnectorV2Error,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RegisterConnectorV2Request,
   output: RegisterConnectorV2Response,
@@ -23022,7 +22249,7 @@ export const startConfigurationPolicyAssociation: API.OperationMethod<
   StartConfigurationPolicyAssociationRequest,
   StartConfigurationPolicyAssociationResponse,
   StartConfigurationPolicyAssociationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartConfigurationPolicyAssociationRequest,
   output: StartConfigurationPolicyAssociationResponse,
@@ -23058,7 +22285,7 @@ export const startConfigurationPolicyDisassociation: API.OperationMethod<
   StartConfigurationPolicyDisassociationRequest,
   StartConfigurationPolicyDisassociationResponse,
   StartConfigurationPolicyDisassociationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartConfigurationPolicyDisassociationRequest,
   output: StartConfigurationPolicyDisassociationResponse,
@@ -23087,7 +22314,7 @@ export const tagResource: API.OperationMethod<
   TagResourceRequest,
   TagResourceResponse,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -23109,7 +22336,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceRequest,
   UntagResourceResponse,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -23132,7 +22359,7 @@ export const updateActionTarget: API.OperationMethod<
   UpdateActionTargetRequest,
   UpdateActionTargetResponse,
   UpdateActionTargetError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateActionTargetRequest,
   output: UpdateActionTargetResponse,
@@ -23162,7 +22389,7 @@ export const updateAggregatorV2: API.OperationMethod<
   UpdateAggregatorV2Request,
   UpdateAggregatorV2Response,
   UpdateAggregatorV2Error,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateAggregatorV2Request,
   output: UpdateAggregatorV2Response,
@@ -23194,7 +22421,7 @@ export const updateAutomationRuleV2: API.OperationMethod<
   UpdateAutomationRuleV2Request,
   UpdateAutomationRuleV2Response,
   UpdateAutomationRuleV2Error,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateAutomationRuleV2Request,
   output: UpdateAutomationRuleV2Response,
@@ -23228,7 +22455,7 @@ export const updateConfigurationPolicy: API.OperationMethod<
   UpdateConfigurationPolicyRequest,
   UpdateConfigurationPolicyResponse,
   UpdateConfigurationPolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateConfigurationPolicyRequest,
   output: UpdateConfigurationPolicyResponse,
@@ -23261,7 +22488,7 @@ export const updateConnectorV2: API.OperationMethod<
   UpdateConnectorV2Request,
   UpdateConnectorV2Response,
   UpdateConnectorV2Error,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateConnectorV2Request,
   output: UpdateConnectorV2Response,
@@ -23298,7 +22525,7 @@ export const updateFindingAggregator: API.OperationMethod<
   UpdateFindingAggregatorRequest,
   UpdateFindingAggregatorResponse,
   UpdateFindingAggregatorError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateFindingAggregatorRequest,
   output: UpdateFindingAggregatorResponse,
@@ -23338,7 +22565,7 @@ export const updateFindings: API.OperationMethod<
   UpdateFindingsRequest,
   UpdateFindingsResponse,
   UpdateFindingsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateFindingsRequest,
   output: UpdateFindingsResponse,
@@ -23368,7 +22595,7 @@ export const updateInsight: API.OperationMethod<
   UpdateInsightRequest,
   UpdateInsightResponse,
   UpdateInsightError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateInsightRequest,
   output: UpdateInsightResponse,
@@ -23401,7 +22628,7 @@ export const updateOrganizationConfiguration: API.OperationMethod<
   UpdateOrganizationConfigurationRequest,
   UpdateOrganizationConfigurationResponse,
   UpdateOrganizationConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateOrganizationConfigurationRequest,
   output: UpdateOrganizationConfigurationResponse,
@@ -23435,7 +22662,7 @@ export const updateSecurityControl: API.OperationMethod<
   UpdateSecurityControlRequest,
   UpdateSecurityControlResponse,
   UpdateSecurityControlError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateSecurityControlRequest,
   output: UpdateSecurityControlResponse,
@@ -23468,7 +22695,7 @@ export const updateSecurityHubConfiguration: API.OperationMethod<
   UpdateSecurityHubConfigurationRequest,
   UpdateSecurityHubConfigurationResponse,
   UpdateSecurityHubConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateSecurityHubConfigurationRequest,
   output: UpdateSecurityHubConfigurationResponse,
@@ -23502,7 +22729,7 @@ export const updateStandardsControl: API.OperationMethod<
   UpdateStandardsControlRequest,
   UpdateStandardsControlResponse,
   UpdateStandardsControlError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateStandardsControlRequest,
   output: UpdateStandardsControlResponse,

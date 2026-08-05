@@ -1,7 +1,6 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as redacted from "effect/Redacted";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -9,7 +8,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 import { SensitiveString } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "Nova Act",
@@ -90,20 +88,24 @@ const rules = T.EndpointResolver((p, _) => {
 export class AccessDeniedException
   extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
     "AccessDeniedException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(403),
   ).pipe(C.withAuthError) {}
 export class ConflictException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
     "ConflictException",
-    { message: S.String, resourceId: S.String, resourceType: S.String },
+    {
+      message: S.String.pipe(T.ErrorMessage()),
+      resourceId: S.String,
+      resourceType: S.String,
+    },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class InternalServerException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
     "InternalServerException",
     {
-      message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       retryAfterSeconds: S.optional(S.Number).pipe(T.HttpHeader("Retry-After")),
       reason: S.optional(
         S.suspend(() => InternalServerExceptionReason).annotate({
@@ -116,14 +118,18 @@ export class InternalServerException
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { message: S.String, resourceId: S.String, resourceType: S.String },
+    {
+      message: S.String.pipe(T.ErrorMessage()),
+      resourceId: S.String,
+      resourceType: S.String,
+    },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class ServiceQuotaExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
     "ServiceQuotaExceededException",
     {
-      message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       resourceId: S.String,
       resourceType: S.String,
       serviceCode: S.String,
@@ -135,7 +141,7 @@ export class ThrottlingException
   extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
     "ThrottlingException",
     {
-      message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       serviceCode: S.optional(S.String),
       quotaCode: S.optional(S.String),
       retryAfterSeconds: S.optional(S.Number).pipe(T.HttpHeader("Retry-After")),
@@ -146,7 +152,7 @@ export class ValidationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
     "ValidationException",
     {
-      message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       reason: S.suspend(() => ValidationExceptionReason).annotate({
         identifier: "ValidationExceptionReason",
       }),
@@ -1081,7 +1087,7 @@ export const createAct: API.OperationMethod<
   CreateActRequest,
   CreateActResponse,
   CreateActError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateActRequest,
   output: CreateActResponse,
@@ -1115,7 +1121,7 @@ export const createSession: API.OperationMethod<
   CreateSessionRequest,
   CreateSessionResponse,
   CreateSessionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateSessionRequest,
   output: CreateSessionResponse,
@@ -1148,7 +1154,7 @@ export const createWorkflowDefinition: API.OperationMethod<
   CreateWorkflowDefinitionRequest,
   CreateWorkflowDefinitionResponse,
   CreateWorkflowDefinitionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateWorkflowDefinitionRequest,
   output: CreateWorkflowDefinitionResponse,
@@ -1180,7 +1186,7 @@ export const createWorkflowRun: API.OperationMethod<
   CreateWorkflowRunRequest,
   CreateWorkflowRunResponse,
   CreateWorkflowRunError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateWorkflowRunRequest,
   output: CreateWorkflowRunResponse,
@@ -1212,7 +1218,7 @@ export const deleteWorkflowDefinition: API.OperationMethod<
   DeleteWorkflowDefinitionRequest,
   DeleteWorkflowDefinitionResponse,
   DeleteWorkflowDefinitionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteWorkflowDefinitionRequest,
   output: DeleteWorkflowDefinitionResponse,
@@ -1244,7 +1250,7 @@ export const deleteWorkflowRun: API.OperationMethod<
   DeleteWorkflowRunRequest,
   DeleteWorkflowRunResponse,
   DeleteWorkflowRunError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteWorkflowRunRequest,
   output: DeleteWorkflowRunResponse,
@@ -1275,7 +1281,7 @@ export const getWorkflowDefinition: API.OperationMethod<
   GetWorkflowDefinitionRequest,
   GetWorkflowDefinitionResponse,
   GetWorkflowDefinitionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetWorkflowDefinitionRequest,
   output: GetWorkflowDefinitionResponse,
@@ -1306,7 +1312,7 @@ export const getWorkflowRun: API.OperationMethod<
   GetWorkflowRunRequest,
   GetWorkflowRunResponse,
   GetWorkflowRunError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetWorkflowRunRequest,
   output: GetWorkflowRunResponse,
@@ -1339,7 +1345,7 @@ export const invokeActStep: API.OperationMethod<
   InvokeActStepRequest,
   InvokeActStepResponse,
   InvokeActStepError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: InvokeActStepRequest,
   output: InvokeActStepResponse,
@@ -1368,27 +1374,13 @@ export type ListActsError =
 /**
  * Lists all acts within a specific session with their current status and execution details.
  */
-export const listActs: API.OperationMethod<
+export const listActs: API.PaginatedOperationMethod<
   ListActsRequest,
   ListActsResponse,
   ListActsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListActsRequest,
-  ) => stream.Stream<
-    ListActsResponse,
-    ListActsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListActsRequest,
-  ) => stream.Stream<
-    ActSummary,
-    ListActsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ActSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListActsRequest,
   output: ListActsResponse,
   errors: [
@@ -1408,27 +1400,7 @@ export const listActs: API.OperationMethod<
     items: "actSummaries",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListActsRequest,
-  ListActsResponse,
-  ListActsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListActsRequest,
-  ) => stream.Stream<
-    ListActsResponse,
-    ListActsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListActsRequest,
-  ) => stream.Stream<
-    ActSummary,
-    ListActsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListModelsError =
   | AccessDeniedException
@@ -1442,7 +1414,7 @@ export const listModels: API.OperationMethod<
   ListModelsRequest,
   ListModelsResponse,
   ListModelsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListModelsRequest,
   output: ListModelsResponse,
@@ -1463,27 +1435,13 @@ export type ListSessionsError =
 /**
  * Lists all sessions within a specific workflow run.
  */
-export const listSessions: API.OperationMethod<
+export const listSessions: API.PaginatedOperationMethod<
   ListSessionsRequest,
   ListSessionsResponse,
   ListSessionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSessionsRequest,
-  ) => stream.Stream<
-    ListSessionsResponse,
-    ListSessionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSessionsRequest,
-  ) => stream.Stream<
-    SessionSummary,
-    ListSessionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  SessionSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListSessionsRequest,
   output: ListSessionsResponse,
   errors: [
@@ -1503,27 +1461,7 @@ export const listSessions: API.OperationMethod<
     items: "sessionSummaries",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListSessionsRequest,
-  ListSessionsResponse,
-  ListSessionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSessionsRequest,
-  ) => stream.Stream<
-    ListSessionsResponse,
-    ListSessionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSessionsRequest,
-  ) => stream.Stream<
-    SessionSummary,
-    ListSessionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListWorkflowDefinitionsError =
   | AccessDeniedException
@@ -1534,27 +1472,13 @@ export type ListWorkflowDefinitionsError =
 /**
  * Lists all workflow definitions in your account with optional filtering and pagination.
  */
-export const listWorkflowDefinitions: API.OperationMethod<
+export const listWorkflowDefinitions: API.PaginatedOperationMethod<
   ListWorkflowDefinitionsRequest,
   ListWorkflowDefinitionsResponse,
   ListWorkflowDefinitionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListWorkflowDefinitionsRequest,
-  ) => stream.Stream<
-    ListWorkflowDefinitionsResponse,
-    ListWorkflowDefinitionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListWorkflowDefinitionsRequest,
-  ) => stream.Stream<
-    WorkflowDefinitionSummary,
-    ListWorkflowDefinitionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  WorkflowDefinitionSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListWorkflowDefinitionsRequest,
   output: ListWorkflowDefinitionsResponse,
   errors: [
@@ -1572,27 +1496,7 @@ export const listWorkflowDefinitions: API.OperationMethod<
     items: "workflowDefinitionSummaries",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListWorkflowDefinitionsRequest,
-  ListWorkflowDefinitionsResponse,
-  ListWorkflowDefinitionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListWorkflowDefinitionsRequest,
-  ) => stream.Stream<
-    ListWorkflowDefinitionsResponse,
-    ListWorkflowDefinitionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListWorkflowDefinitionsRequest,
-  ) => stream.Stream<
-    WorkflowDefinitionSummary,
-    ListWorkflowDefinitionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListWorkflowRunsError =
   | AccessDeniedException
@@ -1605,27 +1509,13 @@ export type ListWorkflowRunsError =
 /**
  * Lists all workflow runs for a specific workflow definition with optional filtering and pagination.
  */
-export const listWorkflowRuns: API.OperationMethod<
+export const listWorkflowRuns: API.PaginatedOperationMethod<
   ListWorkflowRunsRequest,
   ListWorkflowRunsResponse,
   ListWorkflowRunsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListWorkflowRunsRequest,
-  ) => stream.Stream<
-    ListWorkflowRunsResponse,
-    ListWorkflowRunsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListWorkflowRunsRequest,
-  ) => stream.Stream<
-    WorkflowRunSummary,
-    ListWorkflowRunsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  WorkflowRunSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListWorkflowRunsRequest,
   output: ListWorkflowRunsResponse,
   errors: [
@@ -1645,27 +1535,7 @@ export const listWorkflowRuns: API.OperationMethod<
     items: "workflowRunSummaries",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListWorkflowRunsRequest,
-  ListWorkflowRunsResponse,
-  ListWorkflowRunsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListWorkflowRunsRequest,
-  ) => stream.Stream<
-    ListWorkflowRunsResponse,
-    ListWorkflowRunsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListWorkflowRunsRequest,
-  ) => stream.Stream<
-    WorkflowRunSummary,
-    ListWorkflowRunsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type UpdateActError =
   | AccessDeniedException
@@ -1682,7 +1552,7 @@ export const updateAct: API.OperationMethod<
   UpdateActRequest,
   UpdateActResponse,
   UpdateActError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateActRequest,
   output: UpdateActResponse,
@@ -1714,7 +1584,7 @@ export const updateWorkflowRun: API.OperationMethod<
   UpdateWorkflowRunRequest,
   UpdateWorkflowRunResponse,
   UpdateWorkflowRunError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateWorkflowRunRequest,
   output: UpdateWorkflowRunResponse,

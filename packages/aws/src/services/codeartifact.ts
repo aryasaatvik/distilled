@@ -1,7 +1,6 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as redacted from "effect/Redacted";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -9,7 +8,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 import { SensitiveString } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "codeartifact",
@@ -90,14 +88,14 @@ const rules = T.EndpointResolver((p, _) => {
 export class AccessDeniedException
   extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
     "AccessDeniedException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(403),
   ).pipe(C.withAuthError) {}
 export class ConflictException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
     "ConflictException",
     {
-      message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       resourceId: S.optional(S.String),
       resourceType: S.optional(
         S.suspend(() => ResourceType).annotate({ identifier: "ResourceType" }),
@@ -108,14 +106,14 @@ export class ConflictException
 export class InternalServerException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
     "InternalServerException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(500),
   ).pipe(C.withServerError) {}
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
     {
-      message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       resourceId: S.optional(S.String),
       resourceType: S.optional(
         S.suspend(() => ResourceType).annotate({ identifier: "ResourceType" }),
@@ -127,7 +125,7 @@ export class ServiceQuotaExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
     "ServiceQuotaExceededException",
     {
-      message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       resourceId: S.optional(S.String),
       resourceType: S.optional(
         S.suspend(() => ResourceType).annotate({ identifier: "ResourceType" }),
@@ -139,7 +137,7 @@ export class ThrottlingException
   extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
     "ThrottlingException",
     {
-      message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       retryAfterSeconds: S.optional(S.Number).pipe(T.HttpHeader("Retry-After")),
     },
     T.HttpError(429),
@@ -148,7 +146,7 @@ export class ValidationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
     "ValidationException",
     {
-      message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       reason: S.optional(
         S.suspend(() => ValidationExceptionReason).annotate({
           identifier: "ValidationExceptionReason",
@@ -2735,7 +2733,7 @@ export const associateExternalConnection: API.OperationMethod<
   AssociateExternalConnectionRequest,
   AssociateExternalConnectionResult,
   AssociateExternalConnectionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AssociateExternalConnectionRequest,
   output: AssociateExternalConnectionResult,
@@ -2771,7 +2769,7 @@ export const copyPackageVersions: API.OperationMethod<
   CopyPackageVersionsRequest,
   CopyPackageVersionsResult,
   CopyPackageVersionsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CopyPackageVersionsRequest,
   output: CopyPackageVersionsResult,
@@ -2812,7 +2810,7 @@ export const createDomain: API.OperationMethod<
   CreateDomainRequest,
   CreateDomainResult,
   CreateDomainError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateDomainRequest,
   output: CreateDomainResult,
@@ -2846,7 +2844,7 @@ export const createPackageGroup: API.OperationMethod<
   CreatePackageGroupRequest,
   CreatePackageGroupResult,
   CreatePackageGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreatePackageGroupRequest,
   output: CreatePackageGroupResult,
@@ -2880,7 +2878,7 @@ export const createRepository: API.OperationMethod<
   CreateRepositoryRequest,
   CreateRepositoryResult,
   CreateRepositoryError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateRepositoryRequest,
   output: CreateRepositoryResult,
@@ -2913,7 +2911,7 @@ export const deleteDomain: API.OperationMethod<
   DeleteDomainRequest,
   DeleteDomainResult,
   DeleteDomainError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteDomainRequest,
   output: DeleteDomainResult,
@@ -2944,7 +2942,7 @@ export const deleteDomainPermissionsPolicy: API.OperationMethod<
   DeleteDomainPermissionsPolicyRequest,
   DeleteDomainPermissionsPolicyResult,
   DeleteDomainPermissionsPolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteDomainPermissionsPolicyRequest,
   output: DeleteDomainPermissionsPolicyResult,
@@ -2977,7 +2975,7 @@ export const deletePackage: API.OperationMethod<
   DeletePackageRequest,
   DeletePackageResult,
   DeletePackageError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeletePackageRequest,
   output: DeletePackageResult,
@@ -3014,7 +3012,7 @@ export const deletePackageGroup: API.OperationMethod<
   DeletePackageGroupRequest,
   DeletePackageGroupResult,
   DeletePackageGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeletePackageGroupRequest,
   output: DeletePackageGroupResult,
@@ -3051,7 +3049,7 @@ export const deletePackageVersions: API.OperationMethod<
   DeletePackageVersionsRequest,
   DeletePackageVersionsResult,
   DeletePackageVersionsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeletePackageVersionsRequest,
   output: DeletePackageVersionsResult,
@@ -3083,7 +3081,7 @@ export const deleteRepository: API.OperationMethod<
   DeleteRepositoryRequest,
   DeleteRepositoryResult,
   DeleteRepositoryError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteRepositoryRequest,
   output: DeleteRepositoryResult,
@@ -3119,7 +3117,7 @@ export const deleteRepositoryPermissionsPolicy: API.OperationMethod<
   DeleteRepositoryPermissionsPolicyRequest,
   DeleteRepositoryPermissionsPolicyResult,
   DeleteRepositoryPermissionsPolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteRepositoryPermissionsPolicyRequest,
   output: DeleteRepositoryPermissionsPolicyResult,
@@ -3152,7 +3150,7 @@ export const describeDomain: API.OperationMethod<
   DescribeDomainRequest,
   DescribeDomainResult,
   DescribeDomainError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeDomainRequest,
   output: DescribeDomainResult,
@@ -3184,7 +3182,7 @@ export const describePackage: API.OperationMethod<
   DescribePackageRequest,
   DescribePackageResult,
   DescribePackageError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribePackageRequest,
   output: DescribePackageResult,
@@ -3215,7 +3213,7 @@ export const describePackageGroup: API.OperationMethod<
   DescribePackageGroupRequest,
   DescribePackageGroupResult,
   DescribePackageGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribePackageGroupRequest,
   output: DescribePackageGroupResult,
@@ -3248,7 +3246,7 @@ export const describePackageVersion: API.OperationMethod<
   DescribePackageVersionRequest,
   DescribePackageVersionResult,
   DescribePackageVersionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribePackageVersionRequest,
   output: DescribePackageVersionResult,
@@ -3280,7 +3278,7 @@ export const describeRepository: API.OperationMethod<
   DescribeRepositoryRequest,
   DescribeRepositoryResult,
   DescribeRepositoryError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeRepositoryRequest,
   output: DescribeRepositoryResult,
@@ -3312,7 +3310,7 @@ export const disassociateExternalConnection: API.OperationMethod<
   DisassociateExternalConnectionRequest,
   DisassociateExternalConnectionResult,
   DisassociateExternalConnectionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DisassociateExternalConnectionRequest,
   output: DisassociateExternalConnectionResult,
@@ -3352,7 +3350,7 @@ export const disposePackageVersions: API.OperationMethod<
   DisposePackageVersionsRequest,
   DisposePackageVersionsResult,
   DisposePackageVersionsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DisposePackageVersionsRequest,
   output: DisposePackageVersionsResult,
@@ -3388,7 +3386,7 @@ export const getAssociatedPackageGroup: API.OperationMethod<
   GetAssociatedPackageGroupRequest,
   GetAssociatedPackageGroupResult,
   GetAssociatedPackageGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetAssociatedPackageGroupRequest,
   output: GetAssociatedPackageGroupResult,
@@ -3436,7 +3434,7 @@ export const getAuthorizationToken: API.OperationMethod<
   GetAuthorizationTokenRequest,
   GetAuthorizationTokenResult,
   GetAuthorizationTokenError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetAuthorizationTokenRequest,
   output: GetAuthorizationTokenResult,
@@ -3470,7 +3468,7 @@ export const getDomainPermissionsPolicy: API.OperationMethod<
   GetDomainPermissionsPolicyRequest,
   GetDomainPermissionsPolicyResult,
   GetDomainPermissionsPolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetDomainPermissionsPolicyRequest,
   output: GetDomainPermissionsPolicyResult,
@@ -3503,7 +3501,7 @@ export const getPackageVersionAsset: API.OperationMethod<
   GetPackageVersionAssetRequest,
   GetPackageVersionAssetResult,
   GetPackageVersionAssetError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetPackageVersionAssetRequest,
   output: GetPackageVersionAssetResult,
@@ -3536,7 +3534,7 @@ export const getPackageVersionReadme: API.OperationMethod<
   GetPackageVersionReadmeRequest,
   GetPackageVersionReadmeResult,
   GetPackageVersionReadmeError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetPackageVersionReadmeRequest,
   output: GetPackageVersionReadmeResult,
@@ -3583,7 +3581,7 @@ export const getRepositoryEndpoint: API.OperationMethod<
   GetRepositoryEndpointRequest,
   GetRepositoryEndpointResult,
   GetRepositoryEndpointError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetRepositoryEndpointRequest,
   output: GetRepositoryEndpointResult,
@@ -3613,7 +3611,7 @@ export const getRepositoryPermissionsPolicy: API.OperationMethod<
   GetRepositoryPermissionsPolicyRequest,
   GetRepositoryPermissionsPolicyResult,
   GetRepositoryPermissionsPolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetRepositoryPermissionsPolicyRequest,
   output: GetRepositoryPermissionsPolicyResult,
@@ -3641,27 +3639,13 @@ export type ListAllowedRepositoriesForGroupError =
  * Lists the repositories in the added repositories list of the specified restriction type for a package group. For more information about restriction types
  * and added repository lists, see Package group origin controls in the *CodeArtifact User Guide*.
  */
-export const listAllowedRepositoriesForGroup: API.OperationMethod<
+export const listAllowedRepositoriesForGroup: API.PaginatedOperationMethod<
   ListAllowedRepositoriesForGroupRequest,
   ListAllowedRepositoriesForGroupResult,
   ListAllowedRepositoriesForGroupError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAllowedRepositoriesForGroupRequest,
-  ) => stream.Stream<
-    ListAllowedRepositoriesForGroupResult,
-    ListAllowedRepositoriesForGroupError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAllowedRepositoriesForGroupRequest,
-  ) => stream.Stream<
-    RepositoryName,
-    ListAllowedRepositoriesForGroupError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  RepositoryName
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListAllowedRepositoriesForGroupRequest,
   output: ListAllowedRepositoriesForGroupResult,
   errors: [
@@ -3681,27 +3665,7 @@ export const listAllowedRepositoriesForGroup: API.OperationMethod<
     items: "allowedRepositories",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListAllowedRepositoriesForGroupRequest,
-  ListAllowedRepositoriesForGroupResult,
-  ListAllowedRepositoriesForGroupError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAllowedRepositoriesForGroupRequest,
-  ) => stream.Stream<
-    ListAllowedRepositoriesForGroupResult,
-    ListAllowedRepositoriesForGroupError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAllowedRepositoriesForGroupRequest,
-  ) => stream.Stream<
-    RepositoryName,
-    ListAllowedRepositoriesForGroupError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListAssociatedPackagesError =
   | AccessDeniedException
@@ -3714,27 +3678,13 @@ export type ListAssociatedPackagesError =
  * Package group
  * definition syntax and matching behavior in the *CodeArtifact User Guide*.
  */
-export const listAssociatedPackages: API.OperationMethod<
+export const listAssociatedPackages: API.PaginatedOperationMethod<
   ListAssociatedPackagesRequest,
   ListAssociatedPackagesResult,
   ListAssociatedPackagesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAssociatedPackagesRequest,
-  ) => stream.Stream<
-    ListAssociatedPackagesResult,
-    ListAssociatedPackagesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAssociatedPackagesRequest,
-  ) => stream.Stream<
-    AssociatedPackage,
-    ListAssociatedPackagesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  AssociatedPackage
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListAssociatedPackagesRequest,
   output: ListAssociatedPackagesResult,
   errors: [
@@ -3752,27 +3702,7 @@ export const listAssociatedPackages: API.OperationMethod<
     items: "packages",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListAssociatedPackagesRequest,
-  ListAssociatedPackagesResult,
-  ListAssociatedPackagesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAssociatedPackagesRequest,
-  ) => stream.Stream<
-    ListAssociatedPackagesResult,
-    ListAssociatedPackagesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAssociatedPackagesRequest,
-  ) => stream.Stream<
-    AssociatedPackage,
-    ListAssociatedPackagesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListDomainsError =
   | AccessDeniedException
@@ -3785,27 +3715,13 @@ export type ListDomainsError =
  * this call. Each returned `DomainSummary` object contains information about a
  * domain.
  */
-export const listDomains: API.OperationMethod<
+export const listDomains: API.PaginatedOperationMethod<
   ListDomainsRequest,
   ListDomainsResult,
   ListDomainsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDomainsRequest,
-  ) => stream.Stream<
-    ListDomainsResult,
-    ListDomainsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDomainsRequest,
-  ) => stream.Stream<
-    DomainSummary,
-    ListDomainsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  DomainSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListDomainsRequest,
   output: ListDomainsResult,
   errors: [
@@ -3823,27 +3739,7 @@ export const listDomains: API.OperationMethod<
     items: "domains",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListDomainsRequest,
-  ListDomainsResult,
-  ListDomainsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDomainsRequest,
-  ) => stream.Stream<
-    ListDomainsResult,
-    ListDomainsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDomainsRequest,
-  ) => stream.Stream<
-    DomainSummary,
-    ListDomainsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListPackageGroupsError =
   | AccessDeniedException
@@ -3855,27 +3751,13 @@ export type ListPackageGroupsError =
 /**
  * Returns a list of package groups in the requested domain.
  */
-export const listPackageGroups: API.OperationMethod<
+export const listPackageGroups: API.PaginatedOperationMethod<
   ListPackageGroupsRequest,
   ListPackageGroupsResult,
   ListPackageGroupsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPackageGroupsRequest,
-  ) => stream.Stream<
-    ListPackageGroupsResult,
-    ListPackageGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPackageGroupsRequest,
-  ) => stream.Stream<
-    PackageGroupSummary,
-    ListPackageGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  PackageGroupSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListPackageGroupsRequest,
   output: ListPackageGroupsResult,
   errors: [
@@ -3894,27 +3776,7 @@ export const listPackageGroups: API.OperationMethod<
     items: "packageGroups",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListPackageGroupsRequest,
-  ListPackageGroupsResult,
-  ListPackageGroupsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPackageGroupsRequest,
-  ) => stream.Stream<
-    ListPackageGroupsResult,
-    ListPackageGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPackageGroupsRequest,
-  ) => stream.Stream<
-    PackageGroupSummary,
-    ListPackageGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListPackagesError =
   | AccessDeniedException
@@ -3928,27 +3790,13 @@ export type ListPackagesError =
  * PackageSummary
  * objects for packages in a repository that match the request parameters.
  */
-export const listPackages: API.OperationMethod<
+export const listPackages: API.PaginatedOperationMethod<
   ListPackagesRequest,
   ListPackagesResult,
   ListPackagesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPackagesRequest,
-  ) => stream.Stream<
-    ListPackagesResult,
-    ListPackagesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPackagesRequest,
-  ) => stream.Stream<
-    PackageSummary,
-    ListPackagesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  PackageSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListPackagesRequest,
   output: ListPackagesResult,
   errors: [
@@ -3967,27 +3815,7 @@ export const listPackages: API.OperationMethod<
     items: "packages",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListPackagesRequest,
-  ListPackagesResult,
-  ListPackagesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPackagesRequest,
-  ) => stream.Stream<
-    ListPackagesResult,
-    ListPackagesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPackagesRequest,
-  ) => stream.Stream<
-    PackageSummary,
-    ListPackagesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListPackageVersionAssetsError =
   | AccessDeniedException
@@ -4001,27 +3829,13 @@ export type ListPackageVersionAssetsError =
  * AssetSummary
  * objects for assets in a package version.
  */
-export const listPackageVersionAssets: API.OperationMethod<
+export const listPackageVersionAssets: API.PaginatedOperationMethod<
   ListPackageVersionAssetsRequest,
   ListPackageVersionAssetsResult,
   ListPackageVersionAssetsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPackageVersionAssetsRequest,
-  ) => stream.Stream<
-    ListPackageVersionAssetsResult,
-    ListPackageVersionAssetsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPackageVersionAssetsRequest,
-  ) => stream.Stream<
-    AssetSummary,
-    ListPackageVersionAssetsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  AssetSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListPackageVersionAssetsRequest,
   output: ListPackageVersionAssetsResult,
   errors: [
@@ -4040,27 +3854,7 @@ export const listPackageVersionAssets: API.OperationMethod<
     items: "assets",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListPackageVersionAssetsRequest,
-  ListPackageVersionAssetsResult,
-  ListPackageVersionAssetsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPackageVersionAssetsRequest,
-  ) => stream.Stream<
-    ListPackageVersionAssetsResult,
-    ListPackageVersionAssetsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPackageVersionAssetsRequest,
-  ) => stream.Stream<
-    AssetSummary,
-    ListPackageVersionAssetsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListPackageVersionDependenciesError =
   | AccessDeniedException
@@ -4080,7 +3874,7 @@ export const listPackageVersionDependencies: API.OperationMethod<
   ListPackageVersionDependenciesRequest,
   ListPackageVersionDependenciesResult,
   ListPackageVersionDependenciesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListPackageVersionDependenciesRequest,
   output: ListPackageVersionDependenciesResult,
@@ -4108,27 +3902,13 @@ export type ListPackageVersionsError =
  * PackageVersionSummary
  * objects for package versions in a repository that match the request parameters. Package versions of all statuses will be returned by default when calling `list-package-versions` with no `--status` parameter.
  */
-export const listPackageVersions: API.OperationMethod<
+export const listPackageVersions: API.PaginatedOperationMethod<
   ListPackageVersionsRequest,
   ListPackageVersionsResult,
   ListPackageVersionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPackageVersionsRequest,
-  ) => stream.Stream<
-    ListPackageVersionsResult,
-    ListPackageVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPackageVersionsRequest,
-  ) => stream.Stream<
-    PackageVersionSummary,
-    ListPackageVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  PackageVersionSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListPackageVersionsRequest,
   output: ListPackageVersionsResult,
   errors: [
@@ -4147,27 +3927,7 @@ export const listPackageVersions: API.OperationMethod<
     items: "versions",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListPackageVersionsRequest,
-  ListPackageVersionsResult,
-  ListPackageVersionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPackageVersionsRequest,
-  ) => stream.Stream<
-    ListPackageVersionsResult,
-    ListPackageVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPackageVersionsRequest,
-  ) => stream.Stream<
-    PackageVersionSummary,
-    ListPackageVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListRepositoriesError =
   | AccessDeniedException
@@ -4181,27 +3941,13 @@ export type ListRepositoriesError =
  * objects. Each `RepositorySummary` contains information about a repository in the specified Amazon Web Services account and that matches the input
  * parameters.
  */
-export const listRepositories: API.OperationMethod<
+export const listRepositories: API.PaginatedOperationMethod<
   ListRepositoriesRequest,
   ListRepositoriesResult,
   ListRepositoriesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListRepositoriesRequest,
-  ) => stream.Stream<
-    ListRepositoriesResult,
-    ListRepositoriesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListRepositoriesRequest,
-  ) => stream.Stream<
-    RepositorySummary,
-    ListRepositoriesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  RepositorySummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListRepositoriesRequest,
   output: ListRepositoriesResult,
   errors: [
@@ -4219,27 +3965,7 @@ export const listRepositories: API.OperationMethod<
     items: "repositories",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListRepositoriesRequest,
-  ListRepositoriesResult,
-  ListRepositoriesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListRepositoriesRequest,
-  ) => stream.Stream<
-    ListRepositoriesResult,
-    ListRepositoriesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListRepositoriesRequest,
-  ) => stream.Stream<
-    RepositorySummary,
-    ListRepositoriesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListRepositoriesInDomainError =
   | AccessDeniedException
@@ -4254,27 +3980,13 @@ export type ListRepositoriesInDomainError =
  * objects. Each `RepositorySummary` contains information about a repository in the specified domain and that matches the input
  * parameters.
  */
-export const listRepositoriesInDomain: API.OperationMethod<
+export const listRepositoriesInDomain: API.PaginatedOperationMethod<
   ListRepositoriesInDomainRequest,
   ListRepositoriesInDomainResult,
   ListRepositoriesInDomainError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListRepositoriesInDomainRequest,
-  ) => stream.Stream<
-    ListRepositoriesInDomainResult,
-    ListRepositoriesInDomainError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListRepositoriesInDomainRequest,
-  ) => stream.Stream<
-    RepositorySummary,
-    ListRepositoriesInDomainError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  RepositorySummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListRepositoriesInDomainRequest,
   output: ListRepositoriesInDomainResult,
   errors: [
@@ -4293,27 +4005,7 @@ export const listRepositoriesInDomain: API.OperationMethod<
     items: "repositories",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListRepositoriesInDomainRequest,
-  ListRepositoriesInDomainResult,
-  ListRepositoriesInDomainError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListRepositoriesInDomainRequest,
-  ) => stream.Stream<
-    ListRepositoriesInDomainResult,
-    ListRepositoriesInDomainError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListRepositoriesInDomainRequest,
-  ) => stream.Stream<
-    RepositorySummary,
-    ListRepositoriesInDomainError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListSubPackageGroupsError =
   | AccessDeniedException
@@ -4329,27 +4021,13 @@ export type ListSubPackageGroupsError =
  * Package group
  * definition syntax and matching behavior in the *CodeArtifact User Guide*.
  */
-export const listSubPackageGroups: API.OperationMethod<
+export const listSubPackageGroups: API.PaginatedOperationMethod<
   ListSubPackageGroupsRequest,
   ListSubPackageGroupsResult,
   ListSubPackageGroupsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSubPackageGroupsRequest,
-  ) => stream.Stream<
-    ListSubPackageGroupsResult,
-    ListSubPackageGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSubPackageGroupsRequest,
-  ) => stream.Stream<
-    PackageGroupSummary,
-    ListSubPackageGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  PackageGroupSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListSubPackageGroupsRequest,
   output: ListSubPackageGroupsResult,
   errors: [
@@ -4368,27 +4046,7 @@ export const listSubPackageGroups: API.OperationMethod<
     items: "packageGroups",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListSubPackageGroupsRequest,
-  ListSubPackageGroupsResult,
-  ListSubPackageGroupsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSubPackageGroupsRequest,
-  ) => stream.Stream<
-    ListSubPackageGroupsResult,
-    ListSubPackageGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSubPackageGroupsRequest,
-  ) => stream.Stream<
-    PackageGroupSummary,
-    ListSubPackageGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsForResourceError =
   | AccessDeniedException
@@ -4403,7 +4061,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceRequest,
   ListTagsForResourceResult,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResult,
@@ -4443,7 +4101,7 @@ export const publishPackageVersion: API.OperationMethod<
   PublishPackageVersionRequest,
   PublishPackageVersionResult,
   PublishPackageVersionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PublishPackageVersionRequest,
   output: PublishPackageVersionResult,
@@ -4481,7 +4139,7 @@ export const putDomainPermissionsPolicy: API.OperationMethod<
   PutDomainPermissionsPolicyRequest,
   PutDomainPermissionsPolicyResult,
   PutDomainPermissionsPolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutDomainPermissionsPolicyRequest,
   output: PutDomainPermissionsPolicyResult,
@@ -4522,7 +4180,7 @@ export const putPackageOriginConfiguration: API.OperationMethod<
   PutPackageOriginConfigurationRequest,
   PutPackageOriginConfigurationResult,
   PutPackageOriginConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutPackageOriginConfigurationRequest,
   output: PutPackageOriginConfigurationResult,
@@ -4558,7 +4216,7 @@ export const putRepositoryPermissionsPolicy: API.OperationMethod<
   PutRepositoryPermissionsPolicyRequest,
   PutRepositoryPermissionsPolicyResult,
   PutRepositoryPermissionsPolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutRepositoryPermissionsPolicyRequest,
   output: PutRepositoryPermissionsPolicyResult,
@@ -4590,7 +4248,7 @@ export const tagResource: API.OperationMethod<
   TagResourceRequest,
   TagResourceResult,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResult,
@@ -4619,7 +4277,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceRequest,
   UntagResourceResult,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResult,
@@ -4650,7 +4308,7 @@ export const updatePackageGroup: API.OperationMethod<
   UpdatePackageGroupRequest,
   UpdatePackageGroupResult,
   UpdatePackageGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdatePackageGroupRequest,
   output: UpdatePackageGroupResult,
@@ -4688,7 +4346,7 @@ export const updatePackageGroupOriginConfiguration: API.OperationMethod<
   UpdatePackageGroupOriginConfigurationRequest,
   UpdatePackageGroupOriginConfigurationResult,
   UpdatePackageGroupOriginConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdatePackageGroupOriginConfigurationRequest,
   output: UpdatePackageGroupOriginConfigurationResult,
@@ -4723,7 +4381,7 @@ export const updatePackageVersionsStatus: API.OperationMethod<
   UpdatePackageVersionsStatusRequest,
   UpdatePackageVersionsStatusResult,
   UpdatePackageVersionsStatusError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdatePackageVersionsStatusRequest,
   output: UpdatePackageVersionsStatusResult,
@@ -4756,7 +4414,7 @@ export const updateRepository: API.OperationMethod<
   UpdateRepositoryRequest,
   UpdateRepositoryResult,
   UpdateRepositoryError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateRepositoryRequest,
   output: UpdateRepositoryResult,

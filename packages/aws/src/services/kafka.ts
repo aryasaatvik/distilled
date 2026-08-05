@@ -1,6 +1,5 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -8,7 +7,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 const svc = T.AwsApiService({ sdkId: "Kafka", serviceShapeName: "Kafka" });
 const auth = T.AwsAuthSigv4({ name: "kafka" });
 const ver = T.ServiceVersion("2018-11-14");
@@ -148,103 +146,154 @@ const rules = T.EndpointResolver((p, _) => {
 export class BadRequestException
   extends /*@__PURE__*/ S.TaggedErrorClass<BadRequestException>()(
     "BadRequestException",
-    { InvalidParameter: S.optional(S.String), Message: S.optional(S.String) },
+    {
+      InvalidParameter: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class ClusterConnectivityException
   extends /*@__PURE__*/ S.TaggedErrorClass<ClusterConnectivityException>()(
     "ClusterConnectivityException",
-    { InvalidParameter: S.optional(S.String), Message: S.optional(S.String) },
+    {
+      InvalidParameter: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class ConflictException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
     "ConflictException",
-    { InvalidParameter: S.optional(S.String), Message: S.optional(S.String) },
+    {
+      InvalidParameter: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class ControllerMovedException
   extends /*@__PURE__*/ S.TaggedErrorClass<ControllerMovedException>()(
     "ControllerMovedException",
-    { InvalidParameter: S.optional(S.String), Message: S.optional(S.String) },
+    {
+      InvalidParameter: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class ForbiddenException
   extends /*@__PURE__*/ S.TaggedErrorClass<ForbiddenException>()(
     "ForbiddenException",
-    { InvalidParameter: S.optional(S.String), Message: S.optional(S.String) },
+    {
+      InvalidParameter: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(403),
   ).pipe(C.withAuthError) {}
 export class GroupSubscribedToTopicException
   extends /*@__PURE__*/ S.TaggedErrorClass<GroupSubscribedToTopicException>()(
     "GroupSubscribedToTopicException",
-    { InvalidParameter: S.optional(S.String), Message: S.optional(S.String) },
+    {
+      InvalidParameter: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class InternalServerErrorException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerErrorException>()(
     "InternalServerErrorException",
-    { InvalidParameter: S.optional(S.String), Message: S.optional(S.String) },
+    {
+      InvalidParameter: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(500),
   ).pipe(C.withServerError) {}
 export class KafkaRequestException
   extends /*@__PURE__*/ S.TaggedErrorClass<KafkaRequestException>()(
     "KafkaRequestException",
-    { InvalidParameter: S.optional(S.String), Message: S.optional(S.String) },
+    {
+      InvalidParameter: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class KafkaTimeoutException
   extends /*@__PURE__*/ S.TaggedErrorClass<KafkaTimeoutException>()(
     "KafkaTimeoutException",
-    { InvalidParameter: S.optional(S.String), Message: S.optional(S.String) },
+    {
+      InvalidParameter: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class NotControllerException
   extends /*@__PURE__*/ S.TaggedErrorClass<NotControllerException>()(
     "NotControllerException",
-    { InvalidParameter: S.optional(S.String), Message: S.optional(S.String) },
+    {
+      InvalidParameter: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class NotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<NotFoundException>()(
     "NotFoundException",
-    { InvalidParameter: S.optional(S.String), Message: S.optional(S.String) },
+    {
+      InvalidParameter: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class ReassignmentInProgressException
   extends /*@__PURE__*/ S.TaggedErrorClass<ReassignmentInProgressException>()(
     "ReassignmentInProgressException",
-    { InvalidParameter: S.optional(S.String), Message: S.optional(S.String) },
+    {
+      InvalidParameter: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class ServiceUnavailableException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceUnavailableException>()(
     "ServiceUnavailableException",
-    { InvalidParameter: S.optional(S.String), Message: S.optional(S.String) },
+    {
+      InvalidParameter: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(503),
   ).pipe(C.withServerError) {}
 export class TooManyRequestsException
   extends /*@__PURE__*/ S.TaggedErrorClass<TooManyRequestsException>()(
     "TooManyRequestsException",
-    { InvalidParameter: S.optional(S.String), Message: S.optional(S.String) },
+    {
+      InvalidParameter: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(429),
   ).pipe(C.withThrottlingError) {}
 export class TopicExistsException
   extends /*@__PURE__*/ S.TaggedErrorClass<TopicExistsException>()(
     "TopicExistsException",
-    { InvalidParameter: S.optional(S.String), Message: S.optional(S.String) },
+    {
+      InvalidParameter: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class UnauthorizedException
   extends /*@__PURE__*/ S.TaggedErrorClass<UnauthorizedException>()(
     "UnauthorizedException",
-    { InvalidParameter: S.optional(S.String), Message: S.optional(S.String) },
+    {
+      InvalidParameter: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(401),
   ).pipe(C.withAuthError) {}
 export class UnknownTopicOrPartitionException
   extends /*@__PURE__*/ S.TaggedErrorClass<UnknownTopicOrPartitionException>()(
     "UnknownTopicOrPartitionException",
-    { InvalidParameter: S.optional(S.String), Message: S.optional(S.String) },
+    {
+      InvalidParameter: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export type __listOf__string = string[];
@@ -5304,7 +5353,7 @@ export const batchAssociateScramSecret: API.OperationMethod<
   BatchAssociateScramSecretRequest,
   BatchAssociateScramSecretResponse,
   BatchAssociateScramSecretError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchAssociateScramSecretRequest,
   output: BatchAssociateScramSecretResponse,
@@ -5338,7 +5387,7 @@ export const batchDisassociateScramSecret: API.OperationMethod<
   BatchDisassociateScramSecretRequest,
   BatchDisassociateScramSecretResponse,
   BatchDisassociateScramSecretError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchDisassociateScramSecretRequest,
   output: BatchDisassociateScramSecretResponse,
@@ -5372,7 +5421,7 @@ export const createCluster: API.OperationMethod<
   CreateClusterRequest,
   CreateClusterResponse,
   CreateClusterError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateClusterRequest,
   output: CreateClusterResponse,
@@ -5406,7 +5455,7 @@ export const createClusterV2: API.OperationMethod<
   CreateClusterV2Request,
   CreateClusterV2Response,
   CreateClusterV2Error,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateClusterV2Request,
   output: CreateClusterV2Response,
@@ -5440,7 +5489,7 @@ export const createConfiguration: API.OperationMethod<
   CreateConfigurationRequest,
   CreateConfigurationResponse,
   CreateConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateConfigurationRequest,
   output: CreateConfigurationResponse,
@@ -5475,7 +5524,7 @@ export const createReplicator: API.OperationMethod<
   CreateReplicatorRequest,
   CreateReplicatorResponse,
   CreateReplicatorError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateReplicatorRequest,
   output: CreateReplicatorResponse,
@@ -5519,7 +5568,7 @@ export const createTopic: API.OperationMethod<
   CreateTopicRequest,
   CreateTopicResponse,
   CreateTopicError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateTopicRequest,
   output: CreateTopicResponse,
@@ -5561,7 +5610,7 @@ export const createVpcConnection: API.OperationMethod<
   CreateVpcConnectionRequest,
   CreateVpcConnectionResponse,
   CreateVpcConnectionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateVpcConnectionRequest,
   output: CreateVpcConnectionResponse,
@@ -5591,7 +5640,7 @@ export const deleteCluster: API.OperationMethod<
   DeleteClusterRequest,
   DeleteClusterResponse,
   DeleteClusterError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteClusterRequest,
   output: DeleteClusterResponse,
@@ -5619,7 +5668,7 @@ export const deleteClusterPolicy: API.OperationMethod<
   DeleteClusterPolicyRequest,
   DeleteClusterPolicyResponse,
   DeleteClusterPolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteClusterPolicyRequest,
   output: DeleteClusterPolicyResponse,
@@ -5647,7 +5696,7 @@ export const deleteConfiguration: API.OperationMethod<
   DeleteConfigurationRequest,
   DeleteConfigurationResponse,
   DeleteConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteConfigurationRequest,
   output: DeleteConfigurationResponse,
@@ -5678,7 +5727,7 @@ export const deleteReplicator: API.OperationMethod<
   DeleteReplicatorRequest,
   DeleteReplicatorResponse,
   DeleteReplicatorError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteReplicatorRequest,
   output: DeleteReplicatorResponse,
@@ -5717,7 +5766,7 @@ export const deleteTopic: API.OperationMethod<
   DeleteTopicRequest,
   DeleteTopicResponse,
   DeleteTopicError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteTopicRequest,
   output: DeleteTopicResponse,
@@ -5753,7 +5802,7 @@ export const deleteVpcConnection: API.OperationMethod<
   DeleteVpcConnectionRequest,
   DeleteVpcConnectionResponse,
   DeleteVpcConnectionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteVpcConnectionRequest,
   output: DeleteVpcConnectionResponse,
@@ -5782,7 +5831,7 @@ export const describeCluster: API.OperationMethod<
   DescribeClusterRequest,
   DescribeClusterResponse,
   DescribeClusterError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeClusterRequest,
   output: DescribeClusterResponse,
@@ -5812,7 +5861,7 @@ export const describeClusterOperation: API.OperationMethod<
   DescribeClusterOperationRequest,
   DescribeClusterOperationResponse,
   DescribeClusterOperationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeClusterOperationRequest,
   output: DescribeClusterOperationResponse,
@@ -5844,7 +5893,7 @@ export const describeClusterOperationV2: API.OperationMethod<
   DescribeClusterOperationV2Request,
   DescribeClusterOperationV2Response,
   DescribeClusterOperationV2Error,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeClusterOperationV2Request,
   output: DescribeClusterOperationV2Response,
@@ -5876,7 +5925,7 @@ export const describeClusterV2: API.OperationMethod<
   DescribeClusterV2Request,
   DescribeClusterV2Response,
   DescribeClusterV2Error,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeClusterV2Request,
   output: DescribeClusterV2Response,
@@ -5907,7 +5956,7 @@ export const describeConfiguration: API.OperationMethod<
   DescribeConfigurationRequest,
   DescribeConfigurationResponse,
   DescribeConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeConfigurationRequest,
   output: DescribeConfigurationResponse,
@@ -5939,7 +5988,7 @@ export const describeConfigurationRevision: API.OperationMethod<
   DescribeConfigurationRevisionRequest,
   DescribeConfigurationRevisionResponse,
   DescribeConfigurationRevisionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeConfigurationRevisionRequest,
   output: DescribeConfigurationRevisionResponse,
@@ -5972,7 +6021,7 @@ export const describeReplicator: API.OperationMethod<
   DescribeReplicatorRequest,
   DescribeReplicatorResponse,
   DescribeReplicatorError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeReplicatorRequest,
   output: DescribeReplicatorResponse,
@@ -6004,7 +6053,7 @@ export const describeTopic: API.OperationMethod<
   DescribeTopicRequest,
   DescribeTopicResponse,
   DescribeTopicError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeTopicRequest,
   output: DescribeTopicResponse,
@@ -6030,27 +6079,13 @@ export type DescribeTopicPartitionsError =
 /**
  * Returns partition details of this topic on a MSK cluster.
  */
-export const describeTopicPartitions: API.OperationMethod<
+export const describeTopicPartitions: API.PaginatedOperationMethod<
   DescribeTopicPartitionsRequest,
   DescribeTopicPartitionsResponse,
   DescribeTopicPartitionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeTopicPartitionsRequest,
-  ) => stream.Stream<
-    DescribeTopicPartitionsResponse,
-    DescribeTopicPartitionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeTopicPartitionsRequest,
-  ) => stream.Stream<
-    TopicPartitionInfo,
-    DescribeTopicPartitionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  TopicPartitionInfo
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeTopicPartitionsRequest,
   output: DescribeTopicPartitionsResponse,
   errors: [
@@ -6069,27 +6104,7 @@ export const describeTopicPartitions: API.OperationMethod<
     items: "Partitions",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeTopicPartitionsRequest,
-  DescribeTopicPartitionsResponse,
-  DescribeTopicPartitionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeTopicPartitionsRequest,
-  ) => stream.Stream<
-    DescribeTopicPartitionsResponse,
-    DescribeTopicPartitionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeTopicPartitionsRequest,
-  ) => stream.Stream<
-    TopicPartitionInfo,
-    DescribeTopicPartitionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeVpcConnectionError =
   | BadRequestException
@@ -6106,7 +6121,7 @@ export const describeVpcConnection: API.OperationMethod<
   DescribeVpcConnectionRequest,
   DescribeVpcConnectionResponse,
   DescribeVpcConnectionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeVpcConnectionRequest,
   output: DescribeVpcConnectionResponse,
@@ -6138,7 +6153,7 @@ export const getBootstrapBrokers: API.OperationMethod<
   GetBootstrapBrokersRequest,
   GetBootstrapBrokersResponse,
   GetBootstrapBrokersError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetBootstrapBrokersRequest,
   output: GetBootstrapBrokersResponse,
@@ -6168,7 +6183,7 @@ export const getClusterPolicy: API.OperationMethod<
   GetClusterPolicyRequest,
   GetClusterPolicyResponse,
   GetClusterPolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetClusterPolicyRequest,
   output: GetClusterPolicyResponse,
@@ -6199,7 +6214,7 @@ export const getCompatibleKafkaVersions: API.OperationMethod<
   GetCompatibleKafkaVersionsRequest,
   GetCompatibleKafkaVersionsResponse,
   GetCompatibleKafkaVersionsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetCompatibleKafkaVersionsRequest,
   output: GetCompatibleKafkaVersionsResponse,
@@ -6227,27 +6242,13 @@ export type ListClientVpcConnectionsError =
 /**
  * Returns a list of all the VPC connections in this Region.
  */
-export const listClientVpcConnections: API.OperationMethod<
+export const listClientVpcConnections: API.PaginatedOperationMethod<
   ListClientVpcConnectionsRequest,
   ListClientVpcConnectionsResponse,
   ListClientVpcConnectionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListClientVpcConnectionsRequest,
-  ) => stream.Stream<
-    ListClientVpcConnectionsResponse,
-    ListClientVpcConnectionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListClientVpcConnectionsRequest,
-  ) => stream.Stream<
-    ClientVpcConnection,
-    ListClientVpcConnectionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ClientVpcConnection
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListClientVpcConnectionsRequest,
   output: ListClientVpcConnectionsResponse,
   errors: [
@@ -6266,27 +6267,7 @@ export const listClientVpcConnections: API.OperationMethod<
     items: "ClientVpcConnections",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListClientVpcConnectionsRequest,
-  ListClientVpcConnectionsResponse,
-  ListClientVpcConnectionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListClientVpcConnectionsRequest,
-  ) => stream.Stream<
-    ListClientVpcConnectionsResponse,
-    ListClientVpcConnectionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListClientVpcConnectionsRequest,
-  ) => stream.Stream<
-    ClientVpcConnection,
-    ListClientVpcConnectionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListClusterOperationsError =
   | BadRequestException
@@ -6297,27 +6278,13 @@ export type ListClusterOperationsError =
 /**
  * Returns a list of all the operations that have been performed on the specified MSK cluster.
  */
-export const listClusterOperations: API.OperationMethod<
+export const listClusterOperations: API.PaginatedOperationMethod<
   ListClusterOperationsRequest,
   ListClusterOperationsResponse,
   ListClusterOperationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListClusterOperationsRequest,
-  ) => stream.Stream<
-    ListClusterOperationsResponse,
-    ListClusterOperationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListClusterOperationsRequest,
-  ) => stream.Stream<
-    ClusterOperationInfo,
-    ListClusterOperationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ClusterOperationInfo
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListClusterOperationsRequest,
   output: ListClusterOperationsResponse,
   errors: [
@@ -6335,27 +6302,7 @@ export const listClusterOperations: API.OperationMethod<
     items: "ClusterOperationInfoList",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListClusterOperationsRequest,
-  ListClusterOperationsResponse,
-  ListClusterOperationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListClusterOperationsRequest,
-  ) => stream.Stream<
-    ListClusterOperationsResponse,
-    ListClusterOperationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListClusterOperationsRequest,
-  ) => stream.Stream<
-    ClusterOperationInfo,
-    ListClusterOperationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListClusterOperationsV2Error =
   | BadRequestException
@@ -6369,27 +6316,13 @@ export type ListClusterOperationsV2Error =
 /**
  * Returns a list of all the operations that have been performed on the specified MSK cluster.
  */
-export const listClusterOperationsV2: API.OperationMethod<
+export const listClusterOperationsV2: API.PaginatedOperationMethod<
   ListClusterOperationsV2Request,
   ListClusterOperationsV2Response,
   ListClusterOperationsV2Error,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListClusterOperationsV2Request,
-  ) => stream.Stream<
-    ListClusterOperationsV2Response,
-    ListClusterOperationsV2Error,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListClusterOperationsV2Request,
-  ) => stream.Stream<
-    ClusterOperationV2Summary,
-    ListClusterOperationsV2Error,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ClusterOperationV2Summary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListClusterOperationsV2Request,
   output: ListClusterOperationsV2Response,
   errors: [
@@ -6410,27 +6343,7 @@ export const listClusterOperationsV2: API.OperationMethod<
     items: "ClusterOperationInfoList",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListClusterOperationsV2Request,
-  ListClusterOperationsV2Response,
-  ListClusterOperationsV2Error,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListClusterOperationsV2Request,
-  ) => stream.Stream<
-    ListClusterOperationsV2Response,
-    ListClusterOperationsV2Error,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListClusterOperationsV2Request,
-  ) => stream.Stream<
-    ClusterOperationV2Summary,
-    ListClusterOperationsV2Error,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListClustersError =
   | BadRequestException
@@ -6441,27 +6354,13 @@ export type ListClustersError =
 /**
  * Returns a list of all the MSK clusters in the current Region.
  */
-export const listClusters: API.OperationMethod<
+export const listClusters: API.PaginatedOperationMethod<
   ListClustersRequest,
   ListClustersResponse,
   ListClustersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListClustersRequest,
-  ) => stream.Stream<
-    ListClustersResponse,
-    ListClustersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListClustersRequest,
-  ) => stream.Stream<
-    ClusterInfo,
-    ListClustersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ClusterInfo
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListClustersRequest,
   output: ListClustersResponse,
   errors: [
@@ -6479,27 +6378,7 @@ export const listClusters: API.OperationMethod<
     items: "ClusterInfoList",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListClustersRequest,
-  ListClustersResponse,
-  ListClustersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListClustersRequest,
-  ) => stream.Stream<
-    ListClustersResponse,
-    ListClustersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListClustersRequest,
-  ) => stream.Stream<
-    ClusterInfo,
-    ListClustersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListClustersV2Error =
   | BadRequestException
@@ -6510,27 +6389,13 @@ export type ListClustersV2Error =
 /**
  * Returns a list of all the MSK clusters in the current Region.
  */
-export const listClustersV2: API.OperationMethod<
+export const listClustersV2: API.PaginatedOperationMethod<
   ListClustersV2Request,
   ListClustersV2Response,
   ListClustersV2Error,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListClustersV2Request,
-  ) => stream.Stream<
-    ListClustersV2Response,
-    ListClustersV2Error,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListClustersV2Request,
-  ) => stream.Stream<
-    Cluster,
-    ListClustersV2Error,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Cluster
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListClustersV2Request,
   output: ListClustersV2Response,
   errors: [
@@ -6548,27 +6413,7 @@ export const listClustersV2: API.OperationMethod<
     items: "ClusterInfoList",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListClustersV2Request,
-  ListClustersV2Response,
-  ListClustersV2Error,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListClustersV2Request,
-  ) => stream.Stream<
-    ListClustersV2Response,
-    ListClustersV2Error,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListClustersV2Request,
-  ) => stream.Stream<
-    Cluster,
-    ListClustersV2Error,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListConfigurationRevisionsError =
   | BadRequestException
@@ -6581,27 +6426,13 @@ export type ListConfigurationRevisionsError =
 /**
  * Returns a list of all the MSK configurations in this Region.
  */
-export const listConfigurationRevisions: API.OperationMethod<
+export const listConfigurationRevisions: API.PaginatedOperationMethod<
   ListConfigurationRevisionsRequest,
   ListConfigurationRevisionsResponse,
   ListConfigurationRevisionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListConfigurationRevisionsRequest,
-  ) => stream.Stream<
-    ListConfigurationRevisionsResponse,
-    ListConfigurationRevisionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListConfigurationRevisionsRequest,
-  ) => stream.Stream<
-    ConfigurationRevision,
-    ListConfigurationRevisionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ConfigurationRevision
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListConfigurationRevisionsRequest,
   output: ListConfigurationRevisionsResponse,
   errors: [
@@ -6621,27 +6452,7 @@ export const listConfigurationRevisions: API.OperationMethod<
     items: "Revisions",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListConfigurationRevisionsRequest,
-  ListConfigurationRevisionsResponse,
-  ListConfigurationRevisionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListConfigurationRevisionsRequest,
-  ) => stream.Stream<
-    ListConfigurationRevisionsResponse,
-    ListConfigurationRevisionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListConfigurationRevisionsRequest,
-  ) => stream.Stream<
-    ConfigurationRevision,
-    ListConfigurationRevisionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListConfigurationsError =
   | BadRequestException
@@ -6653,27 +6464,13 @@ export type ListConfigurationsError =
 /**
  * Returns a list of all the MSK configurations in this Region.
  */
-export const listConfigurations: API.OperationMethod<
+export const listConfigurations: API.PaginatedOperationMethod<
   ListConfigurationsRequest,
   ListConfigurationsResponse,
   ListConfigurationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListConfigurationsRequest,
-  ) => stream.Stream<
-    ListConfigurationsResponse,
-    ListConfigurationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListConfigurationsRequest,
-  ) => stream.Stream<
-    Configuration,
-    ListConfigurationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Configuration
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListConfigurationsRequest,
   output: ListConfigurationsResponse,
   errors: [
@@ -6692,27 +6489,7 @@ export const listConfigurations: API.OperationMethod<
     items: "Configurations",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListConfigurationsRequest,
-  ListConfigurationsResponse,
-  ListConfigurationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListConfigurationsRequest,
-  ) => stream.Stream<
-    ListConfigurationsResponse,
-    ListConfigurationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListConfigurationsRequest,
-  ) => stream.Stream<
-    Configuration,
-    ListConfigurationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListKafkaVersionsError =
   | BadRequestException
@@ -6723,27 +6500,13 @@ export type ListKafkaVersionsError =
 /**
  * Returns a list of Apache Kafka versions.
  */
-export const listKafkaVersions: API.OperationMethod<
+export const listKafkaVersions: API.PaginatedOperationMethod<
   ListKafkaVersionsRequest,
   ListKafkaVersionsResponse,
   ListKafkaVersionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListKafkaVersionsRequest,
-  ) => stream.Stream<
-    ListKafkaVersionsResponse,
-    ListKafkaVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListKafkaVersionsRequest,
-  ) => stream.Stream<
-    KafkaVersion,
-    ListKafkaVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  KafkaVersion
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListKafkaVersionsRequest,
   output: ListKafkaVersionsResponse,
   errors: [
@@ -6761,27 +6524,7 @@ export const listKafkaVersions: API.OperationMethod<
     items: "KafkaVersions",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListKafkaVersionsRequest,
-  ListKafkaVersionsResponse,
-  ListKafkaVersionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListKafkaVersionsRequest,
-  ) => stream.Stream<
-    ListKafkaVersionsResponse,
-    ListKafkaVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListKafkaVersionsRequest,
-  ) => stream.Stream<
-    KafkaVersion,
-    ListKafkaVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListNodesError =
   | BadRequestException
@@ -6792,27 +6535,13 @@ export type ListNodesError =
 /**
  * Returns a list of the broker nodes in the cluster.
  */
-export const listNodes: API.OperationMethod<
+export const listNodes: API.PaginatedOperationMethod<
   ListNodesRequest,
   ListNodesResponse,
   ListNodesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListNodesRequest,
-  ) => stream.Stream<
-    ListNodesResponse,
-    ListNodesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListNodesRequest,
-  ) => stream.Stream<
-    NodeInfo,
-    ListNodesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  NodeInfo
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListNodesRequest,
   output: ListNodesResponse,
   errors: [
@@ -6830,27 +6559,7 @@ export const listNodes: API.OperationMethod<
     items: "NodeInfoList",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListNodesRequest,
-  ListNodesResponse,
-  ListNodesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListNodesRequest,
-  ) => stream.Stream<
-    ListNodesResponse,
-    ListNodesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListNodesRequest,
-  ) => stream.Stream<
-    NodeInfo,
-    ListNodesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListReplicatorsError =
   | BadRequestException
@@ -6864,27 +6573,13 @@ export type ListReplicatorsError =
 /**
  * Lists the replicators.
  */
-export const listReplicators: API.OperationMethod<
+export const listReplicators: API.PaginatedOperationMethod<
   ListReplicatorsRequest,
   ListReplicatorsResponse,
   ListReplicatorsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListReplicatorsRequest,
-  ) => stream.Stream<
-    ListReplicatorsResponse,
-    ListReplicatorsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListReplicatorsRequest,
-  ) => stream.Stream<
-    ReplicatorSummary,
-    ListReplicatorsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ReplicatorSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListReplicatorsRequest,
   output: ListReplicatorsResponse,
   errors: [
@@ -6905,27 +6600,7 @@ export const listReplicators: API.OperationMethod<
     items: "Replicators",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListReplicatorsRequest,
-  ListReplicatorsResponse,
-  ListReplicatorsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListReplicatorsRequest,
-  ) => stream.Stream<
-    ListReplicatorsResponse,
-    ListReplicatorsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListReplicatorsRequest,
-  ) => stream.Stream<
-    ReplicatorSummary,
-    ListReplicatorsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListScramSecretsError =
   | BadRequestException
@@ -6939,27 +6614,13 @@ export type ListScramSecretsError =
 /**
  * Returns a list of the Scram Secrets associated with an Amazon MSK cluster.
  */
-export const listScramSecrets: API.OperationMethod<
+export const listScramSecrets: API.PaginatedOperationMethod<
   ListScramSecretsRequest,
   ListScramSecretsResponse,
   ListScramSecretsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListScramSecretsRequest,
-  ) => stream.Stream<
-    ListScramSecretsResponse,
-    ListScramSecretsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListScramSecretsRequest,
-  ) => stream.Stream<
-    string,
-    ListScramSecretsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  string
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListScramSecretsRequest,
   output: ListScramSecretsResponse,
   errors: [
@@ -6980,27 +6641,7 @@ export const listScramSecrets: API.OperationMethod<
     items: "SecretArnList",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListScramSecretsRequest,
-  ListScramSecretsResponse,
-  ListScramSecretsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListScramSecretsRequest,
-  ) => stream.Stream<
-    ListScramSecretsResponse,
-    ListScramSecretsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListScramSecretsRequest,
-  ) => stream.Stream<
-    string,
-    ListScramSecretsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsForResourceError =
   | BadRequestException
@@ -7014,7 +6655,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceRequest,
   ListTagsForResourceResponse,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -7039,27 +6680,13 @@ export type ListTopicsError =
 /**
  * List topics in a MSK cluster.
  */
-export const listTopics: API.OperationMethod<
+export const listTopics: API.PaginatedOperationMethod<
   ListTopicsRequest,
   ListTopicsResponse,
   ListTopicsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTopicsRequest,
-  ) => stream.Stream<
-    ListTopicsResponse,
-    ListTopicsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTopicsRequest,
-  ) => stream.Stream<
-    TopicInfo,
-    ListTopicsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  TopicInfo
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListTopicsRequest,
   output: ListTopicsResponse,
   errors: [
@@ -7079,27 +6706,7 @@ export const listTopics: API.OperationMethod<
     items: "Topics",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListTopicsRequest,
-  ListTopicsResponse,
-  ListTopicsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTopicsRequest,
-  ) => stream.Stream<
-    ListTopicsResponse,
-    ListTopicsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTopicsRequest,
-  ) => stream.Stream<
-    TopicInfo,
-    ListTopicsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListVpcConnectionsError =
   | BadRequestException
@@ -7111,27 +6718,13 @@ export type ListVpcConnectionsError =
 /**
  * Returns a list of all the VPC connections in this Region.
  */
-export const listVpcConnections: API.OperationMethod<
+export const listVpcConnections: API.PaginatedOperationMethod<
   ListVpcConnectionsRequest,
   ListVpcConnectionsResponse,
   ListVpcConnectionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListVpcConnectionsRequest,
-  ) => stream.Stream<
-    ListVpcConnectionsResponse,
-    ListVpcConnectionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListVpcConnectionsRequest,
-  ) => stream.Stream<
-    VpcConnection,
-    ListVpcConnectionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  VpcConnection
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListVpcConnectionsRequest,
   output: ListVpcConnectionsResponse,
   errors: [
@@ -7150,27 +6743,7 @@ export const listVpcConnections: API.OperationMethod<
     items: "VpcConnections",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListVpcConnectionsRequest,
-  ListVpcConnectionsResponse,
-  ListVpcConnectionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListVpcConnectionsRequest,
-  ) => stream.Stream<
-    ListVpcConnectionsResponse,
-    ListVpcConnectionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListVpcConnectionsRequest,
-  ) => stream.Stream<
-    VpcConnection,
-    ListVpcConnectionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type PutClusterPolicyError =
   | BadRequestException
@@ -7184,7 +6757,7 @@ export const putClusterPolicy: API.OperationMethod<
   PutClusterPolicyRequest,
   PutClusterPolicyResponse,
   PutClusterPolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutClusterPolicyRequest,
   output: PutClusterPolicyResponse,
@@ -7214,7 +6787,7 @@ export const rebootBroker: API.OperationMethod<
   RebootBrokerRequest,
   RebootBrokerResponse,
   RebootBrokerError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RebootBrokerRequest,
   output: RebootBrokerResponse,
@@ -7246,7 +6819,7 @@ export const rejectClientVpcConnection: API.OperationMethod<
   RejectClientVpcConnectionRequest,
   RejectClientVpcConnectionResponse,
   RejectClientVpcConnectionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RejectClientVpcConnectionRequest,
   output: RejectClientVpcConnectionResponse,
@@ -7274,7 +6847,7 @@ export const tagResource: API.OperationMethod<
   TagResourceRequest,
   TagResourceResponse,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -7300,7 +6873,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceRequest,
   UntagResourceResponse,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -7328,7 +6901,7 @@ export const updateBrokerCount: API.OperationMethod<
   UpdateBrokerCountRequest,
   UpdateBrokerCountResponse,
   UpdateBrokerCountError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateBrokerCountRequest,
   output: UpdateBrokerCountResponse,
@@ -7358,7 +6931,7 @@ export const updateBrokerStorage: API.OperationMethod<
   UpdateBrokerStorageRequest,
   UpdateBrokerStorageResponse,
   UpdateBrokerStorageError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateBrokerStorageRequest,
   output: UpdateBrokerStorageResponse,
@@ -7390,7 +6963,7 @@ export const updateBrokerType: API.OperationMethod<
   UpdateBrokerTypeRequest,
   UpdateBrokerTypeResponse,
   UpdateBrokerTypeError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateBrokerTypeRequest,
   output: UpdateBrokerTypeResponse,
@@ -7423,7 +6996,7 @@ export const updateClusterConfiguration: API.OperationMethod<
   UpdateClusterConfigurationRequest,
   UpdateClusterConfigurationResponse,
   UpdateClusterConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateClusterConfigurationRequest,
   output: UpdateClusterConfigurationResponse,
@@ -7456,7 +7029,7 @@ export const updateClusterKafkaVersion: API.OperationMethod<
   UpdateClusterKafkaVersionRequest,
   UpdateClusterKafkaVersionResponse,
   UpdateClusterKafkaVersionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateClusterKafkaVersionRequest,
   output: UpdateClusterKafkaVersionResponse,
@@ -7489,7 +7062,7 @@ export const updateConfiguration: API.OperationMethod<
   UpdateConfigurationRequest,
   UpdateConfigurationResponse,
   UpdateConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateConfigurationRequest,
   output: UpdateConfigurationResponse,
@@ -7521,7 +7094,7 @@ export const updateConnectivity: API.OperationMethod<
   UpdateConnectivityRequest,
   UpdateConnectivityResponse,
   UpdateConnectivityError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateConnectivityRequest,
   output: UpdateConnectivityResponse,
@@ -7552,7 +7125,7 @@ export const updateMonitoring: API.OperationMethod<
   UpdateMonitoringRequest,
   UpdateMonitoringResponse,
   UpdateMonitoringError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateMonitoringRequest,
   output: UpdateMonitoringResponse,
@@ -7584,7 +7157,7 @@ export const updateRebalancing: API.OperationMethod<
   UpdateRebalancingRequest,
   UpdateRebalancingResponse,
   UpdateRebalancingError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateRebalancingRequest,
   output: UpdateRebalancingResponse,
@@ -7618,7 +7191,7 @@ export const updateReplicationInfo: API.OperationMethod<
   UpdateReplicationInfoRequest,
   UpdateReplicationInfoResponse,
   UpdateReplicationInfoError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateReplicationInfoRequest,
   output: UpdateReplicationInfoResponse,
@@ -7652,7 +7225,7 @@ export const updateSecurity: API.OperationMethod<
   UpdateSecurityRequest,
   UpdateSecurityResponse,
   UpdateSecurityError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateSecurityRequest,
   output: UpdateSecurityResponse,
@@ -7686,7 +7259,7 @@ export const updateStorage: API.OperationMethod<
   UpdateStorageRequest,
   UpdateStorageResponse,
   UpdateStorageError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateStorageRequest,
   output: UpdateStorageResponse,
@@ -7727,7 +7300,7 @@ export const updateTopic: API.OperationMethod<
   UpdateTopicRequest,
   UpdateTopicResponse,
   UpdateTopicError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateTopicRequest,
   output: UpdateTopicResponse,

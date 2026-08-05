@@ -1,6 +1,5 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -8,7 +7,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 const svc = T.AwsApiService({
   sdkId: "fis",
   serviceShapeName: "FaultInjectionSimulator",
@@ -91,7 +89,7 @@ const rules = T.EndpointResolver((p, _) => {
 export class ConflictException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
     "ConflictException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "ConflictException", httpResponseCode: 409 }),
       T.HttpError(409),
@@ -100,7 +98,7 @@ export class ConflictException
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "ResourceNotFoundException",
@@ -112,7 +110,7 @@ export class ResourceNotFoundException
 export class ServiceQuotaExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
     "ServiceQuotaExceededException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "ServiceQuotaExceededException",
@@ -124,7 +122,7 @@ export class ServiceQuotaExceededException
 export class ValidationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
     "ValidationException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "ValidationException", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -2379,7 +2377,7 @@ export const createExperimentTemplate: API.OperationMethod<
   CreateExperimentTemplateRequest,
   CreateExperimentTemplateResponse,
   CreateExperimentTemplateError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateExperimentTemplateRequest,
   output: CreateExperimentTemplateResponse,
@@ -2410,7 +2408,7 @@ export const createTargetAccountConfiguration: API.OperationMethod<
   CreateTargetAccountConfigurationRequest,
   CreateTargetAccountConfigurationResponse,
   CreateTargetAccountConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateTargetAccountConfigurationRequest,
   output: CreateTargetAccountConfigurationResponse,
@@ -2436,7 +2434,7 @@ export const deleteExperimentTemplate: API.OperationMethod<
   DeleteExperimentTemplateRequest,
   DeleteExperimentTemplateResponse,
   DeleteExperimentTemplateError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteExperimentTemplateRequest,
   output: DeleteExperimentTemplateResponse,
@@ -2457,7 +2455,7 @@ export const deleteTargetAccountConfiguration: API.OperationMethod<
   DeleteTargetAccountConfigurationRequest,
   DeleteTargetAccountConfigurationResponse,
   DeleteTargetAccountConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteTargetAccountConfigurationRequest,
   output: DeleteTargetAccountConfigurationResponse,
@@ -2478,7 +2476,7 @@ export const getAction: API.OperationMethod<
   GetActionRequest,
   GetActionResponse,
   GetActionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetActionRequest,
   output: GetActionResponse,
@@ -2499,7 +2497,7 @@ export const getExperiment: API.OperationMethod<
   GetExperimentRequest,
   GetExperimentResponse,
   GetExperimentError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetExperimentRequest,
   output: GetExperimentResponse,
@@ -2520,7 +2518,7 @@ export const getExperimentTargetAccountConfiguration: API.OperationMethod<
   GetExperimentTargetAccountConfigurationRequest,
   GetExperimentTargetAccountConfigurationResponse,
   GetExperimentTargetAccountConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetExperimentTargetAccountConfigurationRequest,
   output: GetExperimentTargetAccountConfigurationResponse,
@@ -2541,7 +2539,7 @@ export const getExperimentTemplate: API.OperationMethod<
   GetExperimentTemplateRequest,
   GetExperimentTemplateResponse,
   GetExperimentTemplateError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetExperimentTemplateRequest,
   output: GetExperimentTemplateResponse,
@@ -2559,7 +2557,7 @@ export const getSafetyLever: API.OperationMethod<
   GetSafetyLeverRequest,
   GetSafetyLeverResponse,
   GetSafetyLeverError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetSafetyLeverRequest,
   output: GetSafetyLeverResponse,
@@ -2580,7 +2578,7 @@ export const getTargetAccountConfiguration: API.OperationMethod<
   GetTargetAccountConfigurationRequest,
   GetTargetAccountConfigurationResponse,
   GetTargetAccountConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetTargetAccountConfigurationRequest,
   output: GetTargetAccountConfigurationResponse,
@@ -2601,7 +2599,7 @@ export const getTargetResourceType: API.OperationMethod<
   GetTargetResourceTypeRequest,
   GetTargetResourceTypeResponse,
   GetTargetResourceTypeError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetTargetResourceTypeRequest,
   output: GetTargetResourceTypeResponse,
@@ -2615,27 +2613,13 @@ export type ListActionsError = ValidationException | CommonErrors;
 /**
  * Lists the available FIS actions.
  */
-export const listActions: API.OperationMethod<
+export const listActions: API.PaginatedOperationMethod<
   ListActionsRequest,
   ListActionsResponse,
   ListActionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListActionsRequest,
-  ) => stream.Stream<
-    ListActionsResponse,
-    ListActionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListActionsRequest,
-  ) => stream.Stream<
-    ActionSummary,
-    ListActionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ActionSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListActionsRequest,
   output: ListActionsResponse,
   errors: [ValidationException],
@@ -2648,27 +2632,7 @@ export const listActions: API.OperationMethod<
     items: "actions",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListActionsRequest,
-  ListActionsResponse,
-  ListActionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListActionsRequest,
-  ) => stream.Stream<
-    ListActionsResponse,
-    ListActionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListActionsRequest,
-  ) => stream.Stream<
-    ActionSummary,
-    ListActionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListExperimentResolvedTargetsError =
   | ResourceNotFoundException
@@ -2677,27 +2641,13 @@ export type ListExperimentResolvedTargetsError =
 /**
  * Lists the resolved targets information of the specified experiment.
  */
-export const listExperimentResolvedTargets: API.OperationMethod<
+export const listExperimentResolvedTargets: API.PaginatedOperationMethod<
   ListExperimentResolvedTargetsRequest,
   ListExperimentResolvedTargetsResponse,
   ListExperimentResolvedTargetsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListExperimentResolvedTargetsRequest,
-  ) => stream.Stream<
-    ListExperimentResolvedTargetsResponse,
-    ListExperimentResolvedTargetsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListExperimentResolvedTargetsRequest,
-  ) => stream.Stream<
-    ResolvedTarget,
-    ListExperimentResolvedTargetsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ResolvedTarget
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListExperimentResolvedTargetsRequest,
   output: ListExperimentResolvedTargetsResponse,
   errors: [ResourceNotFoundException, ValidationException],
@@ -2710,53 +2660,19 @@ export const listExperimentResolvedTargets: API.OperationMethod<
     items: "resolvedTargets",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListExperimentResolvedTargetsRequest,
-  ListExperimentResolvedTargetsResponse,
-  ListExperimentResolvedTargetsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListExperimentResolvedTargetsRequest,
-  ) => stream.Stream<
-    ListExperimentResolvedTargetsResponse,
-    ListExperimentResolvedTargetsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListExperimentResolvedTargetsRequest,
-  ) => stream.Stream<
-    ResolvedTarget,
-    ListExperimentResolvedTargetsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListExperimentsError = ValidationException | CommonErrors;
 /**
  * Lists your experiments.
  */
-export const listExperiments: API.OperationMethod<
+export const listExperiments: API.PaginatedOperationMethod<
   ListExperimentsRequest,
   ListExperimentsResponse,
   ListExperimentsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListExperimentsRequest,
-  ) => stream.Stream<
-    ListExperimentsResponse,
-    ListExperimentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListExperimentsRequest,
-  ) => stream.Stream<
-    ExperimentSummary,
-    ListExperimentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ExperimentSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListExperimentsRequest,
   output: ListExperimentsResponse,
   errors: [ValidationException],
@@ -2769,27 +2685,7 @@ export const listExperiments: API.OperationMethod<
     items: "experiments",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListExperimentsRequest,
-  ListExperimentsResponse,
-  ListExperimentsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListExperimentsRequest,
-  ) => stream.Stream<
-    ListExperimentsResponse,
-    ListExperimentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListExperimentsRequest,
-  ) => stream.Stream<
-    ExperimentSummary,
-    ListExperimentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListExperimentTargetAccountConfigurationsError =
   | ResourceNotFoundException
@@ -2802,7 +2698,7 @@ export const listExperimentTargetAccountConfigurations: API.OperationMethod<
   ListExperimentTargetAccountConfigurationsRequest,
   ListExperimentTargetAccountConfigurationsResponse,
   ListExperimentTargetAccountConfigurationsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListExperimentTargetAccountConfigurationsRequest,
   output: ListExperimentTargetAccountConfigurationsResponse,
@@ -2816,27 +2712,13 @@ export type ListExperimentTemplatesError = ValidationException | CommonErrors;
 /**
  * Lists your experiment templates.
  */
-export const listExperimentTemplates: API.OperationMethod<
+export const listExperimentTemplates: API.PaginatedOperationMethod<
   ListExperimentTemplatesRequest,
   ListExperimentTemplatesResponse,
   ListExperimentTemplatesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListExperimentTemplatesRequest,
-  ) => stream.Stream<
-    ListExperimentTemplatesResponse,
-    ListExperimentTemplatesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListExperimentTemplatesRequest,
-  ) => stream.Stream<
-    ExperimentTemplateSummary,
-    ListExperimentTemplatesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ExperimentTemplateSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListExperimentTemplatesRequest,
   output: ListExperimentTemplatesResponse,
   errors: [ValidationException],
@@ -2849,27 +2731,7 @@ export const listExperimentTemplates: API.OperationMethod<
     items: "experimentTemplates",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListExperimentTemplatesRequest,
-  ListExperimentTemplatesResponse,
-  ListExperimentTemplatesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListExperimentTemplatesRequest,
-  ) => stream.Stream<
-    ListExperimentTemplatesResponse,
-    ListExperimentTemplatesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListExperimentTemplatesRequest,
-  ) => stream.Stream<
-    ExperimentTemplateSummary,
-    ListExperimentTemplatesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsForResourceError = CommonErrors;
 /**
@@ -2879,7 +2741,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceRequest,
   ListTagsForResourceResponse,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -2896,27 +2758,13 @@ export type ListTargetAccountConfigurationsError =
 /**
  * Lists the target account configurations of the specified experiment template.
  */
-export const listTargetAccountConfigurations: API.OperationMethod<
+export const listTargetAccountConfigurations: API.PaginatedOperationMethod<
   ListTargetAccountConfigurationsRequest,
   ListTargetAccountConfigurationsResponse,
   ListTargetAccountConfigurationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTargetAccountConfigurationsRequest,
-  ) => stream.Stream<
-    ListTargetAccountConfigurationsResponse,
-    ListTargetAccountConfigurationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTargetAccountConfigurationsRequest,
-  ) => stream.Stream<
-    TargetAccountConfigurationSummary,
-    ListTargetAccountConfigurationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  TargetAccountConfigurationSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListTargetAccountConfigurationsRequest,
   output: ListTargetAccountConfigurationsResponse,
   errors: [ResourceNotFoundException, ValidationException],
@@ -2929,53 +2777,19 @@ export const listTargetAccountConfigurations: API.OperationMethod<
     items: "targetAccountConfigurations",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListTargetAccountConfigurationsRequest,
-  ListTargetAccountConfigurationsResponse,
-  ListTargetAccountConfigurationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTargetAccountConfigurationsRequest,
-  ) => stream.Stream<
-    ListTargetAccountConfigurationsResponse,
-    ListTargetAccountConfigurationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTargetAccountConfigurationsRequest,
-  ) => stream.Stream<
-    TargetAccountConfigurationSummary,
-    ListTargetAccountConfigurationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTargetResourceTypesError = ValidationException | CommonErrors;
 /**
  * Lists the target resource types.
  */
-export const listTargetResourceTypes: API.OperationMethod<
+export const listTargetResourceTypes: API.PaginatedOperationMethod<
   ListTargetResourceTypesRequest,
   ListTargetResourceTypesResponse,
   ListTargetResourceTypesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTargetResourceTypesRequest,
-  ) => stream.Stream<
-    ListTargetResourceTypesResponse,
-    ListTargetResourceTypesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTargetResourceTypesRequest,
-  ) => stream.Stream<
-    TargetResourceTypeSummary,
-    ListTargetResourceTypesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  TargetResourceTypeSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListTargetResourceTypesRequest,
   output: ListTargetResourceTypesResponse,
   errors: [ValidationException],
@@ -2988,27 +2802,7 @@ export const listTargetResourceTypes: API.OperationMethod<
     items: "targetResourceTypes",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListTargetResourceTypesRequest,
-  ListTargetResourceTypesResponse,
-  ListTargetResourceTypesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTargetResourceTypesRequest,
-  ) => stream.Stream<
-    ListTargetResourceTypesResponse,
-    ListTargetResourceTypesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTargetResourceTypesRequest,
-  ) => stream.Stream<
-    TargetResourceTypeSummary,
-    ListTargetResourceTypesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type StartExperimentError =
   | ConflictException
@@ -3023,7 +2817,7 @@ export const startExperiment: API.OperationMethod<
   StartExperimentRequest,
   StartExperimentResponse,
   StartExperimentError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartExperimentRequest,
   output: StartExperimentResponse,
@@ -3049,7 +2843,7 @@ export const stopExperiment: API.OperationMethod<
   StopExperimentRequest,
   StopExperimentResponse,
   StopExperimentError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StopExperimentRequest,
   output: StopExperimentResponse,
@@ -3067,7 +2861,7 @@ export const tagResource: API.OperationMethod<
   TagResourceRequest,
   TagResourceResponse,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -3085,7 +2879,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceRequest,
   UntagResourceResponse,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -3107,7 +2901,7 @@ export const updateExperimentTemplate: API.OperationMethod<
   UpdateExperimentTemplateRequest,
   UpdateExperimentTemplateResponse,
   UpdateExperimentTemplateError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateExperimentTemplateRequest,
   output: UpdateExperimentTemplateResponse,
@@ -3133,7 +2927,7 @@ export const updateSafetyLeverState: API.OperationMethod<
   UpdateSafetyLeverStateRequest,
   UpdateSafetyLeverStateResponse,
   UpdateSafetyLeverStateError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateSafetyLeverStateRequest,
   output: UpdateSafetyLeverStateResponse,
@@ -3154,7 +2948,7 @@ export const updateTargetAccountConfiguration: API.OperationMethod<
   UpdateTargetAccountConfigurationRequest,
   UpdateTargetAccountConfigurationResponse,
   UpdateTargetAccountConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateTargetAccountConfigurationRequest,
   output: UpdateTargetAccountConfigurationResponse,

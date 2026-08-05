@@ -8,7 +8,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region as Rgn } from "../region.ts";
 import { SensitiveString } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "Geo Places",
@@ -161,26 +160,26 @@ const rules = T.EndpointResolver((p, _) => {
 export class AccessDeniedException
   extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
     "AccessDeniedException",
-    { Message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(403),
   ).pipe(C.withAuthError) {}
 export class InternalServerException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
     "InternalServerException",
-    { Message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.all(T.HttpError(500), T.Retryable()),
   ).pipe(C.withServerError, C.withRetryableError) {}
 export class ThrottlingException
   extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
     "ThrottlingException",
-    { Message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.all(T.HttpError(429), T.Retryable()),
   ).pipe(C.withThrottlingError, C.withRetryableError) {}
 export class ValidationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
     "ValidationException",
     {
-      Message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       Reason: S.String,
       FieldList: S.suspend(() => ValidationExceptionFieldList).annotate({
         identifier: "ValidationExceptionFieldList",
@@ -1767,7 +1766,7 @@ export const autocomplete: API.OperationMethod<
   AutocompleteRequest,
   AutocompleteResponse,
   AutocompleteError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AutocompleteRequest,
   output: AutocompleteResponse,
@@ -1797,7 +1796,7 @@ export const geocode: API.OperationMethod<
   GeocodeRequest,
   GeocodeResponse,
   GeocodeError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GeocodeRequest,
   output: GeocodeResponse,
@@ -1827,7 +1826,7 @@ export const getPlace: API.OperationMethod<
   GetPlaceRequest,
   GetPlaceResponse,
   GetPlaceError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetPlaceRequest,
   output: GetPlaceResponse,
@@ -1857,7 +1856,7 @@ export const reverseGeocode: API.OperationMethod<
   ReverseGeocodeRequest,
   ReverseGeocodeResponse,
   ReverseGeocodeError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ReverseGeocodeRequest,
   output: ReverseGeocodeResponse,
@@ -1887,7 +1886,7 @@ export const searchNearby: API.OperationMethod<
   SearchNearbyRequest,
   SearchNearbyResponse,
   SearchNearbyError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: SearchNearbyRequest,
   output: SearchNearbyResponse,
@@ -1917,7 +1916,7 @@ export const searchText: API.OperationMethod<
   SearchTextRequest,
   SearchTextResponse,
   SearchTextError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: SearchTextRequest,
   output: SearchTextResponse,
@@ -1947,7 +1946,7 @@ export const suggest: API.OperationMethod<
   SuggestRequest,
   SuggestResponse,
   SuggestError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: SuggestRequest,
   output: SuggestResponse,

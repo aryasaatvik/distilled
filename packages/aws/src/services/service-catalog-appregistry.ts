@@ -1,6 +1,5 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -8,7 +7,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 const svc = T.AwsApiService({
   sdkId: "Service Catalog AppRegistry",
   serviceShapeName: "AWS242AppRegistry",
@@ -93,37 +91,40 @@ const rules = T.EndpointResolver((p, _) => {
 export class ConflictException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
     "ConflictException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class InternalServerException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
     "InternalServerException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(500),
   ).pipe(C.withServerError) {}
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class ServiceQuotaExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
     "ServiceQuotaExceededException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(402),
   ).pipe(C.withQuotaError) {}
 export class ThrottlingException
   extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
     "ThrottlingException",
-    { message: S.optional(S.String), serviceCode: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      serviceCode: S.optional(S.String),
+    },
     T.HttpError(429),
   ).pipe(C.withThrottlingError, C.withRetryableError) {}
 export class ValidationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
     "ValidationException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export type ApplicationSpecifier = string;
@@ -1288,7 +1289,7 @@ export const associateAttributeGroup: API.OperationMethod<
   AssociateAttributeGroupRequest,
   AssociateAttributeGroupResponse,
   AssociateAttributeGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AssociateAttributeGroupRequest,
   output: AssociateAttributeGroupResponse,
@@ -1342,7 +1343,7 @@ export const associateResource: API.OperationMethod<
   AssociateResourceRequest,
   AssociateResourceResponse,
   AssociateResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AssociateResourceRequest,
   output: AssociateResourceResponse,
@@ -1373,7 +1374,7 @@ export const createApplication: API.OperationMethod<
   CreateApplicationRequest,
   CreateApplicationResponse,
   CreateApplicationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateApplicationRequest,
   output: CreateApplicationResponse,
@@ -1405,7 +1406,7 @@ export const createAttributeGroup: API.OperationMethod<
   CreateAttributeGroupRequest,
   CreateAttributeGroupResponse,
   CreateAttributeGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateAttributeGroupRequest,
   output: CreateAttributeGroupResponse,
@@ -1432,7 +1433,7 @@ export const deleteApplication: API.OperationMethod<
   DeleteApplicationRequest,
   DeleteApplicationResponse,
   DeleteApplicationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteApplicationRequest,
   output: DeleteApplicationResponse,
@@ -1458,7 +1459,7 @@ export const deleteAttributeGroup: API.OperationMethod<
   DeleteAttributeGroupRequest,
   DeleteAttributeGroupResponse,
   DeleteAttributeGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteAttributeGroupRequest,
   output: DeleteAttributeGroupResponse,
@@ -1484,7 +1485,7 @@ export const disassociateAttributeGroup: API.OperationMethod<
   DisassociateAttributeGroupRequest,
   DisassociateAttributeGroupResponse,
   DisassociateAttributeGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DisassociateAttributeGroupRequest,
   output: DisassociateAttributeGroupResponse,
@@ -1532,7 +1533,7 @@ export const disassociateResource: API.OperationMethod<
   DisassociateResourceRequest,
   DisassociateResourceResponse,
   DisassociateResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DisassociateResourceRequest,
   output: DisassociateResourceResponse,
@@ -1576,7 +1577,7 @@ export const getApplication: API.OperationMethod<
   GetApplicationRequest,
   GetApplicationResponse,
   GetApplicationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetApplicationRequest,
   output: GetApplicationResponse,
@@ -1603,7 +1604,7 @@ export const getAssociatedResource: API.OperationMethod<
   GetAssociatedResourceRequest,
   GetAssociatedResourceResponse,
   GetAssociatedResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetAssociatedResourceRequest,
   output: GetAssociatedResourceResponse,
@@ -1633,7 +1634,7 @@ export const getAttributeGroup: API.OperationMethod<
   GetAttributeGroupRequest,
   GetAttributeGroupResponse,
   GetAttributeGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetAttributeGroupRequest,
   output: GetAttributeGroupResponse,
@@ -1657,7 +1658,7 @@ export const getConfiguration: API.OperationMethod<
   GetConfigurationRequest,
   GetConfigurationResponse,
   GetConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetConfigurationRequest,
   output: GetConfigurationResponse,
@@ -1674,27 +1675,13 @@ export type ListApplicationsError =
 /**
  * Retrieves a list of all of your applications. Results are paginated.
  */
-export const listApplications: API.OperationMethod<
+export const listApplications: API.PaginatedOperationMethod<
   ListApplicationsRequest,
   ListApplicationsResponse,
   ListApplicationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListApplicationsRequest,
-  ) => stream.Stream<
-    ListApplicationsResponse,
-    ListApplicationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListApplicationsRequest,
-  ) => stream.Stream<
-    ApplicationSummary,
-    ListApplicationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ApplicationSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListApplicationsRequest,
   output: ListApplicationsResponse,
   errors: [InternalServerException, ValidationException],
@@ -1707,27 +1694,7 @@ export const listApplications: API.OperationMethod<
     items: "applications",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListApplicationsRequest,
-  ListApplicationsResponse,
-  ListApplicationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListApplicationsRequest,
-  ) => stream.Stream<
-    ListApplicationsResponse,
-    ListApplicationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListApplicationsRequest,
-  ) => stream.Stream<
-    ApplicationSummary,
-    ListApplicationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListAssociatedAttributeGroupsError =
   | InternalServerException
@@ -1737,27 +1704,13 @@ export type ListAssociatedAttributeGroupsError =
 /**
  * Lists all attribute groups that are associated with specified application. Results are paginated.
  */
-export const listAssociatedAttributeGroups: API.OperationMethod<
+export const listAssociatedAttributeGroups: API.PaginatedOperationMethod<
   ListAssociatedAttributeGroupsRequest,
   ListAssociatedAttributeGroupsResponse,
   ListAssociatedAttributeGroupsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAssociatedAttributeGroupsRequest,
-  ) => stream.Stream<
-    ListAssociatedAttributeGroupsResponse,
-    ListAssociatedAttributeGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAssociatedAttributeGroupsRequest,
-  ) => stream.Stream<
-    AttributeGroupId,
-    ListAssociatedAttributeGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  AttributeGroupId
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListAssociatedAttributeGroupsRequest,
   output: ListAssociatedAttributeGroupsResponse,
   errors: [
@@ -1774,27 +1727,7 @@ export const listAssociatedAttributeGroups: API.OperationMethod<
     items: "attributeGroups",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListAssociatedAttributeGroupsRequest,
-  ListAssociatedAttributeGroupsResponse,
-  ListAssociatedAttributeGroupsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAssociatedAttributeGroupsRequest,
-  ) => stream.Stream<
-    ListAssociatedAttributeGroupsResponse,
-    ListAssociatedAttributeGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAssociatedAttributeGroupsRequest,
-  ) => stream.Stream<
-    AttributeGroupId,
-    ListAssociatedAttributeGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListAssociatedResourcesError =
   | InternalServerException
@@ -1819,27 +1752,13 @@ export type ListAssociatedResourcesError =
  * with it
  * using this API.
  */
-export const listAssociatedResources: API.OperationMethod<
+export const listAssociatedResources: API.PaginatedOperationMethod<
   ListAssociatedResourcesRequest,
   ListAssociatedResourcesResponse,
   ListAssociatedResourcesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAssociatedResourcesRequest,
-  ) => stream.Stream<
-    ListAssociatedResourcesResponse,
-    ListAssociatedResourcesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAssociatedResourcesRequest,
-  ) => stream.Stream<
-    ResourceInfo,
-    ListAssociatedResourcesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ResourceInfo
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListAssociatedResourcesRequest,
   output: ListAssociatedResourcesResponse,
   errors: [
@@ -1856,27 +1775,7 @@ export const listAssociatedResources: API.OperationMethod<
     items: "resources",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListAssociatedResourcesRequest,
-  ListAssociatedResourcesResponse,
-  ListAssociatedResourcesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAssociatedResourcesRequest,
-  ) => stream.Stream<
-    ListAssociatedResourcesResponse,
-    ListAssociatedResourcesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAssociatedResourcesRequest,
-  ) => stream.Stream<
-    ResourceInfo,
-    ListAssociatedResourcesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListAttributeGroupsError =
   | InternalServerException
@@ -1885,27 +1784,13 @@ export type ListAttributeGroupsError =
 /**
  * Lists all attribute groups which you have access to. Results are paginated.
  */
-export const listAttributeGroups: API.OperationMethod<
+export const listAttributeGroups: API.PaginatedOperationMethod<
   ListAttributeGroupsRequest,
   ListAttributeGroupsResponse,
   ListAttributeGroupsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAttributeGroupsRequest,
-  ) => stream.Stream<
-    ListAttributeGroupsResponse,
-    ListAttributeGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAttributeGroupsRequest,
-  ) => stream.Stream<
-    AttributeGroupSummary,
-    ListAttributeGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  AttributeGroupSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListAttributeGroupsRequest,
   output: ListAttributeGroupsResponse,
   errors: [InternalServerException, ValidationException],
@@ -1918,27 +1803,7 @@ export const listAttributeGroups: API.OperationMethod<
     items: "attributeGroups",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListAttributeGroupsRequest,
-  ListAttributeGroupsResponse,
-  ListAttributeGroupsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAttributeGroupsRequest,
-  ) => stream.Stream<
-    ListAttributeGroupsResponse,
-    ListAttributeGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAttributeGroupsRequest,
-  ) => stream.Stream<
-    AttributeGroupSummary,
-    ListAttributeGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListAttributeGroupsForApplicationError =
   | InternalServerException
@@ -1948,27 +1813,13 @@ export type ListAttributeGroupsForApplicationError =
 /**
  * Lists the details of all attribute groups associated with a specific application. The results display in pages.
  */
-export const listAttributeGroupsForApplication: API.OperationMethod<
+export const listAttributeGroupsForApplication: API.PaginatedOperationMethod<
   ListAttributeGroupsForApplicationRequest,
   ListAttributeGroupsForApplicationResponse,
   ListAttributeGroupsForApplicationError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAttributeGroupsForApplicationRequest,
-  ) => stream.Stream<
-    ListAttributeGroupsForApplicationResponse,
-    ListAttributeGroupsForApplicationError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAttributeGroupsForApplicationRequest,
-  ) => stream.Stream<
-    AttributeGroupDetails,
-    ListAttributeGroupsForApplicationError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  AttributeGroupDetails
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListAttributeGroupsForApplicationRequest,
   output: ListAttributeGroupsForApplicationResponse,
   errors: [
@@ -1985,27 +1836,7 @@ export const listAttributeGroupsForApplication: API.OperationMethod<
     items: "attributeGroupsDetails",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListAttributeGroupsForApplicationRequest,
-  ListAttributeGroupsForApplicationResponse,
-  ListAttributeGroupsForApplicationError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAttributeGroupsForApplicationRequest,
-  ) => stream.Stream<
-    ListAttributeGroupsForApplicationResponse,
-    ListAttributeGroupsForApplicationError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAttributeGroupsForApplicationRequest,
-  ) => stream.Stream<
-    AttributeGroupDetails,
-    ListAttributeGroupsForApplicationError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsForResourceError =
   | InternalServerException
@@ -2019,7 +1850,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceRequest,
   ListTagsForResourceResponse,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -2046,7 +1877,7 @@ export const putConfiguration: API.OperationMethod<
   PutConfigurationRequest,
   PutConfigurationResponse,
   PutConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutConfigurationRequest,
   output: PutConfigurationResponse,
@@ -2072,7 +1903,7 @@ export const syncResource: API.OperationMethod<
   SyncResourceRequest,
   SyncResourceResponse,
   SyncResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: SyncResourceRequest,
   output: SyncResourceResponse,
@@ -2104,7 +1935,7 @@ export const tagResource: API.OperationMethod<
   TagResourceRequest,
   TagResourceResponse,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -2132,7 +1963,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceRequest,
   UntagResourceResponse,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -2160,7 +1991,7 @@ export const updateApplication: API.OperationMethod<
   UpdateApplicationRequest,
   UpdateApplicationResponse,
   UpdateApplicationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateApplicationRequest,
   output: UpdateApplicationResponse,
@@ -2189,7 +2020,7 @@ export const updateAttributeGroup: API.OperationMethod<
   UpdateAttributeGroupRequest,
   UpdateAttributeGroupResponse,
   UpdateAttributeGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateAttributeGroupRequest,
   output: UpdateAttributeGroupResponse,

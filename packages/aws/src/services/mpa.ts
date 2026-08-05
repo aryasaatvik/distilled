@@ -1,7 +1,6 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as redacted from "effect/Redacted";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -9,7 +8,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region as Rgn } from "../region.ts";
 import { SensitiveString } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "MPA",
@@ -57,55 +55,58 @@ const rules = T.EndpointResolver((p, _) => {
 export class AccessDeniedException
   extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
     "AccessDeniedException",
-    { Message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(403),
   ).pipe(C.withAuthError) {}
 export class ConflictException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
     "ConflictException",
-    { Message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class InternalServerException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
     "InternalServerException",
-    { Message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.all(T.HttpError(500), T.Retryable()),
   ).pipe(C.withServerError, C.withRetryableError) {}
 export class InvalidParameterException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidParameterException>()(
     "InvalidParameterException",
-    { Message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { Message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class ServiceQuotaExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
     "ServiceQuotaExceededException",
-    { Message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(402),
   ).pipe(C.withQuotaError) {}
 export class ThrottlingException
   extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
     "ThrottlingException",
-    { Message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(429),
   ).pipe(C.withThrottlingError) {}
 export class TooManyTagsException
   extends /*@__PURE__*/ S.TaggedErrorClass<TooManyTagsException>()(
     "TooManyTagsException",
-    { Message: S.String, ResourceName: S.optional(S.String) },
+    {
+      message: S.String.pipe(T.ErrorMessage()),
+      ResourceName: S.optional(S.String),
+    },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class ValidationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
     "ValidationException",
-    { Message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export type SessionArn = string;
@@ -1522,7 +1523,7 @@ export const cancelSession: API.OperationMethod<
   CancelSessionRequest,
   CancelSessionResponse,
   CancelSessionError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CancelSessionRequest,
   output: CancelSessionResponse,
@@ -1554,7 +1555,7 @@ export const createApprovalTeam: API.OperationMethod<
   CreateApprovalTeamRequest,
   CreateApprovalTeamResponse,
   CreateApprovalTeamError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateApprovalTeamRequest,
   output: CreateApprovalTeamResponse,
@@ -1585,7 +1586,7 @@ export const createIdentitySource: API.OperationMethod<
   CreateIdentitySourceRequest,
   CreateIdentitySourceResponse,
   CreateIdentitySourceError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateIdentitySourceRequest,
   output: CreateIdentitySourceResponse,
@@ -1615,7 +1616,7 @@ export const deleteIdentitySource: API.OperationMethod<
   DeleteIdentitySourceRequest,
   DeleteIdentitySourceResponse,
   DeleteIdentitySourceError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteIdentitySourceRequest,
   output: DeleteIdentitySourceResponse,
@@ -1648,7 +1649,7 @@ export const deleteInactiveApprovalTeamVersion: API.OperationMethod<
   DeleteInactiveApprovalTeamVersionRequest,
   DeleteInactiveApprovalTeamVersionResponse,
   DeleteInactiveApprovalTeamVersionError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteInactiveApprovalTeamVersionRequest,
   output: DeleteInactiveApprovalTeamVersionResponse,
@@ -1679,7 +1680,7 @@ export const getApprovalTeam: API.OperationMethod<
   GetApprovalTeamRequest,
   GetApprovalTeamResponse,
   GetApprovalTeamError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetApprovalTeamRequest,
   output: GetApprovalTeamResponse,
@@ -1709,7 +1710,7 @@ export const getIdentitySource: API.OperationMethod<
   GetIdentitySourceRequest,
   GetIdentitySourceResponse,
   GetIdentitySourceError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetIdentitySourceRequest,
   output: GetIdentitySourceResponse,
@@ -1739,7 +1740,7 @@ export const getPolicyVersion: API.OperationMethod<
   GetPolicyVersionRequest,
   GetPolicyVersionResponse,
   GetPolicyVersionError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetPolicyVersionRequest,
   output: GetPolicyVersionResponse,
@@ -1769,7 +1770,7 @@ export const getResourcePolicy: API.OperationMethod<
   GetResourcePolicyRequest,
   GetResourcePolicyResponse,
   GetResourcePolicyError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetResourcePolicyRequest,
   output: GetResourcePolicyResponse,
@@ -1799,7 +1800,7 @@ export const getSession: API.OperationMethod<
   GetSessionRequest,
   GetSessionResponse,
   GetSessionError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetSessionRequest,
   output: GetSessionResponse,
@@ -1824,27 +1825,13 @@ export type ListApprovalTeamsError =
 /**
  * Returns a list of approval teams.
  */
-export const listApprovalTeams: API.OperationMethod<
+export const listApprovalTeams: API.PaginatedOperationMethod<
   ListApprovalTeamsRequest,
   ListApprovalTeamsResponse,
   ListApprovalTeamsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListApprovalTeamsRequest,
-  ) => stream.Stream<
-    ListApprovalTeamsResponse,
-    ListApprovalTeamsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListApprovalTeamsRequest,
-  ) => stream.Stream<
-    ListApprovalTeamsResponseApprovalTeam,
-    ListApprovalTeamsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ListApprovalTeamsResponseApprovalTeam
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListApprovalTeamsRequest,
   output: ListApprovalTeamsResponse,
   errors: [
@@ -1862,27 +1849,7 @@ export const listApprovalTeams: API.OperationMethod<
     items: "ApprovalTeams",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListApprovalTeamsRequest,
-  ListApprovalTeamsResponse,
-  ListApprovalTeamsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListApprovalTeamsRequest,
-  ) => stream.Stream<
-    ListApprovalTeamsResponse,
-    ListApprovalTeamsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListApprovalTeamsRequest,
-  ) => stream.Stream<
-    ListApprovalTeamsResponseApprovalTeam,
-    ListApprovalTeamsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListIdentitySourcesError =
   | AccessDeniedException
@@ -1893,27 +1860,13 @@ export type ListIdentitySourcesError =
 /**
  * Returns a list of identity sources. For more information, see Identity Source in the *Multi-party approval User Guide*.
  */
-export const listIdentitySources: API.OperationMethod<
+export const listIdentitySources: API.PaginatedOperationMethod<
   ListIdentitySourcesRequest,
   ListIdentitySourcesResponse,
   ListIdentitySourcesError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListIdentitySourcesRequest,
-  ) => stream.Stream<
-    ListIdentitySourcesResponse,
-    ListIdentitySourcesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListIdentitySourcesRequest,
-  ) => stream.Stream<
-    IdentitySourceForList,
-    ListIdentitySourcesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  IdentitySourceForList
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListIdentitySourcesRequest,
   output: ListIdentitySourcesResponse,
   errors: [
@@ -1931,27 +1884,7 @@ export const listIdentitySources: API.OperationMethod<
     items: "IdentitySources",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListIdentitySourcesRequest,
-  ListIdentitySourcesResponse,
-  ListIdentitySourcesError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListIdentitySourcesRequest,
-  ) => stream.Stream<
-    ListIdentitySourcesResponse,
-    ListIdentitySourcesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListIdentitySourcesRequest,
-  ) => stream.Stream<
-    IdentitySourceForList,
-    ListIdentitySourcesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListPoliciesError =
   | AccessDeniedException
@@ -1962,27 +1895,13 @@ export type ListPoliciesError =
 /**
  * Returns a list of policies. Policies define the permissions for team resources.
  */
-export const listPolicies: API.OperationMethod<
+export const listPolicies: API.PaginatedOperationMethod<
   ListPoliciesRequest,
   ListPoliciesResponse,
   ListPoliciesError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPoliciesRequest,
-  ) => stream.Stream<
-    ListPoliciesResponse,
-    ListPoliciesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPoliciesRequest,
-  ) => stream.Stream<
-    Policy,
-    ListPoliciesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Policy
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListPoliciesRequest,
   output: ListPoliciesResponse,
   errors: [
@@ -2000,27 +1919,7 @@ export const listPolicies: API.OperationMethod<
     items: "Policies",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListPoliciesRequest,
-  ListPoliciesResponse,
-  ListPoliciesError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPoliciesRequest,
-  ) => stream.Stream<
-    ListPoliciesResponse,
-    ListPoliciesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPoliciesRequest,
-  ) => stream.Stream<
-    Policy,
-    ListPoliciesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListPolicyVersionsError =
   | AccessDeniedException
@@ -2032,27 +1931,13 @@ export type ListPolicyVersionsError =
 /**
  * Returns a list of the versions for policies. Policies define the permissions for team resources.
  */
-export const listPolicyVersions: API.OperationMethod<
+export const listPolicyVersions: API.PaginatedOperationMethod<
   ListPolicyVersionsRequest,
   ListPolicyVersionsResponse,
   ListPolicyVersionsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPolicyVersionsRequest,
-  ) => stream.Stream<
-    ListPolicyVersionsResponse,
-    ListPolicyVersionsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPolicyVersionsRequest,
-  ) => stream.Stream<
-    PolicyVersionSummary,
-    ListPolicyVersionsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  PolicyVersionSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListPolicyVersionsRequest,
   output: ListPolicyVersionsResponse,
   errors: [
@@ -2071,27 +1956,7 @@ export const listPolicyVersions: API.OperationMethod<
     items: "PolicyVersions",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListPolicyVersionsRequest,
-  ListPolicyVersionsResponse,
-  ListPolicyVersionsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPolicyVersionsRequest,
-  ) => stream.Stream<
-    ListPolicyVersionsResponse,
-    ListPolicyVersionsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPolicyVersionsRequest,
-  ) => stream.Stream<
-    PolicyVersionSummary,
-    ListPolicyVersionsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListResourcePoliciesError =
   | AccessDeniedException
@@ -2103,27 +1968,13 @@ export type ListResourcePoliciesError =
 /**
  * Returns a list of policies for a resource.
  */
-export const listResourcePolicies: API.OperationMethod<
+export const listResourcePolicies: API.PaginatedOperationMethod<
   ListResourcePoliciesRequest,
   ListResourcePoliciesResponse,
   ListResourcePoliciesError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListResourcePoliciesRequest,
-  ) => stream.Stream<
-    ListResourcePoliciesResponse,
-    ListResourcePoliciesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListResourcePoliciesRequest,
-  ) => stream.Stream<
-    ListResourcePoliciesResponseResourcePolicy,
-    ListResourcePoliciesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ListResourcePoliciesResponseResourcePolicy
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListResourcePoliciesRequest,
   output: ListResourcePoliciesResponse,
   errors: [
@@ -2142,27 +1993,7 @@ export const listResourcePolicies: API.OperationMethod<
     items: "ResourcePolicies",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListResourcePoliciesRequest,
-  ListResourcePoliciesResponse,
-  ListResourcePoliciesError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListResourcePoliciesRequest,
-  ) => stream.Stream<
-    ListResourcePoliciesResponse,
-    ListResourcePoliciesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListResourcePoliciesRequest,
-  ) => stream.Stream<
-    ListResourcePoliciesResponseResourcePolicy,
-    ListResourcePoliciesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListSessionsError =
   | AccessDeniedException
@@ -2174,27 +2005,13 @@ export type ListSessionsError =
 /**
  * Returns a list of approval sessions. For more information, see Session in the *Multi-party approval User Guide*.
  */
-export const listSessions: API.OperationMethod<
+export const listSessions: API.PaginatedOperationMethod<
   ListSessionsRequest,
   ListSessionsResponse,
   ListSessionsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSessionsRequest,
-  ) => stream.Stream<
-    ListSessionsResponse,
-    ListSessionsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSessionsRequest,
-  ) => stream.Stream<
-    ListSessionsResponseSession,
-    ListSessionsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ListSessionsResponseSession
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListSessionsRequest,
   output: ListSessionsResponse,
   errors: [
@@ -2213,27 +2030,7 @@ export const listSessions: API.OperationMethod<
     items: "Sessions",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListSessionsRequest,
-  ListSessionsResponse,
-  ListSessionsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSessionsRequest,
-  ) => stream.Stream<
-    ListSessionsResponse,
-    ListSessionsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSessionsRequest,
-  ) => stream.Stream<
-    ListSessionsResponseSession,
-    ListSessionsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsForResourceError =
   | AccessDeniedException
@@ -2249,7 +2046,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceRequest,
   ListTagsForResourceResponse,
   ListTagsForResourceError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -2284,7 +2081,7 @@ export const startActiveApprovalTeamDeletion: API.OperationMethod<
   StartActiveApprovalTeamDeletionRequest,
   StartActiveApprovalTeamDeletionResponse,
   StartActiveApprovalTeamDeletionError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartActiveApprovalTeamDeletionRequest,
   output: StartActiveApprovalTeamDeletionResponse,
@@ -2315,7 +2112,7 @@ export const startApprovalTeamBaseline: API.OperationMethod<
   StartApprovalTeamBaselineRequest,
   StartApprovalTeamBaselineResponse,
   StartApprovalTeamBaselineError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartApprovalTeamBaselineRequest,
   output: StartApprovalTeamBaselineResponse,
@@ -2346,7 +2143,7 @@ export const tagResource: API.OperationMethod<
   TagResourceRequest,
   TagResourceResponse,
   TagResourceError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -2377,7 +2174,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceRequest,
   UntagResourceResponse,
   UntagResourceError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -2413,7 +2210,7 @@ export const updateApprovalTeam: API.OperationMethod<
   UpdateApprovalTeamRequest,
   UpdateApprovalTeamResponse,
   UpdateApprovalTeamError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateApprovalTeamRequest,
   output: UpdateApprovalTeamResponse,

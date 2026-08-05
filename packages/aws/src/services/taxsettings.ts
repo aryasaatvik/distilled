@@ -1,7 +1,6 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as redacted from "effect/Redacted";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -9,7 +8,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 import { SensitiveString } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "TaxSettings",
@@ -106,44 +104,44 @@ const rules = T.EndpointResolver((p, _) => {
 export class AccessDeniedException
   extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
     "AccessDeniedException",
-    { message: SensitiveString },
+    { message: SensitiveString.pipe(T.ErrorMessage()) },
     T.HttpError(401),
   ).pipe(C.withAuthError) {}
 export class AttachmentUploadException
   extends /*@__PURE__*/ S.TaggedErrorClass<AttachmentUploadException>()(
     "AttachmentUploadException",
-    { message: SensitiveString },
+    { message: SensitiveString.pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class CaseCreationLimitExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<CaseCreationLimitExceededException>()(
     "CaseCreationLimitExceededException",
-    { message: SensitiveString },
+    { message: SensitiveString.pipe(T.ErrorMessage()) },
     T.HttpError(413),
   ).pipe(C.withBadRequestError) {}
 export class ConflictException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
     "ConflictException",
-    { message: SensitiveString, errorCode: S.String },
+    { message: SensitiveString.pipe(T.ErrorMessage()), errorCode: S.String },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class InternalServerException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
     "InternalServerException",
-    { message: SensitiveString, errorCode: S.String },
+    { message: SensitiveString.pipe(T.ErrorMessage()), errorCode: S.String },
     T.HttpError(500),
   ).pipe(C.withServerError) {}
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { message: SensitiveString, errorCode: S.String },
+    { message: SensitiveString.pipe(T.ErrorMessage()), errorCode: S.String },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class ValidationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
     "ValidationException",
     {
-      message: SensitiveString,
+      message: SensitiveString.pipe(T.ErrorMessage()),
       errorCode: S.suspend(() => ValidationExceptionErrorCode).annotate({
         identifier: "ValidationExceptionErrorCode",
       }),
@@ -1604,7 +1602,7 @@ export const batchDeleteTaxRegistration: API.OperationMethod<
   BatchDeleteTaxRegistrationRequest,
   BatchDeleteTaxRegistrationResponse,
   BatchDeleteTaxRegistrationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchDeleteTaxRegistrationRequest,
   output: BatchDeleteTaxRegistrationResponse,
@@ -1626,7 +1624,7 @@ export const batchGetTaxExemptions: API.OperationMethod<
   BatchGetTaxExemptionsRequest,
   BatchGetTaxExemptionsResponse,
   BatchGetTaxExemptionsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchGetTaxExemptionsRequest,
   output: BatchGetTaxExemptionsResponse,
@@ -1786,7 +1784,7 @@ export const batchPutTaxRegistration: API.OperationMethod<
   BatchPutTaxRegistrationRequest,
   BatchPutTaxRegistrationResponse,
   BatchPutTaxRegistrationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchPutTaxRegistrationRequest,
   output: BatchPutTaxRegistrationResponse,
@@ -1809,7 +1807,7 @@ export const deleteSupplementalTaxRegistration: API.OperationMethod<
   DeleteSupplementalTaxRegistrationRequest,
   DeleteSupplementalTaxRegistrationResponse,
   DeleteSupplementalTaxRegistrationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteSupplementalTaxRegistrationRequest,
   output: DeleteSupplementalTaxRegistrationResponse,
@@ -1839,7 +1837,7 @@ export const deleteTaxRegistration: API.OperationMethod<
   DeleteTaxRegistrationRequest,
   DeleteTaxRegistrationResponse,
   DeleteTaxRegistrationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteTaxRegistrationRequest,
   output: DeleteTaxRegistrationResponse,
@@ -1866,7 +1864,7 @@ export const getTaxExemptionTypes: API.OperationMethod<
   GetTaxExemptionTypesRequest,
   GetTaxExemptionTypesResponse,
   GetTaxExemptionTypesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetTaxExemptionTypesRequest,
   output: GetTaxExemptionTypesResponse,
@@ -1892,7 +1890,7 @@ export const getTaxInheritance: API.OperationMethod<
   GetTaxInheritanceRequest,
   GetTaxInheritanceResponse,
   GetTaxInheritanceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetTaxInheritanceRequest,
   output: GetTaxInheritanceResponse,
@@ -1918,7 +1916,7 @@ export const getTaxRegistration: API.OperationMethod<
   GetTaxRegistrationRequest,
   GetTaxRegistrationResponse,
   GetTaxRegistrationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetTaxRegistrationRequest,
   output: GetTaxRegistrationResponse,
@@ -1943,7 +1941,7 @@ export const getTaxRegistrationDocument: API.OperationMethod<
   GetTaxRegistrationDocumentRequest,
   GetTaxRegistrationDocumentResponse,
   GetTaxRegistrationDocumentError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetTaxRegistrationDocumentRequest,
   output: GetTaxRegistrationDocumentResponse,
@@ -1961,27 +1959,13 @@ export type ListSupplementalTaxRegistrationsError =
 /**
  * Retrieves supplemental tax registrations for a single account.
  */
-export const listSupplementalTaxRegistrations: API.OperationMethod<
+export const listSupplementalTaxRegistrations: API.PaginatedOperationMethod<
   ListSupplementalTaxRegistrationsRequest,
   ListSupplementalTaxRegistrationsResponse,
   ListSupplementalTaxRegistrationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSupplementalTaxRegistrationsRequest,
-  ) => stream.Stream<
-    ListSupplementalTaxRegistrationsResponse,
-    ListSupplementalTaxRegistrationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSupplementalTaxRegistrationsRequest,
-  ) => stream.Stream<
-    SupplementalTaxRegistration,
-    ListSupplementalTaxRegistrationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  SupplementalTaxRegistration
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListSupplementalTaxRegistrationsRequest,
   output: ListSupplementalTaxRegistrationsResponse,
   errors: [
@@ -1998,27 +1982,7 @@ export const listSupplementalTaxRegistrations: API.OperationMethod<
     items: "taxRegistrations",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListSupplementalTaxRegistrationsRequest,
-  ListSupplementalTaxRegistrationsResponse,
-  ListSupplementalTaxRegistrationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSupplementalTaxRegistrationsRequest,
-  ) => stream.Stream<
-    ListSupplementalTaxRegistrationsResponse,
-    ListSupplementalTaxRegistrationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSupplementalTaxRegistrationsRequest,
-  ) => stream.Stream<
-    SupplementalTaxRegistration,
-    ListSupplementalTaxRegistrationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTaxExemptionsError =
   | InternalServerException
@@ -2028,27 +1992,13 @@ export type ListTaxExemptionsError =
 /**
  * Retrieves the tax exemption of accounts listed in a consolidated billing family. The IAM action is `tax:GetExemptions`.
  */
-export const listTaxExemptions: API.OperationMethod<
+export const listTaxExemptions: API.PaginatedOperationMethod<
   ListTaxExemptionsRequest,
   ListTaxExemptionsResponse,
   ListTaxExemptionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTaxExemptionsRequest,
-  ) => stream.Stream<
-    ListTaxExemptionsResponse,
-    ListTaxExemptionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTaxExemptionsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListTaxExemptionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListTaxExemptionsRequest,
   output: ListTaxExemptionsResponse,
   errors: [
@@ -2065,27 +2015,7 @@ export const listTaxExemptions: API.OperationMethod<
     items: "taxExemptionDetailsMap",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListTaxExemptionsRequest,
-  ListTaxExemptionsResponse,
-  ListTaxExemptionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTaxExemptionsRequest,
-  ) => stream.Stream<
-    ListTaxExemptionsResponse,
-    ListTaxExemptionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTaxExemptionsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListTaxExemptionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTaxRegistrationsError =
   | InternalServerException
@@ -2095,27 +2025,13 @@ export type ListTaxRegistrationsError =
 /**
  * Retrieves the tax registration of accounts listed in a consolidated billing family. This can be used to retrieve up to 100 accounts' tax registrations in one call (default 50).
  */
-export const listTaxRegistrations: API.OperationMethod<
+export const listTaxRegistrations: API.PaginatedOperationMethod<
   ListTaxRegistrationsRequest,
   ListTaxRegistrationsResponse,
   ListTaxRegistrationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTaxRegistrationsRequest,
-  ) => stream.Stream<
-    ListTaxRegistrationsResponse,
-    ListTaxRegistrationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTaxRegistrationsRequest,
-  ) => stream.Stream<
-    AccountDetails,
-    ListTaxRegistrationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  AccountDetails
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListTaxRegistrationsRequest,
   output: ListTaxRegistrationsResponse,
   errors: [
@@ -2132,27 +2048,7 @@ export const listTaxRegistrations: API.OperationMethod<
     items: "accountDetails",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListTaxRegistrationsRequest,
-  ListTaxRegistrationsResponse,
-  ListTaxRegistrationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTaxRegistrationsRequest,
-  ) => stream.Stream<
-    ListTaxRegistrationsResponse,
-    ListTaxRegistrationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTaxRegistrationsRequest,
-  ) => stream.Stream<
-    AccountDetails,
-    ListTaxRegistrationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type PutSupplementalTaxRegistrationError =
   | ConflictException
@@ -2166,7 +2062,7 @@ export const putSupplementalTaxRegistration: API.OperationMethod<
   PutSupplementalTaxRegistrationRequest,
   PutSupplementalTaxRegistrationResponse,
   PutSupplementalTaxRegistrationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutSupplementalTaxRegistrationRequest,
   output: PutSupplementalTaxRegistrationResponse,
@@ -2191,7 +2087,7 @@ export const putTaxExemption: API.OperationMethod<
   PutTaxExemptionRequest,
   PutTaxExemptionResponse,
   PutTaxExemptionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutTaxExemptionRequest,
   output: PutTaxExemptionResponse,
@@ -2221,7 +2117,7 @@ export const putTaxInheritance: API.OperationMethod<
   PutTaxInheritanceRequest,
   PutTaxInheritanceResponse,
   PutTaxInheritanceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutTaxInheritanceRequest,
   output: PutTaxInheritanceResponse,
@@ -2382,7 +2278,7 @@ export const putTaxRegistration: API.OperationMethod<
   PutTaxRegistrationRequest,
   PutTaxRegistrationResponse,
   PutTaxRegistrationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutTaxRegistrationRequest,
   output: PutTaxRegistrationResponse,

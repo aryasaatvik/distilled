@@ -1,7 +1,6 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as redacted from "effect/Redacted";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -9,7 +8,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 import { SensitiveString } from "../sensitive.ts";
 const svc = T.AwsApiService({ sdkId: "Voice ID", serviceShapeName: "VoiceID" });
 const auth = T.AwsAuthSigv4({ name: "voiceid" });
@@ -87,43 +85,49 @@ const rules = T.EndpointResolver((p, _) => {
 export class AccessDeniedException
   extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
     "AccessDeniedException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(403),
   ).pipe(C.withAuthError) {}
 export class ConflictException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
     "ConflictException",
-    { Message: S.optional(S.String), ConflictType: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      ConflictType: S.optional(S.String),
+    },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class InternalServerException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
     "InternalServerException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(500),
   ).pipe(C.withServerError) {}
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { Message: S.optional(S.String), ResourceType: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      ResourceType: S.optional(S.String),
+    },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class ServiceQuotaExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
     "ServiceQuotaExceededException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(402),
   ).pipe(C.withQuotaError) {}
 export class ThrottlingException
   extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
     "ThrottlingException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(429),
   ).pipe(C.withThrottlingError) {}
 export class ValidationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
     "ValidationException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export type DomainId = string;
@@ -1385,7 +1389,7 @@ export const associateFraudster: API.OperationMethod<
   AssociateFraudsterRequest,
   AssociateFraudsterResponse,
   AssociateFraudsterError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AssociateFraudsterRequest,
   output: AssociateFraudsterResponse,
@@ -1420,7 +1424,7 @@ export const createDomain: API.OperationMethod<
   CreateDomainRequest,
   CreateDomainResponse,
   CreateDomainError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateDomainRequest,
   output: CreateDomainResponse,
@@ -1454,7 +1458,7 @@ export const createWatchlist: API.OperationMethod<
   CreateWatchlistRequest,
   CreateWatchlistResponse,
   CreateWatchlistError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateWatchlistRequest,
   output: CreateWatchlistResponse,
@@ -1487,7 +1491,7 @@ export const deleteDomain: API.OperationMethod<
   DeleteDomainRequest,
   DeleteDomainResponse,
   DeleteDomainError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteDomainRequest,
   output: DeleteDomainResponse,
@@ -1519,7 +1523,7 @@ export const deleteFraudster: API.OperationMethod<
   DeleteFraudsterRequest,
   DeleteFraudsterResponse,
   DeleteFraudsterError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteFraudsterRequest,
   output: DeleteFraudsterResponse,
@@ -1551,7 +1555,7 @@ export const deleteSpeaker: API.OperationMethod<
   DeleteSpeakerRequest,
   DeleteSpeakerResponse,
   DeleteSpeakerError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteSpeakerRequest,
   output: DeleteSpeakerResponse,
@@ -1585,7 +1589,7 @@ export const deleteWatchlist: API.OperationMethod<
   DeleteWatchlistRequest,
   DeleteWatchlistResponse,
   DeleteWatchlistError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteWatchlistRequest,
   output: DeleteWatchlistResponse,
@@ -1616,7 +1620,7 @@ export const describeDomain: API.OperationMethod<
   DescribeDomainRequest,
   DescribeDomainResponse,
   DescribeDomainError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeDomainRequest,
   output: DescribeDomainResponse,
@@ -1646,7 +1650,7 @@ export const describeFraudster: API.OperationMethod<
   DescribeFraudsterRequest,
   DescribeFraudsterResponse,
   DescribeFraudsterError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeFraudsterRequest,
   output: DescribeFraudsterResponse,
@@ -1676,7 +1680,7 @@ export const describeFraudsterRegistrationJob: API.OperationMethod<
   DescribeFraudsterRegistrationJobRequest,
   DescribeFraudsterRegistrationJobResponse,
   DescribeFraudsterRegistrationJobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeFraudsterRegistrationJobRequest,
   output: DescribeFraudsterRegistrationJobResponse,
@@ -1706,7 +1710,7 @@ export const describeSpeaker: API.OperationMethod<
   DescribeSpeakerRequest,
   DescribeSpeakerResponse,
   DescribeSpeakerError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeSpeakerRequest,
   output: DescribeSpeakerResponse,
@@ -1736,7 +1740,7 @@ export const describeSpeakerEnrollmentJob: API.OperationMethod<
   DescribeSpeakerEnrollmentJobRequest,
   DescribeSpeakerEnrollmentJobResponse,
   DescribeSpeakerEnrollmentJobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeSpeakerEnrollmentJobRequest,
   output: DescribeSpeakerEnrollmentJobResponse,
@@ -1766,7 +1770,7 @@ export const describeWatchlist: API.OperationMethod<
   DescribeWatchlistRequest,
   DescribeWatchlistResponse,
   DescribeWatchlistError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeWatchlistRequest,
   output: DescribeWatchlistResponse,
@@ -1799,7 +1803,7 @@ export const disassociateFraudster: API.OperationMethod<
   DisassociateFraudsterRequest,
   DisassociateFraudsterResponse,
   DisassociateFraudsterError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DisassociateFraudsterRequest,
   output: DisassociateFraudsterResponse,
@@ -1832,7 +1836,7 @@ export const evaluateSession: API.OperationMethod<
   EvaluateSessionRequest,
   EvaluateSessionResponse,
   EvaluateSessionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: EvaluateSessionRequest,
   output: EvaluateSessionResponse,
@@ -1858,27 +1862,13 @@ export type ListDomainsError =
 /**
  * Lists all the domains in the Amazon Web Services account.
  */
-export const listDomains: API.OperationMethod<
+export const listDomains: API.PaginatedOperationMethod<
   ListDomainsRequest,
   ListDomainsResponse,
   ListDomainsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDomainsRequest,
-  ) => stream.Stream<
-    ListDomainsResponse,
-    ListDomainsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDomainsRequest,
-  ) => stream.Stream<
-    DomainSummary,
-    ListDomainsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  DomainSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListDomainsRequest,
   output: ListDomainsResponse,
   errors: [
@@ -1896,27 +1886,7 @@ export const listDomains: API.OperationMethod<
     items: "DomainSummaries",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListDomainsRequest,
-  ListDomainsResponse,
-  ListDomainsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDomainsRequest,
-  ) => stream.Stream<
-    ListDomainsResponse,
-    ListDomainsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDomainsRequest,
-  ) => stream.Stream<
-    DomainSummary,
-    ListDomainsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListFraudsterRegistrationJobsError =
   | AccessDeniedException
@@ -1930,27 +1900,13 @@ export type ListFraudsterRegistrationJobsError =
  * `JobStatus`. If `JobStatus` is not provided, this lists all
  * fraudster registration jobs in the given domain.
  */
-export const listFraudsterRegistrationJobs: API.OperationMethod<
+export const listFraudsterRegistrationJobs: API.PaginatedOperationMethod<
   ListFraudsterRegistrationJobsRequest,
   ListFraudsterRegistrationJobsResponse,
   ListFraudsterRegistrationJobsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListFraudsterRegistrationJobsRequest,
-  ) => stream.Stream<
-    ListFraudsterRegistrationJobsResponse,
-    ListFraudsterRegistrationJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListFraudsterRegistrationJobsRequest,
-  ) => stream.Stream<
-    FraudsterRegistrationJobSummary,
-    ListFraudsterRegistrationJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  FraudsterRegistrationJobSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListFraudsterRegistrationJobsRequest,
   output: ListFraudsterRegistrationJobsResponse,
   errors: [
@@ -1969,27 +1925,7 @@ export const listFraudsterRegistrationJobs: API.OperationMethod<
     items: "JobSummaries",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListFraudsterRegistrationJobsRequest,
-  ListFraudsterRegistrationJobsResponse,
-  ListFraudsterRegistrationJobsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListFraudsterRegistrationJobsRequest,
-  ) => stream.Stream<
-    ListFraudsterRegistrationJobsResponse,
-    ListFraudsterRegistrationJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListFraudsterRegistrationJobsRequest,
-  ) => stream.Stream<
-    FraudsterRegistrationJobSummary,
-    ListFraudsterRegistrationJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListFraudstersError =
   | AccessDeniedException
@@ -2001,27 +1937,13 @@ export type ListFraudstersError =
 /**
  * Lists all fraudsters in a specified watchlist or domain.
  */
-export const listFraudsters: API.OperationMethod<
+export const listFraudsters: API.PaginatedOperationMethod<
   ListFraudstersRequest,
   ListFraudstersResponse,
   ListFraudstersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListFraudstersRequest,
-  ) => stream.Stream<
-    ListFraudstersResponse,
-    ListFraudstersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListFraudstersRequest,
-  ) => stream.Stream<
-    FraudsterSummary,
-    ListFraudstersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  FraudsterSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListFraudstersRequest,
   output: ListFraudstersResponse,
   errors: [
@@ -2040,27 +1962,7 @@ export const listFraudsters: API.OperationMethod<
     items: "FraudsterSummaries",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListFraudstersRequest,
-  ListFraudstersResponse,
-  ListFraudstersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListFraudstersRequest,
-  ) => stream.Stream<
-    ListFraudstersResponse,
-    ListFraudstersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListFraudstersRequest,
-  ) => stream.Stream<
-    FraudsterSummary,
-    ListFraudstersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListSpeakerEnrollmentJobsError =
   | AccessDeniedException
@@ -2074,27 +1976,13 @@ export type ListSpeakerEnrollmentJobsError =
  * `JobStatus`. If `JobStatus` is not provided, this lists all
  * jobs with all possible speaker enrollment job statuses.
  */
-export const listSpeakerEnrollmentJobs: API.OperationMethod<
+export const listSpeakerEnrollmentJobs: API.PaginatedOperationMethod<
   ListSpeakerEnrollmentJobsRequest,
   ListSpeakerEnrollmentJobsResponse,
   ListSpeakerEnrollmentJobsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSpeakerEnrollmentJobsRequest,
-  ) => stream.Stream<
-    ListSpeakerEnrollmentJobsResponse,
-    ListSpeakerEnrollmentJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSpeakerEnrollmentJobsRequest,
-  ) => stream.Stream<
-    SpeakerEnrollmentJobSummary,
-    ListSpeakerEnrollmentJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  SpeakerEnrollmentJobSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListSpeakerEnrollmentJobsRequest,
   output: ListSpeakerEnrollmentJobsResponse,
   errors: [
@@ -2113,27 +2001,7 @@ export const listSpeakerEnrollmentJobs: API.OperationMethod<
     items: "JobSummaries",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListSpeakerEnrollmentJobsRequest,
-  ListSpeakerEnrollmentJobsResponse,
-  ListSpeakerEnrollmentJobsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSpeakerEnrollmentJobsRequest,
-  ) => stream.Stream<
-    ListSpeakerEnrollmentJobsResponse,
-    ListSpeakerEnrollmentJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSpeakerEnrollmentJobsRequest,
-  ) => stream.Stream<
-    SpeakerEnrollmentJobSummary,
-    ListSpeakerEnrollmentJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListSpeakersError =
   | AccessDeniedException
@@ -2145,27 +2013,13 @@ export type ListSpeakersError =
 /**
  * Lists all speakers in a specified domain.
  */
-export const listSpeakers: API.OperationMethod<
+export const listSpeakers: API.PaginatedOperationMethod<
   ListSpeakersRequest,
   ListSpeakersResponse,
   ListSpeakersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSpeakersRequest,
-  ) => stream.Stream<
-    ListSpeakersResponse,
-    ListSpeakersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSpeakersRequest,
-  ) => stream.Stream<
-    SpeakerSummary,
-    ListSpeakersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  SpeakerSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListSpeakersRequest,
   output: ListSpeakersResponse,
   errors: [
@@ -2184,27 +2038,7 @@ export const listSpeakers: API.OperationMethod<
     items: "SpeakerSummaries",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListSpeakersRequest,
-  ListSpeakersResponse,
-  ListSpeakersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSpeakersRequest,
-  ) => stream.Stream<
-    ListSpeakersResponse,
-    ListSpeakersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSpeakersRequest,
-  ) => stream.Stream<
-    SpeakerSummary,
-    ListSpeakersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsForResourceError =
   | AccessDeniedException
@@ -2220,7 +2054,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceRequest,
   ListTagsForResourceResponse,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -2246,27 +2080,13 @@ export type ListWatchlistsError =
 /**
  * Lists all watchlists in a specified domain.
  */
-export const listWatchlists: API.OperationMethod<
+export const listWatchlists: API.PaginatedOperationMethod<
   ListWatchlistsRequest,
   ListWatchlistsResponse,
   ListWatchlistsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListWatchlistsRequest,
-  ) => stream.Stream<
-    ListWatchlistsResponse,
-    ListWatchlistsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListWatchlistsRequest,
-  ) => stream.Stream<
-    WatchlistSummary,
-    ListWatchlistsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  WatchlistSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListWatchlistsRequest,
   output: ListWatchlistsResponse,
   errors: [
@@ -2285,27 +2105,7 @@ export const listWatchlists: API.OperationMethod<
     items: "WatchlistSummaries",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListWatchlistsRequest,
-  ListWatchlistsResponse,
-  ListWatchlistsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListWatchlistsRequest,
-  ) => stream.Stream<
-    ListWatchlistsResponse,
-    ListWatchlistsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListWatchlistsRequest,
-  ) => stream.Stream<
-    WatchlistSummary,
-    ListWatchlistsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type OptOutSpeakerError =
   | AccessDeniedException
@@ -2328,7 +2128,7 @@ export const optOutSpeaker: API.OperationMethod<
   OptOutSpeakerRequest,
   OptOutSpeakerResponse,
   OptOutSpeakerError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: OptOutSpeakerRequest,
   output: OptOutSpeakerResponse,
@@ -2362,7 +2162,7 @@ export const startFraudsterRegistrationJob: API.OperationMethod<
   StartFraudsterRegistrationJobRequest,
   StartFraudsterRegistrationJobResponse,
   StartFraudsterRegistrationJobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartFraudsterRegistrationJobRequest,
   output: StartFraudsterRegistrationJobResponse,
@@ -2396,7 +2196,7 @@ export const startSpeakerEnrollmentJob: API.OperationMethod<
   StartSpeakerEnrollmentJobRequest,
   StartSpeakerEnrollmentJobResponse,
   StartSpeakerEnrollmentJobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartSpeakerEnrollmentJobRequest,
   output: StartSpeakerEnrollmentJobResponse,
@@ -2429,7 +2229,7 @@ export const tagResource: API.OperationMethod<
   TagResourceRequest,
   TagResourceResponse,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -2461,7 +2261,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceRequest,
   UntagResourceResponse,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -2495,7 +2295,7 @@ export const updateDomain: API.OperationMethod<
   UpdateDomainRequest,
   UpdateDomainResponse,
   UpdateDomainError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateDomainRequest,
   output: UpdateDomainResponse,
@@ -2527,7 +2327,7 @@ export const updateWatchlist: API.OperationMethod<
   UpdateWatchlistRequest,
   UpdateWatchlistResponse,
   UpdateWatchlistError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateWatchlistRequest,
   output: UpdateWatchlistResponse,

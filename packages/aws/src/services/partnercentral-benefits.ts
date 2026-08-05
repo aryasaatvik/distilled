@@ -1,7 +1,6 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as redacted from "effect/Redacted";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -9,7 +8,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 import { SensitiveString } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "PartnerCentral Benefits",
@@ -57,32 +55,32 @@ const rules = T.EndpointResolver((p, _) => {
 export class AccessDeniedException
   extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
     "AccessDeniedException",
-    { Message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(403),
   ).pipe(C.withAuthError) {}
 export class ConflictException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
     "ConflictException",
-    { Message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class InternalServerException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
     "InternalServerException",
-    { Message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(500),
   ).pipe(C.withServerError) {}
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { Message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class ServiceQuotaExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
     "ServiceQuotaExceededException",
     {
-      Message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       ResourceId: S.String,
       ResourceType: S.String,
       QuotaCode: S.String,
@@ -92,14 +90,14 @@ export class ServiceQuotaExceededException
 export class ThrottlingException
   extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
     "ThrottlingException",
-    { Message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(429),
   ).pipe(C.withThrottlingError) {}
 export class ValidationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
     "ValidationException",
     {
-      Message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       Reason: S.suspend(() => ValidationExceptionReason).annotate({
         identifier: "ValidationExceptionReason",
       }),
@@ -1355,7 +1353,7 @@ export const amendBenefitApplication: API.OperationMethod<
   AmendBenefitApplicationInput,
   AmendBenefitApplicationOutput,
   AmendBenefitApplicationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AmendBenefitApplicationInput,
   output: AmendBenefitApplicationOutput,
@@ -1387,7 +1385,7 @@ export const associateBenefitApplicationResource: API.OperationMethod<
   AssociateBenefitApplicationResourceInput,
   AssociateBenefitApplicationResourceOutput,
   AssociateBenefitApplicationResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AssociateBenefitApplicationResourceInput,
   output: AssociateBenefitApplicationResourceOutput,
@@ -1419,7 +1417,7 @@ export const cancelBenefitApplication: API.OperationMethod<
   CancelBenefitApplicationInput,
   CancelBenefitApplicationOutput,
   CancelBenefitApplicationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CancelBenefitApplicationInput,
   output: CancelBenefitApplicationOutput,
@@ -1451,7 +1449,7 @@ export const createBenefitApplication: API.OperationMethod<
   CreateBenefitApplicationInput,
   CreateBenefitApplicationOutput,
   CreateBenefitApplicationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateBenefitApplicationInput,
   output: CreateBenefitApplicationOutput,
@@ -1483,7 +1481,7 @@ export const disassociateBenefitApplicationResource: API.OperationMethod<
   DisassociateBenefitApplicationResourceInput,
   DisassociateBenefitApplicationResourceOutput,
   DisassociateBenefitApplicationResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DisassociateBenefitApplicationResourceInput,
   output: DisassociateBenefitApplicationResourceOutput,
@@ -1514,7 +1512,7 @@ export const getBenefit: API.OperationMethod<
   GetBenefitInput,
   GetBenefitOutput,
   GetBenefitError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetBenefitInput,
   output: GetBenefitOutput,
@@ -1544,7 +1542,7 @@ export const getBenefitAllocation: API.OperationMethod<
   GetBenefitAllocationInput,
   GetBenefitAllocationOutput,
   GetBenefitAllocationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetBenefitAllocationInput,
   output: GetBenefitAllocationOutput,
@@ -1575,7 +1573,7 @@ export const getBenefitApplication: API.OperationMethod<
   GetBenefitApplicationInput,
   GetBenefitApplicationOutput,
   GetBenefitApplicationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetBenefitApplicationInput,
   output: GetBenefitApplicationOutput,
@@ -1602,27 +1600,13 @@ export type ListBenefitAllocationsError =
 /**
  * Retrieves a paginated list of benefit allocations based on specified filter criteria.
  */
-export const listBenefitAllocations: API.OperationMethod<
+export const listBenefitAllocations: API.PaginatedOperationMethod<
   ListBenefitAllocationsInput,
   ListBenefitAllocationsOutput,
   ListBenefitAllocationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListBenefitAllocationsInput,
-  ) => stream.Stream<
-    ListBenefitAllocationsOutput,
-    ListBenefitAllocationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListBenefitAllocationsInput,
-  ) => stream.Stream<
-    BenefitAllocationSummary,
-    ListBenefitAllocationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  BenefitAllocationSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListBenefitAllocationsInput,
   output: ListBenefitAllocationsOutput,
   errors: [
@@ -1641,27 +1625,7 @@ export const listBenefitAllocations: API.OperationMethod<
     items: "BenefitAllocationSummaries",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListBenefitAllocationsInput,
-  ListBenefitAllocationsOutput,
-  ListBenefitAllocationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListBenefitAllocationsInput,
-  ) => stream.Stream<
-    ListBenefitAllocationsOutput,
-    ListBenefitAllocationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListBenefitAllocationsInput,
-  ) => stream.Stream<
-    BenefitAllocationSummary,
-    ListBenefitAllocationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListBenefitApplicationsError =
   | AccessDeniedException
@@ -1673,27 +1637,13 @@ export type ListBenefitApplicationsError =
 /**
  * Retrieves a paginated list of benefit applications based on specified filter criteria.
  */
-export const listBenefitApplications: API.OperationMethod<
+export const listBenefitApplications: API.PaginatedOperationMethod<
   ListBenefitApplicationsInput,
   ListBenefitApplicationsOutput,
   ListBenefitApplicationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListBenefitApplicationsInput,
-  ) => stream.Stream<
-    ListBenefitApplicationsOutput,
-    ListBenefitApplicationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListBenefitApplicationsInput,
-  ) => stream.Stream<
-    BenefitApplicationSummary,
-    ListBenefitApplicationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  BenefitApplicationSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListBenefitApplicationsInput,
   output: ListBenefitApplicationsOutput,
   errors: [
@@ -1712,27 +1662,7 @@ export const listBenefitApplications: API.OperationMethod<
     items: "BenefitApplicationSummaries",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListBenefitApplicationsInput,
-  ListBenefitApplicationsOutput,
-  ListBenefitApplicationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListBenefitApplicationsInput,
-  ) => stream.Stream<
-    ListBenefitApplicationsOutput,
-    ListBenefitApplicationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListBenefitApplicationsInput,
-  ) => stream.Stream<
-    BenefitApplicationSummary,
-    ListBenefitApplicationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListBenefitsError =
   | AccessDeniedException
@@ -1744,27 +1674,13 @@ export type ListBenefitsError =
 /**
  * Retrieves a paginated list of available benefits based on specified filter criteria.
  */
-export const listBenefits: API.OperationMethod<
+export const listBenefits: API.PaginatedOperationMethod<
   ListBenefitsInput,
   ListBenefitsOutput,
   ListBenefitsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListBenefitsInput,
-  ) => stream.Stream<
-    ListBenefitsOutput,
-    ListBenefitsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListBenefitsInput,
-  ) => stream.Stream<
-    BenefitSummary,
-    ListBenefitsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  BenefitSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListBenefitsInput,
   output: ListBenefitsOutput,
   errors: [
@@ -1783,27 +1699,7 @@ export const listBenefits: API.OperationMethod<
     items: "BenefitSummaries",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListBenefitsInput,
-  ListBenefitsOutput,
-  ListBenefitsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListBenefitsInput,
-  ) => stream.Stream<
-    ListBenefitsOutput,
-    ListBenefitsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListBenefitsInput,
-  ) => stream.Stream<
-    BenefitSummary,
-    ListBenefitsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsForResourceError =
   | AccessDeniedException
@@ -1819,7 +1715,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceRequest,
   ListTagsForResourceResponse,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -1850,7 +1746,7 @@ export const recallBenefitApplication: API.OperationMethod<
   RecallBenefitApplicationInput,
   RecallBenefitApplicationOutput,
   RecallBenefitApplicationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RecallBenefitApplicationInput,
   output: RecallBenefitApplicationOutput,
@@ -1882,7 +1778,7 @@ export const submitBenefitApplication: API.OperationMethod<
   SubmitBenefitApplicationInput,
   SubmitBenefitApplicationOutput,
   SubmitBenefitApplicationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: SubmitBenefitApplicationInput,
   output: SubmitBenefitApplicationOutput,
@@ -1915,7 +1811,7 @@ export const tagResource: API.OperationMethod<
   TagResourceRequest,
   TagResourceResponse,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -1949,7 +1845,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceRequest,
   UntagResourceResponse,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -1982,7 +1878,7 @@ export const updateBenefitApplication: API.OperationMethod<
   UpdateBenefitApplicationInput,
   UpdateBenefitApplicationOutput,
   UpdateBenefitApplicationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateBenefitApplicationInput,
   output: UpdateBenefitApplicationOutput,

@@ -1,7 +1,6 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as redacted from "effect/Redacted";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -9,7 +8,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 import { SensitiveString } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "KafkaConnect",
@@ -108,49 +106,49 @@ const rules = T.EndpointResolver((p, _) => {
 export class BadRequestException
   extends /*@__PURE__*/ S.TaggedErrorClass<BadRequestException>()(
     "BadRequestException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class ConflictException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
     "ConflictException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class ForbiddenException
   extends /*@__PURE__*/ S.TaggedErrorClass<ForbiddenException>()(
     "ForbiddenException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(403),
   ).pipe(C.withAuthError) {}
 export class InternalServerErrorException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerErrorException>()(
     "InternalServerErrorException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(500),
   ).pipe(C.withServerError) {}
 export class NotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<NotFoundException>()(
     "NotFoundException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class ServiceUnavailableException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceUnavailableException>()(
     "ServiceUnavailableException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(503),
   ).pipe(C.withServerError) {}
 export class TooManyRequestsException
   extends /*@__PURE__*/ S.TaggedErrorClass<TooManyRequestsException>()(
     "TooManyRequestsException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(429),
   ).pipe(C.withThrottlingError) {}
 export class UnauthorizedException
   extends /*@__PURE__*/ S.TaggedErrorClass<UnauthorizedException>()(
     "UnauthorizedException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(401),
   ).pipe(C.withAuthError) {}
 export type __integerMin1Max8 = number;
@@ -1613,7 +1611,7 @@ export const createConnector: API.OperationMethod<
   CreateConnectorRequest,
   CreateConnectorResponse,
   CreateConnectorError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateConnectorRequest,
   output: CreateConnectorResponse,
@@ -1649,7 +1647,7 @@ export const createCustomPlugin: API.OperationMethod<
   CreateCustomPluginRequest,
   CreateCustomPluginResponse,
   CreateCustomPluginError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateCustomPluginRequest,
   output: CreateCustomPluginResponse,
@@ -1685,7 +1683,7 @@ export const createWorkerConfiguration: API.OperationMethod<
   CreateWorkerConfigurationRequest,
   CreateWorkerConfigurationResponse,
   CreateWorkerConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateWorkerConfigurationRequest,
   output: CreateWorkerConfigurationResponse,
@@ -1720,7 +1718,7 @@ export const deleteConnector: API.OperationMethod<
   DeleteConnectorRequest,
   DeleteConnectorResponse,
   DeleteConnectorError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteConnectorRequest,
   output: DeleteConnectorResponse,
@@ -1754,7 +1752,7 @@ export const deleteCustomPlugin: API.OperationMethod<
   DeleteCustomPluginRequest,
   DeleteCustomPluginResponse,
   DeleteCustomPluginError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteCustomPluginRequest,
   output: DeleteCustomPluginResponse,
@@ -1788,7 +1786,7 @@ export const deleteWorkerConfiguration: API.OperationMethod<
   DeleteWorkerConfigurationRequest,
   DeleteWorkerConfigurationResponse,
   DeleteWorkerConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteWorkerConfigurationRequest,
   output: DeleteWorkerConfigurationResponse,
@@ -1822,7 +1820,7 @@ export const describeConnector: API.OperationMethod<
   DescribeConnectorRequest,
   DescribeConnectorResponse,
   DescribeConnectorError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeConnectorRequest,
   output: DescribeConnectorResponse,
@@ -1856,7 +1854,7 @@ export const describeConnectorOperation: API.OperationMethod<
   DescribeConnectorOperationRequest,
   DescribeConnectorOperationResponse,
   DescribeConnectorOperationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeConnectorOperationRequest,
   output: DescribeConnectorOperationResponse,
@@ -1890,7 +1888,7 @@ export const describeCustomPlugin: API.OperationMethod<
   DescribeCustomPluginRequest,
   DescribeCustomPluginResponse,
   DescribeCustomPluginError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeCustomPluginRequest,
   output: DescribeCustomPluginResponse,
@@ -1924,7 +1922,7 @@ export const describeWorkerConfiguration: API.OperationMethod<
   DescribeWorkerConfigurationRequest,
   DescribeWorkerConfigurationResponse,
   DescribeWorkerConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeWorkerConfigurationRequest,
   output: DescribeWorkerConfigurationResponse,
@@ -1954,27 +1952,13 @@ export type ListConnectorOperationsError =
 /**
  * Lists information about a connector's operation(s).
  */
-export const listConnectorOperations: API.OperationMethod<
+export const listConnectorOperations: API.PaginatedOperationMethod<
   ListConnectorOperationsRequest,
   ListConnectorOperationsResponse,
   ListConnectorOperationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListConnectorOperationsRequest,
-  ) => stream.Stream<
-    ListConnectorOperationsResponse,
-    ListConnectorOperationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListConnectorOperationsRequest,
-  ) => stream.Stream<
-    ConnectorOperationSummary,
-    ListConnectorOperationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ConnectorOperationSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListConnectorOperationsRequest,
   output: ListConnectorOperationsResponse,
   errors: [
@@ -1995,27 +1979,7 @@ export const listConnectorOperations: API.OperationMethod<
     items: "connectorOperations",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListConnectorOperationsRequest,
-  ListConnectorOperationsResponse,
-  ListConnectorOperationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListConnectorOperationsRequest,
-  ) => stream.Stream<
-    ListConnectorOperationsResponse,
-    ListConnectorOperationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListConnectorOperationsRequest,
-  ) => stream.Stream<
-    ConnectorOperationSummary,
-    ListConnectorOperationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListConnectorsError =
   | BadRequestException
@@ -2029,27 +1993,13 @@ export type ListConnectorsError =
 /**
  * Returns a list of all the connectors in this account and Region. The list is limited to connectors whose name starts with the specified prefix. The response also includes a description of each of the listed connectors.
  */
-export const listConnectors: API.OperationMethod<
+export const listConnectors: API.PaginatedOperationMethod<
   ListConnectorsRequest,
   ListConnectorsResponse,
   ListConnectorsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListConnectorsRequest,
-  ) => stream.Stream<
-    ListConnectorsResponse,
-    ListConnectorsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListConnectorsRequest,
-  ) => stream.Stream<
-    ConnectorSummary,
-    ListConnectorsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ConnectorSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListConnectorsRequest,
   output: ListConnectorsResponse,
   errors: [
@@ -2070,27 +2020,7 @@ export const listConnectors: API.OperationMethod<
     items: "connectors",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListConnectorsRequest,
-  ListConnectorsResponse,
-  ListConnectorsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListConnectorsRequest,
-  ) => stream.Stream<
-    ListConnectorsResponse,
-    ListConnectorsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListConnectorsRequest,
-  ) => stream.Stream<
-    ConnectorSummary,
-    ListConnectorsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListCustomPluginsError =
   | BadRequestException
@@ -2104,27 +2034,13 @@ export type ListCustomPluginsError =
 /**
  * Returns a list of all of the custom plugins in this account and Region.
  */
-export const listCustomPlugins: API.OperationMethod<
+export const listCustomPlugins: API.PaginatedOperationMethod<
   ListCustomPluginsRequest,
   ListCustomPluginsResponse,
   ListCustomPluginsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCustomPluginsRequest,
-  ) => stream.Stream<
-    ListCustomPluginsResponse,
-    ListCustomPluginsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCustomPluginsRequest,
-  ) => stream.Stream<
-    CustomPluginSummary,
-    ListCustomPluginsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  CustomPluginSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListCustomPluginsRequest,
   output: ListCustomPluginsResponse,
   errors: [
@@ -2145,27 +2061,7 @@ export const listCustomPlugins: API.OperationMethod<
     items: "customPlugins",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListCustomPluginsRequest,
-  ListCustomPluginsResponse,
-  ListCustomPluginsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCustomPluginsRequest,
-  ) => stream.Stream<
-    ListCustomPluginsResponse,
-    ListCustomPluginsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCustomPluginsRequest,
-  ) => stream.Stream<
-    CustomPluginSummary,
-    ListCustomPluginsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsForResourceError =
   | BadRequestException
@@ -2183,7 +2079,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceRequest,
   ListTagsForResourceResponse,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -2213,27 +2109,13 @@ export type ListWorkerConfigurationsError =
 /**
  * Returns a list of all of the worker configurations in this account and Region.
  */
-export const listWorkerConfigurations: API.OperationMethod<
+export const listWorkerConfigurations: API.PaginatedOperationMethod<
   ListWorkerConfigurationsRequest,
   ListWorkerConfigurationsResponse,
   ListWorkerConfigurationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListWorkerConfigurationsRequest,
-  ) => stream.Stream<
-    ListWorkerConfigurationsResponse,
-    ListWorkerConfigurationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListWorkerConfigurationsRequest,
-  ) => stream.Stream<
-    WorkerConfigurationSummary,
-    ListWorkerConfigurationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  WorkerConfigurationSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListWorkerConfigurationsRequest,
   output: ListWorkerConfigurationsResponse,
   errors: [
@@ -2254,27 +2136,7 @@ export const listWorkerConfigurations: API.OperationMethod<
     items: "workerConfigurations",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListWorkerConfigurationsRequest,
-  ListWorkerConfigurationsResponse,
-  ListWorkerConfigurationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListWorkerConfigurationsRequest,
-  ) => stream.Stream<
-    ListWorkerConfigurationsResponse,
-    ListWorkerConfigurationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListWorkerConfigurationsRequest,
-  ) => stream.Stream<
-    WorkerConfigurationSummary,
-    ListWorkerConfigurationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type TagResourceError =
   | BadRequestException
@@ -2293,7 +2155,7 @@ export const tagResource: API.OperationMethod<
   TagResourceRequest,
   TagResourceResponse,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -2328,7 +2190,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceRequest,
   UntagResourceResponse,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -2362,7 +2224,7 @@ export const updateConnector: API.OperationMethod<
   UpdateConnectorRequest,
   UpdateConnectorResponse,
   UpdateConnectorError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateConnectorRequest,
   output: UpdateConnectorResponse,

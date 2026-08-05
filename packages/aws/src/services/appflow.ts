@@ -1,7 +1,6 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as redacted from "effect/Redacted";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -9,7 +8,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region as Rgn } from "../region.ts";
 import { SensitiveString } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "Appflow",
@@ -90,61 +88,61 @@ const rules = T.EndpointResolver((p, _) => {
 export class AccessDeniedException
   extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
     "AccessDeniedException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(403),
   ).pipe(C.withAuthError) {}
 export class ConflictException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
     "ConflictException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class ConnectorAuthenticationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConnectorAuthenticationException>()(
     "ConnectorAuthenticationException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(401),
   ).pipe(C.withAuthError) {}
 export class ConnectorServerException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConnectorServerException>()(
     "ConnectorServerException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class InternalServerException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
     "InternalServerException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(500),
   ).pipe(C.withServerError) {}
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class ServiceQuotaExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
     "ServiceQuotaExceededException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(402),
   ).pipe(C.withQuotaError) {}
 export class ThrottlingException
   extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
     "ThrottlingException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(429),
   ).pipe(C.withThrottlingError) {}
 export class UnsupportedOperationException
   extends /*@__PURE__*/ S.TaggedErrorClass<UnsupportedOperationException>()(
     "UnsupportedOperationException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class ValidationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
     "ValidationException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export type FlowName = string;
@@ -3938,7 +3936,7 @@ export const cancelFlowExecutions: API.OperationMethod<
   CancelFlowExecutionsRequest,
   CancelFlowExecutionsResponse,
   CancelFlowExecutionsError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CancelFlowExecutionsRequest,
   output: CancelFlowExecutionsResponse,
@@ -3973,7 +3971,7 @@ export const createConnectorProfile: API.OperationMethod<
   CreateConnectorProfileRequest,
   CreateConnectorProfileResponse,
   CreateConnectorProfileError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateConnectorProfileRequest,
   output: CreateConnectorProfileResponse,
@@ -4011,7 +4009,7 @@ export const createFlow: API.OperationMethod<
   CreateFlowRequest,
   CreateFlowResponse,
   CreateFlowError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateFlowRequest,
   output: CreateFlowResponse,
@@ -4042,7 +4040,7 @@ export const deleteConnectorProfile: API.OperationMethod<
   DeleteConnectorProfileRequest,
   DeleteConnectorProfileResponse,
   DeleteConnectorProfileError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteConnectorProfileRequest,
   output: DeleteConnectorProfileResponse,
@@ -4069,7 +4067,7 @@ export const deleteFlow: API.OperationMethod<
   DeleteFlowRequest,
   DeleteFlowResponse,
   DeleteFlowError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteFlowRequest,
   output: DeleteFlowResponse,
@@ -4097,7 +4095,7 @@ export const describeConnector: API.OperationMethod<
   DescribeConnectorRequest,
   DescribeConnectorResponse,
   DescribeConnectorError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeConnectorRequest,
   output: DescribeConnectorResponse,
@@ -4126,7 +4124,7 @@ export const describeConnectorEntity: API.OperationMethod<
   DescribeConnectorEntityRequest,
   DescribeConnectorEntityResponse,
   DescribeConnectorEntityError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeConnectorEntityRequest,
   output: DescribeConnectorEntityResponse,
@@ -4154,27 +4152,13 @@ export type DescribeConnectorProfilesError =
  * If no names or `connector-types` are provided, returns all connector profiles
  * in a paginated form. If there is no match, this operation returns an empty list.
  */
-export const describeConnectorProfiles: API.OperationMethod<
+export const describeConnectorProfiles: API.PaginatedOperationMethod<
   DescribeConnectorProfilesRequest,
   DescribeConnectorProfilesResponse,
   DescribeConnectorProfilesError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeConnectorProfilesRequest,
-  ) => stream.Stream<
-    DescribeConnectorProfilesResponse,
-    DescribeConnectorProfilesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeConnectorProfilesRequest,
-  ) => stream.Stream<
-    unknown,
-    DescribeConnectorProfilesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeConnectorProfilesRequest,
   output: DescribeConnectorProfilesResponse,
   errors: [InternalServerException, ValidationException],
@@ -4186,27 +4170,7 @@ export const describeConnectorProfiles: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeConnectorProfilesRequest,
-  DescribeConnectorProfilesResponse,
-  DescribeConnectorProfilesError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeConnectorProfilesRequest,
-  ) => stream.Stream<
-    DescribeConnectorProfilesResponse,
-    DescribeConnectorProfilesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeConnectorProfilesRequest,
-  ) => stream.Stream<
-    unknown,
-    DescribeConnectorProfilesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeConnectorsError =
   | InternalServerException
@@ -4218,27 +4182,13 @@ export type DescribeConnectorsError =
  * contains a `nextToken` object, which can be be passed in to the next call to the
  * `DescribeConnectors` API operation to retrieve the next page.
  */
-export const describeConnectors: API.OperationMethod<
+export const describeConnectors: API.PaginatedOperationMethod<
   DescribeConnectorsRequest,
   DescribeConnectorsResponse,
   DescribeConnectorsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeConnectorsRequest,
-  ) => stream.Stream<
-    DescribeConnectorsResponse,
-    DescribeConnectorsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeConnectorsRequest,
-  ) => stream.Stream<
-    unknown,
-    DescribeConnectorsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeConnectorsRequest,
   output: DescribeConnectorsResponse,
   errors: [InternalServerException, ValidationException],
@@ -4250,27 +4200,7 @@ export const describeConnectors: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeConnectorsRequest,
-  DescribeConnectorsResponse,
-  DescribeConnectorsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeConnectorsRequest,
-  ) => stream.Stream<
-    DescribeConnectorsResponse,
-    DescribeConnectorsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeConnectorsRequest,
-  ) => stream.Stream<
-    unknown,
-    DescribeConnectorsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeFlowError =
   | InternalServerException
@@ -4283,7 +4213,7 @@ export const describeFlow: API.OperationMethod<
   DescribeFlowRequest,
   DescribeFlowResponse,
   DescribeFlowError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeFlowRequest,
   output: DescribeFlowResponse,
@@ -4301,27 +4231,13 @@ export type DescribeFlowExecutionRecordsError =
 /**
  * Fetches the execution history of the flow.
  */
-export const describeFlowExecutionRecords: API.OperationMethod<
+export const describeFlowExecutionRecords: API.PaginatedOperationMethod<
   DescribeFlowExecutionRecordsRequest,
   DescribeFlowExecutionRecordsResponse,
   DescribeFlowExecutionRecordsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeFlowExecutionRecordsRequest,
-  ) => stream.Stream<
-    DescribeFlowExecutionRecordsResponse,
-    DescribeFlowExecutionRecordsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeFlowExecutionRecordsRequest,
-  ) => stream.Stream<
-    unknown,
-    DescribeFlowExecutionRecordsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeFlowExecutionRecordsRequest,
   output: DescribeFlowExecutionRecordsResponse,
   errors: [
@@ -4337,27 +4253,7 @@ export const describeFlowExecutionRecords: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeFlowExecutionRecordsRequest,
-  DescribeFlowExecutionRecordsResponse,
-  DescribeFlowExecutionRecordsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeFlowExecutionRecordsRequest,
-  ) => stream.Stream<
-    DescribeFlowExecutionRecordsResponse,
-    DescribeFlowExecutionRecordsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeFlowExecutionRecordsRequest,
-  ) => stream.Stream<
-    unknown,
-    DescribeFlowExecutionRecordsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListConnectorEntitiesError =
   | ConnectorAuthenticationException
@@ -4376,7 +4272,7 @@ export const listConnectorEntities: API.OperationMethod<
   ListConnectorEntitiesRequest,
   ListConnectorEntitiesResponse,
   ListConnectorEntitiesError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListConnectorEntitiesRequest,
   output: ListConnectorEntitiesResponse,
@@ -4401,27 +4297,13 @@ export type ListConnectorsError =
  * This API lists only custom connectors registered in this account, not the Amazon Web Services
  * authored connectors.
  */
-export const listConnectors: API.OperationMethod<
+export const listConnectors: API.PaginatedOperationMethod<
   ListConnectorsRequest,
   ListConnectorsResponse,
   ListConnectorsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListConnectorsRequest,
-  ) => stream.Stream<
-    ListConnectorsResponse,
-    ListConnectorsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListConnectorsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListConnectorsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListConnectorsRequest,
   output: ListConnectorsResponse,
   errors: [InternalServerException, ValidationException],
@@ -4433,27 +4315,7 @@ export const listConnectors: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListConnectorsRequest,
-  ListConnectorsResponse,
-  ListConnectorsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListConnectorsRequest,
-  ) => stream.Stream<
-    ListConnectorsResponse,
-    ListConnectorsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListConnectorsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListConnectorsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListFlowsError =
   | InternalServerException
@@ -4462,27 +4324,13 @@ export type ListFlowsError =
 /**
  * Lists all of the flows associated with your account.
  */
-export const listFlows: API.OperationMethod<
+export const listFlows: API.PaginatedOperationMethod<
   ListFlowsRequest,
   ListFlowsResponse,
   ListFlowsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListFlowsRequest,
-  ) => stream.Stream<
-    ListFlowsResponse,
-    ListFlowsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListFlowsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListFlowsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListFlowsRequest,
   output: ListFlowsResponse,
   errors: [InternalServerException, ValidationException],
@@ -4494,27 +4342,7 @@ export const listFlows: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListFlowsRequest,
-  ListFlowsResponse,
-  ListFlowsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListFlowsRequest,
-  ) => stream.Stream<
-    ListFlowsResponse,
-    ListFlowsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListFlowsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListFlowsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsForResourceError =
   | InternalServerException
@@ -4528,7 +4356,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceRequest,
   ListTagsForResourceResponse,
   ListTagsForResourceError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -4562,7 +4390,7 @@ export const registerConnector: API.OperationMethod<
   RegisterConnectorRequest,
   RegisterConnectorResponse,
   RegisterConnectorError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RegisterConnectorRequest,
   output: RegisterConnectorResponse,
@@ -4602,7 +4430,7 @@ export const resetConnectorMetadataCache: API.OperationMethod<
   ResetConnectorMetadataCacheRequest,
   ResetConnectorMetadataCacheResponse,
   ResetConnectorMetadataCacheError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ResetConnectorMetadataCacheRequest,
   output: ResetConnectorMetadataCacheResponse,
@@ -4631,7 +4459,7 @@ export const startFlow: API.OperationMethod<
   StartFlowRequest,
   StartFlowResponse,
   StartFlowError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartFlowRequest,
   output: StartFlowResponse,
@@ -4661,7 +4489,7 @@ export const stopFlow: API.OperationMethod<
   StopFlowRequest,
   StopFlowResponse,
   StopFlowError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StopFlowRequest,
   output: StopFlowResponse,
@@ -4688,7 +4516,7 @@ export const tagResource: API.OperationMethod<
   TagResourceRequest,
   TagResourceResponse,
   TagResourceError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -4715,7 +4543,7 @@ export const unregisterConnector: API.OperationMethod<
   UnregisterConnectorRequest,
   UnregisterConnectorResponse,
   UnregisterConnectorError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UnregisterConnectorRequest,
   output: UnregisterConnectorResponse,
@@ -4741,7 +4569,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceRequest,
   UntagResourceResponse,
   UntagResourceError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -4770,7 +4598,7 @@ export const updateConnectorProfile: API.OperationMethod<
   UpdateConnectorProfileRequest,
   UpdateConnectorProfileResponse,
   UpdateConnectorProfileError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateConnectorProfileRequest,
   output: UpdateConnectorProfileResponse,
@@ -4810,7 +4638,7 @@ export const updateConnectorRegistration: API.OperationMethod<
   UpdateConnectorRegistrationRequest,
   UpdateConnectorRegistrationResponse,
   UpdateConnectorRegistrationError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateConnectorRegistrationRequest,
   output: UpdateConnectorRegistrationResponse,
@@ -4847,7 +4675,7 @@ export const updateFlow: API.OperationMethod<
   UpdateFlowRequest,
   UpdateFlowResponse,
   UpdateFlowError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateFlowRequest,
   output: UpdateFlowResponse,

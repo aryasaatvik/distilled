@@ -1,7 +1,6 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as redacted from "effect/Redacted";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -9,7 +8,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 import { SensitiveString } from "../sensitive.ts";
 const ns = T.XmlNamespace("http://memorydb.amazonaws.com/doc/2021-01-01/");
 const svc = T.AwsApiService({
@@ -106,7 +104,7 @@ const rules = T.EndpointResolver((p, _) => {
 export class ACLAlreadyExistsFault
   extends /*@__PURE__*/ S.TaggedErrorClass<ACLAlreadyExistsFault>()(
     "ACLAlreadyExistsFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "ACLAlreadyExists", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -115,7 +113,7 @@ export class ACLAlreadyExistsFault
 export class ACLNotFoundFault
   extends /*@__PURE__*/ S.TaggedErrorClass<ACLNotFoundFault>()(
     "ACLNotFoundFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "ACLNotFound", httpResponseCode: 404 }),
       T.HttpError(404),
@@ -124,7 +122,7 @@ export class ACLNotFoundFault
 export class ACLQuotaExceededFault
   extends /*@__PURE__*/ S.TaggedErrorClass<ACLQuotaExceededFault>()(
     "ACLQuotaExceededFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "ACLQuotaExceeded", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -133,7 +131,7 @@ export class ACLQuotaExceededFault
 export class APICallRateForCustomerExceededFault
   extends /*@__PURE__*/ S.TaggedErrorClass<APICallRateForCustomerExceededFault>()(
     "APICallRateForCustomerExceededFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "APICallRateForCustomerExceeded",
@@ -145,7 +143,7 @@ export class APICallRateForCustomerExceededFault
 export class ClusterAlreadyExistsFault
   extends /*@__PURE__*/ S.TaggedErrorClass<ClusterAlreadyExistsFault>()(
     "ClusterAlreadyExistsFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "ClusterAlreadyExists", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -154,7 +152,7 @@ export class ClusterAlreadyExistsFault
 export class ClusterNotFoundFault
   extends /*@__PURE__*/ S.TaggedErrorClass<ClusterNotFoundFault>()(
     "ClusterNotFoundFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "ClusterNotFound", httpResponseCode: 404 }),
       T.HttpError(404),
@@ -163,7 +161,7 @@ export class ClusterNotFoundFault
 export class ClusterQuotaForCustomerExceededFault
   extends /*@__PURE__*/ S.TaggedErrorClass<ClusterQuotaForCustomerExceededFault>()(
     "ClusterQuotaForCustomerExceededFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "ClusterQuotaForCustomerExceeded",
@@ -175,7 +173,7 @@ export class ClusterQuotaForCustomerExceededFault
 export class DefaultUserRequired
   extends /*@__PURE__*/ S.TaggedErrorClass<DefaultUserRequired>()(
     "DefaultUserRequired",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "DefaultUserRequired", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -184,7 +182,7 @@ export class DefaultUserRequired
 export class DuplicateUserNameFault
   extends /*@__PURE__*/ S.TaggedErrorClass<DuplicateUserNameFault>()(
     "DuplicateUserNameFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "DuplicateUserName", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -193,7 +191,7 @@ export class DuplicateUserNameFault
 export class InsufficientClusterCapacityFault
   extends /*@__PURE__*/ S.TaggedErrorClass<InsufficientClusterCapacityFault>()(
     "InsufficientClusterCapacityFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "InsufficientClusterCapacity",
@@ -205,7 +203,7 @@ export class InsufficientClusterCapacityFault
 export class InvalidACLStateFault
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidACLStateFault>()(
     "InvalidACLStateFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "InvalidACLState", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -214,7 +212,7 @@ export class InvalidACLStateFault
 export class InvalidARNFault
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidARNFault>()(
     "InvalidARNFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "InvalidARN", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -223,7 +221,7 @@ export class InvalidARNFault
 export class InvalidClusterStateFault
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidClusterStateFault>()(
     "InvalidClusterStateFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "InvalidClusterState", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -232,7 +230,7 @@ export class InvalidClusterStateFault
 export class InvalidCredentialsException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidCredentialsException>()(
     "InvalidCredentialsException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "InvalidCredentialsException",
@@ -244,7 +242,7 @@ export class InvalidCredentialsException
 export class InvalidKMSKeyFault
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidKMSKeyFault>()(
     "InvalidKMSKeyFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "InvalidKMSKeyFault", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -253,7 +251,7 @@ export class InvalidKMSKeyFault
 export class InvalidMultiRegionClusterStateFault
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidMultiRegionClusterStateFault>()(
     "InvalidMultiRegionClusterStateFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "InvalidMultiRegionClusterState",
@@ -265,7 +263,7 @@ export class InvalidMultiRegionClusterStateFault
 export class InvalidNodeStateFault
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidNodeStateFault>()(
     "InvalidNodeStateFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "InvalidNodeState", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -274,7 +272,7 @@ export class InvalidNodeStateFault
 export class InvalidParameterCombinationException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidParameterCombinationException>()(
     "InvalidParameterCombinationException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "InvalidParameterCombination",
@@ -286,7 +284,7 @@ export class InvalidParameterCombinationException
 export class InvalidParameterGroupStateFault
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidParameterGroupStateFault>()(
     "InvalidParameterGroupStateFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "InvalidParameterGroupState",
@@ -298,7 +296,7 @@ export class InvalidParameterGroupStateFault
 export class InvalidParameterValueException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidParameterValueException>()(
     "InvalidParameterValueException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "InvalidParameterValue", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -307,7 +305,7 @@ export class InvalidParameterValueException
 export class InvalidSnapshotStateFault
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidSnapshotStateFault>()(
     "InvalidSnapshotStateFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "InvalidSnapshotState", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -316,7 +314,7 @@ export class InvalidSnapshotStateFault
 export class InvalidSubnet
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidSubnet>()(
     "InvalidSubnet",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "InvalidSubnet", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -325,7 +323,7 @@ export class InvalidSubnet
 export class InvalidUserStateFault
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidUserStateFault>()(
     "InvalidUserStateFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "InvalidUserState", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -334,7 +332,7 @@ export class InvalidUserStateFault
 export class InvalidVPCNetworkStateFault
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidVPCNetworkStateFault>()(
     "InvalidVPCNetworkStateFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "InvalidVPCNetworkStateFault",
@@ -346,7 +344,7 @@ export class InvalidVPCNetworkStateFault
 export class MultiRegionClusterAlreadyExistsFault
   extends /*@__PURE__*/ S.TaggedErrorClass<MultiRegionClusterAlreadyExistsFault>()(
     "MultiRegionClusterAlreadyExistsFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "MultiRegionClusterAlreadyExistsFault",
@@ -358,7 +356,7 @@ export class MultiRegionClusterAlreadyExistsFault
 export class MultiRegionClusterNotFoundFault
   extends /*@__PURE__*/ S.TaggedErrorClass<MultiRegionClusterNotFoundFault>()(
     "MultiRegionClusterNotFoundFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "MultiRegionClusterNotFound",
@@ -370,7 +368,7 @@ export class MultiRegionClusterNotFoundFault
 export class MultiRegionParameterGroupNotFoundFault
   extends /*@__PURE__*/ S.TaggedErrorClass<MultiRegionParameterGroupNotFoundFault>()(
     "MultiRegionParameterGroupNotFoundFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "MultiRegionParameterGroupNotFoundFault",
@@ -382,7 +380,7 @@ export class MultiRegionParameterGroupNotFoundFault
 export class NodeQuotaForClusterExceededFault
   extends /*@__PURE__*/ S.TaggedErrorClass<NodeQuotaForClusterExceededFault>()(
     "NodeQuotaForClusterExceededFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "NodeQuotaForClusterExceeded",
@@ -394,7 +392,7 @@ export class NodeQuotaForClusterExceededFault
 export class NodeQuotaForCustomerExceededFault
   extends /*@__PURE__*/ S.TaggedErrorClass<NodeQuotaForCustomerExceededFault>()(
     "NodeQuotaForCustomerExceededFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "NodeQuotaForCustomerExceeded",
@@ -406,7 +404,7 @@ export class NodeQuotaForCustomerExceededFault
 export class NoOperationFault
   extends /*@__PURE__*/ S.TaggedErrorClass<NoOperationFault>()(
     "NoOperationFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "NoOperationFault", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -415,7 +413,7 @@ export class NoOperationFault
 export class ParameterGroupAlreadyExistsFault
   extends /*@__PURE__*/ S.TaggedErrorClass<ParameterGroupAlreadyExistsFault>()(
     "ParameterGroupAlreadyExistsFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "ParameterGroupAlreadyExists",
@@ -427,7 +425,7 @@ export class ParameterGroupAlreadyExistsFault
 export class ParameterGroupNotFoundFault
   extends /*@__PURE__*/ S.TaggedErrorClass<ParameterGroupNotFoundFault>()(
     "ParameterGroupNotFoundFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "ParameterGroupNotFound",
@@ -439,7 +437,7 @@ export class ParameterGroupNotFoundFault
 export class ParameterGroupQuotaExceededFault
   extends /*@__PURE__*/ S.TaggedErrorClass<ParameterGroupQuotaExceededFault>()(
     "ParameterGroupQuotaExceededFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "ParameterGroupQuotaExceeded",
@@ -451,7 +449,7 @@ export class ParameterGroupQuotaExceededFault
 export class ReservedNodeAlreadyExistsFault
   extends /*@__PURE__*/ S.TaggedErrorClass<ReservedNodeAlreadyExistsFault>()(
     "ReservedNodeAlreadyExistsFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "ReservedNodeAlreadyExists",
@@ -463,7 +461,7 @@ export class ReservedNodeAlreadyExistsFault
 export class ReservedNodeNotFoundFault
   extends /*@__PURE__*/ S.TaggedErrorClass<ReservedNodeNotFoundFault>()(
     "ReservedNodeNotFoundFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "ReservedNodeNotFound", httpResponseCode: 404 }),
       T.HttpError(404),
@@ -472,7 +470,7 @@ export class ReservedNodeNotFoundFault
 export class ReservedNodeQuotaExceededFault
   extends /*@__PURE__*/ S.TaggedErrorClass<ReservedNodeQuotaExceededFault>()(
     "ReservedNodeQuotaExceededFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "ReservedNodeQuotaExceeded",
@@ -484,7 +482,7 @@ export class ReservedNodeQuotaExceededFault
 export class ReservedNodesOfferingNotFoundFault
   extends /*@__PURE__*/ S.TaggedErrorClass<ReservedNodesOfferingNotFoundFault>()(
     "ReservedNodesOfferingNotFoundFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "ReservedNodesOfferingNotFound",
@@ -496,7 +494,7 @@ export class ReservedNodesOfferingNotFoundFault
 export class ServiceLinkedRoleNotFoundFault
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceLinkedRoleNotFoundFault>()(
     "ServiceLinkedRoleNotFoundFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "ServiceLinkedRoleNotFoundFault",
@@ -508,7 +506,7 @@ export class ServiceLinkedRoleNotFoundFault
 export class ServiceUpdateNotFoundFault
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceUpdateNotFoundFault>()(
     "ServiceUpdateNotFoundFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "ServiceUpdateNotFoundFault",
@@ -520,7 +518,7 @@ export class ServiceUpdateNotFoundFault
 export class ShardNotFoundFault
   extends /*@__PURE__*/ S.TaggedErrorClass<ShardNotFoundFault>()(
     "ShardNotFoundFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "ShardNotFoundFault", httpResponseCode: 404 }),
       T.HttpError(404),
@@ -529,7 +527,7 @@ export class ShardNotFoundFault
 export class ShardsPerClusterQuotaExceededFault
   extends /*@__PURE__*/ S.TaggedErrorClass<ShardsPerClusterQuotaExceededFault>()(
     "ShardsPerClusterQuotaExceededFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "ShardsPerClusterQuotaExceeded",
@@ -541,7 +539,7 @@ export class ShardsPerClusterQuotaExceededFault
 export class SnapshotAlreadyExistsFault
   extends /*@__PURE__*/ S.TaggedErrorClass<SnapshotAlreadyExistsFault>()(
     "SnapshotAlreadyExistsFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "SnapshotAlreadyExistsFault",
@@ -553,7 +551,7 @@ export class SnapshotAlreadyExistsFault
 export class SnapshotNotFoundFault
   extends /*@__PURE__*/ S.TaggedErrorClass<SnapshotNotFoundFault>()(
     "SnapshotNotFoundFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "SnapshotNotFoundFault", httpResponseCode: 404 }),
       T.HttpError(404),
@@ -562,7 +560,7 @@ export class SnapshotNotFoundFault
 export class SnapshotQuotaExceededFault
   extends /*@__PURE__*/ S.TaggedErrorClass<SnapshotQuotaExceededFault>()(
     "SnapshotQuotaExceededFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "SnapshotQuotaExceededFault",
@@ -574,7 +572,7 @@ export class SnapshotQuotaExceededFault
 export class SubnetGroupAlreadyExistsFault
   extends /*@__PURE__*/ S.TaggedErrorClass<SubnetGroupAlreadyExistsFault>()(
     "SubnetGroupAlreadyExistsFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "SubnetGroupAlreadyExists",
@@ -586,7 +584,7 @@ export class SubnetGroupAlreadyExistsFault
 export class SubnetGroupInUseFault
   extends /*@__PURE__*/ S.TaggedErrorClass<SubnetGroupInUseFault>()(
     "SubnetGroupInUseFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "SubnetGroupInUse", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -595,7 +593,7 @@ export class SubnetGroupInUseFault
 export class SubnetGroupNotFoundFault
   extends /*@__PURE__*/ S.TaggedErrorClass<SubnetGroupNotFoundFault>()(
     "SubnetGroupNotFoundFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "SubnetGroupNotFoundFault",
@@ -607,7 +605,7 @@ export class SubnetGroupNotFoundFault
 export class SubnetGroupQuotaExceededFault
   extends /*@__PURE__*/ S.TaggedErrorClass<SubnetGroupQuotaExceededFault>()(
     "SubnetGroupQuotaExceededFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "SubnetGroupQuotaExceeded",
@@ -619,7 +617,7 @@ export class SubnetGroupQuotaExceededFault
 export class SubnetInUse
   extends /*@__PURE__*/ S.TaggedErrorClass<SubnetInUse>()(
     "SubnetInUse",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "SubnetInUse", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -628,7 +626,7 @@ export class SubnetInUse
 export class SubnetNotAllowedFault
   extends /*@__PURE__*/ S.TaggedErrorClass<SubnetNotAllowedFault>()(
     "SubnetNotAllowedFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "SubnetNotAllowedFault", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -637,7 +635,7 @@ export class SubnetNotAllowedFault
 export class SubnetQuotaExceededFault
   extends /*@__PURE__*/ S.TaggedErrorClass<SubnetQuotaExceededFault>()(
     "SubnetQuotaExceededFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "SubnetQuotaExceededFault",
@@ -649,7 +647,7 @@ export class SubnetQuotaExceededFault
 export class TagNotFoundFault
   extends /*@__PURE__*/ S.TaggedErrorClass<TagNotFoundFault>()(
     "TagNotFoundFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "TagNotFound", httpResponseCode: 404 }),
       T.HttpError(404),
@@ -658,7 +656,7 @@ export class TagNotFoundFault
 export class TagQuotaPerResourceExceeded
   extends /*@__PURE__*/ S.TaggedErrorClass<TagQuotaPerResourceExceeded>()(
     "TagQuotaPerResourceExceeded",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "TagQuotaPerResourceExceeded",
@@ -670,7 +668,7 @@ export class TagQuotaPerResourceExceeded
 export class TestFailoverNotAvailableFault
   extends /*@__PURE__*/ S.TaggedErrorClass<TestFailoverNotAvailableFault>()(
     "TestFailoverNotAvailableFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "TestFailoverNotAvailableFault",
@@ -682,7 +680,7 @@ export class TestFailoverNotAvailableFault
 export class UserAlreadyExistsFault
   extends /*@__PURE__*/ S.TaggedErrorClass<UserAlreadyExistsFault>()(
     "UserAlreadyExistsFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "UserAlreadyExists", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -691,7 +689,7 @@ export class UserAlreadyExistsFault
 export class UserNotFoundFault
   extends /*@__PURE__*/ S.TaggedErrorClass<UserNotFoundFault>()(
     "UserNotFoundFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "UserNotFound", httpResponseCode: 404 }),
       T.HttpError(404),
@@ -700,7 +698,7 @@ export class UserNotFoundFault
 export class UserQuotaExceededFault
   extends /*@__PURE__*/ S.TaggedErrorClass<UserQuotaExceededFault>()(
     "UserQuotaExceededFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "UserQuotaExceeded", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -3183,7 +3181,7 @@ export const batchUpdateCluster: API.OperationMethod<
   BatchUpdateClusterRequest,
   BatchUpdateClusterResponse,
   BatchUpdateClusterError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchUpdateClusterRequest,
   output: BatchUpdateClusterResponse,
@@ -3214,7 +3212,7 @@ export const copySnapshot: API.OperationMethod<
   CopySnapshotRequest,
   CopySnapshotResponse,
   CopySnapshotError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CopySnapshotRequest,
   output: CopySnapshotResponse,
@@ -3249,7 +3247,7 @@ export const createACL: API.OperationMethod<
   CreateACLRequest,
   CreateACLResponse,
   CreateACLError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateACLRequest,
   output: CreateACLResponse,
@@ -3294,7 +3292,7 @@ export const createCluster: API.OperationMethod<
   CreateClusterRequest,
   CreateClusterResponse,
   CreateClusterError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateClusterRequest,
   output: CreateClusterResponse,
@@ -3338,7 +3336,7 @@ export const createMultiRegionCluster: API.OperationMethod<
   CreateMultiRegionClusterRequest,
   CreateMultiRegionClusterResponse,
   CreateMultiRegionClusterError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateMultiRegionClusterRequest,
   output: CreateMultiRegionClusterResponse,
@@ -3372,7 +3370,7 @@ export const createParameterGroup: API.OperationMethod<
   CreateParameterGroupRequest,
   CreateParameterGroupResponse,
   CreateParameterGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateParameterGroupRequest,
   output: CreateParameterGroupResponse,
@@ -3407,7 +3405,7 @@ export const createSnapshot: API.OperationMethod<
   CreateSnapshotRequest,
   CreateSnapshotResponse,
   CreateSnapshotError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateSnapshotRequest,
   output: CreateSnapshotResponse,
@@ -3445,7 +3443,7 @@ export const createSubnetGroup: API.OperationMethod<
   CreateSubnetGroupRequest,
   CreateSubnetGroupResponse,
   CreateSubnetGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateSubnetGroupRequest,
   output: CreateSubnetGroupResponse,
@@ -3478,7 +3476,7 @@ export const createUser: API.OperationMethod<
   CreateUserRequest,
   CreateUserResponse,
   CreateUserError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateUserRequest,
   output: CreateUserResponse,
@@ -3507,7 +3505,7 @@ export const deleteACL: API.OperationMethod<
   DeleteACLRequest,
   DeleteACLResponse,
   DeleteACLError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteACLRequest,
   output: DeleteACLResponse,
@@ -3539,7 +3537,7 @@ export const deleteCluster: API.OperationMethod<
   DeleteClusterRequest,
   DeleteClusterResponse,
   DeleteClusterError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteClusterRequest,
   output: DeleteClusterResponse,
@@ -3568,7 +3566,7 @@ export const deleteMultiRegionCluster: API.OperationMethod<
   DeleteMultiRegionClusterRequest,
   DeleteMultiRegionClusterResponse,
   DeleteMultiRegionClusterError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteMultiRegionClusterRequest,
   output: DeleteMultiRegionClusterResponse,
@@ -3597,7 +3595,7 @@ export const deleteParameterGroup: API.OperationMethod<
   DeleteParameterGroupRequest,
   DeleteParameterGroupResponse,
   DeleteParameterGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteParameterGroupRequest,
   output: DeleteParameterGroupResponse,
@@ -3627,7 +3625,7 @@ export const deleteSnapshot: API.OperationMethod<
   DeleteSnapshotRequest,
   DeleteSnapshotResponse,
   DeleteSnapshotError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteSnapshotRequest,
   output: DeleteSnapshotResponse,
@@ -3655,7 +3653,7 @@ export const deleteSubnetGroup: API.OperationMethod<
   DeleteSubnetGroupRequest,
   DeleteSubnetGroupResponse,
   DeleteSubnetGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteSubnetGroupRequest,
   output: DeleteSubnetGroupResponse,
@@ -3681,7 +3679,7 @@ export const deleteUser: API.OperationMethod<
   DeleteUserRequest,
   DeleteUserResponse,
   DeleteUserError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteUserRequest,
   output: DeleteUserResponse,
@@ -3702,27 +3700,13 @@ export type DescribeACLsError =
 /**
  * Returns a list of ACLs.
  */
-export const describeACLs: API.OperationMethod<
+export const describeACLs: API.PaginatedOperationMethod<
   DescribeACLsRequest,
   DescribeACLsResponse,
   DescribeACLsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeACLsRequest,
-  ) => stream.Stream<
-    DescribeACLsResponse,
-    DescribeACLsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeACLsRequest,
-  ) => stream.Stream<
-    ACL,
-    DescribeACLsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ACL
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeACLsRequest,
   output: DescribeACLsResponse,
   errors: [ACLNotFoundFault, InvalidParameterCombinationException],
@@ -3735,27 +3719,7 @@ export const describeACLs: API.OperationMethod<
     items: "ACLs",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeACLsRequest,
-  DescribeACLsResponse,
-  DescribeACLsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeACLsRequest,
-  ) => stream.Stream<
-    DescribeACLsResponse,
-    DescribeACLsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeACLsRequest,
-  ) => stream.Stream<
-    ACL,
-    DescribeACLsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeClustersError =
   | ClusterNotFoundFault
@@ -3766,27 +3730,13 @@ export type DescribeClustersError =
 /**
  * Returns information about all provisioned clusters if no cluster identifier is specified, or about a specific cluster if a cluster name is supplied.
  */
-export const describeClusters: API.OperationMethod<
+export const describeClusters: API.PaginatedOperationMethod<
   DescribeClustersRequest,
   DescribeClustersResponse,
   DescribeClustersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeClustersRequest,
-  ) => stream.Stream<
-    DescribeClustersResponse,
-    DescribeClustersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeClustersRequest,
-  ) => stream.Stream<
-    Cluster,
-    DescribeClustersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Cluster
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeClustersRequest,
   output: DescribeClustersResponse,
   errors: [
@@ -3804,27 +3754,7 @@ export const describeClusters: API.OperationMethod<
     items: "Clusters",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeClustersRequest,
-  DescribeClustersResponse,
-  DescribeClustersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeClustersRequest,
-  ) => stream.Stream<
-    DescribeClustersResponse,
-    DescribeClustersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeClustersRequest,
-  ) => stream.Stream<
-    Cluster,
-    DescribeClustersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeEngineVersionsError =
   | InvalidParameterCombinationException
@@ -3834,27 +3764,13 @@ export type DescribeEngineVersionsError =
 /**
  * Returns a list of the available Redis OSS engine versions.
  */
-export const describeEngineVersions: API.OperationMethod<
+export const describeEngineVersions: API.PaginatedOperationMethod<
   DescribeEngineVersionsRequest,
   DescribeEngineVersionsResponse,
   DescribeEngineVersionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeEngineVersionsRequest,
-  ) => stream.Stream<
-    DescribeEngineVersionsResponse,
-    DescribeEngineVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeEngineVersionsRequest,
-  ) => stream.Stream<
-    EngineVersionInfo,
-    DescribeEngineVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  EngineVersionInfo
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeEngineVersionsRequest,
   output: DescribeEngineVersionsResponse,
   errors: [
@@ -3871,27 +3787,7 @@ export const describeEngineVersions: API.OperationMethod<
     items: "EngineVersions",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeEngineVersionsRequest,
-  DescribeEngineVersionsResponse,
-  DescribeEngineVersionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeEngineVersionsRequest,
-  ) => stream.Stream<
-    DescribeEngineVersionsResponse,
-    DescribeEngineVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeEngineVersionsRequest,
-  ) => stream.Stream<
-    EngineVersionInfo,
-    DescribeEngineVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeEventsError =
   | InvalidParameterCombinationException
@@ -3903,27 +3799,13 @@ export type DescribeEventsError =
  *
  * By default, only the events occurring within the last hour are returned; however, you can retrieve up to 14 days' worth of events if necessary.
  */
-export const describeEvents: API.OperationMethod<
+export const describeEvents: API.PaginatedOperationMethod<
   DescribeEventsRequest,
   DescribeEventsResponse,
   DescribeEventsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeEventsRequest,
-  ) => stream.Stream<
-    DescribeEventsResponse,
-    DescribeEventsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeEventsRequest,
-  ) => stream.Stream<
-    Event,
-    DescribeEventsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Event
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeEventsRequest,
   output: DescribeEventsResponse,
   errors: [
@@ -3940,27 +3822,7 @@ export const describeEvents: API.OperationMethod<
     items: "Events",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeEventsRequest,
-  DescribeEventsResponse,
-  DescribeEventsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeEventsRequest,
-  ) => stream.Stream<
-    DescribeEventsResponse,
-    DescribeEventsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeEventsRequest,
-  ) => stream.Stream<
-    Event,
-    DescribeEventsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeMultiRegionClustersError =
   | ClusterNotFoundFault
@@ -3971,27 +3833,13 @@ export type DescribeMultiRegionClustersError =
 /**
  * Returns details about one or more multi-Region clusters.
  */
-export const describeMultiRegionClusters: API.OperationMethod<
+export const describeMultiRegionClusters: API.PaginatedOperationMethod<
   DescribeMultiRegionClustersRequest,
   DescribeMultiRegionClustersResponse,
   DescribeMultiRegionClustersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeMultiRegionClustersRequest,
-  ) => stream.Stream<
-    DescribeMultiRegionClustersResponse,
-    DescribeMultiRegionClustersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeMultiRegionClustersRequest,
-  ) => stream.Stream<
-    MultiRegionCluster,
-    DescribeMultiRegionClustersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  MultiRegionCluster
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeMultiRegionClustersRequest,
   output: DescribeMultiRegionClustersResponse,
   errors: [
@@ -4009,27 +3857,7 @@ export const describeMultiRegionClusters: API.OperationMethod<
     items: "MultiRegionClusters",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeMultiRegionClustersRequest,
-  DescribeMultiRegionClustersResponse,
-  DescribeMultiRegionClustersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeMultiRegionClustersRequest,
-  ) => stream.Stream<
-    DescribeMultiRegionClustersResponse,
-    DescribeMultiRegionClustersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeMultiRegionClustersRequest,
-  ) => stream.Stream<
-    MultiRegionCluster,
-    DescribeMultiRegionClustersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeMultiRegionParameterGroupsError =
   | InvalidParameterCombinationException
@@ -4044,7 +3872,7 @@ export const describeMultiRegionParameterGroups: API.OperationMethod<
   DescribeMultiRegionParameterGroupsRequest,
   DescribeMultiRegionParameterGroupsResponse,
   DescribeMultiRegionParameterGroupsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeMultiRegionParameterGroupsRequest,
   output: DescribeMultiRegionParameterGroupsResponse,
@@ -4072,7 +3900,7 @@ export const describeMultiRegionParameters: API.OperationMethod<
   DescribeMultiRegionParametersRequest,
   DescribeMultiRegionParametersResponse,
   DescribeMultiRegionParametersError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeMultiRegionParametersRequest,
   output: DescribeMultiRegionParametersResponse,
@@ -4096,27 +3924,13 @@ export type DescribeParameterGroupsError =
 /**
  * Returns a list of parameter group descriptions. If a parameter group name is specified, the list contains only the descriptions for that group.
  */
-export const describeParameterGroups: API.OperationMethod<
+export const describeParameterGroups: API.PaginatedOperationMethod<
   DescribeParameterGroupsRequest,
   DescribeParameterGroupsResponse,
   DescribeParameterGroupsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeParameterGroupsRequest,
-  ) => stream.Stream<
-    DescribeParameterGroupsResponse,
-    DescribeParameterGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeParameterGroupsRequest,
-  ) => stream.Stream<
-    ParameterGroup,
-    DescribeParameterGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ParameterGroup
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeParameterGroupsRequest,
   output: DescribeParameterGroupsResponse,
   errors: [
@@ -4134,27 +3948,7 @@ export const describeParameterGroups: API.OperationMethod<
     items: "ParameterGroups",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeParameterGroupsRequest,
-  DescribeParameterGroupsResponse,
-  DescribeParameterGroupsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeParameterGroupsRequest,
-  ) => stream.Stream<
-    DescribeParameterGroupsResponse,
-    DescribeParameterGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeParameterGroupsRequest,
-  ) => stream.Stream<
-    ParameterGroup,
-    DescribeParameterGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeParametersError =
   | InvalidParameterCombinationException
@@ -4165,27 +3959,13 @@ export type DescribeParametersError =
 /**
  * Returns the detailed parameter list for a particular parameter group.
  */
-export const describeParameters: API.OperationMethod<
+export const describeParameters: API.PaginatedOperationMethod<
   DescribeParametersRequest,
   DescribeParametersResponse,
   DescribeParametersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeParametersRequest,
-  ) => stream.Stream<
-    DescribeParametersResponse,
-    DescribeParametersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeParametersRequest,
-  ) => stream.Stream<
-    Parameter,
-    DescribeParametersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Parameter
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeParametersRequest,
   output: DescribeParametersResponse,
   errors: [
@@ -4203,27 +3983,7 @@ export const describeParameters: API.OperationMethod<
     items: "Parameters",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeParametersRequest,
-  DescribeParametersResponse,
-  DescribeParametersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeParametersRequest,
-  ) => stream.Stream<
-    DescribeParametersResponse,
-    DescribeParametersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeParametersRequest,
-  ) => stream.Stream<
-    Parameter,
-    DescribeParametersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeReservedNodesError =
   | InvalidParameterCombinationException
@@ -4234,27 +3994,13 @@ export type DescribeReservedNodesError =
 /**
  * Returns information about reserved nodes for this account, or about a specified reserved node.
  */
-export const describeReservedNodes: API.OperationMethod<
+export const describeReservedNodes: API.PaginatedOperationMethod<
   DescribeReservedNodesRequest,
   DescribeReservedNodesResponse,
   DescribeReservedNodesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeReservedNodesRequest,
-  ) => stream.Stream<
-    DescribeReservedNodesResponse,
-    DescribeReservedNodesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeReservedNodesRequest,
-  ) => stream.Stream<
-    ReservedNode,
-    DescribeReservedNodesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ReservedNode
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeReservedNodesRequest,
   output: DescribeReservedNodesResponse,
   errors: [
@@ -4272,27 +4018,7 @@ export const describeReservedNodes: API.OperationMethod<
     items: "ReservedNodes",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeReservedNodesRequest,
-  DescribeReservedNodesResponse,
-  DescribeReservedNodesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeReservedNodesRequest,
-  ) => stream.Stream<
-    DescribeReservedNodesResponse,
-    DescribeReservedNodesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeReservedNodesRequest,
-  ) => stream.Stream<
-    ReservedNode,
-    DescribeReservedNodesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeReservedNodesOfferingsError =
   | InvalidParameterCombinationException
@@ -4303,27 +4029,13 @@ export type DescribeReservedNodesOfferingsError =
 /**
  * Lists available reserved node offerings.
  */
-export const describeReservedNodesOfferings: API.OperationMethod<
+export const describeReservedNodesOfferings: API.PaginatedOperationMethod<
   DescribeReservedNodesOfferingsRequest,
   DescribeReservedNodesOfferingsResponse,
   DescribeReservedNodesOfferingsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeReservedNodesOfferingsRequest,
-  ) => stream.Stream<
-    DescribeReservedNodesOfferingsResponse,
-    DescribeReservedNodesOfferingsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeReservedNodesOfferingsRequest,
-  ) => stream.Stream<
-    ReservedNodesOffering,
-    DescribeReservedNodesOfferingsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ReservedNodesOffering
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeReservedNodesOfferingsRequest,
   output: DescribeReservedNodesOfferingsResponse,
   errors: [
@@ -4341,27 +4053,7 @@ export const describeReservedNodesOfferings: API.OperationMethod<
     items: "ReservedNodesOfferings",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeReservedNodesOfferingsRequest,
-  DescribeReservedNodesOfferingsResponse,
-  DescribeReservedNodesOfferingsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeReservedNodesOfferingsRequest,
-  ) => stream.Stream<
-    DescribeReservedNodesOfferingsResponse,
-    DescribeReservedNodesOfferingsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeReservedNodesOfferingsRequest,
-  ) => stream.Stream<
-    ReservedNodesOffering,
-    DescribeReservedNodesOfferingsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeServiceUpdatesError =
   | InvalidParameterCombinationException
@@ -4370,27 +4062,13 @@ export type DescribeServiceUpdatesError =
 /**
  * Returns details of the service updates.
  */
-export const describeServiceUpdates: API.OperationMethod<
+export const describeServiceUpdates: API.PaginatedOperationMethod<
   DescribeServiceUpdatesRequest,
   DescribeServiceUpdatesResponse,
   DescribeServiceUpdatesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeServiceUpdatesRequest,
-  ) => stream.Stream<
-    DescribeServiceUpdatesResponse,
-    DescribeServiceUpdatesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeServiceUpdatesRequest,
-  ) => stream.Stream<
-    ServiceUpdate,
-    DescribeServiceUpdatesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ServiceUpdate
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeServiceUpdatesRequest,
   output: DescribeServiceUpdatesResponse,
   errors: [
@@ -4406,27 +4084,7 @@ export const describeServiceUpdates: API.OperationMethod<
     items: "ServiceUpdates",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeServiceUpdatesRequest,
-  DescribeServiceUpdatesResponse,
-  DescribeServiceUpdatesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeServiceUpdatesRequest,
-  ) => stream.Stream<
-    DescribeServiceUpdatesResponse,
-    DescribeServiceUpdatesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeServiceUpdatesRequest,
-  ) => stream.Stream<
-    ServiceUpdate,
-    DescribeServiceUpdatesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeSnapshotsError =
   | InvalidParameterCombinationException
@@ -4438,27 +4096,13 @@ export type DescribeSnapshotsError =
  * Returns information about cluster snapshots. By default, DescribeSnapshots lists all of your snapshots; it can optionally describe a single snapshot,
  * or just the snapshots associated with a particular cluster.
  */
-export const describeSnapshots: API.OperationMethod<
+export const describeSnapshots: API.PaginatedOperationMethod<
   DescribeSnapshotsRequest,
   DescribeSnapshotsResponse,
   DescribeSnapshotsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeSnapshotsRequest,
-  ) => stream.Stream<
-    DescribeSnapshotsResponse,
-    DescribeSnapshotsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeSnapshotsRequest,
-  ) => stream.Stream<
-    Snapshot,
-    DescribeSnapshotsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Snapshot
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeSnapshotsRequest,
   output: DescribeSnapshotsResponse,
   errors: [
@@ -4476,27 +4120,7 @@ export const describeSnapshots: API.OperationMethod<
     items: "Snapshots",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeSnapshotsRequest,
-  DescribeSnapshotsResponse,
-  DescribeSnapshotsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeSnapshotsRequest,
-  ) => stream.Stream<
-    DescribeSnapshotsResponse,
-    DescribeSnapshotsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeSnapshotsRequest,
-  ) => stream.Stream<
-    Snapshot,
-    DescribeSnapshotsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeSubnetGroupsError =
   | ServiceLinkedRoleNotFoundFault
@@ -4505,27 +4129,13 @@ export type DescribeSubnetGroupsError =
 /**
  * Returns a list of subnet group descriptions. If a subnet group name is specified, the list contains only the description of that group.
  */
-export const describeSubnetGroups: API.OperationMethod<
+export const describeSubnetGroups: API.PaginatedOperationMethod<
   DescribeSubnetGroupsRequest,
   DescribeSubnetGroupsResponse,
   DescribeSubnetGroupsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeSubnetGroupsRequest,
-  ) => stream.Stream<
-    DescribeSubnetGroupsResponse,
-    DescribeSubnetGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeSubnetGroupsRequest,
-  ) => stream.Stream<
-    SubnetGroup,
-    DescribeSubnetGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  SubnetGroup
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeSubnetGroupsRequest,
   output: DescribeSubnetGroupsResponse,
   errors: [ServiceLinkedRoleNotFoundFault, SubnetGroupNotFoundFault],
@@ -4538,27 +4148,7 @@ export const describeSubnetGroups: API.OperationMethod<
     items: "SubnetGroups",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeSubnetGroupsRequest,
-  DescribeSubnetGroupsResponse,
-  DescribeSubnetGroupsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeSubnetGroupsRequest,
-  ) => stream.Stream<
-    DescribeSubnetGroupsResponse,
-    DescribeSubnetGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeSubnetGroupsRequest,
-  ) => stream.Stream<
-    SubnetGroup,
-    DescribeSubnetGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeUsersError =
   | InvalidParameterCombinationException
@@ -4567,27 +4157,13 @@ export type DescribeUsersError =
 /**
  * Returns a list of users.
  */
-export const describeUsers: API.OperationMethod<
+export const describeUsers: API.PaginatedOperationMethod<
   DescribeUsersRequest,
   DescribeUsersResponse,
   DescribeUsersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeUsersRequest,
-  ) => stream.Stream<
-    DescribeUsersResponse,
-    DescribeUsersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeUsersRequest,
-  ) => stream.Stream<
-    User,
-    DescribeUsersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  User
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeUsersRequest,
   output: DescribeUsersResponse,
   errors: [InvalidParameterCombinationException, UserNotFoundFault],
@@ -4600,27 +4176,7 @@ export const describeUsers: API.OperationMethod<
     items: "Users",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeUsersRequest,
-  DescribeUsersResponse,
-  DescribeUsersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeUsersRequest,
-  ) => stream.Stream<
-    DescribeUsersResponse,
-    DescribeUsersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeUsersRequest,
-  ) => stream.Stream<
-    User,
-    DescribeUsersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type FailoverShardError =
   | APICallRateForCustomerExceededFault
@@ -4640,7 +4196,7 @@ export const failoverShard: API.OperationMethod<
   FailoverShardRequest,
   FailoverShardResponse,
   FailoverShardError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: FailoverShardRequest,
   output: FailoverShardResponse,
@@ -4671,7 +4227,7 @@ export const listAllowedMultiRegionClusterUpdates: API.OperationMethod<
   ListAllowedMultiRegionClusterUpdatesRequest,
   ListAllowedMultiRegionClusterUpdatesResponse,
   ListAllowedMultiRegionClusterUpdatesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListAllowedMultiRegionClusterUpdatesRequest,
   output: ListAllowedMultiRegionClusterUpdatesResponse,
@@ -4700,7 +4256,7 @@ export const listAllowedNodeTypeUpdates: API.OperationMethod<
   ListAllowedNodeTypeUpdatesRequest,
   ListAllowedNodeTypeUpdatesResponse,
   ListAllowedNodeTypeUpdatesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListAllowedNodeTypeUpdatesRequest,
   output: ListAllowedNodeTypeUpdatesResponse,
@@ -4737,7 +4293,7 @@ export const listTags: API.OperationMethod<
   ListTagsRequest,
   ListTagsResponse,
   ListTagsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsRequest,
   output: ListTagsResponse,
@@ -4775,7 +4331,7 @@ export const purchaseReservedNodesOffering: API.OperationMethod<
   PurchaseReservedNodesOfferingRequest,
   PurchaseReservedNodesOfferingResponse,
   PurchaseReservedNodesOfferingError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PurchaseReservedNodesOfferingRequest,
   output: PurchaseReservedNodesOfferingResponse,
@@ -4807,7 +4363,7 @@ export const resetParameterGroup: API.OperationMethod<
   ResetParameterGroupRequest,
   ResetParameterGroupResponse,
   ResetParameterGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ResetParameterGroupRequest,
   output: ResetParameterGroupResponse,
@@ -4853,7 +4409,7 @@ export const tagResource: API.OperationMethod<
   TagResourceRequest,
   TagResourceResponse,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -4907,7 +4463,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceRequest,
   UntagResourceResponse,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -4947,7 +4503,7 @@ export const updateACL: API.OperationMethod<
   UpdateACLRequest,
   UpdateACLResponse,
   UpdateACLError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateACLRequest,
   output: UpdateACLResponse,
@@ -4990,7 +4546,7 @@ export const updateCluster: API.OperationMethod<
   UpdateClusterRequest,
   UpdateClusterResponse,
   UpdateClusterError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateClusterRequest,
   output: UpdateClusterResponse,
@@ -5031,7 +4587,7 @@ export const updateMultiRegionCluster: API.OperationMethod<
   UpdateMultiRegionClusterRequest,
   UpdateMultiRegionClusterResponse,
   UpdateMultiRegionClusterError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateMultiRegionClusterRequest,
   output: UpdateMultiRegionClusterResponse,
@@ -5061,7 +4617,7 @@ export const updateParameterGroup: API.OperationMethod<
   UpdateParameterGroupRequest,
   UpdateParameterGroupResponse,
   UpdateParameterGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateParameterGroupRequest,
   output: UpdateParameterGroupResponse,
@@ -5092,7 +4648,7 @@ export const updateSubnetGroup: API.OperationMethod<
   UpdateSubnetGroupRequest,
   UpdateSubnetGroupResponse,
   UpdateSubnetGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateSubnetGroupRequest,
   output: UpdateSubnetGroupResponse,
@@ -5122,7 +4678,7 @@ export const updateUser: API.OperationMethod<
   UpdateUserRequest,
   UpdateUserResponse,
   UpdateUserError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateUserRequest,
   output: UpdateUserResponse,

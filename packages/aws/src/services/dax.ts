@@ -7,7 +7,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 const ns = T.XmlNamespace("http://dax.amazonaws.com/doc/2017-04-19/");
 const svc = T.AwsApiService({ sdkId: "DAX", serviceShapeName: "AmazonDAXV3" });
 const auth = T.AwsAuthSigv4({ name: "dax" });
@@ -85,7 +84,7 @@ const rules = T.EndpointResolver((p, _) => {
 export class ClusterAlreadyExistsFault
   extends /*@__PURE__*/ S.TaggedErrorClass<ClusterAlreadyExistsFault>()(
     "ClusterAlreadyExistsFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "ClusterAlreadyExists", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -94,7 +93,7 @@ export class ClusterAlreadyExistsFault
 export class ClusterNotFoundFault
   extends /*@__PURE__*/ S.TaggedErrorClass<ClusterNotFoundFault>()(
     "ClusterNotFoundFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "ClusterNotFound", httpResponseCode: 404 }),
       T.HttpError(404),
@@ -103,7 +102,7 @@ export class ClusterNotFoundFault
 export class ClusterQuotaForCustomerExceededFault
   extends /*@__PURE__*/ S.TaggedErrorClass<ClusterQuotaForCustomerExceededFault>()(
     "ClusterQuotaForCustomerExceededFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "ClusterQuotaForCustomerExceeded",
@@ -115,7 +114,7 @@ export class ClusterQuotaForCustomerExceededFault
 export class InsufficientClusterCapacityFault
   extends /*@__PURE__*/ S.TaggedErrorClass<InsufficientClusterCapacityFault>()(
     "InsufficientClusterCapacityFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "InsufficientClusterCapacity",
@@ -127,7 +126,7 @@ export class InsufficientClusterCapacityFault
 export class InvalidARNFault
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidARNFault>()(
     "InvalidARNFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "InvalidARN", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -136,7 +135,7 @@ export class InvalidARNFault
 export class InvalidClusterStateFault
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidClusterStateFault>()(
     "InvalidClusterStateFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "InvalidClusterState", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -145,7 +144,7 @@ export class InvalidClusterStateFault
 export class InvalidParameterCombinationException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidParameterCombinationException>()(
     "InvalidParameterCombinationException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "InvalidParameterCombination",
@@ -157,7 +156,7 @@ export class InvalidParameterCombinationException
 export class InvalidParameterGroupStateFault
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidParameterGroupStateFault>()(
     "InvalidParameterGroupStateFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "InvalidParameterGroupState",
@@ -169,7 +168,7 @@ export class InvalidParameterGroupStateFault
 export class InvalidParameterValueException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidParameterValueException>()(
     "InvalidParameterValueException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "InvalidParameterValue", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -178,7 +177,7 @@ export class InvalidParameterValueException
 export class InvalidSubnet
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidSubnet>()(
     "InvalidSubnet",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "InvalidSubnet", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -187,7 +186,7 @@ export class InvalidSubnet
 export class InvalidVPCNetworkStateFault
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidVPCNetworkStateFault>()(
     "InvalidVPCNetworkStateFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "InvalidVPCNetworkStateFault",
@@ -199,7 +198,7 @@ export class InvalidVPCNetworkStateFault
 export class NodeNotFoundFault
   extends /*@__PURE__*/ S.TaggedErrorClass<NodeNotFoundFault>()(
     "NodeNotFoundFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "NodeNotFound", httpResponseCode: 404 }),
       T.HttpError(404),
@@ -208,7 +207,7 @@ export class NodeNotFoundFault
 export class NodeQuotaForClusterExceededFault
   extends /*@__PURE__*/ S.TaggedErrorClass<NodeQuotaForClusterExceededFault>()(
     "NodeQuotaForClusterExceededFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "NodeQuotaForClusterExceeded",
@@ -220,7 +219,7 @@ export class NodeQuotaForClusterExceededFault
 export class NodeQuotaForCustomerExceededFault
   extends /*@__PURE__*/ S.TaggedErrorClass<NodeQuotaForCustomerExceededFault>()(
     "NodeQuotaForCustomerExceededFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "NodeQuotaForCustomerExceeded",
@@ -232,7 +231,7 @@ export class NodeQuotaForCustomerExceededFault
 export class ParameterGroupAlreadyExistsFault
   extends /*@__PURE__*/ S.TaggedErrorClass<ParameterGroupAlreadyExistsFault>()(
     "ParameterGroupAlreadyExistsFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "ParameterGroupAlreadyExists",
@@ -244,7 +243,7 @@ export class ParameterGroupAlreadyExistsFault
 export class ParameterGroupNotFoundFault
   extends /*@__PURE__*/ S.TaggedErrorClass<ParameterGroupNotFoundFault>()(
     "ParameterGroupNotFoundFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "ParameterGroupNotFound",
@@ -256,7 +255,7 @@ export class ParameterGroupNotFoundFault
 export class ParameterGroupQuotaExceededFault
   extends /*@__PURE__*/ S.TaggedErrorClass<ParameterGroupQuotaExceededFault>()(
     "ParameterGroupQuotaExceededFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "ParameterGroupQuotaExceeded",
@@ -268,7 +267,7 @@ export class ParameterGroupQuotaExceededFault
 export class ServiceLinkedRoleNotFoundFault
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceLinkedRoleNotFoundFault>()(
     "ServiceLinkedRoleNotFoundFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "ServiceLinkedRoleNotFoundFault",
@@ -280,7 +279,7 @@ export class ServiceLinkedRoleNotFoundFault
 export class ServiceQuotaExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
     "ServiceQuotaExceededException",
-    {},
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "ServiceQuotaExceeded", httpResponseCode: 402 }),
       T.HttpError(402),
@@ -289,7 +288,7 @@ export class ServiceQuotaExceededException
 export class SubnetGroupAlreadyExistsFault
   extends /*@__PURE__*/ S.TaggedErrorClass<SubnetGroupAlreadyExistsFault>()(
     "SubnetGroupAlreadyExistsFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "SubnetGroupAlreadyExists",
@@ -301,7 +300,7 @@ export class SubnetGroupAlreadyExistsFault
 export class SubnetGroupInUseFault
   extends /*@__PURE__*/ S.TaggedErrorClass<SubnetGroupInUseFault>()(
     "SubnetGroupInUseFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "SubnetGroupInUse", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -310,7 +309,7 @@ export class SubnetGroupInUseFault
 export class SubnetGroupNotFoundFault
   extends /*@__PURE__*/ S.TaggedErrorClass<SubnetGroupNotFoundFault>()(
     "SubnetGroupNotFoundFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "SubnetGroupNotFoundFault",
@@ -322,7 +321,7 @@ export class SubnetGroupNotFoundFault
 export class SubnetGroupQuotaExceededFault
   extends /*@__PURE__*/ S.TaggedErrorClass<SubnetGroupQuotaExceededFault>()(
     "SubnetGroupQuotaExceededFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "SubnetGroupQuotaExceeded",
@@ -334,7 +333,7 @@ export class SubnetGroupQuotaExceededFault
 export class SubnetInUse
   extends /*@__PURE__*/ S.TaggedErrorClass<SubnetInUse>()(
     "SubnetInUse",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "SubnetInUse", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -343,7 +342,7 @@ export class SubnetInUse
 export class SubnetNotAllowedFault
   extends /*@__PURE__*/ S.TaggedErrorClass<SubnetNotAllowedFault>()(
     "SubnetNotAllowedFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "SubnetNotAllowedFault", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -352,7 +351,7 @@ export class SubnetNotAllowedFault
 export class SubnetQuotaExceededFault
   extends /*@__PURE__*/ S.TaggedErrorClass<SubnetQuotaExceededFault>()(
     "SubnetQuotaExceededFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "SubnetQuotaExceededFault",
@@ -364,7 +363,7 @@ export class SubnetQuotaExceededFault
 export class TagNotFoundFault
   extends /*@__PURE__*/ S.TaggedErrorClass<TagNotFoundFault>()(
     "TagNotFoundFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "TagNotFound", httpResponseCode: 404 }),
       T.HttpError(404),
@@ -373,7 +372,7 @@ export class TagNotFoundFault
 export class TagQuotaPerResourceExceeded
   extends /*@__PURE__*/ S.TaggedErrorClass<TagQuotaPerResourceExceeded>()(
     "TagQuotaPerResourceExceeded",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "TagQuotaPerResourceExceeded",
@@ -1414,7 +1413,7 @@ export const createCluster: API.OperationMethod<
   CreateClusterRequest,
   CreateClusterResponse,
   CreateClusterError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateClusterRequest,
   output: CreateClusterResponse,
@@ -1456,7 +1455,7 @@ export const createParameterGroup: API.OperationMethod<
   CreateParameterGroupRequest,
   CreateParameterGroupResponse,
   CreateParameterGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateParameterGroupRequest,
   output: CreateParameterGroupResponse,
@@ -1488,7 +1487,7 @@ export const createSubnetGroup: API.OperationMethod<
   CreateSubnetGroupRequest,
   CreateSubnetGroupResponse,
   CreateSubnetGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateSubnetGroupRequest,
   output: CreateSubnetGroupResponse,
@@ -1524,7 +1523,7 @@ export const decreaseReplicationFactor: API.OperationMethod<
   DecreaseReplicationFactorRequest,
   DecreaseReplicationFactorResponse,
   DecreaseReplicationFactorError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DecreaseReplicationFactorRequest,
   output: DecreaseReplicationFactorResponse,
@@ -1559,7 +1558,7 @@ export const deleteCluster: API.OperationMethod<
   DeleteClusterRequest,
   DeleteClusterResponse,
   DeleteClusterError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteClusterRequest,
   output: DeleteClusterResponse,
@@ -1590,7 +1589,7 @@ export const deleteParameterGroup: API.OperationMethod<
   DeleteParameterGroupRequest,
   DeleteParameterGroupResponse,
   DeleteParameterGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteParameterGroupRequest,
   output: DeleteParameterGroupResponse,
@@ -1621,7 +1620,7 @@ export const deleteSubnetGroup: API.OperationMethod<
   DeleteSubnetGroupRequest,
   DeleteSubnetGroupResponse,
   DeleteSubnetGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteSubnetGroupRequest,
   output: DeleteSubnetGroupResponse,
@@ -1664,7 +1663,7 @@ export const describeClusters: API.OperationMethod<
   DescribeClustersRequest,
   DescribeClustersResponse,
   DescribeClustersError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeClustersRequest,
   output: DescribeClustersResponse,
@@ -1692,7 +1691,7 @@ export const describeDefaultParameters: API.OperationMethod<
   DescribeDefaultParametersRequest,
   DescribeDefaultParametersResponse,
   DescribeDefaultParametersError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeDefaultParametersRequest,
   output: DescribeDefaultParametersResponse,
@@ -1723,7 +1722,7 @@ export const describeEvents: API.OperationMethod<
   DescribeEventsRequest,
   DescribeEventsResponse,
   DescribeEventsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeEventsRequest,
   output: DescribeEventsResponse,
@@ -1751,7 +1750,7 @@ export const describeParameterGroups: API.OperationMethod<
   DescribeParameterGroupsRequest,
   DescribeParameterGroupsResponse,
   DescribeParameterGroupsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeParameterGroupsRequest,
   output: DescribeParameterGroupsResponse,
@@ -1779,7 +1778,7 @@ export const describeParameters: API.OperationMethod<
   DescribeParametersRequest,
   DescribeParametersResponse,
   DescribeParametersError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeParametersRequest,
   output: DescribeParametersResponse,
@@ -1806,7 +1805,7 @@ export const describeSubnetGroups: API.OperationMethod<
   DescribeSubnetGroupsRequest,
   DescribeSubnetGroupsResponse,
   DescribeSubnetGroupsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeSubnetGroupsRequest,
   output: DescribeSubnetGroupsResponse,
@@ -1834,7 +1833,7 @@ export const increaseReplicationFactor: API.OperationMethod<
   IncreaseReplicationFactorRequest,
   IncreaseReplicationFactorResponse,
   IncreaseReplicationFactorError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: IncreaseReplicationFactorRequest,
   output: IncreaseReplicationFactorResponse,
@@ -1870,7 +1869,7 @@ export const listTags: API.OperationMethod<
   ListTagsRequest,
   ListTagsResponse,
   ListTagsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsRequest,
   output: ListTagsResponse,
@@ -1907,7 +1906,7 @@ export const rebootNode: API.OperationMethod<
   RebootNodeRequest,
   RebootNodeResponse,
   RebootNodeError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RebootNodeRequest,
   output: RebootNodeResponse,
@@ -1942,7 +1941,7 @@ export const tagResource: API.OperationMethod<
   TagResourceRequest,
   TagResourceResponse,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -1977,7 +1976,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceRequest,
   UntagResourceResponse,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -2013,7 +2012,7 @@ export const updateCluster: API.OperationMethod<
   UpdateClusterRequest,
   UpdateClusterResponse,
   UpdateClusterError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateClusterRequest,
   output: UpdateClusterResponse,
@@ -2046,7 +2045,7 @@ export const updateParameterGroup: API.OperationMethod<
   UpdateParameterGroupRequest,
   UpdateParameterGroupResponse,
   UpdateParameterGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateParameterGroupRequest,
   output: UpdateParameterGroupResponse,
@@ -2077,7 +2076,7 @@ export const updateSubnetGroup: API.OperationMethod<
   UpdateSubnetGroupRequest,
   UpdateSubnetGroupResponse,
   UpdateSubnetGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateSubnetGroupRequest,
   output: UpdateSubnetGroupResponse,

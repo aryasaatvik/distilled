@@ -1,6 +1,5 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -8,7 +7,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 const ns = T.XmlNamespace(
   "http://elasticloadbalancing.amazonaws.com/doc/2012-06-01/",
 );
@@ -94,7 +92,7 @@ const rules = T.EndpointResolver((p, _) => {
 export class AccessPointNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<AccessPointNotFoundException>()(
     "AccessPointNotFoundException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "LoadBalancerNotFound", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -103,7 +101,7 @@ export class AccessPointNotFoundException
 export class CertificateNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<CertificateNotFoundException>()(
     "CertificateNotFoundException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "CertificateNotFound", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -112,7 +110,7 @@ export class CertificateNotFoundException
 export class DependencyThrottleException
   extends /*@__PURE__*/ S.TaggedErrorClass<DependencyThrottleException>()(
     "DependencyThrottleException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "DependencyThrottle", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -121,7 +119,7 @@ export class DependencyThrottleException
 export class DuplicateAccessPointNameException
   extends /*@__PURE__*/ S.TaggedErrorClass<DuplicateAccessPointNameException>()(
     "DuplicateAccessPointNameException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "DuplicateLoadBalancerName",
@@ -133,7 +131,7 @@ export class DuplicateAccessPointNameException
 export class DuplicateListenerException
   extends /*@__PURE__*/ S.TaggedErrorClass<DuplicateListenerException>()(
     "DuplicateListenerException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "DuplicateListener", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -142,7 +140,7 @@ export class DuplicateListenerException
 export class DuplicatePolicyNameException
   extends /*@__PURE__*/ S.TaggedErrorClass<DuplicatePolicyNameException>()(
     "DuplicatePolicyNameException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "DuplicatePolicyName", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -151,7 +149,7 @@ export class DuplicatePolicyNameException
 export class DuplicateTagKeysException
   extends /*@__PURE__*/ S.TaggedErrorClass<DuplicateTagKeysException>()(
     "DuplicateTagKeysException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "DuplicateTagKeys", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -160,7 +158,7 @@ export class DuplicateTagKeysException
 export class InvalidConfigurationRequestException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidConfigurationRequestException>()(
     "InvalidConfigurationRequestException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "InvalidConfigurationRequest",
@@ -172,7 +170,7 @@ export class InvalidConfigurationRequestException
 export class InvalidEndPointException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidEndPointException>()(
     "InvalidEndPointException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "InvalidInstance", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -181,7 +179,7 @@ export class InvalidEndPointException
 export class InvalidSchemeException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidSchemeException>()(
     "InvalidSchemeException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "InvalidScheme", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -190,7 +188,7 @@ export class InvalidSchemeException
 export class InvalidSecurityGroupException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidSecurityGroupException>()(
     "InvalidSecurityGroupException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "InvalidSecurityGroup", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -199,7 +197,7 @@ export class InvalidSecurityGroupException
 export class InvalidSubnetException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidSubnetException>()(
     "InvalidSubnetException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "InvalidSubnet", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -208,7 +206,7 @@ export class InvalidSubnetException
 export class ListenerNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ListenerNotFoundException>()(
     "ListenerNotFoundException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "ListenerNotFound", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -217,7 +215,7 @@ export class ListenerNotFoundException
 export class LoadBalancerAttributeNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<LoadBalancerAttributeNotFoundException>()(
     "LoadBalancerAttributeNotFoundException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "LoadBalancerAttributeNotFound",
@@ -229,7 +227,7 @@ export class LoadBalancerAttributeNotFoundException
 export class OperationNotPermittedException
   extends /*@__PURE__*/ S.TaggedErrorClass<OperationNotPermittedException>()(
     "OperationNotPermittedException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "OperationNotPermitted", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -238,7 +236,7 @@ export class OperationNotPermittedException
 export class PolicyNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<PolicyNotFoundException>()(
     "PolicyNotFoundException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "PolicyNotFound", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -247,7 +245,7 @@ export class PolicyNotFoundException
 export class PolicyTypeNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<PolicyTypeNotFoundException>()(
     "PolicyTypeNotFoundException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "PolicyTypeNotFound", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -256,7 +254,7 @@ export class PolicyTypeNotFoundException
 export class SubnetNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<SubnetNotFoundException>()(
     "SubnetNotFoundException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "SubnetNotFound", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -265,7 +263,7 @@ export class SubnetNotFoundException
 export class TooManyAccessPointsException
   extends /*@__PURE__*/ S.TaggedErrorClass<TooManyAccessPointsException>()(
     "TooManyAccessPointsException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "TooManyLoadBalancers", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -274,7 +272,7 @@ export class TooManyAccessPointsException
 export class TooManyPoliciesException
   extends /*@__PURE__*/ S.TaggedErrorClass<TooManyPoliciesException>()(
     "TooManyPoliciesException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "TooManyPolicies", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -283,7 +281,7 @@ export class TooManyPoliciesException
 export class TooManyTagsException
   extends /*@__PURE__*/ S.TaggedErrorClass<TooManyTagsException>()(
     "TooManyTagsException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "TooManyTags", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -292,7 +290,7 @@ export class TooManyTagsException
 export class UnsupportedProtocolException
   extends /*@__PURE__*/ S.TaggedErrorClass<UnsupportedProtocolException>()(
     "UnsupportedProtocolException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "UnsupportedProtocol", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -1610,7 +1608,7 @@ export const addTags: API.OperationMethod<
   AddTagsInput,
   AddTagsOutput,
   AddTagsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AddTagsInput,
   output: AddTagsOutput,
@@ -1639,7 +1637,7 @@ export const applySecurityGroupsToLoadBalancer: API.OperationMethod<
   ApplySecurityGroupsToLoadBalancerInput,
   ApplySecurityGroupsToLoadBalancerOutput,
   ApplySecurityGroupsToLoadBalancerError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ApplySecurityGroupsToLoadBalancerInput,
   output: ApplySecurityGroupsToLoadBalancerOutput,
@@ -1670,7 +1668,7 @@ export const attachLoadBalancerToSubnets: API.OperationMethod<
   AttachLoadBalancerToSubnetsInput,
   AttachLoadBalancerToSubnetsOutput,
   AttachLoadBalancerToSubnetsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AttachLoadBalancerToSubnetsInput,
   output: AttachLoadBalancerToSubnetsOutput,
@@ -1698,7 +1696,7 @@ export const configureHealthCheck: API.OperationMethod<
   ConfigureHealthCheckInput,
   ConfigureHealthCheckOutput,
   ConfigureHealthCheckError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ConfigureHealthCheckInput,
   output: ConfigureHealthCheckOutput,
@@ -1732,7 +1730,7 @@ export const createAppCookieStickinessPolicy: API.OperationMethod<
   CreateAppCookieStickinessPolicyInput,
   CreateAppCookieStickinessPolicyOutput,
   CreateAppCookieStickinessPolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateAppCookieStickinessPolicyInput,
   output: CreateAppCookieStickinessPolicyOutput,
@@ -1768,7 +1766,7 @@ export const createLBCookieStickinessPolicy: API.OperationMethod<
   CreateLBCookieStickinessPolicyInput,
   CreateLBCookieStickinessPolicyOutput,
   CreateLBCookieStickinessPolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateLBCookieStickinessPolicyInput,
   output: CreateLBCookieStickinessPolicyOutput,
@@ -1818,7 +1816,7 @@ export const createLoadBalancer: API.OperationMethod<
   CreateAccessPointInput,
   CreateAccessPointOutput,
   CreateLoadBalancerError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateAccessPointInput,
   output: CreateAccessPointOutput,
@@ -1858,7 +1856,7 @@ export const createLoadBalancerListeners: API.OperationMethod<
   CreateLoadBalancerListenerInput,
   CreateLoadBalancerListenerOutput,
   CreateLoadBalancerListenersError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateLoadBalancerListenerInput,
   output: CreateLoadBalancerListenerOutput,
@@ -1890,7 +1888,7 @@ export const createLoadBalancerPolicy: API.OperationMethod<
   CreateLoadBalancerPolicyInput,
   CreateLoadBalancerPolicyOutput,
   CreateLoadBalancerPolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateLoadBalancerPolicyInput,
   output: CreateLoadBalancerPolicyOutput,
@@ -1919,7 +1917,7 @@ export const deleteLoadBalancer: API.OperationMethod<
   DeleteAccessPointInput,
   DeleteAccessPointOutput,
   DeleteLoadBalancerError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteAccessPointInput,
   output: DeleteAccessPointOutput,
@@ -1939,7 +1937,7 @@ export const deleteLoadBalancerListeners: API.OperationMethod<
   DeleteLoadBalancerListenerInput,
   DeleteLoadBalancerListenerOutput,
   DeleteLoadBalancerListenersError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteLoadBalancerListenerInput,
   output: DeleteLoadBalancerListenerOutput,
@@ -1960,7 +1958,7 @@ export const deleteLoadBalancerPolicy: API.OperationMethod<
   DeleteLoadBalancerPolicyInput,
   DeleteLoadBalancerPolicyOutput,
   DeleteLoadBalancerPolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteLoadBalancerPolicyInput,
   output: DeleteLoadBalancerPolicyOutput,
@@ -1986,7 +1984,7 @@ export const deregisterInstancesFromLoadBalancer: API.OperationMethod<
   DeregisterEndPointsInput,
   DeregisterEndPointsOutput,
   DeregisterInstancesFromLoadBalancerError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeregisterEndPointsInput,
   output: DeregisterEndPointsOutput,
@@ -2007,7 +2005,7 @@ export const describeAccountLimits: API.OperationMethod<
   DescribeAccountLimitsInput,
   DescribeAccountLimitsOutput,
   DescribeAccountLimitsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeAccountLimitsInput,
   output: DescribeAccountLimitsOutput,
@@ -2028,7 +2026,7 @@ export const describeInstanceHealth: API.OperationMethod<
   DescribeEndPointStateInput,
   DescribeEndPointStateOutput,
   DescribeInstanceHealthError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeEndPointStateInput,
   output: DescribeEndPointStateOutput,
@@ -2049,7 +2047,7 @@ export const describeLoadBalancerAttributes: API.OperationMethod<
   DescribeLoadBalancerAttributesInput,
   DescribeLoadBalancerAttributesOutput,
   DescribeLoadBalancerAttributesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeLoadBalancerAttributesInput,
   output: DescribeLoadBalancerAttributesOutput,
@@ -2078,7 +2076,7 @@ export const describeLoadBalancerPolicies: API.OperationMethod<
   DescribeLoadBalancerPoliciesInput,
   DescribeLoadBalancerPoliciesOutput,
   DescribeLoadBalancerPoliciesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeLoadBalancerPoliciesInput,
   output: DescribeLoadBalancerPoliciesOutput,
@@ -2107,7 +2105,7 @@ export const describeLoadBalancerPolicyTypes: API.OperationMethod<
   DescribeLoadBalancerPolicyTypesInput,
   DescribeLoadBalancerPolicyTypesOutput,
   DescribeLoadBalancerPolicyTypesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeLoadBalancerPolicyTypesInput,
   output: DescribeLoadBalancerPolicyTypesOutput,
@@ -2124,27 +2122,13 @@ export type DescribeLoadBalancersError =
 /**
  * Describes the specified the load balancers. If no load balancers are specified, the call describes all of your load balancers.
  */
-export const describeLoadBalancers: API.OperationMethod<
+export const describeLoadBalancers: API.PaginatedOperationMethod<
   DescribeAccessPointsInput,
   DescribeAccessPointsOutput,
   DescribeLoadBalancersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeAccessPointsInput,
-  ) => stream.Stream<
-    DescribeAccessPointsOutput,
-    DescribeLoadBalancersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeAccessPointsInput,
-  ) => stream.Stream<
-    LoadBalancerDescription,
-    DescribeLoadBalancersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  LoadBalancerDescription
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeAccessPointsInput,
   output: DescribeAccessPointsOutput,
   errors: [AccessPointNotFoundException, DependencyThrottleException],
@@ -2156,27 +2140,7 @@ export const describeLoadBalancers: API.OperationMethod<
     outputToken: "NextMarker",
     items: "LoadBalancerDescriptions",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeAccessPointsInput,
-  DescribeAccessPointsOutput,
-  DescribeLoadBalancersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeAccessPointsInput,
-  ) => stream.Stream<
-    DescribeAccessPointsOutput,
-    DescribeLoadBalancersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeAccessPointsInput,
-  ) => stream.Stream<
-    LoadBalancerDescription,
-    DescribeLoadBalancersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeTagsError = AccessPointNotFoundException | CommonErrors;
 /**
@@ -2186,7 +2150,7 @@ export const describeTags: API.OperationMethod<
   DescribeTagsInput,
   DescribeTagsOutput,
   DescribeTagsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeTagsInput,
   output: DescribeTagsOutput,
@@ -2211,7 +2175,7 @@ export const detachLoadBalancerFromSubnets: API.OperationMethod<
   DetachLoadBalancerFromSubnetsInput,
   DetachLoadBalancerFromSubnetsOutput,
   DetachLoadBalancerFromSubnetsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DetachLoadBalancerFromSubnetsInput,
   output: DetachLoadBalancerFromSubnetsOutput,
@@ -2243,7 +2207,7 @@ export const disableAvailabilityZonesForLoadBalancer: API.OperationMethod<
   RemoveAvailabilityZonesInput,
   RemoveAvailabilityZonesOutput,
   DisableAvailabilityZonesForLoadBalancerError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RemoveAvailabilityZonesInput,
   output: RemoveAvailabilityZonesOutput,
@@ -2270,7 +2234,7 @@ export const enableAvailabilityZonesForLoadBalancer: API.OperationMethod<
   AddAvailabilityZonesInput,
   AddAvailabilityZonesOutput,
   EnableAvailabilityZonesForLoadBalancerError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AddAvailabilityZonesInput,
   output: AddAvailabilityZonesOutput,
@@ -2306,7 +2270,7 @@ export const modifyLoadBalancerAttributes: API.OperationMethod<
   ModifyLoadBalancerAttributesInput,
   ModifyLoadBalancerAttributesOutput,
   ModifyLoadBalancerAttributesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ModifyLoadBalancerAttributesInput,
   output: ModifyLoadBalancerAttributesOutput,
@@ -2349,7 +2313,7 @@ export const registerInstancesWithLoadBalancer: API.OperationMethod<
   RegisterEndPointsInput,
   RegisterEndPointsOutput,
   RegisterInstancesWithLoadBalancerError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RegisterEndPointsInput,
   output: RegisterEndPointsOutput,
@@ -2367,7 +2331,7 @@ export const removeTags: API.OperationMethod<
   RemoveTagsInput,
   RemoveTagsOutput,
   RemoveTagsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RemoveTagsInput,
   output: RemoveTagsOutput,
@@ -2395,7 +2359,7 @@ export const setLoadBalancerListenerSSLCertificate: API.OperationMethod<
   SetLoadBalancerListenerSSLCertificateInput,
   SetLoadBalancerListenerSSLCertificateOutput,
   SetLoadBalancerListenerSSLCertificateError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: SetLoadBalancerListenerSSLCertificateInput,
   output: SetLoadBalancerListenerSSLCertificateOutput,
@@ -2435,7 +2399,7 @@ export const setLoadBalancerPoliciesForBackendServer: API.OperationMethod<
   SetLoadBalancerPoliciesForBackendServerInput,
   SetLoadBalancerPoliciesForBackendServerOutput,
   SetLoadBalancerPoliciesForBackendServerError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: SetLoadBalancerPoliciesForBackendServerInput,
   output: SetLoadBalancerPoliciesForBackendServerOutput,
@@ -2470,7 +2434,7 @@ export const setLoadBalancerPoliciesOfListener: API.OperationMethod<
   SetLoadBalancerPoliciesOfListenerInput,
   SetLoadBalancerPoliciesOfListenerOutput,
   SetLoadBalancerPoliciesOfListenerError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: SetLoadBalancerPoliciesOfListenerInput,
   output: SetLoadBalancerPoliciesOfListenerOutput,

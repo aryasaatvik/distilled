@@ -6,7 +6,6 @@ import { Retry } from "../retry.ts";
 import * as T from "../traits.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 const svc = T.AwsApiService({
   sdkId: "Sagemaker Edge",
   serviceShapeName: "AmazonSageMakerEdge",
@@ -86,7 +85,7 @@ const rules = T.EndpointResolver((p, _) => {
 export class InternalServiceException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServiceException>()(
     "InternalServiceException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export type DeviceName = string;
 export type DeviceFleetName = string;
@@ -351,7 +350,7 @@ export const getDeployments: API.OperationMethod<
   GetDeploymentsRequest,
   GetDeploymentsResult,
   GetDeploymentsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetDeploymentsRequest,
   output: GetDeploymentsResult,
@@ -371,7 +370,7 @@ export const getDeviceRegistration: API.OperationMethod<
   GetDeviceRegistrationRequest,
   GetDeviceRegistrationResult,
   GetDeviceRegistrationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetDeviceRegistrationRequest,
   output: GetDeviceRegistrationResult,
@@ -389,7 +388,7 @@ export const sendHeartbeat: API.OperationMethod<
   SendHeartbeatRequest,
   SendHeartbeatResponse,
   SendHeartbeatError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: SendHeartbeatRequest,
   output: SendHeartbeatResponse,

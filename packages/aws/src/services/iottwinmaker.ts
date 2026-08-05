@@ -1,6 +1,5 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -8,7 +7,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 const svc = T.AwsApiService({
   sdkId: "IoTTwinMaker",
   serviceShapeName: "AWSIoTTwinMaker",
@@ -88,67 +86,67 @@ const rules = T.EndpointResolver((p, _) => {
 export class AccessDeniedException
   extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
     "AccessDeniedException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(403),
   ).pipe(C.withAuthError) {}
 export class ConflictException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
     "ConflictException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class ConnectorFailureException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConnectorFailureException>()(
     "ConnectorFailureException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(424),
   ) {}
 export class ConnectorTimeoutException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConnectorTimeoutException>()(
     "ConnectorTimeoutException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(424),
   ) {}
 export class InternalServerException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
     "InternalServerException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(500),
   ).pipe(C.withServerError) {}
 export class QueryTimeoutException
   extends /*@__PURE__*/ S.TaggedErrorClass<QueryTimeoutException>()(
     "QueryTimeoutException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(T.HttpError(400), T.Retryable()),
   ).pipe(C.withBadRequestError, C.withRetryableError) {}
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class ServiceQuotaExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
     "ServiceQuotaExceededException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(402),
   ).pipe(C.withQuotaError) {}
 export class ThrottlingException
   extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
     "ThrottlingException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(429),
   ).pipe(C.withThrottlingError) {}
 export class TooManyTagsException
   extends /*@__PURE__*/ S.TaggedErrorClass<TooManyTagsException>()(
     "TooManyTagsException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class ValidationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
     "ValidationException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export type Id = string;
@@ -3134,7 +3132,7 @@ export const batchPutPropertyValues: API.OperationMethod<
   BatchPutPropertyValuesRequest,
   BatchPutPropertyValuesResponse,
   BatchPutPropertyValuesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchPutPropertyValuesRequest,
   output: BatchPutPropertyValuesResponse,
@@ -3165,7 +3163,7 @@ export const cancelMetadataTransferJob: API.OperationMethod<
   CancelMetadataTransferJobRequest,
   CancelMetadataTransferJobResponse,
   CancelMetadataTransferJobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CancelMetadataTransferJobRequest,
   output: CancelMetadataTransferJobResponse,
@@ -3198,7 +3196,7 @@ export const createComponentType: API.OperationMethod<
   CreateComponentTypeRequest,
   CreateComponentTypeResponse,
   CreateComponentTypeError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateComponentTypeRequest,
   output: CreateComponentTypeResponse,
@@ -3231,7 +3229,7 @@ export const createEntity: API.OperationMethod<
   CreateEntityRequest,
   CreateEntityResponse,
   CreateEntityError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateEntityRequest,
   output: CreateEntityResponse,
@@ -3265,7 +3263,7 @@ export const createMetadataTransferJob: API.OperationMethod<
   CreateMetadataTransferJobRequest,
   CreateMetadataTransferJobResponse,
   CreateMetadataTransferJobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateMetadataTransferJobRequest,
   output: CreateMetadataTransferJobResponse,
@@ -3299,7 +3297,7 @@ export const createScene: API.OperationMethod<
   CreateSceneRequest,
   CreateSceneResponse,
   CreateSceneError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateSceneRequest,
   output: CreateSceneResponse,
@@ -3332,7 +3330,7 @@ export const createSyncJob: API.OperationMethod<
   CreateSyncJobRequest,
   CreateSyncJobResponse,
   CreateSyncJobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateSyncJobRequest,
   output: CreateSyncJobResponse,
@@ -3365,7 +3363,7 @@ export const createWorkspace: API.OperationMethod<
   CreateWorkspaceRequest,
   CreateWorkspaceResponse,
   CreateWorkspaceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateWorkspaceRequest,
   output: CreateWorkspaceResponse,
@@ -3397,7 +3395,7 @@ export const deleteComponentType: API.OperationMethod<
   DeleteComponentTypeRequest,
   DeleteComponentTypeResponse,
   DeleteComponentTypeError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteComponentTypeRequest,
   output: DeleteComponentTypeResponse,
@@ -3428,7 +3426,7 @@ export const deleteEntity: API.OperationMethod<
   DeleteEntityRequest,
   DeleteEntityResponse,
   DeleteEntityError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteEntityRequest,
   output: DeleteEntityResponse,
@@ -3459,7 +3457,7 @@ export const deleteScene: API.OperationMethod<
   DeleteSceneRequest,
   DeleteSceneResponse,
   DeleteSceneError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteSceneRequest,
   output: DeleteSceneResponse,
@@ -3491,7 +3489,7 @@ export const deleteSyncJob: API.OperationMethod<
   DeleteSyncJobRequest,
   DeleteSyncJobResponse,
   DeleteSyncJobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteSyncJobRequest,
   output: DeleteSyncJobResponse,
@@ -3523,7 +3521,7 @@ export const deleteWorkspace: API.OperationMethod<
   DeleteWorkspaceRequest,
   DeleteWorkspaceResponse,
   DeleteWorkspaceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteWorkspaceRequest,
   output: DeleteWorkspaceResponse,
@@ -3555,27 +3553,13 @@ export type ExecuteQueryError =
  * The ExecuteQuery action only works with Amazon Web Services Java SDK2.
  * ExecuteQuery will not work with any Amazon Web Services Java SDK version < 2.x.
  */
-export const executeQuery: API.OperationMethod<
+export const executeQuery: API.PaginatedOperationMethod<
   ExecuteQueryRequest,
   ExecuteQueryResponse,
   ExecuteQueryError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ExecuteQueryRequest,
-  ) => stream.Stream<
-    ExecuteQueryResponse,
-    ExecuteQueryError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ExecuteQueryRequest,
-  ) => stream.Stream<
-    unknown,
-    ExecuteQueryError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ExecuteQueryRequest,
   output: ExecuteQueryResponse,
   errors: [
@@ -3595,27 +3579,7 @@ export const executeQuery: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ExecuteQueryRequest,
-  ExecuteQueryResponse,
-  ExecuteQueryError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ExecuteQueryRequest,
-  ) => stream.Stream<
-    ExecuteQueryResponse,
-    ExecuteQueryError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ExecuteQueryRequest,
-  ) => stream.Stream<
-    unknown,
-    ExecuteQueryError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetComponentTypeError =
   | AccessDeniedException
@@ -3631,7 +3595,7 @@ export const getComponentType: API.OperationMethod<
   GetComponentTypeRequest,
   GetComponentTypeResponse,
   GetComponentTypeError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetComponentTypeRequest,
   output: GetComponentTypeResponse,
@@ -3662,7 +3626,7 @@ export const getEntity: API.OperationMethod<
   GetEntityRequest,
   GetEntityResponse,
   GetEntityError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetEntityRequest,
   output: GetEntityResponse,
@@ -3693,7 +3657,7 @@ export const getMetadataTransferJob: API.OperationMethod<
   GetMetadataTransferJobRequest,
   GetMetadataTransferJobResponse,
   GetMetadataTransferJobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetMetadataTransferJobRequest,
   output: GetMetadataTransferJobResponse,
@@ -3723,7 +3687,7 @@ export const getPricingPlan: API.OperationMethod<
   GetPricingPlanRequest,
   GetPricingPlanResponse,
   GetPricingPlanError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetPricingPlanRequest,
   output: GetPricingPlanResponse,
@@ -3754,27 +3718,13 @@ export type GetPropertyValueError =
  * You must specify a value for either `componentName`,
  * `componentTypeId`, `entityId`, or `workspaceId`.
  */
-export const getPropertyValue: API.OperationMethod<
+export const getPropertyValue: API.PaginatedOperationMethod<
   GetPropertyValueRequest,
   GetPropertyValueResponse,
   GetPropertyValueError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetPropertyValueRequest,
-  ) => stream.Stream<
-    GetPropertyValueResponse,
-    GetPropertyValueError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetPropertyValueRequest,
-  ) => stream.Stream<
-    unknown,
-    GetPropertyValueError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetPropertyValueRequest,
   output: GetPropertyValueResponse,
   errors: [
@@ -3795,27 +3745,7 @@ export const getPropertyValue: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetPropertyValueRequest,
-  GetPropertyValueResponse,
-  GetPropertyValueError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetPropertyValueRequest,
-  ) => stream.Stream<
-    GetPropertyValueResponse,
-    GetPropertyValueError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetPropertyValueRequest,
-  ) => stream.Stream<
-    unknown,
-    GetPropertyValueError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetPropertyValueHistoryError =
   | AccessDeniedException
@@ -3834,27 +3764,13 @@ export type GetPropertyValueHistoryError =
  * specify values for `componentName` and `entityId`. For cross-entity
  * quries, specify a value for `componentTypeId`.
  */
-export const getPropertyValueHistory: API.OperationMethod<
+export const getPropertyValueHistory: API.PaginatedOperationMethod<
   GetPropertyValueHistoryRequest,
   GetPropertyValueHistoryResponse,
   GetPropertyValueHistoryError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetPropertyValueHistoryRequest,
-  ) => stream.Stream<
-    GetPropertyValueHistoryResponse,
-    GetPropertyValueHistoryError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetPropertyValueHistoryRequest,
-  ) => stream.Stream<
-    unknown,
-    GetPropertyValueHistoryError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetPropertyValueHistoryRequest,
   output: GetPropertyValueHistoryResponse,
   errors: [
@@ -3875,27 +3791,7 @@ export const getPropertyValueHistory: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetPropertyValueHistoryRequest,
-  GetPropertyValueHistoryResponse,
-  GetPropertyValueHistoryError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetPropertyValueHistoryRequest,
-  ) => stream.Stream<
-    GetPropertyValueHistoryResponse,
-    GetPropertyValueHistoryError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetPropertyValueHistoryRequest,
-  ) => stream.Stream<
-    unknown,
-    GetPropertyValueHistoryError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetSceneError =
   | AccessDeniedException
@@ -3911,7 +3807,7 @@ export const getScene: API.OperationMethod<
   GetSceneRequest,
   GetSceneResponse,
   GetSceneError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetSceneRequest,
   output: GetSceneResponse,
@@ -3943,7 +3839,7 @@ export const getSyncJob: API.OperationMethod<
   GetSyncJobRequest,
   GetSyncJobResponse,
   GetSyncJobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetSyncJobRequest,
   output: GetSyncJobResponse,
@@ -3975,7 +3871,7 @@ export const getWorkspace: API.OperationMethod<
   GetWorkspaceRequest,
   GetWorkspaceResponse,
   GetWorkspaceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetWorkspaceRequest,
   output: GetWorkspaceResponse,
@@ -4002,27 +3898,13 @@ export type ListComponentsError =
 /**
  * This API lists the components of an entity.
  */
-export const listComponents: API.OperationMethod<
+export const listComponents: API.PaginatedOperationMethod<
   ListComponentsRequest,
   ListComponentsResponse,
   ListComponentsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListComponentsRequest,
-  ) => stream.Stream<
-    ListComponentsResponse,
-    ListComponentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListComponentsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListComponentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListComponentsRequest,
   output: ListComponentsResponse,
   errors: [
@@ -4041,27 +3923,7 @@ export const listComponents: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListComponentsRequest,
-  ListComponentsResponse,
-  ListComponentsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListComponentsRequest,
-  ) => stream.Stream<
-    ListComponentsResponse,
-    ListComponentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListComponentsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListComponentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListComponentTypesError =
   | AccessDeniedException
@@ -4072,27 +3934,13 @@ export type ListComponentTypesError =
 /**
  * Lists all component types in a workspace.
  */
-export const listComponentTypes: API.OperationMethod<
+export const listComponentTypes: API.PaginatedOperationMethod<
   ListComponentTypesRequest,
   ListComponentTypesResponse,
   ListComponentTypesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListComponentTypesRequest,
-  ) => stream.Stream<
-    ListComponentTypesResponse,
-    ListComponentTypesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListComponentTypesRequest,
-  ) => stream.Stream<
-    unknown,
-    ListComponentTypesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListComponentTypesRequest,
   output: ListComponentTypesResponse,
   errors: [
@@ -4110,27 +3958,7 @@ export const listComponentTypes: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListComponentTypesRequest,
-  ListComponentTypesResponse,
-  ListComponentTypesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListComponentTypesRequest,
-  ) => stream.Stream<
-    ListComponentTypesResponse,
-    ListComponentTypesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListComponentTypesRequest,
-  ) => stream.Stream<
-    unknown,
-    ListComponentTypesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListEntitiesError =
   | InternalServerException
@@ -4141,27 +3969,13 @@ export type ListEntitiesError =
 /**
  * Lists all entities in a workspace.
  */
-export const listEntities: API.OperationMethod<
+export const listEntities: API.PaginatedOperationMethod<
   ListEntitiesRequest,
   ListEntitiesResponse,
   ListEntitiesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListEntitiesRequest,
-  ) => stream.Stream<
-    ListEntitiesResponse,
-    ListEntitiesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListEntitiesRequest,
-  ) => stream.Stream<
-    unknown,
-    ListEntitiesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListEntitiesRequest,
   output: ListEntitiesResponse,
   errors: [
@@ -4179,27 +3993,7 @@ export const listEntities: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListEntitiesRequest,
-  ListEntitiesResponse,
-  ListEntitiesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListEntitiesRequest,
-  ) => stream.Stream<
-    ListEntitiesResponse,
-    ListEntitiesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListEntitiesRequest,
-  ) => stream.Stream<
-    unknown,
-    ListEntitiesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListMetadataTransferJobsError =
   | AccessDeniedException
@@ -4210,27 +4004,13 @@ export type ListMetadataTransferJobsError =
 /**
  * Lists the metadata transfer jobs.
  */
-export const listMetadataTransferJobs: API.OperationMethod<
+export const listMetadataTransferJobs: API.PaginatedOperationMethod<
   ListMetadataTransferJobsRequest,
   ListMetadataTransferJobsResponse,
   ListMetadataTransferJobsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListMetadataTransferJobsRequest,
-  ) => stream.Stream<
-    ListMetadataTransferJobsResponse,
-    ListMetadataTransferJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListMetadataTransferJobsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListMetadataTransferJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListMetadataTransferJobsRequest,
   output: ListMetadataTransferJobsResponse,
   errors: [
@@ -4248,27 +4028,7 @@ export const listMetadataTransferJobs: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListMetadataTransferJobsRequest,
-  ListMetadataTransferJobsResponse,
-  ListMetadataTransferJobsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListMetadataTransferJobsRequest,
-  ) => stream.Stream<
-    ListMetadataTransferJobsResponse,
-    ListMetadataTransferJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListMetadataTransferJobsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListMetadataTransferJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListPropertiesError =
   | AccessDeniedException
@@ -4280,27 +4040,13 @@ export type ListPropertiesError =
 /**
  * This API lists the properties of a component.
  */
-export const listProperties: API.OperationMethod<
+export const listProperties: API.PaginatedOperationMethod<
   ListPropertiesRequest,
   ListPropertiesResponse,
   ListPropertiesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPropertiesRequest,
-  ) => stream.Stream<
-    ListPropertiesResponse,
-    ListPropertiesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPropertiesRequest,
-  ) => stream.Stream<
-    unknown,
-    ListPropertiesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListPropertiesRequest,
   output: ListPropertiesResponse,
   errors: [
@@ -4319,27 +4065,7 @@ export const listProperties: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListPropertiesRequest,
-  ListPropertiesResponse,
-  ListPropertiesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPropertiesRequest,
-  ) => stream.Stream<
-    ListPropertiesResponse,
-    ListPropertiesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPropertiesRequest,
-  ) => stream.Stream<
-    unknown,
-    ListPropertiesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListScenesError =
   | AccessDeniedException
@@ -4350,27 +4076,13 @@ export type ListScenesError =
 /**
  * Lists all scenes in a workspace.
  */
-export const listScenes: API.OperationMethod<
+export const listScenes: API.PaginatedOperationMethod<
   ListScenesRequest,
   ListScenesResponse,
   ListScenesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListScenesRequest,
-  ) => stream.Stream<
-    ListScenesResponse,
-    ListScenesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListScenesRequest,
-  ) => stream.Stream<
-    unknown,
-    ListScenesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListScenesRequest,
   output: ListScenesResponse,
   errors: [
@@ -4388,27 +4100,7 @@ export const listScenes: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListScenesRequest,
-  ListScenesResponse,
-  ListScenesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListScenesRequest,
-  ) => stream.Stream<
-    ListScenesResponse,
-    ListScenesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListScenesRequest,
-  ) => stream.Stream<
-    unknown,
-    ListScenesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListSyncJobsError =
   | AccessDeniedException
@@ -4420,27 +4112,13 @@ export type ListSyncJobsError =
 /**
  * List all SyncJobs.
  */
-export const listSyncJobs: API.OperationMethod<
+export const listSyncJobs: API.PaginatedOperationMethod<
   ListSyncJobsRequest,
   ListSyncJobsResponse,
   ListSyncJobsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSyncJobsRequest,
-  ) => stream.Stream<
-    ListSyncJobsResponse,
-    ListSyncJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSyncJobsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListSyncJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListSyncJobsRequest,
   output: ListSyncJobsResponse,
   errors: [
@@ -4459,27 +4137,7 @@ export const listSyncJobs: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListSyncJobsRequest,
-  ListSyncJobsResponse,
-  ListSyncJobsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSyncJobsRequest,
-  ) => stream.Stream<
-    ListSyncJobsResponse,
-    ListSyncJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSyncJobsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListSyncJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListSyncResourcesError =
   | AccessDeniedException
@@ -4491,27 +4149,13 @@ export type ListSyncResourcesError =
 /**
  * Lists the sync resources.
  */
-export const listSyncResources: API.OperationMethod<
+export const listSyncResources: API.PaginatedOperationMethod<
   ListSyncResourcesRequest,
   ListSyncResourcesResponse,
   ListSyncResourcesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSyncResourcesRequest,
-  ) => stream.Stream<
-    ListSyncResourcesResponse,
-    ListSyncResourcesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSyncResourcesRequest,
-  ) => stream.Stream<
-    unknown,
-    ListSyncResourcesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListSyncResourcesRequest,
   output: ListSyncResourcesResponse,
   errors: [
@@ -4530,27 +4174,7 @@ export const listSyncResources: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListSyncResourcesRequest,
-  ListSyncResourcesResponse,
-  ListSyncResourcesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSyncResourcesRequest,
-  ) => stream.Stream<
-    ListSyncResourcesResponse,
-    ListSyncResourcesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSyncResourcesRequest,
-  ) => stream.Stream<
-    unknown,
-    ListSyncResourcesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsForResourceError =
   | AccessDeniedException
@@ -4563,7 +4187,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceRequest,
   ListTagsForResourceResponse,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -4583,27 +4207,13 @@ export type ListWorkspacesError =
 /**
  * Retrieves information about workspaces in the current account.
  */
-export const listWorkspaces: API.OperationMethod<
+export const listWorkspaces: API.PaginatedOperationMethod<
   ListWorkspacesRequest,
   ListWorkspacesResponse,
   ListWorkspacesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListWorkspacesRequest,
-  ) => stream.Stream<
-    ListWorkspacesResponse,
-    ListWorkspacesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListWorkspacesRequest,
-  ) => stream.Stream<
-    unknown,
-    ListWorkspacesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListWorkspacesRequest,
   output: ListWorkspacesResponse,
   errors: [
@@ -4621,27 +4231,7 @@ export const listWorkspaces: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListWorkspacesRequest,
-  ListWorkspacesResponse,
-  ListWorkspacesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListWorkspacesRequest,
-  ) => stream.Stream<
-    ListWorkspacesResponse,
-    ListWorkspacesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListWorkspacesRequest,
-  ) => stream.Stream<
-    unknown,
-    ListWorkspacesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type TagResourceError =
   | AccessDeniedException
@@ -4655,7 +4245,7 @@ export const tagResource: API.OperationMethod<
   TagResourceRequest,
   TagResourceResponse,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -4681,7 +4271,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceRequest,
   UntagResourceResponse,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -4707,7 +4297,7 @@ export const updateComponentType: API.OperationMethod<
   UpdateComponentTypeRequest,
   UpdateComponentTypeResponse,
   UpdateComponentTypeError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateComponentTypeRequest,
   output: UpdateComponentTypeResponse,
@@ -4741,7 +4331,7 @@ export const updateEntity: API.OperationMethod<
   UpdateEntityRequest,
   UpdateEntityResponse,
   UpdateEntityError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateEntityRequest,
   output: UpdateEntityResponse,
@@ -4773,7 +4363,7 @@ export const updatePricingPlan: API.OperationMethod<
   UpdatePricingPlanRequest,
   UpdatePricingPlanResponse,
   UpdatePricingPlanError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdatePricingPlanRequest,
   output: UpdatePricingPlanResponse,
@@ -4803,7 +4393,7 @@ export const updateScene: API.OperationMethod<
   UpdateSceneRequest,
   UpdateSceneResponse,
   UpdateSceneError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateSceneRequest,
   output: UpdateSceneResponse,
@@ -4835,7 +4425,7 @@ export const updateWorkspace: API.OperationMethod<
   UpdateWorkspaceRequest,
   UpdateWorkspaceResponse,
   UpdateWorkspaceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateWorkspaceRequest,
   output: UpdateWorkspaceResponse,

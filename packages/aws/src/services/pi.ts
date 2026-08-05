@@ -1,14 +1,12 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as redacted from "effect/Redacted";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
 import * as T from "../traits.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 import { SensitiveString } from "../sensitive.ts";
 const ns = T.XmlNamespace("http://pi.amazonaws.com/doc/2018-02-27/");
 const svc = T.AwsApiService({
@@ -90,17 +88,17 @@ const rules = T.EndpointResolver((p, _) => {
 export class InternalServiceError
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServiceError>()(
     "InternalServiceError",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidArgumentException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidArgumentException>()(
     "InvalidArgumentException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class NotAuthorizedException
   extends /*@__PURE__*/ S.TaggedErrorClass<NotAuthorizedException>()(
     "NotAuthorizedException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export type ServiceType = "RDS" | "DOCDB" | (string & {});
 export const ServiceType = /*@__PURE__*/ S.String;
@@ -1074,7 +1072,7 @@ export const createPerformanceAnalysisReport: API.OperationMethod<
   CreatePerformanceAnalysisReportRequest,
   CreatePerformanceAnalysisReportResponse,
   CreatePerformanceAnalysisReportError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreatePerformanceAnalysisReportRequest,
   output: CreatePerformanceAnalysisReportResponse,
@@ -1100,7 +1098,7 @@ export const deletePerformanceAnalysisReport: API.OperationMethod<
   DeletePerformanceAnalysisReportRequest,
   DeletePerformanceAnalysisReportResponse,
   DeletePerformanceAnalysisReportError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeletePerformanceAnalysisReportRequest,
   output: DeletePerformanceAnalysisReportResponse,
@@ -1125,27 +1123,13 @@ export type DescribeDimensionKeysError =
  * Each response element returns a maximum of 500 bytes. For larger elements, such as SQL statements,
  * only the first 500 bytes are returned.
  */
-export const describeDimensionKeys: API.OperationMethod<
+export const describeDimensionKeys: API.PaginatedOperationMethod<
   DescribeDimensionKeysRequest,
   DescribeDimensionKeysResponse,
   DescribeDimensionKeysError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeDimensionKeysRequest,
-  ) => stream.Stream<
-    DescribeDimensionKeysResponse,
-    DescribeDimensionKeysError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeDimensionKeysRequest,
-  ) => stream.Stream<
-    unknown,
-    DescribeDimensionKeysError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeDimensionKeysRequest,
   output: DescribeDimensionKeysResponse,
   errors: [
@@ -1161,27 +1145,7 @@ export const describeDimensionKeys: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeDimensionKeysRequest,
-  DescribeDimensionKeysResponse,
-  DescribeDimensionKeysError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeDimensionKeysRequest,
-  ) => stream.Stream<
-    DescribeDimensionKeysResponse,
-    DescribeDimensionKeysError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeDimensionKeysRequest,
-  ) => stream.Stream<
-    unknown,
-    DescribeDimensionKeysError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetDimensionKeyDetailsError =
   | InternalServiceError
@@ -1198,7 +1162,7 @@ export const getDimensionKeyDetails: API.OperationMethod<
   GetDimensionKeyDetailsRequest,
   GetDimensionKeyDetailsResponse,
   GetDimensionKeyDetailsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetDimensionKeyDetailsRequest,
   output: GetDimensionKeyDetailsResponse,
@@ -1227,7 +1191,7 @@ export const getPerformanceAnalysisReport: API.OperationMethod<
   GetPerformanceAnalysisReportRequest,
   GetPerformanceAnalysisReportResponse,
   GetPerformanceAnalysisReportError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetPerformanceAnalysisReportRequest,
   output: GetPerformanceAnalysisReportResponse,
@@ -1254,7 +1218,7 @@ export const getResourceMetadata: API.OperationMethod<
   GetResourceMetadataRequest,
   GetResourceMetadataResponse,
   GetResourceMetadataError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetResourceMetadataRequest,
   output: GetResourceMetadataResponse,
@@ -1281,27 +1245,13 @@ export type GetResourceMetricsError =
  * Each response element returns a maximum of 500 bytes. For larger elements, such as SQL statements,
  * only the first 500 bytes are returned.
  */
-export const getResourceMetrics: API.OperationMethod<
+export const getResourceMetrics: API.PaginatedOperationMethod<
   GetResourceMetricsRequest,
   GetResourceMetricsResponse,
   GetResourceMetricsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetResourceMetricsRequest,
-  ) => stream.Stream<
-    GetResourceMetricsResponse,
-    GetResourceMetricsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetResourceMetricsRequest,
-  ) => stream.Stream<
-    unknown,
-    GetResourceMetricsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetResourceMetricsRequest,
   output: GetResourceMetricsResponse,
   errors: [
@@ -1317,27 +1267,7 @@ export const getResourceMetrics: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetResourceMetricsRequest,
-  GetResourceMetricsResponse,
-  GetResourceMetricsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetResourceMetricsRequest,
-  ) => stream.Stream<
-    GetResourceMetricsResponse,
-    GetResourceMetricsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetResourceMetricsRequest,
-  ) => stream.Stream<
-    unknown,
-    GetResourceMetricsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListAvailableResourceDimensionsError =
   | InternalServiceError
@@ -1347,27 +1277,13 @@ export type ListAvailableResourceDimensionsError =
 /**
  * Retrieve the dimensions that can be queried for each specified metric type on a specified DB instance.
  */
-export const listAvailableResourceDimensions: API.OperationMethod<
+export const listAvailableResourceDimensions: API.PaginatedOperationMethod<
   ListAvailableResourceDimensionsRequest,
   ListAvailableResourceDimensionsResponse,
   ListAvailableResourceDimensionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAvailableResourceDimensionsRequest,
-  ) => stream.Stream<
-    ListAvailableResourceDimensionsResponse,
-    ListAvailableResourceDimensionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAvailableResourceDimensionsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListAvailableResourceDimensionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListAvailableResourceDimensionsRequest,
   output: ListAvailableResourceDimensionsResponse,
   errors: [
@@ -1383,27 +1299,7 @@ export const listAvailableResourceDimensions: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListAvailableResourceDimensionsRequest,
-  ListAvailableResourceDimensionsResponse,
-  ListAvailableResourceDimensionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAvailableResourceDimensionsRequest,
-  ) => stream.Stream<
-    ListAvailableResourceDimensionsResponse,
-    ListAvailableResourceDimensionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAvailableResourceDimensionsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListAvailableResourceDimensionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListAvailableResourceMetricsError =
   | InternalServiceError
@@ -1413,27 +1309,13 @@ export type ListAvailableResourceMetricsError =
 /**
  * Retrieve metrics of the specified types that can be queried for a specified DB instance.
  */
-export const listAvailableResourceMetrics: API.OperationMethod<
+export const listAvailableResourceMetrics: API.PaginatedOperationMethod<
   ListAvailableResourceMetricsRequest,
   ListAvailableResourceMetricsResponse,
   ListAvailableResourceMetricsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAvailableResourceMetricsRequest,
-  ) => stream.Stream<
-    ListAvailableResourceMetricsResponse,
-    ListAvailableResourceMetricsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAvailableResourceMetricsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListAvailableResourceMetricsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListAvailableResourceMetricsRequest,
   output: ListAvailableResourceMetricsResponse,
   errors: [
@@ -1449,27 +1331,7 @@ export const listAvailableResourceMetrics: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListAvailableResourceMetricsRequest,
-  ListAvailableResourceMetricsResponse,
-  ListAvailableResourceMetricsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAvailableResourceMetricsRequest,
-  ) => stream.Stream<
-    ListAvailableResourceMetricsResponse,
-    ListAvailableResourceMetricsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAvailableResourceMetricsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListAvailableResourceMetricsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListPerformanceAnalysisReportRecommendationsError =
   | InternalServiceError
@@ -1479,27 +1341,13 @@ export type ListPerformanceAnalysisReportRecommendationsError =
 /**
  * Retrieves recommendations for a performance analysis report.
  */
-export const listPerformanceAnalysisReportRecommendations: API.OperationMethod<
+export const listPerformanceAnalysisReportRecommendations: API.PaginatedOperationMethod<
   ListPerformanceAnalysisReportRecommendationsRequest,
   ListPerformanceAnalysisReportRecommendationsResponse,
   ListPerformanceAnalysisReportRecommendationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPerformanceAnalysisReportRecommendationsRequest,
-  ) => stream.Stream<
-    ListPerformanceAnalysisReportRecommendationsResponse,
-    ListPerformanceAnalysisReportRecommendationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPerformanceAnalysisReportRecommendationsRequest,
-  ) => stream.Stream<
-    Recommendation,
-    ListPerformanceAnalysisReportRecommendationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Recommendation
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListPerformanceAnalysisReportRecommendationsRequest,
   output: ListPerformanceAnalysisReportRecommendationsResponse,
   errors: [
@@ -1516,27 +1364,7 @@ export const listPerformanceAnalysisReportRecommendations: API.OperationMethod<
     items: "Recommendations",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListPerformanceAnalysisReportRecommendationsRequest,
-  ListPerformanceAnalysisReportRecommendationsResponse,
-  ListPerformanceAnalysisReportRecommendationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPerformanceAnalysisReportRecommendationsRequest,
-  ) => stream.Stream<
-    ListPerformanceAnalysisReportRecommendationsResponse,
-    ListPerformanceAnalysisReportRecommendationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPerformanceAnalysisReportRecommendationsRequest,
-  ) => stream.Stream<
-    Recommendation,
-    ListPerformanceAnalysisReportRecommendationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListPerformanceAnalysisReportsError =
   | InternalServiceError
@@ -1546,27 +1374,13 @@ export type ListPerformanceAnalysisReportsError =
 /**
  * Lists all the analysis reports created for the DB instance. The reports are sorted based on the start time of each report.
  */
-export const listPerformanceAnalysisReports: API.OperationMethod<
+export const listPerformanceAnalysisReports: API.PaginatedOperationMethod<
   ListPerformanceAnalysisReportsRequest,
   ListPerformanceAnalysisReportsResponse,
   ListPerformanceAnalysisReportsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPerformanceAnalysisReportsRequest,
-  ) => stream.Stream<
-    ListPerformanceAnalysisReportsResponse,
-    ListPerformanceAnalysisReportsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPerformanceAnalysisReportsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListPerformanceAnalysisReportsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListPerformanceAnalysisReportsRequest,
   output: ListPerformanceAnalysisReportsResponse,
   errors: [
@@ -1582,27 +1396,7 @@ export const listPerformanceAnalysisReports: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListPerformanceAnalysisReportsRequest,
-  ListPerformanceAnalysisReportsResponse,
-  ListPerformanceAnalysisReportsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPerformanceAnalysisReportsRequest,
-  ) => stream.Stream<
-    ListPerformanceAnalysisReportsResponse,
-    ListPerformanceAnalysisReportsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPerformanceAnalysisReportsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListPerformanceAnalysisReportsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsForResourceError =
   | InternalServiceError
@@ -1616,7 +1410,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceRequest,
   ListTagsForResourceResponse,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -1642,7 +1436,7 @@ export const tagResource: API.OperationMethod<
   TagResourceRequest,
   TagResourceResponse,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -1668,7 +1462,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceRequest,
   UntagResourceResponse,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,

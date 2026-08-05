@@ -1,6 +1,5 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -8,7 +7,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 const svc = T.AwsApiService({
   sdkId: "ApplicationCostProfiler",
   serviceShapeName: "AWSApplicationCostProfiler",
@@ -88,31 +86,31 @@ const rules = T.EndpointResolver((p, _) => {
 export class AccessDeniedException
   extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
     "AccessDeniedException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(403),
   ).pipe(C.withAuthError) {}
 export class InternalServerException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
     "InternalServerException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(500),
   ).pipe(C.withServerError) {}
 export class ServiceQuotaExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
     "ServiceQuotaExceededException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(402),
   ).pipe(C.withQuotaError) {}
 export class ThrottlingException
   extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
     "ThrottlingException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(429),
   ).pipe(C.withThrottlingError) {}
 export class ValidationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
     "ValidationException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export type ReportId = string;
@@ -388,7 +386,7 @@ export const deleteReportDefinition: API.OperationMethod<
   DeleteReportDefinitionRequest,
   DeleteReportDefinitionResult,
   DeleteReportDefinitionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteReportDefinitionRequest,
   output: DeleteReportDefinitionResult,
@@ -416,7 +414,7 @@ export const getReportDefinition: API.OperationMethod<
   GetReportDefinitionRequest,
   GetReportDefinitionResult,
   GetReportDefinitionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetReportDefinitionRequest,
   output: GetReportDefinitionResult,
@@ -448,7 +446,7 @@ export const importApplicationUsage: API.OperationMethod<
   ImportApplicationUsageRequest,
   ImportApplicationUsageResult,
   ImportApplicationUsageError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ImportApplicationUsageRequest,
   output: ImportApplicationUsageResult,
@@ -474,27 +472,13 @@ export type ListReportDefinitionsError =
  *
  * The maximum number of reports is one.
  */
-export const listReportDefinitions: API.OperationMethod<
+export const listReportDefinitions: API.PaginatedOperationMethod<
   ListReportDefinitionsRequest,
   ListReportDefinitionsResult,
   ListReportDefinitionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListReportDefinitionsRequest,
-  ) => stream.Stream<
-    ListReportDefinitionsResult,
-    ListReportDefinitionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListReportDefinitionsRequest,
-  ) => stream.Stream<
-    ReportDefinition,
-    ListReportDefinitionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ReportDefinition
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListReportDefinitionsRequest,
   output: ListReportDefinitionsResult,
   errors: [
@@ -512,27 +496,7 @@ export const listReportDefinitions: API.OperationMethod<
     items: "reportDefinitions",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListReportDefinitionsRequest,
-  ListReportDefinitionsResult,
-  ListReportDefinitionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListReportDefinitionsRequest,
-  ) => stream.Stream<
-    ListReportDefinitionsResult,
-    ListReportDefinitionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListReportDefinitionsRequest,
-  ) => stream.Stream<
-    ReportDefinition,
-    ListReportDefinitionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type PutReportDefinitionError =
   | AccessDeniedException
@@ -548,7 +512,7 @@ export const putReportDefinition: API.OperationMethod<
   PutReportDefinitionRequest,
   PutReportDefinitionResult,
   PutReportDefinitionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutReportDefinitionRequest,
   output: PutReportDefinitionResult,
@@ -577,7 +541,7 @@ export const updateReportDefinition: API.OperationMethod<
   UpdateReportDefinitionRequest,
   UpdateReportDefinitionResult,
   UpdateReportDefinitionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateReportDefinitionRequest,
   output: UpdateReportDefinitionResult,

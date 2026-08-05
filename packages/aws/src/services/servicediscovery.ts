@@ -1,6 +1,5 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -8,7 +7,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 const svc = T.AwsApiService({
   sdkId: "ServiceDiscovery",
   serviceShapeName: "Route53AutoNaming_v20170314",
@@ -97,14 +95,14 @@ const rules = T.EndpointResolver((p, _) => {
 export class CustomHealthNotFound
   extends /*@__PURE__*/ S.TaggedErrorClass<CustomHealthNotFound>()(
     "CustomHealthNotFound",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class DuplicateRequest
   extends /*@__PURE__*/ S.TaggedErrorClass<DuplicateRequest>()(
     "DuplicateRequest",
     {
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       DuplicateOperationId: S.optional(S.String),
     },
     T.HttpError(409),
@@ -112,20 +110,20 @@ export class DuplicateRequest
 export class InstanceNotFound
   extends /*@__PURE__*/ S.TaggedErrorClass<InstanceNotFound>()(
     "InstanceNotFound",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class InvalidInput
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidInput>()(
     "InvalidInput",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class NamespaceAlreadyExists
   extends /*@__PURE__*/ S.TaggedErrorClass<NamespaceAlreadyExists>()(
     "NamespaceAlreadyExists",
     {
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       CreatorRequestId: S.optional(S.String),
       NamespaceId: S.optional(S.String),
     },
@@ -134,44 +132,44 @@ export class NamespaceAlreadyExists
 export class NamespaceNotFound
   extends /*@__PURE__*/ S.TaggedErrorClass<NamespaceNotFound>()(
     "NamespaceNotFound",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class OperationNotFound
   extends /*@__PURE__*/ S.TaggedErrorClass<OperationNotFound>()(
     "OperationNotFound",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class RequestLimitExceeded
   extends /*@__PURE__*/ S.TaggedErrorClass<RequestLimitExceeded>()(
     "RequestLimitExceeded",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(429),
   ).pipe(C.withThrottlingError) {}
 export class ResourceInUse
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceInUse>()(
     "ResourceInUse",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(409),
   ).pipe(C.withConflictError, C.withDependencyViolationError) {}
 export class ResourceLimitExceeded
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceLimitExceeded>()(
     "ResourceLimitExceeded",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError, C.withThrottlingError) {}
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class ServiceAlreadyExists
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceAlreadyExists>()(
     "ServiceAlreadyExists",
     {
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       CreatorRequestId: S.optional(S.String),
       ServiceId: S.optional(S.String),
       ServiceArn: S.optional(S.String),
@@ -181,19 +179,22 @@ export class ServiceAlreadyExists
 export class ServiceAttributesLimitExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceAttributesLimitExceededException>()(
     "ServiceAttributesLimitExceededException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class ServiceNotFound
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceNotFound>()(
     "ServiceNotFound",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class TooManyTagsException
   extends /*@__PURE__*/ S.TaggedErrorClass<TooManyTagsException>()(
     "TooManyTagsException",
-    { Message: S.optional(S.String), ResourceName: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      ResourceName: S.optional(S.String),
+    },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export type NamespaceNameHttp = string;
@@ -1561,7 +1562,7 @@ export const createHttpNamespace: API.OperationMethod<
   CreateHttpNamespaceRequest,
   CreateHttpNamespaceResponse,
   CreateHttpNamespaceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateHttpNamespaceRequest,
   output: CreateHttpNamespaceResponse,
@@ -1598,7 +1599,7 @@ export const createPrivateDnsNamespace: API.OperationMethod<
   CreatePrivateDnsNamespaceRequest,
   CreatePrivateDnsNamespaceResponse,
   CreatePrivateDnsNamespaceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreatePrivateDnsNamespaceRequest,
   output: CreatePrivateDnsNamespaceResponse,
@@ -1636,7 +1637,7 @@ export const createPublicDnsNamespace: API.OperationMethod<
   CreatePublicDnsNamespaceRequest,
   CreatePublicDnsNamespaceResponse,
   CreatePublicDnsNamespaceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreatePublicDnsNamespaceRequest,
   output: CreatePublicDnsNamespaceResponse,
@@ -1688,7 +1689,7 @@ export const createService: API.OperationMethod<
   CreateServiceRequest,
   CreateServiceResponse,
   CreateServiceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateServiceRequest,
   output: CreateServiceResponse,
@@ -1718,7 +1719,7 @@ export const deleteNamespace: API.OperationMethod<
   DeleteNamespaceRequest,
   DeleteNamespaceResponse,
   DeleteNamespaceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteNamespaceRequest,
   output: DeleteNamespaceResponse,
@@ -1741,7 +1742,7 @@ export const deleteService: API.OperationMethod<
   DeleteServiceRequest,
   DeleteServiceResponse,
   DeleteServiceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteServiceRequest,
   output: DeleteServiceResponse,
@@ -1762,7 +1763,7 @@ export const deleteServiceAttributes: API.OperationMethod<
   DeleteServiceAttributesRequest,
   DeleteServiceAttributesResponse,
   DeleteServiceAttributesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteServiceAttributesRequest,
   output: DeleteServiceAttributesResponse,
@@ -1787,7 +1788,7 @@ export const deregisterInstance: API.OperationMethod<
   DeregisterInstanceRequest,
   DeregisterInstanceResponse,
   DeregisterInstanceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeregisterInstanceRequest,
   output: DeregisterInstanceResponse,
@@ -1820,7 +1821,7 @@ export const discoverInstances: API.OperationMethod<
   DiscoverInstancesRequest,
   DiscoverInstancesResponse,
   DiscoverInstancesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DiscoverInstancesRequest,
   output: DiscoverInstancesResponse,
@@ -1849,7 +1850,7 @@ export const discoverInstancesRevision: API.OperationMethod<
   DiscoverInstancesRevisionRequest,
   DiscoverInstancesRevisionResponse,
   DiscoverInstancesRevisionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DiscoverInstancesRevisionRequest,
   output: DiscoverInstancesRevisionResponse,
@@ -1877,7 +1878,7 @@ export const getInstance: API.OperationMethod<
   GetInstanceRequest,
   GetInstanceResponse,
   GetInstanceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetInstanceRequest,
   output: GetInstanceResponse,
@@ -1900,27 +1901,13 @@ export type GetInstancesHealthStatusError =
  * There's a brief delay between when you register an instance and when the health status for
  * the instance is available.
  */
-export const getInstancesHealthStatus: API.OperationMethod<
+export const getInstancesHealthStatus: API.PaginatedOperationMethod<
   GetInstancesHealthStatusRequest,
   GetInstancesHealthStatusResponse,
   GetInstancesHealthStatusError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetInstancesHealthStatusRequest,
-  ) => stream.Stream<
-    GetInstancesHealthStatusResponse,
-    GetInstancesHealthStatusError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetInstancesHealthStatusRequest,
-  ) => stream.Stream<
-    unknown,
-    GetInstancesHealthStatusError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetInstancesHealthStatusRequest,
   output: GetInstancesHealthStatusResponse,
   errors: [InstanceNotFound, InvalidInput, ServiceNotFound],
@@ -1932,27 +1919,7 @@ export const getInstancesHealthStatus: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetInstancesHealthStatusRequest,
-  GetInstancesHealthStatusResponse,
-  GetInstancesHealthStatusError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetInstancesHealthStatusRequest,
-  ) => stream.Stream<
-    GetInstancesHealthStatusResponse,
-    GetInstancesHealthStatusError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetInstancesHealthStatusRequest,
-  ) => stream.Stream<
-    unknown,
-    GetInstancesHealthStatusError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetNamespaceError = InvalidInput | NamespaceNotFound | CommonErrors;
 /**
@@ -1962,7 +1929,7 @@ export const getNamespace: API.OperationMethod<
   GetNamespaceRequest,
   GetNamespaceResponse,
   GetNamespaceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetNamespaceRequest,
   output: GetNamespaceResponse,
@@ -1983,7 +1950,7 @@ export const getOperation: API.OperationMethod<
   GetOperationRequest,
   GetOperationResponse,
   GetOperationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetOperationRequest,
   output: GetOperationResponse,
@@ -2001,7 +1968,7 @@ export const getService: API.OperationMethod<
   GetServiceRequest,
   GetServiceResponse,
   GetServiceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetServiceRequest,
   output: GetServiceResponse,
@@ -2022,7 +1989,7 @@ export const getServiceAttributes: API.OperationMethod<
   GetServiceAttributesRequest,
   GetServiceAttributesResponse,
   GetServiceAttributesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetServiceAttributesRequest,
   output: GetServiceAttributesResponse,
@@ -2037,27 +2004,13 @@ export type ListInstancesError = InvalidInput | ServiceNotFound | CommonErrors;
  * Lists summary information about the instances that you registered by using a specified
  * service.
  */
-export const listInstances: API.OperationMethod<
+export const listInstances: API.PaginatedOperationMethod<
   ListInstancesRequest,
   ListInstancesResponse,
   ListInstancesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListInstancesRequest,
-  ) => stream.Stream<
-    ListInstancesResponse,
-    ListInstancesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListInstancesRequest,
-  ) => stream.Stream<
-    unknown,
-    ListInstancesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListInstancesRequest,
   output: ListInstancesResponse,
   errors: [InvalidInput, ServiceNotFound],
@@ -2069,53 +2022,19 @@ export const listInstances: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListInstancesRequest,
-  ListInstancesResponse,
-  ListInstancesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListInstancesRequest,
-  ) => stream.Stream<
-    ListInstancesResponse,
-    ListInstancesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListInstancesRequest,
-  ) => stream.Stream<
-    unknown,
-    ListInstancesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListNamespacesError = InvalidInput | CommonErrors;
 /**
  * Lists summary information about the namespaces that were created by the current Amazon Web Services account and shared with the current Amazon Web Services account.
  */
-export const listNamespaces: API.OperationMethod<
+export const listNamespaces: API.PaginatedOperationMethod<
   ListNamespacesRequest,
   ListNamespacesResponse,
   ListNamespacesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListNamespacesRequest,
-  ) => stream.Stream<
-    ListNamespacesResponse,
-    ListNamespacesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListNamespacesRequest,
-  ) => stream.Stream<
-    unknown,
-    ListNamespacesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListNamespacesRequest,
   output: ListNamespacesResponse,
   errors: [InvalidInput],
@@ -2127,53 +2046,19 @@ export const listNamespaces: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListNamespacesRequest,
-  ListNamespacesResponse,
-  ListNamespacesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListNamespacesRequest,
-  ) => stream.Stream<
-    ListNamespacesResponse,
-    ListNamespacesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListNamespacesRequest,
-  ) => stream.Stream<
-    unknown,
-    ListNamespacesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListOperationsError = InvalidInput | CommonErrors;
 /**
  * Lists operations that match the criteria that you specify.
  */
-export const listOperations: API.OperationMethod<
+export const listOperations: API.PaginatedOperationMethod<
   ListOperationsRequest,
   ListOperationsResponse,
   ListOperationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListOperationsRequest,
-  ) => stream.Stream<
-    ListOperationsResponse,
-    ListOperationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListOperationsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListOperationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListOperationsRequest,
   output: ListOperationsResponse,
   errors: [InvalidInput],
@@ -2185,54 +2070,20 @@ export const listOperations: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListOperationsRequest,
-  ListOperationsResponse,
-  ListOperationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListOperationsRequest,
-  ) => stream.Stream<
-    ListOperationsResponse,
-    ListOperationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListOperationsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListOperationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListServicesError = InvalidInput | CommonErrors;
 /**
  * Lists summary information for all the services that are associated with one or more
  * namespaces.
  */
-export const listServices: API.OperationMethod<
+export const listServices: API.PaginatedOperationMethod<
   ListServicesRequest,
   ListServicesResponse,
   ListServicesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListServicesRequest,
-  ) => stream.Stream<
-    ListServicesResponse,
-    ListServicesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListServicesRequest,
-  ) => stream.Stream<
-    unknown,
-    ListServicesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListServicesRequest,
   output: ListServicesResponse,
   errors: [InvalidInput],
@@ -2244,27 +2095,7 @@ export const listServices: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListServicesRequest,
-  ListServicesResponse,
-  ListServicesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListServicesRequest,
-  ) => stream.Stream<
-    ListServicesResponse,
-    ListServicesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListServicesRequest,
-  ) => stream.Stream<
-    unknown,
-    ListServicesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsForResourceError =
   | InvalidInput
@@ -2277,7 +2108,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceRequest,
   ListTagsForResourceResponse,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -2333,7 +2164,7 @@ export const registerInstance: API.OperationMethod<
   RegisterInstanceRequest,
   RegisterInstanceResponse,
   RegisterInstanceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RegisterInstanceRequest,
   output: RegisterInstanceResponse,
@@ -2361,7 +2192,7 @@ export const tagResource: API.OperationMethod<
   TagResourceRequest,
   TagResourceResponse,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -2382,7 +2213,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceRequest,
   UntagResourceResponse,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -2406,7 +2237,7 @@ export const updateHttpNamespace: API.OperationMethod<
   UpdateHttpNamespaceRequest,
   UpdateHttpNamespaceResponse,
   UpdateHttpNamespaceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateHttpNamespaceRequest,
   output: UpdateHttpNamespaceResponse,
@@ -2437,7 +2268,7 @@ export const updateInstanceCustomHealthStatus: API.OperationMethod<
   UpdateInstanceCustomHealthStatusRequest,
   UpdateInstanceCustomHealthStatusResponse,
   UpdateInstanceCustomHealthStatusError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateInstanceCustomHealthStatusRequest,
   output: UpdateInstanceCustomHealthStatusResponse,
@@ -2466,7 +2297,7 @@ export const updatePrivateDnsNamespace: API.OperationMethod<
   UpdatePrivateDnsNamespaceRequest,
   UpdatePrivateDnsNamespaceResponse,
   UpdatePrivateDnsNamespaceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdatePrivateDnsNamespaceRequest,
   output: UpdatePrivateDnsNamespaceResponse,
@@ -2489,7 +2320,7 @@ export const updatePublicDnsNamespace: API.OperationMethod<
   UpdatePublicDnsNamespaceRequest,
   UpdatePublicDnsNamespaceResponse,
   UpdatePublicDnsNamespaceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdatePublicDnsNamespaceRequest,
   output: UpdatePublicDnsNamespaceResponse,
@@ -2539,7 +2370,7 @@ export const updateService: API.OperationMethod<
   UpdateServiceRequest,
   UpdateServiceResponse,
   UpdateServiceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateServiceRequest,
   output: UpdateServiceResponse,
@@ -2561,7 +2392,7 @@ export const updateServiceAttributes: API.OperationMethod<
   UpdateServiceAttributesRequest,
   UpdateServiceAttributesResponse,
   UpdateServiceAttributesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateServiceAttributesRequest,
   output: UpdateServiceAttributesResponse,

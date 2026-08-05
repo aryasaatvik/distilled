@@ -35563,7 +35563,11 @@ export const getRoute: API.OperationMethod<
   retry: Retry.Retry,
 }));
 
-export type GetScriptError = WorkerNotFound | InvalidRoute | CloudflareOpError;
+export type GetScriptError =
+  | WorkerNotFound
+  | InvalidRoute
+  | WorkerHasNoVersions
+  | CloudflareOpError;
 /** Fetch raw script content for your worker. Note this is the original script content, not JSON encoded. */
 export const getScript: API.OperationMethod<
   GetScriptRequest,
@@ -35576,6 +35580,7 @@ export const getScript: API.OperationMethod<
   errors: [
     WorkerNotFound,
     InvalidRoute,
+    WorkerHasNoVersions,
     CloudflareRateLimited,
     CloudflareError,
   ],
@@ -35789,7 +35794,8 @@ export const keysObservabilityTelemetry: API.PaginatedOperationMethod<
   KeysObservabilityTelemetryRequest,
   KeysObservabilityTelemetryResponse,
   KeysObservabilityTelemetryError,
-  CloudflareOpContext
+  CloudflareOpContext,
+  ObservabilityTelemetryKeysResultItem
 > = /*@__PURE__*/ API.makePaginated(
   () => ({
     input: KeysObservabilityTelemetryRequest,
@@ -35800,7 +35806,7 @@ export const keysObservabilityTelemetry: API.PaginatedOperationMethod<
     pagination: { mode: "single", items: "result" } as const,
   }),
   cloudflarePaginate,
-);
+) as any;
 
 export type ListBetaWorkersError = InvalidRoute | CloudflareOpError;
 /** List all Workers for an account. */
@@ -35808,7 +35814,8 @@ export const listBetaWorkers: API.PaginatedOperationMethod<
   ListBetaWorkersRequest,
   ListBetaWorkersResponse,
   ListBetaWorkersError,
-  CloudflareOpContext
+  CloudflareOpContext,
+  BetaWorkersListResultItem
 > = /*@__PURE__*/ API.makePaginated(
   () => ({
     input: ListBetaWorkersRequest,
@@ -35825,7 +35832,7 @@ export const listBetaWorkers: API.PaginatedOperationMethod<
     } as const,
   }),
   cloudflarePaginate,
-);
+) as any;
 
 export type ListBetaWorkerVersionsError = WorkerNotFound | CloudflareOpError;
 /** List all versions for a Worker. */
@@ -35833,7 +35840,8 @@ export const listBetaWorkerVersions: API.PaginatedOperationMethod<
   ListBetaWorkerVersionsRequest,
   ListBetaWorkerVersionsResponse,
   ListBetaWorkerVersionsError,
-  CloudflareOpContext
+  CloudflareOpContext,
+  BetaWorkersVersionsListResultItem
 > = /*@__PURE__*/ API.makePaginated(
   () => ({
     input: ListBetaWorkerVersionsRequest,
@@ -35850,7 +35858,7 @@ export const listBetaWorkerVersions: API.PaginatedOperationMethod<
     } as const,
   }),
   cloudflarePaginate,
-);
+) as any;
 
 export type ListDomainsError = InvalidRoute | CloudflareOpError;
 /** Lists all domains for an account. */
@@ -35858,7 +35866,8 @@ export const listDomains: API.PaginatedOperationMethod<
   ListDomainsRequest,
   ListDomainsResponse,
   ListDomainsError,
-  CloudflareOpContext
+  CloudflareOpContext,
+  DomainsListResultItem
 > = /*@__PURE__*/ API.makePaginated(
   () => ({
     input: ListDomainsRequest,
@@ -35869,7 +35878,7 @@ export const listDomains: API.PaginatedOperationMethod<
     pagination: { mode: "single", items: "result" } as const,
   }),
   cloudflarePaginate,
-);
+) as any;
 
 export type ListObservabilityDestinationsError = Forbidden | CloudflareOpError;
 /** List your Workers Observability Telemetry Destinations. */
@@ -35877,7 +35886,8 @@ export const listObservabilityDestinations: API.PaginatedOperationMethod<
   ListObservabilityDestinationsRequest,
   ListObservabilityDestinationsResponse,
   ListObservabilityDestinationsError,
-  CloudflareOpContext
+  CloudflareOpContext,
+  ObservabilityDestinationsListResultItem
 > = /*@__PURE__*/ API.makePaginated(
   () => ({
     input: ListObservabilityDestinationsRequest,
@@ -35888,7 +35898,7 @@ export const listObservabilityDestinations: API.PaginatedOperationMethod<
     pagination: { mode: "single", items: "result" } as const,
   }),
   cloudflarePaginate,
-);
+) as any;
 
 export type ListObservabilityQueriesError = CloudflareOpError;
 /** List saved queries. */
@@ -35896,7 +35906,8 @@ export const listObservabilityQueries: API.PaginatedOperationMethod<
   ListObservabilityQueriesRequest,
   ListObservabilityQueriesResponse,
   ListObservabilityQueriesError,
-  CloudflareOpContext
+  CloudflareOpContext,
+  ObservabilityQueriesListResultItem
 > = /*@__PURE__*/ API.makePaginated(
   () => ({
     input: ListObservabilityQueriesRequest,
@@ -35907,7 +35918,7 @@ export const listObservabilityQueries: API.PaginatedOperationMethod<
     pagination: { mode: "single", items: "result" } as const,
   }),
   cloudflarePaginate,
-);
+) as any;
 
 export type ListRoutesError = InvalidRoute | Forbidden | CloudflareOpError;
 /** Returns routes for a zone. */
@@ -35915,7 +35926,8 @@ export const listRoutes: API.PaginatedOperationMethod<
   ListRoutesRequest,
   ListRoutesResponse,
   ListRoutesError,
-  CloudflareOpContext
+  CloudflareOpContext,
+  RoutesListResultItem
 > = /*@__PURE__*/ API.makePaginated(
   () => ({
     input: ListRoutesRequest,
@@ -35926,7 +35938,7 @@ export const listRoutes: API.PaginatedOperationMethod<
     pagination: { mode: "single", items: "result" } as const,
   }),
   cloudflarePaginate,
-);
+) as any;
 
 export type ListScriptDeploymentsError = WorkerNotFound | CloudflareOpError;
 /** List of Worker Deployments. The first deployment in the list is the latest deployment actively serving traffic. */
@@ -35949,7 +35961,8 @@ export const listScripts: API.PaginatedOperationMethod<
   ListScriptsRequest,
   ListScriptsResponse,
   ListScriptsError,
-  CloudflareOpContext
+  CloudflareOpContext,
+  ScriptsListResultItem
 > = /*@__PURE__*/ API.makePaginated(
   () => ({
     input: ListScriptsRequest,
@@ -35960,7 +35973,7 @@ export const listScripts: API.PaginatedOperationMethod<
     pagination: { mode: "single", items: "result" } as const,
   }),
   cloudflarePaginate,
-);
+) as any;
 
 export type ListScriptSecretsError = WorkerNotFound | CloudflareOpError;
 /** List secrets bound to a script. */
@@ -35968,7 +35981,8 @@ export const listScriptSecrets: API.PaginatedOperationMethod<
   ListScriptSecretsRequest,
   ListScriptSecretsResponse,
   ListScriptSecretsError,
-  CloudflareOpContext
+  CloudflareOpContext,
+  ScriptsSecretsListResultItem
 > = /*@__PURE__*/ API.makePaginated(
   () => ({
     input: ListScriptSecretsRequest,
@@ -35979,7 +35993,7 @@ export const listScriptSecrets: API.PaginatedOperationMethod<
     pagination: { mode: "single", items: "result" } as const,
   }),
   cloudflarePaginate,
-);
+) as any;
 
 export type ListScriptVersionsError = WorkerNotFound | CloudflareOpError;
 /** List of Worker Versions. The first version in the list is the latest version. */
@@ -36358,7 +36372,8 @@ export const valuesObservabilityTelemetry: API.PaginatedOperationMethod<
   ValuesObservabilityTelemetryRequest,
   ValuesObservabilityTelemetryResponse,
   ValuesObservabilityTelemetryError,
-  CloudflareOpContext
+  CloudflareOpContext,
+  ObservabilityTelemetryValuesResultItem
 > = /*@__PURE__*/ API.makePaginated(
   () => ({
     input: ValuesObservabilityTelemetryRequest,
@@ -36369,4 +36384,4 @@ export const valuesObservabilityTelemetry: API.PaginatedOperationMethod<
     pagination: { mode: "single", items: "result" } as const,
   }),
   cloudflarePaginate,
-);
+) as any;

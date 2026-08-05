@@ -1,6 +1,5 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -8,7 +7,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 const svc = T.AwsApiService({
   sdkId: "Textract",
   serviceShapeName: "Textract",
@@ -88,22 +86,34 @@ const rules = T.EndpointResolver((p, _) => {
 export class AccessDeniedException
   extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
     "AccessDeniedException",
-    { Message: S.optional(S.String), Code: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      Code: S.optional(S.String),
+    },
   ).pipe(C.withAuthError) {}
 export class BadDocumentException
   extends /*@__PURE__*/ S.TaggedErrorClass<BadDocumentException>()(
     "BadDocumentException",
-    { Message: S.optional(S.String), Code: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      Code: S.optional(S.String),
+    },
   ) {}
 export class ConflictException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
     "ConflictException",
-    { Message: S.optional(S.String), Code: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      Code: S.optional(S.String),
+    },
   ) {}
 export class DocumentTooLargeException
   extends /*@__PURE__*/ S.TaggedErrorClass<DocumentTooLargeException>()(
     "DocumentTooLargeException",
-    { Message: S.optional(S.String), Code: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      Code: S.optional(S.String),
+    },
   ) {}
 export class HumanLoopQuotaExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<HumanLoopQuotaExceededException>()(
@@ -112,7 +122,7 @@ export class HumanLoopQuotaExceededException
       ResourceType: S.optional(S.String),
       QuotaCode: S.optional(S.String),
       ServiceCode: S.optional(S.String),
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       Code: S.optional(S.String),
     },
     T.HttpError(402),
@@ -120,67 +130,106 @@ export class HumanLoopQuotaExceededException
 export class IdempotentParameterMismatchException
   extends /*@__PURE__*/ S.TaggedErrorClass<IdempotentParameterMismatchException>()(
     "IdempotentParameterMismatchException",
-    { Message: S.optional(S.String), Code: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      Code: S.optional(S.String),
+    },
   ) {}
 export class InternalServerError
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerError>()(
     "InternalServerError",
-    { Message: S.optional(S.String), Code: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      Code: S.optional(S.String),
+    },
   ) {}
 export class InvalidJobIdException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidJobIdException>()(
     "InvalidJobIdException",
-    { Message: S.optional(S.String), Code: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      Code: S.optional(S.String),
+    },
   ) {}
 export class InvalidKMSKeyException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidKMSKeyException>()(
     "InvalidKMSKeyException",
-    { Message: S.optional(S.String), Code: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      Code: S.optional(S.String),
+    },
   ) {}
 export class InvalidParameterException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidParameterException>()(
     "InvalidParameterException",
-    { Message: S.optional(S.String), Code: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      Code: S.optional(S.String),
+    },
   ) {}
 export class InvalidS3ObjectException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidS3ObjectException>()(
     "InvalidS3ObjectException",
-    { Message: S.optional(S.String), Code: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      Code: S.optional(S.String),
+    },
   ) {}
 export class LimitExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<LimitExceededException>()(
     "LimitExceededException",
-    { Message: S.optional(S.String), Code: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      Code: S.optional(S.String),
+    },
   ) {}
 export class ProvisionedThroughputExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<ProvisionedThroughputExceededException>()(
     "ProvisionedThroughputExceededException",
-    { Message: S.optional(S.String), Code: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      Code: S.optional(S.String),
+    },
   ) {}
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { Message: S.optional(S.String), Code: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      Code: S.optional(S.String),
+    },
   ) {}
 export class ServiceQuotaExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
     "ServiceQuotaExceededException",
-    { Message: S.optional(S.String), Code: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      Code: S.optional(S.String),
+    },
   ) {}
 export class ThrottlingException
   extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
     "ThrottlingException",
-    { Message: S.optional(S.String), Code: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      Code: S.optional(S.String),
+    },
   ) {}
 export class UnsupportedDocumentException
   extends /*@__PURE__*/ S.TaggedErrorClass<UnsupportedDocumentException>()(
     "UnsupportedDocumentException",
-    { Message: S.optional(S.String), Code: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      Code: S.optional(S.String),
+    },
   ) {}
 export class ValidationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
     "ValidationException",
-    { Message: S.optional(S.String), Code: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      Code: S.optional(S.String),
+    },
   ) {}
 export type ImageBlob = Uint8Array;
 export type S3Bucket = string;
@@ -1765,7 +1814,7 @@ export const analyzeDocument: API.OperationMethod<
   AnalyzeDocumentRequest,
   AnalyzeDocumentResponse,
   AnalyzeDocumentError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AnalyzeDocumentRequest,
   output: AnalyzeDocumentResponse,
@@ -1815,7 +1864,7 @@ export const analyzeExpense: API.OperationMethod<
   AnalyzeExpenseRequest,
   AnalyzeExpenseResponse,
   AnalyzeExpenseError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AnalyzeExpenseRequest,
   output: AnalyzeExpenseResponse,
@@ -1856,7 +1905,7 @@ export const analyzeID: API.OperationMethod<
   AnalyzeIDRequest,
   AnalyzeIDResponse,
   AnalyzeIDError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AnalyzeIDRequest,
   output: AnalyzeIDResponse,
@@ -1899,7 +1948,7 @@ export const createAdapter: API.OperationMethod<
   CreateAdapterRequest,
   CreateAdapterResponse,
   CreateAdapterError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateAdapterRequest,
   output: CreateAdapterResponse,
@@ -1945,7 +1994,7 @@ export const createAdapterVersion: API.OperationMethod<
   CreateAdapterVersionRequest,
   CreateAdapterVersionResponse,
   CreateAdapterVersionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateAdapterVersionRequest,
   output: CreateAdapterVersionResponse,
@@ -1986,7 +2035,7 @@ export const deleteAdapter: API.OperationMethod<
   DeleteAdapterRequest,
   DeleteAdapterResponse,
   DeleteAdapterError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteAdapterRequest,
   output: DeleteAdapterResponse,
@@ -2023,7 +2072,7 @@ export const deleteAdapterVersion: API.OperationMethod<
   DeleteAdapterVersionRequest,
   DeleteAdapterVersionResponse,
   DeleteAdapterVersionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteAdapterVersionRequest,
   output: DeleteAdapterVersionResponse,
@@ -2072,7 +2121,7 @@ export const detectDocumentText: API.OperationMethod<
   DetectDocumentTextRequest,
   DetectDocumentTextResponse,
   DetectDocumentTextError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DetectDocumentTextRequest,
   output: DetectDocumentTextResponse,
@@ -2109,7 +2158,7 @@ export const getAdapter: API.OperationMethod<
   GetAdapterRequest,
   GetAdapterResponse,
   GetAdapterError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetAdapterRequest,
   output: GetAdapterResponse,
@@ -2145,7 +2194,7 @@ export const getAdapterVersion: API.OperationMethod<
   GetAdapterVersionRequest,
   GetAdapterVersionResponse,
   GetAdapterVersionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetAdapterVersionRequest,
   output: GetAdapterVersionResponse,
@@ -2236,7 +2285,7 @@ export const getDocumentAnalysis: API.OperationMethod<
   GetDocumentAnalysisRequest,
   GetDocumentAnalysisResponse,
   GetDocumentAnalysisError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetDocumentAnalysisRequest,
   output: GetDocumentAnalysisResponse,
@@ -2299,7 +2348,7 @@ export const getDocumentTextDetection: API.OperationMethod<
   GetDocumentTextDetectionRequest,
   GetDocumentTextDetectionResponse,
   GetDocumentTextDetectionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetDocumentTextDetectionRequest,
   output: GetDocumentTextDetectionResponse,
@@ -2354,7 +2403,7 @@ export const getExpenseAnalysis: API.OperationMethod<
   GetExpenseAnalysisRequest,
   GetExpenseAnalysisResponse,
   GetExpenseAnalysisError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetExpenseAnalysisRequest,
   output: GetExpenseAnalysisResponse,
@@ -2402,7 +2451,7 @@ export const getLendingAnalysis: API.OperationMethod<
   GetLendingAnalysisRequest,
   GetLendingAnalysisResponse,
   GetLendingAnalysisError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetLendingAnalysisRequest,
   output: GetLendingAnalysisResponse,
@@ -2451,7 +2500,7 @@ export const getLendingAnalysisSummary: API.OperationMethod<
   GetLendingAnalysisSummaryRequest,
   GetLendingAnalysisSummaryResponse,
   GetLendingAnalysisSummaryError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetLendingAnalysisSummaryRequest,
   output: GetLendingAnalysisSummaryResponse,
@@ -2481,27 +2530,13 @@ export type ListAdaptersError =
 /**
  * Lists all adapters that match the specified filtration criteria.
  */
-export const listAdapters: API.OperationMethod<
+export const listAdapters: API.PaginatedOperationMethod<
   ListAdaptersRequest,
   ListAdaptersResponse,
   ListAdaptersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAdaptersRequest,
-  ) => stream.Stream<
-    ListAdaptersResponse,
-    ListAdaptersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAdaptersRequest,
-  ) => stream.Stream<
-    AdapterOverview,
-    ListAdaptersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  AdapterOverview
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListAdaptersRequest,
   output: ListAdaptersResponse,
   errors: [
@@ -2521,27 +2556,7 @@ export const listAdapters: API.OperationMethod<
     items: "Adapters",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListAdaptersRequest,
-  ListAdaptersResponse,
-  ListAdaptersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAdaptersRequest,
-  ) => stream.Stream<
-    ListAdaptersResponse,
-    ListAdaptersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAdaptersRequest,
-  ) => stream.Stream<
-    AdapterOverview,
-    ListAdaptersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListAdapterVersionsError =
   | AccessDeniedException
@@ -2555,27 +2570,13 @@ export type ListAdapterVersionsError =
 /**
  * List all version of an adapter that meet the specified filtration criteria.
  */
-export const listAdapterVersions: API.OperationMethod<
+export const listAdapterVersions: API.PaginatedOperationMethod<
   ListAdapterVersionsRequest,
   ListAdapterVersionsResponse,
   ListAdapterVersionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAdapterVersionsRequest,
-  ) => stream.Stream<
-    ListAdapterVersionsResponse,
-    ListAdapterVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAdapterVersionsRequest,
-  ) => stream.Stream<
-    AdapterVersionOverview,
-    ListAdapterVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  AdapterVersionOverview
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListAdapterVersionsRequest,
   output: ListAdapterVersionsResponse,
   errors: [
@@ -2596,27 +2597,7 @@ export const listAdapterVersions: API.OperationMethod<
     items: "AdapterVersions",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListAdapterVersionsRequest,
-  ListAdapterVersionsResponse,
-  ListAdapterVersionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAdapterVersionsRequest,
-  ) => stream.Stream<
-    ListAdapterVersionsResponse,
-    ListAdapterVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAdapterVersionsRequest,
-  ) => stream.Stream<
-    AdapterVersionOverview,
-    ListAdapterVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsForResourceError =
   | AccessDeniedException
@@ -2634,7 +2615,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceRequest,
   ListTagsForResourceResponse,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -2689,7 +2670,7 @@ export const startDocumentAnalysis: API.OperationMethod<
   StartDocumentAnalysisRequest,
   StartDocumentAnalysisResponse,
   StartDocumentAnalysisError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartDocumentAnalysisRequest,
   output: StartDocumentAnalysisResponse,
@@ -2749,7 +2730,7 @@ export const startDocumentTextDetection: API.OperationMethod<
   StartDocumentTextDetectionRequest,
   StartDocumentTextDetectionResponse,
   StartDocumentTextDetectionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartDocumentTextDetectionRequest,
   output: StartDocumentTextDetectionResponse,
@@ -2808,7 +2789,7 @@ export const startExpenseAnalysis: API.OperationMethod<
   StartExpenseAnalysisRequest,
   StartExpenseAnalysisResponse,
   StartExpenseAnalysisError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartExpenseAnalysisRequest,
   output: StartExpenseAnalysisResponse,
@@ -2878,7 +2859,7 @@ export const startLendingAnalysis: API.OperationMethod<
   StartLendingAnalysisRequest,
   StartLendingAnalysisResponse,
   StartLendingAnalysisError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartLendingAnalysisRequest,
   output: StartLendingAnalysisResponse,
@@ -2918,7 +2899,7 @@ export const tagResource: API.OperationMethod<
   TagResourceRequest,
   TagResourceResponse,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -2953,7 +2934,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceRequest,
   UntagResourceResponse,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -2989,7 +2970,7 @@ export const updateAdapter: API.OperationMethod<
   UpdateAdapterRequest,
   UpdateAdapterResponse,
   UpdateAdapterError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateAdapterRequest,
   output: UpdateAdapterResponse,

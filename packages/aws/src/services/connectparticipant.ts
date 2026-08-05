@@ -1,7 +1,6 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as redacted from "effect/Redacted";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -9,7 +8,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 import { SensitiveString } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "ConnectParticipant",
@@ -93,26 +91,26 @@ const rules = T.EndpointResolver((p, _) => {
 export class AccessDeniedException
   extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
     "AccessDeniedException",
-    { Message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(403),
   ).pipe(C.withAuthError) {}
 export class ConflictException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
     "ConflictException",
-    { Message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class InternalServerException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
     "InternalServerException",
-    { Message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(500),
   ).pipe(C.withServerError) {}
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
     {
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       ResourceId: S.optional(S.String),
       ResourceType: S.optional(
         S.suspend(() => ResourceType).annotate({ identifier: "ResourceType" }),
@@ -123,19 +121,19 @@ export class ResourceNotFoundException
 export class ServiceQuotaExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
     "ServiceQuotaExceededException",
-    { Message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(402),
   ).pipe(C.withQuotaError) {}
 export class ThrottlingException
   extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
     "ThrottlingException",
-    { Message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(429),
   ).pipe(C.withThrottlingError) {}
 export class ValidationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
     "ValidationException",
-    { Message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export type SessionId = string;
@@ -881,7 +879,7 @@ export const cancelParticipantAuthentication: API.OperationMethod<
   CancelParticipantAuthenticationRequest,
   CancelParticipantAuthenticationResponse,
   CancelParticipantAuthenticationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CancelParticipantAuthenticationRequest,
   output: CancelParticipantAuthenticationResponse,
@@ -921,7 +919,7 @@ export const completeAttachmentUpload: API.OperationMethod<
   CompleteAttachmentUploadRequest,
   CompleteAttachmentUploadResponse,
   CompleteAttachmentUploadError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CompleteAttachmentUploadRequest,
   output: CompleteAttachmentUploadResponse,
@@ -1014,7 +1012,7 @@ export const createParticipantConnection: API.OperationMethod<
   CreateParticipantConnectionRequest,
   CreateParticipantConnectionResponse,
   CreateParticipantConnectionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateParticipantConnectionRequest,
   output: CreateParticipantConnectionResponse,
@@ -1045,7 +1043,7 @@ export const describeView: API.OperationMethod<
   DescribeViewRequest,
   DescribeViewResponse,
   DescribeViewError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeViewRequest,
   output: DescribeViewResponse,
@@ -1082,7 +1080,7 @@ export const disconnectParticipant: API.OperationMethod<
   DisconnectParticipantRequest,
   DisconnectParticipantResponse,
   DisconnectParticipantError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DisconnectParticipantRequest,
   output: DisconnectParticipantResponse,
@@ -1124,7 +1122,7 @@ export const getAttachment: API.OperationMethod<
   GetAttachmentRequest,
   GetAttachmentResponse,
   GetAttachmentError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetAttachmentRequest,
   output: GetAttachmentResponse,
@@ -1167,7 +1165,7 @@ export const getAuthenticationUrl: API.OperationMethod<
   GetAuthenticationUrlRequest,
   GetAuthenticationUrlResponse,
   GetAuthenticationUrlError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetAuthenticationUrlRequest,
   output: GetAuthenticationUrlResponse,
@@ -1217,27 +1215,13 @@ export type GetTranscriptError =
  * The Amazon Connect Participant Service APIs do not use Signature Version 4
  * authentication.
  */
-export const getTranscript: API.OperationMethod<
+export const getTranscript: API.PaginatedOperationMethod<
   GetTranscriptRequest,
   GetTranscriptResponse,
   GetTranscriptError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetTranscriptRequest,
-  ) => stream.Stream<
-    GetTranscriptResponse,
-    GetTranscriptError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetTranscriptRequest,
-  ) => stream.Stream<
-    unknown,
-    GetTranscriptError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetTranscriptRequest,
   output: GetTranscriptResponse,
   errors: [
@@ -1254,27 +1238,7 @@ export const getTranscript: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetTranscriptRequest,
-  GetTranscriptResponse,
-  GetTranscriptError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetTranscriptRequest,
-  ) => stream.Stream<
-    GetTranscriptResponse,
-    GetTranscriptError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetTranscriptRequest,
-  ) => stream.Stream<
-    unknown,
-    GetTranscriptError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type SendEventError =
   | AccessDeniedException
@@ -1305,7 +1269,7 @@ export const sendEvent: API.OperationMethod<
   SendEventRequest,
   SendEventResponse,
   SendEventError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: SendEventRequest,
   output: SendEventResponse,
@@ -1342,7 +1306,7 @@ export const sendMessage: API.OperationMethod<
   SendMessageRequest,
   SendMessageResponse,
   SendMessageError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: SendMessageRequest,
   output: SendMessageResponse,
@@ -1380,7 +1344,7 @@ export const startAttachmentUpload: API.OperationMethod<
   StartAttachmentUploadRequest,
   StartAttachmentUploadResponse,
   StartAttachmentUploadError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartAttachmentUploadRequest,
   output: StartAttachmentUploadResponse,

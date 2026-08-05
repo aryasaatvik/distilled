@@ -1,6 +1,5 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -8,7 +7,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 const svc = T.AwsApiService({
   sdkId: "WellArchitected",
   serviceShapeName: "WellArchitectedApiServiceLambda",
@@ -88,14 +86,14 @@ const rules = T.EndpointResolver((p, _) => {
 export class AccessDeniedException
   extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
     "AccessDeniedException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(403),
   ).pipe(C.withAuthError) {}
 export class ConflictException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
     "ConflictException",
     {
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       ResourceId: S.optional(S.String),
       ResourceType: S.optional(S.String),
     },
@@ -104,14 +102,14 @@ export class ConflictException
 export class InternalServerException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
     "InternalServerException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(500),
   ).pipe(C.withServerError) {}
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
     {
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       ResourceId: S.optional(S.String),
       ResourceType: S.optional(S.String),
     },
@@ -121,7 +119,7 @@ export class ServiceQuotaExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
     "ServiceQuotaExceededException",
     {
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       ResourceId: S.optional(S.String),
       ResourceType: S.optional(S.String),
       QuotaCode: S.optional(S.String),
@@ -133,7 +131,7 @@ export class ThrottlingException
   extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
     "ThrottlingException",
     {
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       QuotaCode: S.optional(S.String),
       ServiceCode: S.optional(S.String),
     },
@@ -143,7 +141,7 @@ export class ValidationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
     "ValidationException",
     {
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       Reason: S.optional(
         S.suspend(() => ValidationExceptionReason).annotate({
           identifier: "ValidationExceptionReason",
@@ -4558,7 +4556,7 @@ export const associateLenses: API.OperationMethod<
   AssociateLensesInput,
   AssociateLensesResponse,
   AssociateLensesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AssociateLensesInput,
   output: AssociateLensesResponse,
@@ -4590,7 +4588,7 @@ export const associateProfiles: API.OperationMethod<
   AssociateProfilesInput,
   AssociateProfilesResponse,
   AssociateProfilesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AssociateProfilesInput,
   output: AssociateProfilesResponse,
@@ -4644,7 +4642,7 @@ export const createLensShare: API.OperationMethod<
   CreateLensShareInput,
   CreateLensShareOutput,
   CreateLensShareError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateLensShareInput,
   output: CreateLensShareOutput,
@@ -4685,7 +4683,7 @@ export const createLensVersion: API.OperationMethod<
   CreateLensVersionInput,
   CreateLensVersionOutput,
   CreateLensVersionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateLensVersionInput,
   output: CreateLensVersionOutput,
@@ -4719,7 +4717,7 @@ export const createMilestone: API.OperationMethod<
   CreateMilestoneInput,
   CreateMilestoneOutput,
   CreateMilestoneError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateMilestoneInput,
   output: CreateMilestoneOutput,
@@ -4752,7 +4750,7 @@ export const createProfile: API.OperationMethod<
   CreateProfileInput,
   CreateProfileOutput,
   CreateProfileError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateProfileInput,
   output: CreateProfileOutput,
@@ -4785,7 +4783,7 @@ export const createProfileShare: API.OperationMethod<
   CreateProfileShareInput,
   CreateProfileShareOutput,
   CreateProfileShareError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateProfileShareInput,
   output: CreateProfileShareOutput,
@@ -4828,7 +4826,7 @@ export const createReviewTemplate: API.OperationMethod<
   CreateReviewTemplateInput,
   CreateReviewTemplateOutput,
   CreateReviewTemplateError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateReviewTemplateInput,
   output: CreateReviewTemplateOutput,
@@ -4877,7 +4875,7 @@ export const createTemplateShare: API.OperationMethod<
   CreateTemplateShareInput,
   CreateTemplateShareOutput,
   CreateTemplateShareError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateTemplateShareInput,
   output: CreateTemplateShareOutput,
@@ -4934,7 +4932,7 @@ export const createWorkload: API.OperationMethod<
   CreateWorkloadInput,
   CreateWorkloadOutput,
   CreateWorkloadError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateWorkloadInput,
   output: CreateWorkloadOutput,
@@ -4978,7 +4976,7 @@ export const createWorkloadShare: API.OperationMethod<
   CreateWorkloadShareInput,
   CreateWorkloadShareOutput,
   CreateWorkloadShareError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateWorkloadShareInput,
   output: CreateWorkloadShareOutput,
@@ -5023,7 +5021,7 @@ export const deleteLens: API.OperationMethod<
   DeleteLensInput,
   DeleteLensResponse,
   DeleteLensError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteLensInput,
   output: DeleteLensResponse,
@@ -5068,7 +5066,7 @@ export const deleteLensShare: API.OperationMethod<
   DeleteLensShareInput,
   DeleteLensShareResponse,
   DeleteLensShareError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteLensShareInput,
   output: DeleteLensShareResponse,
@@ -5109,7 +5107,7 @@ export const deleteProfile: API.OperationMethod<
   DeleteProfileInput,
   DeleteProfileResponse,
   DeleteProfileError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteProfileInput,
   output: DeleteProfileResponse,
@@ -5141,7 +5139,7 @@ export const deleteProfileShare: API.OperationMethod<
   DeleteProfileShareInput,
   DeleteProfileShareResponse,
   DeleteProfileShareError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteProfileShareInput,
   output: DeleteProfileShareResponse,
@@ -5179,7 +5177,7 @@ export const deleteReviewTemplate: API.OperationMethod<
   DeleteReviewTemplateInput,
   DeleteReviewTemplateResponse,
   DeleteReviewTemplateError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteReviewTemplateInput,
   output: DeleteReviewTemplateResponse,
@@ -5215,7 +5213,7 @@ export const deleteTemplateShare: API.OperationMethod<
   DeleteTemplateShareInput,
   DeleteTemplateShareResponse,
   DeleteTemplateShareError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteTemplateShareInput,
   output: DeleteTemplateShareResponse,
@@ -5247,7 +5245,7 @@ export const deleteWorkload: API.OperationMethod<
   DeleteWorkloadInput,
   DeleteWorkloadResponse,
   DeleteWorkloadError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteWorkloadInput,
   output: DeleteWorkloadResponse,
@@ -5279,7 +5277,7 @@ export const deleteWorkloadShare: API.OperationMethod<
   DeleteWorkloadShareInput,
   DeleteWorkloadShareResponse,
   DeleteWorkloadShareError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteWorkloadShareInput,
   output: DeleteWorkloadShareResponse,
@@ -5316,7 +5314,7 @@ export const disassociateLenses: API.OperationMethod<
   DisassociateLensesInput,
   DisassociateLensesResponse,
   DisassociateLensesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DisassociateLensesInput,
   output: DisassociateLensesResponse,
@@ -5348,7 +5346,7 @@ export const disassociateProfiles: API.OperationMethod<
   DisassociateProfilesInput,
   DisassociateProfilesResponse,
   DisassociateProfilesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DisassociateProfilesInput,
   output: DisassociateProfilesResponse,
@@ -5394,7 +5392,7 @@ export const exportLens: API.OperationMethod<
   ExportLensInput,
   ExportLensOutput,
   ExportLensError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ExportLensInput,
   output: ExportLensOutput,
@@ -5424,7 +5422,7 @@ export const getAnswer: API.OperationMethod<
   GetAnswerInput,
   GetAnswerOutput,
   GetAnswerError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetAnswerInput,
   output: GetAnswerOutput,
@@ -5452,27 +5450,13 @@ export type GetConsolidatedReportError =
  *
  * You can optionally choose to include workloads that have been shared with you.
  */
-export const getConsolidatedReport: API.OperationMethod<
+export const getConsolidatedReport: API.PaginatedOperationMethod<
   GetConsolidatedReportInput,
   GetConsolidatedReportOutput,
   GetConsolidatedReportError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetConsolidatedReportInput,
-  ) => stream.Stream<
-    GetConsolidatedReportOutput,
-    GetConsolidatedReportError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetConsolidatedReportInput,
-  ) => stream.Stream<
-    unknown,
-    GetConsolidatedReportError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetConsolidatedReportInput,
   output: GetConsolidatedReportOutput,
   errors: [
@@ -5490,27 +5474,7 @@ export const getConsolidatedReport: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetConsolidatedReportInput,
-  GetConsolidatedReportOutput,
-  GetConsolidatedReportError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetConsolidatedReportInput,
-  ) => stream.Stream<
-    GetConsolidatedReportOutput,
-    GetConsolidatedReportError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetConsolidatedReportInput,
-  ) => stream.Stream<
-    unknown,
-    GetConsolidatedReportError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetGlobalSettingsError =
   | AccessDeniedException
@@ -5525,7 +5489,7 @@ export const getGlobalSettings: API.OperationMethod<
   GetGlobalSettingsRequest,
   GetGlobalSettingsOutput,
   GetGlobalSettingsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetGlobalSettingsRequest,
   output: GetGlobalSettingsOutput,
@@ -5554,7 +5518,7 @@ export const getLens: API.OperationMethod<
   GetLensInput,
   GetLensOutput,
   GetLensError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetLensInput,
   output: GetLensOutput,
@@ -5584,7 +5548,7 @@ export const getLensReview: API.OperationMethod<
   GetLensReviewInput,
   GetLensReviewOutput,
   GetLensReviewError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetLensReviewInput,
   output: GetLensReviewOutput,
@@ -5614,7 +5578,7 @@ export const getLensReviewReport: API.OperationMethod<
   GetLensReviewReportInput,
   GetLensReviewReportOutput,
   GetLensReviewReportError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetLensReviewReportInput,
   output: GetLensReviewReportOutput,
@@ -5644,7 +5608,7 @@ export const getLensVersionDifference: API.OperationMethod<
   GetLensVersionDifferenceInput,
   GetLensVersionDifferenceOutput,
   GetLensVersionDifferenceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetLensVersionDifferenceInput,
   output: GetLensVersionDifferenceOutput,
@@ -5674,7 +5638,7 @@ export const getMilestone: API.OperationMethod<
   GetMilestoneInput,
   GetMilestoneOutput,
   GetMilestoneError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetMilestoneInput,
   output: GetMilestoneOutput,
@@ -5704,7 +5668,7 @@ export const getProfile: API.OperationMethod<
   GetProfileInput,
   GetProfileOutput,
   GetProfileError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetProfileInput,
   output: GetProfileOutput,
@@ -5734,7 +5698,7 @@ export const getProfileTemplate: API.OperationMethod<
   GetProfileTemplateInput,
   GetProfileTemplateOutput,
   GetProfileTemplateError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetProfileTemplateInput,
   output: GetProfileTemplateOutput,
@@ -5764,7 +5728,7 @@ export const getReviewTemplate: API.OperationMethod<
   GetReviewTemplateInput,
   GetReviewTemplateOutput,
   GetReviewTemplateError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetReviewTemplateInput,
   output: GetReviewTemplateOutput,
@@ -5794,7 +5758,7 @@ export const getReviewTemplateAnswer: API.OperationMethod<
   GetReviewTemplateAnswerInput,
   GetReviewTemplateAnswerOutput,
   GetReviewTemplateAnswerError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetReviewTemplateAnswerInput,
   output: GetReviewTemplateAnswerOutput,
@@ -5824,7 +5788,7 @@ export const getReviewTemplateLensReview: API.OperationMethod<
   GetReviewTemplateLensReviewInput,
   GetReviewTemplateLensReviewOutput,
   GetReviewTemplateLensReviewError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetReviewTemplateLensReviewInput,
   output: GetReviewTemplateLensReviewOutput,
@@ -5854,7 +5818,7 @@ export const getWorkload: API.OperationMethod<
   GetWorkloadInput,
   GetWorkloadOutput,
   GetWorkloadError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetWorkloadInput,
   output: GetWorkloadOutput,
@@ -5907,7 +5871,7 @@ export const importLens: API.OperationMethod<
   ImportLensInput,
   ImportLensOutput,
   ImportLensError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ImportLensInput,
   output: ImportLensOutput,
@@ -5935,27 +5899,13 @@ export type ListAnswersError =
 /**
  * List of answers for a particular workload and lens.
  */
-export const listAnswers: API.OperationMethod<
+export const listAnswers: API.PaginatedOperationMethod<
   ListAnswersInput,
   ListAnswersOutput,
   ListAnswersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAnswersInput,
-  ) => stream.Stream<
-    ListAnswersOutput,
-    ListAnswersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAnswersInput,
-  ) => stream.Stream<
-    unknown,
-    ListAnswersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListAnswersInput,
   output: ListAnswersOutput,
   errors: [
@@ -5973,27 +5923,7 @@ export const listAnswers: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListAnswersInput,
-  ListAnswersOutput,
-  ListAnswersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAnswersInput,
-  ) => stream.Stream<
-    ListAnswersOutput,
-    ListAnswersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAnswersInput,
-  ) => stream.Stream<
-    unknown,
-    ListAnswersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListCheckDetailsError =
   | AccessDeniedException
@@ -6005,27 +5935,13 @@ export type ListCheckDetailsError =
 /**
  * List of Trusted Advisor check details by account related to the workload.
  */
-export const listCheckDetails: API.OperationMethod<
+export const listCheckDetails: API.PaginatedOperationMethod<
   ListCheckDetailsInput,
   ListCheckDetailsOutput,
   ListCheckDetailsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCheckDetailsInput,
-  ) => stream.Stream<
-    ListCheckDetailsOutput,
-    ListCheckDetailsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCheckDetailsInput,
-  ) => stream.Stream<
-    unknown,
-    ListCheckDetailsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListCheckDetailsInput,
   output: ListCheckDetailsOutput,
   errors: [
@@ -6043,27 +5959,7 @@ export const listCheckDetails: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListCheckDetailsInput,
-  ListCheckDetailsOutput,
-  ListCheckDetailsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCheckDetailsInput,
-  ) => stream.Stream<
-    ListCheckDetailsOutput,
-    ListCheckDetailsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCheckDetailsInput,
-  ) => stream.Stream<
-    unknown,
-    ListCheckDetailsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListCheckSummariesError =
   | AccessDeniedException
@@ -6075,27 +5971,13 @@ export type ListCheckSummariesError =
 /**
  * List of Trusted Advisor checks summarized for all accounts related to the workload.
  */
-export const listCheckSummaries: API.OperationMethod<
+export const listCheckSummaries: API.PaginatedOperationMethod<
   ListCheckSummariesInput,
   ListCheckSummariesOutput,
   ListCheckSummariesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCheckSummariesInput,
-  ) => stream.Stream<
-    ListCheckSummariesOutput,
-    ListCheckSummariesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCheckSummariesInput,
-  ) => stream.Stream<
-    unknown,
-    ListCheckSummariesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListCheckSummariesInput,
   output: ListCheckSummariesOutput,
   errors: [
@@ -6113,27 +5995,7 @@ export const listCheckSummaries: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListCheckSummariesInput,
-  ListCheckSummariesOutput,
-  ListCheckSummariesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCheckSummariesInput,
-  ) => stream.Stream<
-    ListCheckSummariesOutput,
-    ListCheckSummariesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCheckSummariesInput,
-  ) => stream.Stream<
-    unknown,
-    ListCheckSummariesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListLensesError =
   | AccessDeniedException
@@ -6144,27 +6006,13 @@ export type ListLensesError =
 /**
  * List the available lenses.
  */
-export const listLenses: API.OperationMethod<
+export const listLenses: API.PaginatedOperationMethod<
   ListLensesInput,
   ListLensesOutput,
   ListLensesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListLensesInput,
-  ) => stream.Stream<
-    ListLensesOutput,
-    ListLensesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListLensesInput,
-  ) => stream.Stream<
-    unknown,
-    ListLensesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListLensesInput,
   output: ListLensesOutput,
   errors: [
@@ -6181,27 +6029,7 @@ export const listLenses: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListLensesInput,
-  ListLensesOutput,
-  ListLensesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListLensesInput,
-  ) => stream.Stream<
-    ListLensesOutput,
-    ListLensesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListLensesInput,
-  ) => stream.Stream<
-    unknown,
-    ListLensesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListLensReviewImprovementsError =
   | AccessDeniedException
@@ -6213,27 +6041,13 @@ export type ListLensReviewImprovementsError =
 /**
  * List the improvements of a particular lens review.
  */
-export const listLensReviewImprovements: API.OperationMethod<
+export const listLensReviewImprovements: API.PaginatedOperationMethod<
   ListLensReviewImprovementsInput,
   ListLensReviewImprovementsOutput,
   ListLensReviewImprovementsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListLensReviewImprovementsInput,
-  ) => stream.Stream<
-    ListLensReviewImprovementsOutput,
-    ListLensReviewImprovementsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListLensReviewImprovementsInput,
-  ) => stream.Stream<
-    unknown,
-    ListLensReviewImprovementsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListLensReviewImprovementsInput,
   output: ListLensReviewImprovementsOutput,
   errors: [
@@ -6251,27 +6065,7 @@ export const listLensReviewImprovements: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListLensReviewImprovementsInput,
-  ListLensReviewImprovementsOutput,
-  ListLensReviewImprovementsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListLensReviewImprovementsInput,
-  ) => stream.Stream<
-    ListLensReviewImprovementsOutput,
-    ListLensReviewImprovementsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListLensReviewImprovementsInput,
-  ) => stream.Stream<
-    unknown,
-    ListLensReviewImprovementsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListLensReviewsError =
   | AccessDeniedException
@@ -6283,27 +6077,13 @@ export type ListLensReviewsError =
 /**
  * List lens reviews for a particular workload.
  */
-export const listLensReviews: API.OperationMethod<
+export const listLensReviews: API.PaginatedOperationMethod<
   ListLensReviewsInput,
   ListLensReviewsOutput,
   ListLensReviewsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListLensReviewsInput,
-  ) => stream.Stream<
-    ListLensReviewsOutput,
-    ListLensReviewsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListLensReviewsInput,
-  ) => stream.Stream<
-    unknown,
-    ListLensReviewsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListLensReviewsInput,
   output: ListLensReviewsOutput,
   errors: [
@@ -6321,27 +6101,7 @@ export const listLensReviews: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListLensReviewsInput,
-  ListLensReviewsOutput,
-  ListLensReviewsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListLensReviewsInput,
-  ) => stream.Stream<
-    ListLensReviewsOutput,
-    ListLensReviewsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListLensReviewsInput,
-  ) => stream.Stream<
-    unknown,
-    ListLensReviewsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListLensSharesError =
   | AccessDeniedException
@@ -6353,27 +6113,13 @@ export type ListLensSharesError =
 /**
  * List the lens shares associated with the lens.
  */
-export const listLensShares: API.OperationMethod<
+export const listLensShares: API.PaginatedOperationMethod<
   ListLensSharesInput,
   ListLensSharesOutput,
   ListLensSharesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListLensSharesInput,
-  ) => stream.Stream<
-    ListLensSharesOutput,
-    ListLensSharesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListLensSharesInput,
-  ) => stream.Stream<
-    unknown,
-    ListLensSharesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListLensSharesInput,
   output: ListLensSharesOutput,
   errors: [
@@ -6391,27 +6137,7 @@ export const listLensShares: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListLensSharesInput,
-  ListLensSharesOutput,
-  ListLensSharesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListLensSharesInput,
-  ) => stream.Stream<
-    ListLensSharesOutput,
-    ListLensSharesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListLensSharesInput,
-  ) => stream.Stream<
-    unknown,
-    ListLensSharesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListMilestonesError =
   | AccessDeniedException
@@ -6423,27 +6149,13 @@ export type ListMilestonesError =
 /**
  * List all milestones for an existing workload.
  */
-export const listMilestones: API.OperationMethod<
+export const listMilestones: API.PaginatedOperationMethod<
   ListMilestonesInput,
   ListMilestonesOutput,
   ListMilestonesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListMilestonesInput,
-  ) => stream.Stream<
-    ListMilestonesOutput,
-    ListMilestonesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListMilestonesInput,
-  ) => stream.Stream<
-    unknown,
-    ListMilestonesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListMilestonesInput,
   output: ListMilestonesOutput,
   errors: [
@@ -6461,27 +6173,7 @@ export const listMilestones: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListMilestonesInput,
-  ListMilestonesOutput,
-  ListMilestonesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListMilestonesInput,
-  ) => stream.Stream<
-    ListMilestonesOutput,
-    ListMilestonesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListMilestonesInput,
-  ) => stream.Stream<
-    unknown,
-    ListMilestonesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListNotificationsError =
   | AccessDeniedException
@@ -6492,27 +6184,13 @@ export type ListNotificationsError =
 /**
  * List lens notifications.
  */
-export const listNotifications: API.OperationMethod<
+export const listNotifications: API.PaginatedOperationMethod<
   ListNotificationsInput,
   ListNotificationsOutput,
   ListNotificationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListNotificationsInput,
-  ) => stream.Stream<
-    ListNotificationsOutput,
-    ListNotificationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListNotificationsInput,
-  ) => stream.Stream<
-    unknown,
-    ListNotificationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListNotificationsInput,
   output: ListNotificationsOutput,
   errors: [
@@ -6529,27 +6207,7 @@ export const listNotifications: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListNotificationsInput,
-  ListNotificationsOutput,
-  ListNotificationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListNotificationsInput,
-  ) => stream.Stream<
-    ListNotificationsOutput,
-    ListNotificationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListNotificationsInput,
-  ) => stream.Stream<
-    unknown,
-    ListNotificationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListProfileNotificationsError =
   | AccessDeniedException
@@ -6560,27 +6218,13 @@ export type ListProfileNotificationsError =
 /**
  * List profile notifications.
  */
-export const listProfileNotifications: API.OperationMethod<
+export const listProfileNotifications: API.PaginatedOperationMethod<
   ListProfileNotificationsInput,
   ListProfileNotificationsOutput,
   ListProfileNotificationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListProfileNotificationsInput,
-  ) => stream.Stream<
-    ListProfileNotificationsOutput,
-    ListProfileNotificationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListProfileNotificationsInput,
-  ) => stream.Stream<
-    unknown,
-    ListProfileNotificationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListProfileNotificationsInput,
   output: ListProfileNotificationsOutput,
   errors: [
@@ -6597,27 +6241,7 @@ export const listProfileNotifications: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListProfileNotificationsInput,
-  ListProfileNotificationsOutput,
-  ListProfileNotificationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListProfileNotificationsInput,
-  ) => stream.Stream<
-    ListProfileNotificationsOutput,
-    ListProfileNotificationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListProfileNotificationsInput,
-  ) => stream.Stream<
-    unknown,
-    ListProfileNotificationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListProfilesError =
   | AccessDeniedException
@@ -6628,27 +6252,13 @@ export type ListProfilesError =
 /**
  * List profiles.
  */
-export const listProfiles: API.OperationMethod<
+export const listProfiles: API.PaginatedOperationMethod<
   ListProfilesInput,
   ListProfilesOutput,
   ListProfilesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListProfilesInput,
-  ) => stream.Stream<
-    ListProfilesOutput,
-    ListProfilesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListProfilesInput,
-  ) => stream.Stream<
-    unknown,
-    ListProfilesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListProfilesInput,
   output: ListProfilesOutput,
   errors: [
@@ -6665,27 +6275,7 @@ export const listProfiles: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListProfilesInput,
-  ListProfilesOutput,
-  ListProfilesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListProfilesInput,
-  ) => stream.Stream<
-    ListProfilesOutput,
-    ListProfilesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListProfilesInput,
-  ) => stream.Stream<
-    unknown,
-    ListProfilesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListProfileSharesError =
   | AccessDeniedException
@@ -6697,27 +6287,13 @@ export type ListProfileSharesError =
 /**
  * List profile shares.
  */
-export const listProfileShares: API.OperationMethod<
+export const listProfileShares: API.PaginatedOperationMethod<
   ListProfileSharesInput,
   ListProfileSharesOutput,
   ListProfileSharesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListProfileSharesInput,
-  ) => stream.Stream<
-    ListProfileSharesOutput,
-    ListProfileSharesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListProfileSharesInput,
-  ) => stream.Stream<
-    unknown,
-    ListProfileSharesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListProfileSharesInput,
   output: ListProfileSharesOutput,
   errors: [
@@ -6735,27 +6311,7 @@ export const listProfileShares: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListProfileSharesInput,
-  ListProfileSharesOutput,
-  ListProfileSharesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListProfileSharesInput,
-  ) => stream.Stream<
-    ListProfileSharesOutput,
-    ListProfileSharesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListProfileSharesInput,
-  ) => stream.Stream<
-    unknown,
-    ListProfileSharesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListReviewTemplateAnswersError =
   | AccessDeniedException
@@ -6767,27 +6323,13 @@ export type ListReviewTemplateAnswersError =
 /**
  * List the answers of a review template.
  */
-export const listReviewTemplateAnswers: API.OperationMethod<
+export const listReviewTemplateAnswers: API.PaginatedOperationMethod<
   ListReviewTemplateAnswersInput,
   ListReviewTemplateAnswersOutput,
   ListReviewTemplateAnswersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListReviewTemplateAnswersInput,
-  ) => stream.Stream<
-    ListReviewTemplateAnswersOutput,
-    ListReviewTemplateAnswersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListReviewTemplateAnswersInput,
-  ) => stream.Stream<
-    unknown,
-    ListReviewTemplateAnswersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListReviewTemplateAnswersInput,
   output: ListReviewTemplateAnswersOutput,
   errors: [
@@ -6805,27 +6347,7 @@ export const listReviewTemplateAnswers: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListReviewTemplateAnswersInput,
-  ListReviewTemplateAnswersOutput,
-  ListReviewTemplateAnswersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListReviewTemplateAnswersInput,
-  ) => stream.Stream<
-    ListReviewTemplateAnswersOutput,
-    ListReviewTemplateAnswersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListReviewTemplateAnswersInput,
-  ) => stream.Stream<
-    unknown,
-    ListReviewTemplateAnswersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListReviewTemplatesError =
   | AccessDeniedException
@@ -6836,27 +6358,13 @@ export type ListReviewTemplatesError =
 /**
  * List review templates.
  */
-export const listReviewTemplates: API.OperationMethod<
+export const listReviewTemplates: API.PaginatedOperationMethod<
   ListReviewTemplatesInput,
   ListReviewTemplatesOutput,
   ListReviewTemplatesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListReviewTemplatesInput,
-  ) => stream.Stream<
-    ListReviewTemplatesOutput,
-    ListReviewTemplatesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListReviewTemplatesInput,
-  ) => stream.Stream<
-    unknown,
-    ListReviewTemplatesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListReviewTemplatesInput,
   output: ListReviewTemplatesOutput,
   errors: [
@@ -6873,27 +6381,7 @@ export const listReviewTemplates: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListReviewTemplatesInput,
-  ListReviewTemplatesOutput,
-  ListReviewTemplatesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListReviewTemplatesInput,
-  ) => stream.Stream<
-    ListReviewTemplatesOutput,
-    ListReviewTemplatesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListReviewTemplatesInput,
-  ) => stream.Stream<
-    unknown,
-    ListReviewTemplatesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListShareInvitationsError =
   | AccessDeniedException
@@ -6908,27 +6396,13 @@ export type ListShareInvitationsError =
  * `ProfileNamePrefix`, and `TemplateNamePrefix` are mutually
  * exclusive. Use the parameter that matches your `ShareResourceType`.
  */
-export const listShareInvitations: API.OperationMethod<
+export const listShareInvitations: API.PaginatedOperationMethod<
   ListShareInvitationsInput,
   ListShareInvitationsOutput,
   ListShareInvitationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListShareInvitationsInput,
-  ) => stream.Stream<
-    ListShareInvitationsOutput,
-    ListShareInvitationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListShareInvitationsInput,
-  ) => stream.Stream<
-    unknown,
-    ListShareInvitationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListShareInvitationsInput,
   output: ListShareInvitationsOutput,
   errors: [
@@ -6945,27 +6419,7 @@ export const listShareInvitations: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListShareInvitationsInput,
-  ListShareInvitationsOutput,
-  ListShareInvitationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListShareInvitationsInput,
-  ) => stream.Stream<
-    ListShareInvitationsOutput,
-    ListShareInvitationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListShareInvitationsInput,
-  ) => stream.Stream<
-    unknown,
-    ListShareInvitationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsForResourceError =
   | InternalServerException
@@ -6980,7 +6434,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceInput,
   ListTagsForResourceOutput,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceInput,
   output: ListTagsForResourceOutput,
@@ -7000,27 +6454,13 @@ export type ListTemplateSharesError =
 /**
  * List review template shares.
  */
-export const listTemplateShares: API.OperationMethod<
+export const listTemplateShares: API.PaginatedOperationMethod<
   ListTemplateSharesInput,
   ListTemplateSharesOutput,
   ListTemplateSharesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTemplateSharesInput,
-  ) => stream.Stream<
-    ListTemplateSharesOutput,
-    ListTemplateSharesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTemplateSharesInput,
-  ) => stream.Stream<
-    unknown,
-    ListTemplateSharesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListTemplateSharesInput,
   output: ListTemplateSharesOutput,
   errors: [
@@ -7038,27 +6478,7 @@ export const listTemplateShares: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListTemplateSharesInput,
-  ListTemplateSharesOutput,
-  ListTemplateSharesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTemplateSharesInput,
-  ) => stream.Stream<
-    ListTemplateSharesOutput,
-    ListTemplateSharesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTemplateSharesInput,
-  ) => stream.Stream<
-    unknown,
-    ListTemplateSharesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListWorkloadsError =
   | AccessDeniedException
@@ -7069,27 +6489,13 @@ export type ListWorkloadsError =
 /**
  * Paginated list of workloads.
  */
-export const listWorkloads: API.OperationMethod<
+export const listWorkloads: API.PaginatedOperationMethod<
   ListWorkloadsInput,
   ListWorkloadsOutput,
   ListWorkloadsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListWorkloadsInput,
-  ) => stream.Stream<
-    ListWorkloadsOutput,
-    ListWorkloadsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListWorkloadsInput,
-  ) => stream.Stream<
-    unknown,
-    ListWorkloadsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListWorkloadsInput,
   output: ListWorkloadsOutput,
   errors: [
@@ -7106,27 +6512,7 @@ export const listWorkloads: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListWorkloadsInput,
-  ListWorkloadsOutput,
-  ListWorkloadsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListWorkloadsInput,
-  ) => stream.Stream<
-    ListWorkloadsOutput,
-    ListWorkloadsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListWorkloadsInput,
-  ) => stream.Stream<
-    unknown,
-    ListWorkloadsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListWorkloadSharesError =
   | AccessDeniedException
@@ -7138,27 +6524,13 @@ export type ListWorkloadSharesError =
 /**
  * List the workload shares associated with the workload.
  */
-export const listWorkloadShares: API.OperationMethod<
+export const listWorkloadShares: API.PaginatedOperationMethod<
   ListWorkloadSharesInput,
   ListWorkloadSharesOutput,
   ListWorkloadSharesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListWorkloadSharesInput,
-  ) => stream.Stream<
-    ListWorkloadSharesOutput,
-    ListWorkloadSharesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListWorkloadSharesInput,
-  ) => stream.Stream<
-    unknown,
-    ListWorkloadSharesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListWorkloadSharesInput,
   output: ListWorkloadSharesOutput,
   errors: [
@@ -7176,27 +6548,7 @@ export const listWorkloadShares: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListWorkloadSharesInput,
-  ListWorkloadSharesOutput,
-  ListWorkloadSharesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListWorkloadSharesInput,
-  ) => stream.Stream<
-    ListWorkloadSharesOutput,
-    ListWorkloadSharesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListWorkloadSharesInput,
-  ) => stream.Stream<
-    unknown,
-    ListWorkloadSharesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type TagResourceError =
   | InternalServerException
@@ -7211,7 +6563,7 @@ export const tagResource: API.OperationMethod<
   TagResourceInput,
   TagResourceOutput,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceInput,
   output: TagResourceOutput,
@@ -7238,7 +6590,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceInput,
   UntagResourceOutput,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceInput,
   output: UntagResourceOutput,
@@ -7263,7 +6615,7 @@ export const updateAnswer: API.OperationMethod<
   UpdateAnswerInput,
   UpdateAnswerOutput,
   UpdateAnswerError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateAnswerInput,
   output: UpdateAnswerOutput,
@@ -7294,7 +6646,7 @@ export const updateGlobalSettings: API.OperationMethod<
   UpdateGlobalSettingsInput,
   UpdateGlobalSettingsResponse,
   UpdateGlobalSettingsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateGlobalSettingsInput,
   output: UpdateGlobalSettingsResponse,
@@ -7325,7 +6677,7 @@ export const updateIntegration: API.OperationMethod<
   UpdateIntegrationInput,
   UpdateIntegrationResponse,
   UpdateIntegrationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateIntegrationInput,
   output: UpdateIntegrationResponse,
@@ -7357,7 +6709,7 @@ export const updateLensReview: API.OperationMethod<
   UpdateLensReviewInput,
   UpdateLensReviewOutput,
   UpdateLensReviewError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateLensReviewInput,
   output: UpdateLensReviewOutput,
@@ -7389,7 +6741,7 @@ export const updateProfile: API.OperationMethod<
   UpdateProfileInput,
   UpdateProfileOutput,
   UpdateProfileError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateProfileInput,
   output: UpdateProfileOutput,
@@ -7421,7 +6773,7 @@ export const updateReviewTemplate: API.OperationMethod<
   UpdateReviewTemplateInput,
   UpdateReviewTemplateOutput,
   UpdateReviewTemplateError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateReviewTemplateInput,
   output: UpdateReviewTemplateOutput,
@@ -7453,7 +6805,7 @@ export const updateReviewTemplateAnswer: API.OperationMethod<
   UpdateReviewTemplateAnswerInput,
   UpdateReviewTemplateAnswerOutput,
   UpdateReviewTemplateAnswerError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateReviewTemplateAnswerInput,
   output: UpdateReviewTemplateAnswerOutput,
@@ -7485,7 +6837,7 @@ export const updateReviewTemplateLensReview: API.OperationMethod<
   UpdateReviewTemplateLensReviewInput,
   UpdateReviewTemplateLensReviewOutput,
   UpdateReviewTemplateLensReviewError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateReviewTemplateLensReviewInput,
   output: UpdateReviewTemplateLensReviewOutput,
@@ -7519,7 +6871,7 @@ export const updateShareInvitation: API.OperationMethod<
   UpdateShareInvitationInput,
   UpdateShareInvitationOutput,
   UpdateShareInvitationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateShareInvitationInput,
   output: UpdateShareInvitationOutput,
@@ -7551,7 +6903,7 @@ export const updateWorkload: API.OperationMethod<
   UpdateWorkloadInput,
   UpdateWorkloadOutput,
   UpdateWorkloadError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateWorkloadInput,
   output: UpdateWorkloadOutput,
@@ -7583,7 +6935,7 @@ export const updateWorkloadShare: API.OperationMethod<
   UpdateWorkloadShareInput,
   UpdateWorkloadShareOutput,
   UpdateWorkloadShareError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateWorkloadShareInput,
   output: UpdateWorkloadShareOutput,
@@ -7616,7 +6968,7 @@ export const upgradeLensReview: API.OperationMethod<
   UpgradeLensReviewInput,
   UpgradeLensReviewResponse,
   UpgradeLensReviewError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpgradeLensReviewInput,
   output: UpgradeLensReviewResponse,
@@ -7650,7 +7002,7 @@ export const upgradeProfileVersion: API.OperationMethod<
   UpgradeProfileVersionInput,
   UpgradeProfileVersionResponse,
   UpgradeProfileVersionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpgradeProfileVersionInput,
   output: UpgradeProfileVersionResponse,
@@ -7683,7 +7035,7 @@ export const upgradeReviewTemplateLensReview: API.OperationMethod<
   UpgradeReviewTemplateLensReviewInput,
   UpgradeReviewTemplateLensReviewResponse,
   UpgradeReviewTemplateLensReviewError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpgradeReviewTemplateLensReviewInput,
   output: UpgradeReviewTemplateLensReviewResponse,

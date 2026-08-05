@@ -1,6 +1,5 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -8,7 +7,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 const svc = T.AwsApiService({
   sdkId: "GreengrassV2",
   serviceShapeName: "GreengrassV2",
@@ -124,20 +122,24 @@ const rules = T.EndpointResolver((p, _) => {
 export class AccessDeniedException
   extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
     "AccessDeniedException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(403),
   ).pipe(C.withAuthError) {}
 export class ConflictException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
     "ConflictException",
-    { message: S.String, resourceId: S.String, resourceType: S.String },
+    {
+      message: S.String.pipe(T.ErrorMessage()),
+      resourceId: S.String,
+      resourceType: S.String,
+    },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class InternalServerException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
     "InternalServerException",
     {
-      message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       retryAfterSeconds: S.optional(S.Number).pipe(T.HttpHeader("Retry-After")),
     },
     T.HttpError(500),
@@ -145,20 +147,24 @@ export class InternalServerException
 export class RequestAlreadyInProgressException
   extends /*@__PURE__*/ S.TaggedErrorClass<RequestAlreadyInProgressException>()(
     "RequestAlreadyInProgressException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { message: S.String, resourceId: S.String, resourceType: S.String },
+    {
+      message: S.String.pipe(T.ErrorMessage()),
+      resourceId: S.String,
+      resourceType: S.String,
+    },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class ServiceQuotaExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
     "ServiceQuotaExceededException",
     {
-      message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       resourceId: S.optional(S.String),
       resourceType: S.optional(S.String),
       quotaCode: S.String,
@@ -170,7 +176,7 @@ export class ThrottlingException
   extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
     "ThrottlingException",
     {
-      message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       quotaCode: S.optional(S.String),
       serviceCode: S.optional(S.String),
       retryAfterSeconds: S.optional(S.Number).pipe(T.HttpHeader("Retry-After")),
@@ -181,7 +187,7 @@ export class ValidationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
     "ValidationException",
     {
-      message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       reason: S.optional(
         S.suspend(() => ValidationExceptionReason).annotate({
           identifier: "ValidationExceptionReason",
@@ -2161,7 +2167,7 @@ export const associateServiceRoleToAccount: API.OperationMethod<
   AssociateServiceRoleToAccountRequest,
   AssociateServiceRoleToAccountResponse,
   AssociateServiceRoleToAccountError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AssociateServiceRoleToAccountRequest,
   output: AssociateServiceRoleToAccountResponse,
@@ -2195,7 +2201,7 @@ export const batchAssociateClientDeviceWithCoreDevice: API.OperationMethod<
   BatchAssociateClientDeviceWithCoreDeviceRequest,
   BatchAssociateClientDeviceWithCoreDeviceResponse,
   BatchAssociateClientDeviceWithCoreDeviceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchAssociateClientDeviceWithCoreDeviceRequest,
   output: BatchAssociateClientDeviceWithCoreDeviceResponse,
@@ -2227,7 +2233,7 @@ export const batchDisassociateClientDeviceFromCoreDevice: API.OperationMethod<
   BatchDisassociateClientDeviceFromCoreDeviceRequest,
   BatchDisassociateClientDeviceFromCoreDeviceResponse,
   BatchDisassociateClientDeviceFromCoreDeviceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchDisassociateClientDeviceFromCoreDeviceRequest,
   output: BatchDisassociateClientDeviceFromCoreDeviceResponse,
@@ -2260,7 +2266,7 @@ export const cancelDeployment: API.OperationMethod<
   CancelDeploymentRequest,
   CancelDeploymentResponse,
   CancelDeploymentError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CancelDeploymentRequest,
   output: CancelDeploymentResponse,
@@ -2322,7 +2328,7 @@ export const createComponentVersion: API.OperationMethod<
   CreateComponentVersionRequest,
   CreateComponentVersionResponse,
   CreateComponentVersionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateComponentVersionRequest,
   output: CreateComponentVersionResponse,
@@ -2369,7 +2375,7 @@ export const createDeployment: API.OperationMethod<
   CreateDeploymentRequest,
   CreateDeploymentResponse,
   CreateDeploymentError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateDeploymentRequest,
   output: CreateDeploymentResponse,
@@ -2407,7 +2413,7 @@ export const deleteComponent: API.OperationMethod<
   DeleteComponentRequest,
   DeleteComponentResponse,
   DeleteComponentError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteComponentRequest,
   output: DeleteComponentResponse,
@@ -2442,7 +2448,7 @@ export const deleteCoreDevice: API.OperationMethod<
   DeleteCoreDeviceRequest,
   DeleteCoreDeviceResponse,
   DeleteCoreDeviceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteCoreDeviceRequest,
   output: DeleteCoreDeviceResponse,
@@ -2479,7 +2485,7 @@ export const deleteDeployment: API.OperationMethod<
   DeleteDeploymentRequest,
   DeleteDeploymentResponse,
   DeleteDeploymentError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteDeploymentRequest,
   output: DeleteDeploymentResponse,
@@ -2510,7 +2516,7 @@ export const describeComponent: API.OperationMethod<
   DescribeComponentRequest,
   DescribeComponentResponse,
   DescribeComponentError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeComponentRequest,
   output: DescribeComponentResponse,
@@ -2539,7 +2545,7 @@ export const disassociateServiceRoleFromAccount: API.OperationMethod<
   DisassociateServiceRoleFromAccountRequest,
   DisassociateServiceRoleFromAccountResponse,
   DisassociateServiceRoleFromAccountError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DisassociateServiceRoleFromAccountRequest,
   output: DisassociateServiceRoleFromAccountResponse,
@@ -2563,7 +2569,7 @@ export const getComponent: API.OperationMethod<
   GetComponentRequest,
   GetComponentResponse,
   GetComponentError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetComponentRequest,
   output: GetComponentResponse,
@@ -2595,7 +2601,7 @@ export const getComponentVersionArtifact: API.OperationMethod<
   GetComponentVersionArtifactRequest,
   GetComponentVersionArtifactResponse,
   GetComponentVersionArtifactError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetComponentVersionArtifactRequest,
   output: GetComponentVersionArtifactResponse,
@@ -2629,7 +2635,7 @@ export const getConnectivityInfo: API.OperationMethod<
   GetConnectivityInfoRequest,
   GetConnectivityInfoResponse,
   GetConnectivityInfoError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetConnectivityInfoRequest,
   output: GetConnectivityInfoResponse,
@@ -2672,7 +2678,7 @@ export const getCoreDevice: API.OperationMethod<
   GetCoreDeviceRequest,
   GetCoreDeviceResponse,
   GetCoreDeviceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetCoreDeviceRequest,
   output: GetCoreDeviceResponse,
@@ -2702,7 +2708,7 @@ export const getDeployment: API.OperationMethod<
   GetDeploymentRequest,
   GetDeploymentResponse,
   GetDeploymentError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetDeploymentRequest,
   output: GetDeploymentResponse,
@@ -2731,7 +2737,7 @@ export const getServiceRoleForAccount: API.OperationMethod<
   GetServiceRoleForAccountRequest,
   GetServiceRoleForAccountResponse,
   GetServiceRoleForAccountError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetServiceRoleForAccountRequest,
   output: GetServiceRoleForAccountResponse,
@@ -2752,27 +2758,13 @@ export type ListClientDevicesAssociatedWithCoreDeviceError =
  * Retrieves a paginated list of client devices that are associated with a core
  * device.
  */
-export const listClientDevicesAssociatedWithCoreDevice: API.OperationMethod<
+export const listClientDevicesAssociatedWithCoreDevice: API.PaginatedOperationMethod<
   ListClientDevicesAssociatedWithCoreDeviceRequest,
   ListClientDevicesAssociatedWithCoreDeviceResponse,
   ListClientDevicesAssociatedWithCoreDeviceError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListClientDevicesAssociatedWithCoreDeviceRequest,
-  ) => stream.Stream<
-    ListClientDevicesAssociatedWithCoreDeviceResponse,
-    ListClientDevicesAssociatedWithCoreDeviceError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListClientDevicesAssociatedWithCoreDeviceRequest,
-  ) => stream.Stream<
-    AssociatedClientDevice,
-    ListClientDevicesAssociatedWithCoreDeviceError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  AssociatedClientDevice
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListClientDevicesAssociatedWithCoreDeviceRequest,
   output: ListClientDevicesAssociatedWithCoreDeviceResponse,
   errors: [
@@ -2791,27 +2783,7 @@ export const listClientDevicesAssociatedWithCoreDevice: API.OperationMethod<
     items: "associatedClientDevices",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListClientDevicesAssociatedWithCoreDeviceRequest,
-  ListClientDevicesAssociatedWithCoreDeviceResponse,
-  ListClientDevicesAssociatedWithCoreDeviceError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListClientDevicesAssociatedWithCoreDeviceRequest,
-  ) => stream.Stream<
-    ListClientDevicesAssociatedWithCoreDeviceResponse,
-    ListClientDevicesAssociatedWithCoreDeviceError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListClientDevicesAssociatedWithCoreDeviceRequest,
-  ) => stream.Stream<
-    AssociatedClientDevice,
-    ListClientDevicesAssociatedWithCoreDeviceError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListComponentsError =
   | AccessDeniedException
@@ -2824,27 +2796,13 @@ export type ListComponentsError =
  * Retrieves a paginated list of component summaries. This list includes components that you
  * have permission to view.
  */
-export const listComponents: API.OperationMethod<
+export const listComponents: API.PaginatedOperationMethod<
   ListComponentsRequest,
   ListComponentsResponse,
   ListComponentsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListComponentsRequest,
-  ) => stream.Stream<
-    ListComponentsResponse,
-    ListComponentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListComponentsRequest,
-  ) => stream.Stream<
-    Component,
-    ListComponentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Component
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListComponentsRequest,
   output: ListComponentsResponse,
   errors: [
@@ -2863,27 +2821,7 @@ export const listComponents: API.OperationMethod<
     items: "components",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListComponentsRequest,
-  ListComponentsResponse,
-  ListComponentsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListComponentsRequest,
-  ) => stream.Stream<
-    ListComponentsResponse,
-    ListComponentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListComponentsRequest,
-  ) => stream.Stream<
-    Component,
-    ListComponentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListComponentVersionsError =
   | AccessDeniedException
@@ -2896,27 +2834,13 @@ export type ListComponentVersionsError =
  * Retrieves a paginated list of all versions for a component. Greater versions are listed
  * first.
  */
-export const listComponentVersions: API.OperationMethod<
+export const listComponentVersions: API.PaginatedOperationMethod<
   ListComponentVersionsRequest,
   ListComponentVersionsResponse,
   ListComponentVersionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListComponentVersionsRequest,
-  ) => stream.Stream<
-    ListComponentVersionsResponse,
-    ListComponentVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListComponentVersionsRequest,
-  ) => stream.Stream<
-    ComponentVersionListItem,
-    ListComponentVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ComponentVersionListItem
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListComponentVersionsRequest,
   output: ListComponentVersionsResponse,
   errors: [
@@ -2935,27 +2859,7 @@ export const listComponentVersions: API.OperationMethod<
     items: "componentVersions",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListComponentVersionsRequest,
-  ListComponentVersionsResponse,
-  ListComponentVersionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListComponentVersionsRequest,
-  ) => stream.Stream<
-    ListComponentVersionsResponse,
-    ListComponentVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListComponentVersionsRequest,
-  ) => stream.Stream<
-    ComponentVersionListItem,
-    ListComponentVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListCoreDevicesError =
   | AccessDeniedException
@@ -2990,27 +2894,13 @@ export type ListCoreDevicesError =
  * - For IoT Greengrass Core v2.7.0, the core device sends status updates upon local deployment and
  * cloud deployment
  */
-export const listCoreDevices: API.OperationMethod<
+export const listCoreDevices: API.PaginatedOperationMethod<
   ListCoreDevicesRequest,
   ListCoreDevicesResponse,
   ListCoreDevicesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCoreDevicesRequest,
-  ) => stream.Stream<
-    ListCoreDevicesResponse,
-    ListCoreDevicesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCoreDevicesRequest,
-  ) => stream.Stream<
-    CoreDevice,
-    ListCoreDevicesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  CoreDevice
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListCoreDevicesRequest,
   output: ListCoreDevicesResponse,
   errors: [
@@ -3028,27 +2918,7 @@ export const listCoreDevices: API.OperationMethod<
     items: "coreDevices",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListCoreDevicesRequest,
-  ListCoreDevicesResponse,
-  ListCoreDevicesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCoreDevicesRequest,
-  ) => stream.Stream<
-    ListCoreDevicesResponse,
-    ListCoreDevicesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCoreDevicesRequest,
-  ) => stream.Stream<
-    CoreDevice,
-    ListCoreDevicesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListDeploymentsError =
   | AccessDeniedException
@@ -3059,27 +2929,13 @@ export type ListDeploymentsError =
 /**
  * Retrieves a paginated list of deployments.
  */
-export const listDeployments: API.OperationMethod<
+export const listDeployments: API.PaginatedOperationMethod<
   ListDeploymentsRequest,
   ListDeploymentsResponse,
   ListDeploymentsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDeploymentsRequest,
-  ) => stream.Stream<
-    ListDeploymentsResponse,
-    ListDeploymentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDeploymentsRequest,
-  ) => stream.Stream<
-    Deployment,
-    ListDeploymentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Deployment
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListDeploymentsRequest,
   output: ListDeploymentsResponse,
   errors: [
@@ -3097,27 +2953,7 @@ export const listDeployments: API.OperationMethod<
     items: "deployments",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListDeploymentsRequest,
-  ListDeploymentsResponse,
-  ListDeploymentsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDeploymentsRequest,
-  ) => stream.Stream<
-    ListDeploymentsResponse,
-    ListDeploymentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDeploymentsRequest,
-  ) => stream.Stream<
-    Deployment,
-    ListDeploymentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListEffectiveDeploymentsError =
   | AccessDeniedException
@@ -3129,27 +2965,13 @@ export type ListEffectiveDeploymentsError =
 /**
  * Retrieves a paginated list of deployment jobs that IoT Greengrass sends to Greengrass core devices.
  */
-export const listEffectiveDeployments: API.OperationMethod<
+export const listEffectiveDeployments: API.PaginatedOperationMethod<
   ListEffectiveDeploymentsRequest,
   ListEffectiveDeploymentsResponse,
   ListEffectiveDeploymentsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListEffectiveDeploymentsRequest,
-  ) => stream.Stream<
-    ListEffectiveDeploymentsResponse,
-    ListEffectiveDeploymentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListEffectiveDeploymentsRequest,
-  ) => stream.Stream<
-    EffectiveDeployment,
-    ListEffectiveDeploymentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  EffectiveDeployment
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListEffectiveDeploymentsRequest,
   output: ListEffectiveDeploymentsResponse,
   errors: [
@@ -3168,27 +2990,7 @@ export const listEffectiveDeployments: API.OperationMethod<
     items: "effectiveDeployments",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListEffectiveDeploymentsRequest,
-  ListEffectiveDeploymentsResponse,
-  ListEffectiveDeploymentsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListEffectiveDeploymentsRequest,
-  ) => stream.Stream<
-    ListEffectiveDeploymentsResponse,
-    ListEffectiveDeploymentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListEffectiveDeploymentsRequest,
-  ) => stream.Stream<
-    EffectiveDeployment,
-    ListEffectiveDeploymentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListInstalledComponentsError =
   | AccessDeniedException
@@ -3222,27 +3024,13 @@ export type ListInstalledComponentsError =
  * - For IoT Greengrass Core v2.7.0, the core device sends status updates upon local deployment and
  * cloud deployment
  */
-export const listInstalledComponents: API.OperationMethod<
+export const listInstalledComponents: API.PaginatedOperationMethod<
   ListInstalledComponentsRequest,
   ListInstalledComponentsResponse,
   ListInstalledComponentsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListInstalledComponentsRequest,
-  ) => stream.Stream<
-    ListInstalledComponentsResponse,
-    ListInstalledComponentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListInstalledComponentsRequest,
-  ) => stream.Stream<
-    InstalledComponent,
-    ListInstalledComponentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  InstalledComponent
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListInstalledComponentsRequest,
   output: ListInstalledComponentsResponse,
   errors: [
@@ -3261,27 +3049,7 @@ export const listInstalledComponents: API.OperationMethod<
     items: "installedComponents",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListInstalledComponentsRequest,
-  ListInstalledComponentsResponse,
-  ListInstalledComponentsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListInstalledComponentsRequest,
-  ) => stream.Stream<
-    ListInstalledComponentsResponse,
-    ListInstalledComponentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListInstalledComponentsRequest,
-  ) => stream.Stream<
-    InstalledComponent,
-    ListInstalledComponentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsForResourceError =
   | InternalServerException
@@ -3295,7 +3063,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceRequest,
   ListTagsForResourceResponse,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -3339,7 +3107,7 @@ export const resolveComponentCandidates: API.OperationMethod<
   ResolveComponentCandidatesRequest,
   ResolveComponentCandidatesResponse,
   ResolveComponentCandidatesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ResolveComponentCandidatesRequest,
   output: ResolveComponentCandidatesResponse,
@@ -3369,7 +3137,7 @@ export const tagResource: API.OperationMethod<
   TagResourceRequest,
   TagResourceResponse,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -3395,7 +3163,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceRequest,
   UntagResourceResponse,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -3427,7 +3195,7 @@ export const updateConnectivityInfo: API.OperationMethod<
   UpdateConnectivityInfoRequest,
   UpdateConnectivityInfoResponse,
   UpdateConnectivityInfoError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateConnectivityInfoRequest,
   output: UpdateConnectivityInfoResponse,

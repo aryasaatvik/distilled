@@ -1,7 +1,6 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as redacted from "effect/Redacted";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -9,7 +8,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 import { SensitiveString } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "Chime SDK Messaging",
@@ -94,7 +92,7 @@ export class BadRequestException
       Code: S.optional(
         S.suspend(() => ErrorCode).annotate({ identifier: "ErrorCode" }),
       ),
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
     },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
@@ -105,7 +103,7 @@ export class ConflictException
       Code: S.optional(
         S.suspend(() => ErrorCode).annotate({ identifier: "ErrorCode" }),
       ),
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
     },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
@@ -116,7 +114,7 @@ export class ForbiddenException
       Code: S.optional(
         S.suspend(() => ErrorCode).annotate({ identifier: "ErrorCode" }),
       ),
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
     },
     T.HttpError(403),
   ).pipe(C.withAuthError) {}
@@ -127,7 +125,7 @@ export class NotFoundException
       Code: S.optional(
         S.suspend(() => ErrorCode).annotate({ identifier: "ErrorCode" }),
       ),
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
     },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
@@ -138,7 +136,7 @@ export class ResourceLimitExceededException
       Code: S.optional(
         S.suspend(() => ErrorCode).annotate({ identifier: "ErrorCode" }),
       ),
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
     },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
@@ -149,7 +147,7 @@ export class ServiceFailureException
       Code: S.optional(
         S.suspend(() => ErrorCode).annotate({ identifier: "ErrorCode" }),
       ),
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
     },
     T.HttpError(500),
   ).pipe(C.withServerError) {}
@@ -160,7 +158,7 @@ export class ServiceUnavailableException
       Code: S.optional(
         S.suspend(() => ErrorCode).annotate({ identifier: "ErrorCode" }),
       ),
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
     },
     T.HttpError(503),
   ).pipe(C.withServerError) {}
@@ -171,7 +169,7 @@ export class ThrottledClientException
       Code: S.optional(
         S.suspend(() => ErrorCode).annotate({ identifier: "ErrorCode" }),
       ),
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
     },
     T.HttpError(429),
   ).pipe(C.withThrottlingError) {}
@@ -182,7 +180,7 @@ export class UnauthorizedClientException
       Code: S.optional(
         S.suspend(() => ErrorCode).annotate({ identifier: "ErrorCode" }),
       ),
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
     },
     T.HttpError(401),
   ).pipe(C.withAuthError) {}
@@ -2781,7 +2779,7 @@ export const associateChannelFlow: API.OperationMethod<
   AssociateChannelFlowRequest,
   AssociateChannelFlowResponse,
   AssociateChannelFlowError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AssociateChannelFlowRequest,
   output: AssociateChannelFlowResponse,
@@ -2817,7 +2815,7 @@ export const batchCreateChannelMembership: API.OperationMethod<
   BatchCreateChannelMembershipRequest,
   BatchCreateChannelMembershipResponse,
   BatchCreateChannelMembershipError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchCreateChannelMembershipRequest,
   output: BatchCreateChannelMembershipResponse,
@@ -2860,7 +2858,7 @@ export const channelFlowCallback: API.OperationMethod<
   ChannelFlowCallbackRequest,
   ChannelFlowCallbackResponse,
   ChannelFlowCallbackError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ChannelFlowCallbackRequest,
   output: ChannelFlowCallbackResponse,
@@ -2902,7 +2900,7 @@ export const createChannel: API.OperationMethod<
   CreateChannelRequest,
   CreateChannelResponse,
   CreateChannelError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateChannelRequest,
   output: CreateChannelResponse,
@@ -2948,7 +2946,7 @@ export const createChannelBan: API.OperationMethod<
   CreateChannelBanRequest,
   CreateChannelBanResponse,
   CreateChannelBanError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateChannelBanRequest,
   output: CreateChannelBanResponse,
@@ -2998,7 +2996,7 @@ export const createChannelFlow: API.OperationMethod<
   CreateChannelFlowRequest,
   CreateChannelFlowResponse,
   CreateChannelFlowError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateChannelFlowRequest,
   output: CreateChannelFlowResponse,
@@ -3057,7 +3055,7 @@ export const createChannelMembership: API.OperationMethod<
   CreateChannelMembershipRequest,
   CreateChannelMembershipResponse,
   CreateChannelMembershipError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateChannelMembershipRequest,
   output: CreateChannelMembershipResponse,
@@ -3108,7 +3106,7 @@ export const createChannelModerator: API.OperationMethod<
   CreateChannelModeratorRequest,
   CreateChannelModeratorResponse,
   CreateChannelModeratorError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateChannelModeratorRequest,
   output: CreateChannelModeratorResponse,
@@ -3148,7 +3146,7 @@ export const deleteChannel: API.OperationMethod<
   DeleteChannelRequest,
   DeleteChannelResponse,
   DeleteChannelError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteChannelRequest,
   output: DeleteChannelResponse,
@@ -3185,7 +3183,7 @@ export const deleteChannelBan: API.OperationMethod<
   DeleteChannelBanRequest,
   DeleteChannelBanResponse,
   DeleteChannelBanError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteChannelBanRequest,
   output: DeleteChannelBanResponse,
@@ -3221,7 +3219,7 @@ export const deleteChannelFlow: API.OperationMethod<
   DeleteChannelFlowRequest,
   DeleteChannelFlowResponse,
   DeleteChannelFlowError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteChannelFlowRequest,
   output: DeleteChannelFlowResponse,
@@ -3259,7 +3257,7 @@ export const deleteChannelMembership: API.OperationMethod<
   DeleteChannelMembershipRequest,
   DeleteChannelMembershipResponse,
   DeleteChannelMembershipError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteChannelMembershipRequest,
   output: DeleteChannelMembershipResponse,
@@ -3298,7 +3296,7 @@ export const deleteChannelMessage: API.OperationMethod<
   DeleteChannelMessageRequest,
   DeleteChannelMessageResponse,
   DeleteChannelMessageError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteChannelMessageRequest,
   output: DeleteChannelMessageResponse,
@@ -3334,7 +3332,7 @@ export const deleteChannelModerator: API.OperationMethod<
   DeleteChannelModeratorRequest,
   DeleteChannelModeratorResponse,
   DeleteChannelModeratorError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteChannelModeratorRequest,
   output: DeleteChannelModeratorResponse,
@@ -3367,7 +3365,7 @@ export const deleteMessagingStreamingConfigurations: API.OperationMethod<
   DeleteMessagingStreamingConfigurationsRequest,
   DeleteMessagingStreamingConfigurationsResponse,
   DeleteMessagingStreamingConfigurationsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteMessagingStreamingConfigurationsRequest,
   output: DeleteMessagingStreamingConfigurationsResponse,
@@ -3404,7 +3402,7 @@ export const describeChannel: API.OperationMethod<
   DescribeChannelRequest,
   DescribeChannelResponse,
   DescribeChannelError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeChannelRequest,
   output: DescribeChannelResponse,
@@ -3441,7 +3439,7 @@ export const describeChannelBan: API.OperationMethod<
   DescribeChannelBanRequest,
   DescribeChannelBanResponse,
   DescribeChannelBanError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeChannelBanRequest,
   output: DescribeChannelBanResponse,
@@ -3474,7 +3472,7 @@ export const describeChannelFlow: API.OperationMethod<
   DescribeChannelFlowRequest,
   DescribeChannelFlowResponse,
   DescribeChannelFlowError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeChannelFlowRequest,
   output: DescribeChannelFlowResponse,
@@ -3511,7 +3509,7 @@ export const describeChannelMembership: API.OperationMethod<
   DescribeChannelMembershipRequest,
   DescribeChannelMembershipResponse,
   DescribeChannelMembershipError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeChannelMembershipRequest,
   output: DescribeChannelMembershipResponse,
@@ -3549,7 +3547,7 @@ export const describeChannelMembershipForAppInstanceUser: API.OperationMethod<
   DescribeChannelMembershipForAppInstanceUserRequest,
   DescribeChannelMembershipForAppInstanceUserResponse,
   DescribeChannelMembershipForAppInstanceUserError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeChannelMembershipForAppInstanceUserRequest,
   output: DescribeChannelMembershipForAppInstanceUserResponse,
@@ -3586,7 +3584,7 @@ export const describeChannelModeratedByAppInstanceUser: API.OperationMethod<
   DescribeChannelModeratedByAppInstanceUserRequest,
   DescribeChannelModeratedByAppInstanceUserResponse,
   DescribeChannelModeratedByAppInstanceUserError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeChannelModeratedByAppInstanceUserRequest,
   output: DescribeChannelModeratedByAppInstanceUserResponse,
@@ -3623,7 +3621,7 @@ export const describeChannelModerator: API.OperationMethod<
   DescribeChannelModeratorRequest,
   DescribeChannelModeratorResponse,
   DescribeChannelModeratorError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeChannelModeratorRequest,
   output: DescribeChannelModeratorResponse,
@@ -3665,7 +3663,7 @@ export const disassociateChannelFlow: API.OperationMethod<
   DisassociateChannelFlowRequest,
   DisassociateChannelFlowResponse,
   DisassociateChannelFlowError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DisassociateChannelFlowRequest,
   output: DisassociateChannelFlowResponse,
@@ -3707,7 +3705,7 @@ export const getChannelMembershipPreferences: API.OperationMethod<
   GetChannelMembershipPreferencesRequest,
   GetChannelMembershipPreferencesResponse,
   GetChannelMembershipPreferencesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetChannelMembershipPreferencesRequest,
   output: GetChannelMembershipPreferencesResponse,
@@ -3744,7 +3742,7 @@ export const getChannelMessage: API.OperationMethod<
   GetChannelMessageRequest,
   GetChannelMessageResponse,
   GetChannelMessageError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetChannelMessageRequest,
   output: GetChannelMessageResponse,
@@ -3804,7 +3802,7 @@ export const getChannelMessageStatus: API.OperationMethod<
   GetChannelMessageStatusRequest,
   GetChannelMessageStatusResponse,
   GetChannelMessageStatusError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetChannelMessageStatusRequest,
   output: GetChannelMessageStatusResponse,
@@ -3835,7 +3833,7 @@ export const getMessagingSessionEndpoint: API.OperationMethod<
   GetMessagingSessionEndpointRequest,
   GetMessagingSessionEndpointResponse,
   GetMessagingSessionEndpointError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetMessagingSessionEndpointRequest,
   output: GetMessagingSessionEndpointResponse,
@@ -3868,7 +3866,7 @@ export const getMessagingStreamingConfigurations: API.OperationMethod<
   GetMessagingStreamingConfigurationsRequest,
   GetMessagingStreamingConfigurationsResponse,
   GetMessagingStreamingConfigurationsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetMessagingStreamingConfigurationsRequest,
   output: GetMessagingStreamingConfigurationsResponse,
@@ -3901,27 +3899,13 @@ export type ListChannelBansError =
  * ARN of the `AppInstanceUser` or `AppInstanceBot` that makes the API call as the value in
  * the header.
  */
-export const listChannelBans: API.OperationMethod<
+export const listChannelBans: API.PaginatedOperationMethod<
   ListChannelBansRequest,
   ListChannelBansResponse,
   ListChannelBansError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListChannelBansRequest,
-  ) => stream.Stream<
-    ListChannelBansResponse,
-    ListChannelBansError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListChannelBansRequest,
-  ) => stream.Stream<
-    unknown,
-    ListChannelBansError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListChannelBansRequest,
   output: ListChannelBansResponse,
   errors: [
@@ -3940,27 +3924,7 @@ export const listChannelBans: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListChannelBansRequest,
-  ListChannelBansResponse,
-  ListChannelBansError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListChannelBansRequest,
-  ) => stream.Stream<
-    ListChannelBansResponse,
-    ListChannelBansError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListChannelBansRequest,
-  ) => stream.Stream<
-    unknown,
-    ListChannelBansError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListChannelFlowsError =
   | BadRequestException
@@ -3973,27 +3937,13 @@ export type ListChannelFlowsError =
 /**
  * Returns a paginated lists of all the channel flows created under a single Chime. This is a developer API.
  */
-export const listChannelFlows: API.OperationMethod<
+export const listChannelFlows: API.PaginatedOperationMethod<
   ListChannelFlowsRequest,
   ListChannelFlowsResponse,
   ListChannelFlowsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListChannelFlowsRequest,
-  ) => stream.Stream<
-    ListChannelFlowsResponse,
-    ListChannelFlowsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListChannelFlowsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListChannelFlowsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListChannelFlowsRequest,
   output: ListChannelFlowsResponse,
   errors: [
@@ -4012,27 +3962,7 @@ export const listChannelFlows: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListChannelFlowsRequest,
-  ListChannelFlowsResponse,
-  ListChannelFlowsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListChannelFlowsRequest,
-  ) => stream.Stream<
-    ListChannelFlowsResponse,
-    ListChannelFlowsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListChannelFlowsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListChannelFlowsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListChannelMembershipsError =
   | BadRequestException
@@ -4052,27 +3982,13 @@ export type ListChannelMembershipsError =
  * If you want to list the channels to which a specific app instance user belongs, see the
  * ListChannelMembershipsForAppInstanceUser API.
  */
-export const listChannelMemberships: API.OperationMethod<
+export const listChannelMemberships: API.PaginatedOperationMethod<
   ListChannelMembershipsRequest,
   ListChannelMembershipsResponse,
   ListChannelMembershipsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListChannelMembershipsRequest,
-  ) => stream.Stream<
-    ListChannelMembershipsResponse,
-    ListChannelMembershipsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListChannelMembershipsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListChannelMembershipsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListChannelMembershipsRequest,
   output: ListChannelMembershipsResponse,
   errors: [
@@ -4091,27 +4007,7 @@ export const listChannelMemberships: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListChannelMembershipsRequest,
-  ListChannelMembershipsResponse,
-  ListChannelMembershipsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListChannelMembershipsRequest,
-  ) => stream.Stream<
-    ListChannelMembershipsResponse,
-    ListChannelMembershipsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListChannelMembershipsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListChannelMembershipsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListChannelMembershipsForAppInstanceUserError =
   | BadRequestException
@@ -4129,27 +4025,13 @@ export type ListChannelMembershipsForAppInstanceUserError =
  * ARN of the `AppInstanceUser` or `AppInstanceBot` that makes the API call as the value in
  * the header.
  */
-export const listChannelMembershipsForAppInstanceUser: API.OperationMethod<
+export const listChannelMembershipsForAppInstanceUser: API.PaginatedOperationMethod<
   ListChannelMembershipsForAppInstanceUserRequest,
   ListChannelMembershipsForAppInstanceUserResponse,
   ListChannelMembershipsForAppInstanceUserError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListChannelMembershipsForAppInstanceUserRequest,
-  ) => stream.Stream<
-    ListChannelMembershipsForAppInstanceUserResponse,
-    ListChannelMembershipsForAppInstanceUserError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListChannelMembershipsForAppInstanceUserRequest,
-  ) => stream.Stream<
-    unknown,
-    ListChannelMembershipsForAppInstanceUserError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListChannelMembershipsForAppInstanceUserRequest,
   output: ListChannelMembershipsForAppInstanceUserResponse,
   errors: [
@@ -4168,27 +4050,7 @@ export const listChannelMembershipsForAppInstanceUser: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListChannelMembershipsForAppInstanceUserRequest,
-  ListChannelMembershipsForAppInstanceUserResponse,
-  ListChannelMembershipsForAppInstanceUserError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListChannelMembershipsForAppInstanceUserRequest,
-  ) => stream.Stream<
-    ListChannelMembershipsForAppInstanceUserResponse,
-    ListChannelMembershipsForAppInstanceUserError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListChannelMembershipsForAppInstanceUserRequest,
-  ) => stream.Stream<
-    unknown,
-    ListChannelMembershipsForAppInstanceUserError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListChannelMessagesError =
   | BadRequestException
@@ -4211,27 +4073,13 @@ export type ListChannelMessagesError =
  * ARN of the `AppInstanceUser` or `AppInstanceBot` that makes the API call as the value in
  * the header.
  */
-export const listChannelMessages: API.OperationMethod<
+export const listChannelMessages: API.PaginatedOperationMethod<
   ListChannelMessagesRequest,
   ListChannelMessagesResponse,
   ListChannelMessagesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListChannelMessagesRequest,
-  ) => stream.Stream<
-    ListChannelMessagesResponse,
-    ListChannelMessagesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListChannelMessagesRequest,
-  ) => stream.Stream<
-    unknown,
-    ListChannelMessagesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListChannelMessagesRequest,
   output: ListChannelMessagesResponse,
   errors: [
@@ -4250,27 +4098,7 @@ export const listChannelMessages: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListChannelMessagesRequest,
-  ListChannelMessagesResponse,
-  ListChannelMessagesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListChannelMessagesRequest,
-  ) => stream.Stream<
-    ListChannelMessagesResponse,
-    ListChannelMessagesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListChannelMessagesRequest,
-  ) => stream.Stream<
-    unknown,
-    ListChannelMessagesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListChannelModeratorsError =
   | BadRequestException
@@ -4287,27 +4115,13 @@ export type ListChannelModeratorsError =
  * ARN of the `AppInstanceUser` or `AppInstanceBot` that makes the API call as the value in
  * the header.
  */
-export const listChannelModerators: API.OperationMethod<
+export const listChannelModerators: API.PaginatedOperationMethod<
   ListChannelModeratorsRequest,
   ListChannelModeratorsResponse,
   ListChannelModeratorsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListChannelModeratorsRequest,
-  ) => stream.Stream<
-    ListChannelModeratorsResponse,
-    ListChannelModeratorsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListChannelModeratorsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListChannelModeratorsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListChannelModeratorsRequest,
   output: ListChannelModeratorsResponse,
   errors: [
@@ -4326,27 +4140,7 @@ export const listChannelModerators: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListChannelModeratorsRequest,
-  ListChannelModeratorsResponse,
-  ListChannelModeratorsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListChannelModeratorsRequest,
-  ) => stream.Stream<
-    ListChannelModeratorsResponse,
-    ListChannelModeratorsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListChannelModeratorsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListChannelModeratorsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListChannelsError =
   | BadRequestException
@@ -4372,27 +4166,13 @@ export type ListChannelsError =
  * ARN of the `AppInstanceUser` or `AppInstanceBot` that makes the API call as the value in
  * the header.
  */
-export const listChannels: API.OperationMethod<
+export const listChannels: API.PaginatedOperationMethod<
   ListChannelsRequest,
   ListChannelsResponse,
   ListChannelsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListChannelsRequest,
-  ) => stream.Stream<
-    ListChannelsResponse,
-    ListChannelsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListChannelsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListChannelsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListChannelsRequest,
   output: ListChannelsResponse,
   errors: [
@@ -4411,27 +4191,7 @@ export const listChannels: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListChannelsRequest,
-  ListChannelsResponse,
-  ListChannelsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListChannelsRequest,
-  ) => stream.Stream<
-    ListChannelsResponse,
-    ListChannelsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListChannelsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListChannelsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListChannelsAssociatedWithChannelFlowError =
   | BadRequestException
@@ -4444,27 +4204,13 @@ export type ListChannelsAssociatedWithChannelFlowError =
 /**
  * Lists all channels associated with a specified channel flow. You can associate a channel flow with multiple channels, but you can only associate a channel with one channel flow. This is a developer API.
  */
-export const listChannelsAssociatedWithChannelFlow: API.OperationMethod<
+export const listChannelsAssociatedWithChannelFlow: API.PaginatedOperationMethod<
   ListChannelsAssociatedWithChannelFlowRequest,
   ListChannelsAssociatedWithChannelFlowResponse,
   ListChannelsAssociatedWithChannelFlowError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListChannelsAssociatedWithChannelFlowRequest,
-  ) => stream.Stream<
-    ListChannelsAssociatedWithChannelFlowResponse,
-    ListChannelsAssociatedWithChannelFlowError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListChannelsAssociatedWithChannelFlowRequest,
-  ) => stream.Stream<
-    unknown,
-    ListChannelsAssociatedWithChannelFlowError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListChannelsAssociatedWithChannelFlowRequest,
   output: ListChannelsAssociatedWithChannelFlowResponse,
   errors: [
@@ -4483,27 +4229,7 @@ export const listChannelsAssociatedWithChannelFlow: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListChannelsAssociatedWithChannelFlowRequest,
-  ListChannelsAssociatedWithChannelFlowResponse,
-  ListChannelsAssociatedWithChannelFlowError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListChannelsAssociatedWithChannelFlowRequest,
-  ) => stream.Stream<
-    ListChannelsAssociatedWithChannelFlowResponse,
-    ListChannelsAssociatedWithChannelFlowError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListChannelsAssociatedWithChannelFlowRequest,
-  ) => stream.Stream<
-    unknown,
-    ListChannelsAssociatedWithChannelFlowError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListChannelsModeratedByAppInstanceUserError =
   | BadRequestException
@@ -4520,27 +4246,13 @@ export type ListChannelsModeratedByAppInstanceUserError =
  * ARN of the `AppInstanceUser` or `AppInstanceBot` that makes the API call as the value in
  * the header.
  */
-export const listChannelsModeratedByAppInstanceUser: API.OperationMethod<
+export const listChannelsModeratedByAppInstanceUser: API.PaginatedOperationMethod<
   ListChannelsModeratedByAppInstanceUserRequest,
   ListChannelsModeratedByAppInstanceUserResponse,
   ListChannelsModeratedByAppInstanceUserError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListChannelsModeratedByAppInstanceUserRequest,
-  ) => stream.Stream<
-    ListChannelsModeratedByAppInstanceUserResponse,
-    ListChannelsModeratedByAppInstanceUserError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListChannelsModeratedByAppInstanceUserRequest,
-  ) => stream.Stream<
-    unknown,
-    ListChannelsModeratedByAppInstanceUserError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListChannelsModeratedByAppInstanceUserRequest,
   output: ListChannelsModeratedByAppInstanceUserResponse,
   errors: [
@@ -4559,27 +4271,7 @@ export const listChannelsModeratedByAppInstanceUser: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListChannelsModeratedByAppInstanceUserRequest,
-  ListChannelsModeratedByAppInstanceUserResponse,
-  ListChannelsModeratedByAppInstanceUserError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListChannelsModeratedByAppInstanceUserRequest,
-  ) => stream.Stream<
-    ListChannelsModeratedByAppInstanceUserResponse,
-    ListChannelsModeratedByAppInstanceUserError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListChannelsModeratedByAppInstanceUserRequest,
-  ) => stream.Stream<
-    unknown,
-    ListChannelsModeratedByAppInstanceUserError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListSubChannelsError =
   | BadRequestException
@@ -4592,27 +4284,13 @@ export type ListSubChannelsError =
 /**
  * Lists all the SubChannels in an elastic channel when given a channel ID. Available only to the app instance admins and channel moderators of elastic channels.
  */
-export const listSubChannels: API.OperationMethod<
+export const listSubChannels: API.PaginatedOperationMethod<
   ListSubChannelsRequest,
   ListSubChannelsResponse,
   ListSubChannelsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSubChannelsRequest,
-  ) => stream.Stream<
-    ListSubChannelsResponse,
-    ListSubChannelsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSubChannelsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListSubChannelsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListSubChannelsRequest,
   output: ListSubChannelsResponse,
   errors: [
@@ -4631,27 +4309,7 @@ export const listSubChannels: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListSubChannelsRequest,
-  ListSubChannelsResponse,
-  ListSubChannelsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSubChannelsRequest,
-  ) => stream.Stream<
-    ListSubChannelsResponse,
-    ListSubChannelsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSubChannelsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListSubChannelsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsForResourceError =
   | BadRequestException
@@ -4668,7 +4326,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceRequest,
   ListTagsForResourceResponse,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -4711,7 +4369,7 @@ export const putChannelExpirationSettings: API.OperationMethod<
   PutChannelExpirationSettingsRequest,
   PutChannelExpirationSettingsResponse,
   PutChannelExpirationSettingsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutChannelExpirationSettingsRequest,
   output: PutChannelExpirationSettingsResponse,
@@ -4753,7 +4411,7 @@ export const putChannelMembershipPreferences: API.OperationMethod<
   PutChannelMembershipPreferencesRequest,
   PutChannelMembershipPreferencesResponse,
   PutChannelMembershipPreferencesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutChannelMembershipPreferencesRequest,
   output: PutChannelMembershipPreferencesResponse,
@@ -4789,7 +4447,7 @@ export const putMessagingStreamingConfigurations: API.OperationMethod<
   PutMessagingStreamingConfigurationsRequest,
   PutMessagingStreamingConfigurationsResponse,
   PutMessagingStreamingConfigurationsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutMessagingStreamingConfigurationsRequest,
   output: PutMessagingStreamingConfigurationsResponse,
@@ -4829,7 +4487,7 @@ export const redactChannelMessage: API.OperationMethod<
   RedactChannelMessageRequest,
   RedactChannelMessageResponse,
   RedactChannelMessageError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RedactChannelMessageRequest,
   output: RedactChannelMessageResponse,
@@ -4866,27 +4524,13 @@ export type SearchChannelsError =
  *
  * This operation isn't supported for `AppInstanceUsers` with a large number of memberships.
  */
-export const searchChannels: API.OperationMethod<
+export const searchChannels: API.PaginatedOperationMethod<
   SearchChannelsRequest,
   SearchChannelsResponse,
   SearchChannelsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: SearchChannelsRequest,
-  ) => stream.Stream<
-    SearchChannelsResponse,
-    SearchChannelsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: SearchChannelsRequest,
-  ) => stream.Stream<
-    unknown,
-    SearchChannelsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: SearchChannelsRequest,
   output: SearchChannelsResponse,
   errors: [
@@ -4905,27 +4549,7 @@ export const searchChannels: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  SearchChannelsRequest,
-  SearchChannelsResponse,
-  SearchChannelsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: SearchChannelsRequest,
-  ) => stream.Stream<
-    SearchChannelsResponse,
-    SearchChannelsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: SearchChannelsRequest,
-  ) => stream.Stream<
-    unknown,
-    SearchChannelsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type SendChannelMessageError =
   | BadRequestException
@@ -4952,7 +4576,7 @@ export const sendChannelMessage: API.OperationMethod<
   SendChannelMessageRequest,
   SendChannelMessageResponse,
   SendChannelMessageError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: SendChannelMessageRequest,
   output: SendChannelMessageResponse,
@@ -4986,7 +4610,7 @@ export const tagResource: API.OperationMethod<
   TagResourceRequest,
   TagResourceResponse,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -5019,7 +4643,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceRequest,
   UntagResourceResponse,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -5058,7 +4682,7 @@ export const updateChannel: API.OperationMethod<
   UpdateChannelRequest,
   UpdateChannelResponse,
   UpdateChannelError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateChannelRequest,
   output: UpdateChannelResponse,
@@ -5092,7 +4716,7 @@ export const updateChannelFlow: API.OperationMethod<
   UpdateChannelFlowRequest,
   UpdateChannelFlowResponse,
   UpdateChannelFlowError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateChannelFlowRequest,
   output: UpdateChannelFlowResponse,
@@ -5130,7 +4754,7 @@ export const updateChannelMessage: API.OperationMethod<
   UpdateChannelMessageRequest,
   UpdateChannelMessageResponse,
   UpdateChannelMessageError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateChannelMessageRequest,
   output: UpdateChannelMessageResponse,
@@ -5168,7 +4792,7 @@ export const updateChannelReadMarker: API.OperationMethod<
   UpdateChannelReadMarkerRequest,
   UpdateChannelReadMarkerResponse,
   UpdateChannelReadMarkerError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateChannelReadMarkerRequest,
   output: UpdateChannelReadMarkerResponse,

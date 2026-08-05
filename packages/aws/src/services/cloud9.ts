@@ -1,14 +1,12 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as redacted from "effect/Redacted";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
 import * as T from "../traits.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 import { SensitiveString } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "Cloud9",
@@ -90,7 +88,7 @@ export class BadRequestException
   extends /*@__PURE__*/ S.TaggedErrorClass<BadRequestException>()(
     "BadRequestException",
     {
-      message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       className: S.optional(S.String),
       code: S.optional(S.Number),
     },
@@ -99,7 +97,7 @@ export class ConcurrentAccessException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConcurrentAccessException>()(
     "ConcurrentAccessException",
     {
-      message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       className: S.optional(S.String),
       code: S.optional(S.Number),
     },
@@ -108,7 +106,7 @@ export class ConflictException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
     "ConflictException",
     {
-      message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       className: S.optional(S.String),
       code: S.optional(S.Number),
     },
@@ -117,7 +115,7 @@ export class ForbiddenException
   extends /*@__PURE__*/ S.TaggedErrorClass<ForbiddenException>()(
     "ForbiddenException",
     {
-      message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       className: S.optional(S.String),
       code: S.optional(S.Number),
     },
@@ -126,7 +124,7 @@ export class InternalServerErrorException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerErrorException>()(
     "InternalServerErrorException",
     {
-      message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       className: S.optional(S.String),
       code: S.optional(S.Number),
     },
@@ -135,7 +133,7 @@ export class LimitExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<LimitExceededException>()(
     "LimitExceededException",
     {
-      message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       className: S.optional(S.String),
       code: S.optional(S.Number),
     },
@@ -144,7 +142,7 @@ export class NotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<NotFoundException>()(
     "NotFoundException",
     {
-      message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       className: S.optional(S.String),
       code: S.optional(S.Number),
     },
@@ -153,7 +151,7 @@ export class TooManyRequestsException
   extends /*@__PURE__*/ S.TaggedErrorClass<TooManyRequestsException>()(
     "TooManyRequestsException",
     {
-      message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       className: S.optional(S.String),
       code: S.optional(S.Number),
     },
@@ -613,7 +611,7 @@ export const createEnvironmentEC2: API.OperationMethod<
   CreateEnvironmentEC2Request,
   CreateEnvironmentEC2Result,
   CreateEnvironmentEC2Error,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateEnvironmentEC2Request,
   output: CreateEnvironmentEC2Result,
@@ -651,7 +649,7 @@ export const createEnvironmentMembership: API.OperationMethod<
   CreateEnvironmentMembershipRequest,
   CreateEnvironmentMembershipResult,
   CreateEnvironmentMembershipError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateEnvironmentMembershipRequest,
   output: CreateEnvironmentMembershipResult,
@@ -690,7 +688,7 @@ export const deleteEnvironment: API.OperationMethod<
   DeleteEnvironmentRequest,
   DeleteEnvironmentResult,
   DeleteEnvironmentError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteEnvironmentRequest,
   output: DeleteEnvironmentResult,
@@ -728,7 +726,7 @@ export const deleteEnvironmentMembership: API.OperationMethod<
   DeleteEnvironmentMembershipRequest,
   DeleteEnvironmentMembershipResult,
   DeleteEnvironmentMembershipError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteEnvironmentMembershipRequest,
   output: DeleteEnvironmentMembershipResult,
@@ -762,27 +760,13 @@ export type DescribeEnvironmentMembershipsError =
  * Cloud9 can continue to use the service as normal.
  * Learn more"
  */
-export const describeEnvironmentMemberships: API.OperationMethod<
+export const describeEnvironmentMemberships: API.PaginatedOperationMethod<
   DescribeEnvironmentMembershipsRequest,
   DescribeEnvironmentMembershipsResult,
   DescribeEnvironmentMembershipsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeEnvironmentMembershipsRequest,
-  ) => stream.Stream<
-    DescribeEnvironmentMembershipsResult,
-    DescribeEnvironmentMembershipsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeEnvironmentMembershipsRequest,
-  ) => stream.Stream<
-    unknown,
-    DescribeEnvironmentMembershipsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeEnvironmentMembershipsRequest,
   output: DescribeEnvironmentMembershipsResult,
   errors: [
@@ -802,27 +786,7 @@ export const describeEnvironmentMemberships: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeEnvironmentMembershipsRequest,
-  DescribeEnvironmentMembershipsResult,
-  DescribeEnvironmentMembershipsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeEnvironmentMembershipsRequest,
-  ) => stream.Stream<
-    DescribeEnvironmentMembershipsResult,
-    DescribeEnvironmentMembershipsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeEnvironmentMembershipsRequest,
-  ) => stream.Stream<
-    unknown,
-    DescribeEnvironmentMembershipsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeEnvironmentsError =
   | BadRequestException
@@ -844,7 +808,7 @@ export const describeEnvironments: API.OperationMethod<
   DescribeEnvironmentsRequest,
   DescribeEnvironmentsResult,
   DescribeEnvironmentsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeEnvironmentsRequest,
   output: DescribeEnvironmentsResult,
@@ -882,7 +846,7 @@ export const describeEnvironmentStatus: API.OperationMethod<
   DescribeEnvironmentStatusRequest,
   DescribeEnvironmentStatusResult,
   DescribeEnvironmentStatusError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeEnvironmentStatusRequest,
   output: DescribeEnvironmentStatusResult,
@@ -920,27 +884,13 @@ export type ListEnvironmentsError =
  * Cloud9 can continue to use the service as normal.
  * Learn more"
  */
-export const listEnvironments: API.OperationMethod<
+export const listEnvironments: API.PaginatedOperationMethod<
   ListEnvironmentsRequest,
   ListEnvironmentsResult,
   ListEnvironmentsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListEnvironmentsRequest,
-  ) => stream.Stream<
-    ListEnvironmentsResult,
-    ListEnvironmentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListEnvironmentsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListEnvironmentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListEnvironmentsRequest,
   output: ListEnvironmentsResult,
   errors: [
@@ -960,27 +910,7 @@ export const listEnvironments: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListEnvironmentsRequest,
-  ListEnvironmentsResult,
-  ListEnvironmentsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListEnvironmentsRequest,
-  ) => stream.Stream<
-    ListEnvironmentsResult,
-    ListEnvironmentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListEnvironmentsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListEnvironmentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsForResourceError =
   | BadRequestException
@@ -998,7 +928,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceRequest,
   ListTagsForResourceResponse,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -1032,7 +962,7 @@ export const tagResource: API.OperationMethod<
   TagResourceRequest,
   TagResourceResponse,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -1064,7 +994,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceRequest,
   UntagResourceResponse,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -1099,7 +1029,7 @@ export const updateEnvironment: API.OperationMethod<
   UpdateEnvironmentRequest,
   UpdateEnvironmentResult,
   UpdateEnvironmentError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateEnvironmentRequest,
   output: UpdateEnvironmentResult,
@@ -1138,7 +1068,7 @@ export const updateEnvironmentMembership: API.OperationMethod<
   UpdateEnvironmentMembershipRequest,
   UpdateEnvironmentMembershipResult,
   UpdateEnvironmentMembershipError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateEnvironmentMembershipRequest,
   output: UpdateEnvironmentMembershipResult,

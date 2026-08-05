@@ -1,7 +1,6 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as redacted from "effect/Redacted";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -9,7 +8,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 import { SensitiveBlob } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "Translate",
@@ -90,20 +88,20 @@ const rules = T.EndpointResolver((p, _) => {
 export class ConcurrentModificationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConcurrentModificationException>()(
     "ConcurrentModificationException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class ConflictException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
     "ConflictException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class DetectedLanguageLowConfidenceException
   extends /*@__PURE__*/ S.TaggedErrorClass<DetectedLanguageLowConfidenceException>()(
     "DetectedLanguageLowConfidenceException",
     {
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       DetectedLanguageCode: S.optional(S.String),
     },
     T.HttpError(400),
@@ -111,68 +109,71 @@ export class DetectedLanguageLowConfidenceException
 export class InternalServerException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
     "InternalServerException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(500),
   ).pipe(C.withServerError) {}
 export class InvalidFilterException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidFilterException>()(
     "InvalidFilterException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class InvalidParameterValueException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidParameterValueException>()(
     "InvalidParameterValueException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class InvalidRequestException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidRequestException>()(
     "InvalidRequestException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class LimitExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<LimitExceededException>()(
     "LimitExceededException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class ServiceUnavailableException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceUnavailableException>()(
     "ServiceUnavailableException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(503),
   ).pipe(C.withServerError) {}
 export class TextSizeLimitExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<TextSizeLimitExceededException>()(
     "TextSizeLimitExceededException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class TooManyRequestsException
   extends /*@__PURE__*/ S.TaggedErrorClass<TooManyRequestsException>()(
     "TooManyRequestsException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(429),
   ).pipe(C.withThrottlingError) {}
 export class TooManyTagsException
   extends /*@__PURE__*/ S.TaggedErrorClass<TooManyTagsException>()(
     "TooManyTagsException",
-    { message: S.optional(S.String), ResourceArn: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      ResourceArn: S.optional(S.String),
+    },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class UnsupportedDisplayLanguageCodeException
   extends /*@__PURE__*/ S.TaggedErrorClass<UnsupportedDisplayLanguageCodeException>()(
     "UnsupportedDisplayLanguageCodeException",
     {
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       DisplayLanguageCode: S.optional(S.String),
     },
     T.HttpError(400),
@@ -181,7 +182,7 @@ export class UnsupportedLanguagePairException
   extends /*@__PURE__*/ S.TaggedErrorClass<UnsupportedLanguagePairException>()(
     "UnsupportedLanguagePairException",
     {
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       SourceLanguageCode: S.optional(S.String),
       TargetLanguageCode: S.optional(S.String),
     },
@@ -1116,7 +1117,7 @@ export const createParallelData: API.OperationMethod<
   CreateParallelDataRequest,
   CreateParallelDataResponse,
   CreateParallelDataError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateParallelDataRequest,
   output: CreateParallelDataResponse,
@@ -1148,7 +1149,7 @@ export const deleteParallelData: API.OperationMethod<
   DeleteParallelDataRequest,
   DeleteParallelDataResponse,
   DeleteParallelDataError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteParallelDataRequest,
   output: DeleteParallelDataResponse,
@@ -1176,7 +1177,7 @@ export const deleteTerminology: API.OperationMethod<
   DeleteTerminologyRequest,
   DeleteTerminologyResponse,
   DeleteTerminologyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteTerminologyRequest,
   output: DeleteTerminologyResponse,
@@ -1204,7 +1205,7 @@ export const describeTextTranslationJob: API.OperationMethod<
   DescribeTextTranslationJobRequest,
   DescribeTextTranslationJobResponse,
   DescribeTextTranslationJobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeTextTranslationJobRequest,
   output: DescribeTextTranslationJobResponse,
@@ -1231,7 +1232,7 @@ export const getParallelData: API.OperationMethod<
   GetParallelDataRequest,
   GetParallelDataResponse,
   GetParallelDataError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetParallelDataRequest,
   output: GetParallelDataResponse,
@@ -1259,7 +1260,7 @@ export const getTerminology: API.OperationMethod<
   GetTerminologyRequest,
   GetTerminologyResponse,
   GetTerminologyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetTerminologyRequest,
   output: GetTerminologyResponse,
@@ -1297,7 +1298,7 @@ export const importTerminology: API.OperationMethod<
   ImportTerminologyRequest,
   ImportTerminologyResponse,
   ImportTerminologyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ImportTerminologyRequest,
   output: ImportTerminologyResponse,
@@ -1323,27 +1324,13 @@ export type ListLanguagesError =
 /**
  * Provides a list of languages (RFC-5646 codes and names) that Amazon Translate supports.
  */
-export const listLanguages: API.OperationMethod<
+export const listLanguages: API.PaginatedOperationMethod<
   ListLanguagesRequest,
   ListLanguagesResponse,
   ListLanguagesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListLanguagesRequest,
-  ) => stream.Stream<
-    ListLanguagesResponse,
-    ListLanguagesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListLanguagesRequest,
-  ) => stream.Stream<
-    unknown,
-    ListLanguagesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListLanguagesRequest,
   output: ListLanguagesResponse,
   errors: [
@@ -1360,27 +1347,7 @@ export const listLanguages: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListLanguagesRequest,
-  ListLanguagesResponse,
-  ListLanguagesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListLanguagesRequest,
-  ) => stream.Stream<
-    ListLanguagesResponse,
-    ListLanguagesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListLanguagesRequest,
-  ) => stream.Stream<
-    unknown,
-    ListLanguagesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListParallelDataError =
   | InternalServerException
@@ -1390,27 +1357,13 @@ export type ListParallelDataError =
 /**
  * Provides a list of your parallel data resources in Amazon Translate.
  */
-export const listParallelData: API.OperationMethod<
+export const listParallelData: API.PaginatedOperationMethod<
   ListParallelDataRequest,
   ListParallelDataResponse,
   ListParallelDataError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListParallelDataRequest,
-  ) => stream.Stream<
-    ListParallelDataResponse,
-    ListParallelDataError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListParallelDataRequest,
-  ) => stream.Stream<
-    unknown,
-    ListParallelDataError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListParallelDataRequest,
   output: ListParallelDataResponse,
   errors: [
@@ -1426,27 +1379,7 @@ export const listParallelData: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListParallelDataRequest,
-  ListParallelDataResponse,
-  ListParallelDataError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListParallelDataRequest,
-  ) => stream.Stream<
-    ListParallelDataResponse,
-    ListParallelDataError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListParallelDataRequest,
-  ) => stream.Stream<
-    unknown,
-    ListParallelDataError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsForResourceError =
   | InternalServerException
@@ -1462,7 +1395,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceRequest,
   ListTagsForResourceResponse,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -1484,27 +1417,13 @@ export type ListTerminologiesError =
 /**
  * Provides a list of custom terminologies associated with your account.
  */
-export const listTerminologies: API.OperationMethod<
+export const listTerminologies: API.PaginatedOperationMethod<
   ListTerminologiesRequest,
   ListTerminologiesResponse,
   ListTerminologiesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTerminologiesRequest,
-  ) => stream.Stream<
-    ListTerminologiesResponse,
-    ListTerminologiesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTerminologiesRequest,
-  ) => stream.Stream<
-    unknown,
-    ListTerminologiesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListTerminologiesRequest,
   output: ListTerminologiesResponse,
   errors: [
@@ -1520,27 +1439,7 @@ export const listTerminologies: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListTerminologiesRequest,
-  ListTerminologiesResponse,
-  ListTerminologiesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTerminologiesRequest,
-  ) => stream.Stream<
-    ListTerminologiesResponse,
-    ListTerminologiesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTerminologiesRequest,
-  ) => stream.Stream<
-    unknown,
-    ListTerminologiesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTextTranslationJobsError =
   | InternalServerException
@@ -1551,27 +1450,13 @@ export type ListTextTranslationJobsError =
 /**
  * Gets a list of the batch translation jobs that you have submitted.
  */
-export const listTextTranslationJobs: API.OperationMethod<
+export const listTextTranslationJobs: API.PaginatedOperationMethod<
   ListTextTranslationJobsRequest,
   ListTextTranslationJobsResponse,
   ListTextTranslationJobsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTextTranslationJobsRequest,
-  ) => stream.Stream<
-    ListTextTranslationJobsResponse,
-    ListTextTranslationJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTextTranslationJobsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListTextTranslationJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListTextTranslationJobsRequest,
   output: ListTextTranslationJobsResponse,
   errors: [
@@ -1588,27 +1473,7 @@ export const listTextTranslationJobs: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListTextTranslationJobsRequest,
-  ListTextTranslationJobsResponse,
-  ListTextTranslationJobsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTextTranslationJobsRequest,
-  ) => stream.Stream<
-    ListTextTranslationJobsResponse,
-    ListTextTranslationJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTextTranslationJobsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListTextTranslationJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type StartTextTranslationJobError =
   | InternalServerException
@@ -1633,7 +1498,7 @@ export const startTextTranslationJob: API.OperationMethod<
   StartTextTranslationJobRequest,
   StartTextTranslationJobResponse,
   StartTextTranslationJobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartTextTranslationJobRequest,
   output: StartTextTranslationJobResponse,
@@ -1670,7 +1535,7 @@ export const stopTextTranslationJob: API.OperationMethod<
   StopTextTranslationJobRequest,
   StopTextTranslationJobResponse,
   StopTextTranslationJobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StopTextTranslationJobRequest,
   output: StopTextTranslationJobResponse,
@@ -1701,7 +1566,7 @@ export const tagResource: API.OperationMethod<
   TagResourceRequest,
   TagResourceResponse,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -1742,7 +1607,7 @@ export const translateDocument: API.OperationMethod<
   TranslateDocumentRequest,
   TranslateDocumentResponse,
   TranslateDocumentError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TranslateDocumentRequest,
   output: TranslateDocumentResponse,
@@ -1778,7 +1643,7 @@ export const translateText: API.OperationMethod<
   TranslateTextRequest,
   TranslateTextResponse,
   TranslateTextError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TranslateTextRequest,
   output: TranslateTextResponse,
@@ -1812,7 +1677,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceRequest,
   UntagResourceResponse,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -1845,7 +1710,7 @@ export const updateParallelData: API.OperationMethod<
   UpdateParallelDataRequest,
   UpdateParallelDataResponse,
   UpdateParallelDataError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateParallelDataRequest,
   output: UpdateParallelDataResponse,

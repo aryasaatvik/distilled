@@ -1,7 +1,6 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as redacted from "effect/Redacted";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -9,7 +8,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 import { SensitiveString } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "grafana",
@@ -90,20 +88,24 @@ const rules = T.EndpointResolver((p, _) => {
 export class AccessDeniedException
   extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
     "AccessDeniedException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(403),
   ).pipe(C.withAuthError) {}
 export class ConflictException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
     "ConflictException",
-    { message: S.String, resourceId: S.String, resourceType: S.String },
+    {
+      message: S.String.pipe(T.ErrorMessage()),
+      resourceId: S.String,
+      resourceType: S.String,
+    },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class InternalServerException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
     "InternalServerException",
     {
-      message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       retryAfterSeconds: S.optional(S.Number).pipe(T.HttpHeader("Retry-After")),
     },
     T.all(T.HttpError(500), T.Retryable()),
@@ -111,14 +113,18 @@ export class InternalServerException
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { message: S.String, resourceId: S.String, resourceType: S.String },
+    {
+      message: S.String.pipe(T.ErrorMessage()),
+      resourceId: S.String,
+      resourceType: S.String,
+    },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class ServiceQuotaExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
     "ServiceQuotaExceededException",
     {
-      message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       resourceId: S.String,
       resourceType: S.String,
       serviceCode: S.String,
@@ -130,7 +136,7 @@ export class ThrottlingException
   extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
     "ThrottlingException",
     {
-      message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       serviceCode: S.optional(S.String),
       quotaCode: S.optional(S.String),
       retryAfterSeconds: S.optional(S.Number).pipe(T.HttpHeader("Retry-After")),
@@ -141,7 +147,7 @@ export class ValidationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
     "ValidationException",
     {
-      message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       reason: S.String,
       fieldList: S.optional(
         S.suspend(() => ValidationExceptionFieldList).annotate({
@@ -1458,7 +1464,7 @@ export const associateLicense: API.OperationMethod<
   AssociateLicenseRequest,
   AssociateLicenseResponse,
   AssociateLicenseError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AssociateLicenseRequest,
   output: AssociateLicenseResponse,
@@ -1491,7 +1497,7 @@ export const createWorkspace: API.OperationMethod<
   CreateWorkspaceRequest,
   CreateWorkspaceResponse,
   CreateWorkspaceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateWorkspaceRequest,
   output: CreateWorkspaceResponse,
@@ -1526,7 +1532,7 @@ export const createWorkspaceApiKey: API.OperationMethod<
   CreateWorkspaceApiKeyRequest,
   CreateWorkspaceApiKeyResponse,
   CreateWorkspaceApiKeyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateWorkspaceApiKeyRequest,
   output: CreateWorkspaceApiKeyResponse,
@@ -1566,7 +1572,7 @@ export const createWorkspaceServiceAccount: API.OperationMethod<
   CreateWorkspaceServiceAccountRequest,
   CreateWorkspaceServiceAccountResponse,
   CreateWorkspaceServiceAccountError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateWorkspaceServiceAccountRequest,
   output: CreateWorkspaceServiceAccountResponse,
@@ -1606,7 +1612,7 @@ export const createWorkspaceServiceAccountToken: API.OperationMethod<
   CreateWorkspaceServiceAccountTokenRequest,
   CreateWorkspaceServiceAccountTokenResponse,
   CreateWorkspaceServiceAccountTokenError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateWorkspaceServiceAccountTokenRequest,
   output: CreateWorkspaceServiceAccountTokenResponse,
@@ -1639,7 +1645,7 @@ export const deleteWorkspace: API.OperationMethod<
   DeleteWorkspaceRequest,
   DeleteWorkspaceResponse,
   DeleteWorkspaceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteWorkspaceRequest,
   output: DeleteWorkspaceResponse,
@@ -1673,7 +1679,7 @@ export const deleteWorkspaceApiKey: API.OperationMethod<
   DeleteWorkspaceApiKeyRequest,
   DeleteWorkspaceApiKeyResponse,
   DeleteWorkspaceApiKeyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteWorkspaceApiKeyRequest,
   output: DeleteWorkspaceApiKeyResponse,
@@ -1709,7 +1715,7 @@ export const deleteWorkspaceServiceAccount: API.OperationMethod<
   DeleteWorkspaceServiceAccountRequest,
   DeleteWorkspaceServiceAccountResponse,
   DeleteWorkspaceServiceAccountError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteWorkspaceServiceAccountRequest,
   output: DeleteWorkspaceServiceAccountResponse,
@@ -1745,7 +1751,7 @@ export const deleteWorkspaceServiceAccountToken: API.OperationMethod<
   DeleteWorkspaceServiceAccountTokenRequest,
   DeleteWorkspaceServiceAccountTokenResponse,
   DeleteWorkspaceServiceAccountTokenError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteWorkspaceServiceAccountTokenRequest,
   output: DeleteWorkspaceServiceAccountTokenResponse,
@@ -1776,7 +1782,7 @@ export const describeWorkspace: API.OperationMethod<
   DescribeWorkspaceRequest,
   DescribeWorkspaceResponse,
   DescribeWorkspaceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeWorkspaceRequest,
   output: DescribeWorkspaceResponse,
@@ -1807,7 +1813,7 @@ export const describeWorkspaceAuthentication: API.OperationMethod<
   DescribeWorkspaceAuthenticationRequest,
   DescribeWorkspaceAuthenticationResponse,
   DescribeWorkspaceAuthenticationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeWorkspaceAuthenticationRequest,
   output: DescribeWorkspaceAuthenticationResponse,
@@ -1837,7 +1843,7 @@ export const describeWorkspaceConfiguration: API.OperationMethod<
   DescribeWorkspaceConfigurationRequest,
   DescribeWorkspaceConfigurationResponse,
   DescribeWorkspaceConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeWorkspaceConfigurationRequest,
   output: DescribeWorkspaceConfigurationResponse,
@@ -1866,7 +1872,7 @@ export const disassociateLicense: API.OperationMethod<
   DisassociateLicenseRequest,
   DisassociateLicenseResponse,
   DisassociateLicenseError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DisassociateLicenseRequest,
   output: DisassociateLicenseResponse,
@@ -1892,27 +1898,13 @@ export type ListPermissionsError =
 /**
  * Lists the users and groups who have the Grafana `Admin` and `Editor` roles in this workspace. If you use this operation without specifying `userId` or `groupId`, the operation returns the roles of all users and groups. If you specify a `userId` or a `groupId`, only the roles for that user or group are returned. If you do this, you can specify only one `userId` or one `groupId`.
  */
-export const listPermissions: API.OperationMethod<
+export const listPermissions: API.PaginatedOperationMethod<
   ListPermissionsRequest,
   ListPermissionsResponse,
   ListPermissionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPermissionsRequest,
-  ) => stream.Stream<
-    ListPermissionsResponse,
-    ListPermissionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPermissionsRequest,
-  ) => stream.Stream<
-    PermissionEntry,
-    ListPermissionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  PermissionEntry
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListPermissionsRequest,
   output: ListPermissionsResponse,
   errors: [
@@ -1931,27 +1923,7 @@ export const listPermissions: API.OperationMethod<
     items: "permissions",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListPermissionsRequest,
-  ListPermissionsResponse,
-  ListPermissionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPermissionsRequest,
-  ) => stream.Stream<
-    ListPermissionsResponse,
-    ListPermissionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPermissionsRequest,
-  ) => stream.Stream<
-    PermissionEntry,
-    ListPermissionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsForResourceError =
   | AccessDeniedException
@@ -1967,7 +1939,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceRequest,
   ListTagsForResourceResponse,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -1993,27 +1965,13 @@ export type ListVersionsError =
 /**
  * Lists available versions of Grafana. These are available when calling `CreateWorkspace`. Optionally, include a workspace to list the versions to which it can be upgraded.
  */
-export const listVersions: API.OperationMethod<
+export const listVersions: API.PaginatedOperationMethod<
   ListVersionsRequest,
   ListVersionsResponse,
   ListVersionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListVersionsRequest,
-  ) => stream.Stream<
-    ListVersionsResponse,
-    ListVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListVersionsRequest,
-  ) => stream.Stream<
-    GrafanaVersion,
-    ListVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  GrafanaVersion
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListVersionsRequest,
   output: ListVersionsResponse,
   errors: [
@@ -2032,27 +1990,7 @@ export const listVersions: API.OperationMethod<
     items: "grafanaVersions",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListVersionsRequest,
-  ListVersionsResponse,
-  ListVersionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListVersionsRequest,
-  ) => stream.Stream<
-    ListVersionsResponse,
-    ListVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListVersionsRequest,
-  ) => stream.Stream<
-    GrafanaVersion,
-    ListVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListWorkspacesError =
   | AccessDeniedException
@@ -2062,27 +2000,13 @@ export type ListWorkspacesError =
 /**
  * Returns a list of Amazon Managed Grafana workspaces in the account, with some information about each workspace. For more complete information about one workspace, use DescribeWorkspace.
  */
-export const listWorkspaces: API.OperationMethod<
+export const listWorkspaces: API.PaginatedOperationMethod<
   ListWorkspacesRequest,
   ListWorkspacesResponse,
   ListWorkspacesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListWorkspacesRequest,
-  ) => stream.Stream<
-    ListWorkspacesResponse,
-    ListWorkspacesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListWorkspacesRequest,
-  ) => stream.Stream<
-    WorkspaceSummary,
-    ListWorkspacesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  WorkspaceSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListWorkspacesRequest,
   output: ListWorkspacesResponse,
   errors: [AccessDeniedException, InternalServerException, ThrottlingException],
@@ -2095,27 +2019,7 @@ export const listWorkspaces: API.OperationMethod<
     items: "workspaces",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListWorkspacesRequest,
-  ListWorkspacesResponse,
-  ListWorkspacesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListWorkspacesRequest,
-  ) => stream.Stream<
-    ListWorkspacesResponse,
-    ListWorkspacesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListWorkspacesRequest,
-  ) => stream.Stream<
-    WorkspaceSummary,
-    ListWorkspacesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListWorkspaceServiceAccountsError =
   | AccessDeniedException
@@ -2130,27 +2034,13 @@ export type ListWorkspaceServiceAccountsError =
  *
  * Service accounts are only available for workspaces that are compatible with Grafana version 9 and above.
  */
-export const listWorkspaceServiceAccounts: API.OperationMethod<
+export const listWorkspaceServiceAccounts: API.PaginatedOperationMethod<
   ListWorkspaceServiceAccountsRequest,
   ListWorkspaceServiceAccountsResponse,
   ListWorkspaceServiceAccountsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListWorkspaceServiceAccountsRequest,
-  ) => stream.Stream<
-    ListWorkspaceServiceAccountsResponse,
-    ListWorkspaceServiceAccountsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListWorkspaceServiceAccountsRequest,
-  ) => stream.Stream<
-    ServiceAccountSummary,
-    ListWorkspaceServiceAccountsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ServiceAccountSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListWorkspaceServiceAccountsRequest,
   output: ListWorkspaceServiceAccountsResponse,
   errors: [
@@ -2170,27 +2060,7 @@ export const listWorkspaceServiceAccounts: API.OperationMethod<
     items: "serviceAccounts",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListWorkspaceServiceAccountsRequest,
-  ListWorkspaceServiceAccountsResponse,
-  ListWorkspaceServiceAccountsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListWorkspaceServiceAccountsRequest,
-  ) => stream.Stream<
-    ListWorkspaceServiceAccountsResponse,
-    ListWorkspaceServiceAccountsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListWorkspaceServiceAccountsRequest,
-  ) => stream.Stream<
-    ServiceAccountSummary,
-    ListWorkspaceServiceAccountsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListWorkspaceServiceAccountTokensError =
   | AccessDeniedException
@@ -2207,27 +2077,13 @@ export type ListWorkspaceServiceAccountTokensError =
  *
  * Service accounts are only available for workspaces that are compatible with Grafana version 9 and above.
  */
-export const listWorkspaceServiceAccountTokens: API.OperationMethod<
+export const listWorkspaceServiceAccountTokens: API.PaginatedOperationMethod<
   ListWorkspaceServiceAccountTokensRequest,
   ListWorkspaceServiceAccountTokensResponse,
   ListWorkspaceServiceAccountTokensError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListWorkspaceServiceAccountTokensRequest,
-  ) => stream.Stream<
-    ListWorkspaceServiceAccountTokensResponse,
-    ListWorkspaceServiceAccountTokensError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListWorkspaceServiceAccountTokensRequest,
-  ) => stream.Stream<
-    ServiceAccountTokenSummary,
-    ListWorkspaceServiceAccountTokensError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ServiceAccountTokenSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListWorkspaceServiceAccountTokensRequest,
   output: ListWorkspaceServiceAccountTokensResponse,
   errors: [
@@ -2247,27 +2103,7 @@ export const listWorkspaceServiceAccountTokens: API.OperationMethod<
     items: "serviceAccountTokens",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListWorkspaceServiceAccountTokensRequest,
-  ListWorkspaceServiceAccountTokensResponse,
-  ListWorkspaceServiceAccountTokensError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListWorkspaceServiceAccountTokensRequest,
-  ) => stream.Stream<
-    ListWorkspaceServiceAccountTokensResponse,
-    ListWorkspaceServiceAccountTokensError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListWorkspaceServiceAccountTokensRequest,
-  ) => stream.Stream<
-    ServiceAccountTokenSummary,
-    ListWorkspaceServiceAccountTokensError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type TagResourceError =
   | AccessDeniedException
@@ -2285,7 +2121,7 @@ export const tagResource: API.OperationMethod<
   TagResourceRequest,
   TagResourceResponse,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -2315,7 +2151,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceRequest,
   UntagResourceResponse,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -2345,7 +2181,7 @@ export const updatePermissions: API.OperationMethod<
   UpdatePermissionsRequest,
   UpdatePermissionsResponse,
   UpdatePermissionsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdatePermissionsRequest,
   output: UpdatePermissionsResponse,
@@ -2380,7 +2216,7 @@ export const updateWorkspace: API.OperationMethod<
   UpdateWorkspaceRequest,
   UpdateWorkspaceResponse,
   UpdateWorkspaceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateWorkspaceRequest,
   output: UpdateWorkspaceResponse,
@@ -2414,7 +2250,7 @@ export const updateWorkspaceAuthentication: API.OperationMethod<
   UpdateWorkspaceAuthenticationRequest,
   UpdateWorkspaceAuthenticationResponse,
   UpdateWorkspaceAuthenticationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateWorkspaceAuthenticationRequest,
   output: UpdateWorkspaceAuthenticationResponse,
@@ -2446,7 +2282,7 @@ export const updateWorkspaceConfiguration: API.OperationMethod<
   UpdateWorkspaceConfigurationRequest,
   UpdateWorkspaceConfigurationResponse,
   UpdateWorkspaceConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateWorkspaceConfigurationRequest,
   output: UpdateWorkspaceConfigurationResponse,

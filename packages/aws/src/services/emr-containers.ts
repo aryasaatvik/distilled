@@ -1,7 +1,6 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as redacted from "effect/Redacted";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -9,7 +8,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials as Creds } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 import { SensitiveString } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "EMR containers",
@@ -96,19 +94,19 @@ const rules = T.EndpointResolver((p, _) => {
 export class EKSRequestThrottledException
   extends /*@__PURE__*/ S.TaggedErrorClass<EKSRequestThrottledException>()(
     "EKSRequestThrottledException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(429),
   ).pipe(C.withThrottlingError) {}
 export class InternalServerException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
     "InternalServerException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(500),
   ).pipe(C.withServerError) {}
 export class InvalidResourceArn
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidResourceArn>()(
     "InvalidResourceArn",
-    {},
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.SyntheticError({
       from: "BadRequestException",
       message: { includes: "Invalid input resource arn" },
@@ -117,24 +115,24 @@ export class InvalidResourceArn
 export class RequestThrottledException
   extends /*@__PURE__*/ S.TaggedErrorClass<RequestThrottledException>()(
     "RequestThrottledException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class TooManyRequestsException
   extends /*@__PURE__*/ S.TaggedErrorClass<TooManyRequestsException>()(
     "TooManyRequestsException",
-    {},
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ).pipe(C.withThrottlingError, C.withRetryableError) {}
 export class ValidationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
     "ValidationException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export type ResourceIdString = string;
@@ -1679,7 +1677,7 @@ export const cancelJobRun: API.OperationMethod<
   CancelJobRunRequest,
   CancelJobRunResponse,
   CancelJobRunError,
-  Creds | Region | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CancelJobRunRequest,
   output: CancelJobRunResponse,
@@ -1709,7 +1707,7 @@ export const createJobTemplate: API.OperationMethod<
   CreateJobTemplateRequest,
   CreateJobTemplateResponse,
   CreateJobTemplateError,
-  Creds | Region | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateJobTemplateRequest,
   output: CreateJobTemplateResponse,
@@ -1738,7 +1736,7 @@ export const createManagedEndpoint: API.OperationMethod<
   CreateManagedEndpointRequest,
   CreateManagedEndpointResponse,
   CreateManagedEndpointError,
-  Creds | Region | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateManagedEndpointRequest,
   output: CreateManagedEndpointResponse,
@@ -1768,7 +1766,7 @@ export const createSecurityConfiguration: API.OperationMethod<
   CreateSecurityConfigurationRequest,
   CreateSecurityConfigurationResponse,
   CreateSecurityConfigurationError,
-  Creds | Region | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateSecurityConfigurationRequest,
   output: CreateSecurityConfigurationResponse,
@@ -1799,7 +1797,7 @@ export const createVirtualCluster: API.OperationMethod<
   CreateVirtualClusterRequest,
   CreateVirtualClusterResponse,
   CreateVirtualClusterError,
-  Creds | Region | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateVirtualClusterRequest,
   output: CreateVirtualClusterResponse,
@@ -1830,7 +1828,7 @@ export const deleteJobTemplate: API.OperationMethod<
   DeleteJobTemplateRequest,
   DeleteJobTemplateResponse,
   DeleteJobTemplateError,
-  Creds | Region | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteJobTemplateRequest,
   output: DeleteJobTemplateResponse,
@@ -1857,7 +1855,7 @@ export const deleteManagedEndpoint: API.OperationMethod<
   DeleteManagedEndpointRequest,
   DeleteManagedEndpointResponse,
   DeleteManagedEndpointError,
-  Creds | Region | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteManagedEndpointRequest,
   output: DeleteManagedEndpointResponse,
@@ -1886,7 +1884,7 @@ export const deleteVirtualCluster: API.OperationMethod<
   DeleteVirtualClusterRequest,
   DeleteVirtualClusterResponse,
   DeleteVirtualClusterError,
-  Creds | Region | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteVirtualClusterRequest,
   output: DeleteVirtualClusterResponse,
@@ -1914,7 +1912,7 @@ export const describeJobRun: API.OperationMethod<
   DescribeJobRunRequest,
   DescribeJobRunResponse,
   DescribeJobRunError,
-  Creds | Region | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeJobRunRequest,
   output: DescribeJobRunResponse,
@@ -1945,7 +1943,7 @@ export const describeJobTemplate: API.OperationMethod<
   DescribeJobTemplateRequest,
   DescribeJobTemplateResponse,
   DescribeJobTemplateError,
-  Creds | Region | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeJobTemplateRequest,
   output: DescribeJobTemplateResponse,
@@ -1974,7 +1972,7 @@ export const describeManagedEndpoint: API.OperationMethod<
   DescribeManagedEndpointRequest,
   DescribeManagedEndpointResponse,
   DescribeManagedEndpointError,
-  Creds | Region | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeManagedEndpointRequest,
   output: DescribeManagedEndpointResponse,
@@ -2006,7 +2004,7 @@ export const describeSecurityConfiguration: API.OperationMethod<
   DescribeSecurityConfigurationRequest,
   DescribeSecurityConfigurationResponse,
   DescribeSecurityConfigurationError,
-  Creds | Region | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeSecurityConfigurationRequest,
   output: DescribeSecurityConfigurationResponse,
@@ -2039,7 +2037,7 @@ export const describeVirtualCluster: API.OperationMethod<
   DescribeVirtualClusterRequest,
   DescribeVirtualClusterResponse,
   DescribeVirtualClusterError,
-  Creds | Region | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeVirtualClusterRequest,
   output: DescribeVirtualClusterResponse,
@@ -2068,7 +2066,7 @@ export const getManagedEndpointSessionCredentials: API.OperationMethod<
   GetManagedEndpointSessionCredentialsRequest,
   GetManagedEndpointSessionCredentialsResponse,
   GetManagedEndpointSessionCredentialsError,
-  Creds | Region | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetManagedEndpointSessionCredentialsRequest,
   output: GetManagedEndpointSessionCredentialsResponse,
@@ -2093,27 +2091,13 @@ export type ListJobRunsError =
  * Lists job runs based on a set of parameters. A job run is a unit of work, such as a
  * Spark jar, PySpark script, or SparkSQL query, that you submit to Amazon EMR on EKS.
  */
-export const listJobRuns: API.OperationMethod<
+export const listJobRuns: API.PaginatedOperationMethod<
   ListJobRunsRequest,
   ListJobRunsResponse,
   ListJobRunsError,
-  Creds | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListJobRunsRequest,
-  ) => stream.Stream<
-    ListJobRunsResponse,
-    ListJobRunsError,
-    Creds | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListJobRunsRequest,
-  ) => stream.Stream<
-    JobRun,
-    ListJobRunsError,
-    Creds | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Creds | HttpClient.HttpClient,
+  JobRun
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListJobRunsRequest,
   output: ListJobRunsResponse,
   errors: [
@@ -2130,27 +2114,7 @@ export const listJobRuns: API.OperationMethod<
     items: "jobRuns",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListJobRunsRequest,
-  ListJobRunsResponse,
-  ListJobRunsError,
-  Creds | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListJobRunsRequest,
-  ) => stream.Stream<
-    ListJobRunsResponse,
-    ListJobRunsError,
-    Creds | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListJobRunsRequest,
-  ) => stream.Stream<
-    JobRun,
-    ListJobRunsError,
-    Creds | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListJobTemplatesError =
   | InternalServerException
@@ -2163,27 +2127,13 @@ export type ListJobTemplatesError =
  * allows two use cases: avoid repeating recurring StartJobRun API request values, enforcing
  * certain values in StartJobRun API request.
  */
-export const listJobTemplates: API.OperationMethod<
+export const listJobTemplates: API.PaginatedOperationMethod<
   ListJobTemplatesRequest,
   ListJobTemplatesResponse,
   ListJobTemplatesError,
-  Creds | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListJobTemplatesRequest,
-  ) => stream.Stream<
-    ListJobTemplatesResponse,
-    ListJobTemplatesError,
-    Creds | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListJobTemplatesRequest,
-  ) => stream.Stream<
-    JobTemplate,
-    ListJobTemplatesError,
-    Creds | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Creds | HttpClient.HttpClient,
+  JobTemplate
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListJobTemplatesRequest,
   output: ListJobTemplatesResponse,
   errors: [
@@ -2200,27 +2150,7 @@ export const listJobTemplates: API.OperationMethod<
     items: "templates",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListJobTemplatesRequest,
-  ListJobTemplatesResponse,
-  ListJobTemplatesError,
-  Creds | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListJobTemplatesRequest,
-  ) => stream.Stream<
-    ListJobTemplatesResponse,
-    ListJobTemplatesError,
-    Creds | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListJobTemplatesRequest,
-  ) => stream.Stream<
-    JobTemplate,
-    ListJobTemplatesError,
-    Creds | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListManagedEndpointsError =
   | InternalServerException
@@ -2231,27 +2161,13 @@ export type ListManagedEndpointsError =
  * Lists managed endpoints based on a set of parameters. A managed endpoint is a gateway
  * that connects Amazon EMR Studio to Amazon EMR on EKS so that Amazon EMR Studio can communicate with your virtual cluster.
  */
-export const listManagedEndpoints: API.OperationMethod<
+export const listManagedEndpoints: API.PaginatedOperationMethod<
   ListManagedEndpointsRequest,
   ListManagedEndpointsResponse,
   ListManagedEndpointsError,
-  Creds | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListManagedEndpointsRequest,
-  ) => stream.Stream<
-    ListManagedEndpointsResponse,
-    ListManagedEndpointsError,
-    Creds | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListManagedEndpointsRequest,
-  ) => stream.Stream<
-    Endpoint,
-    ListManagedEndpointsError,
-    Creds | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Creds | HttpClient.HttpClient,
+  Endpoint
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListManagedEndpointsRequest,
   output: ListManagedEndpointsResponse,
   errors: [
@@ -2268,27 +2184,7 @@ export const listManagedEndpoints: API.OperationMethod<
     items: "endpoints",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListManagedEndpointsRequest,
-  ListManagedEndpointsResponse,
-  ListManagedEndpointsError,
-  Creds | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListManagedEndpointsRequest,
-  ) => stream.Stream<
-    ListManagedEndpointsResponse,
-    ListManagedEndpointsError,
-    Creds | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListManagedEndpointsRequest,
-  ) => stream.Stream<
-    Endpoint,
-    ListManagedEndpointsError,
-    Creds | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListSecurityConfigurationsError =
   | InternalServerException
@@ -2302,27 +2198,13 @@ export type ListSecurityConfigurationsError =
  * create a security configuration to re-use a security setup each time you create a virtual
  * cluster.
  */
-export const listSecurityConfigurations: API.OperationMethod<
+export const listSecurityConfigurations: API.PaginatedOperationMethod<
   ListSecurityConfigurationsRequest,
   ListSecurityConfigurationsResponse,
   ListSecurityConfigurationsError,
-  Creds | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSecurityConfigurationsRequest,
-  ) => stream.Stream<
-    ListSecurityConfigurationsResponse,
-    ListSecurityConfigurationsError,
-    Creds | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSecurityConfigurationsRequest,
-  ) => stream.Stream<
-    SecurityConfiguration,
-    ListSecurityConfigurationsError,
-    Creds | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Creds | HttpClient.HttpClient,
+  SecurityConfiguration
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListSecurityConfigurationsRequest,
   output: ListSecurityConfigurationsResponse,
   errors: [
@@ -2339,27 +2221,7 @@ export const listSecurityConfigurations: API.OperationMethod<
     items: "securityConfigurations",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListSecurityConfigurationsRequest,
-  ListSecurityConfigurationsResponse,
-  ListSecurityConfigurationsError,
-  Creds | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSecurityConfigurationsRequest,
-  ) => stream.Stream<
-    ListSecurityConfigurationsResponse,
-    ListSecurityConfigurationsError,
-    Creds | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSecurityConfigurationsRequest,
-  ) => stream.Stream<
-    SecurityConfiguration,
-    ListSecurityConfigurationsError,
-    Creds | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsForResourceError =
   | InternalServerException
@@ -2374,7 +2236,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceRequest,
   ListTagsForResourceResponse,
   ListTagsForResourceError,
-  Creds | Region | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -2402,27 +2264,13 @@ export type ListVirtualClustersError =
  * virtual clusters the same way you model Kubernetes namespaces to meet your
  * requirements.
  */
-export const listVirtualClusters: API.OperationMethod<
+export const listVirtualClusters: API.PaginatedOperationMethod<
   ListVirtualClustersRequest,
   ListVirtualClustersResponse,
   ListVirtualClustersError,
-  Creds | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListVirtualClustersRequest,
-  ) => stream.Stream<
-    ListVirtualClustersResponse,
-    ListVirtualClustersError,
-    Creds | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListVirtualClustersRequest,
-  ) => stream.Stream<
-    VirtualCluster,
-    ListVirtualClustersError,
-    Creds | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Creds | HttpClient.HttpClient,
+  VirtualCluster
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListVirtualClustersRequest,
   output: ListVirtualClustersResponse,
   errors: [
@@ -2439,27 +2287,7 @@ export const listVirtualClusters: API.OperationMethod<
     items: "virtualClusters",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListVirtualClustersRequest,
-  ListVirtualClustersResponse,
-  ListVirtualClustersError,
-  Creds | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListVirtualClustersRequest,
-  ) => stream.Stream<
-    ListVirtualClustersResponse,
-    ListVirtualClustersError,
-    Creds | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListVirtualClustersRequest,
-  ) => stream.Stream<
-    VirtualCluster,
-    ListVirtualClustersError,
-    Creds | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type StartJobRunError =
   | InternalServerException
@@ -2475,7 +2303,7 @@ export const startJobRun: API.OperationMethod<
   StartJobRunRequest,
   StartJobRunResponse,
   StartJobRunError,
-  Creds | Region | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartJobRunRequest,
   output: StartJobRunResponse,
@@ -2512,7 +2340,7 @@ export const tagResource: API.OperationMethod<
   TagResourceRequest,
   TagResourceResponse,
   TagResourceError,
-  Creds | Region | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -2542,7 +2370,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceRequest,
   UntagResourceResponse,
   UntagResourceError,
-  Creds | Region | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,

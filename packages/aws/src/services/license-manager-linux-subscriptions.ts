@@ -1,13 +1,11 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
 import * as T from "../traits.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 const svc = T.AwsApiService({
   sdkId: "License Manager Linux Subscriptions",
   serviceShapeName: "LicenseManagerLinuxSubscriptions",
@@ -87,22 +85,22 @@ const rules = T.EndpointResolver((p, _) => {
 export class InternalServerException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
     "InternalServerException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class ThrottlingException
   extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
     "ThrottlingException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class ValidationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
     "ValidationException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export type SubscriptionProviderArn = string;
 export interface DeregisterSubscriptionProviderRequest {
@@ -627,7 +625,7 @@ export const deregisterSubscriptionProvider: API.OperationMethod<
   DeregisterSubscriptionProviderRequest,
   DeregisterSubscriptionProviderResponse,
   DeregisterSubscriptionProviderError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeregisterSubscriptionProviderRequest,
   output: DeregisterSubscriptionProviderResponse,
@@ -655,7 +653,7 @@ export const getRegisteredSubscriptionProvider: API.OperationMethod<
   GetRegisteredSubscriptionProviderRequest,
   GetRegisteredSubscriptionProviderResponse,
   GetRegisteredSubscriptionProviderError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetRegisteredSubscriptionProviderRequest,
   output: GetRegisteredSubscriptionProviderResponse,
@@ -682,7 +680,7 @@ export const getServiceSettings: API.OperationMethod<
   GetServiceSettingsRequest,
   GetServiceSettingsResponse,
   GetServiceSettingsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetServiceSettingsRequest,
   output: GetServiceSettingsResponse,
@@ -701,27 +699,13 @@ export type ListLinuxSubscriptionInstancesError =
  * Lists the running Amazon EC2 instances that were discovered with commercial Linux
  * subscriptions.
  */
-export const listLinuxSubscriptionInstances: API.OperationMethod<
+export const listLinuxSubscriptionInstances: API.PaginatedOperationMethod<
   ListLinuxSubscriptionInstancesRequest,
   ListLinuxSubscriptionInstancesResponse,
   ListLinuxSubscriptionInstancesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListLinuxSubscriptionInstancesRequest,
-  ) => stream.Stream<
-    ListLinuxSubscriptionInstancesResponse,
-    ListLinuxSubscriptionInstancesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListLinuxSubscriptionInstancesRequest,
-  ) => stream.Stream<
-    Instance,
-    ListLinuxSubscriptionInstancesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Instance
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListLinuxSubscriptionInstancesRequest,
   output: ListLinuxSubscriptionInstancesResponse,
   errors: [InternalServerException, ThrottlingException, ValidationException],
@@ -734,27 +718,7 @@ export const listLinuxSubscriptionInstances: API.OperationMethod<
     items: "Instances",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListLinuxSubscriptionInstancesRequest,
-  ListLinuxSubscriptionInstancesResponse,
-  ListLinuxSubscriptionInstancesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListLinuxSubscriptionInstancesRequest,
-  ) => stream.Stream<
-    ListLinuxSubscriptionInstancesResponse,
-    ListLinuxSubscriptionInstancesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListLinuxSubscriptionInstancesRequest,
-  ) => stream.Stream<
-    Instance,
-    ListLinuxSubscriptionInstancesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListLinuxSubscriptionsError =
   | InternalServerException
@@ -766,27 +730,13 @@ export type ListLinuxSubscriptionsError =
  * organization, the returned results will include data aggregated across your accounts in
  * Organizations.
  */
-export const listLinuxSubscriptions: API.OperationMethod<
+export const listLinuxSubscriptions: API.PaginatedOperationMethod<
   ListLinuxSubscriptionsRequest,
   ListLinuxSubscriptionsResponse,
   ListLinuxSubscriptionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListLinuxSubscriptionsRequest,
-  ) => stream.Stream<
-    ListLinuxSubscriptionsResponse,
-    ListLinuxSubscriptionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListLinuxSubscriptionsRequest,
-  ) => stream.Stream<
-    Subscription,
-    ListLinuxSubscriptionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Subscription
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListLinuxSubscriptionsRequest,
   output: ListLinuxSubscriptionsResponse,
   errors: [InternalServerException, ThrottlingException, ValidationException],
@@ -799,27 +749,7 @@ export const listLinuxSubscriptions: API.OperationMethod<
     items: "Subscriptions",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListLinuxSubscriptionsRequest,
-  ListLinuxSubscriptionsResponse,
-  ListLinuxSubscriptionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListLinuxSubscriptionsRequest,
-  ) => stream.Stream<
-    ListLinuxSubscriptionsResponse,
-    ListLinuxSubscriptionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListLinuxSubscriptionsRequest,
-  ) => stream.Stream<
-    Subscription,
-    ListLinuxSubscriptionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListRegisteredSubscriptionProvidersError =
   | InternalServerException
@@ -829,27 +759,13 @@ export type ListRegisteredSubscriptionProvidersError =
 /**
  * List Bring Your Own License (BYOL) subscription registration resources for your account.
  */
-export const listRegisteredSubscriptionProviders: API.OperationMethod<
+export const listRegisteredSubscriptionProviders: API.PaginatedOperationMethod<
   ListRegisteredSubscriptionProvidersRequest,
   ListRegisteredSubscriptionProvidersResponse,
   ListRegisteredSubscriptionProvidersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListRegisteredSubscriptionProvidersRequest,
-  ) => stream.Stream<
-    ListRegisteredSubscriptionProvidersResponse,
-    ListRegisteredSubscriptionProvidersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListRegisteredSubscriptionProvidersRequest,
-  ) => stream.Stream<
-    RegisteredSubscriptionProvider,
-    ListRegisteredSubscriptionProvidersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  RegisteredSubscriptionProvider
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListRegisteredSubscriptionProvidersRequest,
   output: ListRegisteredSubscriptionProvidersResponse,
   errors: [InternalServerException, ThrottlingException, ValidationException],
@@ -862,27 +778,7 @@ export const listRegisteredSubscriptionProviders: API.OperationMethod<
     items: "RegisteredSubscriptionProviders",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListRegisteredSubscriptionProvidersRequest,
-  ListRegisteredSubscriptionProvidersResponse,
-  ListRegisteredSubscriptionProvidersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListRegisteredSubscriptionProvidersRequest,
-  ) => stream.Stream<
-    ListRegisteredSubscriptionProvidersResponse,
-    ListRegisteredSubscriptionProvidersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListRegisteredSubscriptionProvidersRequest,
-  ) => stream.Stream<
-    RegisteredSubscriptionProvider,
-    ListRegisteredSubscriptionProvidersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsForResourceError =
   | InternalServerException
@@ -897,7 +793,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceRequest,
   ListTagsForResourceResponse,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -923,7 +819,7 @@ export const registerSubscriptionProvider: API.OperationMethod<
   RegisterSubscriptionProviderRequest,
   RegisterSubscriptionProviderResponse,
   RegisterSubscriptionProviderError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RegisterSubscriptionProviderRequest,
   output: RegisterSubscriptionProviderResponse,
@@ -945,7 +841,7 @@ export const tagResource: API.OperationMethod<
   TagResourceRequest,
   TagResourceResponse,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -970,7 +866,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceRequest,
   UntagResourceResponse,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -992,7 +888,7 @@ export const updateServiceSettings: API.OperationMethod<
   UpdateServiceSettingsRequest,
   UpdateServiceSettingsResponse,
   UpdateServiceSettingsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateServiceSettingsRequest,
   output: UpdateServiceSettingsResponse,

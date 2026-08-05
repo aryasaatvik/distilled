@@ -1,7 +1,6 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as redacted from "effect/Redacted";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -9,7 +8,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region as Rgn } from "../region.ts";
 import { SensitiveString } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "SESv2",
@@ -139,79 +137,79 @@ const rules = T.EndpointResolver((p, _) => {
 export class AccountSuspendedException
   extends /*@__PURE__*/ S.TaggedErrorClass<AccountSuspendedException>()(
     "AccountSuspendedException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class AlreadyExistsException
   extends /*@__PURE__*/ S.TaggedErrorClass<AlreadyExistsException>()(
     "AlreadyExistsException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError, C.withAlreadyExistsError) {}
 export class BadRequestException
   extends /*@__PURE__*/ S.TaggedErrorClass<BadRequestException>()(
     "BadRequestException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class ConcurrentModificationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConcurrentModificationException>()(
     "ConcurrentModificationException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(500),
   ).pipe(C.withServerError) {}
 export class ConflictException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
     "ConflictException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class InternalServiceErrorException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServiceErrorException>()(
     "InternalServiceErrorException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(500),
   ).pipe(C.withServerError) {}
 export class InvalidNextTokenException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidNextTokenException>()(
     "InvalidNextTokenException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class LimitExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<LimitExceededException>()(
     "LimitExceededException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class MailFromDomainNotVerifiedException
   extends /*@__PURE__*/ S.TaggedErrorClass<MailFromDomainNotVerifiedException>()(
     "MailFromDomainNotVerifiedException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class MessageRejected
   extends /*@__PURE__*/ S.TaggedErrorClass<MessageRejected>()(
     "MessageRejected",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class NotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<NotFoundException>()(
     "NotFoundException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class SendingPausedException
   extends /*@__PURE__*/ S.TaggedErrorClass<SendingPausedException>()(
     "SendingPausedException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class TooManyRequestsException
   extends /*@__PURE__*/ S.TaggedErrorClass<TooManyRequestsException>()(
     "TooManyRequestsException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(429),
   ).pipe(C.withThrottlingError) {}
 export type QueryIdentifier = string;
@@ -6073,7 +6071,7 @@ export const batchGetMetricData: API.OperationMethod<
   BatchGetMetricDataRequest,
   BatchGetMetricDataResponse,
   BatchGetMetricDataError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchGetMetricDataRequest,
   output: BatchGetMetricDataResponse,
@@ -6100,7 +6098,7 @@ export const cancelExportJob: API.OperationMethod<
   CancelExportJobRequest,
   CancelExportJobResponse,
   CancelExportJobError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CancelExportJobRequest,
   output: CancelExportJobResponse,
@@ -6129,7 +6127,7 @@ export const createConfigurationSet: API.OperationMethod<
   CreateConfigurationSetRequest,
   CreateConfigurationSetResponse,
   CreateConfigurationSetError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateConfigurationSetRequest,
   output: CreateConfigurationSetResponse,
@@ -6166,7 +6164,7 @@ export const createConfigurationSetEventDestination: API.OperationMethod<
   CreateConfigurationSetEventDestinationRequest,
   CreateConfigurationSetEventDestinationResponse,
   CreateConfigurationSetEventDestinationError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateConfigurationSetEventDestinationRequest,
   output: CreateConfigurationSetEventDestinationResponse,
@@ -6196,7 +6194,7 @@ export const createContact: API.OperationMethod<
   CreateContactRequest,
   CreateContactResponse,
   CreateContactError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateContactRequest,
   output: CreateContactResponse,
@@ -6224,7 +6222,7 @@ export const createContactList: API.OperationMethod<
   CreateContactListRequest,
   CreateContactListResponse,
   CreateContactListError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateContactListRequest,
   output: CreateContactListResponse,
@@ -6259,7 +6257,7 @@ export const createCustomVerificationEmailTemplate: API.OperationMethod<
   CreateCustomVerificationEmailTemplateRequest,
   CreateCustomVerificationEmailTemplateResponse,
   CreateCustomVerificationEmailTemplateError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateCustomVerificationEmailTemplateRequest,
   output: CreateCustomVerificationEmailTemplateResponse,
@@ -6292,7 +6290,7 @@ export const createDedicatedIpPool: API.OperationMethod<
   CreateDedicatedIpPoolRequest,
   CreateDedicatedIpPoolResponse,
   CreateDedicatedIpPoolError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateDedicatedIpPoolRequest,
   output: CreateDedicatedIpPoolResponse,
@@ -6332,7 +6330,7 @@ export const createDeliverabilityTestReport: API.OperationMethod<
   CreateDeliverabilityTestReportRequest,
   CreateDeliverabilityTestReportResponse,
   CreateDeliverabilityTestReportError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateDeliverabilityTestReportRequest,
   output: CreateDeliverabilityTestReportResponse,
@@ -6395,7 +6393,7 @@ export const createEmailIdentity: API.OperationMethod<
   CreateEmailIdentityRequest,
   CreateEmailIdentityResponse,
   CreateEmailIdentityError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateEmailIdentityRequest,
   output: CreateEmailIdentityResponse,
@@ -6437,7 +6435,7 @@ export const createEmailIdentityPolicy: API.OperationMethod<
   CreateEmailIdentityPolicyRequest,
   CreateEmailIdentityPolicyResponse,
   CreateEmailIdentityPolicyError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateEmailIdentityPolicyRequest,
   output: CreateEmailIdentityPolicyResponse,
@@ -6470,7 +6468,7 @@ export const createEmailTemplate: API.OperationMethod<
   CreateEmailTemplateRequest,
   CreateEmailTemplateResponse,
   CreateEmailTemplateError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateEmailTemplateRequest,
   output: CreateEmailTemplateResponse,
@@ -6500,7 +6498,7 @@ export const createExportJob: API.OperationMethod<
   CreateExportJobRequest,
   CreateExportJobResponse,
   CreateExportJobError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateExportJobRequest,
   output: CreateExportJobResponse,
@@ -6527,7 +6525,7 @@ export const createImportJob: API.OperationMethod<
   CreateImportJobRequest,
   CreateImportJobResponse,
   CreateImportJobError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateImportJobRequest,
   output: CreateImportJobResponse,
@@ -6560,7 +6558,7 @@ export const createMultiRegionEndpoint: API.OperationMethod<
   CreateMultiRegionEndpointRequest,
   CreateMultiRegionEndpointResponse,
   CreateMultiRegionEndpointError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateMultiRegionEndpointRequest,
   output: CreateMultiRegionEndpointResponse,
@@ -6597,7 +6595,7 @@ export const createTenant: API.OperationMethod<
   CreateTenantRequest,
   CreateTenantResponse,
   CreateTenantError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateTenantRequest,
   output: CreateTenantResponse,
@@ -6632,7 +6630,7 @@ export const createTenantResourceAssociation: API.OperationMethod<
   CreateTenantResourceAssociationRequest,
   CreateTenantResourceAssociationResponse,
   CreateTenantResourceAssociationError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateTenantResourceAssociationRequest,
   output: CreateTenantResourceAssociationResponse,
@@ -6665,7 +6663,7 @@ export const deleteConfigurationSet: API.OperationMethod<
   DeleteConfigurationSetRequest,
   DeleteConfigurationSetResponse,
   DeleteConfigurationSetError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteConfigurationSetRequest,
   output: DeleteConfigurationSetResponse,
@@ -6697,7 +6695,7 @@ export const deleteConfigurationSetEventDestination: API.OperationMethod<
   DeleteConfigurationSetEventDestinationRequest,
   DeleteConfigurationSetEventDestinationResponse,
   DeleteConfigurationSetEventDestinationError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteConfigurationSetEventDestinationRequest,
   output: DeleteConfigurationSetEventDestinationResponse,
@@ -6719,7 +6717,7 @@ export const deleteContact: API.OperationMethod<
   DeleteContactRequest,
   DeleteContactResponse,
   DeleteContactError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteContactRequest,
   output: DeleteContactResponse,
@@ -6742,7 +6740,7 @@ export const deleteContactList: API.OperationMethod<
   DeleteContactListRequest,
   DeleteContactListResponse,
   DeleteContactListError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteContactListRequest,
   output: DeleteContactListResponse,
@@ -6775,7 +6773,7 @@ export const deleteCustomVerificationEmailTemplate: API.OperationMethod<
   DeleteCustomVerificationEmailTemplateRequest,
   DeleteCustomVerificationEmailTemplateResponse,
   DeleteCustomVerificationEmailTemplateError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteCustomVerificationEmailTemplateRequest,
   output: DeleteCustomVerificationEmailTemplateResponse,
@@ -6798,7 +6796,7 @@ export const deleteDedicatedIpPool: API.OperationMethod<
   DeleteDedicatedIpPoolRequest,
   DeleteDedicatedIpPoolResponse,
   DeleteDedicatedIpPoolError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteDedicatedIpPoolRequest,
   output: DeleteDedicatedIpPoolResponse,
@@ -6827,7 +6825,7 @@ export const deleteEmailIdentity: API.OperationMethod<
   DeleteEmailIdentityRequest,
   DeleteEmailIdentityResponse,
   DeleteEmailIdentityError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteEmailIdentityRequest,
   output: DeleteEmailIdentityResponse,
@@ -6866,7 +6864,7 @@ export const deleteEmailIdentityPolicy: API.OperationMethod<
   DeleteEmailIdentityPolicyRequest,
   DeleteEmailIdentityPolicyResponse,
   DeleteEmailIdentityPolicyError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteEmailIdentityPolicyRequest,
   output: DeleteEmailIdentityPolicyResponse,
@@ -6890,7 +6888,7 @@ export const deleteEmailTemplate: API.OperationMethod<
   DeleteEmailTemplateRequest,
   DeleteEmailTemplateResponse,
   DeleteEmailTemplateError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteEmailTemplateRequest,
   output: DeleteEmailTemplateResponse,
@@ -6916,7 +6914,7 @@ export const deleteMultiRegionEndpoint: API.OperationMethod<
   DeleteMultiRegionEndpointRequest,
   DeleteMultiRegionEndpointResponse,
   DeleteMultiRegionEndpointError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteMultiRegionEndpointRequest,
   output: DeleteMultiRegionEndpointResponse,
@@ -6946,7 +6944,7 @@ export const deleteSuppressedDestination: API.OperationMethod<
   DeleteSuppressedDestinationRequest,
   DeleteSuppressedDestinationResponse,
   DeleteSuppressedDestinationError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteSuppressedDestinationRequest,
   output: DeleteSuppressedDestinationResponse,
@@ -6971,7 +6969,7 @@ export const deleteTenant: API.OperationMethod<
   DeleteTenantRequest,
   DeleteTenantResponse,
   DeleteTenantError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteTenantRequest,
   output: DeleteTenantResponse,
@@ -6997,7 +6995,7 @@ export const deleteTenantResourceAssociation: API.OperationMethod<
   DeleteTenantResourceAssociationRequest,
   DeleteTenantResourceAssociationResponse,
   DeleteTenantResourceAssociationError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteTenantResourceAssociationRequest,
   output: DeleteTenantResourceAssociationResponse,
@@ -7019,7 +7017,7 @@ export const getAccount: API.OperationMethod<
   GetAccountRequest,
   GetAccountResponse,
   GetAccountError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetAccountRequest,
   output: GetAccountResponse,
@@ -7041,7 +7039,7 @@ export const getBlacklistReports: API.OperationMethod<
   GetBlacklistReportsRequest,
   GetBlacklistReportsResponse,
   GetBlacklistReportsError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetBlacklistReportsRequest,
   output: GetBlacklistReportsResponse,
@@ -7070,7 +7068,7 @@ export const getConfigurationSet: API.OperationMethod<
   GetConfigurationSetRequest,
   GetConfigurationSetResponse,
   GetConfigurationSetError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetConfigurationSetRequest,
   output: GetConfigurationSetResponse,
@@ -7098,7 +7096,7 @@ export const getConfigurationSetEventDestinations: API.OperationMethod<
   GetConfigurationSetEventDestinationsRequest,
   GetConfigurationSetEventDestinationsResponse,
   GetConfigurationSetEventDestinationsError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetConfigurationSetEventDestinationsRequest,
   output: GetConfigurationSetEventDestinationsResponse,
@@ -7120,7 +7118,7 @@ export const getContact: API.OperationMethod<
   GetContactRequest,
   GetContactResponse,
   GetContactError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetContactRequest,
   output: GetContactResponse,
@@ -7143,7 +7141,7 @@ export const getContactList: API.OperationMethod<
   GetContactListRequest,
   GetContactListResponse,
   GetContactListError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetContactListRequest,
   output: GetContactListResponse,
@@ -7172,7 +7170,7 @@ export const getCustomVerificationEmailTemplate: API.OperationMethod<
   GetCustomVerificationEmailTemplateRequest,
   GetCustomVerificationEmailTemplateResponse,
   GetCustomVerificationEmailTemplateError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetCustomVerificationEmailTemplateRequest,
   output: GetCustomVerificationEmailTemplateResponse,
@@ -7196,7 +7194,7 @@ export const getDedicatedIp: API.OperationMethod<
   GetDedicatedIpRequest,
   GetDedicatedIpResponse,
   GetDedicatedIpError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetDedicatedIpRequest,
   output: GetDedicatedIpResponse,
@@ -7218,7 +7216,7 @@ export const getDedicatedIpPool: API.OperationMethod<
   GetDedicatedIpPoolRequest,
   GetDedicatedIpPoolResponse,
   GetDedicatedIpPoolError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetDedicatedIpPoolRequest,
   output: GetDedicatedIpPoolResponse,
@@ -7237,27 +7235,13 @@ export type GetDedicatedIpsError =
  * List the dedicated IP addresses that are associated with your Amazon Web Services
  * account.
  */
-export const getDedicatedIps: API.OperationMethod<
+export const getDedicatedIps: API.PaginatedOperationMethod<
   GetDedicatedIpsRequest,
   GetDedicatedIpsResponse,
   GetDedicatedIpsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetDedicatedIpsRequest,
-  ) => stream.Stream<
-    GetDedicatedIpsResponse,
-    GetDedicatedIpsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetDedicatedIpsRequest,
-  ) => stream.Stream<
-    unknown,
-    GetDedicatedIpsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetDedicatedIpsRequest,
   output: GetDedicatedIpsResponse,
   errors: [BadRequestException, NotFoundException, TooManyRequestsException],
@@ -7269,27 +7253,7 @@ export const getDedicatedIps: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "PageSize",
   } as const,
-})) as any as API.OperationMethod<
-  GetDedicatedIpsRequest,
-  GetDedicatedIpsResponse,
-  GetDedicatedIpsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetDedicatedIpsRequest,
-  ) => stream.Stream<
-    GetDedicatedIpsResponse,
-    GetDedicatedIpsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetDedicatedIpsRequest,
-  ) => stream.Stream<
-    unknown,
-    GetDedicatedIpsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetDeliverabilityDashboardOptionsError =
   | BadRequestException
@@ -7310,7 +7274,7 @@ export const getDeliverabilityDashboardOptions: API.OperationMethod<
   GetDeliverabilityDashboardOptionsRequest,
   GetDeliverabilityDashboardOptionsResponse,
   GetDeliverabilityDashboardOptionsError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetDeliverabilityDashboardOptionsRequest,
   output: GetDeliverabilityDashboardOptionsResponse,
@@ -7336,7 +7300,7 @@ export const getDeliverabilityTestReport: API.OperationMethod<
   GetDeliverabilityTestReportRequest,
   GetDeliverabilityTestReportResponse,
   GetDeliverabilityTestReportError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetDeliverabilityTestReportRequest,
   output: GetDeliverabilityTestReportResponse,
@@ -7360,7 +7324,7 @@ export const getDomainDeliverabilityCampaign: API.OperationMethod<
   GetDomainDeliverabilityCampaignRequest,
   GetDomainDeliverabilityCampaignResponse,
   GetDomainDeliverabilityCampaignError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetDomainDeliverabilityCampaignRequest,
   output: GetDomainDeliverabilityCampaignResponse,
@@ -7383,7 +7347,7 @@ export const getDomainStatisticsReport: API.OperationMethod<
   GetDomainStatisticsReportRequest,
   GetDomainStatisticsReportResponse,
   GetDomainStatisticsReportError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetDomainStatisticsReportRequest,
   output: GetDomainStatisticsReportResponse,
@@ -7404,7 +7368,7 @@ export const getEmailAddressInsights: API.OperationMethod<
   GetEmailAddressInsightsRequest,
   GetEmailAddressInsightsResponse,
   GetEmailAddressInsightsError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetEmailAddressInsightsRequest,
   output: GetEmailAddressInsightsResponse,
@@ -7428,7 +7392,7 @@ export const getEmailIdentity: API.OperationMethod<
   GetEmailIdentityRequest,
   GetEmailIdentityResponse,
   GetEmailIdentityError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetEmailIdentityRequest,
   output: GetEmailIdentityResponse,
@@ -7462,7 +7426,7 @@ export const getEmailIdentityPolicies: API.OperationMethod<
   GetEmailIdentityPoliciesRequest,
   GetEmailIdentityPoliciesResponse,
   GetEmailIdentityPoliciesError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetEmailIdentityPoliciesRequest,
   output: GetEmailIdentityPoliciesResponse,
@@ -7487,7 +7451,7 @@ export const getEmailTemplate: API.OperationMethod<
   GetEmailTemplateRequest,
   GetEmailTemplateResponse,
   GetEmailTemplateError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetEmailTemplateRequest,
   output: GetEmailTemplateResponse,
@@ -7509,7 +7473,7 @@ export const getExportJob: API.OperationMethod<
   GetExportJobRequest,
   GetExportJobResponse,
   GetExportJobError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetExportJobRequest,
   output: GetExportJobResponse,
@@ -7531,7 +7495,7 @@ export const getImportJob: API.OperationMethod<
   GetImportJobRequest,
   GetImportJobResponse,
   GetImportJobError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetImportJobRequest,
   output: GetImportJobResponse,
@@ -7556,7 +7520,7 @@ export const getMessageInsights: API.OperationMethod<
   GetMessageInsightsRequest,
   GetMessageInsightsResponse,
   GetMessageInsightsError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetMessageInsightsRequest,
   output: GetMessageInsightsResponse,
@@ -7581,7 +7545,7 @@ export const getMultiRegionEndpoint: API.OperationMethod<
   GetMultiRegionEndpointRequest,
   GetMultiRegionEndpointResponse,
   GetMultiRegionEndpointError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetMultiRegionEndpointRequest,
   output: GetMultiRegionEndpointResponse,
@@ -7610,7 +7574,7 @@ export const getReputationEntity: API.OperationMethod<
   GetReputationEntityRequest,
   GetReputationEntityResponse,
   GetReputationEntityError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetReputationEntityRequest,
   output: GetReputationEntityResponse,
@@ -7635,7 +7599,7 @@ export const getSuppressedDestination: API.OperationMethod<
   GetSuppressedDestinationRequest,
   GetSuppressedDestinationResponse,
   GetSuppressedDestinationError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetSuppressedDestinationRequest,
   output: GetSuppressedDestinationResponse,
@@ -7658,7 +7622,7 @@ export const getTenant: API.OperationMethod<
   GetTenantRequest,
   GetTenantResponse,
   GetTenantError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetTenantRequest,
   output: GetTenantResponse,
@@ -7681,27 +7645,13 @@ export type ListConfigurationSetsError =
  * the configuration set in the headers of the email. When you apply a configuration set to
  * an email, all of the rules in that configuration set are applied to the email.
  */
-export const listConfigurationSets: API.OperationMethod<
+export const listConfigurationSets: API.PaginatedOperationMethod<
   ListConfigurationSetsRequest,
   ListConfigurationSetsResponse,
   ListConfigurationSetsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListConfigurationSetsRequest,
-  ) => stream.Stream<
-    ListConfigurationSetsResponse,
-    ListConfigurationSetsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListConfigurationSetsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListConfigurationSetsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListConfigurationSetsRequest,
   output: ListConfigurationSetsResponse,
   errors: [BadRequestException, TooManyRequestsException],
@@ -7713,27 +7663,7 @@ export const listConfigurationSets: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "PageSize",
   } as const,
-})) as any as API.OperationMethod<
-  ListConfigurationSetsRequest,
-  ListConfigurationSetsResponse,
-  ListConfigurationSetsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListConfigurationSetsRequest,
-  ) => stream.Stream<
-    ListConfigurationSetsResponse,
-    ListConfigurationSetsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListConfigurationSetsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListConfigurationSetsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListContactListsError =
   | BadRequestException
@@ -7745,27 +7675,13 @@ export type ListContactListsError =
  * If your output includes a "NextToken" field with a string value, this indicates there may be additional
  * contacts on the filtered list - regardless of the number of contacts returned.
  */
-export const listContactLists: API.OperationMethod<
+export const listContactLists: API.PaginatedOperationMethod<
   ListContactListsRequest,
   ListContactListsResponse,
   ListContactListsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListContactListsRequest,
-  ) => stream.Stream<
-    ListContactListsResponse,
-    ListContactListsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListContactListsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListContactListsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListContactListsRequest,
   output: ListContactListsResponse,
   errors: [BadRequestException, TooManyRequestsException],
@@ -7777,27 +7693,7 @@ export const listContactLists: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "PageSize",
   } as const,
-})) as any as API.OperationMethod<
-  ListContactListsRequest,
-  ListContactListsResponse,
-  ListContactListsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListContactListsRequest,
-  ) => stream.Stream<
-    ListContactListsResponse,
-    ListContactListsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListContactListsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListContactListsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListContactsError =
   | BadRequestException
@@ -7807,27 +7703,13 @@ export type ListContactsError =
 /**
  * Lists the contacts present in a specific contact list.
  */
-export const listContacts: API.OperationMethod<
+export const listContacts: API.PaginatedOperationMethod<
   ListContactsRequest,
   ListContactsResponse,
   ListContactsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListContactsRequest,
-  ) => stream.Stream<
-    ListContactsResponse,
-    ListContactsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListContactsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListContactsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListContactsRequest,
   output: ListContactsResponse,
   errors: [BadRequestException, NotFoundException, TooManyRequestsException],
@@ -7839,27 +7721,7 @@ export const listContacts: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "PageSize",
   } as const,
-})) as any as API.OperationMethod<
-  ListContactsRequest,
-  ListContactsResponse,
-  ListContactsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListContactsRequest,
-  ) => stream.Stream<
-    ListContactsResponse,
-    ListContactsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListContactsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListContactsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListCustomVerificationEmailTemplatesError =
   | BadRequestException
@@ -7875,27 +7737,13 @@ export type ListCustomVerificationEmailTemplatesError =
  *
  * You can execute this operation no more than once per second.
  */
-export const listCustomVerificationEmailTemplates: API.OperationMethod<
+export const listCustomVerificationEmailTemplates: API.PaginatedOperationMethod<
   ListCustomVerificationEmailTemplatesRequest,
   ListCustomVerificationEmailTemplatesResponse,
   ListCustomVerificationEmailTemplatesError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCustomVerificationEmailTemplatesRequest,
-  ) => stream.Stream<
-    ListCustomVerificationEmailTemplatesResponse,
-    ListCustomVerificationEmailTemplatesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCustomVerificationEmailTemplatesRequest,
-  ) => stream.Stream<
-    unknown,
-    ListCustomVerificationEmailTemplatesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListCustomVerificationEmailTemplatesRequest,
   output: ListCustomVerificationEmailTemplatesResponse,
   errors: [BadRequestException, TooManyRequestsException],
@@ -7907,27 +7755,7 @@ export const listCustomVerificationEmailTemplates: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "PageSize",
   } as const,
-})) as any as API.OperationMethod<
-  ListCustomVerificationEmailTemplatesRequest,
-  ListCustomVerificationEmailTemplatesResponse,
-  ListCustomVerificationEmailTemplatesError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCustomVerificationEmailTemplatesRequest,
-  ) => stream.Stream<
-    ListCustomVerificationEmailTemplatesResponse,
-    ListCustomVerificationEmailTemplatesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCustomVerificationEmailTemplatesRequest,
-  ) => stream.Stream<
-    unknown,
-    ListCustomVerificationEmailTemplatesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListDedicatedIpPoolsError =
   | BadRequestException
@@ -7937,27 +7765,13 @@ export type ListDedicatedIpPoolsError =
  * List all of the dedicated IP pools that exist in your Amazon Web Services account in the current
  * Region.
  */
-export const listDedicatedIpPools: API.OperationMethod<
+export const listDedicatedIpPools: API.PaginatedOperationMethod<
   ListDedicatedIpPoolsRequest,
   ListDedicatedIpPoolsResponse,
   ListDedicatedIpPoolsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDedicatedIpPoolsRequest,
-  ) => stream.Stream<
-    ListDedicatedIpPoolsResponse,
-    ListDedicatedIpPoolsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDedicatedIpPoolsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListDedicatedIpPoolsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListDedicatedIpPoolsRequest,
   output: ListDedicatedIpPoolsResponse,
   errors: [BadRequestException, TooManyRequestsException],
@@ -7969,27 +7783,7 @@ export const listDedicatedIpPools: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "PageSize",
   } as const,
-})) as any as API.OperationMethod<
-  ListDedicatedIpPoolsRequest,
-  ListDedicatedIpPoolsResponse,
-  ListDedicatedIpPoolsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDedicatedIpPoolsRequest,
-  ) => stream.Stream<
-    ListDedicatedIpPoolsResponse,
-    ListDedicatedIpPoolsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDedicatedIpPoolsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListDedicatedIpPoolsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListDeliverabilityTestReportsError =
   | BadRequestException
@@ -8001,27 +7795,13 @@ export type ListDeliverabilityTestReportsError =
  * predictive inbox placement tests that are complete, you can use the `GetDeliverabilityTestReport`
  * operation to view the results.
  */
-export const listDeliverabilityTestReports: API.OperationMethod<
+export const listDeliverabilityTestReports: API.PaginatedOperationMethod<
   ListDeliverabilityTestReportsRequest,
   ListDeliverabilityTestReportsResponse,
   ListDeliverabilityTestReportsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDeliverabilityTestReportsRequest,
-  ) => stream.Stream<
-    ListDeliverabilityTestReportsResponse,
-    ListDeliverabilityTestReportsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDeliverabilityTestReportsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListDeliverabilityTestReportsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListDeliverabilityTestReportsRequest,
   output: ListDeliverabilityTestReportsResponse,
   errors: [BadRequestException, NotFoundException, TooManyRequestsException],
@@ -8033,27 +7813,7 @@ export const listDeliverabilityTestReports: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "PageSize",
   } as const,
-})) as any as API.OperationMethod<
-  ListDeliverabilityTestReportsRequest,
-  ListDeliverabilityTestReportsResponse,
-  ListDeliverabilityTestReportsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDeliverabilityTestReportsRequest,
-  ) => stream.Stream<
-    ListDeliverabilityTestReportsResponse,
-    ListDeliverabilityTestReportsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDeliverabilityTestReportsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListDeliverabilityTestReportsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListDomainDeliverabilityCampaignsError =
   | BadRequestException
@@ -8065,27 +7825,13 @@ export type ListDomainDeliverabilityCampaignsError =
  * email during a specified time range. This data is available for a domain only if you
  * enabled the Deliverability dashboard for the domain.
  */
-export const listDomainDeliverabilityCampaigns: API.OperationMethod<
+export const listDomainDeliverabilityCampaigns: API.PaginatedOperationMethod<
   ListDomainDeliverabilityCampaignsRequest,
   ListDomainDeliverabilityCampaignsResponse,
   ListDomainDeliverabilityCampaignsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDomainDeliverabilityCampaignsRequest,
-  ) => stream.Stream<
-    ListDomainDeliverabilityCampaignsResponse,
-    ListDomainDeliverabilityCampaignsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDomainDeliverabilityCampaignsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListDomainDeliverabilityCampaignsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListDomainDeliverabilityCampaignsRequest,
   output: ListDomainDeliverabilityCampaignsResponse,
   errors: [BadRequestException, NotFoundException, TooManyRequestsException],
@@ -8097,27 +7843,7 @@ export const listDomainDeliverabilityCampaigns: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "PageSize",
   } as const,
-})) as any as API.OperationMethod<
-  ListDomainDeliverabilityCampaignsRequest,
-  ListDomainDeliverabilityCampaignsResponse,
-  ListDomainDeliverabilityCampaignsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDomainDeliverabilityCampaignsRequest,
-  ) => stream.Stream<
-    ListDomainDeliverabilityCampaignsResponse,
-    ListDomainDeliverabilityCampaignsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDomainDeliverabilityCampaignsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListDomainDeliverabilityCampaignsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListEmailIdentitiesError =
   | BadRequestException
@@ -8129,27 +7855,13 @@ export type ListEmailIdentitiesError =
  * identities that are verified as well as those that aren't. This operation returns
  * identities that are associated with Amazon SES and Amazon Pinpoint.
  */
-export const listEmailIdentities: API.OperationMethod<
+export const listEmailIdentities: API.PaginatedOperationMethod<
   ListEmailIdentitiesRequest,
   ListEmailIdentitiesResponse,
   ListEmailIdentitiesError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListEmailIdentitiesRequest,
-  ) => stream.Stream<
-    ListEmailIdentitiesResponse,
-    ListEmailIdentitiesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListEmailIdentitiesRequest,
-  ) => stream.Stream<
-    unknown,
-    ListEmailIdentitiesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListEmailIdentitiesRequest,
   output: ListEmailIdentitiesResponse,
   errors: [BadRequestException, TooManyRequestsException],
@@ -8161,27 +7873,7 @@ export const listEmailIdentities: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "PageSize",
   } as const,
-})) as any as API.OperationMethod<
-  ListEmailIdentitiesRequest,
-  ListEmailIdentitiesResponse,
-  ListEmailIdentitiesError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListEmailIdentitiesRequest,
-  ) => stream.Stream<
-    ListEmailIdentitiesResponse,
-    ListEmailIdentitiesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListEmailIdentitiesRequest,
-  ) => stream.Stream<
-    unknown,
-    ListEmailIdentitiesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListEmailTemplatesError =
   | BadRequestException
@@ -8193,27 +7885,13 @@ export type ListEmailTemplatesError =
  *
  * You can execute this operation no more than once per second.
  */
-export const listEmailTemplates: API.OperationMethod<
+export const listEmailTemplates: API.PaginatedOperationMethod<
   ListEmailTemplatesRequest,
   ListEmailTemplatesResponse,
   ListEmailTemplatesError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListEmailTemplatesRequest,
-  ) => stream.Stream<
-    ListEmailTemplatesResponse,
-    ListEmailTemplatesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListEmailTemplatesRequest,
-  ) => stream.Stream<
-    unknown,
-    ListEmailTemplatesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListEmailTemplatesRequest,
   output: ListEmailTemplatesResponse,
   errors: [BadRequestException, TooManyRequestsException],
@@ -8225,27 +7903,7 @@ export const listEmailTemplates: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "PageSize",
   } as const,
-})) as any as API.OperationMethod<
-  ListEmailTemplatesRequest,
-  ListEmailTemplatesResponse,
-  ListEmailTemplatesError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListEmailTemplatesRequest,
-  ) => stream.Stream<
-    ListEmailTemplatesResponse,
-    ListEmailTemplatesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListEmailTemplatesRequest,
-  ) => stream.Stream<
-    unknown,
-    ListEmailTemplatesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListExportJobsError =
   | BadRequestException
@@ -8254,27 +7912,13 @@ export type ListExportJobsError =
 /**
  * Lists all of the export jobs.
  */
-export const listExportJobs: API.OperationMethod<
+export const listExportJobs: API.PaginatedOperationMethod<
   ListExportJobsRequest,
   ListExportJobsResponse,
   ListExportJobsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListExportJobsRequest,
-  ) => stream.Stream<
-    ListExportJobsResponse,
-    ListExportJobsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListExportJobsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListExportJobsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListExportJobsRequest,
   output: ListExportJobsResponse,
   errors: [BadRequestException, TooManyRequestsException],
@@ -8286,27 +7930,7 @@ export const listExportJobs: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "PageSize",
   } as const,
-})) as any as API.OperationMethod<
-  ListExportJobsRequest,
-  ListExportJobsResponse,
-  ListExportJobsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListExportJobsRequest,
-  ) => stream.Stream<
-    ListExportJobsResponse,
-    ListExportJobsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListExportJobsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListExportJobsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListImportJobsError =
   | BadRequestException
@@ -8315,27 +7939,13 @@ export type ListImportJobsError =
 /**
  * Lists all of the import jobs.
  */
-export const listImportJobs: API.OperationMethod<
+export const listImportJobs: API.PaginatedOperationMethod<
   ListImportJobsRequest,
   ListImportJobsResponse,
   ListImportJobsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListImportJobsRequest,
-  ) => stream.Stream<
-    ListImportJobsResponse,
-    ListImportJobsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListImportJobsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListImportJobsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListImportJobsRequest,
   output: ListImportJobsResponse,
   errors: [BadRequestException, TooManyRequestsException],
@@ -8347,27 +7957,7 @@ export const listImportJobs: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "PageSize",
   } as const,
-})) as any as API.OperationMethod<
-  ListImportJobsRequest,
-  ListImportJobsResponse,
-  ListImportJobsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListImportJobsRequest,
-  ) => stream.Stream<
-    ListImportJobsResponse,
-    ListImportJobsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListImportJobsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListImportJobsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListMultiRegionEndpointsError =
   | BadRequestException
@@ -8379,27 +7969,13 @@ export type ListMultiRegionEndpointsError =
  * Only multi-region endpoints (global-endpoints) whose primary region is the AWS-Region
  * where operation is executed will be listed.
  */
-export const listMultiRegionEndpoints: API.OperationMethod<
+export const listMultiRegionEndpoints: API.PaginatedOperationMethod<
   ListMultiRegionEndpointsRequest,
   ListMultiRegionEndpointsResponse,
   ListMultiRegionEndpointsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListMultiRegionEndpointsRequest,
-  ) => stream.Stream<
-    ListMultiRegionEndpointsResponse,
-    ListMultiRegionEndpointsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListMultiRegionEndpointsRequest,
-  ) => stream.Stream<
-    MultiRegionEndpoint,
-    ListMultiRegionEndpointsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  MultiRegionEndpoint
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListMultiRegionEndpointsRequest,
   output: ListMultiRegionEndpointsResponse,
   errors: [BadRequestException, TooManyRequestsException],
@@ -8412,27 +7988,7 @@ export const listMultiRegionEndpoints: API.OperationMethod<
     items: "MultiRegionEndpoints",
     pageSize: "PageSize",
   } as const,
-})) as any as API.OperationMethod<
-  ListMultiRegionEndpointsRequest,
-  ListMultiRegionEndpointsResponse,
-  ListMultiRegionEndpointsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListMultiRegionEndpointsRequest,
-  ) => stream.Stream<
-    ListMultiRegionEndpointsResponse,
-    ListMultiRegionEndpointsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListMultiRegionEndpointsRequest,
-  ) => stream.Stream<
-    MultiRegionEndpoint,
-    ListMultiRegionEndpointsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListRecommendationsError =
   | BadRequestException
@@ -8444,27 +8000,13 @@ export type ListRecommendationsError =
  *
  * You can execute this operation no more than once per second.
  */
-export const listRecommendations: API.OperationMethod<
+export const listRecommendations: API.PaginatedOperationMethod<
   ListRecommendationsRequest,
   ListRecommendationsResponse,
   ListRecommendationsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListRecommendationsRequest,
-  ) => stream.Stream<
-    ListRecommendationsResponse,
-    ListRecommendationsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListRecommendationsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListRecommendationsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListRecommendationsRequest,
   output: ListRecommendationsResponse,
   errors: [BadRequestException, NotFoundException, TooManyRequestsException],
@@ -8476,27 +8018,7 @@ export const listRecommendations: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "PageSize",
   } as const,
-})) as any as API.OperationMethod<
-  ListRecommendationsRequest,
-  ListRecommendationsResponse,
-  ListRecommendationsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListRecommendationsRequest,
-  ) => stream.Stream<
-    ListRecommendationsResponse,
-    ListRecommendationsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListRecommendationsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListRecommendationsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListReputationEntitiesError =
   | BadRequestException
@@ -8511,27 +8033,13 @@ export type ListReputationEntitiesError =
  * tracking and management capabilities. Use this operation to get an overview of
  * all entities and their current reputation status.
  */
-export const listReputationEntities: API.OperationMethod<
+export const listReputationEntities: API.PaginatedOperationMethod<
   ListReputationEntitiesRequest,
   ListReputationEntitiesResponse,
   ListReputationEntitiesError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListReputationEntitiesRequest,
-  ) => stream.Stream<
-    ListReputationEntitiesResponse,
-    ListReputationEntitiesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListReputationEntitiesRequest,
-  ) => stream.Stream<
-    ReputationEntity,
-    ListReputationEntitiesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ReputationEntity
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListReputationEntitiesRequest,
   output: ListReputationEntitiesResponse,
   errors: [BadRequestException, TooManyRequestsException],
@@ -8544,27 +8052,7 @@ export const listReputationEntities: API.OperationMethod<
     items: "ReputationEntities",
     pageSize: "PageSize",
   } as const,
-})) as any as API.OperationMethod<
-  ListReputationEntitiesRequest,
-  ListReputationEntitiesResponse,
-  ListReputationEntitiesError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListReputationEntitiesRequest,
-  ) => stream.Stream<
-    ListReputationEntitiesResponse,
-    ListReputationEntitiesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListReputationEntitiesRequest,
-  ) => stream.Stream<
-    ReputationEntity,
-    ListReputationEntitiesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListResourceTenantsError =
   | BadRequestException
@@ -8578,27 +8066,13 @@ export type ListResourceTenantsError =
  * resource. This is useful for understanding which tenants are currently using a particular
  * resource such as an email identity, configuration set, or email template.
  */
-export const listResourceTenants: API.OperationMethod<
+export const listResourceTenants: API.PaginatedOperationMethod<
   ListResourceTenantsRequest,
   ListResourceTenantsResponse,
   ListResourceTenantsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListResourceTenantsRequest,
-  ) => stream.Stream<
-    ListResourceTenantsResponse,
-    ListResourceTenantsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListResourceTenantsRequest,
-  ) => stream.Stream<
-    ResourceTenantMetadata,
-    ListResourceTenantsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ResourceTenantMetadata
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListResourceTenantsRequest,
   output: ListResourceTenantsResponse,
   errors: [BadRequestException, NotFoundException, TooManyRequestsException],
@@ -8611,27 +8085,7 @@ export const listResourceTenants: API.OperationMethod<
     items: "ResourceTenants",
     pageSize: "PageSize",
   } as const,
-})) as any as API.OperationMethod<
-  ListResourceTenantsRequest,
-  ListResourceTenantsResponse,
-  ListResourceTenantsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListResourceTenantsRequest,
-  ) => stream.Stream<
-    ListResourceTenantsResponse,
-    ListResourceTenantsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListResourceTenantsRequest,
-  ) => stream.Stream<
-    ResourceTenantMetadata,
-    ListResourceTenantsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListSuppressedDestinationsError =
   | BadRequestException
@@ -8645,27 +8099,13 @@ export type ListSuppressedDestinationsError =
  * `TenantName` parameter. If you omit `TenantName`, the operation
  * targets the account-level suppression list.
  */
-export const listSuppressedDestinations: API.OperationMethod<
+export const listSuppressedDestinations: API.PaginatedOperationMethod<
   ListSuppressedDestinationsRequest,
   ListSuppressedDestinationsResponse,
   ListSuppressedDestinationsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSuppressedDestinationsRequest,
-  ) => stream.Stream<
-    ListSuppressedDestinationsResponse,
-    ListSuppressedDestinationsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSuppressedDestinationsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListSuppressedDestinationsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListSuppressedDestinationsRequest,
   output: ListSuppressedDestinationsResponse,
   errors: [
@@ -8682,27 +8122,7 @@ export const listSuppressedDestinations: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "PageSize",
   } as const,
-})) as any as API.OperationMethod<
-  ListSuppressedDestinationsRequest,
-  ListSuppressedDestinationsResponse,
-  ListSuppressedDestinationsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSuppressedDestinationsRequest,
-  ) => stream.Stream<
-    ListSuppressedDestinationsResponse,
-    ListSuppressedDestinationsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSuppressedDestinationsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListSuppressedDestinationsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsForResourceError =
   | BadRequestException
@@ -8721,7 +8141,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceRequest,
   ListTagsForResourceResponse,
   ListTagsForResourceError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -8743,27 +8163,13 @@ export type ListTenantResourcesError =
  * or email templates) that are associated with the specified tenant. You can optionally
  * filter the results by resource type.
  */
-export const listTenantResources: API.OperationMethod<
+export const listTenantResources: API.PaginatedOperationMethod<
   ListTenantResourcesRequest,
   ListTenantResourcesResponse,
   ListTenantResourcesError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTenantResourcesRequest,
-  ) => stream.Stream<
-    ListTenantResourcesResponse,
-    ListTenantResourcesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTenantResourcesRequest,
-  ) => stream.Stream<
-    TenantResource,
-    ListTenantResourcesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  TenantResource
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListTenantResourcesRequest,
   output: ListTenantResourcesResponse,
   errors: [BadRequestException, NotFoundException, TooManyRequestsException],
@@ -8776,27 +8182,7 @@ export const listTenantResources: API.OperationMethod<
     items: "TenantResources",
     pageSize: "PageSize",
   } as const,
-})) as any as API.OperationMethod<
-  ListTenantResourcesRequest,
-  ListTenantResourcesResponse,
-  ListTenantResourcesError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTenantResourcesRequest,
-  ) => stream.Stream<
-    ListTenantResourcesResponse,
-    ListTenantResourcesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTenantResourcesRequest,
-  ) => stream.Stream<
-    TenantResource,
-    ListTenantResourcesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTenantsError =
   | BadRequestException
@@ -8808,27 +8194,13 @@ export type ListTenantsError =
  * This operation returns basic information about each tenant,
  * such as tenant name, ID, ARN, and creation timestamp.
  */
-export const listTenants: API.OperationMethod<
+export const listTenants: API.PaginatedOperationMethod<
   ListTenantsRequest,
   ListTenantsResponse,
   ListTenantsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTenantsRequest,
-  ) => stream.Stream<
-    ListTenantsResponse,
-    ListTenantsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTenantsRequest,
-  ) => stream.Stream<
-    TenantInfo,
-    ListTenantsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  TenantInfo
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListTenantsRequest,
   output: ListTenantsResponse,
   errors: [BadRequestException, TooManyRequestsException],
@@ -8841,27 +8213,7 @@ export const listTenants: API.OperationMethod<
     items: "Tenants",
     pageSize: "PageSize",
   } as const,
-})) as any as API.OperationMethod<
-  ListTenantsRequest,
-  ListTenantsResponse,
-  ListTenantsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTenantsRequest,
-  ) => stream.Stream<
-    ListTenantsResponse,
-    ListTenantsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTenantsRequest,
-  ) => stream.Stream<
-    TenantInfo,
-    ListTenantsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type PutAccountDedicatedIpWarmupAttributesError =
   | BadRequestException
@@ -8874,7 +8226,7 @@ export const putAccountDedicatedIpWarmupAttributes: API.OperationMethod<
   PutAccountDedicatedIpWarmupAttributesRequest,
   PutAccountDedicatedIpWarmupAttributesResponse,
   PutAccountDedicatedIpWarmupAttributesError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutAccountDedicatedIpWarmupAttributesRequest,
   output: PutAccountDedicatedIpWarmupAttributesResponse,
@@ -8896,7 +8248,7 @@ export const putAccountDetails: API.OperationMethod<
   PutAccountDetailsRequest,
   PutAccountDetailsResponse,
   PutAccountDetailsError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutAccountDetailsRequest,
   output: PutAccountDetailsResponse,
@@ -8917,7 +8269,7 @@ export const putAccountSendingAttributes: API.OperationMethod<
   PutAccountSendingAttributesRequest,
   PutAccountSendingAttributesResponse,
   PutAccountSendingAttributesError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutAccountSendingAttributesRequest,
   output: PutAccountSendingAttributesResponse,
@@ -8938,7 +8290,7 @@ export const putAccountSuppressionAttributes: API.OperationMethod<
   PutAccountSuppressionAttributesRequest,
   PutAccountSuppressionAttributesResponse,
   PutAccountSuppressionAttributesError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutAccountSuppressionAttributesRequest,
   output: PutAccountSuppressionAttributesResponse,
@@ -8961,7 +8313,7 @@ export const putAccountVdmAttributes: API.OperationMethod<
   PutAccountVdmAttributesRequest,
   PutAccountVdmAttributesResponse,
   PutAccountVdmAttributesError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutAccountVdmAttributesRequest,
   output: PutAccountVdmAttributesResponse,
@@ -8985,7 +8337,7 @@ export const putConfigurationSetArchivingOptions: API.OperationMethod<
   PutConfigurationSetArchivingOptionsRequest,
   PutConfigurationSetArchivingOptionsResponse,
   PutConfigurationSetArchivingOptionsError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutConfigurationSetArchivingOptionsRequest,
   output: PutConfigurationSetArchivingOptionsResponse,
@@ -9008,7 +8360,7 @@ export const putConfigurationSetDeliveryOptions: API.OperationMethod<
   PutConfigurationSetDeliveryOptionsRequest,
   PutConfigurationSetDeliveryOptionsResponse,
   PutConfigurationSetDeliveryOptionsError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutConfigurationSetDeliveryOptionsRequest,
   output: PutConfigurationSetDeliveryOptionsResponse,
@@ -9031,7 +8383,7 @@ export const putConfigurationSetReputationOptions: API.OperationMethod<
   PutConfigurationSetReputationOptionsRequest,
   PutConfigurationSetReputationOptionsResponse,
   PutConfigurationSetReputationOptionsError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutConfigurationSetReputationOptionsRequest,
   output: PutConfigurationSetReputationOptionsResponse,
@@ -9054,7 +8406,7 @@ export const putConfigurationSetSendingOptions: API.OperationMethod<
   PutConfigurationSetSendingOptionsRequest,
   PutConfigurationSetSendingOptionsResponse,
   PutConfigurationSetSendingOptionsError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutConfigurationSetSendingOptionsRequest,
   output: PutConfigurationSetSendingOptionsResponse,
@@ -9079,7 +8431,7 @@ export const putConfigurationSetSuppressionOptions: API.OperationMethod<
   PutConfigurationSetSuppressionOptionsRequest,
   PutConfigurationSetSuppressionOptionsResponse,
   PutConfigurationSetSuppressionOptionsError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutConfigurationSetSuppressionOptionsRequest,
   output: PutConfigurationSetSuppressionOptionsResponse,
@@ -9102,7 +8454,7 @@ export const putConfigurationSetTrackingOptions: API.OperationMethod<
   PutConfigurationSetTrackingOptionsRequest,
   PutConfigurationSetTrackingOptionsResponse,
   PutConfigurationSetTrackingOptionsError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutConfigurationSetTrackingOptionsRequest,
   output: PutConfigurationSetTrackingOptionsResponse,
@@ -9126,7 +8478,7 @@ export const putConfigurationSetVdmOptions: API.OperationMethod<
   PutConfigurationSetVdmOptionsRequest,
   PutConfigurationSetVdmOptionsResponse,
   PutConfigurationSetVdmOptionsError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutConfigurationSetVdmOptionsRequest,
   output: PutConfigurationSetVdmOptionsResponse,
@@ -9154,7 +8506,7 @@ export const putDedicatedIpInPool: API.OperationMethod<
   PutDedicatedIpInPoolRequest,
   PutDedicatedIpInPoolResponse,
   PutDedicatedIpInPoolError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutDedicatedIpInPoolRequest,
   output: PutDedicatedIpInPoolResponse,
@@ -9179,7 +8531,7 @@ export const putDedicatedIpPoolScalingAttributes: API.OperationMethod<
   PutDedicatedIpPoolScalingAttributesRequest,
   PutDedicatedIpPoolScalingAttributesResponse,
   PutDedicatedIpPoolScalingAttributesError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutDedicatedIpPoolScalingAttributesRequest,
   output: PutDedicatedIpPoolScalingAttributesResponse,
@@ -9206,7 +8558,7 @@ export const putDedicatedIpWarmupAttributes: API.OperationMethod<
   PutDedicatedIpWarmupAttributesRequest,
   PutDedicatedIpWarmupAttributesResponse,
   PutDedicatedIpWarmupAttributesError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutDedicatedIpWarmupAttributesRequest,
   output: PutDedicatedIpWarmupAttributesResponse,
@@ -9236,7 +8588,7 @@ export const putDeliverabilityDashboardOption: API.OperationMethod<
   PutDeliverabilityDashboardOptionRequest,
   PutDeliverabilityDashboardOptionResponse,
   PutDeliverabilityDashboardOptionError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutDeliverabilityDashboardOptionRequest,
   output: PutDeliverabilityDashboardOptionResponse,
@@ -9264,7 +8616,7 @@ export const putEmailIdentityConfigurationSetAttributes: API.OperationMethod<
   PutEmailIdentityConfigurationSetAttributesRequest,
   PutEmailIdentityConfigurationSetAttributesResponse,
   PutEmailIdentityConfigurationSetAttributesError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutEmailIdentityConfigurationSetAttributesRequest,
   output: PutEmailIdentityConfigurationSetAttributesResponse,
@@ -9286,7 +8638,7 @@ export const putEmailIdentityDkimAttributes: API.OperationMethod<
   PutEmailIdentityDkimAttributesRequest,
   PutEmailIdentityDkimAttributesResponse,
   PutEmailIdentityDkimAttributesError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutEmailIdentityDkimAttributesRequest,
   output: PutEmailIdentityDkimAttributesResponse,
@@ -9322,7 +8674,7 @@ export const putEmailIdentityDkimSigningAttributes: API.OperationMethod<
   PutEmailIdentityDkimSigningAttributesRequest,
   PutEmailIdentityDkimSigningAttributesResponse,
   PutEmailIdentityDkimSigningAttributesError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutEmailIdentityDkimSigningAttributesRequest,
   output: PutEmailIdentityDkimSigningAttributesResponse,
@@ -9355,7 +8707,7 @@ export const putEmailIdentityFeedbackAttributes: API.OperationMethod<
   PutEmailIdentityFeedbackAttributesRequest,
   PutEmailIdentityFeedbackAttributesResponse,
   PutEmailIdentityFeedbackAttributesError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutEmailIdentityFeedbackAttributesRequest,
   output: PutEmailIdentityFeedbackAttributesResponse,
@@ -9378,7 +8730,7 @@ export const putEmailIdentityMailFromAttributes: API.OperationMethod<
   PutEmailIdentityMailFromAttributesRequest,
   PutEmailIdentityMailFromAttributesResponse,
   PutEmailIdentityMailFromAttributesError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutEmailIdentityMailFromAttributesRequest,
   output: PutEmailIdentityMailFromAttributesResponse,
@@ -9403,7 +8755,7 @@ export const putSuppressedDestination: API.OperationMethod<
   PutSuppressedDestinationRequest,
   PutSuppressedDestinationResponse,
   PutSuppressedDestinationError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutSuppressedDestinationRequest,
   output: PutSuppressedDestinationResponse,
@@ -9430,7 +8782,7 @@ export const putTenantSuppressionAttributes: API.OperationMethod<
   PutTenantSuppressionAttributesRequest,
   PutTenantSuppressionAttributesResponse,
   PutTenantSuppressionAttributesError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutTenantSuppressionAttributesRequest,
   output: PutTenantSuppressionAttributesResponse,
@@ -9457,7 +8809,7 @@ export const sendBulkEmail: API.OperationMethod<
   SendBulkEmailRequest,
   SendBulkEmailResponse,
   SendBulkEmailError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: SendBulkEmailRequest,
   output: SendBulkEmailResponse,
@@ -9502,7 +8854,7 @@ export const sendCustomVerificationEmail: API.OperationMethod<
   SendCustomVerificationEmailRequest,
   SendCustomVerificationEmailResponse,
   SendCustomVerificationEmailError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: SendCustomVerificationEmailRequest,
   output: SendCustomVerificationEmailResponse,
@@ -9552,7 +8904,7 @@ export const sendEmail: API.OperationMethod<
   SendEmailRequest,
   SendEmailResponse,
   SendEmailError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: SendEmailRequest,
   output: SendEmailResponse,
@@ -9593,7 +8945,7 @@ export const tagResource: API.OperationMethod<
   TagResourceRequest,
   TagResourceResponse,
   TagResourceError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -9623,7 +8975,7 @@ export const testRenderEmailTemplate: API.OperationMethod<
   TestRenderEmailTemplateRequest,
   TestRenderEmailTemplateResponse,
   TestRenderEmailTemplateError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TestRenderEmailTemplateRequest,
   output: TestRenderEmailTemplateResponse,
@@ -9646,7 +8998,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceRequest,
   UntagResourceResponse,
   UntagResourceError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -9678,7 +9030,7 @@ export const updateConfigurationSetEventDestination: API.OperationMethod<
   UpdateConfigurationSetEventDestinationRequest,
   UpdateConfigurationSetEventDestinationResponse,
   UpdateConfigurationSetEventDestinationError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateConfigurationSetEventDestinationRequest,
   output: UpdateConfigurationSetEventDestinationResponse,
@@ -9705,7 +9057,7 @@ export const updateContact: API.OperationMethod<
   UpdateContactRequest,
   UpdateContactResponse,
   UpdateContactError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateContactRequest,
   output: UpdateContactResponse,
@@ -9733,7 +9085,7 @@ export const updateContactList: API.OperationMethod<
   UpdateContactListRequest,
   UpdateContactListResponse,
   UpdateContactListError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateContactListRequest,
   output: UpdateContactListResponse,
@@ -9766,7 +9118,7 @@ export const updateCustomVerificationEmailTemplate: API.OperationMethod<
   UpdateCustomVerificationEmailTemplateRequest,
   UpdateCustomVerificationEmailTemplateResponse,
   UpdateCustomVerificationEmailTemplateError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateCustomVerificationEmailTemplateRequest,
   output: UpdateCustomVerificationEmailTemplateResponse,
@@ -9800,7 +9152,7 @@ export const updateEmailIdentityPolicy: API.OperationMethod<
   UpdateEmailIdentityPolicyRequest,
   UpdateEmailIdentityPolicyResponse,
   UpdateEmailIdentityPolicyError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateEmailIdentityPolicyRequest,
   output: UpdateEmailIdentityPolicyResponse,
@@ -9826,7 +9178,7 @@ export const updateEmailTemplate: API.OperationMethod<
   UpdateEmailTemplateRequest,
   UpdateEmailTemplateResponse,
   UpdateEmailTemplateError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateEmailTemplateRequest,
   output: UpdateEmailTemplateResponse,
@@ -9857,7 +9209,7 @@ export const updateReputationEntityCustomerManagedStatus: API.OperationMethod<
   UpdateReputationEntityCustomerManagedStatusRequest,
   UpdateReputationEntityCustomerManagedStatusResponse,
   UpdateReputationEntityCustomerManagedStatusError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateReputationEntityCustomerManagedStatusRequest,
   output: UpdateReputationEntityCustomerManagedStatusResponse,
@@ -9884,7 +9236,7 @@ export const updateReputationEntityPolicy: API.OperationMethod<
   UpdateReputationEntityPolicyRequest,
   UpdateReputationEntityPolicyResponse,
   UpdateReputationEntityPolicyError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateReputationEntityPolicyRequest,
   output: UpdateReputationEntityPolicyResponse,

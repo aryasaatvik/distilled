@@ -1,7 +1,6 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as redacted from "effect/Redacted";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -9,7 +8,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 import { SensitiveString } from "../sensitive.ts";
 const ns = T.XmlNamespace(
   "http://directoryservicedata.amazonaws.com/doc/2023-05-31/",
@@ -94,7 +92,7 @@ export class AccessDeniedException
   extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
     "AccessDeniedException",
     {
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       Reason: S.optional(
         S.suspend(() => AccessDeniedReason).annotate({
           identifier: "AccessDeniedReason",
@@ -106,14 +104,14 @@ export class AccessDeniedException
 export class ConflictException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
     "ConflictException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class DirectoryUnavailableException
   extends /*@__PURE__*/ S.TaggedErrorClass<DirectoryUnavailableException>()(
     "DirectoryUnavailableException",
     {
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       Reason: S.optional(
         S.suspend(() => DirectoryUnavailableReason).annotate({
           identifier: "DirectoryUnavailableReason",
@@ -125,20 +123,20 @@ export class DirectoryUnavailableException
 export class InternalServerException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
     "InternalServerException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(T.HttpError(500), T.Retryable()),
   ).pipe(C.withServerError, C.withRetryableError) {}
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class ThrottlingException
   extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
     "ThrottlingException",
     {
-      Message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       RetryAfterSeconds: S.optional(S.Number).pipe(T.HttpHeader("Retry-After")),
     },
     T.all(T.HttpError(429), T.Retryable({ throttling: true })),
@@ -147,7 +145,7 @@ export class ValidationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
     "ValidationException",
     {
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       Reason: S.optional(
         S.suspend(() => ValidationExceptionReason).annotate({
           identifier: "ValidationExceptionReason",
@@ -1068,7 +1066,7 @@ export const addGroupMember: API.OperationMethod<
   AddGroupMemberRequest,
   AddGroupMemberResult,
   AddGroupMemberError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AddGroupMemberRequest,
   output: AddGroupMemberResult,
@@ -1101,7 +1099,7 @@ export const createGroup: API.OperationMethod<
   CreateGroupRequest,
   CreateGroupResult,
   CreateGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateGroupRequest,
   output: CreateGroupResult,
@@ -1133,7 +1131,7 @@ export const createUser: API.OperationMethod<
   CreateUserRequest,
   CreateUserResult,
   CreateUserError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateUserRequest,
   output: CreateUserResult,
@@ -1166,7 +1164,7 @@ export const deleteGroup: API.OperationMethod<
   DeleteGroupRequest,
   DeleteGroupResult,
   DeleteGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteGroupRequest,
   output: DeleteGroupResult,
@@ -1200,7 +1198,7 @@ export const deleteUser: API.OperationMethod<
   DeleteUserRequest,
   DeleteUserResult,
   DeleteUserError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteUserRequest,
   output: DeleteUserResult,
@@ -1233,7 +1231,7 @@ export const describeGroup: API.OperationMethod<
   DescribeGroupRequest,
   DescribeGroupResult,
   DescribeGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeGroupRequest,
   output: DescribeGroupResult,
@@ -1265,7 +1263,7 @@ export const describeUser: API.OperationMethod<
   DescribeUserRequest,
   DescribeUserResult,
   DescribeUserError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeUserRequest,
   output: DescribeUserResult,
@@ -1300,7 +1298,7 @@ export const disableUser: API.OperationMethod<
   DisableUserRequest,
   DisableUserResult,
   DisableUserError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DisableUserRequest,
   output: DisableUserResult,
@@ -1337,27 +1335,13 @@ export type ListGroupMembersError =
  * You can also specify a maximum number of return results with the `MaxResults`
  * parameter.
  */
-export const listGroupMembers: API.OperationMethod<
+export const listGroupMembers: API.PaginatedOperationMethod<
   ListGroupMembersRequest,
   ListGroupMembersResult,
   ListGroupMembersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListGroupMembersRequest,
-  ) => stream.Stream<
-    ListGroupMembersResult,
-    ListGroupMembersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListGroupMembersRequest,
-  ) => stream.Stream<
-    Member,
-    ListGroupMembersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Member
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListGroupMembersRequest,
   output: ListGroupMembersResult,
   errors: [
@@ -1377,27 +1361,7 @@ export const listGroupMembers: API.OperationMethod<
     items: "Members",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListGroupMembersRequest,
-  ListGroupMembersResult,
-  ListGroupMembersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListGroupMembersRequest,
-  ) => stream.Stream<
-    ListGroupMembersResult,
-    ListGroupMembersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListGroupMembersRequest,
-  ) => stream.Stream<
-    Member,
-    ListGroupMembersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListGroupsError =
   | AccessDeniedException
@@ -1417,27 +1381,13 @@ export type ListGroupsError =
  * You can also specify a maximum number of return results with the `MaxResults`
  * parameter.
  */
-export const listGroups: API.OperationMethod<
+export const listGroups: API.PaginatedOperationMethod<
   ListGroupsRequest,
   ListGroupsResult,
   ListGroupsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListGroupsRequest,
-  ) => stream.Stream<
-    ListGroupsResult,
-    ListGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListGroupsRequest,
-  ) => stream.Stream<
-    GroupSummary,
-    ListGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  GroupSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListGroupsRequest,
   output: ListGroupsResult,
   errors: [
@@ -1456,27 +1406,7 @@ export const listGroups: API.OperationMethod<
     items: "Groups",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListGroupsRequest,
-  ListGroupsResult,
-  ListGroupsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListGroupsRequest,
-  ) => stream.Stream<
-    ListGroupsResult,
-    ListGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListGroupsRequest,
-  ) => stream.Stream<
-    GroupSummary,
-    ListGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListGroupsForMemberError =
   | AccessDeniedException
@@ -1497,27 +1427,13 @@ export type ListGroupsForMemberError =
  * You can also specify a maximum number of return results with the `MaxResults`
  * parameter.
  */
-export const listGroupsForMember: API.OperationMethod<
+export const listGroupsForMember: API.PaginatedOperationMethod<
   ListGroupsForMemberRequest,
   ListGroupsForMemberResult,
   ListGroupsForMemberError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListGroupsForMemberRequest,
-  ) => stream.Stream<
-    ListGroupsForMemberResult,
-    ListGroupsForMemberError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListGroupsForMemberRequest,
-  ) => stream.Stream<
-    GroupSummary,
-    ListGroupsForMemberError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  GroupSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListGroupsForMemberRequest,
   output: ListGroupsForMemberResult,
   errors: [
@@ -1537,27 +1453,7 @@ export const listGroupsForMember: API.OperationMethod<
     items: "Groups",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListGroupsForMemberRequest,
-  ListGroupsForMemberResult,
-  ListGroupsForMemberError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListGroupsForMemberRequest,
-  ) => stream.Stream<
-    ListGroupsForMemberResult,
-    ListGroupsForMemberError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListGroupsForMemberRequest,
-  ) => stream.Stream<
-    GroupSummary,
-    ListGroupsForMemberError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListUsersError =
   | AccessDeniedException
@@ -1577,27 +1473,13 @@ export type ListUsersError =
  * You can also specify a maximum number of return results with the `MaxResults`
  * parameter.
  */
-export const listUsers: API.OperationMethod<
+export const listUsers: API.PaginatedOperationMethod<
   ListUsersRequest,
   ListUsersResult,
   ListUsersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListUsersRequest,
-  ) => stream.Stream<
-    ListUsersResult,
-    ListUsersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListUsersRequest,
-  ) => stream.Stream<
-    UserSummary,
-    ListUsersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  UserSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListUsersRequest,
   output: ListUsersResult,
   errors: [
@@ -1616,27 +1498,7 @@ export const listUsers: API.OperationMethod<
     items: "Users",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListUsersRequest,
-  ListUsersResult,
-  ListUsersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListUsersRequest,
-  ) => stream.Stream<
-    ListUsersResult,
-    ListUsersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListUsersRequest,
-  ) => stream.Stream<
-    UserSummary,
-    ListUsersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type RemoveGroupMemberError =
   | AccessDeniedException
@@ -1654,7 +1516,7 @@ export const removeGroupMember: API.OperationMethod<
   RemoveGroupMemberRequest,
   RemoveGroupMemberResult,
   RemoveGroupMemberError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RemoveGroupMemberRequest,
   output: RemoveGroupMemberResult,
@@ -1692,27 +1554,13 @@ export type SearchGroupsError =
  * You can also specify a maximum number of return results with the `MaxResults`
  * parameter.
  */
-export const searchGroups: API.OperationMethod<
+export const searchGroups: API.PaginatedOperationMethod<
   SearchGroupsRequest,
   SearchGroupsResult,
   SearchGroupsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: SearchGroupsRequest,
-  ) => stream.Stream<
-    SearchGroupsResult,
-    SearchGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: SearchGroupsRequest,
-  ) => stream.Stream<
-    Group,
-    SearchGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Group
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: SearchGroupsRequest,
   output: SearchGroupsResult,
   errors: [
@@ -1731,27 +1579,7 @@ export const searchGroups: API.OperationMethod<
     items: "Groups",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  SearchGroupsRequest,
-  SearchGroupsResult,
-  SearchGroupsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: SearchGroupsRequest,
-  ) => stream.Stream<
-    SearchGroupsResult,
-    SearchGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: SearchGroupsRequest,
-  ) => stream.Stream<
-    Group,
-    SearchGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type SearchUsersError =
   | AccessDeniedException
@@ -1773,27 +1601,13 @@ export type SearchUsersError =
  * You can also specify a maximum number of return results with the `MaxResults`
  * parameter.
  */
-export const searchUsers: API.OperationMethod<
+export const searchUsers: API.PaginatedOperationMethod<
   SearchUsersRequest,
   SearchUsersResult,
   SearchUsersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: SearchUsersRequest,
-  ) => stream.Stream<
-    SearchUsersResult,
-    SearchUsersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: SearchUsersRequest,
-  ) => stream.Stream<
-    User,
-    SearchUsersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  User
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: SearchUsersRequest,
   output: SearchUsersResult,
   errors: [
@@ -1812,27 +1626,7 @@ export const searchUsers: API.OperationMethod<
     items: "Users",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  SearchUsersRequest,
-  SearchUsersResult,
-  SearchUsersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: SearchUsersRequest,
-  ) => stream.Stream<
-    SearchUsersResult,
-    SearchUsersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: SearchUsersRequest,
-  ) => stream.Stream<
-    User,
-    SearchUsersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type UpdateGroupError =
   | AccessDeniedException
@@ -1850,7 +1644,7 @@ export const updateGroup: API.OperationMethod<
   UpdateGroupRequest,
   UpdateGroupResult,
   UpdateGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateGroupRequest,
   output: UpdateGroupResult,
@@ -1884,7 +1678,7 @@ export const updateUser: API.OperationMethod<
   UpdateUserRequest,
   UpdateUserResult,
   UpdateUserError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateUserRequest,
   output: UpdateUserResult,

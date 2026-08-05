@@ -1,6 +1,5 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -8,7 +7,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 const svc = T.AwsApiService({
   sdkId: "FreeTier",
   serviceShapeName: "AWSFreeTierService",
@@ -121,31 +119,31 @@ const rules = T.EndpointResolver((p, _) => {
 export class AccessDeniedException
   extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
     "AccessDeniedException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(403),
   ).pipe(C.withAuthError) {}
 export class InternalServerException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
     "InternalServerException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(500),
   ).pipe(C.withServerError) {}
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class ThrottlingException
   extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
     "ThrottlingException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(429),
   ).pipe(C.withThrottlingError) {}
 export class ValidationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
     "ValidationException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export type ActivityId = string;
@@ -477,7 +475,7 @@ export const getAccountActivity: API.OperationMethod<
   GetAccountActivityRequest,
   GetAccountActivityResponse,
   GetAccountActivityError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetAccountActivityRequest,
   output: GetAccountActivityResponse,
@@ -506,7 +504,7 @@ export const getAccountPlanState: API.OperationMethod<
   GetAccountPlanStateRequest,
   GetAccountPlanStateResponse,
   GetAccountPlanStateError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetAccountPlanStateRequest,
   output: GetAccountPlanStateResponse,
@@ -530,27 +528,13 @@ export type GetFreeTierUsageError =
 /**
  * Returns a list of all Free Tier usage objects that match your filters.
  */
-export const getFreeTierUsage: API.OperationMethod<
+export const getFreeTierUsage: API.PaginatedOperationMethod<
   GetFreeTierUsageRequest,
   GetFreeTierUsageResponse,
   GetFreeTierUsageError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetFreeTierUsageRequest,
-  ) => stream.Stream<
-    GetFreeTierUsageResponse,
-    GetFreeTierUsageError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetFreeTierUsageRequest,
-  ) => stream.Stream<
-    FreeTierUsage,
-    GetFreeTierUsageError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  FreeTierUsage
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetFreeTierUsageRequest,
   output: GetFreeTierUsageResponse,
   errors: [InternalServerException, ThrottlingException, ValidationException],
@@ -563,27 +547,7 @@ export const getFreeTierUsage: API.OperationMethod<
     items: "freeTierUsages",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetFreeTierUsageRequest,
-  GetFreeTierUsageResponse,
-  GetFreeTierUsageError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetFreeTierUsageRequest,
-  ) => stream.Stream<
-    GetFreeTierUsageResponse,
-    GetFreeTierUsageError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetFreeTierUsageRequest,
-  ) => stream.Stream<
-    FreeTierUsage,
-    GetFreeTierUsageError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListAccountActivitiesError =
   | InternalServerException
@@ -593,27 +557,13 @@ export type ListAccountActivitiesError =
 /**
  * Returns a list of activities that are available. This operation supports pagination and filtering by status.
  */
-export const listAccountActivities: API.OperationMethod<
+export const listAccountActivities: API.PaginatedOperationMethod<
   ListAccountActivitiesRequest,
   ListAccountActivitiesResponse,
   ListAccountActivitiesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAccountActivitiesRequest,
-  ) => stream.Stream<
-    ListAccountActivitiesResponse,
-    ListAccountActivitiesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAccountActivitiesRequest,
-  ) => stream.Stream<
-    ActivitySummary,
-    ListAccountActivitiesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ActivitySummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListAccountActivitiesRequest,
   output: ListAccountActivitiesResponse,
   errors: [InternalServerException, ThrottlingException, ValidationException],
@@ -626,27 +576,7 @@ export const listAccountActivities: API.OperationMethod<
     items: "activities",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListAccountActivitiesRequest,
-  ListAccountActivitiesResponse,
-  ListAccountActivitiesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAccountActivitiesRequest,
-  ) => stream.Stream<
-    ListAccountActivitiesResponse,
-    ListAccountActivitiesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAccountActivitiesRequest,
-  ) => stream.Stream<
-    ActivitySummary,
-    ListAccountActivitiesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type UpgradeAccountPlanError =
   | AccessDeniedException
@@ -662,7 +592,7 @@ export const upgradeAccountPlan: API.OperationMethod<
   UpgradeAccountPlanRequest,
   UpgradeAccountPlanResponse,
   UpgradeAccountPlanError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpgradeAccountPlanRequest,
   output: UpgradeAccountPlanResponse,

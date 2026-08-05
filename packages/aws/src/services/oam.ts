@@ -1,6 +1,5 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -8,7 +7,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 const svc = T.AwsApiService({ sdkId: "OAM", serviceShapeName: "oamservice" });
 const auth = T.AwsAuthSigv4({ name: "oam" });
 const ver = T.ServiceVersion("2022-06-10");
@@ -86,7 +84,7 @@ export class ConflictException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
     "ConflictException",
     {
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       amznErrorType: S.optional(S.String).pipe(
         T.HttpHeader("x-amzn-ErrorType"),
       ),
@@ -97,7 +95,7 @@ export class InternalServiceFault
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServiceFault>()(
     "InternalServiceFault",
     {
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       amznErrorType: S.optional(S.String).pipe(
         T.HttpHeader("x-amzn-ErrorType"),
       ),
@@ -108,7 +106,7 @@ export class InvalidParameterException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidParameterException>()(
     "InvalidParameterException",
     {
-      message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       amznErrorType: S.optional(S.String).pipe(
         T.HttpHeader("x-amzn-ErrorType"),
       ),
@@ -119,7 +117,7 @@ export class MissingRequiredParameterException
   extends /*@__PURE__*/ S.TaggedErrorClass<MissingRequiredParameterException>()(
     "MissingRequiredParameterException",
     {
-      message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       amznErrorType: S.optional(S.String).pipe(
         T.HttpHeader("x-amzn-ErrorType"),
       ),
@@ -130,7 +128,7 @@ export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
     {
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       amznErrorType: S.optional(S.String).pipe(
         T.HttpHeader("x-amzn-ErrorType"),
       ),
@@ -141,7 +139,7 @@ export class ServiceQuotaExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
     "ServiceQuotaExceededException",
     {
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       amznErrorType: S.optional(S.String).pipe(
         T.HttpHeader("x-amzn-ErrorType"),
       ),
@@ -151,18 +149,18 @@ export class ServiceQuotaExceededException
 export class TooManyRequestsException
   extends /*@__PURE__*/ S.TaggedErrorClass<TooManyRequestsException>()(
     "TooManyRequestsException",
-    {},
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ).pipe(C.withThrottlingError, C.withRetryableError) {}
 export class TooManyTagsException
   extends /*@__PURE__*/ S.TaggedErrorClass<TooManyTagsException>()(
     "TooManyTagsException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class ValidationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
     "ValidationException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export type LabelTemplate = string;
@@ -785,7 +783,7 @@ export const createLink: API.OperationMethod<
   CreateLinkInput,
   CreateLinkOutput,
   CreateLinkError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateLinkInput,
   output: CreateLinkOutput,
@@ -821,7 +819,7 @@ export const createSink: API.OperationMethod<
   CreateSinkInput,
   CreateSinkOutput,
   CreateSinkError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateSinkInput,
   output: CreateSinkOutput,
@@ -852,7 +850,7 @@ export const deleteLink: API.OperationMethod<
   DeleteLinkInput,
   DeleteLinkOutput,
   DeleteLinkError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteLinkInput,
   output: DeleteLinkOutput,
@@ -883,7 +881,7 @@ export const deleteSink: API.OperationMethod<
   DeleteSinkInput,
   DeleteSinkOutput,
   DeleteSinkError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteSinkInput,
   output: DeleteSinkOutput,
@@ -916,7 +914,7 @@ export const getLink: API.OperationMethod<
   GetLinkInput,
   GetLinkOutput,
   GetLinkError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetLinkInput,
   output: GetLinkOutput,
@@ -948,7 +946,7 @@ export const getSink: API.OperationMethod<
   GetSinkInput,
   GetSinkOutput,
   GetSinkError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetSinkInput,
   output: GetSinkOutput,
@@ -978,7 +976,7 @@ export const getSinkPolicy: API.OperationMethod<
   GetSinkPolicyInput,
   GetSinkPolicyOutput,
   GetSinkPolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetSinkPolicyInput,
   output: GetSinkPolicyOutput,
@@ -1008,27 +1006,13 @@ export type ListAttachedLinksError =
  *
  * To find a list of links for one source account, use ListLinks.
  */
-export const listAttachedLinks: API.OperationMethod<
+export const listAttachedLinks: API.PaginatedOperationMethod<
   ListAttachedLinksInput,
   ListAttachedLinksOutput,
   ListAttachedLinksError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAttachedLinksInput,
-  ) => stream.Stream<
-    ListAttachedLinksOutput,
-    ListAttachedLinksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAttachedLinksInput,
-  ) => stream.Stream<
-    ListAttachedLinksItem,
-    ListAttachedLinksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ListAttachedLinksItem
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListAttachedLinksInput,
   output: ListAttachedLinksOutput,
   errors: [
@@ -1047,27 +1031,7 @@ export const listAttachedLinks: API.OperationMethod<
     items: "Items",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListAttachedLinksInput,
-  ListAttachedLinksOutput,
-  ListAttachedLinksError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAttachedLinksInput,
-  ) => stream.Stream<
-    ListAttachedLinksOutput,
-    ListAttachedLinksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAttachedLinksInput,
-  ) => stream.Stream<
-    ListAttachedLinksItem,
-    ListAttachedLinksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListLinksError =
   | InternalServiceFault
@@ -1080,27 +1044,13 @@ export type ListLinksError =
  *
  * To find a list of links for one monitoring account sink, use ListAttachedLinks from within the monitoring account.
  */
-export const listLinks: API.OperationMethod<
+export const listLinks: API.PaginatedOperationMethod<
   ListLinksInput,
   ListLinksOutput,
   ListLinksError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListLinksInput,
-  ) => stream.Stream<
-    ListLinksOutput,
-    ListLinksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListLinksInput,
-  ) => stream.Stream<
-    ListLinksItem,
-    ListLinksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ListLinksItem
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListLinksInput,
   output: ListLinksOutput,
   errors: [
@@ -1118,27 +1068,7 @@ export const listLinks: API.OperationMethod<
     items: "Items",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListLinksInput,
-  ListLinksOutput,
-  ListLinksError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListLinksInput,
-  ) => stream.Stream<
-    ListLinksOutput,
-    ListLinksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListLinksInput,
-  ) => stream.Stream<
-    ListLinksItem,
-    ListLinksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListSinksError =
   | InternalServiceFault
@@ -1149,27 +1079,13 @@ export type ListSinksError =
 /**
  * Use this operation in a monitoring account to return the list of sinks created in that account.
  */
-export const listSinks: API.OperationMethod<
+export const listSinks: API.PaginatedOperationMethod<
   ListSinksInput,
   ListSinksOutput,
   ListSinksError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSinksInput,
-  ) => stream.Stream<
-    ListSinksOutput,
-    ListSinksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSinksInput,
-  ) => stream.Stream<
-    ListSinksItem,
-    ListSinksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ListSinksItem
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListSinksInput,
   output: ListSinksOutput,
   errors: [
@@ -1187,27 +1103,7 @@ export const listSinks: API.OperationMethod<
     items: "Items",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListSinksInput,
-  ListSinksOutput,
-  ListSinksError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSinksInput,
-  ) => stream.Stream<
-    ListSinksOutput,
-    ListSinksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSinksInput,
-  ) => stream.Stream<
-    ListSinksItem,
-    ListSinksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsForResourceError =
   | ResourceNotFoundException
@@ -1221,7 +1117,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceInput,
   ListTagsForResourceOutput,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceInput,
   output: ListTagsForResourceOutput,
@@ -1265,7 +1161,7 @@ export const putSinkPolicy: API.OperationMethod<
   PutSinkPolicyInput,
   PutSinkPolicyOutput,
   PutSinkPolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutSinkPolicyInput,
   output: PutSinkPolicyOutput,
@@ -1304,7 +1200,7 @@ export const tagResource: API.OperationMethod<
   TagResourceInput,
   TagResourceOutput,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceInput,
   output: TagResourceOutput,
@@ -1333,7 +1229,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceInput,
   UntagResourceOutput,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceInput,
   output: UntagResourceOutput,
@@ -1365,7 +1261,7 @@ export const updateLink: API.OperationMethod<
   UpdateLinkInput,
   UpdateLinkOutput,
   UpdateLinkError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateLinkInput,
   output: UpdateLinkOutput,

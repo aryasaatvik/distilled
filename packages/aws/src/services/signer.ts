@@ -1,6 +1,5 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -8,7 +7,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 const svc = T.AwsApiService({
   sdkId: "signer",
   serviceShapeName: "WallabyService",
@@ -88,49 +86,73 @@ const rules = T.EndpointResolver((p, _) => {
 export class AccessDeniedException
   extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
     "AccessDeniedException",
-    { message: S.optional(S.String), code: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      code: S.optional(S.String),
+    },
     T.HttpError(403),
   ).pipe(C.withAuthError) {}
 export class BadRequestException
   extends /*@__PURE__*/ S.TaggedErrorClass<BadRequestException>()(
     "BadRequestException",
-    { message: S.optional(S.String), code: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      code: S.optional(S.String),
+    },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class ConflictException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
     "ConflictException",
-    { message: S.optional(S.String), code: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      code: S.optional(S.String),
+    },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class InternalServiceErrorException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServiceErrorException>()(
     "InternalServiceErrorException",
-    { message: S.optional(S.String), code: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      code: S.optional(S.String),
+    },
     T.HttpError(500),
   ).pipe(C.withServerError) {}
 export class NotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<NotFoundException>()(
     "NotFoundException",
-    { message: S.optional(S.String), code: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      code: S.optional(S.String),
+    },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { message: S.optional(S.String), code: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      code: S.optional(S.String),
+    },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class ServiceLimitExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceLimitExceededException>()(
     "ServiceLimitExceededException",
-    { message: S.optional(S.String), code: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      code: S.optional(S.String),
+    },
     T.HttpError(402),
   ).pipe(C.withQuotaError) {}
 export class SigningProfileAlreadyExists
   extends /*@__PURE__*/ S.TaggedErrorClass<SigningProfileAlreadyExists>()(
     "SigningProfileAlreadyExists",
-    { message: S.optional(S.String), code: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      code: S.optional(S.String),
+    },
     T.SyntheticError({
       from: "ValidationException",
       message: { includes: "already exists" },
@@ -139,19 +161,28 @@ export class SigningProfileAlreadyExists
 export class ThrottlingException
   extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
     "ThrottlingException",
-    { message: S.optional(S.String), code: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      code: S.optional(S.String),
+    },
     T.HttpError(429),
   ).pipe(C.withThrottlingError) {}
 export class TooManyRequestsException
   extends /*@__PURE__*/ S.TaggedErrorClass<TooManyRequestsException>()(
     "TooManyRequestsException",
-    { message: S.optional(S.String), code: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      code: S.optional(S.String),
+    },
     T.HttpError(429),
   ).pipe(C.withThrottlingError) {}
 export class ValidationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
     "ValidationException",
-    { message: S.optional(S.String), code: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      code: S.optional(S.String),
+    },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export type ProfileName = string;
@@ -1250,7 +1281,7 @@ export const addProfilePermission: API.OperationMethod<
   AddProfilePermissionRequest,
   AddProfilePermissionResponse,
   AddProfilePermissionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AddProfilePermissionRequest,
   output: AddProfilePermissionResponse,
@@ -1283,7 +1314,7 @@ export const cancelSigningProfile: API.OperationMethod<
   CancelSigningProfileRequest,
   CancelSigningProfileResponse,
   CancelSigningProfileError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CancelSigningProfileRequest,
   output: CancelSigningProfileResponse,
@@ -1313,7 +1344,7 @@ export const describeSigningJob: API.OperationMethod<
   DescribeSigningJobRequest,
   DescribeSigningJobResponse,
   DescribeSigningJobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeSigningJobRequest,
   output: DescribeSigningJobResponse,
@@ -1342,7 +1373,7 @@ export const getRevocationStatus: API.OperationMethod<
   GetRevocationStatusRequest,
   GetRevocationStatusResponse,
   GetRevocationStatusError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetRevocationStatusRequest,
   output: GetRevocationStatusResponse,
@@ -1371,7 +1402,7 @@ export const getSigningPlatform: API.OperationMethod<
   GetSigningPlatformRequest,
   GetSigningPlatformResponse,
   GetSigningPlatformError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetSigningPlatformRequest,
   output: GetSigningPlatformResponse,
@@ -1399,7 +1430,7 @@ export const getSigningProfile: API.OperationMethod<
   GetSigningProfileRequest,
   GetSigningProfileResponse,
   GetSigningProfileError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetSigningProfileRequest,
   output: GetSigningProfileResponse,
@@ -1428,7 +1459,7 @@ export const listProfilePermissions: API.OperationMethod<
   ListProfilePermissionsRequest,
   ListProfilePermissionsResponse,
   ListProfilePermissionsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListProfilePermissionsRequest,
   output: ListProfilePermissionsResponse,
@@ -1459,27 +1490,13 @@ export type ListSigningJobsError =
  * parameter and with new values that Signer returns in the `nextToken`
  * parameter until all of your signing jobs have been returned.
  */
-export const listSigningJobs: API.OperationMethod<
+export const listSigningJobs: API.PaginatedOperationMethod<
   ListSigningJobsRequest,
   ListSigningJobsResponse,
   ListSigningJobsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSigningJobsRequest,
-  ) => stream.Stream<
-    ListSigningJobsResponse,
-    ListSigningJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSigningJobsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListSigningJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListSigningJobsRequest,
   output: ListSigningJobsResponse,
   errors: [
@@ -1496,27 +1513,7 @@ export const listSigningJobs: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListSigningJobsRequest,
-  ListSigningJobsResponse,
-  ListSigningJobsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSigningJobsRequest,
-  ) => stream.Stream<
-    ListSigningJobsResponse,
-    ListSigningJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSigningJobsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListSigningJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListSigningPlatformsError =
   | AccessDeniedException
@@ -1533,27 +1530,13 @@ export type ListSigningPlatformsError =
  * `nextToken` parameter until all of your signing jobs have been
  * returned.
  */
-export const listSigningPlatforms: API.OperationMethod<
+export const listSigningPlatforms: API.PaginatedOperationMethod<
   ListSigningPlatformsRequest,
   ListSigningPlatformsResponse,
   ListSigningPlatformsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSigningPlatformsRequest,
-  ) => stream.Stream<
-    ListSigningPlatformsResponse,
-    ListSigningPlatformsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSigningPlatformsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListSigningPlatformsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListSigningPlatformsRequest,
   output: ListSigningPlatformsResponse,
   errors: [
@@ -1570,27 +1553,7 @@ export const listSigningPlatforms: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListSigningPlatformsRequest,
-  ListSigningPlatformsResponse,
-  ListSigningPlatformsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSigningPlatformsRequest,
-  ) => stream.Stream<
-    ListSigningPlatformsResponse,
-    ListSigningPlatformsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSigningPlatformsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListSigningPlatformsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListSigningProfilesError =
   | AccessDeniedException
@@ -1607,27 +1570,13 @@ export type ListSigningProfilesError =
  * new values that Signer returns in the `nextToken` parameter until all of
  * your signing jobs have been returned.
  */
-export const listSigningProfiles: API.OperationMethod<
+export const listSigningProfiles: API.PaginatedOperationMethod<
   ListSigningProfilesRequest,
   ListSigningProfilesResponse,
   ListSigningProfilesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSigningProfilesRequest,
-  ) => stream.Stream<
-    ListSigningProfilesResponse,
-    ListSigningProfilesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSigningProfilesRequest,
-  ) => stream.Stream<
-    unknown,
-    ListSigningProfilesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListSigningProfilesRequest,
   output: ListSigningProfilesResponse,
   errors: [
@@ -1643,27 +1592,7 @@ export const listSigningProfiles: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListSigningProfilesRequest,
-  ListSigningProfilesResponse,
-  ListSigningProfilesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSigningProfilesRequest,
-  ) => stream.Stream<
-    ListSigningProfilesResponse,
-    ListSigningProfilesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSigningProfilesRequest,
-  ) => stream.Stream<
-    unknown,
-    ListSigningProfilesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsForResourceError =
   | BadRequestException
@@ -1678,7 +1607,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceRequest,
   ListTagsForResourceResponse,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -1709,7 +1638,7 @@ export const putSigningProfile: API.OperationMethod<
   PutSigningProfileRequest,
   PutSigningProfileResponse,
   PutSigningProfileError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutSigningProfileRequest,
   output: PutSigningProfileResponse,
@@ -1741,7 +1670,7 @@ export const removeProfilePermission: API.OperationMethod<
   RemoveProfilePermissionRequest,
   RemoveProfilePermissionResponse,
   RemoveProfilePermissionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RemoveProfilePermissionRequest,
   output: RemoveProfilePermissionResponse,
@@ -1773,7 +1702,7 @@ export const revokeSignature: API.OperationMethod<
   RevokeSignatureRequest,
   RevokeSignatureResponse,
   RevokeSignatureError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RevokeSignatureRequest,
   output: RevokeSignatureResponse,
@@ -1807,7 +1736,7 @@ export const revokeSigningProfile: API.OperationMethod<
   RevokeSigningProfileRequest,
   RevokeSigningProfileResponse,
   RevokeSigningProfileError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RevokeSigningProfileRequest,
   output: RevokeSigningProfileResponse,
@@ -1837,7 +1766,7 @@ export const signPayload: API.OperationMethod<
   SignPayloadRequest,
   SignPayloadResponse,
   SignPayloadError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: SignPayloadRequest,
   output: SignPayloadResponse,
@@ -1889,7 +1818,7 @@ export const startSigningJob: API.OperationMethod<
   StartSigningJobRequest,
   StartSigningJobResponse,
   StartSigningJobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartSigningJobRequest,
   output: StartSigningJobResponse,
@@ -1922,7 +1851,7 @@ export const tagResource: API.OperationMethod<
   TagResourceRequest,
   TagResourceResponse,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -1951,7 +1880,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceRequest,
   UntagResourceResponse,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,

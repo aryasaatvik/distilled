@@ -1,7 +1,6 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as redacted from "effect/Redacted";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -9,7 +8,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 import { SensitiveString } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "forecast",
@@ -90,37 +88,37 @@ const rules = T.EndpointResolver((p, _) => {
 export class InvalidInputException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidInputException>()(
     "InvalidInputException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class InvalidNextTokenException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidNextTokenException>()(
     "InvalidNextTokenException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class LimitExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<LimitExceededException>()(
     "LimitExceededException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class ResourceAlreadyExistsException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceAlreadyExistsException>()(
     "ResourceAlreadyExistsException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(403),
   ).pipe(C.withAuthError, C.withAlreadyExistsError) {}
 export class ResourceInUseException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceInUseException>()(
     "ResourceInUseException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export type Name = string;
@@ -3164,7 +3162,7 @@ export const createAutoPredictor: API.OperationMethod<
   CreateAutoPredictorRequest,
   CreateAutoPredictorResponse,
   CreateAutoPredictorError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateAutoPredictorRequest,
   output: CreateAutoPredictorResponse,
@@ -3227,7 +3225,7 @@ export const createDataset: API.OperationMethod<
   CreateDatasetRequest,
   CreateDatasetResponse,
   CreateDatasetError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateDatasetRequest,
   output: CreateDatasetResponse,
@@ -3265,7 +3263,7 @@ export const createDatasetGroup: API.OperationMethod<
   CreateDatasetGroupRequest,
   CreateDatasetGroupResponse,
   CreateDatasetGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateDatasetGroupRequest,
   output: CreateDatasetGroupResponse,
@@ -3316,7 +3314,7 @@ export const createDatasetImportJob: API.OperationMethod<
   CreateDatasetImportJobRequest,
   CreateDatasetImportJobResponse,
   CreateDatasetImportJobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateDatasetImportJobRequest,
   output: CreateDatasetImportJobResponse,
@@ -3425,7 +3423,7 @@ export const createExplainability: API.OperationMethod<
   CreateExplainabilityRequest,
   CreateExplainabilityResponse,
   CreateExplainabilityError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateExplainabilityRequest,
   output: CreateExplainabilityResponse,
@@ -3463,7 +3461,7 @@ export const createExplainabilityExport: API.OperationMethod<
   CreateExplainabilityExportRequest,
   CreateExplainabilityExportResponse,
   CreateExplainabilityExportError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateExplainabilityExportRequest,
   output: CreateExplainabilityExportResponse,
@@ -3515,7 +3513,7 @@ export const createForecast: API.OperationMethod<
   CreateForecastRequest,
   CreateForecastResponse,
   CreateForecastError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateForecastRequest,
   output: CreateForecastResponse,
@@ -3562,7 +3560,7 @@ export const createForecastExportJob: API.OperationMethod<
   CreateForecastExportJobRequest,
   CreateForecastExportJobResponse,
   CreateForecastExportJobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateForecastExportJobRequest,
   output: CreateForecastExportJobResponse,
@@ -3593,7 +3591,7 @@ export const createMonitor: API.OperationMethod<
   CreateMonitorRequest,
   CreateMonitorResponse,
   CreateMonitorError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateMonitorRequest,
   output: CreateMonitorResponse,
@@ -3674,7 +3672,7 @@ export const createPredictor: API.OperationMethod<
   CreatePredictorRequest,
   CreatePredictorResponse,
   CreatePredictorError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreatePredictorRequest,
   output: CreatePredictorResponse,
@@ -3719,7 +3717,7 @@ export const createPredictorBacktestExportJob: API.OperationMethod<
   CreatePredictorBacktestExportJobRequest,
   CreatePredictorBacktestExportJobResponse,
   CreatePredictorBacktestExportJobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreatePredictorBacktestExportJobRequest,
   output: CreatePredictorBacktestExportJobResponse,
@@ -3765,7 +3763,7 @@ export const createWhatIfAnalysis: API.OperationMethod<
   CreateWhatIfAnalysisRequest,
   CreateWhatIfAnalysisResponse,
   CreateWhatIfAnalysisError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateWhatIfAnalysisRequest,
   output: CreateWhatIfAnalysisResponse,
@@ -3796,7 +3794,7 @@ export const createWhatIfForecast: API.OperationMethod<
   CreateWhatIfForecastRequest,
   CreateWhatIfForecastResponse,
   CreateWhatIfForecastError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateWhatIfForecastRequest,
   output: CreateWhatIfForecastResponse,
@@ -3844,7 +3842,7 @@ export const createWhatIfForecastExport: API.OperationMethod<
   CreateWhatIfForecastExportRequest,
   CreateWhatIfForecastExportResponse,
   CreateWhatIfForecastExportError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateWhatIfForecastExportRequest,
   output: CreateWhatIfForecastExportResponse,
@@ -3878,7 +3876,7 @@ export const deleteDataset: API.OperationMethod<
   DeleteDatasetRequest,
   DeleteDatasetResponse,
   DeleteDatasetError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteDatasetRequest,
   output: DeleteDatasetResponse,
@@ -3908,7 +3906,7 @@ export const deleteDatasetGroup: API.OperationMethod<
   DeleteDatasetGroupRequest,
   DeleteDatasetGroupResponse,
   DeleteDatasetGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteDatasetGroupRequest,
   output: DeleteDatasetGroupResponse,
@@ -3937,7 +3935,7 @@ export const deleteDatasetImportJob: API.OperationMethod<
   DeleteDatasetImportJobRequest,
   DeleteDatasetImportJobResponse,
   DeleteDatasetImportJobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteDatasetImportJobRequest,
   output: DeleteDatasetImportJobResponse,
@@ -3966,7 +3964,7 @@ export const deleteExplainability: API.OperationMethod<
   DeleteExplainabilityRequest,
   DeleteExplainabilityResponse,
   DeleteExplainabilityError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteExplainabilityRequest,
   output: DeleteExplainabilityResponse,
@@ -3992,7 +3990,7 @@ export const deleteExplainabilityExport: API.OperationMethod<
   DeleteExplainabilityExportRequest,
   DeleteExplainabilityExportResponse,
   DeleteExplainabilityExportError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteExplainabilityExportRequest,
   output: DeleteExplainabilityExportResponse,
@@ -4023,7 +4021,7 @@ export const deleteForecast: API.OperationMethod<
   DeleteForecastRequest,
   DeleteForecastResponse,
   DeleteForecastError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteForecastRequest,
   output: DeleteForecastResponse,
@@ -4051,7 +4049,7 @@ export const deleteForecastExportJob: API.OperationMethod<
   DeleteForecastExportJobRequest,
   DeleteForecastExportJobResponse,
   DeleteForecastExportJobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteForecastExportJobRequest,
   output: DeleteForecastExportJobResponse,
@@ -4077,7 +4075,7 @@ export const deleteMonitor: API.OperationMethod<
   DeleteMonitorRequest,
   DeleteMonitorResponse,
   DeleteMonitorError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteMonitorRequest,
   output: DeleteMonitorResponse,
@@ -4104,7 +4102,7 @@ export const deletePredictor: API.OperationMethod<
   DeletePredictorRequest,
   DeletePredictorResponse,
   DeletePredictorError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeletePredictorRequest,
   output: DeletePredictorResponse,
@@ -4130,7 +4128,7 @@ export const deletePredictorBacktestExportJob: API.OperationMethod<
   DeletePredictorBacktestExportJobRequest,
   DeletePredictorBacktestExportJobResponse,
   DeletePredictorBacktestExportJobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeletePredictorBacktestExportJobRequest,
   output: DeletePredictorBacktestExportJobResponse,
@@ -4176,7 +4174,7 @@ export const deleteResourceTree: API.OperationMethod<
   DeleteResourceTreeRequest,
   DeleteResourceTreeResponse,
   DeleteResourceTreeError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteResourceTreeRequest,
   output: DeleteResourceTreeResponse,
@@ -4205,7 +4203,7 @@ export const deleteWhatIfAnalysis: API.OperationMethod<
   DeleteWhatIfAnalysisRequest,
   DeleteWhatIfAnalysisResponse,
   DeleteWhatIfAnalysisError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteWhatIfAnalysisRequest,
   output: DeleteWhatIfAnalysisResponse,
@@ -4234,7 +4232,7 @@ export const deleteWhatIfForecast: API.OperationMethod<
   DeleteWhatIfForecastRequest,
   DeleteWhatIfForecastResponse,
   DeleteWhatIfForecastError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteWhatIfForecastRequest,
   output: DeleteWhatIfForecastResponse,
@@ -4261,7 +4259,7 @@ export const deleteWhatIfForecastExport: API.OperationMethod<
   DeleteWhatIfForecastExportRequest,
   DeleteWhatIfForecastExportResponse,
   DeleteWhatIfForecastExportError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteWhatIfForecastExportRequest,
   output: DeleteWhatIfForecastExportResponse,
@@ -4286,7 +4284,7 @@ export const describeAutoPredictor: API.OperationMethod<
   DescribeAutoPredictorRequest,
   DescribeAutoPredictorResponse,
   DescribeAutoPredictorError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeAutoPredictorRequest,
   output: DescribeAutoPredictorResponse,
@@ -4316,7 +4314,7 @@ export const describeDataset: API.OperationMethod<
   DescribeDatasetRequest,
   DescribeDatasetResponse,
   DescribeDatasetError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeDatasetRequest,
   output: DescribeDatasetResponse,
@@ -4349,7 +4347,7 @@ export const describeDatasetGroup: API.OperationMethod<
   DescribeDatasetGroupRequest,
   DescribeDatasetGroupResponse,
   DescribeDatasetGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeDatasetGroupRequest,
   output: DescribeDatasetGroupResponse,
@@ -4386,7 +4384,7 @@ export const describeDatasetImportJob: API.OperationMethod<
   DescribeDatasetImportJobRequest,
   DescribeDatasetImportJobResponse,
   DescribeDatasetImportJobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeDatasetImportJobRequest,
   output: DescribeDatasetImportJobResponse,
@@ -4407,7 +4405,7 @@ export const describeExplainability: API.OperationMethod<
   DescribeExplainabilityRequest,
   DescribeExplainabilityResponse,
   DescribeExplainabilityError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeExplainabilityRequest,
   output: DescribeExplainabilityResponse,
@@ -4428,7 +4426,7 @@ export const describeExplainabilityExport: API.OperationMethod<
   DescribeExplainabilityExportRequest,
   DescribeExplainabilityExportResponse,
   DescribeExplainabilityExportError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeExplainabilityExportRequest,
   output: DescribeExplainabilityExportResponse,
@@ -4463,7 +4461,7 @@ export const describeForecast: API.OperationMethod<
   DescribeForecastRequest,
   DescribeForecastResponse,
   DescribeForecastError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeForecastRequest,
   output: DescribeForecastResponse,
@@ -4496,7 +4494,7 @@ export const describeForecastExportJob: API.OperationMethod<
   DescribeForecastExportJobRequest,
   DescribeForecastExportJobResponse,
   DescribeForecastExportJobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeForecastExportJobRequest,
   output: DescribeForecastExportJobResponse,
@@ -4531,7 +4529,7 @@ export const describeMonitor: API.OperationMethod<
   DescribeMonitorRequest,
   DescribeMonitorResponse,
   DescribeMonitorError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeMonitorRequest,
   output: DescribeMonitorResponse,
@@ -4573,7 +4571,7 @@ export const describePredictor: API.OperationMethod<
   DescribePredictorRequest,
   DescribePredictorResponse,
   DescribePredictorError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribePredictorRequest,
   output: DescribePredictorResponse,
@@ -4606,7 +4604,7 @@ export const describePredictorBacktestExportJob: API.OperationMethod<
   DescribePredictorBacktestExportJobRequest,
   DescribePredictorBacktestExportJobResponse,
   DescribePredictorBacktestExportJobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribePredictorBacktestExportJobRequest,
   output: DescribePredictorBacktestExportJobResponse,
@@ -4637,7 +4635,7 @@ export const describeWhatIfAnalysis: API.OperationMethod<
   DescribeWhatIfAnalysisRequest,
   DescribeWhatIfAnalysisResponse,
   DescribeWhatIfAnalysisError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeWhatIfAnalysisRequest,
   output: DescribeWhatIfAnalysisResponse,
@@ -4668,7 +4666,7 @@ export const describeWhatIfForecast: API.OperationMethod<
   DescribeWhatIfForecastRequest,
   DescribeWhatIfForecastResponse,
   DescribeWhatIfForecastError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeWhatIfForecastRequest,
   output: DescribeWhatIfForecastResponse,
@@ -4699,7 +4697,7 @@ export const describeWhatIfForecastExport: API.OperationMethod<
   DescribeWhatIfForecastExportRequest,
   DescribeWhatIfForecastExportResponse,
   DescribeWhatIfForecastExportError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeWhatIfForecastExportRequest,
   output: DescribeWhatIfForecastExportResponse,
@@ -4738,7 +4736,7 @@ export const getAccuracyMetrics: API.OperationMethod<
   GetAccuracyMetricsRequest,
   GetAccuracyMetricsResponse,
   GetAccuracyMetricsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetAccuracyMetricsRequest,
   output: GetAccuracyMetricsResponse,
@@ -4760,27 +4758,13 @@ export type ListDatasetGroupsError = InvalidNextTokenException | CommonErrors;
  * dataset group ARN with the DescribeDatasetGroup
  * operation.
  */
-export const listDatasetGroups: API.OperationMethod<
+export const listDatasetGroups: API.PaginatedOperationMethod<
   ListDatasetGroupsRequest,
   ListDatasetGroupsResponse,
   ListDatasetGroupsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDatasetGroupsRequest,
-  ) => stream.Stream<
-    ListDatasetGroupsResponse,
-    ListDatasetGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDatasetGroupsRequest,
-  ) => stream.Stream<
-    DatasetGroupSummary,
-    ListDatasetGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  DatasetGroupSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListDatasetGroupsRequest,
   output: ListDatasetGroupsResponse,
   errors: [InvalidNextTokenException],
@@ -4793,27 +4777,7 @@ export const listDatasetGroups: API.OperationMethod<
     items: "DatasetGroups",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListDatasetGroupsRequest,
-  ListDatasetGroupsResponse,
-  ListDatasetGroupsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDatasetGroupsRequest,
-  ) => stream.Stream<
-    ListDatasetGroupsResponse,
-    ListDatasetGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDatasetGroupsRequest,
-  ) => stream.Stream<
-    DatasetGroupSummary,
-    ListDatasetGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListDatasetImportJobsError =
   | InvalidInputException
@@ -4826,27 +4790,13 @@ export type ListDatasetImportJobsError =
  * ARN with the DescribeDatasetImportJob
  * operation. You can filter the list by providing an array of Filter objects.
  */
-export const listDatasetImportJobs: API.OperationMethod<
+export const listDatasetImportJobs: API.PaginatedOperationMethod<
   ListDatasetImportJobsRequest,
   ListDatasetImportJobsResponse,
   ListDatasetImportJobsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDatasetImportJobsRequest,
-  ) => stream.Stream<
-    ListDatasetImportJobsResponse,
-    ListDatasetImportJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDatasetImportJobsRequest,
-  ) => stream.Stream<
-    DatasetImportJobSummary,
-    ListDatasetImportJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  DatasetImportJobSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListDatasetImportJobsRequest,
   output: ListDatasetImportJobsResponse,
   errors: [InvalidInputException, InvalidNextTokenException],
@@ -4859,27 +4809,7 @@ export const listDatasetImportJobs: API.OperationMethod<
     items: "DatasetImportJobs",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListDatasetImportJobsRequest,
-  ListDatasetImportJobsResponse,
-  ListDatasetImportJobsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDatasetImportJobsRequest,
-  ) => stream.Stream<
-    ListDatasetImportJobsResponse,
-    ListDatasetImportJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDatasetImportJobsRequest,
-  ) => stream.Stream<
-    DatasetImportJobSummary,
-    ListDatasetImportJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListDatasetsError = InvalidNextTokenException | CommonErrors;
 /**
@@ -4887,27 +4817,13 @@ export type ListDatasetsError = InvalidNextTokenException | CommonErrors;
  * dataset, a summary of its properties, including its Amazon Resource Name (ARN), is returned.
  * To retrieve the complete set of properties, use the ARN with the DescribeDataset operation.
  */
-export const listDatasets: API.OperationMethod<
+export const listDatasets: API.PaginatedOperationMethod<
   ListDatasetsRequest,
   ListDatasetsResponse,
   ListDatasetsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDatasetsRequest,
-  ) => stream.Stream<
-    ListDatasetsResponse,
-    ListDatasetsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDatasetsRequest,
-  ) => stream.Stream<
-    DatasetSummary,
-    ListDatasetsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  DatasetSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListDatasetsRequest,
   output: ListDatasetsResponse,
   errors: [InvalidNextTokenException],
@@ -4920,27 +4836,7 @@ export const listDatasets: API.OperationMethod<
     items: "Datasets",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListDatasetsRequest,
-  ListDatasetsResponse,
-  ListDatasetsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDatasetsRequest,
-  ) => stream.Stream<
-    ListDatasetsResponse,
-    ListDatasetsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDatasetsRequest,
-  ) => stream.Stream<
-    DatasetSummary,
-    ListDatasetsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListExplainabilitiesError =
   | InvalidInputException
@@ -4954,27 +4850,13 @@ export type ListExplainabilitiesError =
  * To retrieve the complete set of properties for a particular Explainability resource,
  * use the ARN with the DescribeExplainability operation.
  */
-export const listExplainabilities: API.OperationMethod<
+export const listExplainabilities: API.PaginatedOperationMethod<
   ListExplainabilitiesRequest,
   ListExplainabilitiesResponse,
   ListExplainabilitiesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListExplainabilitiesRequest,
-  ) => stream.Stream<
-    ListExplainabilitiesResponse,
-    ListExplainabilitiesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListExplainabilitiesRequest,
-  ) => stream.Stream<
-    ExplainabilitySummary,
-    ListExplainabilitiesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ExplainabilitySummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListExplainabilitiesRequest,
   output: ListExplainabilitiesResponse,
   errors: [InvalidInputException, InvalidNextTokenException],
@@ -4987,27 +4869,7 @@ export const listExplainabilities: API.OperationMethod<
     items: "Explainabilities",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListExplainabilitiesRequest,
-  ListExplainabilitiesResponse,
-  ListExplainabilitiesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListExplainabilitiesRequest,
-  ) => stream.Stream<
-    ListExplainabilitiesResponse,
-    ListExplainabilitiesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListExplainabilitiesRequest,
-  ) => stream.Stream<
-    ExplainabilitySummary,
-    ListExplainabilitiesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListExplainabilityExportsError =
   | InvalidInputException
@@ -5020,27 +4882,13 @@ export type ListExplainabilityExportsError =
  * To retrieve the complete set of properties for a particular Explainability export, use
  * the ARN with the DescribeExplainability operation.
  */
-export const listExplainabilityExports: API.OperationMethod<
+export const listExplainabilityExports: API.PaginatedOperationMethod<
   ListExplainabilityExportsRequest,
   ListExplainabilityExportsResponse,
   ListExplainabilityExportsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListExplainabilityExportsRequest,
-  ) => stream.Stream<
-    ListExplainabilityExportsResponse,
-    ListExplainabilityExportsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListExplainabilityExportsRequest,
-  ) => stream.Stream<
-    ExplainabilityExportSummary,
-    ListExplainabilityExportsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ExplainabilityExportSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListExplainabilityExportsRequest,
   output: ListExplainabilityExportsResponse,
   errors: [InvalidInputException, InvalidNextTokenException],
@@ -5053,27 +4901,7 @@ export const listExplainabilityExports: API.OperationMethod<
     items: "ExplainabilityExports",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListExplainabilityExportsRequest,
-  ListExplainabilityExportsResponse,
-  ListExplainabilityExportsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListExplainabilityExportsRequest,
-  ) => stream.Stream<
-    ListExplainabilityExportsResponse,
-    ListExplainabilityExportsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListExplainabilityExportsRequest,
-  ) => stream.Stream<
-    ExplainabilityExportSummary,
-    ListExplainabilityExportsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListForecastExportJobsError =
   | InvalidInputException
@@ -5085,27 +4913,13 @@ export type ListForecastExportJobsError =
  * complete set of properties, use the ARN with the DescribeForecastExportJob
  * operation. You can filter the list using an array of Filter objects.
  */
-export const listForecastExportJobs: API.OperationMethod<
+export const listForecastExportJobs: API.PaginatedOperationMethod<
   ListForecastExportJobsRequest,
   ListForecastExportJobsResponse,
   ListForecastExportJobsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListForecastExportJobsRequest,
-  ) => stream.Stream<
-    ListForecastExportJobsResponse,
-    ListForecastExportJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListForecastExportJobsRequest,
-  ) => stream.Stream<
-    ForecastExportJobSummary,
-    ListForecastExportJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ForecastExportJobSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListForecastExportJobsRequest,
   output: ListForecastExportJobsResponse,
   errors: [InvalidInputException, InvalidNextTokenException],
@@ -5118,27 +4932,7 @@ export const listForecastExportJobs: API.OperationMethod<
     items: "ForecastExportJobs",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListForecastExportJobsRequest,
-  ListForecastExportJobsResponse,
-  ListForecastExportJobsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListForecastExportJobsRequest,
-  ) => stream.Stream<
-    ListForecastExportJobsResponse,
-    ListForecastExportJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListForecastExportJobsRequest,
-  ) => stream.Stream<
-    ForecastExportJobSummary,
-    ListForecastExportJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListForecastsError =
   | InvalidInputException
@@ -5151,27 +4945,13 @@ export type ListForecastsError =
  * DescribeForecast operation. You can filter the list using an array of
  * Filter objects.
  */
-export const listForecasts: API.OperationMethod<
+export const listForecasts: API.PaginatedOperationMethod<
   ListForecastsRequest,
   ListForecastsResponse,
   ListForecastsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListForecastsRequest,
-  ) => stream.Stream<
-    ListForecastsResponse,
-    ListForecastsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListForecastsRequest,
-  ) => stream.Stream<
-    ForecastSummary,
-    ListForecastsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ForecastSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListForecastsRequest,
   output: ListForecastsResponse,
   errors: [InvalidInputException, InvalidNextTokenException],
@@ -5184,27 +4964,7 @@ export const listForecasts: API.OperationMethod<
     items: "Forecasts",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListForecastsRequest,
-  ListForecastsResponse,
-  ListForecastsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListForecastsRequest,
-  ) => stream.Stream<
-    ListForecastsResponse,
-    ListForecastsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListForecastsRequest,
-  ) => stream.Stream<
-    ForecastSummary,
-    ListForecastsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListMonitorEvaluationsError =
   | InvalidInputException
@@ -5218,27 +4978,13 @@ export type ListMonitorEvaluationsError =
  * For information about monitoring see predictor-monitoring. For
  * more information about retrieving monitoring results see Viewing Monitoring Results.
  */
-export const listMonitorEvaluations: API.OperationMethod<
+export const listMonitorEvaluations: API.PaginatedOperationMethod<
   ListMonitorEvaluationsRequest,
   ListMonitorEvaluationsResponse,
   ListMonitorEvaluationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListMonitorEvaluationsRequest,
-  ) => stream.Stream<
-    ListMonitorEvaluationsResponse,
-    ListMonitorEvaluationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListMonitorEvaluationsRequest,
-  ) => stream.Stream<
-    PredictorMonitorEvaluation,
-    ListMonitorEvaluationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  PredictorMonitorEvaluation
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListMonitorEvaluationsRequest,
   output: ListMonitorEvaluationsResponse,
   errors: [
@@ -5255,27 +5001,7 @@ export const listMonitorEvaluations: API.OperationMethod<
     items: "PredictorMonitorEvaluations",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListMonitorEvaluationsRequest,
-  ListMonitorEvaluationsResponse,
-  ListMonitorEvaluationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListMonitorEvaluationsRequest,
-  ) => stream.Stream<
-    ListMonitorEvaluationsResponse,
-    ListMonitorEvaluationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListMonitorEvaluationsRequest,
-  ) => stream.Stream<
-    PredictorMonitorEvaluation,
-    ListMonitorEvaluationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListMonitorsError =
   | InvalidInputException
@@ -5285,27 +5011,13 @@ export type ListMonitorsError =
  * Returns a list of monitors created with the CreateMonitor operation and CreateAutoPredictor operation. For each monitor resource, this operation returns of a summary of its properties, including its Amazon Resource Name (ARN). You
  * can retrieve a complete set of properties of a monitor resource by specify the monitor's ARN in the DescribeMonitor operation.
  */
-export const listMonitors: API.OperationMethod<
+export const listMonitors: API.PaginatedOperationMethod<
   ListMonitorsRequest,
   ListMonitorsResponse,
   ListMonitorsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListMonitorsRequest,
-  ) => stream.Stream<
-    ListMonitorsResponse,
-    ListMonitorsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListMonitorsRequest,
-  ) => stream.Stream<
-    MonitorSummary,
-    ListMonitorsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  MonitorSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListMonitorsRequest,
   output: ListMonitorsResponse,
   errors: [InvalidInputException, InvalidNextTokenException],
@@ -5318,27 +5030,7 @@ export const listMonitors: API.OperationMethod<
     items: "Monitors",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListMonitorsRequest,
-  ListMonitorsResponse,
-  ListMonitorsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListMonitorsRequest,
-  ) => stream.Stream<
-    ListMonitorsResponse,
-    ListMonitorsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListMonitorsRequest,
-  ) => stream.Stream<
-    MonitorSummary,
-    ListMonitorsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListPredictorBacktestExportJobsError =
   | InvalidInputException
@@ -5351,27 +5043,13 @@ export type ListPredictorBacktestExportJobsError =
  * To retrieve the complete set of properties for a particular backtest export job, use
  * the ARN with the DescribePredictorBacktestExportJob operation.
  */
-export const listPredictorBacktestExportJobs: API.OperationMethod<
+export const listPredictorBacktestExportJobs: API.PaginatedOperationMethod<
   ListPredictorBacktestExportJobsRequest,
   ListPredictorBacktestExportJobsResponse,
   ListPredictorBacktestExportJobsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPredictorBacktestExportJobsRequest,
-  ) => stream.Stream<
-    ListPredictorBacktestExportJobsResponse,
-    ListPredictorBacktestExportJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPredictorBacktestExportJobsRequest,
-  ) => stream.Stream<
-    PredictorBacktestExportJobSummary,
-    ListPredictorBacktestExportJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  PredictorBacktestExportJobSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListPredictorBacktestExportJobsRequest,
   output: ListPredictorBacktestExportJobsResponse,
   errors: [InvalidInputException, InvalidNextTokenException],
@@ -5384,27 +5062,7 @@ export const listPredictorBacktestExportJobs: API.OperationMethod<
     items: "PredictorBacktestExportJobs",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListPredictorBacktestExportJobsRequest,
-  ListPredictorBacktestExportJobsResponse,
-  ListPredictorBacktestExportJobsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPredictorBacktestExportJobsRequest,
-  ) => stream.Stream<
-    ListPredictorBacktestExportJobsResponse,
-    ListPredictorBacktestExportJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPredictorBacktestExportJobsRequest,
-  ) => stream.Stream<
-    PredictorBacktestExportJobSummary,
-    ListPredictorBacktestExportJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListPredictorsError =
   | InvalidInputException
@@ -5418,27 +5076,13 @@ export type ListPredictorsError =
  * You can retrieve the complete set of properties by using the ARN with the DescribeAutoPredictor and DescribePredictor operations. You
  * can filter the list using an array of Filter objects.
  */
-export const listPredictors: API.OperationMethod<
+export const listPredictors: API.PaginatedOperationMethod<
   ListPredictorsRequest,
   ListPredictorsResponse,
   ListPredictorsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPredictorsRequest,
-  ) => stream.Stream<
-    ListPredictorsResponse,
-    ListPredictorsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPredictorsRequest,
-  ) => stream.Stream<
-    PredictorSummary,
-    ListPredictorsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  PredictorSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListPredictorsRequest,
   output: ListPredictorsResponse,
   errors: [InvalidInputException, InvalidNextTokenException],
@@ -5451,27 +5095,7 @@ export const listPredictors: API.OperationMethod<
     items: "Predictors",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListPredictorsRequest,
-  ListPredictorsResponse,
-  ListPredictorsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPredictorsRequest,
-  ) => stream.Stream<
-    ListPredictorsResponse,
-    ListPredictorsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPredictorsRequest,
-  ) => stream.Stream<
-    PredictorSummary,
-    ListPredictorsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsForResourceError =
   | InvalidInputException
@@ -5484,7 +5108,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceRequest,
   ListTagsForResourceResponse,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -5501,27 +5125,13 @@ export type ListWhatIfAnalysesError =
 /**
  * Returns a list of what-if analyses created using the CreateWhatIfAnalysis operation. For each what-if analysis, this operation returns a summary of its properties, including its Amazon Resource Name (ARN). You can retrieve the complete set of properties by using the what-if analysis ARN with the DescribeWhatIfAnalysis operation.
  */
-export const listWhatIfAnalyses: API.OperationMethod<
+export const listWhatIfAnalyses: API.PaginatedOperationMethod<
   ListWhatIfAnalysesRequest,
   ListWhatIfAnalysesResponse,
   ListWhatIfAnalysesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListWhatIfAnalysesRequest,
-  ) => stream.Stream<
-    ListWhatIfAnalysesResponse,
-    ListWhatIfAnalysesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListWhatIfAnalysesRequest,
-  ) => stream.Stream<
-    WhatIfAnalysisSummary,
-    ListWhatIfAnalysesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  WhatIfAnalysisSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListWhatIfAnalysesRequest,
   output: ListWhatIfAnalysesResponse,
   errors: [InvalidInputException, InvalidNextTokenException],
@@ -5534,27 +5144,7 @@ export const listWhatIfAnalyses: API.OperationMethod<
     items: "WhatIfAnalyses",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListWhatIfAnalysesRequest,
-  ListWhatIfAnalysesResponse,
-  ListWhatIfAnalysesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListWhatIfAnalysesRequest,
-  ) => stream.Stream<
-    ListWhatIfAnalysesResponse,
-    ListWhatIfAnalysesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListWhatIfAnalysesRequest,
-  ) => stream.Stream<
-    WhatIfAnalysisSummary,
-    ListWhatIfAnalysesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListWhatIfForecastExportsError =
   | InvalidInputException
@@ -5563,27 +5153,13 @@ export type ListWhatIfForecastExportsError =
 /**
  * Returns a list of what-if forecast exports created using the CreateWhatIfForecastExport operation. For each what-if forecast export, this operation returns a summary of its properties, including its Amazon Resource Name (ARN). You can retrieve the complete set of properties by using the what-if forecast export ARN with the DescribeWhatIfForecastExport operation.
  */
-export const listWhatIfForecastExports: API.OperationMethod<
+export const listWhatIfForecastExports: API.PaginatedOperationMethod<
   ListWhatIfForecastExportsRequest,
   ListWhatIfForecastExportsResponse,
   ListWhatIfForecastExportsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListWhatIfForecastExportsRequest,
-  ) => stream.Stream<
-    ListWhatIfForecastExportsResponse,
-    ListWhatIfForecastExportsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListWhatIfForecastExportsRequest,
-  ) => stream.Stream<
-    WhatIfForecastExportSummary,
-    ListWhatIfForecastExportsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  WhatIfForecastExportSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListWhatIfForecastExportsRequest,
   output: ListWhatIfForecastExportsResponse,
   errors: [InvalidInputException, InvalidNextTokenException],
@@ -5596,27 +5172,7 @@ export const listWhatIfForecastExports: API.OperationMethod<
     items: "WhatIfForecastExports",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListWhatIfForecastExportsRequest,
-  ListWhatIfForecastExportsResponse,
-  ListWhatIfForecastExportsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListWhatIfForecastExportsRequest,
-  ) => stream.Stream<
-    ListWhatIfForecastExportsResponse,
-    ListWhatIfForecastExportsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListWhatIfForecastExportsRequest,
-  ) => stream.Stream<
-    WhatIfForecastExportSummary,
-    ListWhatIfForecastExportsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListWhatIfForecastsError =
   | InvalidInputException
@@ -5625,27 +5181,13 @@ export type ListWhatIfForecastsError =
 /**
  * Returns a list of what-if forecasts created using the CreateWhatIfForecast operation. For each what-if forecast, this operation returns a summary of its properties, including its Amazon Resource Name (ARN). You can retrieve the complete set of properties by using the what-if forecast ARN with the DescribeWhatIfForecast operation.
  */
-export const listWhatIfForecasts: API.OperationMethod<
+export const listWhatIfForecasts: API.PaginatedOperationMethod<
   ListWhatIfForecastsRequest,
   ListWhatIfForecastsResponse,
   ListWhatIfForecastsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListWhatIfForecastsRequest,
-  ) => stream.Stream<
-    ListWhatIfForecastsResponse,
-    ListWhatIfForecastsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListWhatIfForecastsRequest,
-  ) => stream.Stream<
-    WhatIfForecastSummary,
-    ListWhatIfForecastsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  WhatIfForecastSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListWhatIfForecastsRequest,
   output: ListWhatIfForecastsResponse,
   errors: [InvalidInputException, InvalidNextTokenException],
@@ -5658,27 +5200,7 @@ export const listWhatIfForecasts: API.OperationMethod<
     items: "WhatIfForecasts",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListWhatIfForecastsRequest,
-  ListWhatIfForecastsResponse,
-  ListWhatIfForecastsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListWhatIfForecastsRequest,
-  ) => stream.Stream<
-    ListWhatIfForecastsResponse,
-    ListWhatIfForecastsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListWhatIfForecastsRequest,
-  ) => stream.Stream<
-    WhatIfForecastSummary,
-    ListWhatIfForecastsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ResumeResourceError =
   | InvalidInputException
@@ -5693,7 +5215,7 @@ export const resumeResource: API.OperationMethod<
   ResumeResourceRequest,
   ResumeResourceResponse,
   ResumeResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ResumeResourceRequest,
   output: ResumeResourceResponse,
@@ -5741,7 +5263,7 @@ export const stopResource: API.OperationMethod<
   StopResourceRequest,
   StopResourceResponse,
   StopResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StopResourceRequest,
   output: StopResourceResponse,
@@ -5770,7 +5292,7 @@ export const tagResource: API.OperationMethod<
   TagResourceRequest,
   TagResourceResponse,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -5795,7 +5317,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceRequest,
   UntagResourceResponse,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -5821,7 +5343,7 @@ export const updateDatasetGroup: API.OperationMethod<
   UpdateDatasetGroupRequest,
   UpdateDatasetGroupResponse,
   UpdateDatasetGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateDatasetGroupRequest,
   output: UpdateDatasetGroupResponse,

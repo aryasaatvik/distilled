@@ -1,6 +1,5 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -8,7 +7,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 const svc = T.AwsApiService({
   sdkId: "Support App",
   serviceShapeName: "SupportApp",
@@ -88,37 +86,37 @@ const rules = T.EndpointResolver((p, _) => {
 export class AccessDeniedException
   extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
     "AccessDeniedException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(403),
   ).pipe(C.withAuthError) {}
 export class ConflictException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
     "ConflictException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class InternalServerException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
     "InternalServerException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(500),
   ).pipe(C.withServerError) {}
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class ServiceQuotaExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
     "ServiceQuotaExceededException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(402),
   ).pipe(C.withQuotaError) {}
 export class ValidationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
     "ValidationException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export type TeamId = string;
@@ -536,7 +534,7 @@ export const createSlackChannelConfiguration: API.OperationMethod<
   CreateSlackChannelConfigurationRequest,
   CreateSlackChannelConfigurationResult,
   CreateSlackChannelConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateSlackChannelConfigurationRequest,
   output: CreateSlackChannelConfigurationResult,
@@ -565,7 +563,7 @@ export const deleteAccountAlias: API.OperationMethod<
   DeleteAccountAliasRequest,
   DeleteAccountAliasResult,
   DeleteAccountAliasError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteAccountAliasRequest,
   output: DeleteAccountAliasResult,
@@ -594,7 +592,7 @@ export const deleteSlackChannelConfiguration: API.OperationMethod<
   DeleteSlackChannelConfigurationRequest,
   DeleteSlackChannelConfigurationResult,
   DeleteSlackChannelConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteSlackChannelConfigurationRequest,
   output: DeleteSlackChannelConfigurationResult,
@@ -625,7 +623,7 @@ export const deleteSlackWorkspaceConfiguration: API.OperationMethod<
   DeleteSlackWorkspaceConfigurationRequest,
   DeleteSlackWorkspaceConfigurationResult,
   DeleteSlackWorkspaceConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteSlackWorkspaceConfigurationRequest,
   output: DeleteSlackWorkspaceConfigurationResult,
@@ -650,7 +648,7 @@ export const getAccountAlias: API.OperationMethod<
   GetAccountAliasRequest,
   GetAccountAliasResult,
   GetAccountAliasError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetAccountAliasRequest,
   output: GetAccountAliasResult,
@@ -667,27 +665,13 @@ export type ListSlackChannelConfigurationsError =
 /**
  * Lists the Slack channel configurations for an Amazon Web Services account.
  */
-export const listSlackChannelConfigurations: API.OperationMethod<
+export const listSlackChannelConfigurations: API.PaginatedOperationMethod<
   ListSlackChannelConfigurationsRequest,
   ListSlackChannelConfigurationsResult,
   ListSlackChannelConfigurationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSlackChannelConfigurationsRequest,
-  ) => stream.Stream<
-    ListSlackChannelConfigurationsResult,
-    ListSlackChannelConfigurationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSlackChannelConfigurationsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListSlackChannelConfigurationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListSlackChannelConfigurationsRequest,
   output: ListSlackChannelConfigurationsResult,
   errors: [AccessDeniedException, InternalServerException],
@@ -695,27 +679,7 @@ export const listSlackChannelConfigurations: API.OperationMethod<
   retry: Retry,
   operationName: "ListSlackChannelConfigurations",
   pagination: { inputToken: "nextToken", outputToken: "nextToken" } as const,
-})) as any as API.OperationMethod<
-  ListSlackChannelConfigurationsRequest,
-  ListSlackChannelConfigurationsResult,
-  ListSlackChannelConfigurationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSlackChannelConfigurationsRequest,
-  ) => stream.Stream<
-    ListSlackChannelConfigurationsResult,
-    ListSlackChannelConfigurationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSlackChannelConfigurationsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListSlackChannelConfigurationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListSlackWorkspaceConfigurationsError =
   | AccessDeniedException
@@ -724,27 +688,13 @@ export type ListSlackWorkspaceConfigurationsError =
 /**
  * Lists the Slack workspace configurations for an Amazon Web Services account.
  */
-export const listSlackWorkspaceConfigurations: API.OperationMethod<
+export const listSlackWorkspaceConfigurations: API.PaginatedOperationMethod<
   ListSlackWorkspaceConfigurationsRequest,
   ListSlackWorkspaceConfigurationsResult,
   ListSlackWorkspaceConfigurationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSlackWorkspaceConfigurationsRequest,
-  ) => stream.Stream<
-    ListSlackWorkspaceConfigurationsResult,
-    ListSlackWorkspaceConfigurationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSlackWorkspaceConfigurationsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListSlackWorkspaceConfigurationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListSlackWorkspaceConfigurationsRequest,
   output: ListSlackWorkspaceConfigurationsResult,
   errors: [AccessDeniedException, InternalServerException],
@@ -752,27 +702,7 @@ export const listSlackWorkspaceConfigurations: API.OperationMethod<
   retry: Retry,
   operationName: "ListSlackWorkspaceConfigurations",
   pagination: { inputToken: "nextToken", outputToken: "nextToken" } as const,
-})) as any as API.OperationMethod<
-  ListSlackWorkspaceConfigurationsRequest,
-  ListSlackWorkspaceConfigurationsResult,
-  ListSlackWorkspaceConfigurationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSlackWorkspaceConfigurationsRequest,
-  ) => stream.Stream<
-    ListSlackWorkspaceConfigurationsResult,
-    ListSlackWorkspaceConfigurationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSlackWorkspaceConfigurationsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListSlackWorkspaceConfigurationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type PutAccountAliasError =
   | AccessDeniedException
@@ -788,7 +718,7 @@ export const putAccountAlias: API.OperationMethod<
   PutAccountAliasRequest,
   PutAccountAliasResult,
   PutAccountAliasError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutAccountAliasRequest,
   output: PutAccountAliasResult,
@@ -836,7 +766,7 @@ export const registerSlackWorkspaceForOrganization: API.OperationMethod<
   RegisterSlackWorkspaceForOrganizationRequest,
   RegisterSlackWorkspaceForOrganizationResult,
   RegisterSlackWorkspaceForOrganizationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RegisterSlackWorkspaceForOrganizationRequest,
   output: RegisterSlackWorkspaceForOrganizationResult,
@@ -866,7 +796,7 @@ export const updateSlackChannelConfiguration: API.OperationMethod<
   UpdateSlackChannelConfigurationRequest,
   UpdateSlackChannelConfigurationResult,
   UpdateSlackChannelConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateSlackChannelConfigurationRequest,
   output: UpdateSlackChannelConfigurationResult,

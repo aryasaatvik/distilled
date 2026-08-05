@@ -1,7 +1,6 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as redacted from "effect/Redacted";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -9,7 +8,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 import { SensitiveString } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "IoTFleetWise",
@@ -90,13 +88,17 @@ const rules = T.EndpointResolver((p, _) => {
 export class AccessDeniedException
   extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
     "AccessDeniedException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(403),
   ).pipe(C.withAuthError) {}
 export class ConflictException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
     "ConflictException",
-    { message: S.String, resource: S.String, resourceType: S.String },
+    {
+      message: S.String.pipe(T.ErrorMessage()),
+      resource: S.String,
+      resourceType: S.String,
+    },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class DecoderManifestValidationException
@@ -113,7 +115,7 @@ export class DecoderManifestValidationException
           identifier: "InvalidNetworkInterfaces",
         }),
       ),
-      message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
     },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
@@ -121,7 +123,7 @@ export class InternalServerException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
     "InternalServerException",
     {
-      message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       retryAfterSeconds: S.optional(S.Number).pipe(T.HttpHeader("Retry-After")),
     },
     T.HttpError(500),
@@ -134,7 +136,7 @@ export class InvalidNodeException
         S.suspend(() => Nodes).annotate({ identifier: "Nodes" }),
       ),
       reason: S.optional(S.String),
-      message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
     },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
@@ -142,7 +144,7 @@ export class InvalidSignalsException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidSignalsException>()(
     "InvalidSignalsException",
     {
-      message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       invalidSignals: S.optional(
         S.suspend(() => InvalidSignals).annotate({
           identifier: "InvalidSignals",
@@ -154,20 +156,28 @@ export class InvalidSignalsException
 export class LimitExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<LimitExceededException>()(
     "LimitExceededException",
-    { message: S.String, resourceId: S.String, resourceType: S.String },
+    {
+      message: S.String.pipe(T.ErrorMessage()),
+      resourceId: S.String,
+      resourceType: S.String,
+    },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { message: S.String, resourceId: S.String, resourceType: S.String },
+    {
+      message: S.String.pipe(T.ErrorMessage()),
+      resourceId: S.String,
+      resourceType: S.String,
+    },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class ThrottlingException
   extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
     "ThrottlingException",
     {
-      message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       quotaCode: S.optional(S.String),
       serviceCode: S.optional(S.String),
       retryAfterSeconds: S.optional(S.Number).pipe(T.HttpHeader("Retry-After")),
@@ -178,7 +188,7 @@ export class ValidationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
     "ValidationException",
     {
-      message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       reason: S.optional(
         S.suspend(() => ValidationExceptionReason).annotate({
           identifier: "ValidationExceptionReason",
@@ -3771,7 +3781,7 @@ export const associateVehicleFleet: API.OperationMethod<
   AssociateVehicleFleetRequest,
   AssociateVehicleFleetResponse,
   AssociateVehicleFleetError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AssociateVehicleFleetRequest,
   output: AssociateVehicleFleetResponse,
@@ -3808,7 +3818,7 @@ export const batchCreateVehicle: API.OperationMethod<
   BatchCreateVehicleRequest,
   BatchCreateVehicleResponse,
   BatchCreateVehicleError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchCreateVehicleRequest,
   output: BatchCreateVehicleResponse,
@@ -3844,7 +3854,7 @@ export const batchUpdateVehicle: API.OperationMethod<
   BatchUpdateVehicleRequest,
   BatchUpdateVehicleResponse,
   BatchUpdateVehicleError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchUpdateVehicleRequest,
   output: BatchUpdateVehicleResponse,
@@ -3883,7 +3893,7 @@ export const createCampaign: API.OperationMethod<
   CreateCampaignRequest,
   CreateCampaignResponse,
   CreateCampaignError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateCampaignRequest,
   output: CreateCampaignResponse,
@@ -3925,7 +3935,7 @@ export const createDecoderManifest: API.OperationMethod<
   CreateDecoderManifestRequest,
   CreateDecoderManifestResponse,
   CreateDecoderManifestError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateDecoderManifestRequest,
   output: CreateDecoderManifestResponse,
@@ -3964,7 +3974,7 @@ export const createFleet: API.OperationMethod<
   CreateFleetRequest,
   CreateFleetResponse,
   CreateFleetError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateFleetRequest,
   output: CreateFleetResponse,
@@ -4002,7 +4012,7 @@ export const createModelManifest: API.OperationMethod<
   CreateModelManifestRequest,
   CreateModelManifestResponse,
   CreateModelManifestError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateModelManifestRequest,
   output: CreateModelManifestResponse,
@@ -4037,7 +4047,7 @@ export const createSignalCatalog: API.OperationMethod<
   CreateSignalCatalogRequest,
   CreateSignalCatalogResponse,
   CreateSignalCatalogError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateSignalCatalogRequest,
   output: CreateSignalCatalogResponse,
@@ -4074,7 +4084,7 @@ export const createStateTemplate: API.OperationMethod<
   CreateStateTemplateRequest,
   CreateStateTemplateResponse,
   CreateStateTemplateError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateStateTemplateRequest,
   output: CreateStateTemplateResponse,
@@ -4117,7 +4127,7 @@ export const createVehicle: API.OperationMethod<
   CreateVehicleRequest,
   CreateVehicleResponse,
   CreateVehicleError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateVehicleRequest,
   output: CreateVehicleResponse,
@@ -4149,7 +4159,7 @@ export const deleteCampaign: API.OperationMethod<
   DeleteCampaignRequest,
   DeleteCampaignResponse,
   DeleteCampaignError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteCampaignRequest,
   output: DeleteCampaignResponse,
@@ -4179,7 +4189,7 @@ export const deleteDecoderManifest: API.OperationMethod<
   DeleteDecoderManifestRequest,
   DeleteDecoderManifestResponse,
   DeleteDecoderManifestError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteDecoderManifestRequest,
   output: DeleteDecoderManifestResponse,
@@ -4210,7 +4220,7 @@ export const deleteFleet: API.OperationMethod<
   DeleteFleetRequest,
   DeleteFleetResponse,
   DeleteFleetError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteFleetRequest,
   output: DeleteFleetResponse,
@@ -4239,7 +4249,7 @@ export const deleteModelManifest: API.OperationMethod<
   DeleteModelManifestRequest,
   DeleteModelManifestResponse,
   DeleteModelManifestError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteModelManifestRequest,
   output: DeleteModelManifestResponse,
@@ -4269,7 +4279,7 @@ export const deleteSignalCatalog: API.OperationMethod<
   DeleteSignalCatalogRequest,
   DeleteSignalCatalogResponse,
   DeleteSignalCatalogError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteSignalCatalogRequest,
   output: DeleteSignalCatalogResponse,
@@ -4298,7 +4308,7 @@ export const deleteStateTemplate: API.OperationMethod<
   DeleteStateTemplateRequest,
   DeleteStateTemplateResponse,
   DeleteStateTemplateError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteStateTemplateRequest,
   output: DeleteStateTemplateResponse,
@@ -4326,7 +4336,7 @@ export const deleteVehicle: API.OperationMethod<
   DeleteVehicleRequest,
   DeleteVehicleResponse,
   DeleteVehicleError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteVehicleRequest,
   output: DeleteVehicleResponse,
@@ -4356,7 +4366,7 @@ export const disassociateVehicleFleet: API.OperationMethod<
   DisassociateVehicleFleetRequest,
   DisassociateVehicleFleetResponse,
   DisassociateVehicleFleetError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DisassociateVehicleFleetRequest,
   output: DisassociateVehicleFleetResponse,
@@ -4387,7 +4397,7 @@ export const getCampaign: API.OperationMethod<
   GetCampaignRequest,
   GetCampaignResponse,
   GetCampaignError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetCampaignRequest,
   output: GetCampaignResponse,
@@ -4415,7 +4425,7 @@ export const getDecoderManifest: API.OperationMethod<
   GetDecoderManifestRequest,
   GetDecoderManifestResponse,
   GetDecoderManifestError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetDecoderManifestRequest,
   output: GetDecoderManifestResponse,
@@ -4444,7 +4454,7 @@ export const getEncryptionConfiguration: API.OperationMethod<
   GetEncryptionConfigurationRequest,
   GetEncryptionConfigurationResponse,
   GetEncryptionConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetEncryptionConfigurationRequest,
   output: GetEncryptionConfigurationResponse,
@@ -4474,7 +4484,7 @@ export const getFleet: API.OperationMethod<
   GetFleetRequest,
   GetFleetResponse,
   GetFleetError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetFleetRequest,
   output: GetFleetResponse,
@@ -4501,7 +4511,7 @@ export const getLoggingOptions: API.OperationMethod<
   GetLoggingOptionsRequest,
   GetLoggingOptionsResponse,
   GetLoggingOptionsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetLoggingOptionsRequest,
   output: GetLoggingOptionsResponse,
@@ -4524,7 +4534,7 @@ export const getModelManifest: API.OperationMethod<
   GetModelManifestRequest,
   GetModelManifestResponse,
   GetModelManifestError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetModelManifestRequest,
   output: GetModelManifestResponse,
@@ -4559,7 +4569,7 @@ export const getRegisterAccountStatus: API.OperationMethod<
   GetRegisterAccountStatusRequest,
   GetRegisterAccountStatusResponse,
   GetRegisterAccountStatusError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetRegisterAccountStatusRequest,
   output: GetRegisterAccountStatusResponse,
@@ -4588,7 +4598,7 @@ export const getSignalCatalog: API.OperationMethod<
   GetSignalCatalogRequest,
   GetSignalCatalogResponse,
   GetSignalCatalogError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetSignalCatalogRequest,
   output: GetSignalCatalogResponse,
@@ -4619,7 +4629,7 @@ export const getStateTemplate: API.OperationMethod<
   GetStateTemplateRequest,
   GetStateTemplateResponse,
   GetStateTemplateError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetStateTemplateRequest,
   output: GetStateTemplateResponse,
@@ -4649,7 +4659,7 @@ export const getVehicle: API.OperationMethod<
   GetVehicleRequest,
   GetVehicleResponse,
   GetVehicleError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetVehicleRequest,
   output: GetVehicleResponse,
@@ -4675,27 +4685,13 @@ export type GetVehicleStatusError =
  * Retrieves information about the status of campaigns, decoder manifests, or state templates
  * associated with a vehicle.
  */
-export const getVehicleStatus: API.OperationMethod<
+export const getVehicleStatus: API.PaginatedOperationMethod<
   GetVehicleStatusRequest,
   GetVehicleStatusResponse,
   GetVehicleStatusError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetVehicleStatusRequest,
-  ) => stream.Stream<
-    GetVehicleStatusResponse,
-    GetVehicleStatusError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetVehicleStatusRequest,
-  ) => stream.Stream<
-    VehicleStatus,
-    GetVehicleStatusError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  VehicleStatus
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetVehicleStatusRequest,
   output: GetVehicleStatusResponse,
   errors: [
@@ -4713,27 +4709,7 @@ export const getVehicleStatus: API.OperationMethod<
     items: "campaigns",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetVehicleStatusRequest,
-  GetVehicleStatusResponse,
-  GetVehicleStatusError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetVehicleStatusRequest,
-  ) => stream.Stream<
-    GetVehicleStatusResponse,
-    GetVehicleStatusError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetVehicleStatusRequest,
-  ) => stream.Stream<
-    VehicleStatus,
-    GetVehicleStatusError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ImportDecoderManifestError =
   | AccessDeniedException
@@ -4753,7 +4729,7 @@ export const importDecoderManifest: API.OperationMethod<
   ImportDecoderManifestRequest,
   ImportDecoderManifestResponse,
   ImportDecoderManifestError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ImportDecoderManifestRequest,
   output: ImportDecoderManifestResponse,
@@ -4789,7 +4765,7 @@ export const importSignalCatalog: API.OperationMethod<
   ImportSignalCatalogRequest,
   ImportSignalCatalogResponse,
   ImportSignalCatalogError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ImportSignalCatalogRequest,
   output: ImportSignalCatalogResponse,
@@ -4818,27 +4794,13 @@ export type ListCampaignsError =
  *
  * This API operation uses pagination. Specify the `nextToken` parameter in the request to return more results.
  */
-export const listCampaigns: API.OperationMethod<
+export const listCampaigns: API.PaginatedOperationMethod<
   ListCampaignsRequest,
   ListCampaignsResponse,
   ListCampaignsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCampaignsRequest,
-  ) => stream.Stream<
-    ListCampaignsResponse,
-    ListCampaignsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCampaignsRequest,
-  ) => stream.Stream<
-    CampaignSummary,
-    ListCampaignsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  CampaignSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListCampaignsRequest,
   output: ListCampaignsResponse,
   errors: [AccessDeniedException, ThrottlingException, ValidationException],
@@ -4851,27 +4813,7 @@ export const listCampaigns: API.OperationMethod<
     items: "campaignSummaries",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListCampaignsRequest,
-  ListCampaignsResponse,
-  ListCampaignsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCampaignsRequest,
-  ) => stream.Stream<
-    ListCampaignsResponse,
-    ListCampaignsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCampaignsRequest,
-  ) => stream.Stream<
-    CampaignSummary,
-    ListCampaignsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListDecoderManifestNetworkInterfacesError =
   | AccessDeniedException
@@ -4885,27 +4827,13 @@ export type ListDecoderManifestNetworkInterfacesError =
  *
  * This API operation uses pagination. Specify the `nextToken` parameter in the request to return more results.
  */
-export const listDecoderManifestNetworkInterfaces: API.OperationMethod<
+export const listDecoderManifestNetworkInterfaces: API.PaginatedOperationMethod<
   ListDecoderManifestNetworkInterfacesRequest,
   ListDecoderManifestNetworkInterfacesResponse,
   ListDecoderManifestNetworkInterfacesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDecoderManifestNetworkInterfacesRequest,
-  ) => stream.Stream<
-    ListDecoderManifestNetworkInterfacesResponse,
-    ListDecoderManifestNetworkInterfacesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDecoderManifestNetworkInterfacesRequest,
-  ) => stream.Stream<
-    NetworkInterface,
-    ListDecoderManifestNetworkInterfacesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  NetworkInterface
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListDecoderManifestNetworkInterfacesRequest,
   output: ListDecoderManifestNetworkInterfacesResponse,
   errors: [
@@ -4924,27 +4852,7 @@ export const listDecoderManifestNetworkInterfaces: API.OperationMethod<
     items: "networkInterfaces",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListDecoderManifestNetworkInterfacesRequest,
-  ListDecoderManifestNetworkInterfacesResponse,
-  ListDecoderManifestNetworkInterfacesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDecoderManifestNetworkInterfacesRequest,
-  ) => stream.Stream<
-    ListDecoderManifestNetworkInterfacesResponse,
-    ListDecoderManifestNetworkInterfacesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDecoderManifestNetworkInterfacesRequest,
-  ) => stream.Stream<
-    NetworkInterface,
-    ListDecoderManifestNetworkInterfacesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListDecoderManifestsError =
   | AccessDeniedException
@@ -4957,27 +4865,13 @@ export type ListDecoderManifestsError =
  *
  * This API operation uses pagination. Specify the `nextToken` parameter in the request to return more results.
  */
-export const listDecoderManifests: API.OperationMethod<
+export const listDecoderManifests: API.PaginatedOperationMethod<
   ListDecoderManifestsRequest,
   ListDecoderManifestsResponse,
   ListDecoderManifestsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDecoderManifestsRequest,
-  ) => stream.Stream<
-    ListDecoderManifestsResponse,
-    ListDecoderManifestsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDecoderManifestsRequest,
-  ) => stream.Stream<
-    DecoderManifestSummary,
-    ListDecoderManifestsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  DecoderManifestSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListDecoderManifestsRequest,
   output: ListDecoderManifestsResponse,
   errors: [
@@ -4995,27 +4889,7 @@ export const listDecoderManifests: API.OperationMethod<
     items: "summaries",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListDecoderManifestsRequest,
-  ListDecoderManifestsResponse,
-  ListDecoderManifestsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDecoderManifestsRequest,
-  ) => stream.Stream<
-    ListDecoderManifestsResponse,
-    ListDecoderManifestsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDecoderManifestsRequest,
-  ) => stream.Stream<
-    DecoderManifestSummary,
-    ListDecoderManifestsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListDecoderManifestSignalsError =
   | AccessDeniedException
@@ -5029,27 +4903,13 @@ export type ListDecoderManifestSignalsError =
  *
  * This API operation uses pagination. Specify the `nextToken` parameter in the request to return more results.
  */
-export const listDecoderManifestSignals: API.OperationMethod<
+export const listDecoderManifestSignals: API.PaginatedOperationMethod<
   ListDecoderManifestSignalsRequest,
   ListDecoderManifestSignalsResponse,
   ListDecoderManifestSignalsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDecoderManifestSignalsRequest,
-  ) => stream.Stream<
-    ListDecoderManifestSignalsResponse,
-    ListDecoderManifestSignalsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDecoderManifestSignalsRequest,
-  ) => stream.Stream<
-    SignalDecoder,
-    ListDecoderManifestSignalsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  SignalDecoder
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListDecoderManifestSignalsRequest,
   output: ListDecoderManifestSignalsResponse,
   errors: [
@@ -5068,27 +4928,7 @@ export const listDecoderManifestSignals: API.OperationMethod<
     items: "signalDecoders",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListDecoderManifestSignalsRequest,
-  ListDecoderManifestSignalsResponse,
-  ListDecoderManifestSignalsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDecoderManifestSignalsRequest,
-  ) => stream.Stream<
-    ListDecoderManifestSignalsResponse,
-    ListDecoderManifestSignalsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDecoderManifestSignalsRequest,
-  ) => stream.Stream<
-    SignalDecoder,
-    ListDecoderManifestSignalsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListFleetsError =
   | AccessDeniedException
@@ -5102,27 +4942,13 @@ export type ListFleetsError =
  *
  * This API operation uses pagination. Specify the `nextToken` parameter in the request to return more results.
  */
-export const listFleets: API.OperationMethod<
+export const listFleets: API.PaginatedOperationMethod<
   ListFleetsRequest,
   ListFleetsResponse,
   ListFleetsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListFleetsRequest,
-  ) => stream.Stream<
-    ListFleetsResponse,
-    ListFleetsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListFleetsRequest,
-  ) => stream.Stream<
-    FleetSummary,
-    ListFleetsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  FleetSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListFleetsRequest,
   output: ListFleetsResponse,
   errors: [
@@ -5141,27 +4967,7 @@ export const listFleets: API.OperationMethod<
     items: "fleetSummaries",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListFleetsRequest,
-  ListFleetsResponse,
-  ListFleetsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListFleetsRequest,
-  ) => stream.Stream<
-    ListFleetsResponse,
-    ListFleetsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListFleetsRequest,
-  ) => stream.Stream<
-    FleetSummary,
-    ListFleetsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListFleetsForVehicleError =
   | AccessDeniedException
@@ -5175,27 +4981,13 @@ export type ListFleetsForVehicleError =
  *
  * This API operation uses pagination. Specify the `nextToken` parameter in the request to return more results.
  */
-export const listFleetsForVehicle: API.OperationMethod<
+export const listFleetsForVehicle: API.PaginatedOperationMethod<
   ListFleetsForVehicleRequest,
   ListFleetsForVehicleResponse,
   ListFleetsForVehicleError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListFleetsForVehicleRequest,
-  ) => stream.Stream<
-    ListFleetsForVehicleResponse,
-    ListFleetsForVehicleError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListFleetsForVehicleRequest,
-  ) => stream.Stream<
-    FleetId,
-    ListFleetsForVehicleError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  FleetId
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListFleetsForVehicleRequest,
   output: ListFleetsForVehicleResponse,
   errors: [
@@ -5214,27 +5006,7 @@ export const listFleetsForVehicle: API.OperationMethod<
     items: "fleets",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListFleetsForVehicleRequest,
-  ListFleetsForVehicleResponse,
-  ListFleetsForVehicleError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListFleetsForVehicleRequest,
-  ) => stream.Stream<
-    ListFleetsForVehicleResponse,
-    ListFleetsForVehicleError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListFleetsForVehicleRequest,
-  ) => stream.Stream<
-    FleetId,
-    ListFleetsForVehicleError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListModelManifestNodesError =
   | AccessDeniedException
@@ -5249,27 +5021,13 @@ export type ListModelManifestNodesError =
  *
  * This API operation uses pagination. Specify the `nextToken` parameter in the request to return more results.
  */
-export const listModelManifestNodes: API.OperationMethod<
+export const listModelManifestNodes: API.PaginatedOperationMethod<
   ListModelManifestNodesRequest,
   ListModelManifestNodesResponse,
   ListModelManifestNodesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListModelManifestNodesRequest,
-  ) => stream.Stream<
-    ListModelManifestNodesResponse,
-    ListModelManifestNodesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListModelManifestNodesRequest,
-  ) => stream.Stream<
-    Node,
-    ListModelManifestNodesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Node
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListModelManifestNodesRequest,
   output: ListModelManifestNodesResponse,
   errors: [
@@ -5289,27 +5047,7 @@ export const listModelManifestNodes: API.OperationMethod<
     items: "nodes",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListModelManifestNodesRequest,
-  ListModelManifestNodesResponse,
-  ListModelManifestNodesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListModelManifestNodesRequest,
-  ) => stream.Stream<
-    ListModelManifestNodesResponse,
-    ListModelManifestNodesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListModelManifestNodesRequest,
-  ) => stream.Stream<
-    Node,
-    ListModelManifestNodesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListModelManifestsError =
   | AccessDeniedException
@@ -5322,27 +5060,13 @@ export type ListModelManifestsError =
  *
  * This API operation uses pagination. Specify the `nextToken` parameter in the request to return more results.
  */
-export const listModelManifests: API.OperationMethod<
+export const listModelManifests: API.PaginatedOperationMethod<
   ListModelManifestsRequest,
   ListModelManifestsResponse,
   ListModelManifestsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListModelManifestsRequest,
-  ) => stream.Stream<
-    ListModelManifestsResponse,
-    ListModelManifestsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListModelManifestsRequest,
-  ) => stream.Stream<
-    ModelManifestSummary,
-    ListModelManifestsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ModelManifestSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListModelManifestsRequest,
   output: ListModelManifestsResponse,
   errors: [
@@ -5360,27 +5084,7 @@ export const listModelManifests: API.OperationMethod<
     items: "summaries",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListModelManifestsRequest,
-  ListModelManifestsResponse,
-  ListModelManifestsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListModelManifestsRequest,
-  ) => stream.Stream<
-    ListModelManifestsResponse,
-    ListModelManifestsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListModelManifestsRequest,
-  ) => stream.Stream<
-    ModelManifestSummary,
-    ListModelManifestsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListSignalCatalogNodesError =
   | AccessDeniedException
@@ -5395,27 +5099,13 @@ export type ListSignalCatalogNodesError =
  *
  * This API operation uses pagination. Specify the `nextToken` parameter in the request to return more results.
  */
-export const listSignalCatalogNodes: API.OperationMethod<
+export const listSignalCatalogNodes: API.PaginatedOperationMethod<
   ListSignalCatalogNodesRequest,
   ListSignalCatalogNodesResponse,
   ListSignalCatalogNodesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSignalCatalogNodesRequest,
-  ) => stream.Stream<
-    ListSignalCatalogNodesResponse,
-    ListSignalCatalogNodesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSignalCatalogNodesRequest,
-  ) => stream.Stream<
-    Node,
-    ListSignalCatalogNodesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Node
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListSignalCatalogNodesRequest,
   output: ListSignalCatalogNodesResponse,
   errors: [
@@ -5435,27 +5125,7 @@ export const listSignalCatalogNodes: API.OperationMethod<
     items: "nodes",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListSignalCatalogNodesRequest,
-  ListSignalCatalogNodesResponse,
-  ListSignalCatalogNodesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSignalCatalogNodesRequest,
-  ) => stream.Stream<
-    ListSignalCatalogNodesResponse,
-    ListSignalCatalogNodesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSignalCatalogNodesRequest,
-  ) => stream.Stream<
-    Node,
-    ListSignalCatalogNodesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListSignalCatalogsError =
   | AccessDeniedException
@@ -5471,27 +5141,13 @@ export type ListSignalCatalogsError =
  *
  * This API operation uses pagination. Specify the `nextToken` parameter in the request to return more results.
  */
-export const listSignalCatalogs: API.OperationMethod<
+export const listSignalCatalogs: API.PaginatedOperationMethod<
   ListSignalCatalogsRequest,
   ListSignalCatalogsResponse,
   ListSignalCatalogsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSignalCatalogsRequest,
-  ) => stream.Stream<
-    ListSignalCatalogsResponse,
-    ListSignalCatalogsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSignalCatalogsRequest,
-  ) => stream.Stream<
-    SignalCatalogSummary,
-    ListSignalCatalogsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  SignalCatalogSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListSignalCatalogsRequest,
   output: ListSignalCatalogsResponse,
   errors: [
@@ -5509,27 +5165,7 @@ export const listSignalCatalogs: API.OperationMethod<
     items: "summaries",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListSignalCatalogsRequest,
-  ListSignalCatalogsResponse,
-  ListSignalCatalogsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSignalCatalogsRequest,
-  ) => stream.Stream<
-    ListSignalCatalogsResponse,
-    ListSignalCatalogsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSignalCatalogsRequest,
-  ) => stream.Stream<
-    SignalCatalogSummary,
-    ListSignalCatalogsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListStateTemplatesError =
   | AccessDeniedException
@@ -5542,27 +5178,13 @@ export type ListStateTemplatesError =
  *
  * Access to certain Amazon Web Services IoT FleetWise features is currently gated. For more information, see Amazon Web Services Region and feature availability in the *Amazon Web Services IoT FleetWise Developer Guide*.
  */
-export const listStateTemplates: API.OperationMethod<
+export const listStateTemplates: API.PaginatedOperationMethod<
   ListStateTemplatesRequest,
   ListStateTemplatesResponse,
   ListStateTemplatesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListStateTemplatesRequest,
-  ) => stream.Stream<
-    ListStateTemplatesResponse,
-    ListStateTemplatesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListStateTemplatesRequest,
-  ) => stream.Stream<
-    StateTemplateSummary,
-    ListStateTemplatesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  StateTemplateSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListStateTemplatesRequest,
   output: ListStateTemplatesResponse,
   errors: [
@@ -5580,27 +5202,7 @@ export const listStateTemplates: API.OperationMethod<
     items: "summaries",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListStateTemplatesRequest,
-  ListStateTemplatesResponse,
-  ListStateTemplatesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListStateTemplatesRequest,
-  ) => stream.Stream<
-    ListStateTemplatesResponse,
-    ListStateTemplatesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListStateTemplatesRequest,
-  ) => stream.Stream<
-    StateTemplateSummary,
-    ListStateTemplatesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsForResourceError =
   | AccessDeniedException
@@ -5616,7 +5218,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceRequest,
   ListTagsForResourceResponse,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -5643,27 +5245,13 @@ export type ListVehiclesError =
  *
  * This API operation uses pagination. Specify the `nextToken` parameter in the request to return more results.
  */
-export const listVehicles: API.OperationMethod<
+export const listVehicles: API.PaginatedOperationMethod<
   ListVehiclesRequest,
   ListVehiclesResponse,
   ListVehiclesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListVehiclesRequest,
-  ) => stream.Stream<
-    ListVehiclesResponse,
-    ListVehiclesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListVehiclesRequest,
-  ) => stream.Stream<
-    VehicleSummary,
-    ListVehiclesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  VehicleSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListVehiclesRequest,
   output: ListVehiclesResponse,
   errors: [
@@ -5681,27 +5269,7 @@ export const listVehicles: API.OperationMethod<
     items: "vehicleSummaries",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListVehiclesRequest,
-  ListVehiclesResponse,
-  ListVehiclesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListVehiclesRequest,
-  ) => stream.Stream<
-    ListVehiclesResponse,
-    ListVehiclesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListVehiclesRequest,
-  ) => stream.Stream<
-    VehicleSummary,
-    ListVehiclesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListVehiclesInFleetError =
   | AccessDeniedException
@@ -5715,27 +5283,13 @@ export type ListVehiclesInFleetError =
  *
  * This API operation uses pagination. Specify the `nextToken` parameter in the request to return more results.
  */
-export const listVehiclesInFleet: API.OperationMethod<
+export const listVehiclesInFleet: API.PaginatedOperationMethod<
   ListVehiclesInFleetRequest,
   ListVehiclesInFleetResponse,
   ListVehiclesInFleetError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListVehiclesInFleetRequest,
-  ) => stream.Stream<
-    ListVehiclesInFleetResponse,
-    ListVehiclesInFleetError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListVehiclesInFleetRequest,
-  ) => stream.Stream<
-    VehicleName,
-    ListVehiclesInFleetError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  VehicleName
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListVehiclesInFleetRequest,
   output: ListVehiclesInFleetResponse,
   errors: [
@@ -5754,27 +5308,7 @@ export const listVehiclesInFleet: API.OperationMethod<
     items: "vehicles",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListVehiclesInFleetRequest,
-  ListVehiclesInFleetResponse,
-  ListVehiclesInFleetError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListVehiclesInFleetRequest,
-  ) => stream.Stream<
-    ListVehiclesInFleetResponse,
-    ListVehiclesInFleetError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListVehiclesInFleetRequest,
-  ) => stream.Stream<
-    VehicleName,
-    ListVehiclesInFleetError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type PutEncryptionConfigurationError =
   | AccessDeniedException
@@ -5794,7 +5328,7 @@ export const putEncryptionConfiguration: API.OperationMethod<
   PutEncryptionConfigurationRequest,
   PutEncryptionConfigurationResponse,
   PutEncryptionConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutEncryptionConfigurationRequest,
   output: PutEncryptionConfigurationResponse,
@@ -5825,7 +5359,7 @@ export const putLoggingOptions: API.OperationMethod<
   PutLoggingOptionsRequest,
   PutLoggingOptionsResponse,
   PutLoggingOptionsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutLoggingOptionsRequest,
   output: PutLoggingOptionsResponse,
@@ -5878,7 +5412,7 @@ export const registerAccount: API.OperationMethod<
   RegisterAccountRequest,
   RegisterAccountResponse,
   RegisterAccountError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RegisterAccountRequest,
   output: RegisterAccountResponse,
@@ -5910,7 +5444,7 @@ export const tagResource: API.OperationMethod<
   TagResourceRequest,
   TagResourceResponse,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -5940,7 +5474,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceRequest,
   UntagResourceResponse,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -5970,7 +5504,7 @@ export const updateCampaign: API.OperationMethod<
   UpdateCampaignRequest,
   UpdateCampaignResponse,
   UpdateCampaignError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateCampaignRequest,
   output: UpdateCampaignResponse,
@@ -6005,7 +5539,7 @@ export const updateDecoderManifest: API.OperationMethod<
   UpdateDecoderManifestRequest,
   UpdateDecoderManifestResponse,
   UpdateDecoderManifestError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateDecoderManifestRequest,
   output: UpdateDecoderManifestResponse,
@@ -6038,7 +5572,7 @@ export const updateFleet: API.OperationMethod<
   UpdateFleetRequest,
   UpdateFleetResponse,
   UpdateFleetError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateFleetRequest,
   output: UpdateFleetResponse,
@@ -6072,7 +5606,7 @@ export const updateModelManifest: API.OperationMethod<
   UpdateModelManifestRequest,
   UpdateModelManifestResponse,
   UpdateModelManifestError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateModelManifestRequest,
   output: UpdateModelManifestResponse,
@@ -6108,7 +5642,7 @@ export const updateSignalCatalog: API.OperationMethod<
   UpdateSignalCatalogRequest,
   UpdateSignalCatalogResponse,
   UpdateSignalCatalogError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateSignalCatalogRequest,
   output: UpdateSignalCatalogResponse,
@@ -6146,7 +5680,7 @@ export const updateStateTemplate: API.OperationMethod<
   UpdateStateTemplateRequest,
   UpdateStateTemplateResponse,
   UpdateStateTemplateError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateStateTemplateRequest,
   output: UpdateStateTemplateResponse,
@@ -6182,7 +5716,7 @@ export const updateVehicle: API.OperationMethod<
   UpdateVehicleRequest,
   UpdateVehicleResponse,
   UpdateVehicleError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateVehicleRequest,
   output: UpdateVehicleResponse,

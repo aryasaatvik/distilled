@@ -1,7 +1,6 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as redacted from "effect/Redacted";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -9,7 +8,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 import { SensitiveString } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "Chime SDK Meetings",
@@ -92,7 +90,7 @@ export class BadRequestException
     "BadRequestException",
     {
       Code: S.optional(S.String),
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       RequestId: S.optional(S.String),
     },
     T.HttpError(400),
@@ -102,7 +100,7 @@ export class ConflictException
     "ConflictException",
     {
       Code: S.optional(S.String),
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       RequestId: S.optional(S.String),
     },
     T.HttpError(409),
@@ -112,7 +110,7 @@ export class ForbiddenException
     "ForbiddenException",
     {
       Code: S.optional(S.String),
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       RequestId: S.optional(S.String),
     },
     T.HttpError(403),
@@ -122,7 +120,7 @@ export class LimitExceededException
     "LimitExceededException",
     {
       Code: S.optional(S.String),
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       RequestId: S.optional(S.String),
     },
     T.HttpError(400),
@@ -132,7 +130,7 @@ export class NotFoundException
     "NotFoundException",
     {
       Code: S.optional(S.String),
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       RequestId: S.optional(S.String),
     },
     T.HttpError(404),
@@ -142,7 +140,7 @@ export class ResourceNotFoundException
     "ResourceNotFoundException",
     {
       Code: S.optional(S.String),
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       RequestId: S.optional(S.String),
       ResourceName: S.optional(S.String),
     },
@@ -153,7 +151,7 @@ export class ServiceFailureException
     "ServiceFailureException",
     {
       Code: S.optional(S.String),
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       RequestId: S.optional(S.String),
     },
     T.HttpError(500),
@@ -163,7 +161,7 @@ export class ServiceUnavailableException
     "ServiceUnavailableException",
     {
       Code: S.optional(S.String),
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       RequestId: S.optional(S.String),
       RetryAfterSeconds: S.optional(S.String).pipe(T.HttpHeader("Retry-After")),
     },
@@ -174,7 +172,7 @@ export class ThrottlingException
     "ThrottlingException",
     {
       Code: S.optional(S.String),
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       RequestId: S.optional(S.String),
     },
     T.HttpError(429),
@@ -184,7 +182,7 @@ export class TooManyTagsException
     "TooManyTagsException",
     {
       Code: S.optional(S.String),
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       RequestId: S.optional(S.String),
       ResourceName: S.optional(S.String),
     },
@@ -195,7 +193,7 @@ export class UnauthorizedException
     "UnauthorizedException",
     {
       Code: S.optional(S.String),
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       RequestId: S.optional(S.String),
     },
     T.HttpError(401),
@@ -205,7 +203,7 @@ export class UnprocessableEntityException
     "UnprocessableEntityException",
     {
       Code: S.optional(S.String),
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       RequestId: S.optional(S.String),
     },
     T.HttpError(422),
@@ -1134,7 +1132,7 @@ export const batchCreateAttendee: API.OperationMethod<
   BatchCreateAttendeeRequest,
   BatchCreateAttendeeResponse,
   BatchCreateAttendeeError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchCreateAttendeeRequest,
   output: BatchCreateAttendeeResponse,
@@ -1200,7 +1198,7 @@ export const batchUpdateAttendeeCapabilitiesExcept: API.OperationMethod<
   BatchUpdateAttendeeCapabilitiesExceptRequest,
   BatchUpdateAttendeeCapabilitiesExceptResponse,
   BatchUpdateAttendeeCapabilitiesExceptError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchUpdateAttendeeCapabilitiesExceptRequest,
   output: BatchUpdateAttendeeCapabilitiesExceptResponse,
@@ -1240,7 +1238,7 @@ export const createAttendee: API.OperationMethod<
   CreateAttendeeRequest,
   CreateAttendeeResponse,
   CreateAttendeeError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateAttendeeRequest,
   output: CreateAttendeeResponse,
@@ -1290,7 +1288,7 @@ export const createMeeting: API.OperationMethod<
   CreateMeetingRequest,
   CreateMeetingResponse,
   CreateMeetingError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateMeetingRequest,
   output: CreateMeetingResponse,
@@ -1339,7 +1337,7 @@ export const createMeetingWithAttendees: API.OperationMethod<
   CreateMeetingWithAttendeesRequest,
   CreateMeetingWithAttendeesResponse,
   CreateMeetingWithAttendeesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateMeetingWithAttendeesRequest,
   output: CreateMeetingWithAttendeesResponse,
@@ -1377,7 +1375,7 @@ export const deleteAttendee: API.OperationMethod<
   DeleteAttendeeRequest,
   DeleteAttendeeResponse,
   DeleteAttendeeError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteAttendeeRequest,
   output: DeleteAttendeeResponse,
@@ -1414,7 +1412,7 @@ export const deleteMeeting: API.OperationMethod<
   DeleteMeetingRequest,
   DeleteMeetingResponse,
   DeleteMeetingError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteMeetingRequest,
   output: DeleteMeetingResponse,
@@ -1450,7 +1448,7 @@ export const getAttendee: API.OperationMethod<
   GetAttendeeRequest,
   GetAttendeeResponse,
   GetAttendeeError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetAttendeeRequest,
   output: GetAttendeeResponse,
@@ -1486,7 +1484,7 @@ export const getMeeting: API.OperationMethod<
   GetMeetingRequest,
   GetMeetingResponse,
   GetMeetingError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetMeetingRequest,
   output: GetMeetingResponse,
@@ -1518,27 +1516,13 @@ export type ListAttendeesError =
  * Using the Amazon Chime SDK
  * in the *Amazon Chime Developer Guide*.
  */
-export const listAttendees: API.OperationMethod<
+export const listAttendees: API.PaginatedOperationMethod<
   ListAttendeesRequest,
   ListAttendeesResponse,
   ListAttendeesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAttendeesRequest,
-  ) => stream.Stream<
-    ListAttendeesResponse,
-    ListAttendeesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAttendeesRequest,
-  ) => stream.Stream<
-    unknown,
-    ListAttendeesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListAttendeesRequest,
   output: ListAttendeesResponse,
   errors: [
@@ -1558,27 +1542,7 @@ export const listAttendees: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListAttendeesRequest,
-  ListAttendeesResponse,
-  ListAttendeesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAttendeesRequest,
-  ) => stream.Stream<
-    ListAttendeesResponse,
-    ListAttendeesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAttendeesRequest,
-  ) => stream.Stream<
-    unknown,
-    ListAttendeesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsForResourceError =
   | BadRequestException
@@ -1597,7 +1561,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceRequest,
   ListTagsForResourceResponse,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -1648,7 +1612,7 @@ export const startMeetingTranscription: API.OperationMethod<
   StartMeetingTranscriptionRequest,
   StartMeetingTranscriptionResponse,
   StartMeetingTranscriptionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartMeetingTranscriptionRequest,
   output: StartMeetingTranscriptionResponse,
@@ -1694,7 +1658,7 @@ export const stopMeetingTranscription: API.OperationMethod<
   StopMeetingTranscriptionRequest,
   StopMeetingTranscriptionResponse,
   StopMeetingTranscriptionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StopMeetingTranscriptionRequest,
   output: StopMeetingTranscriptionResponse,
@@ -1731,7 +1695,7 @@ export const tagResource: API.OperationMethod<
   TagResourceRequest,
   TagResourceResponse,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -1783,7 +1747,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceRequest,
   UntagResourceResponse,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -1848,7 +1812,7 @@ export const updateAttendeeCapabilities: API.OperationMethod<
   UpdateAttendeeCapabilitiesRequest,
   UpdateAttendeeCapabilitiesResponse,
   UpdateAttendeeCapabilitiesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateAttendeeCapabilitiesRequest,
   output: UpdateAttendeeCapabilitiesResponse,

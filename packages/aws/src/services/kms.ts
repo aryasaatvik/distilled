@@ -1,7 +1,6 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as redacted from "effect/Redacted";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -9,7 +8,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const ns = T.XmlNamespace("https://trent.amazonaws.com/doc/2014-11-01/");
 const svc = T.AwsApiService({ sdkId: "KMS", serviceShapeName: "TrentService" });
@@ -88,7 +86,7 @@ const rules = T.EndpointResolver((p, _) => {
 export class AlreadyExistsException
   extends /*@__PURE__*/ S.TaggedErrorClass<AlreadyExistsException>()(
     "AlreadyExistsException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "AlreadyExists", httpResponseCode: 409 }),
       T.HttpError(409),
@@ -97,7 +95,7 @@ export class AlreadyExistsException
 export class CloudHsmClusterInUseException
   extends /*@__PURE__*/ S.TaggedErrorClass<CloudHsmClusterInUseException>()(
     "CloudHsmClusterInUseException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "CloudHsmClusterInUseException",
@@ -109,7 +107,7 @@ export class CloudHsmClusterInUseException
 export class CloudHsmClusterInvalidConfigurationException
   extends /*@__PURE__*/ S.TaggedErrorClass<CloudHsmClusterInvalidConfigurationException>()(
     "CloudHsmClusterInvalidConfigurationException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "CloudHsmClusterInvalidConfigurationException",
@@ -121,7 +119,7 @@ export class CloudHsmClusterInvalidConfigurationException
 export class CloudHsmClusterNotActiveException
   extends /*@__PURE__*/ S.TaggedErrorClass<CloudHsmClusterNotActiveException>()(
     "CloudHsmClusterNotActiveException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "CloudHsmClusterNotActiveException",
@@ -133,7 +131,7 @@ export class CloudHsmClusterNotActiveException
 export class CloudHsmClusterNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<CloudHsmClusterNotFoundException>()(
     "CloudHsmClusterNotFoundException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "CloudHsmClusterNotFoundException",
@@ -145,7 +143,7 @@ export class CloudHsmClusterNotFoundException
 export class CloudHsmClusterNotRelatedException
   extends /*@__PURE__*/ S.TaggedErrorClass<CloudHsmClusterNotRelatedException>()(
     "CloudHsmClusterNotRelatedException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "CloudHsmClusterNotRelatedException",
@@ -157,7 +155,7 @@ export class CloudHsmClusterNotRelatedException
 export class ConflictException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
     "ConflictException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "ConflictException", httpResponseCode: 409 }),
       T.HttpError(409),
@@ -166,7 +164,7 @@ export class ConflictException
 export class CustomKeyStoreHasCMKsException
   extends /*@__PURE__*/ S.TaggedErrorClass<CustomKeyStoreHasCMKsException>()(
     "CustomKeyStoreHasCMKsException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "CustomKeyStoreHasCMKsException",
@@ -178,7 +176,7 @@ export class CustomKeyStoreHasCMKsException
 export class CustomKeyStoreInvalidStateException
   extends /*@__PURE__*/ S.TaggedErrorClass<CustomKeyStoreInvalidStateException>()(
     "CustomKeyStoreInvalidStateException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "CustomKeyStoreInvalidStateException",
@@ -190,7 +188,7 @@ export class CustomKeyStoreInvalidStateException
 export class CustomKeyStoreNameInUseException
   extends /*@__PURE__*/ S.TaggedErrorClass<CustomKeyStoreNameInUseException>()(
     "CustomKeyStoreNameInUseException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "CustomKeyStoreNameInUseException",
@@ -202,7 +200,7 @@ export class CustomKeyStoreNameInUseException
 export class CustomKeyStoreNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<CustomKeyStoreNotFoundException>()(
     "CustomKeyStoreNotFoundException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "CustomKeyStoreNotFoundException",
@@ -214,7 +212,7 @@ export class CustomKeyStoreNotFoundException
 export class DependencyTimeoutException
   extends /*@__PURE__*/ S.TaggedErrorClass<DependencyTimeoutException>()(
     "DependencyTimeoutException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "DependencyTimeout", httpResponseCode: 503 }),
       T.HttpError(503),
@@ -223,7 +221,7 @@ export class DependencyTimeoutException
 export class DisabledException
   extends /*@__PURE__*/ S.TaggedErrorClass<DisabledException>()(
     "DisabledException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "Disabled", httpResponseCode: 409 }),
       T.HttpError(409),
@@ -232,7 +230,7 @@ export class DisabledException
 export class DryRunOperationException
   extends /*@__PURE__*/ S.TaggedErrorClass<DryRunOperationException>()(
     "DryRunOperationException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "DryRunOperation", httpResponseCode: 412 }),
       T.HttpError(412),
@@ -241,7 +239,7 @@ export class DryRunOperationException
 export class ExpiredImportTokenException
   extends /*@__PURE__*/ S.TaggedErrorClass<ExpiredImportTokenException>()(
     "ExpiredImportTokenException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "ExpiredImportTokenException",
@@ -253,7 +251,7 @@ export class ExpiredImportTokenException
 export class IncorrectKeyException
   extends /*@__PURE__*/ S.TaggedErrorClass<IncorrectKeyException>()(
     "IncorrectKeyException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "IncorrectKeyException", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -262,7 +260,7 @@ export class IncorrectKeyException
 export class IncorrectKeyMaterialException
   extends /*@__PURE__*/ S.TaggedErrorClass<IncorrectKeyMaterialException>()(
     "IncorrectKeyMaterialException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "IncorrectKeyMaterialException",
@@ -274,7 +272,7 @@ export class IncorrectKeyMaterialException
 export class IncorrectTrustAnchorException
   extends /*@__PURE__*/ S.TaggedErrorClass<IncorrectTrustAnchorException>()(
     "IncorrectTrustAnchorException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "IncorrectTrustAnchorException",
@@ -286,7 +284,7 @@ export class IncorrectTrustAnchorException
 export class InvalidAliasNameException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidAliasNameException>()(
     "InvalidAliasNameException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "InvalidAliasName", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -295,7 +293,7 @@ export class InvalidAliasNameException
 export class InvalidArnException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidArnException>()(
     "InvalidArnException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "InvalidArn", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -304,7 +302,7 @@ export class InvalidArnException
 export class InvalidCiphertextException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidCiphertextException>()(
     "InvalidCiphertextException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "InvalidCiphertext", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -313,7 +311,7 @@ export class InvalidCiphertextException
 export class InvalidGrantIdException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidGrantIdException>()(
     "InvalidGrantIdException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "InvalidGrantId", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -322,7 +320,7 @@ export class InvalidGrantIdException
 export class InvalidGrantTokenException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidGrantTokenException>()(
     "InvalidGrantTokenException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "InvalidGrantToken", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -331,7 +329,7 @@ export class InvalidGrantTokenException
 export class InvalidImportTokenException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidImportTokenException>()(
     "InvalidImportTokenException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "InvalidImportTokenException",
@@ -343,7 +341,7 @@ export class InvalidImportTokenException
 export class InvalidKeyUsageException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidKeyUsageException>()(
     "InvalidKeyUsageException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "InvalidKeyUsage", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -352,7 +350,7 @@ export class InvalidKeyUsageException
 export class InvalidMarkerException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidMarkerException>()(
     "InvalidMarkerException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "InvalidMarker", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -361,7 +359,7 @@ export class InvalidMarkerException
 export class KeyUnavailableException
   extends /*@__PURE__*/ S.TaggedErrorClass<KeyUnavailableException>()(
     "KeyUnavailableException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "KeyUnavailable", httpResponseCode: 500 }),
       T.HttpError(500),
@@ -370,7 +368,7 @@ export class KeyUnavailableException
 export class KMSInternalException
   extends /*@__PURE__*/ S.TaggedErrorClass<KMSInternalException>()(
     "KMSInternalException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "KMSInternal", httpResponseCode: 500 }),
       T.HttpError(500),
@@ -379,7 +377,7 @@ export class KMSInternalException
 export class KMSInvalidMacException
   extends /*@__PURE__*/ S.TaggedErrorClass<KMSInvalidMacException>()(
     "KMSInvalidMacException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "KMSInvalidMac", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -388,7 +386,7 @@ export class KMSInvalidMacException
 export class KMSInvalidSignatureException
   extends /*@__PURE__*/ S.TaggedErrorClass<KMSInvalidSignatureException>()(
     "KMSInvalidSignatureException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "KMSInvalidSignature", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -397,7 +395,7 @@ export class KMSInvalidSignatureException
 export class KMSInvalidStateException
   extends /*@__PURE__*/ S.TaggedErrorClass<KMSInvalidStateException>()(
     "KMSInvalidStateException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "KMSInvalidStateException",
@@ -409,7 +407,7 @@ export class KMSInvalidStateException
 export class LimitExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<LimitExceededException>()(
     "LimitExceededException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "LimitExceeded", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -418,7 +416,7 @@ export class LimitExceededException
 export class MalformedPolicyDocumentException
   extends /*@__PURE__*/ S.TaggedErrorClass<MalformedPolicyDocumentException>()(
     "MalformedPolicyDocumentException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "MalformedPolicyDocument",
@@ -430,7 +428,7 @@ export class MalformedPolicyDocumentException
 export class NotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<NotFoundException>()(
     "NotFoundException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "NotFound", httpResponseCode: 404 }),
       T.HttpError(404),
@@ -439,7 +437,7 @@ export class NotFoundException
 export class TagException
   extends /*@__PURE__*/ S.TaggedErrorClass<TagException>()(
     "TagException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "TagException", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -448,7 +446,7 @@ export class TagException
 export class UnsupportedOperationException
   extends /*@__PURE__*/ S.TaggedErrorClass<UnsupportedOperationException>()(
     "UnsupportedOperationException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "UnsupportedOperation", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -457,7 +455,7 @@ export class UnsupportedOperationException
 export class XksKeyAlreadyInUseException
   extends /*@__PURE__*/ S.TaggedErrorClass<XksKeyAlreadyInUseException>()(
     "XksKeyAlreadyInUseException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "XksKeyAlreadyInUse", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -466,7 +464,7 @@ export class XksKeyAlreadyInUseException
 export class XksKeyInvalidConfigurationException
   extends /*@__PURE__*/ S.TaggedErrorClass<XksKeyInvalidConfigurationException>()(
     "XksKeyInvalidConfigurationException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "XksKeyInvalidConfiguration",
@@ -478,7 +476,7 @@ export class XksKeyInvalidConfigurationException
 export class XksKeyNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<XksKeyNotFoundException>()(
     "XksKeyNotFoundException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "XksKeyNotFoundException",
@@ -490,7 +488,7 @@ export class XksKeyNotFoundException
 export class XksProxyIncorrectAuthenticationCredentialException
   extends /*@__PURE__*/ S.TaggedErrorClass<XksProxyIncorrectAuthenticationCredentialException>()(
     "XksProxyIncorrectAuthenticationCredentialException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "XksProxyIncorrectAuthenticationCredentialException",
@@ -502,7 +500,7 @@ export class XksProxyIncorrectAuthenticationCredentialException
 export class XksProxyInvalidConfigurationException
   extends /*@__PURE__*/ S.TaggedErrorClass<XksProxyInvalidConfigurationException>()(
     "XksProxyInvalidConfigurationException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "XksProxyInvalidConfigurationException",
@@ -514,7 +512,7 @@ export class XksProxyInvalidConfigurationException
 export class XksProxyInvalidResponseException
   extends /*@__PURE__*/ S.TaggedErrorClass<XksProxyInvalidResponseException>()(
     "XksProxyInvalidResponseException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "XksProxyInvalidResponseException",
@@ -526,7 +524,7 @@ export class XksProxyInvalidResponseException
 export class XksProxyUriEndpointInUseException
   extends /*@__PURE__*/ S.TaggedErrorClass<XksProxyUriEndpointInUseException>()(
     "XksProxyUriEndpointInUseException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "XksProxyUriEndpointInUseException",
@@ -538,7 +536,7 @@ export class XksProxyUriEndpointInUseException
 export class XksProxyUriInUseException
   extends /*@__PURE__*/ S.TaggedErrorClass<XksProxyUriInUseException>()(
     "XksProxyUriInUseException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "XksProxyUriInUseException",
@@ -550,7 +548,7 @@ export class XksProxyUriInUseException
 export class XksProxyUriUnreachableException
   extends /*@__PURE__*/ S.TaggedErrorClass<XksProxyUriUnreachableException>()(
     "XksProxyUriUnreachableException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "XksProxyUriUnreachableException",
@@ -562,7 +560,7 @@ export class XksProxyUriUnreachableException
 export class XksProxyVpcEndpointServiceInUseException
   extends /*@__PURE__*/ S.TaggedErrorClass<XksProxyVpcEndpointServiceInUseException>()(
     "XksProxyVpcEndpointServiceInUseException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "XksProxyVpcEndpointServiceInUseException",
@@ -574,7 +572,7 @@ export class XksProxyVpcEndpointServiceInUseException
 export class XksProxyVpcEndpointServiceInvalidConfigurationException
   extends /*@__PURE__*/ S.TaggedErrorClass<XksProxyVpcEndpointServiceInvalidConfigurationException>()(
     "XksProxyVpcEndpointServiceInvalidConfigurationException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "XksProxyVpcEndpointServiceInvalidConfigurationException",
@@ -586,7 +584,7 @@ export class XksProxyVpcEndpointServiceInvalidConfigurationException
 export class XksProxyVpcEndpointServiceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<XksProxyVpcEndpointServiceNotFoundException>()(
     "XksProxyVpcEndpointServiceNotFoundException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "XksProxyVpcEndpointServiceNotFoundException",
@@ -3214,7 +3212,7 @@ export const cancelKeyDeletion: API.OperationMethod<
   CancelKeyDeletionRequest,
   CancelKeyDeletionResponse,
   CancelKeyDeletionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CancelKeyDeletionRequest,
   output: CancelKeyDeletionResponse,
@@ -3325,7 +3323,7 @@ export const connectCustomKeyStore: API.OperationMethod<
   ConnectCustomKeyStoreRequest,
   ConnectCustomKeyStoreResponse,
   ConnectCustomKeyStoreError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ConnectCustomKeyStoreRequest,
   output: ConnectCustomKeyStoreResponse,
@@ -3401,7 +3399,7 @@ export const createAlias: API.OperationMethod<
   CreateAliasRequest,
   CreateAliasResponse,
   CreateAliasError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateAliasRequest,
   output: CreateAliasResponse,
@@ -3517,7 +3515,7 @@ export const createCustomKeyStore: API.OperationMethod<
   CreateCustomKeyStoreRequest,
   CreateCustomKeyStoreResponse,
   CreateCustomKeyStoreError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateCustomKeyStoreRequest,
   output: CreateCustomKeyStoreResponse,
@@ -3618,7 +3616,7 @@ export const createGrant: API.OperationMethod<
   CreateGrantRequest,
   CreateGrantResponse,
   CreateGrantError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateGrantRequest,
   output: CreateGrantResponse,
@@ -3824,7 +3822,7 @@ export const createKey: API.OperationMethod<
   CreateKeyRequest,
   CreateKeyResponse,
   CreateKeyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateKeyRequest,
   output: CreateKeyResponse,
@@ -3939,7 +3937,7 @@ export const decrypt: API.OperationMethod<
   DecryptRequest,
   DecryptResponse,
   DecryptError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DecryptRequest,
   output: DecryptResponse,
@@ -4007,7 +4005,7 @@ export const deleteAlias: API.OperationMethod<
   DeleteAliasRequest,
   DeleteAliasResponse,
   DeleteAliasError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteAliasRequest,
   output: DeleteAliasResponse,
@@ -4083,7 +4081,7 @@ export const deleteCustomKeyStore: API.OperationMethod<
   DeleteCustomKeyStoreRequest,
   DeleteCustomKeyStoreResponse,
   DeleteCustomKeyStoreError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteCustomKeyStoreRequest,
   output: DeleteCustomKeyStoreResponse,
@@ -4147,7 +4145,7 @@ export const deleteImportedKeyMaterial: API.OperationMethod<
   DeleteImportedKeyMaterialRequest,
   DeleteImportedKeyMaterialResponse,
   DeleteImportedKeyMaterialError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteImportedKeyMaterialRequest,
   output: DeleteImportedKeyMaterialResponse,
@@ -4255,7 +4253,7 @@ export const deriveSharedSecret: API.OperationMethod<
   DeriveSharedSecretRequest,
   DeriveSharedSecretResponse,
   DeriveSharedSecretError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeriveSharedSecretRequest,
   output: DeriveSharedSecretResponse,
@@ -4331,27 +4329,13 @@ export type DescribeCustomKeyStoresError =
  * **Eventual consistency**: The KMS API follows an eventual consistency model.
  * For more information, see KMS eventual consistency.
  */
-export const describeCustomKeyStores: API.OperationMethod<
+export const describeCustomKeyStores: API.PaginatedOperationMethod<
   DescribeCustomKeyStoresRequest,
   DescribeCustomKeyStoresResponse,
   DescribeCustomKeyStoresError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeCustomKeyStoresRequest,
-  ) => stream.Stream<
-    DescribeCustomKeyStoresResponse,
-    DescribeCustomKeyStoresError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeCustomKeyStoresRequest,
-  ) => stream.Stream<
-    CustomKeyStoresListEntry,
-    DescribeCustomKeyStoresError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  CustomKeyStoresListEntry
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeCustomKeyStoresRequest,
   output: DescribeCustomKeyStoresResponse,
   errors: [
@@ -4368,27 +4352,7 @@ export const describeCustomKeyStores: API.OperationMethod<
     items: "CustomKeyStores",
     pageSize: "Limit",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeCustomKeyStoresRequest,
-  DescribeCustomKeyStoresResponse,
-  DescribeCustomKeyStoresError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeCustomKeyStoresRequest,
-  ) => stream.Stream<
-    DescribeCustomKeyStoresResponse,
-    DescribeCustomKeyStoresError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeCustomKeyStoresRequest,
-  ) => stream.Stream<
-    CustomKeyStoresListEntry,
-    DescribeCustomKeyStoresError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeKeyError =
   | DependencyTimeoutException
@@ -4459,7 +4423,7 @@ export const describeKey: API.OperationMethod<
   DescribeKeyRequest,
   DescribeKeyResponse,
   DescribeKeyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeKeyRequest,
   output: DescribeKeyResponse,
@@ -4504,7 +4468,7 @@ export const disableKey: API.OperationMethod<
   DisableKeyRequest,
   DisableKeyResponse,
   DisableKeyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DisableKeyRequest,
   output: DisableKeyResponse,
@@ -4568,7 +4532,7 @@ export const disableKeyRotation: API.OperationMethod<
   DisableKeyRotationRequest,
   DisableKeyRotationResponse,
   DisableKeyRotationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DisableKeyRotationRequest,
   output: DisableKeyRotationResponse,
@@ -4637,7 +4601,7 @@ export const disconnectCustomKeyStore: API.OperationMethod<
   DisconnectCustomKeyStoreRequest,
   DisconnectCustomKeyStoreResponse,
   DisconnectCustomKeyStoreError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DisconnectCustomKeyStoreRequest,
   output: DisconnectCustomKeyStoreResponse,
@@ -4679,7 +4643,7 @@ export const enableKey: API.OperationMethod<
   EnableKeyRequest,
   EnableKeyResponse,
   EnableKeyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: EnableKeyRequest,
   output: EnableKeyResponse,
@@ -4764,7 +4728,7 @@ export const enableKeyRotation: API.OperationMethod<
   EnableKeyRotationRequest,
   EnableKeyRotationResponse,
   EnableKeyRotationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: EnableKeyRotationRequest,
   output: EnableKeyRotationResponse,
@@ -4868,7 +4832,7 @@ export const encrypt: API.OperationMethod<
   EncryptRequest,
   EncryptResponse,
   EncryptError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: EncryptRequest,
   output: EncryptResponse,
@@ -4992,7 +4956,7 @@ export const generateDataKey: API.OperationMethod<
   GenerateDataKeyRequest,
   GenerateDataKeyResponse,
   GenerateDataKeyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GenerateDataKeyRequest,
   output: GenerateDataKeyResponse,
@@ -5103,7 +5067,7 @@ export const generateDataKeyPair: API.OperationMethod<
   GenerateDataKeyPairRequest,
   GenerateDataKeyPairResponse,
   GenerateDataKeyPairError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GenerateDataKeyPairRequest,
   output: GenerateDataKeyPairResponse,
@@ -5196,7 +5160,7 @@ export const generateDataKeyPairWithoutPlaintext: API.OperationMethod<
   GenerateDataKeyPairWithoutPlaintextRequest,
   GenerateDataKeyPairWithoutPlaintextResponse,
   GenerateDataKeyPairWithoutPlaintextError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GenerateDataKeyPairWithoutPlaintextRequest,
   output: GenerateDataKeyPairWithoutPlaintextResponse,
@@ -5301,7 +5265,7 @@ export const generateDataKeyWithoutPlaintext: API.OperationMethod<
   GenerateDataKeyWithoutPlaintextRequest,
   GenerateDataKeyWithoutPlaintextResponse,
   GenerateDataKeyWithoutPlaintextError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GenerateDataKeyWithoutPlaintextRequest,
   output: GenerateDataKeyWithoutPlaintextResponse,
@@ -5369,7 +5333,7 @@ export const generateMac: API.OperationMethod<
   GenerateMacRequest,
   GenerateMacResponse,
   GenerateMacError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GenerateMacRequest,
   output: GenerateMacResponse,
@@ -5427,7 +5391,7 @@ export const generateRandom: API.OperationMethod<
   GenerateRandomRequest,
   GenerateRandomResponse,
   GenerateRandomError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GenerateRandomRequest,
   output: GenerateRandomResponse,
@@ -5508,7 +5472,7 @@ export const getKeyLastUsage: API.OperationMethod<
   GetKeyLastUsageRequest,
   GetKeyLastUsageResponse,
   GetKeyLastUsageError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetKeyLastUsageRequest,
   output: GetKeyLastUsageResponse,
@@ -5546,7 +5510,7 @@ export const getKeyPolicy: API.OperationMethod<
   GetKeyPolicyRequest,
   GetKeyPolicyResponse,
   GetKeyPolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetKeyPolicyRequest,
   output: GetKeyPolicyResponse,
@@ -5629,7 +5593,7 @@ export const getKeyRotationStatus: API.OperationMethod<
   GetKeyRotationStatusRequest,
   GetKeyRotationStatusResponse,
   GetKeyRotationStatusError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetKeyRotationStatusRequest,
   output: GetKeyRotationStatusResponse,
@@ -5725,7 +5689,7 @@ export const getParametersForImport: API.OperationMethod<
   GetParametersForImportRequest,
   GetParametersForImportResponse,
   GetParametersForImportError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetParametersForImportRequest,
   output: GetParametersForImportResponse,
@@ -5808,7 +5772,7 @@ export const getPublicKey: API.OperationMethod<
   GetPublicKeyRequest,
   GetPublicKeyResponse,
   GetPublicKeyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetPublicKeyRequest,
   output: GetPublicKeyResponse,
@@ -5961,7 +5925,7 @@ export const importKeyMaterial: API.OperationMethod<
   ImportKeyMaterialRequest,
   ImportKeyMaterialResponse,
   ImportKeyMaterialError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ImportKeyMaterialRequest,
   output: ImportKeyMaterialResponse,
@@ -6026,27 +5990,13 @@ export type ListAliasesError =
  * **Eventual consistency**: The KMS API follows an eventual consistency model.
  * For more information, see KMS eventual consistency.
  */
-export const listAliases: API.OperationMethod<
+export const listAliases: API.PaginatedOperationMethod<
   ListAliasesRequest,
   ListAliasesResponse,
   ListAliasesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAliasesRequest,
-  ) => stream.Stream<
-    ListAliasesResponse,
-    ListAliasesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAliasesRequest,
-  ) => stream.Stream<
-    AliasListEntry,
-    ListAliasesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  AliasListEntry
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListAliasesRequest,
   output: ListAliasesResponse,
   errors: [
@@ -6065,27 +6015,7 @@ export const listAliases: API.OperationMethod<
     items: "Aliases",
     pageSize: "Limit",
   } as const,
-})) as any as API.OperationMethod<
-  ListAliasesRequest,
-  ListAliasesResponse,
-  ListAliasesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAliasesRequest,
-  ) => stream.Stream<
-    ListAliasesResponse,
-    ListAliasesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAliasesRequest,
-  ) => stream.Stream<
-    AliasListEntry,
-    ListAliasesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListGrantsError =
   | DependencyTimeoutException
@@ -6135,27 +6065,13 @@ export type ListGrantsError =
  * **Eventual consistency**: The KMS API follows an eventual consistency model.
  * For more information, see KMS eventual consistency.
  */
-export const listGrants: API.OperationMethod<
+export const listGrants: API.PaginatedOperationMethod<
   ListGrantsRequest,
   ListGrantsResponse,
   ListGrantsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListGrantsRequest,
-  ) => stream.Stream<
-    ListGrantsResponse,
-    ListGrantsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListGrantsRequest,
-  ) => stream.Stream<
-    GrantListEntry,
-    ListGrantsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  GrantListEntry
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListGrantsRequest,
   output: ListGrantsResponse,
   errors: [
@@ -6176,27 +6092,7 @@ export const listGrants: API.OperationMethod<
     items: "Grants",
     pageSize: "Limit",
   } as const,
-})) as any as API.OperationMethod<
-  ListGrantsRequest,
-  ListGrantsResponse,
-  ListGrantsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListGrantsRequest,
-  ) => stream.Stream<
-    ListGrantsResponse,
-    ListGrantsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListGrantsRequest,
-  ) => stream.Stream<
-    GrantListEntry,
-    ListGrantsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListKeyPoliciesError =
   | DependencyTimeoutException
@@ -6223,27 +6119,13 @@ export type ListKeyPoliciesError =
  * **Eventual consistency**: The KMS API follows an eventual consistency model.
  * For more information, see KMS eventual consistency.
  */
-export const listKeyPolicies: API.OperationMethod<
+export const listKeyPolicies: API.PaginatedOperationMethod<
   ListKeyPoliciesRequest,
   ListKeyPoliciesResponse,
   ListKeyPoliciesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListKeyPoliciesRequest,
-  ) => stream.Stream<
-    ListKeyPoliciesResponse,
-    ListKeyPoliciesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListKeyPoliciesRequest,
-  ) => stream.Stream<
-    PolicyNameType,
-    ListKeyPoliciesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  PolicyNameType
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListKeyPoliciesRequest,
   output: ListKeyPoliciesResponse,
   errors: [
@@ -6262,27 +6144,7 @@ export const listKeyPolicies: API.OperationMethod<
     items: "PolicyNames",
     pageSize: "Limit",
   } as const,
-})) as any as API.OperationMethod<
-  ListKeyPoliciesRequest,
-  ListKeyPoliciesResponse,
-  ListKeyPoliciesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListKeyPoliciesRequest,
-  ) => stream.Stream<
-    ListKeyPoliciesResponse,
-    ListKeyPoliciesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListKeyPoliciesRequest,
-  ) => stream.Stream<
-    PolicyNameType,
-    ListKeyPoliciesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListKeyRotationsError =
   | InvalidArnException
@@ -6324,27 +6186,13 @@ export type ListKeyRotationsError =
  * **Eventual consistency**: The KMS API follows an eventual consistency model.
  * For more information, see KMS eventual consistency.
  */
-export const listKeyRotations: API.OperationMethod<
+export const listKeyRotations: API.PaginatedOperationMethod<
   ListKeyRotationsRequest,
   ListKeyRotationsResponse,
   ListKeyRotationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListKeyRotationsRequest,
-  ) => stream.Stream<
-    ListKeyRotationsResponse,
-    ListKeyRotationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListKeyRotationsRequest,
-  ) => stream.Stream<
-    RotationsListEntry,
-    ListKeyRotationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  RotationsListEntry
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListKeyRotationsRequest,
   output: ListKeyRotationsResponse,
   errors: [
@@ -6364,27 +6212,7 @@ export const listKeyRotations: API.OperationMethod<
     items: "Rotations",
     pageSize: "Limit",
   } as const,
-})) as any as API.OperationMethod<
-  ListKeyRotationsRequest,
-  ListKeyRotationsResponse,
-  ListKeyRotationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListKeyRotationsRequest,
-  ) => stream.Stream<
-    ListKeyRotationsResponse,
-    ListKeyRotationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListKeyRotationsRequest,
-  ) => stream.Stream<
-    RotationsListEntry,
-    ListKeyRotationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListKeysError =
   | DependencyTimeoutException
@@ -6411,27 +6239,13 @@ export type ListKeysError =
  * **Eventual consistency**: The KMS API follows an eventual consistency model.
  * For more information, see KMS eventual consistency.
  */
-export const listKeys: API.OperationMethod<
+export const listKeys: API.PaginatedOperationMethod<
   ListKeysRequest,
   ListKeysResponse,
   ListKeysError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListKeysRequest,
-  ) => stream.Stream<
-    ListKeysResponse,
-    ListKeysError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListKeysRequest,
-  ) => stream.Stream<
-    KeyListEntry,
-    ListKeysError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  KeyListEntry
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListKeysRequest,
   output: ListKeysResponse,
   errors: [
@@ -6448,27 +6262,7 @@ export const listKeys: API.OperationMethod<
     items: "Keys",
     pageSize: "Limit",
   } as const,
-})) as any as API.OperationMethod<
-  ListKeysRequest,
-  ListKeysResponse,
-  ListKeysError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListKeysRequest,
-  ) => stream.Stream<
-    ListKeysResponse,
-    ListKeysError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListKeysRequest,
-  ) => stream.Stream<
-    KeyListEntry,
-    ListKeysError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListResourceTagsError =
   | InvalidArnException
@@ -6501,27 +6295,13 @@ export type ListResourceTagsError =
  * **Eventual consistency**: The KMS API follows an eventual consistency model.
  * For more information, see KMS eventual consistency.
  */
-export const listResourceTags: API.OperationMethod<
+export const listResourceTags: API.PaginatedOperationMethod<
   ListResourceTagsRequest,
   ListResourceTagsResponse,
   ListResourceTagsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListResourceTagsRequest,
-  ) => stream.Stream<
-    ListResourceTagsResponse,
-    ListResourceTagsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListResourceTagsRequest,
-  ) => stream.Stream<
-    Tag,
-    ListResourceTagsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Tag
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListResourceTagsRequest,
   output: ListResourceTagsResponse,
   errors: [
@@ -6539,27 +6319,7 @@ export const listResourceTags: API.OperationMethod<
     items: "Tags",
     pageSize: "Limit",
   } as const,
-})) as any as API.OperationMethod<
-  ListResourceTagsRequest,
-  ListResourceTagsResponse,
-  ListResourceTagsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListResourceTagsRequest,
-  ) => stream.Stream<
-    ListResourceTagsResponse,
-    ListResourceTagsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListResourceTagsRequest,
-  ) => stream.Stream<
-    Tag,
-    ListResourceTagsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListRetirableGrantsError =
   | DependencyTimeoutException
@@ -6615,27 +6375,13 @@ export type ListRetirableGrantsError =
  * **Eventual consistency**: The KMS API follows an eventual consistency model.
  * For more information, see KMS eventual consistency.
  */
-export const listRetirableGrants: API.OperationMethod<
+export const listRetirableGrants: API.PaginatedOperationMethod<
   ListRetirableGrantsRequest,
   ListGrantsResponse,
   ListRetirableGrantsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListRetirableGrantsRequest,
-  ) => stream.Stream<
-    ListGrantsResponse,
-    ListRetirableGrantsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListRetirableGrantsRequest,
-  ) => stream.Stream<
-    GrantListEntry,
-    ListRetirableGrantsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  GrantListEntry
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListRetirableGrantsRequest,
   output: ListGrantsResponse,
   errors: [
@@ -6654,27 +6400,7 @@ export const listRetirableGrants: API.OperationMethod<
     items: "Grants",
     pageSize: "Limit",
   } as const,
-})) as any as API.OperationMethod<
-  ListRetirableGrantsRequest,
-  ListGrantsResponse,
-  ListRetirableGrantsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListRetirableGrantsRequest,
-  ) => stream.Stream<
-    ListGrantsResponse,
-    ListRetirableGrantsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListRetirableGrantsRequest,
-  ) => stream.Stream<
-    GrantListEntry,
-    ListRetirableGrantsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type PutKeyPolicyError =
   | DependencyTimeoutException
@@ -6709,7 +6435,7 @@ export const putKeyPolicy: API.OperationMethod<
   PutKeyPolicyRequest,
   PutKeyPolicyResponse,
   PutKeyPolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutKeyPolicyRequest,
   output: PutKeyPolicyResponse,
@@ -6827,7 +6553,7 @@ export const reEncrypt: API.OperationMethod<
   ReEncryptRequest,
   ReEncryptResponse,
   ReEncryptError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ReEncryptRequest,
   output: ReEncryptResponse,
@@ -6938,7 +6664,7 @@ export const replicateKey: API.OperationMethod<
   ReplicateKeyRequest,
   ReplicateKeyResponse,
   ReplicateKeyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ReplicateKeyRequest,
   output: ReplicateKeyResponse,
@@ -7010,7 +6736,7 @@ export const retireGrant: API.OperationMethod<
   RetireGrantRequest,
   RetireGrantResponse,
   RetireGrantError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RetireGrantRequest,
   output: RetireGrantResponse,
@@ -7078,7 +6804,7 @@ export const revokeGrant: API.OperationMethod<
   RevokeGrantRequest,
   RevokeGrantResponse,
   RevokeGrantError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RevokeGrantRequest,
   output: RevokeGrantResponse,
@@ -7168,7 +6894,7 @@ export const rotateKeyOnDemand: API.OperationMethod<
   RotateKeyOnDemandRequest,
   RotateKeyOnDemandResponse,
   RotateKeyOnDemandError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RotateKeyOnDemandRequest,
   output: RotateKeyOnDemandResponse,
@@ -7255,7 +6981,7 @@ export const scheduleKeyDeletion: API.OperationMethod<
   ScheduleKeyDeletionRequest,
   ScheduleKeyDeletionResponse,
   ScheduleKeyDeletionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ScheduleKeyDeletionRequest,
   output: ScheduleKeyDeletionResponse,
@@ -7339,7 +7065,7 @@ export const sign: API.OperationMethod<
   SignRequest,
   SignResponse,
   SignError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: SignRequest,
   output: SignResponse,
@@ -7411,7 +7137,7 @@ export const tagResource: API.OperationMethod<
   TagResourceRequest,
   TagResourceResponse,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -7473,7 +7199,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceRequest,
   UntagResourceResponse,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -7551,7 +7277,7 @@ export const updateAlias: API.OperationMethod<
   UpdateAliasRequest,
   UpdateAliasResponse,
   UpdateAliasError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateAliasRequest,
   output: UpdateAliasResponse,
@@ -7677,7 +7403,7 @@ export const updateCustomKeyStore: API.OperationMethod<
   UpdateCustomKeyStoreRequest,
   UpdateCustomKeyStoreResponse,
   UpdateCustomKeyStoreError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateCustomKeyStoreRequest,
   output: UpdateCustomKeyStoreResponse,
@@ -7735,7 +7461,7 @@ export const updateKeyDescription: API.OperationMethod<
   UpdateKeyDescriptionRequest,
   UpdateKeyDescriptionResponse,
   UpdateKeyDescriptionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateKeyDescriptionRequest,
   output: UpdateKeyDescriptionResponse,
@@ -7826,7 +7552,7 @@ export const updatePrimaryRegion: API.OperationMethod<
   UpdatePrimaryRegionRequest,
   UpdatePrimaryRegionResponse,
   UpdatePrimaryRegionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdatePrimaryRegionRequest,
   output: UpdatePrimaryRegionResponse,
@@ -7903,7 +7629,7 @@ export const verify: API.OperationMethod<
   VerifyRequest,
   VerifyResponse,
   VerifyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: VerifyRequest,
   output: VerifyResponse,
@@ -7967,7 +7693,7 @@ export const verifyMac: API.OperationMethod<
   VerifyMacRequest,
   VerifyMacResponse,
   VerifyMacError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: VerifyMacRequest,
   output: VerifyMacResponse,

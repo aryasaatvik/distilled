@@ -1,13 +1,11 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
 import * as T from "../traits.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region as Rgn } from "../region.ts";
 const svc = T.AwsApiService({
   sdkId: "Health",
   serviceShapeName: "AWSHealth_20160804",
@@ -143,17 +141,17 @@ const rules = T.EndpointResolver((p, _) => {
 export class ConcurrentModificationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConcurrentModificationException>()(
     "ConcurrentModificationException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidPaginationToken
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidPaginationToken>()(
     "InvalidPaginationToken",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class UnsupportedLocale
   extends /*@__PURE__*/ S.TaggedErrorClass<UnsupportedLocale>()(
     "UnsupportedLocale",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export type EventArn = string;
 export type NextToken = string;
@@ -1119,27 +1117,13 @@ export type DescribeAffectedAccountsForOrganizationError =
  *
  * This API operation uses pagination. Specify the `nextToken` parameter in the next request to return more results.
  */
-export const describeAffectedAccountsForOrganization: API.OperationMethod<
+export const describeAffectedAccountsForOrganization: API.PaginatedOperationMethod<
   DescribeAffectedAccountsForOrganizationRequest,
   DescribeAffectedAccountsForOrganizationResponse,
   DescribeAffectedAccountsForOrganizationError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeAffectedAccountsForOrganizationRequest,
-  ) => stream.Stream<
-    DescribeAffectedAccountsForOrganizationResponse,
-    DescribeAffectedAccountsForOrganizationError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeAffectedAccountsForOrganizationRequest,
-  ) => stream.Stream<
-    AccountId,
-    DescribeAffectedAccountsForOrganizationError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  AccountId
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeAffectedAccountsForOrganizationRequest,
   output: DescribeAffectedAccountsForOrganizationResponse,
   errors: [InvalidPaginationToken],
@@ -1152,27 +1136,7 @@ export const describeAffectedAccountsForOrganization: API.OperationMethod<
     items: "affectedAccounts",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeAffectedAccountsForOrganizationRequest,
-  DescribeAffectedAccountsForOrganizationResponse,
-  DescribeAffectedAccountsForOrganizationError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeAffectedAccountsForOrganizationRequest,
-  ) => stream.Stream<
-    DescribeAffectedAccountsForOrganizationResponse,
-    DescribeAffectedAccountsForOrganizationError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeAffectedAccountsForOrganizationRequest,
-  ) => stream.Stream<
-    AccountId,
-    DescribeAffectedAccountsForOrganizationError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeAffectedEntitiesError =
   | InvalidPaginationToken
@@ -1192,27 +1156,13 @@ export type DescribeAffectedEntitiesError =
  * - This operation supports resource-level permissions. You can use this operation to allow or deny access to specific Health events. For more
  * information, see Resource- and action-based conditions in the *Health User Guide*.
  */
-export const describeAffectedEntities: API.OperationMethod<
+export const describeAffectedEntities: API.PaginatedOperationMethod<
   DescribeAffectedEntitiesRequest,
   DescribeAffectedEntitiesResponse,
   DescribeAffectedEntitiesError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeAffectedEntitiesRequest,
-  ) => stream.Stream<
-    DescribeAffectedEntitiesResponse,
-    DescribeAffectedEntitiesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeAffectedEntitiesRequest,
-  ) => stream.Stream<
-    AffectedEntity,
-    DescribeAffectedEntitiesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  AffectedEntity
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeAffectedEntitiesRequest,
   output: DescribeAffectedEntitiesResponse,
   errors: [InvalidPaginationToken, UnsupportedLocale],
@@ -1225,27 +1175,7 @@ export const describeAffectedEntities: API.OperationMethod<
     items: "entities",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeAffectedEntitiesRequest,
-  DescribeAffectedEntitiesResponse,
-  DescribeAffectedEntitiesError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeAffectedEntitiesRequest,
-  ) => stream.Stream<
-    DescribeAffectedEntitiesResponse,
-    DescribeAffectedEntitiesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeAffectedEntitiesRequest,
-  ) => stream.Stream<
-    AffectedEntity,
-    DescribeAffectedEntitiesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeAffectedEntitiesForOrganizationError =
   | InvalidPaginationToken
@@ -1268,27 +1198,13 @@ export type DescribeAffectedEntitiesForOrganizationError =
  * - This operation doesn't support resource-level permissions. You can't use this operation to allow or deny access to specific Health events. For more
  * information, see Resource- and action-based conditions in the *Health User Guide*.
  */
-export const describeAffectedEntitiesForOrganization: API.OperationMethod<
+export const describeAffectedEntitiesForOrganization: API.PaginatedOperationMethod<
   DescribeAffectedEntitiesForOrganizationRequest,
   DescribeAffectedEntitiesForOrganizationResponse,
   DescribeAffectedEntitiesForOrganizationError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeAffectedEntitiesForOrganizationRequest,
-  ) => stream.Stream<
-    DescribeAffectedEntitiesForOrganizationResponse,
-    DescribeAffectedEntitiesForOrganizationError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeAffectedEntitiesForOrganizationRequest,
-  ) => stream.Stream<
-    AffectedEntity,
-    DescribeAffectedEntitiesForOrganizationError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  AffectedEntity
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeAffectedEntitiesForOrganizationRequest,
   output: DescribeAffectedEntitiesForOrganizationResponse,
   errors: [InvalidPaginationToken, UnsupportedLocale],
@@ -1301,27 +1217,7 @@ export const describeAffectedEntitiesForOrganization: API.OperationMethod<
     items: "entities",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeAffectedEntitiesForOrganizationRequest,
-  DescribeAffectedEntitiesForOrganizationResponse,
-  DescribeAffectedEntitiesForOrganizationError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeAffectedEntitiesForOrganizationRequest,
-  ) => stream.Stream<
-    DescribeAffectedEntitiesForOrganizationResponse,
-    DescribeAffectedEntitiesForOrganizationError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeAffectedEntitiesForOrganizationRequest,
-  ) => stream.Stream<
-    AffectedEntity,
-    DescribeAffectedEntitiesForOrganizationError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeEntityAggregatesError = CommonErrors;
 /**
@@ -1331,7 +1227,7 @@ export const describeEntityAggregates: API.OperationMethod<
   DescribeEntityAggregatesRequest,
   DescribeEntityAggregatesResponse,
   DescribeEntityAggregatesError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeEntityAggregatesRequest,
   output: DescribeEntityAggregatesResponse,
@@ -1349,7 +1245,7 @@ export const describeEntityAggregatesForOrganization: API.OperationMethod<
   DescribeEntityAggregatesForOrganizationRequest,
   DescribeEntityAggregatesForOrganizationResponse,
   DescribeEntityAggregatesForOrganizationError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeEntityAggregatesForOrganizationRequest,
   output: DescribeEntityAggregatesForOrganizationResponse,
@@ -1369,27 +1265,13 @@ export type DescribeEventAggregatesError =
  *
  * This API operation uses pagination. Specify the `nextToken` parameter in the next request to return more results.
  */
-export const describeEventAggregates: API.OperationMethod<
+export const describeEventAggregates: API.PaginatedOperationMethod<
   DescribeEventAggregatesRequest,
   DescribeEventAggregatesResponse,
   DescribeEventAggregatesError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeEventAggregatesRequest,
-  ) => stream.Stream<
-    DescribeEventAggregatesResponse,
-    DescribeEventAggregatesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeEventAggregatesRequest,
-  ) => stream.Stream<
-    EventAggregate,
-    DescribeEventAggregatesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  EventAggregate
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeEventAggregatesRequest,
   output: DescribeEventAggregatesResponse,
   errors: [InvalidPaginationToken],
@@ -1402,27 +1284,7 @@ export const describeEventAggregates: API.OperationMethod<
     items: "eventAggregates",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeEventAggregatesRequest,
-  DescribeEventAggregatesResponse,
-  DescribeEventAggregatesError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeEventAggregatesRequest,
-  ) => stream.Stream<
-    DescribeEventAggregatesResponse,
-    DescribeEventAggregatesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeEventAggregatesRequest,
-  ) => stream.Stream<
-    EventAggregate,
-    DescribeEventAggregatesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeEventDetailsError = UnsupportedLocale | CommonErrors;
 /**
@@ -1441,7 +1303,7 @@ export const describeEventDetails: API.OperationMethod<
   DescribeEventDetailsRequest,
   DescribeEventDetailsResponse,
   DescribeEventDetailsError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeEventDetailsRequest,
   output: DescribeEventDetailsResponse,
@@ -1488,7 +1350,7 @@ export const describeEventDetailsForOrganization: API.OperationMethod<
   DescribeEventDetailsForOrganizationRequest,
   DescribeEventDetailsForOrganizationResponse,
   DescribeEventDetailsForOrganizationError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeEventDetailsForOrganizationRequest,
   output: DescribeEventDetailsForOrganizationResponse,
@@ -1522,27 +1384,13 @@ export type DescribeEventsError =
  *
  * - This API operation uses pagination. Specify the `nextToken` parameter in the next request to return more results.
  */
-export const describeEvents: API.OperationMethod<
+export const describeEvents: API.PaginatedOperationMethod<
   DescribeEventsRequest,
   DescribeEventsResponse,
   DescribeEventsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeEventsRequest,
-  ) => stream.Stream<
-    DescribeEventsResponse,
-    DescribeEventsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeEventsRequest,
-  ) => stream.Stream<
-    Event,
-    DescribeEventsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Event
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeEventsRequest,
   output: DescribeEventsResponse,
   errors: [InvalidPaginationToken, UnsupportedLocale],
@@ -1555,27 +1403,7 @@ export const describeEvents: API.OperationMethod<
     items: "events",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeEventsRequest,
-  DescribeEventsResponse,
-  DescribeEventsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeEventsRequest,
-  ) => stream.Stream<
-    DescribeEventsResponse,
-    DescribeEventsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeEventsRequest,
-  ) => stream.Stream<
-    Event,
-    DescribeEventsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeEventsForOrganizationError =
   | InvalidPaginationToken
@@ -1606,27 +1434,13 @@ export type DescribeEventsForOrganizationError =
  *
  * This API operation uses pagination. Specify the `nextToken` parameter in the next request to return more results.
  */
-export const describeEventsForOrganization: API.OperationMethod<
+export const describeEventsForOrganization: API.PaginatedOperationMethod<
   DescribeEventsForOrganizationRequest,
   DescribeEventsForOrganizationResponse,
   DescribeEventsForOrganizationError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeEventsForOrganizationRequest,
-  ) => stream.Stream<
-    DescribeEventsForOrganizationResponse,
-    DescribeEventsForOrganizationError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeEventsForOrganizationRequest,
-  ) => stream.Stream<
-    OrganizationEvent,
-    DescribeEventsForOrganizationError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  OrganizationEvent
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeEventsForOrganizationRequest,
   output: DescribeEventsForOrganizationResponse,
   errors: [InvalidPaginationToken, UnsupportedLocale],
@@ -1639,27 +1453,7 @@ export const describeEventsForOrganization: API.OperationMethod<
     items: "events",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeEventsForOrganizationRequest,
-  DescribeEventsForOrganizationResponse,
-  DescribeEventsForOrganizationError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeEventsForOrganizationRequest,
-  ) => stream.Stream<
-    DescribeEventsForOrganizationResponse,
-    DescribeEventsForOrganizationError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeEventsForOrganizationRequest,
-  ) => stream.Stream<
-    OrganizationEvent,
-    DescribeEventsForOrganizationError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeEventTypesError =
   | InvalidPaginationToken
@@ -1674,27 +1468,13 @@ export type DescribeEventTypesError =
  *
  * This API operation uses pagination. Specify the `nextToken` parameter in the next request to return more results.
  */
-export const describeEventTypes: API.OperationMethod<
+export const describeEventTypes: API.PaginatedOperationMethod<
   DescribeEventTypesRequest,
   DescribeEventTypesResponse,
   DescribeEventTypesError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeEventTypesRequest,
-  ) => stream.Stream<
-    DescribeEventTypesResponse,
-    DescribeEventTypesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeEventTypesRequest,
-  ) => stream.Stream<
-    EventType,
-    DescribeEventTypesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  EventType
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeEventTypesRequest,
   output: DescribeEventTypesResponse,
   errors: [InvalidPaginationToken, UnsupportedLocale],
@@ -1707,27 +1487,7 @@ export const describeEventTypes: API.OperationMethod<
     items: "eventTypes",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeEventTypesRequest,
-  DescribeEventTypesResponse,
-  DescribeEventTypesError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeEventTypesRequest,
-  ) => stream.Stream<
-    DescribeEventTypesResponse,
-    DescribeEventTypesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeEventTypesRequest,
-  ) => stream.Stream<
-    EventType,
-    DescribeEventTypesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeHealthServiceStatusForOrganizationError = CommonErrors;
 /**
@@ -1739,7 +1499,7 @@ export const describeHealthServiceStatusForOrganization: API.OperationMethod<
   DescribeHealthServiceStatusForOrganizationRequest,
   DescribeHealthServiceStatusForOrganizationResponse,
   DescribeHealthServiceStatusForOrganizationError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeHealthServiceStatusForOrganizationRequest,
   output: DescribeHealthServiceStatusForOrganizationResponse,
@@ -1772,7 +1532,7 @@ export const disableHealthServiceAccessForOrganization: API.OperationMethod<
   DisableHealthServiceAccessForOrganizationRequest,
   DisableHealthServiceAccessForOrganizationResponse,
   DisableHealthServiceAccessForOrganizationError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DisableHealthServiceAccessForOrganizationRequest,
   output: DisableHealthServiceAccessForOrganizationResponse,
@@ -1811,7 +1571,7 @@ export const enableHealthServiceAccessForOrganization: API.OperationMethod<
   EnableHealthServiceAccessForOrganizationRequest,
   EnableHealthServiceAccessForOrganizationResponse,
   EnableHealthServiceAccessForOrganizationError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: EnableHealthServiceAccessForOrganizationRequest,
   output: EnableHealthServiceAccessForOrganizationResponse,

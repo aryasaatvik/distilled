@@ -1,6 +1,5 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -8,7 +7,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 const svc = T.AwsApiService({
   sdkId: "Sustainability",
   serviceShapeName: "AwsSustainabilityApiService",
@@ -115,25 +113,25 @@ const rules = T.EndpointResolver((p, _) => {
 export class AccessDeniedException
   extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
     "AccessDeniedException",
-    { Message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(403),
   ).pipe(C.withAuthError) {}
 export class InternalServerException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
     "InternalServerException",
-    { Message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.all(T.HttpError(500), T.Retryable()),
   ).pipe(C.withServerError, C.withRetryableError) {}
 export class ThrottlingException
   extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
     "ThrottlingException",
-    { Message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.all(T.HttpError(429), T.Retryable()),
   ).pipe(C.withThrottlingError, C.withRetryableError) {}
 export class ValidationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
     "ValidationException",
-    { Message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export interface TimePeriod {
@@ -349,27 +347,13 @@ export type GetEstimatedCarbonEmissionsError =
 /**
  * Returns estimated carbon emission values based on customer grouping and filtering parameters. We recommend using pagination to ensure that the operation returns quickly and successfully.
  */
-export const getEstimatedCarbonEmissions: API.OperationMethod<
+export const getEstimatedCarbonEmissions: API.PaginatedOperationMethod<
   GetEstimatedCarbonEmissionsRequest,
   GetEstimatedCarbonEmissionsResponse,
   GetEstimatedCarbonEmissionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetEstimatedCarbonEmissionsRequest,
-  ) => stream.Stream<
-    GetEstimatedCarbonEmissionsResponse,
-    GetEstimatedCarbonEmissionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetEstimatedCarbonEmissionsRequest,
-  ) => stream.Stream<
-    EstimatedCarbonEmissions,
-    GetEstimatedCarbonEmissionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  EstimatedCarbonEmissions
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetEstimatedCarbonEmissionsRequest,
   output: GetEstimatedCarbonEmissionsResponse,
   errors: [
@@ -387,27 +371,7 @@ export const getEstimatedCarbonEmissions: API.OperationMethod<
     items: "Results",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetEstimatedCarbonEmissionsRequest,
-  GetEstimatedCarbonEmissionsResponse,
-  GetEstimatedCarbonEmissionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetEstimatedCarbonEmissionsRequest,
-  ) => stream.Stream<
-    GetEstimatedCarbonEmissionsResponse,
-    GetEstimatedCarbonEmissionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetEstimatedCarbonEmissionsRequest,
-  ) => stream.Stream<
-    EstimatedCarbonEmissions,
-    GetEstimatedCarbonEmissionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetEstimatedCarbonEmissionsDimensionValuesError =
   | AccessDeniedException
@@ -418,27 +382,13 @@ export type GetEstimatedCarbonEmissionsDimensionValuesError =
 /**
  * Returns the possible dimension values available for a customer's account. We recommend using pagination to ensure that the operation returns quickly and successfully.
  */
-export const getEstimatedCarbonEmissionsDimensionValues: API.OperationMethod<
+export const getEstimatedCarbonEmissionsDimensionValues: API.PaginatedOperationMethod<
   GetEstimatedCarbonEmissionsDimensionValuesRequest,
   GetEstimatedCarbonEmissionsDimensionValuesResponse,
   GetEstimatedCarbonEmissionsDimensionValuesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetEstimatedCarbonEmissionsDimensionValuesRequest,
-  ) => stream.Stream<
-    GetEstimatedCarbonEmissionsDimensionValuesResponse,
-    GetEstimatedCarbonEmissionsDimensionValuesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetEstimatedCarbonEmissionsDimensionValuesRequest,
-  ) => stream.Stream<
-    DimensionEntry,
-    GetEstimatedCarbonEmissionsDimensionValuesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  DimensionEntry
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetEstimatedCarbonEmissionsDimensionValuesRequest,
   output: GetEstimatedCarbonEmissionsDimensionValuesResponse,
   errors: [
@@ -456,24 +406,4 @@ export const getEstimatedCarbonEmissionsDimensionValues: API.OperationMethod<
     items: "Results",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetEstimatedCarbonEmissionsDimensionValuesRequest,
-  GetEstimatedCarbonEmissionsDimensionValuesResponse,
-  GetEstimatedCarbonEmissionsDimensionValuesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetEstimatedCarbonEmissionsDimensionValuesRequest,
-  ) => stream.Stream<
-    GetEstimatedCarbonEmissionsDimensionValuesResponse,
-    GetEstimatedCarbonEmissionsDimensionValuesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetEstimatedCarbonEmissionsDimensionValuesRequest,
-  ) => stream.Stream<
-    DimensionEntry,
-    GetEstimatedCarbonEmissionsDimensionValuesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;

@@ -1,7 +1,6 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as redacted from "effect/Redacted";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -9,7 +8,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 import { SensitiveString } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "Chime SDK Voice",
@@ -94,7 +92,7 @@ export class AccessDeniedException
       Code: S.optional(
         S.suspend(() => ErrorCode).annotate({ identifier: "ErrorCode" }),
       ),
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
     },
     T.HttpError(403),
   ).pipe(C.withAuthError) {}
@@ -105,7 +103,7 @@ export class BadRequestException
       Code: S.optional(
         S.suspend(() => ErrorCode).annotate({ identifier: "ErrorCode" }),
       ),
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
     },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
@@ -116,7 +114,7 @@ export class ConflictException
       Code: S.optional(
         S.suspend(() => ErrorCode).annotate({ identifier: "ErrorCode" }),
       ),
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
     },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
@@ -127,7 +125,7 @@ export class ForbiddenException
       Code: S.optional(
         S.suspend(() => ErrorCode).annotate({ identifier: "ErrorCode" }),
       ),
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
     },
     T.HttpError(403),
   ).pipe(C.withAuthError) {}
@@ -138,7 +136,7 @@ export class GoneException
       Code: S.optional(
         S.suspend(() => ErrorCode).annotate({ identifier: "ErrorCode" }),
       ),
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
     },
     T.HttpError(410),
   ).pipe(C.withBadRequestError) {}
@@ -149,7 +147,7 @@ export class NotFoundException
       Code: S.optional(
         S.suspend(() => ErrorCode).annotate({ identifier: "ErrorCode" }),
       ),
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
     },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
@@ -160,7 +158,7 @@ export class ResourceLimitExceededException
       Code: S.optional(
         S.suspend(() => ErrorCode).annotate({ identifier: "ErrorCode" }),
       ),
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
     },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
@@ -171,7 +169,7 @@ export class ServiceFailureException
       Code: S.optional(
         S.suspend(() => ErrorCode).annotate({ identifier: "ErrorCode" }),
       ),
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
     },
     T.HttpError(500),
   ).pipe(C.withServerError) {}
@@ -182,7 +180,7 @@ export class ServiceUnavailableException
       Code: S.optional(
         S.suspend(() => ErrorCode).annotate({ identifier: "ErrorCode" }),
       ),
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
     },
     T.HttpError(503),
   ).pipe(C.withServerError) {}
@@ -193,7 +191,7 @@ export class ThrottledClientException
       Code: S.optional(
         S.suspend(() => ErrorCode).annotate({ identifier: "ErrorCode" }),
       ),
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
     },
     T.HttpError(429),
   ).pipe(C.withThrottlingError) {}
@@ -204,7 +202,7 @@ export class UnauthorizedClientException
       Code: S.optional(
         S.suspend(() => ErrorCode).annotate({ identifier: "ErrorCode" }),
       ),
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
     },
     T.HttpError(401),
   ).pipe(C.withAuthError) {}
@@ -215,7 +213,7 @@ export class UnprocessableEntityException
       Code: S.optional(
         S.suspend(() => ErrorCode).annotate({ identifier: "ErrorCode" }),
       ),
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
     },
     T.HttpError(422),
   ).pipe(C.withBadRequestError) {}
@@ -4465,7 +4463,7 @@ export const associatePhoneNumbersWithVoiceConnector: API.OperationMethod<
   AssociatePhoneNumbersWithVoiceConnectorRequest,
   AssociatePhoneNumbersWithVoiceConnectorResponse,
   AssociatePhoneNumbersWithVoiceConnectorError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AssociatePhoneNumbersWithVoiceConnectorRequest,
   output: AssociatePhoneNumbersWithVoiceConnectorResponse,
@@ -4501,7 +4499,7 @@ export const associatePhoneNumbersWithVoiceConnectorGroup: API.OperationMethod<
   AssociatePhoneNumbersWithVoiceConnectorGroupRequest,
   AssociatePhoneNumbersWithVoiceConnectorGroupResponse,
   AssociatePhoneNumbersWithVoiceConnectorGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AssociatePhoneNumbersWithVoiceConnectorGroupRequest,
   output: AssociatePhoneNumbersWithVoiceConnectorGroupResponse,
@@ -4540,7 +4538,7 @@ export const batchDeletePhoneNumber: API.OperationMethod<
   BatchDeletePhoneNumberRequest,
   BatchDeletePhoneNumberResponse,
   BatchDeletePhoneNumberError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchDeletePhoneNumberRequest,
   output: BatchDeletePhoneNumberResponse,
@@ -4577,7 +4575,7 @@ export const batchUpdatePhoneNumber: API.OperationMethod<
   BatchUpdatePhoneNumberRequest,
   BatchUpdatePhoneNumberResponse,
   BatchUpdatePhoneNumberError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchUpdatePhoneNumberRequest,
   output: BatchUpdatePhoneNumberResponse,
@@ -4612,7 +4610,7 @@ export const createPhoneNumberOrder: API.OperationMethod<
   CreatePhoneNumberOrderRequest,
   CreatePhoneNumberOrderResponse,
   CreatePhoneNumberOrderError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreatePhoneNumberOrderRequest,
   output: CreatePhoneNumberOrderResponse,
@@ -4648,7 +4646,7 @@ export const createProxySession: API.OperationMethod<
   CreateProxySessionRequest,
   CreateProxySessionResponse,
   CreateProxySessionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateProxySessionRequest,
   output: CreateProxySessionResponse,
@@ -4685,7 +4683,7 @@ export const createSipMediaApplication: API.OperationMethod<
   CreateSipMediaApplicationRequest,
   CreateSipMediaApplicationResponse,
   CreateSipMediaApplicationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateSipMediaApplicationRequest,
   output: CreateSipMediaApplicationResponse,
@@ -4724,7 +4722,7 @@ export const createSipMediaApplicationCall: API.OperationMethod<
   CreateSipMediaApplicationCallRequest,
   CreateSipMediaApplicationCallResponse,
   CreateSipMediaApplicationCallError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateSipMediaApplicationCallRequest,
   output: CreateSipMediaApplicationCallResponse,
@@ -4762,7 +4760,7 @@ export const createSipRule: API.OperationMethod<
   CreateSipRuleRequest,
   CreateSipRuleResponse,
   CreateSipRuleError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateSipRuleRequest,
   output: CreateSipRuleResponse,
@@ -4802,7 +4800,7 @@ export const createVoiceConnector: API.OperationMethod<
   CreateVoiceConnectorRequest,
   CreateVoiceConnectorResponse,
   CreateVoiceConnectorError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateVoiceConnectorRequest,
   output: CreateVoiceConnectorResponse,
@@ -4844,7 +4842,7 @@ export const createVoiceConnectorGroup: API.OperationMethod<
   CreateVoiceConnectorGroupRequest,
   CreateVoiceConnectorGroupResponse,
   CreateVoiceConnectorGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateVoiceConnectorGroupRequest,
   output: CreateVoiceConnectorGroupResponse,
@@ -4889,7 +4887,7 @@ export const createVoiceProfile: API.OperationMethod<
   CreateVoiceProfileRequest,
   CreateVoiceProfileResponse,
   CreateVoiceProfileError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateVoiceProfileRequest,
   output: CreateVoiceProfileResponse,
@@ -4935,7 +4933,7 @@ export const createVoiceProfileDomain: API.OperationMethod<
   CreateVoiceProfileDomainRequest,
   CreateVoiceProfileDomainResponse,
   CreateVoiceProfileDomainError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateVoiceProfileDomainRequest,
   output: CreateVoiceProfileDomainResponse,
@@ -4978,7 +4976,7 @@ export const deletePhoneNumber: API.OperationMethod<
   DeletePhoneNumberRequest,
   DeletePhoneNumberResponse,
   DeletePhoneNumberError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeletePhoneNumberRequest,
   output: DeletePhoneNumberResponse,
@@ -5013,7 +5011,7 @@ export const deleteProxySession: API.OperationMethod<
   DeleteProxySessionRequest,
   DeleteProxySessionResponse,
   DeleteProxySessionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteProxySessionRequest,
   output: DeleteProxySessionResponse,
@@ -5048,7 +5046,7 @@ export const deleteSipMediaApplication: API.OperationMethod<
   DeleteSipMediaApplicationRequest,
   DeleteSipMediaApplicationResponse,
   DeleteSipMediaApplicationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteSipMediaApplicationRequest,
   output: DeleteSipMediaApplicationResponse,
@@ -5084,7 +5082,7 @@ export const deleteSipRule: API.OperationMethod<
   DeleteSipRuleRequest,
   DeleteSipRuleResponse,
   DeleteSipRuleError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteSipRuleRequest,
   output: DeleteSipRuleResponse,
@@ -5122,7 +5120,7 @@ export const deleteVoiceConnector: API.OperationMethod<
   DeleteVoiceConnectorRequest,
   DeleteVoiceConnectorResponse,
   DeleteVoiceConnectorError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteVoiceConnectorRequest,
   output: DeleteVoiceConnectorResponse,
@@ -5158,7 +5156,7 @@ export const deleteVoiceConnectorEmergencyCallingConfiguration: API.OperationMet
   DeleteVoiceConnectorEmergencyCallingConfigurationRequest,
   DeleteVoiceConnectorEmergencyCallingConfigurationResponse,
   DeleteVoiceConnectorEmergencyCallingConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteVoiceConnectorEmergencyCallingConfigurationRequest,
   output: DeleteVoiceConnectorEmergencyCallingConfigurationResponse,
@@ -5192,7 +5190,7 @@ export const deleteVoiceConnectorExternalSystemsConfiguration: API.OperationMeth
   DeleteVoiceConnectorExternalSystemsConfigurationRequest,
   DeleteVoiceConnectorExternalSystemsConfigurationResponse,
   DeleteVoiceConnectorExternalSystemsConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteVoiceConnectorExternalSystemsConfigurationRequest,
   output: DeleteVoiceConnectorExternalSystemsConfigurationResponse,
@@ -5229,7 +5227,7 @@ export const deleteVoiceConnectorGroup: API.OperationMethod<
   DeleteVoiceConnectorGroupRequest,
   DeleteVoiceConnectorGroupResponse,
   DeleteVoiceConnectorGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteVoiceConnectorGroupRequest,
   output: DeleteVoiceConnectorGroupResponse,
@@ -5267,7 +5265,7 @@ export const deleteVoiceConnectorOrigination: API.OperationMethod<
   DeleteVoiceConnectorOriginationRequest,
   DeleteVoiceConnectorOriginationResponse,
   DeleteVoiceConnectorOriginationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteVoiceConnectorOriginationRequest,
   output: DeleteVoiceConnectorOriginationResponse,
@@ -5301,7 +5299,7 @@ export const deleteVoiceConnectorProxy: API.OperationMethod<
   DeleteVoiceConnectorProxyRequest,
   DeleteVoiceConnectorProxyResponse,
   DeleteVoiceConnectorProxyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteVoiceConnectorProxyRequest,
   output: DeleteVoiceConnectorProxyResponse,
@@ -5335,7 +5333,7 @@ export const deleteVoiceConnectorStreamingConfiguration: API.OperationMethod<
   DeleteVoiceConnectorStreamingConfigurationRequest,
   DeleteVoiceConnectorStreamingConfigurationResponse,
   DeleteVoiceConnectorStreamingConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteVoiceConnectorStreamingConfigurationRequest,
   output: DeleteVoiceConnectorStreamingConfigurationResponse,
@@ -5372,7 +5370,7 @@ export const deleteVoiceConnectorTermination: API.OperationMethod<
   DeleteVoiceConnectorTerminationRequest,
   DeleteVoiceConnectorTerminationResponse,
   DeleteVoiceConnectorTerminationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteVoiceConnectorTerminationRequest,
   output: DeleteVoiceConnectorTerminationResponse,
@@ -5407,7 +5405,7 @@ export const deleteVoiceConnectorTerminationCredentials: API.OperationMethod<
   DeleteVoiceConnectorTerminationCredentialsRequest,
   DeleteVoiceConnectorTerminationCredentialsResponse,
   DeleteVoiceConnectorTerminationCredentialsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteVoiceConnectorTerminationCredentialsRequest,
   output: DeleteVoiceConnectorTerminationCredentialsResponse,
@@ -5443,7 +5441,7 @@ export const deleteVoiceProfile: API.OperationMethod<
   DeleteVoiceProfileRequest,
   DeleteVoiceProfileResponse,
   DeleteVoiceProfileError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteVoiceProfileRequest,
   output: DeleteVoiceProfileResponse,
@@ -5481,7 +5479,7 @@ export const deleteVoiceProfileDomain: API.OperationMethod<
   DeleteVoiceProfileDomainRequest,
   DeleteVoiceProfileDomainResponse,
   DeleteVoiceProfileDomainError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteVoiceProfileDomainRequest,
   output: DeleteVoiceProfileDomainResponse,
@@ -5518,7 +5516,7 @@ export const disassociatePhoneNumbersFromVoiceConnector: API.OperationMethod<
   DisassociatePhoneNumbersFromVoiceConnectorRequest,
   DisassociatePhoneNumbersFromVoiceConnectorResponse,
   DisassociatePhoneNumbersFromVoiceConnectorError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DisassociatePhoneNumbersFromVoiceConnectorRequest,
   output: DisassociatePhoneNumbersFromVoiceConnectorResponse,
@@ -5553,7 +5551,7 @@ export const disassociatePhoneNumbersFromVoiceConnectorGroup: API.OperationMetho
   DisassociatePhoneNumbersFromVoiceConnectorGroupRequest,
   DisassociatePhoneNumbersFromVoiceConnectorGroupResponse,
   DisassociatePhoneNumbersFromVoiceConnectorGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DisassociatePhoneNumbersFromVoiceConnectorGroupRequest,
   output: DisassociatePhoneNumbersFromVoiceConnectorGroupResponse,
@@ -5586,7 +5584,7 @@ export const getGlobalSettings: API.OperationMethod<
   GetGlobalSettingsRequest,
   GetGlobalSettingsResponse,
   GetGlobalSettingsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetGlobalSettingsRequest,
   output: GetGlobalSettingsResponse,
@@ -5620,7 +5618,7 @@ export const getPhoneNumber: API.OperationMethod<
   GetPhoneNumberRequest,
   GetPhoneNumberResponse,
   GetPhoneNumberError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetPhoneNumberRequest,
   output: GetPhoneNumberResponse,
@@ -5656,7 +5654,7 @@ export const getPhoneNumberOrder: API.OperationMethod<
   GetPhoneNumberOrderRequest,
   GetPhoneNumberOrderResponse,
   GetPhoneNumberOrderError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetPhoneNumberOrderRequest,
   output: GetPhoneNumberOrderResponse,
@@ -5690,7 +5688,7 @@ export const getPhoneNumberSettings: API.OperationMethod<
   GetPhoneNumberSettingsRequest,
   GetPhoneNumberSettingsResponse,
   GetPhoneNumberSettingsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetPhoneNumberSettingsRequest,
   output: GetPhoneNumberSettingsResponse,
@@ -5723,7 +5721,7 @@ export const getProxySession: API.OperationMethod<
   GetProxySessionRequest,
   GetProxySessionResponse,
   GetProxySessionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetProxySessionRequest,
   output: GetProxySessionResponse,
@@ -5758,7 +5756,7 @@ export const getSipMediaApplication: API.OperationMethod<
   GetSipMediaApplicationRequest,
   GetSipMediaApplicationResponse,
   GetSipMediaApplicationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetSipMediaApplicationRequest,
   output: GetSipMediaApplicationResponse,
@@ -5795,7 +5793,7 @@ export const getSipMediaApplicationAlexaSkillConfiguration: API.OperationMethod<
   GetSipMediaApplicationAlexaSkillConfigurationRequest,
   GetSipMediaApplicationAlexaSkillConfigurationResponse,
   GetSipMediaApplicationAlexaSkillConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetSipMediaApplicationAlexaSkillConfigurationRequest,
   output: GetSipMediaApplicationAlexaSkillConfigurationResponse,
@@ -5829,7 +5827,7 @@ export const getSipMediaApplicationLoggingConfiguration: API.OperationMethod<
   GetSipMediaApplicationLoggingConfigurationRequest,
   GetSipMediaApplicationLoggingConfigurationResponse,
   GetSipMediaApplicationLoggingConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetSipMediaApplicationLoggingConfigurationRequest,
   output: GetSipMediaApplicationLoggingConfigurationResponse,
@@ -5864,7 +5862,7 @@ export const getSipRule: API.OperationMethod<
   GetSipRuleRequest,
   GetSipRuleResponse,
   GetSipRuleError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetSipRuleRequest,
   output: GetSipRuleResponse,
@@ -5900,7 +5898,7 @@ export const getSpeakerSearchTask: API.OperationMethod<
   GetSpeakerSearchTaskRequest,
   GetSpeakerSearchTaskResponse,
   GetSpeakerSearchTaskError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetSpeakerSearchTaskRequest,
   output: GetSpeakerSearchTaskResponse,
@@ -5937,7 +5935,7 @@ export const getVoiceConnector: API.OperationMethod<
   GetVoiceConnectorRequest,
   GetVoiceConnectorResponse,
   GetVoiceConnectorError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetVoiceConnectorRequest,
   output: GetVoiceConnectorResponse,
@@ -5971,7 +5969,7 @@ export const getVoiceConnectorEmergencyCallingConfiguration: API.OperationMethod
   GetVoiceConnectorEmergencyCallingConfigurationRequest,
   GetVoiceConnectorEmergencyCallingConfigurationResponse,
   GetVoiceConnectorEmergencyCallingConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetVoiceConnectorEmergencyCallingConfigurationRequest,
   output: GetVoiceConnectorEmergencyCallingConfigurationResponse,
@@ -6006,7 +6004,7 @@ export const getVoiceConnectorExternalSystemsConfiguration: API.OperationMethod<
   GetVoiceConnectorExternalSystemsConfigurationRequest,
   GetVoiceConnectorExternalSystemsConfigurationResponse,
   GetVoiceConnectorExternalSystemsConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetVoiceConnectorExternalSystemsConfigurationRequest,
   output: GetVoiceConnectorExternalSystemsConfigurationResponse,
@@ -6041,7 +6039,7 @@ export const getVoiceConnectorGroup: API.OperationMethod<
   GetVoiceConnectorGroupRequest,
   GetVoiceConnectorGroupResponse,
   GetVoiceConnectorGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetVoiceConnectorGroupRequest,
   output: GetVoiceConnectorGroupResponse,
@@ -6076,7 +6074,7 @@ export const getVoiceConnectorLoggingConfiguration: API.OperationMethod<
   GetVoiceConnectorLoggingConfigurationRequest,
   GetVoiceConnectorLoggingConfigurationResponse,
   GetVoiceConnectorLoggingConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetVoiceConnectorLoggingConfigurationRequest,
   output: GetVoiceConnectorLoggingConfigurationResponse,
@@ -6110,7 +6108,7 @@ export const getVoiceConnectorOrigination: API.OperationMethod<
   GetVoiceConnectorOriginationRequest,
   GetVoiceConnectorOriginationResponse,
   GetVoiceConnectorOriginationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetVoiceConnectorOriginationRequest,
   output: GetVoiceConnectorOriginationResponse,
@@ -6145,7 +6143,7 @@ export const getVoiceConnectorProxy: API.OperationMethod<
   GetVoiceConnectorProxyRequest,
   GetVoiceConnectorProxyResponse,
   GetVoiceConnectorProxyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetVoiceConnectorProxyRequest,
   output: GetVoiceConnectorProxyResponse,
@@ -6181,7 +6179,7 @@ export const getVoiceConnectorStreamingConfiguration: API.OperationMethod<
   GetVoiceConnectorStreamingConfigurationRequest,
   GetVoiceConnectorStreamingConfigurationResponse,
   GetVoiceConnectorStreamingConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetVoiceConnectorStreamingConfigurationRequest,
   output: GetVoiceConnectorStreamingConfigurationResponse,
@@ -6215,7 +6213,7 @@ export const getVoiceConnectorTermination: API.OperationMethod<
   GetVoiceConnectorTerminationRequest,
   GetVoiceConnectorTerminationResponse,
   GetVoiceConnectorTerminationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetVoiceConnectorTerminationRequest,
   output: GetVoiceConnectorTerminationResponse,
@@ -6251,7 +6249,7 @@ export const getVoiceConnectorTerminationHealth: API.OperationMethod<
   GetVoiceConnectorTerminationHealthRequest,
   GetVoiceConnectorTerminationHealthResponse,
   GetVoiceConnectorTerminationHealthError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetVoiceConnectorTerminationHealthRequest,
   output: GetVoiceConnectorTerminationHealthResponse,
@@ -6286,7 +6284,7 @@ export const getVoiceProfile: API.OperationMethod<
   GetVoiceProfileRequest,
   GetVoiceProfileResponse,
   GetVoiceProfileError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetVoiceProfileRequest,
   output: GetVoiceProfileResponse,
@@ -6322,7 +6320,7 @@ export const getVoiceProfileDomain: API.OperationMethod<
   GetVoiceProfileDomainRequest,
   GetVoiceProfileDomainResponse,
   GetVoiceProfileDomainError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetVoiceProfileDomainRequest,
   output: GetVoiceProfileDomainResponse,
@@ -6359,7 +6357,7 @@ export const getVoiceToneAnalysisTask: API.OperationMethod<
   GetVoiceToneAnalysisTaskRequest,
   GetVoiceToneAnalysisTaskResponse,
   GetVoiceToneAnalysisTaskError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetVoiceToneAnalysisTaskRequest,
   output: GetVoiceToneAnalysisTaskResponse,
@@ -6394,7 +6392,7 @@ export const listAvailableVoiceConnectorRegions: API.OperationMethod<
   ListAvailableVoiceConnectorRegionsRequest,
   ListAvailableVoiceConnectorRegionsResponse,
   ListAvailableVoiceConnectorRegionsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListAvailableVoiceConnectorRegionsRequest,
   output: ListAvailableVoiceConnectorRegionsResponse,
@@ -6422,27 +6420,13 @@ export type ListPhoneNumberOrdersError =
 /**
  * Lists the phone numbers for an administrator's Amazon Chime SDK account.
  */
-export const listPhoneNumberOrders: API.OperationMethod<
+export const listPhoneNumberOrders: API.PaginatedOperationMethod<
   ListPhoneNumberOrdersRequest,
   ListPhoneNumberOrdersResponse,
   ListPhoneNumberOrdersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPhoneNumberOrdersRequest,
-  ) => stream.Stream<
-    ListPhoneNumberOrdersResponse,
-    ListPhoneNumberOrdersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPhoneNumberOrdersRequest,
-  ) => stream.Stream<
-    unknown,
-    ListPhoneNumberOrdersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListPhoneNumberOrdersRequest,
   output: ListPhoneNumberOrdersResponse,
   errors: [
@@ -6461,27 +6445,7 @@ export const listPhoneNumberOrders: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListPhoneNumberOrdersRequest,
-  ListPhoneNumberOrdersResponse,
-  ListPhoneNumberOrdersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPhoneNumberOrdersRequest,
-  ) => stream.Stream<
-    ListPhoneNumberOrdersResponse,
-    ListPhoneNumberOrdersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPhoneNumberOrdersRequest,
-  ) => stream.Stream<
-    unknown,
-    ListPhoneNumberOrdersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListPhoneNumbersError =
   | BadRequestException
@@ -6497,27 +6461,13 @@ export type ListPhoneNumbersError =
  * Amazon Chime SDK user, Amazon Chime SDK Voice Connector, or Amazon Chime SDK Voice
  * Connector group.
  */
-export const listPhoneNumbers: API.OperationMethod<
+export const listPhoneNumbers: API.PaginatedOperationMethod<
   ListPhoneNumbersRequest,
   ListPhoneNumbersResponse,
   ListPhoneNumbersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPhoneNumbersRequest,
-  ) => stream.Stream<
-    ListPhoneNumbersResponse,
-    ListPhoneNumbersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPhoneNumbersRequest,
-  ) => stream.Stream<
-    unknown,
-    ListPhoneNumbersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListPhoneNumbersRequest,
   output: ListPhoneNumbersResponse,
   errors: [
@@ -6537,27 +6487,7 @@ export const listPhoneNumbers: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListPhoneNumbersRequest,
-  ListPhoneNumbersResponse,
-  ListPhoneNumbersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPhoneNumbersRequest,
-  ) => stream.Stream<
-    ListPhoneNumbersResponse,
-    ListPhoneNumbersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPhoneNumbersRequest,
-  ) => stream.Stream<
-    unknown,
-    ListPhoneNumbersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListProxySessionsError =
   | BadRequestException
@@ -6571,27 +6501,13 @@ export type ListProxySessionsError =
 /**
  * Lists the proxy sessions for the specified Amazon Chime SDK Voice Connector.
  */
-export const listProxySessions: API.OperationMethod<
+export const listProxySessions: API.PaginatedOperationMethod<
   ListProxySessionsRequest,
   ListProxySessionsResponse,
   ListProxySessionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListProxySessionsRequest,
-  ) => stream.Stream<
-    ListProxySessionsResponse,
-    ListProxySessionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListProxySessionsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListProxySessionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListProxySessionsRequest,
   output: ListProxySessionsResponse,
   errors: [
@@ -6611,27 +6527,7 @@ export const listProxySessions: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListProxySessionsRequest,
-  ListProxySessionsResponse,
-  ListProxySessionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListProxySessionsRequest,
-  ) => stream.Stream<
-    ListProxySessionsResponse,
-    ListProxySessionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListProxySessionsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListProxySessionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListSipMediaApplicationsError =
   | BadRequestException
@@ -6644,27 +6540,13 @@ export type ListSipMediaApplicationsError =
 /**
  * Lists the SIP media applications under the administrator's AWS account.
  */
-export const listSipMediaApplications: API.OperationMethod<
+export const listSipMediaApplications: API.PaginatedOperationMethod<
   ListSipMediaApplicationsRequest,
   ListSipMediaApplicationsResponse,
   ListSipMediaApplicationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSipMediaApplicationsRequest,
-  ) => stream.Stream<
-    ListSipMediaApplicationsResponse,
-    ListSipMediaApplicationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSipMediaApplicationsRequest,
-  ) => stream.Stream<
-    SipMediaApplication,
-    ListSipMediaApplicationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  SipMediaApplication
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListSipMediaApplicationsRequest,
   output: ListSipMediaApplicationsResponse,
   errors: [
@@ -6684,27 +6566,7 @@ export const listSipMediaApplications: API.OperationMethod<
     items: "SipMediaApplications",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListSipMediaApplicationsRequest,
-  ListSipMediaApplicationsResponse,
-  ListSipMediaApplicationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSipMediaApplicationsRequest,
-  ) => stream.Stream<
-    ListSipMediaApplicationsResponse,
-    ListSipMediaApplicationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSipMediaApplicationsRequest,
-  ) => stream.Stream<
-    SipMediaApplication,
-    ListSipMediaApplicationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListSipRulesError =
   | BadRequestException
@@ -6717,27 +6579,13 @@ export type ListSipRulesError =
 /**
  * Lists the SIP rules under the administrator's AWS account.
  */
-export const listSipRules: API.OperationMethod<
+export const listSipRules: API.PaginatedOperationMethod<
   ListSipRulesRequest,
   ListSipRulesResponse,
   ListSipRulesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSipRulesRequest,
-  ) => stream.Stream<
-    ListSipRulesResponse,
-    ListSipRulesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSipRulesRequest,
-  ) => stream.Stream<
-    SipRule,
-    ListSipRulesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  SipRule
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListSipRulesRequest,
   output: ListSipRulesResponse,
   errors: [
@@ -6757,27 +6605,7 @@ export const listSipRules: API.OperationMethod<
     items: "SipRules",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListSipRulesRequest,
-  ListSipRulesResponse,
-  ListSipRulesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSipRulesRequest,
-  ) => stream.Stream<
-    ListSipRulesResponse,
-    ListSipRulesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSipRulesRequest,
-  ) => stream.Stream<
-    SipRule,
-    ListSipRulesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListSupportedPhoneNumberCountriesError =
   | AccessDeniedException
@@ -6795,7 +6623,7 @@ export const listSupportedPhoneNumberCountries: API.OperationMethod<
   ListSupportedPhoneNumberCountriesRequest,
   ListSupportedPhoneNumberCountriesResponse,
   ListSupportedPhoneNumberCountriesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListSupportedPhoneNumberCountriesRequest,
   output: ListSupportedPhoneNumberCountriesResponse,
@@ -6828,7 +6656,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceRequest,
   ListTagsForResourceResponse,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -6857,27 +6685,13 @@ export type ListVoiceConnectorGroupsError =
  * Lists the Amazon Chime SDK Voice Connector groups in the administrator's AWS
  * account.
  */
-export const listVoiceConnectorGroups: API.OperationMethod<
+export const listVoiceConnectorGroups: API.PaginatedOperationMethod<
   ListVoiceConnectorGroupsRequest,
   ListVoiceConnectorGroupsResponse,
   ListVoiceConnectorGroupsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListVoiceConnectorGroupsRequest,
-  ) => stream.Stream<
-    ListVoiceConnectorGroupsResponse,
-    ListVoiceConnectorGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListVoiceConnectorGroupsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListVoiceConnectorGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListVoiceConnectorGroupsRequest,
   output: ListVoiceConnectorGroupsResponse,
   errors: [
@@ -6896,27 +6710,7 @@ export const listVoiceConnectorGroups: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListVoiceConnectorGroupsRequest,
-  ListVoiceConnectorGroupsResponse,
-  ListVoiceConnectorGroupsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListVoiceConnectorGroupsRequest,
-  ) => stream.Stream<
-    ListVoiceConnectorGroupsResponse,
-    ListVoiceConnectorGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListVoiceConnectorGroupsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListVoiceConnectorGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListVoiceConnectorsError =
   | BadRequestException
@@ -6930,27 +6724,13 @@ export type ListVoiceConnectorsError =
  * Lists the Amazon Chime SDK Voice Connectors in the administrators
  * AWS account.
  */
-export const listVoiceConnectors: API.OperationMethod<
+export const listVoiceConnectors: API.PaginatedOperationMethod<
   ListVoiceConnectorsRequest,
   ListVoiceConnectorsResponse,
   ListVoiceConnectorsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListVoiceConnectorsRequest,
-  ) => stream.Stream<
-    ListVoiceConnectorsResponse,
-    ListVoiceConnectorsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListVoiceConnectorsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListVoiceConnectorsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListVoiceConnectorsRequest,
   output: ListVoiceConnectorsResponse,
   errors: [
@@ -6969,27 +6749,7 @@ export const listVoiceConnectors: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListVoiceConnectorsRequest,
-  ListVoiceConnectorsResponse,
-  ListVoiceConnectorsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListVoiceConnectorsRequest,
-  ) => stream.Stream<
-    ListVoiceConnectorsResponse,
-    ListVoiceConnectorsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListVoiceConnectorsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListVoiceConnectorsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListVoiceConnectorTerminationCredentialsError =
   | BadRequestException
@@ -7007,7 +6767,7 @@ export const listVoiceConnectorTerminationCredentials: API.OperationMethod<
   ListVoiceConnectorTerminationCredentialsRequest,
   ListVoiceConnectorTerminationCredentialsResponse,
   ListVoiceConnectorTerminationCredentialsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListVoiceConnectorTerminationCredentialsRequest,
   output: ListVoiceConnectorTerminationCredentialsResponse,
@@ -7037,27 +6797,13 @@ export type ListVoiceProfileDomainsError =
 /**
  * Lists the specified voice profile domains in the administrator's AWS account.
  */
-export const listVoiceProfileDomains: API.OperationMethod<
+export const listVoiceProfileDomains: API.PaginatedOperationMethod<
   ListVoiceProfileDomainsRequest,
   ListVoiceProfileDomainsResponse,
   ListVoiceProfileDomainsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListVoiceProfileDomainsRequest,
-  ) => stream.Stream<
-    ListVoiceProfileDomainsResponse,
-    ListVoiceProfileDomainsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListVoiceProfileDomainsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListVoiceProfileDomainsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListVoiceProfileDomainsRequest,
   output: ListVoiceProfileDomainsResponse,
   errors: [
@@ -7077,27 +6823,7 @@ export const listVoiceProfileDomains: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListVoiceProfileDomainsRequest,
-  ListVoiceProfileDomainsResponse,
-  ListVoiceProfileDomainsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListVoiceProfileDomainsRequest,
-  ) => stream.Stream<
-    ListVoiceProfileDomainsResponse,
-    ListVoiceProfileDomainsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListVoiceProfileDomainsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListVoiceProfileDomainsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListVoiceProfilesError =
   | BadRequestException
@@ -7111,27 +6837,13 @@ export type ListVoiceProfilesError =
 /**
  * Lists the voice profiles in a voice profile domain.
  */
-export const listVoiceProfiles: API.OperationMethod<
+export const listVoiceProfiles: API.PaginatedOperationMethod<
   ListVoiceProfilesRequest,
   ListVoiceProfilesResponse,
   ListVoiceProfilesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListVoiceProfilesRequest,
-  ) => stream.Stream<
-    ListVoiceProfilesResponse,
-    ListVoiceProfilesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListVoiceProfilesRequest,
-  ) => stream.Stream<
-    unknown,
-    ListVoiceProfilesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListVoiceProfilesRequest,
   output: ListVoiceProfilesResponse,
   errors: [
@@ -7151,27 +6863,7 @@ export const listVoiceProfiles: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListVoiceProfilesRequest,
-  ListVoiceProfilesResponse,
-  ListVoiceProfilesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListVoiceProfilesRequest,
-  ) => stream.Stream<
-    ListVoiceProfilesResponse,
-    ListVoiceProfilesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListVoiceProfilesRequest,
-  ) => stream.Stream<
-    unknown,
-    ListVoiceProfilesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type PutSipMediaApplicationAlexaSkillConfigurationError =
   | BadRequestException
@@ -7192,7 +6884,7 @@ export const putSipMediaApplicationAlexaSkillConfiguration: API.OperationMethod<
   PutSipMediaApplicationAlexaSkillConfigurationRequest,
   PutSipMediaApplicationAlexaSkillConfigurationResponse,
   PutSipMediaApplicationAlexaSkillConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutSipMediaApplicationAlexaSkillConfigurationRequest,
   output: PutSipMediaApplicationAlexaSkillConfigurationResponse,
@@ -7226,7 +6918,7 @@ export const putSipMediaApplicationLoggingConfiguration: API.OperationMethod<
   PutSipMediaApplicationLoggingConfigurationRequest,
   PutSipMediaApplicationLoggingConfigurationResponse,
   PutSipMediaApplicationLoggingConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutSipMediaApplicationLoggingConfigurationRequest,
   output: PutSipMediaApplicationLoggingConfigurationResponse,
@@ -7260,7 +6952,7 @@ export const putVoiceConnectorEmergencyCallingConfiguration: API.OperationMethod
   PutVoiceConnectorEmergencyCallingConfigurationRequest,
   PutVoiceConnectorEmergencyCallingConfigurationResponse,
   PutVoiceConnectorEmergencyCallingConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutVoiceConnectorEmergencyCallingConfigurationRequest,
   output: PutVoiceConnectorEmergencyCallingConfigurationResponse,
@@ -7295,7 +6987,7 @@ export const putVoiceConnectorExternalSystemsConfiguration: API.OperationMethod<
   PutVoiceConnectorExternalSystemsConfigurationRequest,
   PutVoiceConnectorExternalSystemsConfigurationResponse,
   PutVoiceConnectorExternalSystemsConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutVoiceConnectorExternalSystemsConfigurationRequest,
   output: PutVoiceConnectorExternalSystemsConfigurationResponse,
@@ -7330,7 +7022,7 @@ export const putVoiceConnectorLoggingConfiguration: API.OperationMethod<
   PutVoiceConnectorLoggingConfigurationRequest,
   PutVoiceConnectorLoggingConfigurationResponse,
   PutVoiceConnectorLoggingConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutVoiceConnectorLoggingConfigurationRequest,
   output: PutVoiceConnectorLoggingConfigurationResponse,
@@ -7364,7 +7056,7 @@ export const putVoiceConnectorOrigination: API.OperationMethod<
   PutVoiceConnectorOriginationRequest,
   PutVoiceConnectorOriginationResponse,
   PutVoiceConnectorOriginationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutVoiceConnectorOriginationRequest,
   output: PutVoiceConnectorOriginationResponse,
@@ -7399,7 +7091,7 @@ export const putVoiceConnectorProxy: API.OperationMethod<
   PutVoiceConnectorProxyRequest,
   PutVoiceConnectorProxyResponse,
   PutVoiceConnectorProxyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutVoiceConnectorProxyRequest,
   output: PutVoiceConnectorProxyResponse,
@@ -7434,7 +7126,7 @@ export const putVoiceConnectorStreamingConfiguration: API.OperationMethod<
   PutVoiceConnectorStreamingConfigurationRequest,
   PutVoiceConnectorStreamingConfigurationResponse,
   PutVoiceConnectorStreamingConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutVoiceConnectorStreamingConfigurationRequest,
   output: PutVoiceConnectorStreamingConfigurationResponse,
@@ -7469,7 +7161,7 @@ export const putVoiceConnectorTermination: API.OperationMethod<
   PutVoiceConnectorTerminationRequest,
   PutVoiceConnectorTerminationResponse,
   PutVoiceConnectorTerminationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutVoiceConnectorTerminationRequest,
   output: PutVoiceConnectorTerminationResponse,
@@ -7504,7 +7196,7 @@ export const putVoiceConnectorTerminationCredentials: API.OperationMethod<
   PutVoiceConnectorTerminationCredentialsRequest,
   PutVoiceConnectorTerminationCredentialsResponse,
   PutVoiceConnectorTerminationCredentialsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutVoiceConnectorTerminationCredentialsRequest,
   output: PutVoiceConnectorTerminationCredentialsResponse,
@@ -7539,7 +7231,7 @@ export const restorePhoneNumber: API.OperationMethod<
   RestorePhoneNumberRequest,
   RestorePhoneNumberResponse,
   RestorePhoneNumberError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RestorePhoneNumberRequest,
   output: RestorePhoneNumberResponse,
@@ -7570,27 +7262,13 @@ export type SearchAvailablePhoneNumbersError =
 /**
  * Searches the provisioned phone numbers in an organization.
  */
-export const searchAvailablePhoneNumbers: API.OperationMethod<
+export const searchAvailablePhoneNumbers: API.PaginatedOperationMethod<
   SearchAvailablePhoneNumbersRequest,
   SearchAvailablePhoneNumbersResponse,
   SearchAvailablePhoneNumbersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: SearchAvailablePhoneNumbersRequest,
-  ) => stream.Stream<
-    SearchAvailablePhoneNumbersResponse,
-    SearchAvailablePhoneNumbersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: SearchAvailablePhoneNumbersRequest,
-  ) => stream.Stream<
-    unknown,
-    SearchAvailablePhoneNumbersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: SearchAvailablePhoneNumbersRequest,
   output: SearchAvailablePhoneNumbersResponse,
   errors: [
@@ -7610,27 +7288,7 @@ export const searchAvailablePhoneNumbers: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  SearchAvailablePhoneNumbersRequest,
-  SearchAvailablePhoneNumbersResponse,
-  SearchAvailablePhoneNumbersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: SearchAvailablePhoneNumbersRequest,
-  ) => stream.Stream<
-    SearchAvailablePhoneNumbersResponse,
-    SearchAvailablePhoneNumbersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: SearchAvailablePhoneNumbersRequest,
-  ) => stream.Stream<
-    unknown,
-    SearchAvailablePhoneNumbersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type StartSpeakerSearchTaskError =
   | AccessDeniedException
@@ -7656,7 +7314,7 @@ export const startSpeakerSearchTask: API.OperationMethod<
   StartSpeakerSearchTaskRequest,
   StartSpeakerSearchTaskResponse,
   StartSpeakerSearchTaskError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartSpeakerSearchTaskRequest,
   output: StartSpeakerSearchTaskResponse,
@@ -7705,7 +7363,7 @@ export const startVoiceToneAnalysisTask: API.OperationMethod<
   StartVoiceToneAnalysisTaskRequest,
   StartVoiceToneAnalysisTaskResponse,
   StartVoiceToneAnalysisTaskError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartVoiceToneAnalysisTaskRequest,
   output: StartVoiceToneAnalysisTaskResponse,
@@ -7747,7 +7405,7 @@ export const stopSpeakerSearchTask: API.OperationMethod<
   StopSpeakerSearchTaskRequest,
   StopSpeakerSearchTaskResponse,
   StopSpeakerSearchTaskError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StopSpeakerSearchTaskRequest,
   output: StopSpeakerSearchTaskResponse,
@@ -7787,7 +7445,7 @@ export const stopVoiceToneAnalysisTask: API.OperationMethod<
   StopVoiceToneAnalysisTaskRequest,
   StopVoiceToneAnalysisTaskResponse,
   StopVoiceToneAnalysisTaskError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StopVoiceToneAnalysisTaskRequest,
   output: StopVoiceToneAnalysisTaskResponse,
@@ -7824,7 +7482,7 @@ export const tagResource: API.OperationMethod<
   TagResourceRequest,
   TagResourceResponse,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -7857,7 +7515,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceRequest,
   UntagResourceResponse,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -7889,7 +7547,7 @@ export const updateGlobalSettings: API.OperationMethod<
   UpdateGlobalSettingsRequest,
   UpdateGlobalSettingsResponse,
   UpdateGlobalSettingsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateGlobalSettingsRequest,
   output: UpdateGlobalSettingsResponse,
@@ -7932,7 +7590,7 @@ export const updatePhoneNumber: API.OperationMethod<
   UpdatePhoneNumberRequest,
   UpdatePhoneNumberResponse,
   UpdatePhoneNumberError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdatePhoneNumberRequest,
   output: UpdatePhoneNumberResponse,
@@ -7969,7 +7627,7 @@ export const updatePhoneNumberSettings: API.OperationMethod<
   UpdatePhoneNumberSettingsRequest,
   UpdatePhoneNumberSettingsResponse,
   UpdatePhoneNumberSettingsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdatePhoneNumberSettingsRequest,
   output: UpdatePhoneNumberSettingsResponse,
@@ -8002,7 +7660,7 @@ export const updateProxySession: API.OperationMethod<
   UpdateProxySessionRequest,
   UpdateProxySessionResponse,
   UpdateProxySessionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateProxySessionRequest,
   output: UpdateProxySessionResponse,
@@ -8037,7 +7695,7 @@ export const updateSipMediaApplication: API.OperationMethod<
   UpdateSipMediaApplicationRequest,
   UpdateSipMediaApplicationResponse,
   UpdateSipMediaApplicationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateSipMediaApplicationRequest,
   output: UpdateSipMediaApplicationResponse,
@@ -8075,7 +7733,7 @@ export const updateSipMediaApplicationCall: API.OperationMethod<
   UpdateSipMediaApplicationCallRequest,
   UpdateSipMediaApplicationCallResponse,
   UpdateSipMediaApplicationCallError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateSipMediaApplicationCallRequest,
   output: UpdateSipMediaApplicationCallResponse,
@@ -8112,7 +7770,7 @@ export const updateSipRule: API.OperationMethod<
   UpdateSipRuleRequest,
   UpdateSipRuleResponse,
   UpdateSipRuleError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateSipRuleRequest,
   output: UpdateSipRuleResponse,
@@ -8148,7 +7806,7 @@ export const updateVoiceConnector: API.OperationMethod<
   UpdateVoiceConnectorRequest,
   UpdateVoiceConnectorResponse,
   UpdateVoiceConnectorError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateVoiceConnectorRequest,
   output: UpdateVoiceConnectorResponse,
@@ -8183,7 +7841,7 @@ export const updateVoiceConnectorGroup: API.OperationMethod<
   UpdateVoiceConnectorGroupRequest,
   UpdateVoiceConnectorGroupResponse,
   UpdateVoiceConnectorGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateVoiceConnectorGroupRequest,
   output: UpdateVoiceConnectorGroupResponse,
@@ -8230,7 +7888,7 @@ export const updateVoiceProfile: API.OperationMethod<
   UpdateVoiceProfileRequest,
   UpdateVoiceProfileResponse,
   UpdateVoiceProfileError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateVoiceProfileRequest,
   output: UpdateVoiceProfileResponse,
@@ -8268,7 +7926,7 @@ export const updateVoiceProfileDomain: API.OperationMethod<
   UpdateVoiceProfileDomainRequest,
   UpdateVoiceProfileDomainResponse,
   UpdateVoiceProfileDomainError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateVoiceProfileDomainRequest,
   output: UpdateVoiceProfileDomainResponse,
@@ -8307,7 +7965,7 @@ export const validateE911Address: API.OperationMethod<
   ValidateE911AddressRequest,
   ValidateE911AddressResponse,
   ValidateE911AddressError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ValidateE911AddressRequest,
   output: ValidateE911AddressResponse,

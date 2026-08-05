@@ -1,6 +1,5 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -8,7 +7,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 const svc = T.AwsApiService({
   sdkId: "GroundStation",
   serviceShapeName: "GroundStation",
@@ -88,37 +86,49 @@ const rules = T.EndpointResolver((p, _) => {
 export class DependencyException
   extends /*@__PURE__*/ S.TaggedErrorClass<DependencyException>()(
     "DependencyException",
-    { message: S.optional(S.String), parameterName: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      parameterName: S.optional(S.String),
+    },
     T.HttpError(531),
   ).pipe(C.withServerError) {}
 export class InvalidParameterException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidParameterException>()(
     "InvalidParameterException",
-    { message: S.optional(S.String), parameterName: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      parameterName: S.optional(S.String),
+    },
     T.HttpError(431),
   ) {}
 export class ResourceInUseException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceInUseException>()(
     "ResourceInUseException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class ResourceLimitExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceLimitExceededException>()(
     "ResourceLimitExceededException",
-    { message: S.optional(S.String), parameterName: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      parameterName: S.optional(S.String),
+    },
     T.HttpError(429),
   ).pipe(C.withThrottlingError) {}
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(434),
   ) {}
 export class ServiceQuotaExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
     "ServiceQuotaExceededException",
-    { message: S.optional(S.String), parameterName: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      parameterName: S.optional(S.String),
+    },
     T.HttpError(402),
   ).pipe(C.withQuotaError) {}
 export type Uuid = string;
@@ -2992,7 +3002,7 @@ export const cancelContact: API.OperationMethod<
   CancelContactRequest,
   ContactIdResponse,
   CancelContactError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CancelContactRequest,
   output: ContactIdResponse,
@@ -3021,7 +3031,7 @@ export const createConfig: API.OperationMethod<
   CreateConfigRequest,
   ConfigIdResponse,
   CreateConfigError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateConfigRequest,
   output: ConfigIdResponse,
@@ -3052,7 +3062,7 @@ export const createDataflowEndpointGroup: API.OperationMethod<
   CreateDataflowEndpointGroupRequest,
   DataflowEndpointGroupIdResponse,
   CreateDataflowEndpointGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateDataflowEndpointGroupRequest,
   output: DataflowEndpointGroupIdResponse,
@@ -3083,7 +3093,7 @@ export const createDataflowEndpointGroupV2: API.OperationMethod<
   CreateDataflowEndpointGroupV2Request,
   CreateDataflowEndpointGroupV2Response,
   CreateDataflowEndpointGroupV2Error,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateDataflowEndpointGroupV2Request,
   output: CreateDataflowEndpointGroupV2Response,
@@ -3110,7 +3120,7 @@ export const createEphemeris: API.OperationMethod<
   CreateEphemerisRequest,
   EphemerisIdResponse,
   CreateEphemerisError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateEphemerisRequest,
   output: EphemerisIdResponse,
@@ -3138,7 +3148,7 @@ export const createMissionProfile: API.OperationMethod<
   CreateMissionProfileRequest,
   MissionProfileIdResponse,
   CreateMissionProfileError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateMissionProfileRequest,
   output: MissionProfileIdResponse,
@@ -3164,7 +3174,7 @@ export const deleteConfig: API.OperationMethod<
   DeleteConfigRequest,
   ConfigIdResponse,
   DeleteConfigError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteConfigRequest,
   output: ConfigIdResponse,
@@ -3190,7 +3200,7 @@ export const deleteDataflowEndpointGroup: API.OperationMethod<
   DeleteDataflowEndpointGroupRequest,
   DataflowEndpointGroupIdResponse,
   DeleteDataflowEndpointGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteDataflowEndpointGroupRequest,
   output: DataflowEndpointGroupIdResponse,
@@ -3217,7 +3227,7 @@ export const deleteEphemeris: API.OperationMethod<
   DeleteEphemerisRequest,
   EphemerisIdResponse,
   DeleteEphemerisError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteEphemerisRequest,
   output: EphemerisIdResponse,
@@ -3244,7 +3254,7 @@ export const deleteMissionProfile: API.OperationMethod<
   DeleteMissionProfileRequest,
   MissionProfileIdResponse,
   DeleteMissionProfileError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteMissionProfileRequest,
   output: MissionProfileIdResponse,
@@ -3270,7 +3280,7 @@ export const describeContact: API.OperationMethod<
   DescribeContactRequest,
   DescribeContactResponse,
   DescribeContactError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeContactRequest,
   output: DescribeContactResponse,
@@ -3296,7 +3306,7 @@ export const describeContactVersion: API.OperationMethod<
   DescribeContactVersionRequest,
   DescribeContactVersionResponse,
   DescribeContactVersionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeContactVersionRequest,
   output: DescribeContactVersionResponse,
@@ -3322,7 +3332,7 @@ export const describeEphemeris: API.OperationMethod<
   DescribeEphemerisRequest,
   DescribeEphemerisResponse,
   DescribeEphemerisError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeEphemerisRequest,
   output: DescribeEphemerisResponse,
@@ -3350,7 +3360,7 @@ export const getAgentConfiguration: API.OperationMethod<
   GetAgentConfigurationRequest,
   GetAgentConfigurationResponse,
   GetAgentConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetAgentConfigurationRequest,
   output: GetAgentConfigurationResponse,
@@ -3378,7 +3388,7 @@ export const getAgentTaskResponseUrl: API.OperationMethod<
   GetAgentTaskResponseUrlRequest,
   GetAgentTaskResponseUrlResponse,
   GetAgentTaskResponseUrlError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetAgentTaskResponseUrlRequest,
   output: GetAgentTaskResponseUrlResponse,
@@ -3406,7 +3416,7 @@ export const getConfig: API.OperationMethod<
   GetConfigRequest,
   GetConfigResponse,
   GetConfigError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetConfigRequest,
   output: GetConfigResponse,
@@ -3432,7 +3442,7 @@ export const getDataflowEndpointGroup: API.OperationMethod<
   GetDataflowEndpointGroupRequest,
   GetDataflowEndpointGroupResponse,
   GetDataflowEndpointGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetDataflowEndpointGroupRequest,
   output: GetDataflowEndpointGroupResponse,
@@ -3458,7 +3468,7 @@ export const getMinuteUsage: API.OperationMethod<
   GetMinuteUsageRequest,
   GetMinuteUsageResponse,
   GetMinuteUsageError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetMinuteUsageRequest,
   output: GetMinuteUsageResponse,
@@ -3484,7 +3494,7 @@ export const getMissionProfile: API.OperationMethod<
   GetMissionProfileRequest,
   GetMissionProfileResponse,
   GetMissionProfileError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetMissionProfileRequest,
   output: GetMissionProfileResponse,
@@ -3510,7 +3520,7 @@ export const getSatellite: API.OperationMethod<
   GetSatelliteRequest,
   GetSatelliteResponse,
   GetSatelliteError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetSatelliteRequest,
   output: GetSatelliteResponse,
@@ -3531,27 +3541,13 @@ export type ListAntennasError =
 /**
  * Returns a list of antennas at a specified ground station.
  */
-export const listAntennas: API.OperationMethod<
+export const listAntennas: API.PaginatedOperationMethod<
   ListAntennasRequest,
   ListAntennasResponse,
   ListAntennasError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAntennasRequest,
-  ) => stream.Stream<
-    ListAntennasResponse,
-    ListAntennasError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAntennasRequest,
-  ) => stream.Stream<
-    AntennaListItem,
-    ListAntennasError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  AntennaListItem
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListAntennasRequest,
   output: ListAntennasResponse,
   errors: [DependencyException, InvalidParameterException],
@@ -3564,27 +3560,7 @@ export const listAntennas: API.OperationMethod<
     items: "antennaList",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListAntennasRequest,
-  ListAntennasResponse,
-  ListAntennasError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAntennasRequest,
-  ) => stream.Stream<
-    ListAntennasResponse,
-    ListAntennasError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAntennasRequest,
-  ) => stream.Stream<
-    AntennaListItem,
-    ListAntennasError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListConfigsError =
   | DependencyException
@@ -3594,27 +3570,13 @@ export type ListConfigsError =
 /**
  * Returns a list of `Config` objects.
  */
-export const listConfigs: API.OperationMethod<
+export const listConfigs: API.PaginatedOperationMethod<
   ListConfigsRequest,
   ListConfigsResponse,
   ListConfigsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListConfigsRequest,
-  ) => stream.Stream<
-    ListConfigsResponse,
-    ListConfigsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListConfigsRequest,
-  ) => stream.Stream<
-    ConfigListItem,
-    ListConfigsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ConfigListItem
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListConfigsRequest,
   output: ListConfigsResponse,
   errors: [
@@ -3631,27 +3593,7 @@ export const listConfigs: API.OperationMethod<
     items: "configList",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListConfigsRequest,
-  ListConfigsResponse,
-  ListConfigsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListConfigsRequest,
-  ) => stream.Stream<
-    ListConfigsResponse,
-    ListConfigsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListConfigsRequest,
-  ) => stream.Stream<
-    ConfigListItem,
-    ListConfigsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListContactsError =
   | DependencyException
@@ -3663,27 +3605,13 @@ export type ListContactsError =
  *
  * If `statusList` contains AVAILABLE, the request must include ` groundStation`, `missionprofileArn`, and `satelliteArn`.
  */
-export const listContacts: API.OperationMethod<
+export const listContacts: API.PaginatedOperationMethod<
   ListContactsRequest,
   ListContactsResponse,
   ListContactsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListContactsRequest,
-  ) => stream.Stream<
-    ListContactsResponse,
-    ListContactsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListContactsRequest,
-  ) => stream.Stream<
-    ContactData,
-    ListContactsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ContactData
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListContactsRequest,
   output: ListContactsResponse,
   errors: [
@@ -3700,27 +3628,7 @@ export const listContacts: API.OperationMethod<
     items: "contactList",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListContactsRequest,
-  ListContactsResponse,
-  ListContactsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListContactsRequest,
-  ) => stream.Stream<
-    ListContactsResponse,
-    ListContactsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListContactsRequest,
-  ) => stream.Stream<
-    ContactData,
-    ListContactsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListContactVersionsError =
   | DependencyException
@@ -3730,27 +3638,13 @@ export type ListContactVersionsError =
 /**
  * Returns a list of versions for a specified contact.
  */
-export const listContactVersions: API.OperationMethod<
+export const listContactVersions: API.PaginatedOperationMethod<
   ListContactVersionsRequest,
   ListContactVersionsResponse,
   ListContactVersionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListContactVersionsRequest,
-  ) => stream.Stream<
-    ListContactVersionsResponse,
-    ListContactVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListContactVersionsRequest,
-  ) => stream.Stream<
-    ContactVersion,
-    ListContactVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ContactVersion
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListContactVersionsRequest,
   output: ListContactVersionsResponse,
   errors: [
@@ -3767,27 +3661,7 @@ export const listContactVersions: API.OperationMethod<
     items: "contactVersionsList",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListContactVersionsRequest,
-  ListContactVersionsResponse,
-  ListContactVersionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListContactVersionsRequest,
-  ) => stream.Stream<
-    ListContactVersionsResponse,
-    ListContactVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListContactVersionsRequest,
-  ) => stream.Stream<
-    ContactVersion,
-    ListContactVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListDataflowEndpointGroupsError =
   | DependencyException
@@ -3797,27 +3671,13 @@ export type ListDataflowEndpointGroupsError =
 /**
  * Returns a list of `DataflowEndpoint` groups.
  */
-export const listDataflowEndpointGroups: API.OperationMethod<
+export const listDataflowEndpointGroups: API.PaginatedOperationMethod<
   ListDataflowEndpointGroupsRequest,
   ListDataflowEndpointGroupsResponse,
   ListDataflowEndpointGroupsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDataflowEndpointGroupsRequest,
-  ) => stream.Stream<
-    ListDataflowEndpointGroupsResponse,
-    ListDataflowEndpointGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDataflowEndpointGroupsRequest,
-  ) => stream.Stream<
-    DataflowEndpointListItem,
-    ListDataflowEndpointGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  DataflowEndpointListItem
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListDataflowEndpointGroupsRequest,
   output: ListDataflowEndpointGroupsResponse,
   errors: [
@@ -3834,27 +3694,7 @@ export const listDataflowEndpointGroups: API.OperationMethod<
     items: "dataflowEndpointGroupList",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListDataflowEndpointGroupsRequest,
-  ListDataflowEndpointGroupsResponse,
-  ListDataflowEndpointGroupsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDataflowEndpointGroupsRequest,
-  ) => stream.Stream<
-    ListDataflowEndpointGroupsResponse,
-    ListDataflowEndpointGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDataflowEndpointGroupsRequest,
-  ) => stream.Stream<
-    DataflowEndpointListItem,
-    ListDataflowEndpointGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListEphemeridesError =
   | DependencyException
@@ -3864,27 +3704,13 @@ export type ListEphemeridesError =
 /**
  * List your existing ephemerides.
  */
-export const listEphemerides: API.OperationMethod<
+export const listEphemerides: API.PaginatedOperationMethod<
   ListEphemeridesRequest,
   ListEphemeridesResponse,
   ListEphemeridesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListEphemeridesRequest,
-  ) => stream.Stream<
-    ListEphemeridesResponse,
-    ListEphemeridesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListEphemeridesRequest,
-  ) => stream.Stream<
-    EphemerisItem,
-    ListEphemeridesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  EphemerisItem
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListEphemeridesRequest,
   output: ListEphemeridesResponse,
   errors: [
@@ -3901,27 +3727,7 @@ export const listEphemerides: API.OperationMethod<
     items: "ephemerides",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListEphemeridesRequest,
-  ListEphemeridesResponse,
-  ListEphemeridesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListEphemeridesRequest,
-  ) => stream.Stream<
-    ListEphemeridesResponse,
-    ListEphemeridesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListEphemeridesRequest,
-  ) => stream.Stream<
-    EphemerisItem,
-    ListEphemeridesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListGroundStationReservationsError =
   | DependencyException
@@ -3930,27 +3736,13 @@ export type ListGroundStationReservationsError =
 /**
  * Returns a list of reservations for a specified ground station.
  */
-export const listGroundStationReservations: API.OperationMethod<
+export const listGroundStationReservations: API.PaginatedOperationMethod<
   ListGroundStationReservationsRequest,
   ListGroundStationReservationsResponse,
   ListGroundStationReservationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListGroundStationReservationsRequest,
-  ) => stream.Stream<
-    ListGroundStationReservationsResponse,
-    ListGroundStationReservationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListGroundStationReservationsRequest,
-  ) => stream.Stream<
-    GroundStationReservationListItem,
-    ListGroundStationReservationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  GroundStationReservationListItem
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListGroundStationReservationsRequest,
   output: ListGroundStationReservationsResponse,
   errors: [DependencyException, InvalidParameterException],
@@ -3963,27 +3755,7 @@ export const listGroundStationReservations: API.OperationMethod<
     items: "reservationList",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListGroundStationReservationsRequest,
-  ListGroundStationReservationsResponse,
-  ListGroundStationReservationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListGroundStationReservationsRequest,
-  ) => stream.Stream<
-    ListGroundStationReservationsResponse,
-    ListGroundStationReservationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListGroundStationReservationsRequest,
-  ) => stream.Stream<
-    GroundStationReservationListItem,
-    ListGroundStationReservationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListGroundStationsError =
   | DependencyException
@@ -3993,27 +3765,13 @@ export type ListGroundStationsError =
 /**
  * Returns a list of ground stations.
  */
-export const listGroundStations: API.OperationMethod<
+export const listGroundStations: API.PaginatedOperationMethod<
   ListGroundStationsRequest,
   ListGroundStationsResponse,
   ListGroundStationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListGroundStationsRequest,
-  ) => stream.Stream<
-    ListGroundStationsResponse,
-    ListGroundStationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListGroundStationsRequest,
-  ) => stream.Stream<
-    GroundStationData,
-    ListGroundStationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  GroundStationData
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListGroundStationsRequest,
   output: ListGroundStationsResponse,
   errors: [
@@ -4030,27 +3788,7 @@ export const listGroundStations: API.OperationMethod<
     items: "groundStationList",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListGroundStationsRequest,
-  ListGroundStationsResponse,
-  ListGroundStationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListGroundStationsRequest,
-  ) => stream.Stream<
-    ListGroundStationsResponse,
-    ListGroundStationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListGroundStationsRequest,
-  ) => stream.Stream<
-    GroundStationData,
-    ListGroundStationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListMissionProfilesError =
   | DependencyException
@@ -4060,27 +3798,13 @@ export type ListMissionProfilesError =
 /**
  * Returns a list of mission profiles.
  */
-export const listMissionProfiles: API.OperationMethod<
+export const listMissionProfiles: API.PaginatedOperationMethod<
   ListMissionProfilesRequest,
   ListMissionProfilesResponse,
   ListMissionProfilesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListMissionProfilesRequest,
-  ) => stream.Stream<
-    ListMissionProfilesResponse,
-    ListMissionProfilesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListMissionProfilesRequest,
-  ) => stream.Stream<
-    MissionProfileListItem,
-    ListMissionProfilesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  MissionProfileListItem
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListMissionProfilesRequest,
   output: ListMissionProfilesResponse,
   errors: [
@@ -4097,27 +3821,7 @@ export const listMissionProfiles: API.OperationMethod<
     items: "missionProfileList",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListMissionProfilesRequest,
-  ListMissionProfilesResponse,
-  ListMissionProfilesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListMissionProfilesRequest,
-  ) => stream.Stream<
-    ListMissionProfilesResponse,
-    ListMissionProfilesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListMissionProfilesRequest,
-  ) => stream.Stream<
-    MissionProfileListItem,
-    ListMissionProfilesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListSatellitesError =
   | DependencyException
@@ -4127,27 +3831,13 @@ export type ListSatellitesError =
 /**
  * Returns a list of satellites.
  */
-export const listSatellites: API.OperationMethod<
+export const listSatellites: API.PaginatedOperationMethod<
   ListSatellitesRequest,
   ListSatellitesResponse,
   ListSatellitesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSatellitesRequest,
-  ) => stream.Stream<
-    ListSatellitesResponse,
-    ListSatellitesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSatellitesRequest,
-  ) => stream.Stream<
-    SatelliteListItem,
-    ListSatellitesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  SatelliteListItem
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListSatellitesRequest,
   output: ListSatellitesResponse,
   errors: [
@@ -4164,27 +3854,7 @@ export const listSatellites: API.OperationMethod<
     items: "satellites",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListSatellitesRequest,
-  ListSatellitesResponse,
-  ListSatellitesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSatellitesRequest,
-  ) => stream.Stream<
-    ListSatellitesResponse,
-    ListSatellitesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSatellitesRequest,
-  ) => stream.Stream<
-    SatelliteListItem,
-    ListSatellitesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsForResourceError =
   | DependencyException
@@ -4198,7 +3868,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceRequest,
   ListTagsForResourceResponse,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -4226,7 +3896,7 @@ export const registerAgent: API.OperationMethod<
   RegisterAgentRequest,
   RegisterAgentResponse,
   RegisterAgentError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RegisterAgentRequest,
   output: RegisterAgentResponse,
@@ -4253,7 +3923,7 @@ export const reserveContact: API.OperationMethod<
   ReserveContactRequest,
   ContactIdResponse,
   ReserveContactError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ReserveContactRequest,
   output: ContactIdResponse,
@@ -4280,7 +3950,7 @@ export const tagResource: API.OperationMethod<
   TagResourceRequest,
   TagResourceResponse,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -4306,7 +3976,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceRequest,
   UntagResourceResponse,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -4334,7 +4004,7 @@ export const updateAgentStatus: API.OperationMethod<
   UpdateAgentStatusRequest,
   UpdateAgentStatusResponse,
   UpdateAgentStatusError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateAgentStatusRequest,
   output: UpdateAgentStatusResponse,
@@ -4362,7 +4032,7 @@ export const updateConfig: API.OperationMethod<
   UpdateConfigRequest,
   ConfigIdResponse,
   UpdateConfigError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateConfigRequest,
   output: ConfigIdResponse,
@@ -4389,7 +4059,7 @@ export const updateContact: API.OperationMethod<
   UpdateContactRequest,
   UpdateContactResponse,
   UpdateContactError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateContactRequest,
   output: UpdateContactResponse,
@@ -4416,7 +4086,7 @@ export const updateEphemeris: API.OperationMethod<
   UpdateEphemerisRequest,
   EphemerisIdResponse,
   UpdateEphemerisError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateEphemerisRequest,
   output: EphemerisIdResponse,
@@ -4444,7 +4114,7 @@ export const updateMissionProfile: API.OperationMethod<
   UpdateMissionProfileRequest,
   MissionProfileIdResponse,
   UpdateMissionProfileError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateMissionProfileRequest,
   output: MissionProfileIdResponse,

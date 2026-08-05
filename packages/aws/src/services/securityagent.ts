@@ -1,7 +1,6 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as redacted from "effect/Redacted";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -9,7 +8,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "SecurityAgent",
@@ -57,38 +55,38 @@ const rules = T.EndpointResolver((p, _) => {
 export class AccessDeniedException
   extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
     "AccessDeniedException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(403),
   ).pipe(C.withAuthError) {}
 export class ConflictException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
     "ConflictException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class InternalServerException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
     "InternalServerException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(500),
   ).pipe(C.withServerError) {}
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class ServiceQuotaExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
     "ServiceQuotaExceededException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(402),
   ).pipe(C.withQuotaError) {}
 export class ThrottlingException
   extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
     "ThrottlingException",
     {
-      message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       serviceCode: S.optional(S.String),
       quotaCode: S.optional(S.String),
     },
@@ -98,7 +96,7 @@ export class ValidationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
     "ValidationException",
     {
-      message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       fieldList: S.optional(
         S.suspend(() => ValidationExceptionFieldList).annotate({
           identifier: "ValidationExceptionFieldList",
@@ -6306,7 +6304,7 @@ export const addArtifact: API.OperationMethod<
   AddArtifactInput,
   AddArtifactOutput,
   AddArtifactError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AddArtifactInput,
   output: AddArtifactOutput,
@@ -6338,7 +6336,7 @@ export const batchCreateSecurityRequirements: API.OperationMethod<
   BatchCreateSecurityRequirementsInput,
   BatchCreateSecurityRequirementsOutput,
   BatchCreateSecurityRequirementsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchCreateSecurityRequirementsInput,
   output: BatchCreateSecurityRequirementsOutput,
@@ -6364,7 +6362,7 @@ export const batchDeleteCodeReviews: API.OperationMethod<
   BatchDeleteCodeReviewsInput,
   BatchDeleteCodeReviewsOutput,
   BatchDeleteCodeReviewsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchDeleteCodeReviewsInput,
   output: BatchDeleteCodeReviewsOutput,
@@ -6382,7 +6380,7 @@ export const batchDeletePentests: API.OperationMethod<
   BatchDeletePentestsInput,
   BatchDeletePentestsOutput,
   BatchDeletePentestsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchDeletePentestsInput,
   output: BatchDeletePentestsOutput,
@@ -6407,7 +6405,7 @@ export const batchDeleteSecurityRequirements: API.OperationMethod<
   BatchDeleteSecurityRequirementsInput,
   BatchDeleteSecurityRequirementsOutput,
   BatchDeleteSecurityRequirementsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchDeleteSecurityRequirementsInput,
   output: BatchDeleteSecurityRequirementsOutput,
@@ -6432,7 +6430,7 @@ export const batchDeleteThreatModels: API.OperationMethod<
   BatchDeleteThreatModelsInput,
   BatchDeleteThreatModelsOutput,
   BatchDeleteThreatModelsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchDeleteThreatModelsInput,
   output: BatchDeleteThreatModelsOutput,
@@ -6450,7 +6448,7 @@ export const batchGetAgentSpaces: API.OperationMethod<
   BatchGetAgentSpacesInput,
   BatchGetAgentSpacesOutput,
   BatchGetAgentSpacesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchGetAgentSpacesInput,
   output: BatchGetAgentSpacesOutput,
@@ -6474,7 +6472,7 @@ export const batchGetArtifactMetadata: API.OperationMethod<
   BatchGetArtifactMetadataInput,
   BatchGetArtifactMetadataOutput,
   BatchGetArtifactMetadataError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchGetArtifactMetadataInput,
   output: BatchGetArtifactMetadataOutput,
@@ -6498,7 +6496,7 @@ export const batchGetCodeReviewJobs: API.OperationMethod<
   BatchGetCodeReviewJobsInput,
   BatchGetCodeReviewJobsOutput,
   BatchGetCodeReviewJobsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchGetCodeReviewJobsInput,
   output: BatchGetCodeReviewJobsOutput,
@@ -6516,7 +6514,7 @@ export const batchGetCodeReviewJobTasks: API.OperationMethod<
   BatchGetCodeReviewJobTasksInput,
   BatchGetCodeReviewJobTasksOutput,
   BatchGetCodeReviewJobTasksError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchGetCodeReviewJobTasksInput,
   output: BatchGetCodeReviewJobTasksOutput,
@@ -6534,7 +6532,7 @@ export const batchGetCodeReviews: API.OperationMethod<
   BatchGetCodeReviewsInput,
   BatchGetCodeReviewsOutput,
   BatchGetCodeReviewsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchGetCodeReviewsInput,
   output: BatchGetCodeReviewsOutput,
@@ -6552,7 +6550,7 @@ export const batchGetFindings: API.OperationMethod<
   BatchGetFindingsInput,
   BatchGetFindingsOutput,
   BatchGetFindingsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchGetFindingsInput,
   output: BatchGetFindingsOutput,
@@ -6570,7 +6568,7 @@ export const batchGetPentestJobs: API.OperationMethod<
   BatchGetPentestJobsInput,
   BatchGetPentestJobsOutput,
   BatchGetPentestJobsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchGetPentestJobsInput,
   output: BatchGetPentestJobsOutput,
@@ -6588,7 +6586,7 @@ export const batchGetPentestJobTasks: API.OperationMethod<
   BatchGetPentestJobTasksInput,
   BatchGetPentestJobTasksOutput,
   BatchGetPentestJobTasksError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchGetPentestJobTasksInput,
   output: BatchGetPentestJobTasksOutput,
@@ -6606,7 +6604,7 @@ export const batchGetPentests: API.OperationMethod<
   BatchGetPentestsInput,
   BatchGetPentestsOutput,
   BatchGetPentestsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchGetPentestsInput,
   output: BatchGetPentestsOutput,
@@ -6630,7 +6628,7 @@ export const batchGetSecurityRequirements: API.OperationMethod<
   BatchGetSecurityRequirementsInput,
   BatchGetSecurityRequirementsOutput,
   BatchGetSecurityRequirementsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchGetSecurityRequirementsInput,
   output: BatchGetSecurityRequirementsOutput,
@@ -6654,7 +6652,7 @@ export const batchGetTargetDomains: API.OperationMethod<
   BatchGetTargetDomainsInput,
   BatchGetTargetDomainsOutput,
   BatchGetTargetDomainsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchGetTargetDomainsInput,
   output: BatchGetTargetDomainsOutput,
@@ -6672,7 +6670,7 @@ export const batchGetThreatModelJobs: API.OperationMethod<
   BatchGetThreatModelJobsInput,
   BatchGetThreatModelJobsOutput,
   BatchGetThreatModelJobsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchGetThreatModelJobsInput,
   output: BatchGetThreatModelJobsOutput,
@@ -6690,7 +6688,7 @@ export const batchGetThreatModelJobTasks: API.OperationMethod<
   BatchGetThreatModelJobTasksInput,
   BatchGetThreatModelJobTasksOutput,
   BatchGetThreatModelJobTasksError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchGetThreatModelJobTasksInput,
   output: BatchGetThreatModelJobTasksOutput,
@@ -6708,7 +6706,7 @@ export const batchGetThreatModels: API.OperationMethod<
   BatchGetThreatModelsInput,
   BatchGetThreatModelsOutput,
   BatchGetThreatModelsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchGetThreatModelsInput,
   output: BatchGetThreatModelsOutput,
@@ -6726,7 +6724,7 @@ export const batchGetThreats: API.OperationMethod<
   BatchGetThreatsInput,
   BatchGetThreatsOutput,
   BatchGetThreatsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchGetThreatsInput,
   output: BatchGetThreatsOutput,
@@ -6751,7 +6749,7 @@ export const batchUpdateSecurityRequirements: API.OperationMethod<
   BatchUpdateSecurityRequirementsInput,
   BatchUpdateSecurityRequirementsOutput,
   BatchUpdateSecurityRequirementsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchUpdateSecurityRequirementsInput,
   output: BatchUpdateSecurityRequirementsOutput,
@@ -6776,7 +6774,7 @@ export const createAgentSpace: API.OperationMethod<
   CreateAgentSpaceInput,
   CreateAgentSpaceOutput,
   CreateAgentSpaceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateAgentSpaceInput,
   output: CreateAgentSpaceOutput,
@@ -6794,7 +6792,7 @@ export const createApplication: API.OperationMethod<
   CreateApplicationRequest,
   CreateApplicationResponse,
   CreateApplicationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateApplicationRequest,
   output: CreateApplicationResponse,
@@ -6812,7 +6810,7 @@ export const createCodeReview: API.OperationMethod<
   CreateCodeReviewInput,
   CreateCodeReviewOutput,
   CreateCodeReviewError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateCodeReviewInput,
   output: CreateCodeReviewOutput,
@@ -6837,7 +6835,7 @@ export const createIntegration: API.OperationMethod<
   CreateIntegrationInput,
   CreateIntegrationOutput,
   CreateIntegrationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateIntegrationInput,
   output: CreateIntegrationOutput,
@@ -6862,7 +6860,7 @@ export const createMembership: API.OperationMethod<
   CreateMembershipRequest,
   CreateMembershipResponse,
   CreateMembershipError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateMembershipRequest,
   output: CreateMembershipResponse,
@@ -6880,7 +6878,7 @@ export const createPentest: API.OperationMethod<
   CreatePentestInput,
   CreatePentestOutput,
   CreatePentestError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreatePentestInput,
   output: CreatePentestOutput,
@@ -6905,7 +6903,7 @@ export const createPrivateConnection: API.OperationMethod<
   CreatePrivateConnectionInput,
   CreatePrivateConnectionOutput,
   CreatePrivateConnectionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreatePrivateConnectionInput,
   output: CreatePrivateConnectionOutput,
@@ -6937,7 +6935,7 @@ export const createSecurityRequirementPack: API.OperationMethod<
   CreateSecurityRequirementPackInput,
   CreateSecurityRequirementPackOutput,
   CreateSecurityRequirementPackError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateSecurityRequirementPackInput,
   output: CreateSecurityRequirementPackOutput,
@@ -6962,7 +6960,7 @@ export const createTargetDomain: API.OperationMethod<
   CreateTargetDomainInput,
   CreateTargetDomainOutput,
   CreateTargetDomainError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateTargetDomainInput,
   output: CreateTargetDomainOutput,
@@ -6980,7 +6978,7 @@ export const createThreat: API.OperationMethod<
   CreateThreatInput,
   CreateThreatOutput,
   CreateThreatError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateThreatInput,
   output: CreateThreatOutput,
@@ -6998,7 +6996,7 @@ export const createThreatModel: API.OperationMethod<
   CreateThreatModelInput,
   CreateThreatModelOutput,
   CreateThreatModelError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateThreatModelInput,
   output: CreateThreatModelOutput,
@@ -7016,7 +7014,7 @@ export const deleteAgentSpace: API.OperationMethod<
   DeleteAgentSpaceInput,
   DeleteAgentSpaceOutput,
   DeleteAgentSpaceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteAgentSpaceInput,
   output: DeleteAgentSpaceOutput,
@@ -7034,7 +7032,7 @@ export const deleteApplication: API.OperationMethod<
   DeleteApplicationRequest,
   DeleteApplicationResponse,
   DeleteApplicationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteApplicationRequest,
   output: DeleteApplicationResponse,
@@ -7058,7 +7056,7 @@ export const deleteArtifact: API.OperationMethod<
   DeleteArtifactInput,
   DeleteArtifactOutput,
   DeleteArtifactError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteArtifactInput,
   output: DeleteArtifactOutput,
@@ -7089,7 +7087,7 @@ export const deleteIntegration: API.OperationMethod<
   DeleteIntegrationInput,
   DeleteIntegrationOutput,
   DeleteIntegrationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteIntegrationInput,
   output: DeleteIntegrationOutput,
@@ -7114,7 +7112,7 @@ export const deleteMembership: API.OperationMethod<
   DeleteMembershipRequest,
   DeleteMembershipResponse,
   DeleteMembershipError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteMembershipRequest,
   output: DeleteMembershipResponse,
@@ -7139,7 +7137,7 @@ export const deletePrivateConnection: API.OperationMethod<
   DeletePrivateConnectionInput,
   DeletePrivateConnectionOutput,
   DeletePrivateConnectionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeletePrivateConnectionInput,
   output: DeletePrivateConnectionOutput,
@@ -7171,7 +7169,7 @@ export const deleteSecurityRequirementPack: API.OperationMethod<
   DeleteSecurityRequirementPackInput,
   DeleteSecurityRequirementPackOutput,
   DeleteSecurityRequirementPackError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteSecurityRequirementPackInput,
   output: DeleteSecurityRequirementPackOutput,
@@ -7196,7 +7194,7 @@ export const deleteTargetDomain: API.OperationMethod<
   DeleteTargetDomainInput,
   DeleteTargetDomainOutput,
   DeleteTargetDomainError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteTargetDomainInput,
   output: DeleteTargetDomainOutput,
@@ -7220,7 +7218,7 @@ export const describePrivateConnection: API.OperationMethod<
   DescribePrivateConnectionInput,
   DescribePrivateConnectionOutput,
   DescribePrivateConnectionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribePrivateConnectionInput,
   output: DescribePrivateConnectionOutput,
@@ -7244,7 +7242,7 @@ export const getApplication: API.OperationMethod<
   GetApplicationRequest,
   GetApplicationResponse,
   GetApplicationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetApplicationRequest,
   output: GetApplicationResponse,
@@ -7268,7 +7266,7 @@ export const getArtifact: API.OperationMethod<
   GetArtifactInput,
   GetArtifactOutput,
   GetArtifactError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetArtifactInput,
   output: GetArtifactOutput,
@@ -7298,7 +7296,7 @@ export const getIntegration: API.OperationMethod<
   GetIntegrationInput,
   GetIntegrationOutput,
   GetIntegrationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetIntegrationInput,
   output: GetIntegrationOutput,
@@ -7328,7 +7326,7 @@ export const getSecurityRequirementPack: API.OperationMethod<
   GetSecurityRequirementPackInput,
   GetSecurityRequirementPackOutput,
   GetSecurityRequirementPackError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetSecurityRequirementPackInput,
   output: GetSecurityRequirementPackOutput,
@@ -7360,7 +7358,7 @@ export const importSecurityRequirements: API.OperationMethod<
   ImportSecurityRequirementsInput,
   ImportSecurityRequirementsOutput,
   ImportSecurityRequirementsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ImportSecurityRequirementsInput,
   output: ImportSecurityRequirementsOutput,
@@ -7393,7 +7391,7 @@ export const initiateProviderRegistration: API.OperationMethod<
   InitiateProviderRegistrationInput,
   InitiateProviderRegistrationOutput,
   InitiateProviderRegistrationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: InitiateProviderRegistrationInput,
   output: InitiateProviderRegistrationOutput,
@@ -7414,27 +7412,13 @@ export type ListAgentSpacesError = CommonErrors;
 /**
  * Returns a paginated list of agent space summaries in your account.
  */
-export const listAgentSpaces: API.OperationMethod<
+export const listAgentSpaces: API.PaginatedOperationMethod<
   ListAgentSpacesInput,
   ListAgentSpacesOutput,
   ListAgentSpacesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAgentSpacesInput,
-  ) => stream.Stream<
-    ListAgentSpacesOutput,
-    ListAgentSpacesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAgentSpacesInput,
-  ) => stream.Stream<
-    AgentSpaceSummary,
-    ListAgentSpacesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  AgentSpaceSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListAgentSpacesInput,
   output: ListAgentSpacesOutput,
   errors: [],
@@ -7447,53 +7431,19 @@ export const listAgentSpaces: API.OperationMethod<
     items: "agentSpaceSummaries",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListAgentSpacesInput,
-  ListAgentSpacesOutput,
-  ListAgentSpacesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAgentSpacesInput,
-  ) => stream.Stream<
-    ListAgentSpacesOutput,
-    ListAgentSpacesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAgentSpacesInput,
-  ) => stream.Stream<
-    AgentSpaceSummary,
-    ListAgentSpacesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListApplicationsError = CommonErrors;
 /**
  * Returns a paginated list of application summaries in your account.
  */
-export const listApplications: API.OperationMethod<
+export const listApplications: API.PaginatedOperationMethod<
   ListApplicationsRequest,
   ListApplicationsResponse,
   ListApplicationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListApplicationsRequest,
-  ) => stream.Stream<
-    ListApplicationsResponse,
-    ListApplicationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListApplicationsRequest,
-  ) => stream.Stream<
-    ApplicationSummary,
-    ListApplicationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ApplicationSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListApplicationsRequest,
   output: ListApplicationsResponse,
   errors: [],
@@ -7506,27 +7456,7 @@ export const listApplications: API.OperationMethod<
     items: "applicationSummaries",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListApplicationsRequest,
-  ListApplicationsResponse,
-  ListApplicationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListApplicationsRequest,
-  ) => stream.Stream<
-    ListApplicationsResponse,
-    ListApplicationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListApplicationsRequest,
-  ) => stream.Stream<
-    ApplicationSummary,
-    ListApplicationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListArtifactsError =
   | AccessDeniedException
@@ -7538,27 +7468,13 @@ export type ListArtifactsError =
 /**
  * Returns a paginated list of artifact summaries for the specified agent space.
  */
-export const listArtifacts: API.OperationMethod<
+export const listArtifacts: API.PaginatedOperationMethod<
   ListArtifactsInput,
   ListArtifactsOutput,
   ListArtifactsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListArtifactsInput,
-  ) => stream.Stream<
-    ListArtifactsOutput,
-    ListArtifactsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListArtifactsInput,
-  ) => stream.Stream<
-    ArtifactSummary,
-    ListArtifactsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ArtifactSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListArtifactsInput,
   output: ListArtifactsOutput,
   errors: [
@@ -7577,53 +7493,19 @@ export const listArtifacts: API.OperationMethod<
     items: "artifactSummaries",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListArtifactsInput,
-  ListArtifactsOutput,
-  ListArtifactsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListArtifactsInput,
-  ) => stream.Stream<
-    ListArtifactsOutput,
-    ListArtifactsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListArtifactsInput,
-  ) => stream.Stream<
-    ArtifactSummary,
-    ListArtifactsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListCodeReviewJobsForCodeReviewError = CommonErrors;
 /**
  * Returns a paginated list of code review job summaries for the specified code review configuration.
  */
-export const listCodeReviewJobsForCodeReview: API.OperationMethod<
+export const listCodeReviewJobsForCodeReview: API.PaginatedOperationMethod<
   ListCodeReviewJobsForCodeReviewInput,
   ListCodeReviewJobsForCodeReviewOutput,
   ListCodeReviewJobsForCodeReviewError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCodeReviewJobsForCodeReviewInput,
-  ) => stream.Stream<
-    ListCodeReviewJobsForCodeReviewOutput,
-    ListCodeReviewJobsForCodeReviewError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCodeReviewJobsForCodeReviewInput,
-  ) => stream.Stream<
-    CodeReviewJobSummary,
-    ListCodeReviewJobsForCodeReviewError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  CodeReviewJobSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListCodeReviewJobsForCodeReviewInput,
   output: ListCodeReviewJobsForCodeReviewOutput,
   errors: [],
@@ -7636,53 +7518,19 @@ export const listCodeReviewJobsForCodeReview: API.OperationMethod<
     items: "codeReviewJobSummaries",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListCodeReviewJobsForCodeReviewInput,
-  ListCodeReviewJobsForCodeReviewOutput,
-  ListCodeReviewJobsForCodeReviewError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCodeReviewJobsForCodeReviewInput,
-  ) => stream.Stream<
-    ListCodeReviewJobsForCodeReviewOutput,
-    ListCodeReviewJobsForCodeReviewError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCodeReviewJobsForCodeReviewInput,
-  ) => stream.Stream<
-    CodeReviewJobSummary,
-    ListCodeReviewJobsForCodeReviewError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListCodeReviewJobTasksError = CommonErrors;
 /**
  * Returns a paginated list of task summaries for the specified code review job, optionally filtered by step name or category.
  */
-export const listCodeReviewJobTasks: API.OperationMethod<
+export const listCodeReviewJobTasks: API.PaginatedOperationMethod<
   ListCodeReviewJobTasksInput,
   ListCodeReviewJobTasksOutput,
   ListCodeReviewJobTasksError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCodeReviewJobTasksInput,
-  ) => stream.Stream<
-    ListCodeReviewJobTasksOutput,
-    ListCodeReviewJobTasksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCodeReviewJobTasksInput,
-  ) => stream.Stream<
-    CodeReviewJobTaskSummary,
-    ListCodeReviewJobTasksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  CodeReviewJobTaskSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListCodeReviewJobTasksInput,
   output: ListCodeReviewJobTasksOutput,
   errors: [],
@@ -7695,53 +7543,19 @@ export const listCodeReviewJobTasks: API.OperationMethod<
     items: "codeReviewJobTaskSummaries",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListCodeReviewJobTasksInput,
-  ListCodeReviewJobTasksOutput,
-  ListCodeReviewJobTasksError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCodeReviewJobTasksInput,
-  ) => stream.Stream<
-    ListCodeReviewJobTasksOutput,
-    ListCodeReviewJobTasksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCodeReviewJobTasksInput,
-  ) => stream.Stream<
-    CodeReviewJobTaskSummary,
-    ListCodeReviewJobTasksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListCodeReviewsError = CommonErrors;
 /**
  * Returns a paginated list of code review summaries for the specified agent space.
  */
-export const listCodeReviews: API.OperationMethod<
+export const listCodeReviews: API.PaginatedOperationMethod<
   ListCodeReviewsInput,
   ListCodeReviewsOutput,
   ListCodeReviewsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCodeReviewsInput,
-  ) => stream.Stream<
-    ListCodeReviewsOutput,
-    ListCodeReviewsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCodeReviewsInput,
-  ) => stream.Stream<
-    CodeReviewSummary,
-    ListCodeReviewsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  CodeReviewSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListCodeReviewsInput,
   output: ListCodeReviewsOutput,
   errors: [],
@@ -7754,53 +7568,19 @@ export const listCodeReviews: API.OperationMethod<
     items: "codeReviewSummaries",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListCodeReviewsInput,
-  ListCodeReviewsOutput,
-  ListCodeReviewsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCodeReviewsInput,
-  ) => stream.Stream<
-    ListCodeReviewsOutput,
-    ListCodeReviewsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCodeReviewsInput,
-  ) => stream.Stream<
-    CodeReviewSummary,
-    ListCodeReviewsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListDiscoveredEndpointsError = CommonErrors;
 /**
  * Returns a paginated list of endpoints discovered during a pentest job execution.
  */
-export const listDiscoveredEndpoints: API.OperationMethod<
+export const listDiscoveredEndpoints: API.PaginatedOperationMethod<
   ListDiscoveredEndpointsInput,
   ListDiscoveredEndpointsOutput,
   ListDiscoveredEndpointsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDiscoveredEndpointsInput,
-  ) => stream.Stream<
-    ListDiscoveredEndpointsOutput,
-    ListDiscoveredEndpointsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDiscoveredEndpointsInput,
-  ) => stream.Stream<
-    DiscoveredEndpoint,
-    ListDiscoveredEndpointsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  DiscoveredEndpoint
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListDiscoveredEndpointsInput,
   output: ListDiscoveredEndpointsOutput,
   errors: [],
@@ -7813,53 +7593,19 @@ export const listDiscoveredEndpoints: API.OperationMethod<
     items: "discoveredEndpoints",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListDiscoveredEndpointsInput,
-  ListDiscoveredEndpointsOutput,
-  ListDiscoveredEndpointsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDiscoveredEndpointsInput,
-  ) => stream.Stream<
-    ListDiscoveredEndpointsOutput,
-    ListDiscoveredEndpointsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDiscoveredEndpointsInput,
-  ) => stream.Stream<
-    DiscoveredEndpoint,
-    ListDiscoveredEndpointsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListFindingsError = CommonErrors;
 /**
  * Lists the security findings for a pentest job.
  */
-export const listFindings: API.OperationMethod<
+export const listFindings: API.PaginatedOperationMethod<
   ListFindingsInput,
   ListFindingsOutput,
   ListFindingsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListFindingsInput,
-  ) => stream.Stream<
-    ListFindingsOutput,
-    ListFindingsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListFindingsInput,
-  ) => stream.Stream<
-    FindingSummary,
-    ListFindingsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  FindingSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListFindingsInput,
   output: ListFindingsOutput,
   errors: [],
@@ -7872,27 +7618,7 @@ export const listFindings: API.OperationMethod<
     items: "findingsSummaries",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListFindingsInput,
-  ListFindingsOutput,
-  ListFindingsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListFindingsInput,
-  ) => stream.Stream<
-    ListFindingsOutput,
-    ListFindingsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListFindingsInput,
-  ) => stream.Stream<
-    FindingSummary,
-    ListFindingsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListIntegratedResourcesError =
   | AccessDeniedException
@@ -7904,27 +7630,13 @@ export type ListIntegratedResourcesError =
 /**
  * Lists the integrated resources for an agent space, optionally filtered by integration or resource type.
  */
-export const listIntegratedResources: API.OperationMethod<
+export const listIntegratedResources: API.PaginatedOperationMethod<
   ListIntegratedResourcesInput,
   ListIntegratedResourcesOutput,
   ListIntegratedResourcesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListIntegratedResourcesInput,
-  ) => stream.Stream<
-    ListIntegratedResourcesOutput,
-    ListIntegratedResourcesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListIntegratedResourcesInput,
-  ) => stream.Stream<
-    IntegratedResourceSummary,
-    ListIntegratedResourcesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  IntegratedResourceSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListIntegratedResourcesInput,
   output: ListIntegratedResourcesOutput,
   errors: [
@@ -7943,27 +7655,7 @@ export const listIntegratedResources: API.OperationMethod<
     items: "integratedResourceSummaries",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListIntegratedResourcesInput,
-  ListIntegratedResourcesOutput,
-  ListIntegratedResourcesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListIntegratedResourcesInput,
-  ) => stream.Stream<
-    ListIntegratedResourcesOutput,
-    ListIntegratedResourcesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListIntegratedResourcesInput,
-  ) => stream.Stream<
-    IntegratedResourceSummary,
-    ListIntegratedResourcesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListIntegrationsError =
   | AccessDeniedException
@@ -7975,27 +7667,13 @@ export type ListIntegrationsError =
 /**
  * Lists the integrations in your account, optionally filtered by provider or provider type.
  */
-export const listIntegrations: API.OperationMethod<
+export const listIntegrations: API.PaginatedOperationMethod<
   ListIntegrationsInput,
   ListIntegrationsOutput,
   ListIntegrationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListIntegrationsInput,
-  ) => stream.Stream<
-    ListIntegrationsOutput,
-    ListIntegrationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListIntegrationsInput,
-  ) => stream.Stream<
-    IntegrationSummary,
-    ListIntegrationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  IntegrationSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListIntegrationsInput,
   output: ListIntegrationsOutput,
   errors: [
@@ -8014,53 +7692,19 @@ export const listIntegrations: API.OperationMethod<
     items: "integrationSummaries",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListIntegrationsInput,
-  ListIntegrationsOutput,
-  ListIntegrationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListIntegrationsInput,
-  ) => stream.Stream<
-    ListIntegrationsOutput,
-    ListIntegrationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListIntegrationsInput,
-  ) => stream.Stream<
-    IntegrationSummary,
-    ListIntegrationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListMembershipsError = CommonErrors;
 /**
  * Returns a paginated list of membership summaries for the specified agent space within an application.
  */
-export const listMemberships: API.OperationMethod<
+export const listMemberships: API.PaginatedOperationMethod<
   ListMembershipsRequest,
   ListMembershipsResponse,
   ListMembershipsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListMembershipsRequest,
-  ) => stream.Stream<
-    ListMembershipsResponse,
-    ListMembershipsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListMembershipsRequest,
-  ) => stream.Stream<
-    MembershipSummary,
-    ListMembershipsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  MembershipSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListMembershipsRequest,
   output: ListMembershipsResponse,
   errors: [],
@@ -8073,53 +7717,19 @@ export const listMemberships: API.OperationMethod<
     items: "membershipSummaries",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListMembershipsRequest,
-  ListMembershipsResponse,
-  ListMembershipsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListMembershipsRequest,
-  ) => stream.Stream<
-    ListMembershipsResponse,
-    ListMembershipsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListMembershipsRequest,
-  ) => stream.Stream<
-    MembershipSummary,
-    ListMembershipsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListPentestJobsForPentestError = CommonErrors;
 /**
  * Returns a paginated list of pentest job summaries for the specified pentest configuration.
  */
-export const listPentestJobsForPentest: API.OperationMethod<
+export const listPentestJobsForPentest: API.PaginatedOperationMethod<
   ListPentestJobsForPentestInput,
   ListPentestJobsForPentestOutput,
   ListPentestJobsForPentestError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPentestJobsForPentestInput,
-  ) => stream.Stream<
-    ListPentestJobsForPentestOutput,
-    ListPentestJobsForPentestError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPentestJobsForPentestInput,
-  ) => stream.Stream<
-    PentestJobSummary,
-    ListPentestJobsForPentestError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  PentestJobSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListPentestJobsForPentestInput,
   output: ListPentestJobsForPentestOutput,
   errors: [],
@@ -8132,53 +7742,19 @@ export const listPentestJobsForPentest: API.OperationMethod<
     items: "pentestJobSummaries",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListPentestJobsForPentestInput,
-  ListPentestJobsForPentestOutput,
-  ListPentestJobsForPentestError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPentestJobsForPentestInput,
-  ) => stream.Stream<
-    ListPentestJobsForPentestOutput,
-    ListPentestJobsForPentestError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPentestJobsForPentestInput,
-  ) => stream.Stream<
-    PentestJobSummary,
-    ListPentestJobsForPentestError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListPentestJobTasksError = CommonErrors;
 /**
  * Returns a paginated list of task summaries for the specified pentest job, optionally filtered by step name or category.
  */
-export const listPentestJobTasks: API.OperationMethod<
+export const listPentestJobTasks: API.PaginatedOperationMethod<
   ListPentestJobTasksInput,
   ListPentestJobTasksOutput,
   ListPentestJobTasksError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPentestJobTasksInput,
-  ) => stream.Stream<
-    ListPentestJobTasksOutput,
-    ListPentestJobTasksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPentestJobTasksInput,
-  ) => stream.Stream<
-    TaskSummary,
-    ListPentestJobTasksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  TaskSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListPentestJobTasksInput,
   output: ListPentestJobTasksOutput,
   errors: [],
@@ -8191,53 +7767,19 @@ export const listPentestJobTasks: API.OperationMethod<
     items: "taskSummaries",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListPentestJobTasksInput,
-  ListPentestJobTasksOutput,
-  ListPentestJobTasksError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPentestJobTasksInput,
-  ) => stream.Stream<
-    ListPentestJobTasksOutput,
-    ListPentestJobTasksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPentestJobTasksInput,
-  ) => stream.Stream<
-    TaskSummary,
-    ListPentestJobTasksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListPentestsError = CommonErrors;
 /**
  * Returns a paginated list of pentest summaries for the specified agent space.
  */
-export const listPentests: API.OperationMethod<
+export const listPentests: API.PaginatedOperationMethod<
   ListPentestsInput,
   ListPentestsOutput,
   ListPentestsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPentestsInput,
-  ) => stream.Stream<
-    ListPentestsOutput,
-    ListPentestsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPentestsInput,
-  ) => stream.Stream<
-    PentestSummary,
-    ListPentestsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  PentestSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListPentestsInput,
   output: ListPentestsOutput,
   errors: [],
@@ -8250,27 +7792,7 @@ export const listPentests: API.OperationMethod<
     items: "pentestSummaries",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListPentestsInput,
-  ListPentestsOutput,
-  ListPentestsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPentestsInput,
-  ) => stream.Stream<
-    ListPentestsOutput,
-    ListPentestsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPentestsInput,
-  ) => stream.Stream<
-    PentestSummary,
-    ListPentestsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListPrivateConnectionsError =
   | AccessDeniedException
@@ -8281,27 +7803,13 @@ export type ListPrivateConnectionsError =
 /**
  * Lists the private connections in your account.
  */
-export const listPrivateConnections: API.OperationMethod<
+export const listPrivateConnections: API.PaginatedOperationMethod<
   ListPrivateConnectionsInput,
   ListPrivateConnectionsOutput,
   ListPrivateConnectionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPrivateConnectionsInput,
-  ) => stream.Stream<
-    ListPrivateConnectionsOutput,
-    ListPrivateConnectionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPrivateConnectionsInput,
-  ) => stream.Stream<
-    PrivateConnectionSummary,
-    ListPrivateConnectionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  PrivateConnectionSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListPrivateConnectionsInput,
   output: ListPrivateConnectionsOutput,
   errors: [
@@ -8319,27 +7827,7 @@ export const listPrivateConnections: API.OperationMethod<
     items: "privateConnections",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListPrivateConnectionsInput,
-  ListPrivateConnectionsOutput,
-  ListPrivateConnectionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPrivateConnectionsInput,
-  ) => stream.Stream<
-    ListPrivateConnectionsOutput,
-    ListPrivateConnectionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPrivateConnectionsInput,
-  ) => stream.Stream<
-    PrivateConnectionSummary,
-    ListPrivateConnectionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListSecurityRequirementPacksError =
   | AccessDeniedException
@@ -8350,27 +7838,13 @@ export type ListSecurityRequirementPacksError =
 /**
  * Lists all security requirement packs in the caller's account.
  */
-export const listSecurityRequirementPacks: API.OperationMethod<
+export const listSecurityRequirementPacks: API.PaginatedOperationMethod<
   ListSecurityRequirementPacksInput,
   ListSecurityRequirementPacksOutput,
   ListSecurityRequirementPacksError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSecurityRequirementPacksInput,
-  ) => stream.Stream<
-    ListSecurityRequirementPacksOutput,
-    ListSecurityRequirementPacksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSecurityRequirementPacksInput,
-  ) => stream.Stream<
-    SecurityRequirementPackSummary,
-    ListSecurityRequirementPacksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  SecurityRequirementPackSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListSecurityRequirementPacksInput,
   output: ListSecurityRequirementPacksOutput,
   errors: [
@@ -8388,27 +7862,7 @@ export const listSecurityRequirementPacks: API.OperationMethod<
     items: "securityRequirementPackSummaries",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListSecurityRequirementPacksInput,
-  ListSecurityRequirementPacksOutput,
-  ListSecurityRequirementPacksError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSecurityRequirementPacksInput,
-  ) => stream.Stream<
-    ListSecurityRequirementPacksOutput,
-    ListSecurityRequirementPacksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSecurityRequirementPacksInput,
-  ) => stream.Stream<
-    SecurityRequirementPackSummary,
-    ListSecurityRequirementPacksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListSecurityRequirementsError =
   | AccessDeniedException
@@ -8420,27 +7874,13 @@ export type ListSecurityRequirementsError =
 /**
  * Lists security requirements within a pack.
  */
-export const listSecurityRequirements: API.OperationMethod<
+export const listSecurityRequirements: API.PaginatedOperationMethod<
   ListSecurityRequirementsInput,
   ListSecurityRequirementsOutput,
   ListSecurityRequirementsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSecurityRequirementsInput,
-  ) => stream.Stream<
-    ListSecurityRequirementsOutput,
-    ListSecurityRequirementsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSecurityRequirementsInput,
-  ) => stream.Stream<
-    SecurityRequirementSummary,
-    ListSecurityRequirementsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  SecurityRequirementSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListSecurityRequirementsInput,
   output: ListSecurityRequirementsOutput,
   errors: [
@@ -8459,27 +7899,7 @@ export const listSecurityRequirements: API.OperationMethod<
     items: "securityRequirementSummaries",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListSecurityRequirementsInput,
-  ListSecurityRequirementsOutput,
-  ListSecurityRequirementsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSecurityRequirementsInput,
-  ) => stream.Stream<
-    ListSecurityRequirementsOutput,
-    ListSecurityRequirementsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSecurityRequirementsInput,
-  ) => stream.Stream<
-    SecurityRequirementSummary,
-    ListSecurityRequirementsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsForResourceError = CommonErrors;
 /**
@@ -8489,7 +7909,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceInput,
   ListTagsForResourceOutput,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceInput,
   output: ListTagsForResourceOutput,
@@ -8503,27 +7923,13 @@ export type ListTargetDomainsError = CommonErrors;
 /**
  * Returns a paginated list of target domain summaries in your account.
  */
-export const listTargetDomains: API.OperationMethod<
+export const listTargetDomains: API.PaginatedOperationMethod<
   ListTargetDomainsInput,
   ListTargetDomainsOutput,
   ListTargetDomainsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTargetDomainsInput,
-  ) => stream.Stream<
-    ListTargetDomainsOutput,
-    ListTargetDomainsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTargetDomainsInput,
-  ) => stream.Stream<
-    TargetDomainSummary,
-    ListTargetDomainsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  TargetDomainSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListTargetDomainsInput,
   output: ListTargetDomainsOutput,
   errors: [],
@@ -8536,53 +7942,19 @@ export const listTargetDomains: API.OperationMethod<
     items: "targetDomainSummaries",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListTargetDomainsInput,
-  ListTargetDomainsOutput,
-  ListTargetDomainsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTargetDomainsInput,
-  ) => stream.Stream<
-    ListTargetDomainsOutput,
-    ListTargetDomainsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTargetDomainsInput,
-  ) => stream.Stream<
-    TargetDomainSummary,
-    ListTargetDomainsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListThreatModelJobsError = CommonErrors;
 /**
  * Returns a paginated list of threat model job summaries for the specified threat model.
  */
-export const listThreatModelJobs: API.OperationMethod<
+export const listThreatModelJobs: API.PaginatedOperationMethod<
   ListThreatModelJobsInput,
   ListThreatModelJobsOutput,
   ListThreatModelJobsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListThreatModelJobsInput,
-  ) => stream.Stream<
-    ListThreatModelJobsOutput,
-    ListThreatModelJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListThreatModelJobsInput,
-  ) => stream.Stream<
-    ThreatModelJobSummary,
-    ListThreatModelJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ThreatModelJobSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListThreatModelJobsInput,
   output: ListThreatModelJobsOutput,
   errors: [],
@@ -8595,53 +7967,19 @@ export const listThreatModelJobs: API.OperationMethod<
     items: "threatModelJobSummaries",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListThreatModelJobsInput,
-  ListThreatModelJobsOutput,
-  ListThreatModelJobsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListThreatModelJobsInput,
-  ) => stream.Stream<
-    ListThreatModelJobsOutput,
-    ListThreatModelJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListThreatModelJobsInput,
-  ) => stream.Stream<
-    ThreatModelJobSummary,
-    ListThreatModelJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListThreatModelJobTasksError = CommonErrors;
 /**
  * Returns a paginated list of task summaries for the specified threat model job.
  */
-export const listThreatModelJobTasks: API.OperationMethod<
+export const listThreatModelJobTasks: API.PaginatedOperationMethod<
   ListThreatModelJobTasksInput,
   ListThreatModelJobTasksOutput,
   ListThreatModelJobTasksError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListThreatModelJobTasksInput,
-  ) => stream.Stream<
-    ListThreatModelJobTasksOutput,
-    ListThreatModelJobTasksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListThreatModelJobTasksInput,
-  ) => stream.Stream<
-    ThreatModelJobTaskSummary,
-    ListThreatModelJobTasksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ThreatModelJobTaskSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListThreatModelJobTasksInput,
   output: ListThreatModelJobTasksOutput,
   errors: [],
@@ -8654,53 +7992,19 @@ export const listThreatModelJobTasks: API.OperationMethod<
     items: "threatModelJobTaskSummaries",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListThreatModelJobTasksInput,
-  ListThreatModelJobTasksOutput,
-  ListThreatModelJobTasksError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListThreatModelJobTasksInput,
-  ) => stream.Stream<
-    ListThreatModelJobTasksOutput,
-    ListThreatModelJobTasksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListThreatModelJobTasksInput,
-  ) => stream.Stream<
-    ThreatModelJobTaskSummary,
-    ListThreatModelJobTasksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListThreatModelsError = CommonErrors;
 /**
  * Returns a paginated list of threat model summaries for the specified agent space.
  */
-export const listThreatModels: API.OperationMethod<
+export const listThreatModels: API.PaginatedOperationMethod<
   ListThreatModelsInput,
   ListThreatModelsOutput,
   ListThreatModelsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListThreatModelsInput,
-  ) => stream.Stream<
-    ListThreatModelsOutput,
-    ListThreatModelsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListThreatModelsInput,
-  ) => stream.Stream<
-    ThreatModelSummary,
-    ListThreatModelsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ThreatModelSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListThreatModelsInput,
   output: ListThreatModelsOutput,
   errors: [],
@@ -8713,53 +8017,19 @@ export const listThreatModels: API.OperationMethod<
     items: "threatModelSummaries",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListThreatModelsInput,
-  ListThreatModelsOutput,
-  ListThreatModelsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListThreatModelsInput,
-  ) => stream.Stream<
-    ListThreatModelsOutput,
-    ListThreatModelsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListThreatModelsInput,
-  ) => stream.Stream<
-    ThreatModelSummary,
-    ListThreatModelsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListThreatsError = CommonErrors;
 /**
  * Returns a paginated list of threats for a threat model job.
  */
-export const listThreats: API.OperationMethod<
+export const listThreats: API.PaginatedOperationMethod<
   ListThreatsInput,
   ListThreatsOutput,
   ListThreatsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListThreatsInput,
-  ) => stream.Stream<
-    ListThreatsOutput,
-    ListThreatsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListThreatsInput,
-  ) => stream.Stream<
-    ThreatSummary,
-    ListThreatsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ThreatSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListThreatsInput,
   output: ListThreatsOutput,
   errors: [],
@@ -8772,27 +8042,7 @@ export const listThreats: API.OperationMethod<
     items: "threats",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListThreatsInput,
-  ListThreatsOutput,
-  ListThreatsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListThreatsInput,
-  ) => stream.Stream<
-    ListThreatsOutput,
-    ListThreatsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListThreatsInput,
-  ) => stream.Stream<
-    ThreatSummary,
-    ListThreatsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type StartCodeRemediationError = CommonErrors;
 /**
@@ -8802,7 +8052,7 @@ export const startCodeRemediation: API.OperationMethod<
   StartCodeRemediationInput,
   StartCodeRemediationOutput,
   StartCodeRemediationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartCodeRemediationInput,
   output: StartCodeRemediationOutput,
@@ -8820,7 +8070,7 @@ export const startCodeReviewJob: API.OperationMethod<
   StartCodeReviewJobInput,
   StartCodeReviewJobOutput,
   StartCodeReviewJobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartCodeReviewJobInput,
   output: StartCodeReviewJobOutput,
@@ -8838,7 +8088,7 @@ export const startPentestJob: API.OperationMethod<
   StartPentestJobInput,
   StartPentestJobOutput,
   StartPentestJobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartPentestJobInput,
   output: StartPentestJobOutput,
@@ -8856,7 +8106,7 @@ export const startThreatModelJob: API.OperationMethod<
   StartThreatModelJobInput,
   StartThreatModelJobOutput,
   StartThreatModelJobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartThreatModelJobInput,
   output: StartThreatModelJobOutput,
@@ -8874,7 +8124,7 @@ export const stopCodeReviewJob: API.OperationMethod<
   StopCodeReviewJobInput,
   StopCodeReviewJobOutput,
   StopCodeReviewJobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StopCodeReviewJobInput,
   output: StopCodeReviewJobOutput,
@@ -8892,7 +8142,7 @@ export const stopPentestJob: API.OperationMethod<
   StopPentestJobInput,
   StopPentestJobOutput,
   StopPentestJobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StopPentestJobInput,
   output: StopPentestJobOutput,
@@ -8910,7 +8160,7 @@ export const stopThreatModelJob: API.OperationMethod<
   StopThreatModelJobInput,
   StopThreatModelJobOutput,
   StopThreatModelJobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StopThreatModelJobInput,
   output: StopThreatModelJobOutput,
@@ -8928,7 +8178,7 @@ export const tagResource: API.OperationMethod<
   TagResourceInput,
   TagResourceOutput,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceInput,
   output: TagResourceOutput,
@@ -8946,7 +8196,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceInput,
   UntagResourceOutput,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceInput,
   output: UntagResourceOutput,
@@ -8964,7 +8214,7 @@ export const updateAgentSpace: API.OperationMethod<
   UpdateAgentSpaceInput,
   UpdateAgentSpaceOutput,
   UpdateAgentSpaceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateAgentSpaceInput,
   output: UpdateAgentSpaceOutput,
@@ -8982,7 +8232,7 @@ export const updateApplication: API.OperationMethod<
   UpdateApplicationRequest,
   UpdateApplicationResponse,
   UpdateApplicationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateApplicationRequest,
   output: UpdateApplicationResponse,
@@ -9000,7 +8250,7 @@ export const updateCodeReview: API.OperationMethod<
   UpdateCodeReviewInput,
   UpdateCodeReviewOutput,
   UpdateCodeReviewError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateCodeReviewInput,
   output: UpdateCodeReviewOutput,
@@ -9018,7 +8268,7 @@ export const updateFinding: API.OperationMethod<
   UpdateFindingInput,
   UpdateFindingOutput,
   UpdateFindingError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateFindingInput,
   output: UpdateFindingOutput,
@@ -9043,7 +8293,7 @@ export const updateIntegratedResources: API.OperationMethod<
   UpdateIntegratedResourcesInput,
   UpdateIntegratedResourcesOutput,
   UpdateIntegratedResourcesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateIntegratedResourcesInput,
   output: UpdateIntegratedResourcesOutput,
@@ -9068,7 +8318,7 @@ export const updatePentest: API.OperationMethod<
   UpdatePentestInput,
   UpdatePentestOutput,
   UpdatePentestError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdatePentestInput,
   output: UpdatePentestOutput,
@@ -9093,7 +8343,7 @@ export const updatePrivateConnectionCertificate: API.OperationMethod<
   UpdatePrivateConnectionCertificateInput,
   UpdatePrivateConnectionCertificateOutput,
   UpdatePrivateConnectionCertificateError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdatePrivateConnectionCertificateInput,
   output: UpdatePrivateConnectionCertificateOutput,
@@ -9125,7 +8375,7 @@ export const updateSecurityRequirementPack: API.OperationMethod<
   UpdateSecurityRequirementPackInput,
   UpdateSecurityRequirementPackOutput,
   UpdateSecurityRequirementPackError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateSecurityRequirementPackInput,
   output: UpdateSecurityRequirementPackOutput,
@@ -9150,7 +8400,7 @@ export const updateTargetDomain: API.OperationMethod<
   UpdateTargetDomainInput,
   UpdateTargetDomainOutput,
   UpdateTargetDomainError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateTargetDomainInput,
   output: UpdateTargetDomainOutput,
@@ -9168,7 +8418,7 @@ export const updateThreat: API.OperationMethod<
   UpdateThreatInput,
   UpdateThreatOutput,
   UpdateThreatError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateThreatInput,
   output: UpdateThreatOutput,
@@ -9186,7 +8436,7 @@ export const updateThreatModel: API.OperationMethod<
   UpdateThreatModelInput,
   UpdateThreatModelOutput,
   UpdateThreatModelError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateThreatModelInput,
   output: UpdateThreatModelOutput,
@@ -9204,7 +8454,7 @@ export const verifyTargetDomain: API.OperationMethod<
   VerifyTargetDomainInput,
   VerifyTargetDomainOutput,
   VerifyTargetDomainError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: VerifyTargetDomainInput,
   output: VerifyTargetDomainOutput,

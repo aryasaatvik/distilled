@@ -1,13 +1,11 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
 import * as T from "../traits.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 const svc = T.AwsApiService({
   sdkId: "Network Firewall",
   serviceShapeName: "NetworkFirewall_20201112",
@@ -87,62 +85,62 @@ const rules = T.EndpointResolver((p, _) => {
 export class InsufficientCapacityException
   extends /*@__PURE__*/ S.TaggedErrorClass<InsufficientCapacityException>()(
     "InsufficientCapacityException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InternalServerError
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerError>()(
     "InternalServerError",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidOperationException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidOperationException>()(
     "InvalidOperationException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidRequestException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidRequestException>()(
     "InvalidRequestException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidResourcePolicyException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidResourcePolicyException>()(
     "InvalidResourcePolicyException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidTokenException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidTokenException>()(
     "InvalidTokenException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class LimitExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<LimitExceededException>()(
     "LimitExceededException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class LogDestinationPermissionException
   extends /*@__PURE__*/ S.TaggedErrorClass<LogDestinationPermissionException>()(
     "LogDestinationPermissionException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class ResourceOwnerCheckException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceOwnerCheckException>()(
     "ResourceOwnerCheckException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class ThrottlingException
   extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
     "ThrottlingException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class UnsupportedOperationException
   extends /*@__PURE__*/ S.TaggedErrorClass<UnsupportedOperationException>()(
     "UnsupportedOperationException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export type TransitGatewayAttachmentId = string;
 export interface AcceptNetworkFirewallTransitGatewayAttachmentRequest {
@@ -4408,7 +4406,7 @@ export const acceptNetworkFirewallTransitGatewayAttachment: API.OperationMethod<
   AcceptNetworkFirewallTransitGatewayAttachmentRequest,
   AcceptNetworkFirewallTransitGatewayAttachmentResponse,
   AcceptNetworkFirewallTransitGatewayAttachmentError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AcceptNetworkFirewallTransitGatewayAttachmentRequest,
   output: AcceptNetworkFirewallTransitGatewayAttachmentResponse,
@@ -4441,7 +4439,7 @@ export const associateAvailabilityZones: API.OperationMethod<
   AssociateAvailabilityZonesRequest,
   AssociateAvailabilityZonesResponse,
   AssociateAvailabilityZonesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AssociateAvailabilityZonesRequest,
   output: AssociateAvailabilityZonesResponse,
@@ -4479,7 +4477,7 @@ export const associateFirewallPolicy: API.OperationMethod<
   AssociateFirewallPolicyRequest,
   AssociateFirewallPolicyResponse,
   AssociateFirewallPolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AssociateFirewallPolicyRequest,
   output: AssociateFirewallPolicyResponse,
@@ -4518,7 +4516,7 @@ export const associateSubnets: API.OperationMethod<
   AssociateSubnetsRequest,
   AssociateSubnetsResponse,
   AssociateSubnetsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AssociateSubnetsRequest,
   output: AssociateSubnetsResponse,
@@ -4551,7 +4549,7 @@ export const attachRuleGroupsToProxyConfiguration: API.OperationMethod<
   AttachRuleGroupsToProxyConfigurationRequest,
   AttachRuleGroupsToProxyConfigurationResponse,
   AttachRuleGroupsToProxyConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AttachRuleGroupsToProxyConfigurationRequest,
   output: AttachRuleGroupsToProxyConfigurationResponse,
@@ -4594,7 +4592,7 @@ export const createFirewall: API.OperationMethod<
   CreateFirewallRequest,
   CreateFirewallResponse,
   CreateFirewallError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateFirewallRequest,
   output: CreateFirewallResponse,
@@ -4629,7 +4627,7 @@ export const createFirewallPolicy: API.OperationMethod<
   CreateFirewallPolicyRequest,
   CreateFirewallPolicyResponse,
   CreateFirewallPolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateFirewallPolicyRequest,
   output: CreateFirewallPolicyResponse,
@@ -4666,7 +4664,7 @@ export const createProxy: API.OperationMethod<
   CreateProxyRequest,
   CreateProxyResponse,
   CreateProxyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateProxyRequest,
   output: CreateProxyResponse,
@@ -4703,7 +4701,7 @@ export const createProxyConfiguration: API.OperationMethod<
   CreateProxyConfigurationRequest,
   CreateProxyConfigurationResponse,
   CreateProxyConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateProxyConfigurationRequest,
   output: CreateProxyConfigurationResponse,
@@ -4740,7 +4738,7 @@ export const createProxyRuleGroup: API.OperationMethod<
   CreateProxyRuleGroupRequest,
   CreateProxyRuleGroupResponse,
   CreateProxyRuleGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateProxyRuleGroupRequest,
   output: CreateProxyRuleGroupResponse,
@@ -4771,7 +4769,7 @@ export const createProxyRules: API.OperationMethod<
   CreateProxyRulesRequest,
   CreateProxyRulesResponse,
   CreateProxyRulesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateProxyRulesRequest,
   output: CreateProxyRulesResponse,
@@ -4799,7 +4797,7 @@ export const createRuleGroup: API.OperationMethod<
   CreateRuleGroupRequest,
   CreateRuleGroupResponse,
   CreateRuleGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateRuleGroupRequest,
   output: CreateRuleGroupResponse,
@@ -4838,7 +4836,7 @@ export const createTLSInspectionConfiguration: API.OperationMethod<
   CreateTLSInspectionConfigurationRequest,
   CreateTLSInspectionConfigurationResponse,
   CreateTLSInspectionConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateTLSInspectionConfigurationRequest,
   output: CreateTLSInspectionConfigurationResponse,
@@ -4870,7 +4868,7 @@ export const createVpcEndpointAssociation: API.OperationMethod<
   CreateVpcEndpointAssociationRequest,
   CreateVpcEndpointAssociationResponse,
   CreateVpcEndpointAssociationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateVpcEndpointAssociationRequest,
   output: CreateVpcEndpointAssociationResponse,
@@ -4915,7 +4913,7 @@ export const deleteFirewall: API.OperationMethod<
   DeleteFirewallRequest,
   DeleteFirewallResponse,
   DeleteFirewallError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteFirewallRequest,
   output: DeleteFirewallResponse,
@@ -4947,7 +4945,7 @@ export const deleteFirewallPolicy: API.OperationMethod<
   DeleteFirewallPolicyRequest,
   DeleteFirewallPolicyResponse,
   DeleteFirewallPolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteFirewallPolicyRequest,
   output: DeleteFirewallPolicyResponse,
@@ -4981,7 +4979,7 @@ export const deleteNetworkFirewallTransitGatewayAttachment: API.OperationMethod<
   DeleteNetworkFirewallTransitGatewayAttachmentRequest,
   DeleteNetworkFirewallTransitGatewayAttachmentResponse,
   DeleteNetworkFirewallTransitGatewayAttachmentError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteNetworkFirewallTransitGatewayAttachmentRequest,
   output: DeleteNetworkFirewallTransitGatewayAttachmentResponse,
@@ -5012,7 +5010,7 @@ export const deleteProxy: API.OperationMethod<
   DeleteProxyRequest,
   DeleteProxyResponse,
   DeleteProxyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteProxyRequest,
   output: DeleteProxyResponse,
@@ -5041,7 +5039,7 @@ export const deleteProxyConfiguration: API.OperationMethod<
   DeleteProxyConfigurationRequest,
   DeleteProxyConfigurationResponse,
   DeleteProxyConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteProxyConfigurationRequest,
   output: DeleteProxyConfigurationResponse,
@@ -5069,7 +5067,7 @@ export const deleteProxyRuleGroup: API.OperationMethod<
   DeleteProxyRuleGroupRequest,
   DeleteProxyRuleGroupResponse,
   DeleteProxyRuleGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteProxyRuleGroupRequest,
   output: DeleteProxyRuleGroupResponse,
@@ -5097,7 +5095,7 @@ export const deleteProxyRules: API.OperationMethod<
   DeleteProxyRulesRequest,
   DeleteProxyRulesResponse,
   DeleteProxyRulesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteProxyRulesRequest,
   output: DeleteProxyRulesResponse,
@@ -5126,7 +5124,7 @@ export const deleteResourcePolicy: API.OperationMethod<
   DeleteResourcePolicyRequest,
   DeleteResourcePolicyResponse,
   DeleteResourcePolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteResourcePolicyRequest,
   output: DeleteResourcePolicyResponse,
@@ -5157,7 +5155,7 @@ export const deleteRuleGroup: API.OperationMethod<
   DeleteRuleGroupRequest,
   DeleteRuleGroupResponse,
   DeleteRuleGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteRuleGroupRequest,
   output: DeleteRuleGroupResponse,
@@ -5188,7 +5186,7 @@ export const deleteTLSInspectionConfiguration: API.OperationMethod<
   DeleteTLSInspectionConfigurationRequest,
   DeleteTLSInspectionConfigurationResponse,
   DeleteTLSInspectionConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteTLSInspectionConfigurationRequest,
   output: DeleteTLSInspectionConfigurationResponse,
@@ -5225,7 +5223,7 @@ export const deleteVpcEndpointAssociation: API.OperationMethod<
   DeleteVpcEndpointAssociationRequest,
   DeleteVpcEndpointAssociationResponse,
   DeleteVpcEndpointAssociationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteVpcEndpointAssociationRequest,
   output: DeleteVpcEndpointAssociationResponse,
@@ -5254,7 +5252,7 @@ export const describeFirewall: API.OperationMethod<
   DescribeFirewallRequest,
   DescribeFirewallResponse,
   DescribeFirewallError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeFirewallRequest,
   output: DescribeFirewallResponse,
@@ -5283,7 +5281,7 @@ export const describeFirewallMetadata: API.OperationMethod<
   DescribeFirewallMetadataRequest,
   DescribeFirewallMetadataResponse,
   DescribeFirewallMetadataError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeFirewallMetadataRequest,
   output: DescribeFirewallMetadataResponse,
@@ -5311,7 +5309,7 @@ export const describeFirewallPolicy: API.OperationMethod<
   DescribeFirewallPolicyRequest,
   DescribeFirewallPolicyResponse,
   DescribeFirewallPolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeFirewallPolicyRequest,
   output: DescribeFirewallPolicyResponse,
@@ -5339,7 +5337,7 @@ export const describeFlowOperation: API.OperationMethod<
   DescribeFlowOperationRequest,
   DescribeFlowOperationResponse,
   DescribeFlowOperationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeFlowOperationRequest,
   output: DescribeFlowOperationResponse,
@@ -5367,7 +5365,7 @@ export const describeLoggingConfiguration: API.OperationMethod<
   DescribeLoggingConfigurationRequest,
   DescribeLoggingConfigurationResponse,
   DescribeLoggingConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeLoggingConfigurationRequest,
   output: DescribeLoggingConfigurationResponse,
@@ -5395,7 +5393,7 @@ export const describeProxy: API.OperationMethod<
   DescribeProxyRequest,
   DescribeProxyResponse,
   DescribeProxyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeProxyRequest,
   output: DescribeProxyResponse,
@@ -5423,7 +5421,7 @@ export const describeProxyConfiguration: API.OperationMethod<
   DescribeProxyConfigurationRequest,
   DescribeProxyConfigurationResponse,
   DescribeProxyConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeProxyConfigurationRequest,
   output: DescribeProxyConfigurationResponse,
@@ -5451,7 +5449,7 @@ export const describeProxyRule: API.OperationMethod<
   DescribeProxyRuleRequest,
   DescribeProxyRuleResponse,
   DescribeProxyRuleError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeProxyRuleRequest,
   output: DescribeProxyRuleResponse,
@@ -5479,7 +5477,7 @@ export const describeProxyRuleGroup: API.OperationMethod<
   DescribeProxyRuleGroupRequest,
   DescribeProxyRuleGroupResponse,
   DescribeProxyRuleGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeProxyRuleGroupRequest,
   output: DescribeProxyRuleGroupResponse,
@@ -5507,7 +5505,7 @@ export const describeResourcePolicy: API.OperationMethod<
   DescribeResourcePolicyRequest,
   DescribeResourcePolicyResponse,
   DescribeResourcePolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeResourcePolicyRequest,
   output: DescribeResourcePolicyResponse,
@@ -5535,7 +5533,7 @@ export const describeRuleGroup: API.OperationMethod<
   DescribeRuleGroupRequest,
   DescribeRuleGroupResponse,
   DescribeRuleGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeRuleGroupRequest,
   output: DescribeRuleGroupResponse,
@@ -5565,7 +5563,7 @@ export const describeRuleGroupMetadata: API.OperationMethod<
   DescribeRuleGroupMetadataRequest,
   DescribeRuleGroupMetadataResponse,
   DescribeRuleGroupMetadataError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeRuleGroupMetadataRequest,
   output: DescribeRuleGroupMetadataResponse,
@@ -5597,7 +5595,7 @@ export const describeRuleGroupSummary: API.OperationMethod<
   DescribeRuleGroupSummaryRequest,
   DescribeRuleGroupSummaryResponse,
   DescribeRuleGroupSummaryError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeRuleGroupSummaryRequest,
   output: DescribeRuleGroupSummaryResponse,
@@ -5625,7 +5623,7 @@ export const describeTLSInspectionConfiguration: API.OperationMethod<
   DescribeTLSInspectionConfigurationRequest,
   DescribeTLSInspectionConfigurationResponse,
   DescribeTLSInspectionConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeTLSInspectionConfigurationRequest,
   output: DescribeTLSInspectionConfigurationResponse,
@@ -5653,7 +5651,7 @@ export const describeVpcEndpointAssociation: API.OperationMethod<
   DescribeVpcEndpointAssociationRequest,
   DescribeVpcEndpointAssociationResponse,
   DescribeVpcEndpointAssociationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeVpcEndpointAssociationRequest,
   output: DescribeVpcEndpointAssociationResponse,
@@ -5683,7 +5681,7 @@ export const detachRuleGroupsFromProxyConfiguration: API.OperationMethod<
   DetachRuleGroupsFromProxyConfigurationRequest,
   DetachRuleGroupsFromProxyConfigurationResponse,
   DetachRuleGroupsFromProxyConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DetachRuleGroupsFromProxyConfigurationRequest,
   output: DetachRuleGroupsFromProxyConfigurationResponse,
@@ -5717,7 +5715,7 @@ export const disassociateAvailabilityZones: API.OperationMethod<
   DisassociateAvailabilityZonesRequest,
   DisassociateAvailabilityZonesResponse,
   DisassociateAvailabilityZonesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DisassociateAvailabilityZonesRequest,
   output: DisassociateAvailabilityZonesResponse,
@@ -5751,7 +5749,7 @@ export const disassociateSubnets: API.OperationMethod<
   DisassociateSubnetsRequest,
   DisassociateSubnetsResponse,
   DisassociateSubnetsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DisassociateSubnetsRequest,
   output: DisassociateSubnetsResponse,
@@ -5779,27 +5777,13 @@ export type GetAnalysisReportResultsError =
  *
  * For more information, see AnalysisTypeReportResult.
  */
-export const getAnalysisReportResults: API.OperationMethod<
+export const getAnalysisReportResults: API.PaginatedOperationMethod<
   GetAnalysisReportResultsRequest,
   GetAnalysisReportResultsResponse,
   GetAnalysisReportResultsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetAnalysisReportResultsRequest,
-  ) => stream.Stream<
-    GetAnalysisReportResultsResponse,
-    GetAnalysisReportResultsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetAnalysisReportResultsRequest,
-  ) => stream.Stream<
-    AnalysisTypeReportResult,
-    GetAnalysisReportResultsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  AnalysisTypeReportResult
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetAnalysisReportResultsRequest,
   output: GetAnalysisReportResultsResponse,
   errors: [
@@ -5817,27 +5801,7 @@ export const getAnalysisReportResults: API.OperationMethod<
     items: "AnalysisReportResults",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetAnalysisReportResultsRequest,
-  GetAnalysisReportResultsResponse,
-  GetAnalysisReportResultsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetAnalysisReportResultsRequest,
-  ) => stream.Stream<
-    GetAnalysisReportResultsResponse,
-    GetAnalysisReportResultsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetAnalysisReportResultsRequest,
-  ) => stream.Stream<
-    AnalysisTypeReportResult,
-    GetAnalysisReportResultsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListAnalysisReportsError =
   | InternalServerError
@@ -5848,27 +5812,13 @@ export type ListAnalysisReportsError =
 /**
  * Returns a list of all traffic analysis reports generated within the last 30 days.
  */
-export const listAnalysisReports: API.OperationMethod<
+export const listAnalysisReports: API.PaginatedOperationMethod<
   ListAnalysisReportsRequest,
   ListAnalysisReportsResponse,
   ListAnalysisReportsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAnalysisReportsRequest,
-  ) => stream.Stream<
-    ListAnalysisReportsResponse,
-    ListAnalysisReportsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAnalysisReportsRequest,
-  ) => stream.Stream<
-    AnalysisReport,
-    ListAnalysisReportsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  AnalysisReport
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListAnalysisReportsRequest,
   output: ListAnalysisReportsResponse,
   errors: [
@@ -5886,27 +5836,7 @@ export const listAnalysisReports: API.OperationMethod<
     items: "AnalysisReports",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListAnalysisReportsRequest,
-  ListAnalysisReportsResponse,
-  ListAnalysisReportsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAnalysisReportsRequest,
-  ) => stream.Stream<
-    ListAnalysisReportsResponse,
-    ListAnalysisReportsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAnalysisReportsRequest,
-  ) => stream.Stream<
-    AnalysisReport,
-    ListAnalysisReportsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListFirewallPoliciesError =
   | InternalServerError
@@ -5918,27 +5848,13 @@ export type ListFirewallPoliciesError =
  * your setting for max results and the number of firewall policies, a single call might not
  * return the full list.
  */
-export const listFirewallPolicies: API.OperationMethod<
+export const listFirewallPolicies: API.PaginatedOperationMethod<
   ListFirewallPoliciesRequest,
   ListFirewallPoliciesResponse,
   ListFirewallPoliciesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListFirewallPoliciesRequest,
-  ) => stream.Stream<
-    ListFirewallPoliciesResponse,
-    ListFirewallPoliciesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListFirewallPoliciesRequest,
-  ) => stream.Stream<
-    FirewallPolicyMetadata,
-    ListFirewallPoliciesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  FirewallPolicyMetadata
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListFirewallPoliciesRequest,
   output: ListFirewallPoliciesResponse,
   errors: [InternalServerError, InvalidRequestException, ThrottlingException],
@@ -5951,27 +5867,7 @@ export const listFirewallPolicies: API.OperationMethod<
     items: "FirewallPolicies",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListFirewallPoliciesRequest,
-  ListFirewallPoliciesResponse,
-  ListFirewallPoliciesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListFirewallPoliciesRequest,
-  ) => stream.Stream<
-    ListFirewallPoliciesResponse,
-    ListFirewallPoliciesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListFirewallPoliciesRequest,
-  ) => stream.Stream<
-    FirewallPolicyMetadata,
-    ListFirewallPoliciesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListFirewallsError =
   | InternalServerError
@@ -5985,27 +5881,13 @@ export type ListFirewallsError =
  * Depending on your setting for max results and the number of firewalls, a single call
  * might not return the full list.
  */
-export const listFirewalls: API.OperationMethod<
+export const listFirewalls: API.PaginatedOperationMethod<
   ListFirewallsRequest,
   ListFirewallsResponse,
   ListFirewallsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListFirewallsRequest,
-  ) => stream.Stream<
-    ListFirewallsResponse,
-    ListFirewallsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListFirewallsRequest,
-  ) => stream.Stream<
-    FirewallMetadata,
-    ListFirewallsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  FirewallMetadata
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListFirewallsRequest,
   output: ListFirewallsResponse,
   errors: [InternalServerError, InvalidRequestException, ThrottlingException],
@@ -6018,27 +5900,7 @@ export const listFirewalls: API.OperationMethod<
     items: "Firewalls",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListFirewallsRequest,
-  ListFirewallsResponse,
-  ListFirewallsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListFirewallsRequest,
-  ) => stream.Stream<
-    ListFirewallsResponse,
-    ListFirewallsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListFirewallsRequest,
-  ) => stream.Stream<
-    FirewallMetadata,
-    ListFirewallsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListFlowOperationResultsError =
   | InternalServerError
@@ -6054,27 +5916,13 @@ export type ListFlowOperationResultsError =
  * A flow is network traffic that is monitored by a firewall, either by stateful or stateless rules.
  * For traffic to be considered part of a flow, it must share Destination, DestinationPort, Direction, Protocol, Source, and SourcePort.
  */
-export const listFlowOperationResults: API.OperationMethod<
+export const listFlowOperationResults: API.PaginatedOperationMethod<
   ListFlowOperationResultsRequest,
   ListFlowOperationResultsResponse,
   ListFlowOperationResultsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListFlowOperationResultsRequest,
-  ) => stream.Stream<
-    ListFlowOperationResultsResponse,
-    ListFlowOperationResultsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListFlowOperationResultsRequest,
-  ) => stream.Stream<
-    Flow,
-    ListFlowOperationResultsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Flow
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListFlowOperationResultsRequest,
   output: ListFlowOperationResultsResponse,
   errors: [
@@ -6092,27 +5940,7 @@ export const listFlowOperationResults: API.OperationMethod<
     items: "Flows",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListFlowOperationResultsRequest,
-  ListFlowOperationResultsResponse,
-  ListFlowOperationResultsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListFlowOperationResultsRequest,
-  ) => stream.Stream<
-    ListFlowOperationResultsResponse,
-    ListFlowOperationResultsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListFlowOperationResultsRequest,
-  ) => stream.Stream<
-    Flow,
-    ListFlowOperationResultsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListFlowOperationsError =
   | InternalServerError
@@ -6129,27 +5957,13 @@ export type ListFlowOperationsError =
  * A flow is network traffic that is monitored by a firewall, either by stateful or stateless rules.
  * For traffic to be considered part of a flow, it must share Destination, DestinationPort, Direction, Protocol, Source, and SourcePort.
  */
-export const listFlowOperations: API.OperationMethod<
+export const listFlowOperations: API.PaginatedOperationMethod<
   ListFlowOperationsRequest,
   ListFlowOperationsResponse,
   ListFlowOperationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListFlowOperationsRequest,
-  ) => stream.Stream<
-    ListFlowOperationsResponse,
-    ListFlowOperationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListFlowOperationsRequest,
-  ) => stream.Stream<
-    FlowOperationMetadata,
-    ListFlowOperationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  FlowOperationMetadata
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListFlowOperationsRequest,
   output: ListFlowOperationsResponse,
   errors: [
@@ -6167,27 +5981,7 @@ export const listFlowOperations: API.OperationMethod<
     items: "FlowOperations",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListFlowOperationsRequest,
-  ListFlowOperationsResponse,
-  ListFlowOperationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListFlowOperationsRequest,
-  ) => stream.Stream<
-    ListFlowOperationsResponse,
-    ListFlowOperationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListFlowOperationsRequest,
-  ) => stream.Stream<
-    FlowOperationMetadata,
-    ListFlowOperationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListProxiesError =
   | InternalServerError
@@ -6199,27 +5993,13 @@ export type ListProxiesError =
  * your setting for max results and the number of proxies, a single call might not
  * return the full list.
  */
-export const listProxies: API.OperationMethod<
+export const listProxies: API.PaginatedOperationMethod<
   ListProxiesRequest,
   ListProxiesResponse,
   ListProxiesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListProxiesRequest,
-  ) => stream.Stream<
-    ListProxiesResponse,
-    ListProxiesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListProxiesRequest,
-  ) => stream.Stream<
-    ProxyMetadata,
-    ListProxiesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ProxyMetadata
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListProxiesRequest,
   output: ListProxiesResponse,
   errors: [InternalServerError, InvalidRequestException, ThrottlingException],
@@ -6232,27 +6012,7 @@ export const listProxies: API.OperationMethod<
     items: "Proxies",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListProxiesRequest,
-  ListProxiesResponse,
-  ListProxiesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListProxiesRequest,
-  ) => stream.Stream<
-    ListProxiesResponse,
-    ListProxiesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListProxiesRequest,
-  ) => stream.Stream<
-    ProxyMetadata,
-    ListProxiesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListProxyConfigurationsError =
   | InternalServerError
@@ -6265,27 +6025,13 @@ export type ListProxyConfigurationsError =
  * your setting for max results and the number of proxy configurations, a single call might not
  * return the full list.
  */
-export const listProxyConfigurations: API.OperationMethod<
+export const listProxyConfigurations: API.PaginatedOperationMethod<
   ListProxyConfigurationsRequest,
   ListProxyConfigurationsResponse,
   ListProxyConfigurationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListProxyConfigurationsRequest,
-  ) => stream.Stream<
-    ListProxyConfigurationsResponse,
-    ListProxyConfigurationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListProxyConfigurationsRequest,
-  ) => stream.Stream<
-    ProxyConfigurationMetadata,
-    ListProxyConfigurationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ProxyConfigurationMetadata
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListProxyConfigurationsRequest,
   output: ListProxyConfigurationsResponse,
   errors: [
@@ -6303,27 +6049,7 @@ export const listProxyConfigurations: API.OperationMethod<
     items: "ProxyConfigurations",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListProxyConfigurationsRequest,
-  ListProxyConfigurationsResponse,
-  ListProxyConfigurationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListProxyConfigurationsRequest,
-  ) => stream.Stream<
-    ListProxyConfigurationsResponse,
-    ListProxyConfigurationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListProxyConfigurationsRequest,
-  ) => stream.Stream<
-    ProxyConfigurationMetadata,
-    ListProxyConfigurationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListProxyRuleGroupsError =
   | InternalServerError
@@ -6336,27 +6062,13 @@ export type ListProxyRuleGroupsError =
  * your setting for max results and the number of proxy rule groups, a single call might not
  * return the full list.
  */
-export const listProxyRuleGroups: API.OperationMethod<
+export const listProxyRuleGroups: API.PaginatedOperationMethod<
   ListProxyRuleGroupsRequest,
   ListProxyRuleGroupsResponse,
   ListProxyRuleGroupsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListProxyRuleGroupsRequest,
-  ) => stream.Stream<
-    ListProxyRuleGroupsResponse,
-    ListProxyRuleGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListProxyRuleGroupsRequest,
-  ) => stream.Stream<
-    ProxyRuleGroupMetadata,
-    ListProxyRuleGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ProxyRuleGroupMetadata
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListProxyRuleGroupsRequest,
   output: ListProxyRuleGroupsResponse,
   errors: [
@@ -6374,27 +6086,7 @@ export const listProxyRuleGroups: API.OperationMethod<
     items: "ProxyRuleGroups",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListProxyRuleGroupsRequest,
-  ListProxyRuleGroupsResponse,
-  ListProxyRuleGroupsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListProxyRuleGroupsRequest,
-  ) => stream.Stream<
-    ListProxyRuleGroupsResponse,
-    ListProxyRuleGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListProxyRuleGroupsRequest,
-  ) => stream.Stream<
-    ProxyRuleGroupMetadata,
-    ListProxyRuleGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListRuleGroupsError =
   | InternalServerError
@@ -6406,27 +6098,13 @@ export type ListRuleGroupsError =
  * setting for max results and the number of rule groups, a single call might not return the
  * full list.
  */
-export const listRuleGroups: API.OperationMethod<
+export const listRuleGroups: API.PaginatedOperationMethod<
   ListRuleGroupsRequest,
   ListRuleGroupsResponse,
   ListRuleGroupsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListRuleGroupsRequest,
-  ) => stream.Stream<
-    ListRuleGroupsResponse,
-    ListRuleGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListRuleGroupsRequest,
-  ) => stream.Stream<
-    RuleGroupMetadata,
-    ListRuleGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  RuleGroupMetadata
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListRuleGroupsRequest,
   output: ListRuleGroupsResponse,
   errors: [InternalServerError, InvalidRequestException, ThrottlingException],
@@ -6439,27 +6117,7 @@ export const listRuleGroups: API.OperationMethod<
     items: "RuleGroups",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListRuleGroupsRequest,
-  ListRuleGroupsResponse,
-  ListRuleGroupsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListRuleGroupsRequest,
-  ) => stream.Stream<
-    ListRuleGroupsResponse,
-    ListRuleGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListRuleGroupsRequest,
-  ) => stream.Stream<
-    RuleGroupMetadata,
-    ListRuleGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsForResourceError =
   | InternalServerError
@@ -6477,27 +6135,13 @@ export type ListTagsForResourceError =
  * You can tag the Amazon Web Services resources that you manage through Network Firewall: firewalls, firewall
  * policies, and rule groups.
  */
-export const listTagsForResource: API.OperationMethod<
+export const listTagsForResource: API.PaginatedOperationMethod<
   ListTagsForResourceRequest,
   ListTagsForResourceResponse,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTagsForResourceRequest,
-  ) => stream.Stream<
-    ListTagsForResourceResponse,
-    ListTagsForResourceError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTagsForResourceRequest,
-  ) => stream.Stream<
-    Tag,
-    ListTagsForResourceError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Tag
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
   errors: [
@@ -6515,27 +6159,7 @@ export const listTagsForResource: API.OperationMethod<
     items: "Tags",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListTagsForResourceRequest,
-  ListTagsForResourceResponse,
-  ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTagsForResourceRequest,
-  ) => stream.Stream<
-    ListTagsForResourceResponse,
-    ListTagsForResourceError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTagsForResourceRequest,
-  ) => stream.Stream<
-    Tag,
-    ListTagsForResourceError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTLSInspectionConfigurationsError =
   | InternalServerError
@@ -6545,27 +6169,13 @@ export type ListTLSInspectionConfigurationsError =
 /**
  * Retrieves the metadata for the TLS inspection configurations that you have defined. Depending on your setting for max results and the number of TLS inspection configurations, a single call might not return the full list.
  */
-export const listTLSInspectionConfigurations: API.OperationMethod<
+export const listTLSInspectionConfigurations: API.PaginatedOperationMethod<
   ListTLSInspectionConfigurationsRequest,
   ListTLSInspectionConfigurationsResponse,
   ListTLSInspectionConfigurationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTLSInspectionConfigurationsRequest,
-  ) => stream.Stream<
-    ListTLSInspectionConfigurationsResponse,
-    ListTLSInspectionConfigurationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTLSInspectionConfigurationsRequest,
-  ) => stream.Stream<
-    TLSInspectionConfigurationMetadata,
-    ListTLSInspectionConfigurationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  TLSInspectionConfigurationMetadata
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListTLSInspectionConfigurationsRequest,
   output: ListTLSInspectionConfigurationsResponse,
   errors: [InternalServerError, InvalidRequestException, ThrottlingException],
@@ -6578,27 +6188,7 @@ export const listTLSInspectionConfigurations: API.OperationMethod<
     items: "TLSInspectionConfigurations",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListTLSInspectionConfigurationsRequest,
-  ListTLSInspectionConfigurationsResponse,
-  ListTLSInspectionConfigurationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTLSInspectionConfigurationsRequest,
-  ) => stream.Stream<
-    ListTLSInspectionConfigurationsResponse,
-    ListTLSInspectionConfigurationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTLSInspectionConfigurationsRequest,
-  ) => stream.Stream<
-    TLSInspectionConfigurationMetadata,
-    ListTLSInspectionConfigurationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListVpcEndpointAssociationsError =
   | InternalServerError
@@ -6612,27 +6202,13 @@ export type ListVpcEndpointAssociationsError =
  * Depending on your setting for max results and the number of associations, a single call
  * might not return the full list.
  */
-export const listVpcEndpointAssociations: API.OperationMethod<
+export const listVpcEndpointAssociations: API.PaginatedOperationMethod<
   ListVpcEndpointAssociationsRequest,
   ListVpcEndpointAssociationsResponse,
   ListVpcEndpointAssociationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListVpcEndpointAssociationsRequest,
-  ) => stream.Stream<
-    ListVpcEndpointAssociationsResponse,
-    ListVpcEndpointAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListVpcEndpointAssociationsRequest,
-  ) => stream.Stream<
-    VpcEndpointAssociationMetadata,
-    ListVpcEndpointAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  VpcEndpointAssociationMetadata
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListVpcEndpointAssociationsRequest,
   output: ListVpcEndpointAssociationsResponse,
   errors: [InternalServerError, InvalidRequestException, ThrottlingException],
@@ -6645,27 +6221,7 @@ export const listVpcEndpointAssociations: API.OperationMethod<
     items: "VpcEndpointAssociations",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListVpcEndpointAssociationsRequest,
-  ListVpcEndpointAssociationsResponse,
-  ListVpcEndpointAssociationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListVpcEndpointAssociationsRequest,
-  ) => stream.Stream<
-    ListVpcEndpointAssociationsResponse,
-    ListVpcEndpointAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListVpcEndpointAssociationsRequest,
-  ) => stream.Stream<
-    VpcEndpointAssociationMetadata,
-    ListVpcEndpointAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type PutResourcePolicyError =
   | InternalServerError
@@ -6694,7 +6250,7 @@ export const putResourcePolicy: API.OperationMethod<
   PutResourcePolicyRequest,
   PutResourcePolicyResponse,
   PutResourcePolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutResourcePolicyRequest,
   output: PutResourcePolicyResponse,
@@ -6729,7 +6285,7 @@ export const rejectNetworkFirewallTransitGatewayAttachment: API.OperationMethod<
   RejectNetworkFirewallTransitGatewayAttachmentRequest,
   RejectNetworkFirewallTransitGatewayAttachmentResponse,
   RejectNetworkFirewallTransitGatewayAttachmentError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RejectNetworkFirewallTransitGatewayAttachmentRequest,
   output: RejectNetworkFirewallTransitGatewayAttachmentResponse,
@@ -6759,7 +6315,7 @@ export const startAnalysisReport: API.OperationMethod<
   StartAnalysisReportRequest,
   StartAnalysisReportResponse,
   StartAnalysisReportError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartAnalysisReportRequest,
   output: StartAnalysisReportResponse,
@@ -6795,7 +6351,7 @@ export const startFlowCapture: API.OperationMethod<
   StartFlowCaptureRequest,
   StartFlowCaptureResponse,
   StartFlowCaptureError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartFlowCaptureRequest,
   output: StartFlowCaptureResponse,
@@ -6829,7 +6385,7 @@ export const startFlowFlush: API.OperationMethod<
   StartFlowFlushRequest,
   StartFlowFlushResponse,
   StartFlowFlushError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartFlowFlushRequest,
   output: StartFlowFlushResponse,
@@ -6863,7 +6419,7 @@ export const tagResource: API.OperationMethod<
   TagResourceRequest,
   TagResourceResponse,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -6898,7 +6454,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceRequest,
   UntagResourceResponse,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -6930,7 +6486,7 @@ export const updateAvailabilityZoneChangeProtection: API.OperationMethod<
   UpdateAvailabilityZoneChangeProtectionRequest,
   UpdateAvailabilityZoneChangeProtectionResponse,
   UpdateAvailabilityZoneChangeProtectionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateAvailabilityZoneChangeProtectionRequest,
   output: UpdateAvailabilityZoneChangeProtectionResponse,
@@ -6961,7 +6517,7 @@ export const updateFirewallAnalysisSettings: API.OperationMethod<
   UpdateFirewallAnalysisSettingsRequest,
   UpdateFirewallAnalysisSettingsResponse,
   UpdateFirewallAnalysisSettingsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateFirewallAnalysisSettingsRequest,
   output: UpdateFirewallAnalysisSettingsResponse,
@@ -6995,7 +6551,7 @@ export const updateFirewallDeleteProtection: API.OperationMethod<
   UpdateFirewallDeleteProtectionRequest,
   UpdateFirewallDeleteProtectionResponse,
   UpdateFirewallDeleteProtectionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateFirewallDeleteProtectionRequest,
   output: UpdateFirewallDeleteProtectionResponse,
@@ -7027,7 +6583,7 @@ export const updateFirewallDescription: API.OperationMethod<
   UpdateFirewallDescriptionRequest,
   UpdateFirewallDescriptionResponse,
   UpdateFirewallDescriptionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateFirewallDescriptionRequest,
   output: UpdateFirewallDescriptionResponse,
@@ -7058,7 +6614,7 @@ export const updateFirewallEncryptionConfiguration: API.OperationMethod<
   UpdateFirewallEncryptionConfigurationRequest,
   UpdateFirewallEncryptionConfigurationResponse,
   UpdateFirewallEncryptionConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateFirewallEncryptionConfigurationRequest,
   output: UpdateFirewallEncryptionConfigurationResponse,
@@ -7089,7 +6645,7 @@ export const updateFirewallPolicy: API.OperationMethod<
   UpdateFirewallPolicyRequest,
   UpdateFirewallPolicyResponse,
   UpdateFirewallPolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateFirewallPolicyRequest,
   output: UpdateFirewallPolicyResponse,
@@ -7122,7 +6678,7 @@ export const updateFirewallPolicyChangeProtection: API.OperationMethod<
   UpdateFirewallPolicyChangeProtectionRequest,
   UpdateFirewallPolicyChangeProtectionResponse,
   UpdateFirewallPolicyChangeProtectionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateFirewallPolicyChangeProtectionRequest,
   output: UpdateFirewallPolicyChangeProtectionResponse,
@@ -7177,7 +6733,7 @@ export const updateLoggingConfiguration: API.OperationMethod<
   UpdateLoggingConfigurationRequest,
   UpdateLoggingConfigurationResponse,
   UpdateLoggingConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateLoggingConfigurationRequest,
   output: UpdateLoggingConfigurationResponse,
@@ -7208,7 +6764,7 @@ export const updateProxy: API.OperationMethod<
   UpdateProxyRequest,
   UpdateProxyResponse,
   UpdateProxyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateProxyRequest,
   output: UpdateProxyResponse,
@@ -7237,7 +6793,7 @@ export const updateProxyConfiguration: API.OperationMethod<
   UpdateProxyConfigurationRequest,
   UpdateProxyConfigurationResponse,
   UpdateProxyConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateProxyConfigurationRequest,
   output: UpdateProxyConfigurationResponse,
@@ -7265,7 +6821,7 @@ export const updateProxyRule: API.OperationMethod<
   UpdateProxyRuleRequest,
   UpdateProxyRuleResponse,
   UpdateProxyRuleError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateProxyRuleRequest,
   output: UpdateProxyRuleResponse,
@@ -7293,7 +6849,7 @@ export const updateProxyRuleGroupPriorities: API.OperationMethod<
   UpdateProxyRuleGroupPrioritiesRequest,
   UpdateProxyRuleGroupPrioritiesResponse,
   UpdateProxyRuleGroupPrioritiesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateProxyRuleGroupPrioritiesRequest,
   output: UpdateProxyRuleGroupPrioritiesResponse,
@@ -7321,7 +6877,7 @@ export const updateProxyRulePriorities: API.OperationMethod<
   UpdateProxyRulePrioritiesRequest,
   UpdateProxyRulePrioritiesResponse,
   UpdateProxyRulePrioritiesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateProxyRulePrioritiesRequest,
   output: UpdateProxyRulePrioritiesResponse,
@@ -7356,7 +6912,7 @@ export const updateRuleGroup: API.OperationMethod<
   UpdateRuleGroupRequest,
   UpdateRuleGroupResponse,
   UpdateRuleGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateRuleGroupRequest,
   output: UpdateRuleGroupResponse,
@@ -7387,7 +6943,7 @@ export const updateSubnetChangeProtection: API.OperationMethod<
   UpdateSubnetChangeProtectionRequest,
   UpdateSubnetChangeProtectionResponse,
   UpdateSubnetChangeProtectionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateSubnetChangeProtectionRequest,
   output: UpdateSubnetChangeProtectionResponse,
@@ -7424,7 +6980,7 @@ export const updateTLSInspectionConfiguration: API.OperationMethod<
   UpdateTLSInspectionConfigurationRequest,
   UpdateTLSInspectionConfigurationResponse,
   UpdateTLSInspectionConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateTLSInspectionConfigurationRequest,
   output: UpdateTLSInspectionConfigurationResponse,

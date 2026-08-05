@@ -1,6 +1,5 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -8,7 +7,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region as Rgn } from "../region.ts";
 const svc = T.AwsApiService({
   sdkId: "ControlTower",
   serviceShapeName: "AWSControlTowerApis",
@@ -88,43 +86,43 @@ const rules = T.EndpointResolver((p, _) => {
 export class AccessDeniedException
   extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
     "AccessDeniedException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(403),
   ).pipe(C.withAuthError) {}
 export class BadRequestException
   extends /*@__PURE__*/ S.TaggedErrorClass<BadRequestException>()(
     "BadRequestException",
-    {},
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ).pipe(C.withBadRequestError) {}
 export class ConflictException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
     "ConflictException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class InternalServerException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
     "InternalServerException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.all(T.HttpError(500), T.Retryable()),
   ).pipe(C.withServerError, C.withRetryableError) {}
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class ServiceQuotaExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
     "ServiceQuotaExceededException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(402),
   ).pipe(C.withQuotaError) {}
 export class ThrottlingException
   extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
     "ThrottlingException",
     {
-      message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       serviceCode: S.optional(S.String),
       quotaCode: S.optional(S.String),
       retryAfterSeconds: S.optional(S.Number).pipe(T.HttpHeader("Retry-After")),
@@ -134,12 +132,12 @@ export class ThrottlingException
 export class UnauthorizedException
   extends /*@__PURE__*/ S.TaggedErrorClass<UnauthorizedException>()(
     "UnauthorizedException",
-    {},
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ).pipe(C.withAuthError) {}
 export class ValidationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
     "ValidationException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export type LandingZoneVersion = string;
@@ -1602,7 +1600,7 @@ export const createLandingZone: API.OperationMethod<
   CreateLandingZoneInput,
   CreateLandingZoneOutput,
   CreateLandingZoneError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateLandingZoneInput,
   output: CreateLandingZoneOutput,
@@ -1637,7 +1635,7 @@ export const deleteLandingZone: API.OperationMethod<
   DeleteLandingZoneInput,
   DeleteLandingZoneOutput,
   DeleteLandingZoneError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteLandingZoneInput,
   output: DeleteLandingZoneOutput,
@@ -1672,7 +1670,7 @@ export const disableBaseline: API.OperationMethod<
   DisableBaselineInput,
   DisableBaselineOutput,
   DisableBaselineError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DisableBaselineInput,
   output: DisableBaselineOutput,
@@ -1707,7 +1705,7 @@ export const disableControl: API.OperationMethod<
   DisableControlInput,
   DisableControlOutput,
   DisableControlError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DisableControlInput,
   output: DisableControlOutput,
@@ -1742,7 +1740,7 @@ export const enableBaseline: API.OperationMethod<
   EnableBaselineInput,
   EnableBaselineOutput,
   EnableBaselineError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: EnableBaselineInput,
   output: EnableBaselineOutput,
@@ -1777,7 +1775,7 @@ export const enableControl: API.OperationMethod<
   EnableControlInput,
   EnableControlOutput,
   EnableControlError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: EnableControlInput,
   output: EnableControlOutput,
@@ -1810,7 +1808,7 @@ export const getBaseline: API.OperationMethod<
   GetBaselineInput,
   GetBaselineOutput,
   GetBaselineError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetBaselineInput,
   output: GetBaselineOutput,
@@ -1842,7 +1840,7 @@ export const getBaselineOperation: API.OperationMethod<
   GetBaselineOperationInput,
   GetBaselineOperationOutput,
   GetBaselineOperationError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetBaselineOperationInput,
   output: GetBaselineOperationOutput,
@@ -1873,7 +1871,7 @@ export const getControlOperation: API.OperationMethod<
   GetControlOperationInput,
   GetControlOperationOutput,
   GetControlOperationError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetControlOperationInput,
   output: GetControlOperationOutput,
@@ -1904,7 +1902,7 @@ export const getEnabledBaseline: API.OperationMethod<
   GetEnabledBaselineInput,
   GetEnabledBaselineOutput,
   GetEnabledBaselineError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetEnabledBaselineInput,
   output: GetEnabledBaselineOutput,
@@ -1935,7 +1933,7 @@ export const getEnabledControl: API.OperationMethod<
   GetEnabledControlInput,
   GetEnabledControlOutput,
   GetEnabledControlError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetEnabledControlInput,
   output: GetEnabledControlOutput,
@@ -1966,7 +1964,7 @@ export const getLandingZone: API.OperationMethod<
   GetLandingZoneInput,
   GetLandingZoneOutput,
   GetLandingZoneError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetLandingZoneInput,
   output: GetLandingZoneOutput,
@@ -1998,7 +1996,7 @@ export const getLandingZoneOperation: API.OperationMethod<
   GetLandingZoneOperationInput,
   GetLandingZoneOperationOutput,
   GetLandingZoneOperationError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetLandingZoneOperationInput,
   output: GetLandingZoneOperationOutput,
@@ -2025,27 +2023,13 @@ export type ListBaselinesError =
 /**
  * Returns a summary list of all available baselines. For usage examples, see *the Amazon Web Services Control Tower User Guide* .
  */
-export const listBaselines: API.OperationMethod<
+export const listBaselines: API.PaginatedOperationMethod<
   ListBaselinesInput,
   ListBaselinesOutput,
   ListBaselinesError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListBaselinesInput,
-  ) => stream.Stream<
-    ListBaselinesOutput,
-    ListBaselinesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListBaselinesInput,
-  ) => stream.Stream<
-    BaselineSummary,
-    ListBaselinesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  BaselineSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListBaselinesInput,
   output: ListBaselinesOutput,
   errors: [
@@ -2064,27 +2048,7 @@ export const listBaselines: API.OperationMethod<
     items: "baselines",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListBaselinesInput,
-  ListBaselinesOutput,
-  ListBaselinesError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListBaselinesInput,
-  ) => stream.Stream<
-    ListBaselinesOutput,
-    ListBaselinesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListBaselinesInput,
-  ) => stream.Stream<
-    BaselineSummary,
-    ListBaselinesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListControlOperationsError =
   | AccessDeniedException
@@ -2095,27 +2059,13 @@ export type ListControlOperationsError =
 /**
  * Provides a list of operations in progress or queued. For usage examples, see ListControlOperation examples.
  */
-export const listControlOperations: API.OperationMethod<
+export const listControlOperations: API.PaginatedOperationMethod<
   ListControlOperationsInput,
   ListControlOperationsOutput,
   ListControlOperationsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListControlOperationsInput,
-  ) => stream.Stream<
-    ListControlOperationsOutput,
-    ListControlOperationsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListControlOperationsInput,
-  ) => stream.Stream<
-    ControlOperationSummary,
-    ListControlOperationsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ControlOperationSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListControlOperationsInput,
   output: ListControlOperationsOutput,
   errors: [
@@ -2133,27 +2083,7 @@ export const listControlOperations: API.OperationMethod<
     items: "controlOperations",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListControlOperationsInput,
-  ListControlOperationsOutput,
-  ListControlOperationsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListControlOperationsInput,
-  ) => stream.Stream<
-    ListControlOperationsOutput,
-    ListControlOperationsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListControlOperationsInput,
-  ) => stream.Stream<
-    ControlOperationSummary,
-    ListControlOperationsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListEnabledBaselinesError =
   | AccessDeniedException
@@ -2165,27 +2095,13 @@ export type ListEnabledBaselinesError =
 /**
  * Returns a list of summaries describing `EnabledBaseline` resources. You can filter the list by the corresponding `Baseline` or `Target` of the `EnabledBaseline` resources. For usage examples, see *the Amazon Web Services Control Tower User Guide* .
  */
-export const listEnabledBaselines: API.OperationMethod<
+export const listEnabledBaselines: API.PaginatedOperationMethod<
   ListEnabledBaselinesInput,
   ListEnabledBaselinesOutput,
   ListEnabledBaselinesError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListEnabledBaselinesInput,
-  ) => stream.Stream<
-    ListEnabledBaselinesOutput,
-    ListEnabledBaselinesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListEnabledBaselinesInput,
-  ) => stream.Stream<
-    EnabledBaselineSummary,
-    ListEnabledBaselinesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  EnabledBaselineSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListEnabledBaselinesInput,
   output: ListEnabledBaselinesOutput,
   errors: [
@@ -2204,27 +2120,7 @@ export const listEnabledBaselines: API.OperationMethod<
     items: "enabledBaselines",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListEnabledBaselinesInput,
-  ListEnabledBaselinesOutput,
-  ListEnabledBaselinesError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListEnabledBaselinesInput,
-  ) => stream.Stream<
-    ListEnabledBaselinesOutput,
-    ListEnabledBaselinesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListEnabledBaselinesInput,
-  ) => stream.Stream<
-    EnabledBaselineSummary,
-    ListEnabledBaselinesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListEnabledControlsError =
   | AccessDeniedException
@@ -2236,27 +2132,13 @@ export type ListEnabledControlsError =
 /**
  * Lists the controls enabled by Amazon Web Services Control Tower on the specified organizational unit and the accounts it contains. For usage examples, see the *Controls Reference Guide* .
  */
-export const listEnabledControls: API.OperationMethod<
+export const listEnabledControls: API.PaginatedOperationMethod<
   ListEnabledControlsInput,
   ListEnabledControlsOutput,
   ListEnabledControlsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListEnabledControlsInput,
-  ) => stream.Stream<
-    ListEnabledControlsOutput,
-    ListEnabledControlsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListEnabledControlsInput,
-  ) => stream.Stream<
-    EnabledControlSummary,
-    ListEnabledControlsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  EnabledControlSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListEnabledControlsInput,
   output: ListEnabledControlsOutput,
   errors: [
@@ -2275,27 +2157,7 @@ export const listEnabledControls: API.OperationMethod<
     items: "enabledControls",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListEnabledControlsInput,
-  ListEnabledControlsOutput,
-  ListEnabledControlsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListEnabledControlsInput,
-  ) => stream.Stream<
-    ListEnabledControlsOutput,
-    ListEnabledControlsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListEnabledControlsInput,
-  ) => stream.Stream<
-    EnabledControlSummary,
-    ListEnabledControlsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListLandingZoneOperationsError =
   | AccessDeniedException
@@ -2307,27 +2169,13 @@ export type ListLandingZoneOperationsError =
 /**
  * Lists all landing zone operations from the past 90 days. Results are sorted by time, with the most recent operation first.
  */
-export const listLandingZoneOperations: API.OperationMethod<
+export const listLandingZoneOperations: API.PaginatedOperationMethod<
   ListLandingZoneOperationsInput,
   ListLandingZoneOperationsOutput,
   ListLandingZoneOperationsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListLandingZoneOperationsInput,
-  ) => stream.Stream<
-    ListLandingZoneOperationsOutput,
-    ListLandingZoneOperationsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListLandingZoneOperationsInput,
-  ) => stream.Stream<
-    LandingZoneOperationSummary,
-    ListLandingZoneOperationsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  LandingZoneOperationSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListLandingZoneOperationsInput,
   output: ListLandingZoneOperationsOutput,
   errors: [
@@ -2346,27 +2194,7 @@ export const listLandingZoneOperations: API.OperationMethod<
     items: "landingZoneOperations",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListLandingZoneOperationsInput,
-  ListLandingZoneOperationsOutput,
-  ListLandingZoneOperationsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListLandingZoneOperationsInput,
-  ) => stream.Stream<
-    ListLandingZoneOperationsOutput,
-    ListLandingZoneOperationsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListLandingZoneOperationsInput,
-  ) => stream.Stream<
-    LandingZoneOperationSummary,
-    ListLandingZoneOperationsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListLandingZonesError =
   | AccessDeniedException
@@ -2380,27 +2208,13 @@ export type ListLandingZonesError =
  *
  * Returns one landing zone ARN.
  */
-export const listLandingZones: API.OperationMethod<
+export const listLandingZones: API.PaginatedOperationMethod<
   ListLandingZonesInput,
   ListLandingZonesOutput,
   ListLandingZonesError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListLandingZonesInput,
-  ) => stream.Stream<
-    ListLandingZonesOutput,
-    ListLandingZonesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListLandingZonesInput,
-  ) => stream.Stream<
-    LandingZoneSummary,
-    ListLandingZonesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  LandingZoneSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListLandingZonesInput,
   output: ListLandingZonesOutput,
   errors: [
@@ -2419,27 +2233,7 @@ export const listLandingZones: API.OperationMethod<
     items: "landingZones",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListLandingZonesInput,
-  ListLandingZonesOutput,
-  ListLandingZonesError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListLandingZonesInput,
-  ) => stream.Stream<
-    ListLandingZonesOutput,
-    ListLandingZonesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListLandingZonesInput,
-  ) => stream.Stream<
-    LandingZoneSummary,
-    ListLandingZonesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsForResourceError =
   | InternalServerException
@@ -2454,7 +2248,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceInput,
   ListTagsForResourceOutput,
   ListTagsForResourceError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceInput,
   output: ListTagsForResourceOutput,
@@ -2486,7 +2280,7 @@ export const resetEnabledBaseline: API.OperationMethod<
   ResetEnabledBaselineInput,
   ResetEnabledBaselineOutput,
   ResetEnabledBaselineError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ResetEnabledBaselineInput,
   output: ResetEnabledBaselineOutput,
@@ -2521,7 +2315,7 @@ export const resetEnabledControl: API.OperationMethod<
   ResetEnabledControlInput,
   ResetEnabledControlOutput,
   ResetEnabledControlError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ResetEnabledControlInput,
   output: ResetEnabledControlOutput,
@@ -2555,7 +2349,7 @@ export const resetLandingZone: API.OperationMethod<
   ResetLandingZoneInput,
   ResetLandingZoneOutput,
   ResetLandingZoneError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ResetLandingZoneInput,
   output: ResetLandingZoneOutput,
@@ -2586,7 +2380,7 @@ export const tagResource: API.OperationMethod<
   TagResourceInput,
   TagResourceOutput,
   TagResourceError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceInput,
   output: TagResourceOutput,
@@ -2614,7 +2408,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceInput,
   UntagResourceOutput,
   UntagResourceError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceInput,
   output: UntagResourceOutput,
@@ -2646,7 +2440,7 @@ export const updateEnabledBaseline: API.OperationMethod<
   UpdateEnabledBaselineInput,
   UpdateEnabledBaselineOutput,
   UpdateEnabledBaselineError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateEnabledBaselineInput,
   output: UpdateEnabledBaselineOutput,
@@ -2687,7 +2481,7 @@ export const updateEnabledControl: API.OperationMethod<
   UpdateEnabledControlInput,
   UpdateEnabledControlOutput,
   UpdateEnabledControlError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateEnabledControlInput,
   output: UpdateEnabledControlOutput,
@@ -2721,7 +2515,7 @@ export const updateLandingZone: API.OperationMethod<
   UpdateLandingZoneInput,
   UpdateLandingZoneOutput,
   UpdateLandingZoneError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateLandingZoneInput,
   output: UpdateLandingZoneOutput,

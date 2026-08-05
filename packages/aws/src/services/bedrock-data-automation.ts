@@ -1,7 +1,6 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as redacted from "effect/Redacted";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -9,7 +8,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 import { SensitiveString } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "Bedrock Data Automation",
@@ -90,44 +88,44 @@ const rules = T.EndpointResolver((p, _) => {
 export class AccessDeniedException
   extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
     "AccessDeniedException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(403),
   ).pipe(C.withAuthError) {}
 export class ConflictException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
     "ConflictException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class InternalServerException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
     "InternalServerException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(500),
   ).pipe(C.withServerError) {}
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class ServiceQuotaExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
     "ServiceQuotaExceededException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(402),
   ).pipe(C.withQuotaError) {}
 export class ThrottlingException
   extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
     "ThrottlingException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(429),
   ).pipe(C.withThrottlingError) {}
 export class ValidationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
     "ValidationException",
     {
-      message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       fieldList: S.optional(
         S.suspend(() => ValidationExceptionFieldList).annotate({
           identifier: "ValidationExceptionFieldList",
@@ -2348,7 +2346,7 @@ export const copyBlueprintStage: API.OperationMethod<
   CopyBlueprintStageRequest,
   CopyBlueprintStageResponse,
   CopyBlueprintStageError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CopyBlueprintStageRequest,
   output: CopyBlueprintStageResponse,
@@ -2379,7 +2377,7 @@ export const createBlueprint: API.OperationMethod<
   CreateBlueprintRequest,
   CreateBlueprintResponse,
   CreateBlueprintError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateBlueprintRequest,
   output: CreateBlueprintResponse,
@@ -2411,7 +2409,7 @@ export const createBlueprintVersion: API.OperationMethod<
   CreateBlueprintVersionRequest,
   CreateBlueprintVersionResponse,
   CreateBlueprintVersionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateBlueprintVersionRequest,
   output: CreateBlueprintVersionResponse,
@@ -2443,7 +2441,7 @@ export const createDataAutomationLibrary: API.OperationMethod<
   CreateDataAutomationLibraryRequest,
   CreateDataAutomationLibraryResponse,
   CreateDataAutomationLibraryError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateDataAutomationLibraryRequest,
   output: CreateDataAutomationLibraryResponse,
@@ -2475,7 +2473,7 @@ export const createDataAutomationProject: API.OperationMethod<
   CreateDataAutomationProjectRequest,
   CreateDataAutomationProjectResponse,
   CreateDataAutomationProjectError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateDataAutomationProjectRequest,
   output: CreateDataAutomationProjectResponse,
@@ -2506,7 +2504,7 @@ export const deleteBlueprint: API.OperationMethod<
   DeleteBlueprintRequest,
   DeleteBlueprintResponse,
   DeleteBlueprintError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteBlueprintRequest,
   output: DeleteBlueprintResponse,
@@ -2537,7 +2535,7 @@ export const deleteDataAutomationLibrary: API.OperationMethod<
   DeleteDataAutomationLibraryRequest,
   DeleteDataAutomationLibraryResponse,
   DeleteDataAutomationLibraryError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteDataAutomationLibraryRequest,
   output: DeleteDataAutomationLibraryResponse,
@@ -2568,7 +2566,7 @@ export const deleteDataAutomationProject: API.OperationMethod<
   DeleteDataAutomationProjectRequest,
   DeleteDataAutomationProjectResponse,
   DeleteDataAutomationProjectError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteDataAutomationProjectRequest,
   output: DeleteDataAutomationProjectResponse,
@@ -2598,7 +2596,7 @@ export const getBlueprint: API.OperationMethod<
   GetBlueprintRequest,
   GetBlueprintResponse,
   GetBlueprintError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetBlueprintRequest,
   output: GetBlueprintResponse,
@@ -2628,7 +2626,7 @@ export const getBlueprintOptimizationStatus: API.OperationMethod<
   GetBlueprintOptimizationStatusRequest,
   GetBlueprintOptimizationStatusResponse,
   GetBlueprintOptimizationStatusError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetBlueprintOptimizationStatusRequest,
   output: GetBlueprintOptimizationStatusResponse,
@@ -2658,7 +2656,7 @@ export const getDataAutomationLibrary: API.OperationMethod<
   GetDataAutomationLibraryRequest,
   GetDataAutomationLibraryResponse,
   GetDataAutomationLibraryError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetDataAutomationLibraryRequest,
   output: GetDataAutomationLibraryResponse,
@@ -2688,7 +2686,7 @@ export const getDataAutomationLibraryEntity: API.OperationMethod<
   GetDataAutomationLibraryEntityRequest,
   GetDataAutomationLibraryEntityResponse,
   GetDataAutomationLibraryEntityError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetDataAutomationLibraryEntityRequest,
   output: GetDataAutomationLibraryEntityResponse,
@@ -2718,7 +2716,7 @@ export const getDataAutomationLibraryIngestionJob: API.OperationMethod<
   GetDataAutomationLibraryIngestionJobRequest,
   GetDataAutomationLibraryIngestionJobResponse,
   GetDataAutomationLibraryIngestionJobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetDataAutomationLibraryIngestionJobRequest,
   output: GetDataAutomationLibraryIngestionJobResponse,
@@ -2748,7 +2746,7 @@ export const getDataAutomationProject: API.OperationMethod<
   GetDataAutomationProjectRequest,
   GetDataAutomationProjectResponse,
   GetDataAutomationProjectError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetDataAutomationProjectRequest,
   output: GetDataAutomationProjectResponse,
@@ -2779,7 +2777,7 @@ export const invokeBlueprintOptimizationAsync: API.OperationMethod<
   InvokeBlueprintOptimizationAsyncRequest,
   InvokeBlueprintOptimizationAsyncResponse,
   InvokeBlueprintOptimizationAsyncError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: InvokeBlueprintOptimizationAsyncRequest,
   output: InvokeBlueprintOptimizationAsyncResponse,
@@ -2812,7 +2810,7 @@ export const invokeDataAutomationLibraryIngestionJob: API.OperationMethod<
   InvokeDataAutomationLibraryIngestionJobRequest,
   InvokeDataAutomationLibraryIngestionJobResponse,
   InvokeDataAutomationLibraryIngestionJobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: InvokeDataAutomationLibraryIngestionJobRequest,
   output: InvokeDataAutomationLibraryIngestionJobResponse,
@@ -2840,27 +2838,13 @@ export type ListBlueprintsError =
 /**
  * Lists all existing Amazon Bedrock Data Automation Blueprints
  */
-export const listBlueprints: API.OperationMethod<
+export const listBlueprints: API.PaginatedOperationMethod<
   ListBlueprintsRequest,
   ListBlueprintsResponse,
   ListBlueprintsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListBlueprintsRequest,
-  ) => stream.Stream<
-    ListBlueprintsResponse,
-    ListBlueprintsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListBlueprintsRequest,
-  ) => stream.Stream<
-    BlueprintSummary,
-    ListBlueprintsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  BlueprintSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListBlueprintsRequest,
   output: ListBlueprintsResponse,
   errors: [
@@ -2879,27 +2863,7 @@ export const listBlueprints: API.OperationMethod<
     items: "blueprints",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListBlueprintsRequest,
-  ListBlueprintsResponse,
-  ListBlueprintsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListBlueprintsRequest,
-  ) => stream.Stream<
-    ListBlueprintsResponse,
-    ListBlueprintsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListBlueprintsRequest,
-  ) => stream.Stream<
-    BlueprintSummary,
-    ListBlueprintsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListDataAutomationLibrariesError =
   | AccessDeniedException
@@ -2910,27 +2874,13 @@ export type ListDataAutomationLibrariesError =
 /**
  * Lists all existing Amazon Bedrock Data Automation Libraries
  */
-export const listDataAutomationLibraries: API.OperationMethod<
+export const listDataAutomationLibraries: API.PaginatedOperationMethod<
   ListDataAutomationLibrariesRequest,
   ListDataAutomationLibrariesResponse,
   ListDataAutomationLibrariesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDataAutomationLibrariesRequest,
-  ) => stream.Stream<
-    ListDataAutomationLibrariesResponse,
-    ListDataAutomationLibrariesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDataAutomationLibrariesRequest,
-  ) => stream.Stream<
-    DataAutomationLibrarySummary,
-    ListDataAutomationLibrariesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  DataAutomationLibrarySummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListDataAutomationLibrariesRequest,
   output: ListDataAutomationLibrariesResponse,
   errors: [
@@ -2948,27 +2898,7 @@ export const listDataAutomationLibraries: API.OperationMethod<
     items: "libraries",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListDataAutomationLibrariesRequest,
-  ListDataAutomationLibrariesResponse,
-  ListDataAutomationLibrariesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDataAutomationLibrariesRequest,
-  ) => stream.Stream<
-    ListDataAutomationLibrariesResponse,
-    ListDataAutomationLibrariesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDataAutomationLibrariesRequest,
-  ) => stream.Stream<
-    DataAutomationLibrarySummary,
-    ListDataAutomationLibrariesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListDataAutomationLibraryEntitiesError =
   | AccessDeniedException
@@ -2980,27 +2910,13 @@ export type ListDataAutomationLibraryEntitiesError =
 /**
  * Lists all stored entities in the library
  */
-export const listDataAutomationLibraryEntities: API.OperationMethod<
+export const listDataAutomationLibraryEntities: API.PaginatedOperationMethod<
   ListDataAutomationLibraryEntitiesRequest,
   ListDataAutomationLibraryEntitiesResponse,
   ListDataAutomationLibraryEntitiesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDataAutomationLibraryEntitiesRequest,
-  ) => stream.Stream<
-    ListDataAutomationLibraryEntitiesResponse,
-    ListDataAutomationLibraryEntitiesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDataAutomationLibraryEntitiesRequest,
-  ) => stream.Stream<
-    DataAutomationLibraryEntitySummary,
-    ListDataAutomationLibraryEntitiesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  DataAutomationLibraryEntitySummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListDataAutomationLibraryEntitiesRequest,
   output: ListDataAutomationLibraryEntitiesResponse,
   errors: [
@@ -3019,27 +2935,7 @@ export const listDataAutomationLibraryEntities: API.OperationMethod<
     items: "entities",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListDataAutomationLibraryEntitiesRequest,
-  ListDataAutomationLibraryEntitiesResponse,
-  ListDataAutomationLibraryEntitiesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDataAutomationLibraryEntitiesRequest,
-  ) => stream.Stream<
-    ListDataAutomationLibraryEntitiesResponse,
-    ListDataAutomationLibraryEntitiesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDataAutomationLibraryEntitiesRequest,
-  ) => stream.Stream<
-    DataAutomationLibraryEntitySummary,
-    ListDataAutomationLibraryEntitiesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListDataAutomationLibraryIngestionJobsError =
   | AccessDeniedException
@@ -3051,27 +2947,13 @@ export type ListDataAutomationLibraryIngestionJobsError =
 /**
  * Lists all data automation library ingestion jobs
  */
-export const listDataAutomationLibraryIngestionJobs: API.OperationMethod<
+export const listDataAutomationLibraryIngestionJobs: API.PaginatedOperationMethod<
   ListDataAutomationLibraryIngestionJobsRequest,
   ListDataAutomationLibraryIngestionJobsResponse,
   ListDataAutomationLibraryIngestionJobsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDataAutomationLibraryIngestionJobsRequest,
-  ) => stream.Stream<
-    ListDataAutomationLibraryIngestionJobsResponse,
-    ListDataAutomationLibraryIngestionJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDataAutomationLibraryIngestionJobsRequest,
-  ) => stream.Stream<
-    DataAutomationLibraryIngestionJobSummary,
-    ListDataAutomationLibraryIngestionJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  DataAutomationLibraryIngestionJobSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListDataAutomationLibraryIngestionJobsRequest,
   output: ListDataAutomationLibraryIngestionJobsResponse,
   errors: [
@@ -3090,27 +2972,7 @@ export const listDataAutomationLibraryIngestionJobs: API.OperationMethod<
     items: "jobs",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListDataAutomationLibraryIngestionJobsRequest,
-  ListDataAutomationLibraryIngestionJobsResponse,
-  ListDataAutomationLibraryIngestionJobsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDataAutomationLibraryIngestionJobsRequest,
-  ) => stream.Stream<
-    ListDataAutomationLibraryIngestionJobsResponse,
-    ListDataAutomationLibraryIngestionJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDataAutomationLibraryIngestionJobsRequest,
-  ) => stream.Stream<
-    DataAutomationLibraryIngestionJobSummary,
-    ListDataAutomationLibraryIngestionJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListDataAutomationProjectsError =
   | AccessDeniedException
@@ -3122,27 +2984,13 @@ export type ListDataAutomationProjectsError =
 /**
  * Lists all existing Amazon Bedrock Data Automation Projects
  */
-export const listDataAutomationProjects: API.OperationMethod<
+export const listDataAutomationProjects: API.PaginatedOperationMethod<
   ListDataAutomationProjectsRequest,
   ListDataAutomationProjectsResponse,
   ListDataAutomationProjectsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDataAutomationProjectsRequest,
-  ) => stream.Stream<
-    ListDataAutomationProjectsResponse,
-    ListDataAutomationProjectsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDataAutomationProjectsRequest,
-  ) => stream.Stream<
-    DataAutomationProjectSummary,
-    ListDataAutomationProjectsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  DataAutomationProjectSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListDataAutomationProjectsRequest,
   output: ListDataAutomationProjectsResponse,
   errors: [
@@ -3161,27 +3009,7 @@ export const listDataAutomationProjects: API.OperationMethod<
     items: "projects",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListDataAutomationProjectsRequest,
-  ListDataAutomationProjectsResponse,
-  ListDataAutomationProjectsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDataAutomationProjectsRequest,
-  ) => stream.Stream<
-    ListDataAutomationProjectsResponse,
-    ListDataAutomationProjectsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDataAutomationProjectsRequest,
-  ) => stream.Stream<
-    DataAutomationProjectSummary,
-    ListDataAutomationProjectsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsForResourceError =
   | AccessDeniedException
@@ -3197,7 +3025,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceRequest,
   ListTagsForResourceResponse,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -3228,7 +3056,7 @@ export const tagResource: API.OperationMethod<
   TagResourceRequest,
   TagResourceResponse,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -3259,7 +3087,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceRequest,
   UntagResourceResponse,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -3290,7 +3118,7 @@ export const updateBlueprint: API.OperationMethod<
   UpdateBlueprintRequest,
   UpdateBlueprintResponse,
   UpdateBlueprintError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateBlueprintRequest,
   output: UpdateBlueprintResponse,
@@ -3322,7 +3150,7 @@ export const updateDataAutomationLibrary: API.OperationMethod<
   UpdateDataAutomationLibraryRequest,
   UpdateDataAutomationLibraryResponse,
   UpdateDataAutomationLibraryError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateDataAutomationLibraryRequest,
   output: UpdateDataAutomationLibraryResponse,
@@ -3355,7 +3183,7 @@ export const updateDataAutomationProject: API.OperationMethod<
   UpdateDataAutomationProjectRequest,
   UpdateDataAutomationProjectResponse,
   UpdateDataAutomationProjectError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateDataAutomationProjectRequest,
   output: UpdateDataAutomationProjectResponse,

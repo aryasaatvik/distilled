@@ -1,7 +1,6 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as redacted from "effect/Redacted";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -9,7 +8,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 import { SensitiveString } from "../sensitive.ts";
 const ns = T.XmlNamespace("http://apprunner.amazonaws.com/doc/2020-05-15/");
 const svc = T.AwsApiService({
@@ -91,7 +89,7 @@ const rules = T.EndpointResolver((p, _) => {
 export class InternalServiceErrorException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServiceErrorException>()(
     "InternalServiceErrorException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "InternalServiceError", httpResponseCode: 500 }),
       T.HttpError(500),
@@ -100,7 +98,7 @@ export class InternalServiceErrorException
 export class InvalidRequestException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidRequestException>()(
     "InvalidRequestException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "InvalidRequest", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -109,7 +107,7 @@ export class InvalidRequestException
 export class InvalidStateException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidStateException>()(
     "InvalidStateException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "InvalidState", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -118,7 +116,7 @@ export class InvalidStateException
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "ResourceNotfound", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -127,7 +125,7 @@ export class ResourceNotFoundException
 export class ServiceQuotaExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
     "ServiceQuotaExceededException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "ServiceQuotaExceeded", httpResponseCode: 402 }),
       T.HttpError(402),
@@ -2125,7 +2123,7 @@ export const associateCustomDomain: API.OperationMethod<
   AssociateCustomDomainRequest,
   AssociateCustomDomainResponse,
   AssociateCustomDomainError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AssociateCustomDomainRequest,
   output: AssociateCustomDomainResponse,
@@ -2162,7 +2160,7 @@ export const createAutoScalingConfiguration: API.OperationMethod<
   CreateAutoScalingConfigurationRequest,
   CreateAutoScalingConfigurationResponse,
   CreateAutoScalingConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateAutoScalingConfigurationRequest,
   output: CreateAutoScalingConfigurationResponse,
@@ -2193,7 +2191,7 @@ export const createConnection: API.OperationMethod<
   CreateConnectionRequest,
   CreateConnectionResponse,
   CreateConnectionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateConnectionRequest,
   output: CreateConnectionResponse,
@@ -2229,7 +2227,7 @@ export const createObservabilityConfiguration: API.OperationMethod<
   CreateObservabilityConfigurationRequest,
   CreateObservabilityConfigurationResponse,
   CreateObservabilityConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateObservabilityConfigurationRequest,
   output: CreateObservabilityConfigurationResponse,
@@ -2257,7 +2255,7 @@ export const createService: API.OperationMethod<
   CreateServiceRequest,
   CreateServiceResponse,
   CreateServiceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateServiceRequest,
   output: CreateServiceResponse,
@@ -2284,7 +2282,7 @@ export const createVpcConnector: API.OperationMethod<
   CreateVpcConnectorRequest,
   CreateVpcConnectorResponse,
   CreateVpcConnectorError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateVpcConnectorRequest,
   output: CreateVpcConnectorResponse,
@@ -2311,7 +2309,7 @@ export const createVpcIngressConnection: API.OperationMethod<
   CreateVpcIngressConnectionRequest,
   CreateVpcIngressConnectionResponse,
   CreateVpcIngressConnectionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateVpcIngressConnectionRequest,
   output: CreateVpcIngressConnectionResponse,
@@ -2340,7 +2338,7 @@ export const deleteAutoScalingConfiguration: API.OperationMethod<
   DeleteAutoScalingConfigurationRequest,
   DeleteAutoScalingConfigurationResponse,
   DeleteAutoScalingConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteAutoScalingConfigurationRequest,
   output: DeleteAutoScalingConfigurationResponse,
@@ -2367,7 +2365,7 @@ export const deleteConnection: API.OperationMethod<
   DeleteConnectionRequest,
   DeleteConnectionResponse,
   DeleteConnectionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteConnectionRequest,
   output: DeleteConnectionResponse,
@@ -2394,7 +2392,7 @@ export const deleteObservabilityConfiguration: API.OperationMethod<
   DeleteObservabilityConfigurationRequest,
   DeleteObservabilityConfigurationResponse,
   DeleteObservabilityConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteObservabilityConfigurationRequest,
   output: DeleteObservabilityConfigurationResponse,
@@ -2426,7 +2424,7 @@ export const deleteService: API.OperationMethod<
   DeleteServiceRequest,
   DeleteServiceResponse,
   DeleteServiceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteServiceRequest,
   output: DeleteServiceResponse,
@@ -2454,7 +2452,7 @@ export const deleteVpcConnector: API.OperationMethod<
   DeleteVpcConnectorRequest,
   DeleteVpcConnectorResponse,
   DeleteVpcConnectorError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteVpcConnectorRequest,
   output: DeleteVpcConnectorResponse,
@@ -2489,7 +2487,7 @@ export const deleteVpcIngressConnection: API.OperationMethod<
   DeleteVpcIngressConnectionRequest,
   DeleteVpcIngressConnectionResponse,
   DeleteVpcIngressConnectionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteVpcIngressConnectionRequest,
   output: DeleteVpcIngressConnectionResponse,
@@ -2516,7 +2514,7 @@ export const describeAutoScalingConfiguration: API.OperationMethod<
   DescribeAutoScalingConfigurationRequest,
   DescribeAutoScalingConfigurationResponse,
   DescribeAutoScalingConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeAutoScalingConfigurationRequest,
   output: DescribeAutoScalingConfigurationResponse,
@@ -2538,27 +2536,13 @@ export type DescribeCustomDomainsError =
 /**
  * Return a description of custom domain names that are associated with an App Runner service.
  */
-export const describeCustomDomains: API.OperationMethod<
+export const describeCustomDomains: API.PaginatedOperationMethod<
   DescribeCustomDomainsRequest,
   DescribeCustomDomainsResponse,
   DescribeCustomDomainsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeCustomDomainsRequest,
-  ) => stream.Stream<
-    DescribeCustomDomainsResponse,
-    DescribeCustomDomainsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeCustomDomainsRequest,
-  ) => stream.Stream<
-    unknown,
-    DescribeCustomDomainsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeCustomDomainsRequest,
   output: DescribeCustomDomainsResponse,
   errors: [
@@ -2574,27 +2558,7 @@ export const describeCustomDomains: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeCustomDomainsRequest,
-  DescribeCustomDomainsResponse,
-  DescribeCustomDomainsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeCustomDomainsRequest,
-  ) => stream.Stream<
-    DescribeCustomDomainsResponse,
-    DescribeCustomDomainsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeCustomDomainsRequest,
-  ) => stream.Stream<
-    unknown,
-    DescribeCustomDomainsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeObservabilityConfigurationError =
   | InternalServiceErrorException
@@ -2608,7 +2572,7 @@ export const describeObservabilityConfiguration: API.OperationMethod<
   DescribeObservabilityConfigurationRequest,
   DescribeObservabilityConfigurationResponse,
   DescribeObservabilityConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeObservabilityConfigurationRequest,
   output: DescribeObservabilityConfigurationResponse,
@@ -2634,7 +2598,7 @@ export const describeService: API.OperationMethod<
   DescribeServiceRequest,
   DescribeServiceResponse,
   DescribeServiceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeServiceRequest,
   output: DescribeServiceResponse,
@@ -2660,7 +2624,7 @@ export const describeVpcConnector: API.OperationMethod<
   DescribeVpcConnectorRequest,
   DescribeVpcConnectorResponse,
   DescribeVpcConnectorError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeVpcConnectorRequest,
   output: DescribeVpcConnectorResponse,
@@ -2686,7 +2650,7 @@ export const describeVpcIngressConnection: API.OperationMethod<
   DescribeVpcIngressConnectionRequest,
   DescribeVpcIngressConnectionResponse,
   DescribeVpcIngressConnectionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeVpcIngressConnectionRequest,
   output: DescribeVpcIngressConnectionResponse,
@@ -2717,7 +2681,7 @@ export const disassociateCustomDomain: API.OperationMethod<
   DisassociateCustomDomainRequest,
   DisassociateCustomDomainResponse,
   DisassociateCustomDomainError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DisassociateCustomDomainRequest,
   output: DisassociateCustomDomainResponse,
@@ -2744,27 +2708,13 @@ export type ListAutoScalingConfigurationsError =
  * To retrieve a full description of a particular configuration revision, call and provide one of
  * the ARNs returned by `ListAutoScalingConfigurations`.
  */
-export const listAutoScalingConfigurations: API.OperationMethod<
+export const listAutoScalingConfigurations: API.PaginatedOperationMethod<
   ListAutoScalingConfigurationsRequest,
   ListAutoScalingConfigurationsResponse,
   ListAutoScalingConfigurationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAutoScalingConfigurationsRequest,
-  ) => stream.Stream<
-    ListAutoScalingConfigurationsResponse,
-    ListAutoScalingConfigurationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAutoScalingConfigurationsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListAutoScalingConfigurationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListAutoScalingConfigurationsRequest,
   output: ListAutoScalingConfigurationsResponse,
   errors: [InternalServiceErrorException, InvalidRequestException],
@@ -2776,27 +2726,7 @@ export const listAutoScalingConfigurations: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListAutoScalingConfigurationsRequest,
-  ListAutoScalingConfigurationsResponse,
-  ListAutoScalingConfigurationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAutoScalingConfigurationsRequest,
-  ) => stream.Stream<
-    ListAutoScalingConfigurationsResponse,
-    ListAutoScalingConfigurationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAutoScalingConfigurationsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListAutoScalingConfigurationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListConnectionsError =
   | InternalServiceErrorException
@@ -2805,27 +2735,13 @@ export type ListConnectionsError =
 /**
  * Returns a list of App Runner connections that are associated with your Amazon Web Services account.
  */
-export const listConnections: API.OperationMethod<
+export const listConnections: API.PaginatedOperationMethod<
   ListConnectionsRequest,
   ListConnectionsResponse,
   ListConnectionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListConnectionsRequest,
-  ) => stream.Stream<
-    ListConnectionsResponse,
-    ListConnectionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListConnectionsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListConnectionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListConnectionsRequest,
   output: ListConnectionsResponse,
   errors: [InternalServiceErrorException, InvalidRequestException],
@@ -2837,27 +2753,7 @@ export const listConnections: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListConnectionsRequest,
-  ListConnectionsResponse,
-  ListConnectionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListConnectionsRequest,
-  ) => stream.Stream<
-    ListConnectionsResponse,
-    ListConnectionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListConnectionsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListConnectionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListObservabilityConfigurationsError =
   | InternalServiceErrorException
@@ -2871,27 +2767,13 @@ export type ListObservabilityConfigurationsError =
  * To retrieve a full description of a particular configuration revision, call and provide one
  * of the ARNs returned by `ListObservabilityConfigurations`.
  */
-export const listObservabilityConfigurations: API.OperationMethod<
+export const listObservabilityConfigurations: API.PaginatedOperationMethod<
   ListObservabilityConfigurationsRequest,
   ListObservabilityConfigurationsResponse,
   ListObservabilityConfigurationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListObservabilityConfigurationsRequest,
-  ) => stream.Stream<
-    ListObservabilityConfigurationsResponse,
-    ListObservabilityConfigurationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListObservabilityConfigurationsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListObservabilityConfigurationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListObservabilityConfigurationsRequest,
   output: ListObservabilityConfigurationsResponse,
   errors: [InternalServiceErrorException, InvalidRequestException],
@@ -2903,27 +2785,7 @@ export const listObservabilityConfigurations: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListObservabilityConfigurationsRequest,
-  ListObservabilityConfigurationsResponse,
-  ListObservabilityConfigurationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListObservabilityConfigurationsRequest,
-  ) => stream.Stream<
-    ListObservabilityConfigurationsResponse,
-    ListObservabilityConfigurationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListObservabilityConfigurationsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListObservabilityConfigurationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListOperationsError =
   | InternalServiceErrorException
@@ -2936,27 +2798,13 @@ export type ListOperationsError =
  * The resulting list of OperationSummary objects is sorted in reverse chronological order. The first object on the list represents the
  * last started operation.
  */
-export const listOperations: API.OperationMethod<
+export const listOperations: API.PaginatedOperationMethod<
   ListOperationsRequest,
   ListOperationsResponse,
   ListOperationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListOperationsRequest,
-  ) => stream.Stream<
-    ListOperationsResponse,
-    ListOperationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListOperationsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListOperationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListOperationsRequest,
   output: ListOperationsResponse,
   errors: [
@@ -2972,27 +2820,7 @@ export const listOperations: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListOperationsRequest,
-  ListOperationsResponse,
-  ListOperationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListOperationsRequest,
-  ) => stream.Stream<
-    ListOperationsResponse,
-    ListOperationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListOperationsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListOperationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListServicesError =
   | InternalServiceErrorException
@@ -3001,27 +2829,13 @@ export type ListServicesError =
 /**
  * Returns a list of running App Runner services in your Amazon Web Services account.
  */
-export const listServices: API.OperationMethod<
+export const listServices: API.PaginatedOperationMethod<
   ListServicesRequest,
   ListServicesResponse,
   ListServicesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListServicesRequest,
-  ) => stream.Stream<
-    ListServicesResponse,
-    ListServicesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListServicesRequest,
-  ) => stream.Stream<
-    unknown,
-    ListServicesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListServicesRequest,
   output: ListServicesResponse,
   errors: [InternalServiceErrorException, InvalidRequestException],
@@ -3033,27 +2847,7 @@ export const listServices: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListServicesRequest,
-  ListServicesResponse,
-  ListServicesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListServicesRequest,
-  ) => stream.Stream<
-    ListServicesResponse,
-    ListServicesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListServicesRequest,
-  ) => stream.Stream<
-    unknown,
-    ListServicesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListServicesForAutoScalingConfigurationError =
   | InternalServiceErrorException
@@ -3063,27 +2857,13 @@ export type ListServicesForAutoScalingConfigurationError =
 /**
  * Returns a list of the associated App Runner services using an auto scaling configuration.
  */
-export const listServicesForAutoScalingConfiguration: API.OperationMethod<
+export const listServicesForAutoScalingConfiguration: API.PaginatedOperationMethod<
   ListServicesForAutoScalingConfigurationRequest,
   ListServicesForAutoScalingConfigurationResponse,
   ListServicesForAutoScalingConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListServicesForAutoScalingConfigurationRequest,
-  ) => stream.Stream<
-    ListServicesForAutoScalingConfigurationResponse,
-    ListServicesForAutoScalingConfigurationError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListServicesForAutoScalingConfigurationRequest,
-  ) => stream.Stream<
-    unknown,
-    ListServicesForAutoScalingConfigurationError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListServicesForAutoScalingConfigurationRequest,
   output: ListServicesForAutoScalingConfigurationResponse,
   errors: [
@@ -3099,27 +2879,7 @@ export const listServicesForAutoScalingConfiguration: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListServicesForAutoScalingConfigurationRequest,
-  ListServicesForAutoScalingConfigurationResponse,
-  ListServicesForAutoScalingConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListServicesForAutoScalingConfigurationRequest,
-  ) => stream.Stream<
-    ListServicesForAutoScalingConfigurationResponse,
-    ListServicesForAutoScalingConfigurationError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListServicesForAutoScalingConfigurationRequest,
-  ) => stream.Stream<
-    unknown,
-    ListServicesForAutoScalingConfigurationError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsForResourceError =
   | InternalServiceErrorException
@@ -3134,7 +2894,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceRequest,
   ListTagsForResourceResponse,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -3156,27 +2916,13 @@ export type ListVpcConnectorsError =
 /**
  * Returns a list of App Runner VPC connectors in your Amazon Web Services account.
  */
-export const listVpcConnectors: API.OperationMethod<
+export const listVpcConnectors: API.PaginatedOperationMethod<
   ListVpcConnectorsRequest,
   ListVpcConnectorsResponse,
   ListVpcConnectorsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListVpcConnectorsRequest,
-  ) => stream.Stream<
-    ListVpcConnectorsResponse,
-    ListVpcConnectorsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListVpcConnectorsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListVpcConnectorsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListVpcConnectorsRequest,
   output: ListVpcConnectorsResponse,
   errors: [InternalServiceErrorException, InvalidRequestException],
@@ -3188,27 +2934,7 @@ export const listVpcConnectors: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListVpcConnectorsRequest,
-  ListVpcConnectorsResponse,
-  ListVpcConnectorsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListVpcConnectorsRequest,
-  ) => stream.Stream<
-    ListVpcConnectorsResponse,
-    ListVpcConnectorsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListVpcConnectorsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListVpcConnectorsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListVpcIngressConnectionsError =
   | InternalServiceErrorException
@@ -3217,27 +2943,13 @@ export type ListVpcIngressConnectionsError =
 /**
  * Return a list of App Runner VPC Ingress Connections in your Amazon Web Services account.
  */
-export const listVpcIngressConnections: API.OperationMethod<
+export const listVpcIngressConnections: API.PaginatedOperationMethod<
   ListVpcIngressConnectionsRequest,
   ListVpcIngressConnectionsResponse,
   ListVpcIngressConnectionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListVpcIngressConnectionsRequest,
-  ) => stream.Stream<
-    ListVpcIngressConnectionsResponse,
-    ListVpcIngressConnectionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListVpcIngressConnectionsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListVpcIngressConnectionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListVpcIngressConnectionsRequest,
   output: ListVpcIngressConnectionsResponse,
   errors: [InternalServiceErrorException, InvalidRequestException],
@@ -3249,27 +2961,7 @@ export const listVpcIngressConnections: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListVpcIngressConnectionsRequest,
-  ListVpcIngressConnectionsResponse,
-  ListVpcIngressConnectionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListVpcIngressConnectionsRequest,
-  ) => stream.Stream<
-    ListVpcIngressConnectionsResponse,
-    ListVpcIngressConnectionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListVpcIngressConnectionsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListVpcIngressConnectionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type PauseServiceError =
   | InternalServiceErrorException
@@ -3288,7 +2980,7 @@ export const pauseService: API.OperationMethod<
   PauseServiceRequest,
   PauseServiceResponse,
   PauseServiceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PauseServiceRequest,
   output: PauseServiceResponse,
@@ -3319,7 +3011,7 @@ export const resumeService: API.OperationMethod<
   ResumeServiceRequest,
   ResumeServiceResponse,
   ResumeServiceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ResumeServiceRequest,
   output: ResumeServiceResponse,
@@ -3353,7 +3045,7 @@ export const startDeployment: API.OperationMethod<
   StartDeploymentRequest,
   StartDeploymentResponse,
   StartDeploymentError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartDeploymentRequest,
   output: StartDeploymentResponse,
@@ -3380,7 +3072,7 @@ export const tagResource: API.OperationMethod<
   TagResourceRequest,
   TagResourceResponse,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -3408,7 +3100,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceRequest,
   UntagResourceResponse,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -3436,7 +3128,7 @@ export const updateDefaultAutoScalingConfiguration: API.OperationMethod<
   UpdateDefaultAutoScalingConfigurationRequest,
   UpdateDefaultAutoScalingConfigurationResponse,
   UpdateDefaultAutoScalingConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateDefaultAutoScalingConfigurationRequest,
   output: UpdateDefaultAutoScalingConfigurationResponse,
@@ -3470,7 +3162,7 @@ export const updateService: API.OperationMethod<
   UpdateServiceRequest,
   UpdateServiceResponse,
   UpdateServiceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateServiceRequest,
   output: UpdateServiceResponse,
@@ -3504,7 +3196,7 @@ export const updateVpcIngressConnection: API.OperationMethod<
   UpdateVpcIngressConnectionRequest,
   UpdateVpcIngressConnectionResponse,
   UpdateVpcIngressConnectionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateVpcIngressConnectionRequest,
   output: UpdateVpcIngressConnectionResponse,

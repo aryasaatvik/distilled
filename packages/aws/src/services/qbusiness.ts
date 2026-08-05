@@ -9,7 +9,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 import { SensitiveString } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "QBusiness",
@@ -77,62 +76,74 @@ const rules = T.EndpointResolver((p, _) => {
 export class AccessDeniedException
   extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
     "AccessDeniedException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(403),
   ).pipe(C.withAuthError) {}
 export class ConflictException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
     "ConflictException",
-    { message: S.String, resourceId: S.String, resourceType: S.String },
+    {
+      message: S.String.pipe(T.ErrorMessage()),
+      resourceId: S.String,
+      resourceType: S.String,
+    },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class ExternalResourceException
   extends /*@__PURE__*/ S.TaggedErrorClass<ExternalResourceException>()(
     "ExternalResourceException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(424),
   ) {}
 export class InternalServerException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
     "InternalServerException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(500),
   ).pipe(C.withServerError) {}
 export class LicenseNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<LicenseNotFoundException>()(
     "LicenseNotFoundException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class MediaTooLargeException
   extends /*@__PURE__*/ S.TaggedErrorClass<MediaTooLargeException>()(
     "MediaTooLargeException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { message: S.String, resourceId: S.String, resourceType: S.String },
+    {
+      message: S.String.pipe(T.ErrorMessage()),
+      resourceId: S.String,
+      resourceType: S.String,
+    },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class ServiceQuotaExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
     "ServiceQuotaExceededException",
-    { message: S.String, resourceId: S.String, resourceType: S.String },
+    {
+      message: S.String.pipe(T.ErrorMessage()),
+      resourceId: S.String,
+      resourceType: S.String,
+    },
     T.HttpError(402),
   ).pipe(C.withQuotaError) {}
 export class ThrottlingException
   extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
     "ThrottlingException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(429),
   ).pipe(C.withThrottlingError) {}
 export class ValidationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
     "ValidationException",
     {
-      message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       reason: S.suspend(() => ValidationExceptionReason).annotate({
         identifier: "ValidationExceptionReason",
       }),
@@ -6213,7 +6224,7 @@ export const associatePermission: API.OperationMethod<
   AssociatePermissionRequest,
   AssociatePermissionResponse,
   AssociatePermissionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AssociatePermissionRequest,
   output: AssociatePermissionResponse,
@@ -6248,7 +6259,7 @@ export const batchDeleteDocument: API.OperationMethod<
   BatchDeleteDocumentRequest,
   BatchDeleteDocumentResponse,
   BatchDeleteDocumentError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchDeleteDocumentRequest,
   output: BatchDeleteDocumentResponse,
@@ -6291,7 +6302,7 @@ export const batchPutDocument: API.OperationMethod<
   BatchPutDocumentRequest,
   BatchPutDocumentResponse,
   BatchPutDocumentError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchPutDocumentRequest,
   output: BatchPutDocumentResponse,
@@ -6323,7 +6334,7 @@ export const cancelSubscription: API.OperationMethod<
   CancelSubscriptionRequest,
   CancelSubscriptionResponse,
   CancelSubscriptionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CancelSubscriptionRequest,
   output: CancelSubscriptionResponse,
@@ -6356,7 +6367,7 @@ export const chat: API.OperationMethod<
   ChatInput,
   ChatOutput,
   ChatError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ChatInput,
   output: ChatOutput,
@@ -6392,7 +6403,7 @@ export const chatSync: API.OperationMethod<
   ChatSyncInput,
   ChatSyncOutput,
   ChatSyncError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ChatSyncInput,
   output: ChatSyncOutput,
@@ -6425,7 +6436,7 @@ export const checkDocumentAccess: API.OperationMethod<
   CheckDocumentAccessRequest,
   CheckDocumentAccessResponse,
   CheckDocumentAccessError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CheckDocumentAccessRequest,
   output: CheckDocumentAccessResponse,
@@ -6456,7 +6467,7 @@ export const createAnonymousWebExperienceUrl: API.OperationMethod<
   CreateAnonymousWebExperienceUrlRequest,
   CreateAnonymousWebExperienceUrlResponse,
   CreateAnonymousWebExperienceUrlError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateAnonymousWebExperienceUrlRequest,
   output: CreateAnonymousWebExperienceUrlResponse,
@@ -6495,7 +6506,7 @@ export const createApplication: API.OperationMethod<
   CreateApplicationRequest,
   CreateApplicationResponse,
   CreateApplicationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateApplicationRequest,
   output: CreateApplicationResponse,
@@ -6529,7 +6540,7 @@ export const createChatResponseConfiguration: API.OperationMethod<
   CreateChatResponseConfigurationRequest,
   CreateChatResponseConfigurationResponse,
   CreateChatResponseConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateChatResponseConfigurationRequest,
   output: CreateChatResponseConfigurationResponse,
@@ -6563,7 +6574,7 @@ export const createDataAccessor: API.OperationMethod<
   CreateDataAccessorRequest,
   CreateDataAccessorResponse,
   CreateDataAccessorError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateDataAccessorRequest,
   output: CreateDataAccessorResponse,
@@ -6599,7 +6610,7 @@ export const createDataSource: API.OperationMethod<
   CreateDataSourceRequest,
   CreateDataSourceResponse,
   CreateDataSourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateDataSourceRequest,
   output: CreateDataSourceResponse,
@@ -6637,7 +6648,7 @@ export const createIndex: API.OperationMethod<
   CreateIndexRequest,
   CreateIndexResponse,
   CreateIndexError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateIndexRequest,
   output: CreateIndexResponse,
@@ -6671,7 +6682,7 @@ export const createPlugin: API.OperationMethod<
   CreatePluginRequest,
   CreatePluginResponse,
   CreatePluginError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreatePluginRequest,
   output: CreatePluginResponse,
@@ -6705,7 +6716,7 @@ export const createRetriever: API.OperationMethod<
   CreateRetrieverRequest,
   CreateRetrieverResponse,
   CreateRetrieverError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateRetrieverRequest,
   output: CreateRetrieverResponse,
@@ -6742,7 +6753,7 @@ export const createSubscription: API.OperationMethod<
   CreateSubscriptionRequest,
   CreateSubscriptionResponse,
   CreateSubscriptionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateSubscriptionRequest,
   output: CreateSubscriptionResponse,
@@ -6775,7 +6786,7 @@ export const createUser: API.OperationMethod<
   CreateUserRequest,
   CreateUserResponse,
   CreateUserError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateUserRequest,
   output: CreateUserResponse,
@@ -6809,7 +6820,7 @@ export const createWebExperience: API.OperationMethod<
   CreateWebExperienceRequest,
   CreateWebExperienceResponse,
   CreateWebExperienceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateWebExperienceRequest,
   output: CreateWebExperienceResponse,
@@ -6842,7 +6853,7 @@ export const deleteApplication: API.OperationMethod<
   DeleteApplicationRequest,
   DeleteApplicationResponse,
   DeleteApplicationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteApplicationRequest,
   output: DeleteApplicationResponse,
@@ -6874,7 +6885,7 @@ export const deleteAttachment: API.OperationMethod<
   DeleteAttachmentRequest,
   DeleteAttachmentResponse,
   DeleteAttachmentError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteAttachmentRequest,
   output: DeleteAttachmentResponse,
@@ -6905,7 +6916,7 @@ export const deleteChatControlsConfiguration: API.OperationMethod<
   DeleteChatControlsConfigurationRequest,
   DeleteChatControlsConfigurationResponse,
   DeleteChatControlsConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteChatControlsConfigurationRequest,
   output: DeleteChatControlsConfigurationResponse,
@@ -6936,7 +6947,7 @@ export const deleteChatResponseConfiguration: API.OperationMethod<
   DeleteChatResponseConfigurationRequest,
   DeleteChatResponseConfigurationResponse,
   DeleteChatResponseConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteChatResponseConfigurationRequest,
   output: DeleteChatResponseConfigurationResponse,
@@ -6969,7 +6980,7 @@ export const deleteConversation: API.OperationMethod<
   DeleteConversationRequest,
   DeleteConversationResponse,
   DeleteConversationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteConversationRequest,
   output: DeleteConversationResponse,
@@ -7002,7 +7013,7 @@ export const deleteDataAccessor: API.OperationMethod<
   DeleteDataAccessorRequest,
   DeleteDataAccessorResponse,
   DeleteDataAccessorError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteDataAccessorRequest,
   output: DeleteDataAccessorResponse,
@@ -7034,7 +7045,7 @@ export const deleteDataSource: API.OperationMethod<
   DeleteDataSourceRequest,
   DeleteDataSourceResponse,
   DeleteDataSourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteDataSourceRequest,
   output: DeleteDataSourceResponse,
@@ -7068,7 +7079,7 @@ export const deleteGroup: API.OperationMethod<
   DeleteGroupRequest,
   DeleteGroupResponse,
   DeleteGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteGroupRequest,
   output: DeleteGroupResponse,
@@ -7100,7 +7111,7 @@ export const deleteIndex: API.OperationMethod<
   DeleteIndexRequest,
   DeleteIndexResponse,
   DeleteIndexError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteIndexRequest,
   output: DeleteIndexResponse,
@@ -7132,7 +7143,7 @@ export const deletePlugin: API.OperationMethod<
   DeletePluginRequest,
   DeletePluginResponse,
   DeletePluginError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeletePluginRequest,
   output: DeletePluginResponse,
@@ -7164,7 +7175,7 @@ export const deleteRetriever: API.OperationMethod<
   DeleteRetrieverRequest,
   DeleteRetrieverResponse,
   DeleteRetrieverError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteRetrieverRequest,
   output: DeleteRetrieverResponse,
@@ -7196,7 +7207,7 @@ export const deleteUser: API.OperationMethod<
   DeleteUserRequest,
   DeleteUserResponse,
   DeleteUserError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteUserRequest,
   output: DeleteUserResponse,
@@ -7228,7 +7239,7 @@ export const deleteWebExperience: API.OperationMethod<
   DeleteWebExperienceRequest,
   DeleteWebExperienceResponse,
   DeleteWebExperienceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteWebExperienceRequest,
   output: DeleteWebExperienceResponse,
@@ -7260,7 +7271,7 @@ export const disassociatePermission: API.OperationMethod<
   DisassociatePermissionRequest,
   DisassociatePermissionResponse,
   DisassociatePermissionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DisassociatePermissionRequest,
   output: DisassociatePermissionResponse,
@@ -7291,7 +7302,7 @@ export const getApplication: API.OperationMethod<
   GetApplicationRequest,
   GetApplicationResponse,
   GetApplicationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetApplicationRequest,
   output: GetApplicationResponse,
@@ -7317,27 +7328,13 @@ export type GetChatControlsConfigurationError =
 /**
  * Gets information about chat controls configured for an existing Amazon Q Business application.
  */
-export const getChatControlsConfiguration: API.OperationMethod<
+export const getChatControlsConfiguration: API.PaginatedOperationMethod<
   GetChatControlsConfigurationRequest,
   GetChatControlsConfigurationResponse,
   GetChatControlsConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetChatControlsConfigurationRequest,
-  ) => stream.Stream<
-    GetChatControlsConfigurationResponse,
-    GetChatControlsConfigurationError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetChatControlsConfigurationRequest,
-  ) => stream.Stream<
-    TopicConfiguration,
-    GetChatControlsConfigurationError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  TopicConfiguration
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetChatControlsConfigurationRequest,
   output: GetChatControlsConfigurationResponse,
   errors: [
@@ -7356,27 +7353,7 @@ export const getChatControlsConfiguration: API.OperationMethod<
     items: "topicConfigurations",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetChatControlsConfigurationRequest,
-  GetChatControlsConfigurationResponse,
-  GetChatControlsConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetChatControlsConfigurationRequest,
-  ) => stream.Stream<
-    GetChatControlsConfigurationResponse,
-    GetChatControlsConfigurationError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetChatControlsConfigurationRequest,
-  ) => stream.Stream<
-    TopicConfiguration,
-    GetChatControlsConfigurationError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetChatResponseConfigurationError =
   | AccessDeniedException
@@ -7392,7 +7369,7 @@ export const getChatResponseConfiguration: API.OperationMethod<
   GetChatResponseConfigurationRequest,
   GetChatResponseConfigurationResponse,
   GetChatResponseConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetChatResponseConfigurationRequest,
   output: GetChatResponseConfigurationResponse,
@@ -7422,7 +7399,7 @@ export const getDataAccessor: API.OperationMethod<
   GetDataAccessorRequest,
   GetDataAccessorResponse,
   GetDataAccessorError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetDataAccessorRequest,
   output: GetDataAccessorResponse,
@@ -7452,7 +7429,7 @@ export const getDataSource: API.OperationMethod<
   GetDataSourceRequest,
   GetDataSourceResponse,
   GetDataSourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetDataSourceRequest,
   output: GetDataSourceResponse,
@@ -7482,7 +7459,7 @@ export const getDocumentContent: API.OperationMethod<
   GetDocumentContentRequest,
   GetDocumentContentResponse,
   GetDocumentContentError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetDocumentContentRequest,
   output: GetDocumentContentResponse,
@@ -7513,7 +7490,7 @@ export const getGroup: API.OperationMethod<
   GetGroupRequest,
   GetGroupResponse,
   GetGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetGroupRequest,
   output: GetGroupResponse,
@@ -7544,7 +7521,7 @@ export const getIndex: API.OperationMethod<
   GetIndexRequest,
   GetIndexResponse,
   GetIndexError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetIndexRequest,
   output: GetIndexResponse,
@@ -7578,7 +7555,7 @@ export const getMedia: API.OperationMethod<
   GetMediaRequest,
   GetMediaResponse,
   GetMediaError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetMediaRequest,
   output: GetMediaResponse,
@@ -7610,7 +7587,7 @@ export const getPlugin: API.OperationMethod<
   GetPluginRequest,
   GetPluginResponse,
   GetPluginError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetPluginRequest,
   output: GetPluginResponse,
@@ -7640,7 +7617,7 @@ export const getPolicy: API.OperationMethod<
   GetPolicyRequest,
   GetPolicyResponse,
   GetPolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetPolicyRequest,
   output: GetPolicyResponse,
@@ -7670,7 +7647,7 @@ export const getRetriever: API.OperationMethod<
   GetRetrieverRequest,
   GetRetrieverResponse,
   GetRetrieverError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetRetrieverRequest,
   output: GetRetrieverResponse,
@@ -7701,7 +7678,7 @@ export const getUser: API.OperationMethod<
   GetUserRequest,
   GetUserResponse,
   GetUserError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetUserRequest,
   output: GetUserResponse,
@@ -7732,7 +7709,7 @@ export const getWebExperience: API.OperationMethod<
   GetWebExperienceRequest,
   GetWebExperienceResponse,
   GetWebExperienceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetWebExperienceRequest,
   output: GetWebExperienceResponse,
@@ -7759,27 +7736,13 @@ export type ListApplicationsError =
  *
  * Amazon Q Business applications may securely transmit data for processing across Amazon Web Services Regions within your geography. For more information, see Cross region inference in Amazon Q Business.
  */
-export const listApplications: API.OperationMethod<
+export const listApplications: API.PaginatedOperationMethod<
   ListApplicationsRequest,
   ListApplicationsResponse,
   ListApplicationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListApplicationsRequest,
-  ) => stream.Stream<
-    ListApplicationsResponse,
-    ListApplicationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListApplicationsRequest,
-  ) => stream.Stream<
-    Application,
-    ListApplicationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Application
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListApplicationsRequest,
   output: ListApplicationsResponse,
   errors: [
@@ -7797,27 +7760,7 @@ export const listApplications: API.OperationMethod<
     items: "applications",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListApplicationsRequest,
-  ListApplicationsResponse,
-  ListApplicationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListApplicationsRequest,
-  ) => stream.Stream<
-    ListApplicationsResponse,
-    ListApplicationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListApplicationsRequest,
-  ) => stream.Stream<
-    Application,
-    ListApplicationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListAttachmentsError =
   | AccessDeniedException
@@ -7830,27 +7773,13 @@ export type ListAttachmentsError =
 /**
  * Gets a list of attachments associated with an Amazon Q Business web experience or a list of attachements associated with a specific Amazon Q Business conversation.
  */
-export const listAttachments: API.OperationMethod<
+export const listAttachments: API.PaginatedOperationMethod<
   ListAttachmentsRequest,
   ListAttachmentsResponse,
   ListAttachmentsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAttachmentsRequest,
-  ) => stream.Stream<
-    ListAttachmentsResponse,
-    ListAttachmentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAttachmentsRequest,
-  ) => stream.Stream<
-    Attachment,
-    ListAttachmentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Attachment
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListAttachmentsRequest,
   output: ListAttachmentsResponse,
   errors: [
@@ -7870,27 +7799,7 @@ export const listAttachments: API.OperationMethod<
     items: "attachments",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListAttachmentsRequest,
-  ListAttachmentsResponse,
-  ListAttachmentsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAttachmentsRequest,
-  ) => stream.Stream<
-    ListAttachmentsResponse,
-    ListAttachmentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAttachmentsRequest,
-  ) => stream.Stream<
-    Attachment,
-    ListAttachmentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListChatResponseConfigurationsError =
   | AccessDeniedException
@@ -7902,27 +7811,13 @@ export type ListChatResponseConfigurationsError =
 /**
  * Retrieves a list of all chat response configurations available in a specified Amazon Q Business application. This operation returns summary information about each configuration to help administrators manage and select appropriate response settings.
  */
-export const listChatResponseConfigurations: API.OperationMethod<
+export const listChatResponseConfigurations: API.PaginatedOperationMethod<
   ListChatResponseConfigurationsRequest,
   ListChatResponseConfigurationsResponse,
   ListChatResponseConfigurationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListChatResponseConfigurationsRequest,
-  ) => stream.Stream<
-    ListChatResponseConfigurationsResponse,
-    ListChatResponseConfigurationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListChatResponseConfigurationsRequest,
-  ) => stream.Stream<
-    ChatResponseConfiguration,
-    ListChatResponseConfigurationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ChatResponseConfiguration
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListChatResponseConfigurationsRequest,
   output: ListChatResponseConfigurationsResponse,
   errors: [
@@ -7941,27 +7836,7 @@ export const listChatResponseConfigurations: API.OperationMethod<
     items: "chatResponseConfigurations",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListChatResponseConfigurationsRequest,
-  ListChatResponseConfigurationsResponse,
-  ListChatResponseConfigurationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListChatResponseConfigurationsRequest,
-  ) => stream.Stream<
-    ListChatResponseConfigurationsResponse,
-    ListChatResponseConfigurationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListChatResponseConfigurationsRequest,
-  ) => stream.Stream<
-    ChatResponseConfiguration,
-    ListChatResponseConfigurationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListConversationsError =
   | AccessDeniedException
@@ -7974,27 +7849,13 @@ export type ListConversationsError =
 /**
  * Lists one or more Amazon Q Business conversations.
  */
-export const listConversations: API.OperationMethod<
+export const listConversations: API.PaginatedOperationMethod<
   ListConversationsRequest,
   ListConversationsResponse,
   ListConversationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListConversationsRequest,
-  ) => stream.Stream<
-    ListConversationsResponse,
-    ListConversationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListConversationsRequest,
-  ) => stream.Stream<
-    Conversation,
-    ListConversationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Conversation
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListConversationsRequest,
   output: ListConversationsResponse,
   errors: [
@@ -8014,27 +7875,7 @@ export const listConversations: API.OperationMethod<
     items: "conversations",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListConversationsRequest,
-  ListConversationsResponse,
-  ListConversationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListConversationsRequest,
-  ) => stream.Stream<
-    ListConversationsResponse,
-    ListConversationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListConversationsRequest,
-  ) => stream.Stream<
-    Conversation,
-    ListConversationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListDataAccessorsError =
   | AccessDeniedException
@@ -8046,27 +7887,13 @@ export type ListDataAccessorsError =
 /**
  * Lists the data accessors for a Amazon Q Business application. This operation returns a paginated list of data accessor summaries, including the friendly name, unique identifier, ARN, associated IAM role, and creation/update timestamps for each data accessor.
  */
-export const listDataAccessors: API.OperationMethod<
+export const listDataAccessors: API.PaginatedOperationMethod<
   ListDataAccessorsRequest,
   ListDataAccessorsResponse,
   ListDataAccessorsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDataAccessorsRequest,
-  ) => stream.Stream<
-    ListDataAccessorsResponse,
-    ListDataAccessorsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDataAccessorsRequest,
-  ) => stream.Stream<
-    DataAccessor,
-    ListDataAccessorsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  DataAccessor
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListDataAccessorsRequest,
   output: ListDataAccessorsResponse,
   errors: [
@@ -8085,27 +7912,7 @@ export const listDataAccessors: API.OperationMethod<
     items: "dataAccessors",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListDataAccessorsRequest,
-  ListDataAccessorsResponse,
-  ListDataAccessorsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDataAccessorsRequest,
-  ) => stream.Stream<
-    ListDataAccessorsResponse,
-    ListDataAccessorsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDataAccessorsRequest,
-  ) => stream.Stream<
-    DataAccessor,
-    ListDataAccessorsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListDataSourcesError =
   | AccessDeniedException
@@ -8117,27 +7924,13 @@ export type ListDataSourcesError =
 /**
  * Lists the Amazon Q Business data source connectors that you have created.
  */
-export const listDataSources: API.OperationMethod<
+export const listDataSources: API.PaginatedOperationMethod<
   ListDataSourcesRequest,
   ListDataSourcesResponse,
   ListDataSourcesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDataSourcesRequest,
-  ) => stream.Stream<
-    ListDataSourcesResponse,
-    ListDataSourcesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDataSourcesRequest,
-  ) => stream.Stream<
-    DataSource,
-    ListDataSourcesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  DataSource
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListDataSourcesRequest,
   output: ListDataSourcesResponse,
   errors: [
@@ -8156,27 +7949,7 @@ export const listDataSources: API.OperationMethod<
     items: "dataSources",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListDataSourcesRequest,
-  ListDataSourcesResponse,
-  ListDataSourcesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDataSourcesRequest,
-  ) => stream.Stream<
-    ListDataSourcesResponse,
-    ListDataSourcesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDataSourcesRequest,
-  ) => stream.Stream<
-    DataSource,
-    ListDataSourcesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListDataSourceSyncJobsError =
   | AccessDeniedException
@@ -8189,27 +7962,13 @@ export type ListDataSourceSyncJobsError =
 /**
  * Get information about an Amazon Q Business data source connector synchronization.
  */
-export const listDataSourceSyncJobs: API.OperationMethod<
+export const listDataSourceSyncJobs: API.PaginatedOperationMethod<
   ListDataSourceSyncJobsRequest,
   ListDataSourceSyncJobsResponse,
   ListDataSourceSyncJobsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDataSourceSyncJobsRequest,
-  ) => stream.Stream<
-    ListDataSourceSyncJobsResponse,
-    ListDataSourceSyncJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDataSourceSyncJobsRequest,
-  ) => stream.Stream<
-    DataSourceSyncJob,
-    ListDataSourceSyncJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  DataSourceSyncJob
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListDataSourceSyncJobsRequest,
   output: ListDataSourceSyncJobsResponse,
   errors: [
@@ -8229,27 +7988,7 @@ export const listDataSourceSyncJobs: API.OperationMethod<
     items: "history",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListDataSourceSyncJobsRequest,
-  ListDataSourceSyncJobsResponse,
-  ListDataSourceSyncJobsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDataSourceSyncJobsRequest,
-  ) => stream.Stream<
-    ListDataSourceSyncJobsResponse,
-    ListDataSourceSyncJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDataSourceSyncJobsRequest,
-  ) => stream.Stream<
-    DataSourceSyncJob,
-    ListDataSourceSyncJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListDocumentsError =
   | AccessDeniedException
@@ -8261,27 +8000,13 @@ export type ListDocumentsError =
 /**
  * A list of documents attached to an index.
  */
-export const listDocuments: API.OperationMethod<
+export const listDocuments: API.PaginatedOperationMethod<
   ListDocumentsRequest,
   ListDocumentsResponse,
   ListDocumentsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDocumentsRequest,
-  ) => stream.Stream<
-    ListDocumentsResponse,
-    ListDocumentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDocumentsRequest,
-  ) => stream.Stream<
-    DocumentDetails,
-    ListDocumentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  DocumentDetails
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListDocumentsRequest,
   output: ListDocumentsResponse,
   errors: [
@@ -8300,27 +8025,7 @@ export const listDocuments: API.OperationMethod<
     items: "documentDetailList",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListDocumentsRequest,
-  ListDocumentsResponse,
-  ListDocumentsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDocumentsRequest,
-  ) => stream.Stream<
-    ListDocumentsResponse,
-    ListDocumentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDocumentsRequest,
-  ) => stream.Stream<
-    DocumentDetails,
-    ListDocumentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListGroupsError =
   | AccessDeniedException
@@ -8333,27 +8038,13 @@ export type ListGroupsError =
 /**
  * Provides a list of groups that are mapped to users.
  */
-export const listGroups: API.OperationMethod<
+export const listGroups: API.PaginatedOperationMethod<
   ListGroupsRequest,
   ListGroupsResponse,
   ListGroupsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListGroupsRequest,
-  ) => stream.Stream<
-    ListGroupsResponse,
-    ListGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListGroupsRequest,
-  ) => stream.Stream<
-    GroupSummary,
-    ListGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  GroupSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListGroupsRequest,
   output: ListGroupsResponse,
   errors: [
@@ -8373,27 +8064,7 @@ export const listGroups: API.OperationMethod<
     items: "items",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListGroupsRequest,
-  ListGroupsResponse,
-  ListGroupsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListGroupsRequest,
-  ) => stream.Stream<
-    ListGroupsResponse,
-    ListGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListGroupsRequest,
-  ) => stream.Stream<
-    GroupSummary,
-    ListGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListIndicesError =
   | AccessDeniedException
@@ -8405,27 +8076,13 @@ export type ListIndicesError =
 /**
  * Lists the Amazon Q Business indices you have created.
  */
-export const listIndices: API.OperationMethod<
+export const listIndices: API.PaginatedOperationMethod<
   ListIndicesRequest,
   ListIndicesResponse,
   ListIndicesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListIndicesRequest,
-  ) => stream.Stream<
-    ListIndicesResponse,
-    ListIndicesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListIndicesRequest,
-  ) => stream.Stream<
-    Index,
-    ListIndicesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Index
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListIndicesRequest,
   output: ListIndicesResponse,
   errors: [
@@ -8444,27 +8101,7 @@ export const listIndices: API.OperationMethod<
     items: "indices",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListIndicesRequest,
-  ListIndicesResponse,
-  ListIndicesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListIndicesRequest,
-  ) => stream.Stream<
-    ListIndicesResponse,
-    ListIndicesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListIndicesRequest,
-  ) => stream.Stream<
-    Index,
-    ListIndicesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListMessagesError =
   | AccessDeniedException
@@ -8477,27 +8114,13 @@ export type ListMessagesError =
 /**
  * Gets a list of messages associated with an Amazon Q Business web experience.
  */
-export const listMessages: API.OperationMethod<
+export const listMessages: API.PaginatedOperationMethod<
   ListMessagesRequest,
   ListMessagesResponse,
   ListMessagesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListMessagesRequest,
-  ) => stream.Stream<
-    ListMessagesResponse,
-    ListMessagesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListMessagesRequest,
-  ) => stream.Stream<
-    Message,
-    ListMessagesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Message
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListMessagesRequest,
   output: ListMessagesResponse,
   errors: [
@@ -8517,27 +8140,7 @@ export const listMessages: API.OperationMethod<
     items: "messages",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListMessagesRequest,
-  ListMessagesResponse,
-  ListMessagesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListMessagesRequest,
-  ) => stream.Stream<
-    ListMessagesResponse,
-    ListMessagesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListMessagesRequest,
-  ) => stream.Stream<
-    Message,
-    ListMessagesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListPluginActionsError =
   | AccessDeniedException
@@ -8549,27 +8152,13 @@ export type ListPluginActionsError =
 /**
  * Lists configured Amazon Q Business actions for a specific plugin in an Amazon Q Business application.
  */
-export const listPluginActions: API.OperationMethod<
+export const listPluginActions: API.PaginatedOperationMethod<
   ListPluginActionsRequest,
   ListPluginActionsResponse,
   ListPluginActionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPluginActionsRequest,
-  ) => stream.Stream<
-    ListPluginActionsResponse,
-    ListPluginActionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPluginActionsRequest,
-  ) => stream.Stream<
-    ActionSummary,
-    ListPluginActionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ActionSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListPluginActionsRequest,
   output: ListPluginActionsResponse,
   errors: [
@@ -8588,27 +8177,7 @@ export const listPluginActions: API.OperationMethod<
     items: "items",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListPluginActionsRequest,
-  ListPluginActionsResponse,
-  ListPluginActionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPluginActionsRequest,
-  ) => stream.Stream<
-    ListPluginActionsResponse,
-    ListPluginActionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPluginActionsRequest,
-  ) => stream.Stream<
-    ActionSummary,
-    ListPluginActionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListPluginsError =
   | AccessDeniedException
@@ -8620,27 +8189,13 @@ export type ListPluginsError =
 /**
  * Lists configured Amazon Q Business plugins.
  */
-export const listPlugins: API.OperationMethod<
+export const listPlugins: API.PaginatedOperationMethod<
   ListPluginsRequest,
   ListPluginsResponse,
   ListPluginsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPluginsRequest,
-  ) => stream.Stream<
-    ListPluginsResponse,
-    ListPluginsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPluginsRequest,
-  ) => stream.Stream<
-    Plugin,
-    ListPluginsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Plugin
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListPluginsRequest,
   output: ListPluginsResponse,
   errors: [
@@ -8659,27 +8214,7 @@ export const listPlugins: API.OperationMethod<
     items: "plugins",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListPluginsRequest,
-  ListPluginsResponse,
-  ListPluginsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPluginsRequest,
-  ) => stream.Stream<
-    ListPluginsResponse,
-    ListPluginsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPluginsRequest,
-  ) => stream.Stream<
-    Plugin,
-    ListPluginsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListPluginTypeActionsError =
   | AccessDeniedException
@@ -8690,27 +8225,13 @@ export type ListPluginTypeActionsError =
 /**
  * Lists configured Amazon Q Business actions for any plugin type—both built-in and custom.
  */
-export const listPluginTypeActions: API.OperationMethod<
+export const listPluginTypeActions: API.PaginatedOperationMethod<
   ListPluginTypeActionsRequest,
   ListPluginTypeActionsResponse,
   ListPluginTypeActionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPluginTypeActionsRequest,
-  ) => stream.Stream<
-    ListPluginTypeActionsResponse,
-    ListPluginTypeActionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPluginTypeActionsRequest,
-  ) => stream.Stream<
-    ActionSummary,
-    ListPluginTypeActionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ActionSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListPluginTypeActionsRequest,
   output: ListPluginTypeActionsResponse,
   errors: [
@@ -8728,27 +8249,7 @@ export const listPluginTypeActions: API.OperationMethod<
     items: "items",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListPluginTypeActionsRequest,
-  ListPluginTypeActionsResponse,
-  ListPluginTypeActionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPluginTypeActionsRequest,
-  ) => stream.Stream<
-    ListPluginTypeActionsResponse,
-    ListPluginTypeActionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPluginTypeActionsRequest,
-  ) => stream.Stream<
-    ActionSummary,
-    ListPluginTypeActionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListPluginTypeMetadataError =
   | AccessDeniedException
@@ -8759,27 +8260,13 @@ export type ListPluginTypeMetadataError =
 /**
  * Lists metadata for all Amazon Q Business plugin types.
  */
-export const listPluginTypeMetadata: API.OperationMethod<
+export const listPluginTypeMetadata: API.PaginatedOperationMethod<
   ListPluginTypeMetadataRequest,
   ListPluginTypeMetadataResponse,
   ListPluginTypeMetadataError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPluginTypeMetadataRequest,
-  ) => stream.Stream<
-    ListPluginTypeMetadataResponse,
-    ListPluginTypeMetadataError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPluginTypeMetadataRequest,
-  ) => stream.Stream<
-    PluginTypeMetadataSummary,
-    ListPluginTypeMetadataError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  PluginTypeMetadataSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListPluginTypeMetadataRequest,
   output: ListPluginTypeMetadataResponse,
   errors: [
@@ -8797,27 +8284,7 @@ export const listPluginTypeMetadata: API.OperationMethod<
     items: "items",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListPluginTypeMetadataRequest,
-  ListPluginTypeMetadataResponse,
-  ListPluginTypeMetadataError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPluginTypeMetadataRequest,
-  ) => stream.Stream<
-    ListPluginTypeMetadataResponse,
-    ListPluginTypeMetadataError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPluginTypeMetadataRequest,
-  ) => stream.Stream<
-    PluginTypeMetadataSummary,
-    ListPluginTypeMetadataError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListRetrieversError =
   | AccessDeniedException
@@ -8829,27 +8296,13 @@ export type ListRetrieversError =
 /**
  * Lists the retriever used by an Amazon Q Business application.
  */
-export const listRetrievers: API.OperationMethod<
+export const listRetrievers: API.PaginatedOperationMethod<
   ListRetrieversRequest,
   ListRetrieversResponse,
   ListRetrieversError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListRetrieversRequest,
-  ) => stream.Stream<
-    ListRetrieversResponse,
-    ListRetrieversError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListRetrieversRequest,
-  ) => stream.Stream<
-    Retriever,
-    ListRetrieversError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Retriever
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListRetrieversRequest,
   output: ListRetrieversResponse,
   errors: [
@@ -8868,27 +8321,7 @@ export const listRetrievers: API.OperationMethod<
     items: "retrievers",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListRetrieversRequest,
-  ListRetrieversResponse,
-  ListRetrieversError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListRetrieversRequest,
-  ) => stream.Stream<
-    ListRetrieversResponse,
-    ListRetrieversError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListRetrieversRequest,
-  ) => stream.Stream<
-    Retriever,
-    ListRetrieversError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListSubscriptionsError =
   | AccessDeniedException
@@ -8901,27 +8334,13 @@ export type ListSubscriptionsError =
 /**
  * Lists all subscriptions created in an Amazon Q Business application.
  */
-export const listSubscriptions: API.OperationMethod<
+export const listSubscriptions: API.PaginatedOperationMethod<
   ListSubscriptionsRequest,
   ListSubscriptionsResponse,
   ListSubscriptionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSubscriptionsRequest,
-  ) => stream.Stream<
-    ListSubscriptionsResponse,
-    ListSubscriptionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSubscriptionsRequest,
-  ) => stream.Stream<
-    Subscription,
-    ListSubscriptionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Subscription
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListSubscriptionsRequest,
   output: ListSubscriptionsResponse,
   errors: [
@@ -8941,27 +8360,7 @@ export const listSubscriptions: API.OperationMethod<
     items: "subscriptions",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListSubscriptionsRequest,
-  ListSubscriptionsResponse,
-  ListSubscriptionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSubscriptionsRequest,
-  ) => stream.Stream<
-    ListSubscriptionsResponse,
-    ListSubscriptionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSubscriptionsRequest,
-  ) => stream.Stream<
-    Subscription,
-    ListSubscriptionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsForResourceError =
   | AccessDeniedException
@@ -8977,7 +8376,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceRequest,
   ListTagsForResourceResponse,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -9003,27 +8402,13 @@ export type ListWebExperiencesError =
 /**
  * Lists one or more Amazon Q Business Web Experiences.
  */
-export const listWebExperiences: API.OperationMethod<
+export const listWebExperiences: API.PaginatedOperationMethod<
   ListWebExperiencesRequest,
   ListWebExperiencesResponse,
   ListWebExperiencesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListWebExperiencesRequest,
-  ) => stream.Stream<
-    ListWebExperiencesResponse,
-    ListWebExperiencesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListWebExperiencesRequest,
-  ) => stream.Stream<
-    WebExperience,
-    ListWebExperiencesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  WebExperience
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListWebExperiencesRequest,
   output: ListWebExperiencesResponse,
   errors: [
@@ -9042,27 +8427,7 @@ export const listWebExperiences: API.OperationMethod<
     items: "webExperiences",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListWebExperiencesRequest,
-  ListWebExperiencesResponse,
-  ListWebExperiencesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListWebExperiencesRequest,
-  ) => stream.Stream<
-    ListWebExperiencesResponse,
-    ListWebExperiencesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListWebExperiencesRequest,
-  ) => stream.Stream<
-    WebExperience,
-    ListWebExperiencesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type PutFeedbackError =
   | AccessDeniedException
@@ -9078,7 +8443,7 @@ export const putFeedback: API.OperationMethod<
   PutFeedbackRequest,
   PutFeedbackResponse,
   PutFeedbackError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutFeedbackRequest,
   output: PutFeedbackResponse,
@@ -9114,7 +8479,7 @@ export const putGroup: API.OperationMethod<
   PutGroupRequest,
   PutGroupResponse,
   PutGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutGroupRequest,
   output: PutGroupResponse,
@@ -9143,27 +8508,13 @@ export type SearchRelevantContentError =
 /**
  * Searches for relevant content in a Amazon Q Business application based on a query. This operation takes a search query text, the Amazon Q Business application identifier, and optional filters (such as content source and maximum results) as input. It returns a list of relevant content items, where each item includes the content text, the unique document identifier, the document title, the document URI, any relevant document attributes, and score attributes indicating the confidence level of the relevance.
  */
-export const searchRelevantContent: API.OperationMethod<
+export const searchRelevantContent: API.PaginatedOperationMethod<
   SearchRelevantContentRequest,
   SearchRelevantContentResponse,
   SearchRelevantContentError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: SearchRelevantContentRequest,
-  ) => stream.Stream<
-    SearchRelevantContentResponse,
-    SearchRelevantContentError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: SearchRelevantContentRequest,
-  ) => stream.Stream<
-    RelevantContent,
-    SearchRelevantContentError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  RelevantContent
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: SearchRelevantContentRequest,
   output: SearchRelevantContentResponse,
   errors: [
@@ -9183,27 +8534,7 @@ export const searchRelevantContent: API.OperationMethod<
     items: "relevantContent",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  SearchRelevantContentRequest,
-  SearchRelevantContentResponse,
-  SearchRelevantContentError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: SearchRelevantContentRequest,
-  ) => stream.Stream<
-    SearchRelevantContentResponse,
-    SearchRelevantContentError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: SearchRelevantContentRequest,
-  ) => stream.Stream<
-    RelevantContent,
-    SearchRelevantContentError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type StartDataSourceSyncJobError =
   | AccessDeniedException
@@ -9221,7 +8552,7 @@ export const startDataSourceSyncJob: API.OperationMethod<
   StartDataSourceSyncJobRequest,
   StartDataSourceSyncJobResponse,
   StartDataSourceSyncJobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartDataSourceSyncJobRequest,
   output: StartDataSourceSyncJobResponse,
@@ -9254,7 +8585,7 @@ export const stopDataSourceSyncJob: API.OperationMethod<
   StopDataSourceSyncJobRequest,
   StopDataSourceSyncJobResponse,
   StopDataSourceSyncJobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StopDataSourceSyncJobRequest,
   output: StopDataSourceSyncJobResponse,
@@ -9286,7 +8617,7 @@ export const tagResource: API.OperationMethod<
   TagResourceRequest,
   TagResourceResponse,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -9317,7 +8648,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceRequest,
   UntagResourceResponse,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -9352,7 +8683,7 @@ export const updateApplication: API.OperationMethod<
   UpdateApplicationRequest,
   UpdateApplicationResponse,
   UpdateApplicationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateApplicationRequest,
   output: UpdateApplicationResponse,
@@ -9385,7 +8716,7 @@ export const updateChatControlsConfiguration: API.OperationMethod<
   UpdateChatControlsConfigurationRequest,
   UpdateChatControlsConfigurationResponse,
   UpdateChatControlsConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateChatControlsConfigurationRequest,
   output: UpdateChatControlsConfigurationResponse,
@@ -9418,7 +8749,7 @@ export const updateChatResponseConfiguration: API.OperationMethod<
   UpdateChatResponseConfigurationRequest,
   UpdateChatResponseConfigurationResponse,
   UpdateChatResponseConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateChatResponseConfigurationRequest,
   output: UpdateChatResponseConfigurationResponse,
@@ -9450,7 +8781,7 @@ export const updateDataAccessor: API.OperationMethod<
   UpdateDataAccessorRequest,
   UpdateDataAccessorResponse,
   UpdateDataAccessorError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateDataAccessorRequest,
   output: UpdateDataAccessorResponse,
@@ -9482,7 +8813,7 @@ export const updateDataSource: API.OperationMethod<
   UpdateDataSourceRequest,
   UpdateDataSourceResponse,
   UpdateDataSourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateDataSourceRequest,
   output: UpdateDataSourceResponse,
@@ -9515,7 +8846,7 @@ export const updateIndex: API.OperationMethod<
   UpdateIndexRequest,
   UpdateIndexResponse,
   UpdateIndexError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateIndexRequest,
   output: UpdateIndexResponse,
@@ -9549,7 +8880,7 @@ export const updatePlugin: API.OperationMethod<
   UpdatePluginRequest,
   UpdatePluginResponse,
   UpdatePluginError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdatePluginRequest,
   output: UpdatePluginResponse,
@@ -9583,7 +8914,7 @@ export const updateRetriever: API.OperationMethod<
   UpdateRetrieverRequest,
   UpdateRetrieverResponse,
   UpdateRetrieverError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateRetrieverRequest,
   output: UpdateRetrieverResponse,
@@ -9616,7 +8947,7 @@ export const updateSubscription: API.OperationMethod<
   UpdateSubscriptionRequest,
   UpdateSubscriptionResponse,
   UpdateSubscriptionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateSubscriptionRequest,
   output: UpdateSubscriptionResponse,
@@ -9649,7 +8980,7 @@ export const updateUser: API.OperationMethod<
   UpdateUserRequest,
   UpdateUserResponse,
   UpdateUserError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateUserRequest,
   output: UpdateUserResponse,
@@ -9682,7 +9013,7 @@ export const updateWebExperience: API.OperationMethod<
   UpdateWebExperienceRequest,
   UpdateWebExperienceResponse,
   UpdateWebExperienceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateWebExperienceRequest,
   output: UpdateWebExperienceResponse,

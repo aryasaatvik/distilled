@@ -1,7 +1,6 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as redacted from "effect/Redacted";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -9,7 +8,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const svc = T.AwsApiService({ sdkId: "odb", serviceShapeName: "Odb" });
 const auth = T.AwsAuthSigv4({ name: "odb" });
@@ -87,20 +85,24 @@ const rules = T.EndpointResolver((p, _) => {
 export class AccessDeniedException
   extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
     "AccessDeniedException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(403),
   ).pipe(C.withAuthError) {}
 export class ConflictException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
     "ConflictException",
-    { message: S.String, resourceId: S.String, resourceType: S.String },
+    {
+      message: S.String.pipe(T.ErrorMessage()),
+      resourceId: S.String,
+      resourceType: S.String,
+    },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class InternalServerException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
     "InternalServerException",
     {
-      message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       retryAfterSeconds: S.optional(S.Number).pipe(T.HttpHeader("Retry-After")),
     },
     T.all(T.HttpError(500), T.Retryable()),
@@ -108,14 +110,18 @@ export class InternalServerException
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { message: S.String, resourceId: S.String, resourceType: S.String },
+    {
+      message: S.String.pipe(T.ErrorMessage()),
+      resourceId: S.String,
+      resourceType: S.String,
+    },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class ServiceQuotaExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
     "ServiceQuotaExceededException",
     {
-      message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       resourceId: S.String,
       resourceType: S.String,
       quotaCode: S.String,
@@ -126,7 +132,7 @@ export class ThrottlingException
   extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
     "ThrottlingException",
     {
-      message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       retryAfterSeconds: S.optional(S.Number).pipe(T.HttpHeader("Retry-After")),
     },
     T.HttpError(429),
@@ -135,7 +141,7 @@ export class ValidationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
     "ValidationException",
     {
-      message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       reason: S.suspend(() => ValidationExceptionReason).annotate({
         identifier: "ValidationExceptionReason",
       }),
@@ -5215,7 +5221,7 @@ export const acceptMarketplaceRegistration: API.OperationMethod<
   AcceptMarketplaceRegistrationInput,
   AcceptMarketplaceRegistrationOutput,
   AcceptMarketplaceRegistrationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AcceptMarketplaceRegistrationInput,
   output: AcceptMarketplaceRegistrationOutput,
@@ -5246,7 +5252,7 @@ export const associateIamRoleToResource: API.OperationMethod<
   AssociateIamRoleToResourceInput,
   AssociateIamRoleToResourceOutput,
   AssociateIamRoleToResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AssociateIamRoleToResourceInput,
   output: AssociateIamRoleToResourceOutput,
@@ -5279,7 +5285,7 @@ export const createAutonomousDatabase: API.OperationMethod<
   CreateAutonomousDatabaseInput,
   CreateAutonomousDatabaseOutput,
   CreateAutonomousDatabaseError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateAutonomousDatabaseInput,
   output: CreateAutonomousDatabaseOutput,
@@ -5313,7 +5319,7 @@ export const createAutonomousDatabaseBackup: API.OperationMethod<
   CreateAutonomousDatabaseBackupInput,
   CreateAutonomousDatabaseBackupOutput,
   CreateAutonomousDatabaseBackupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateAutonomousDatabaseBackupInput,
   output: CreateAutonomousDatabaseBackupOutput,
@@ -5345,7 +5351,7 @@ export const createAutonomousDatabaseWallet: API.OperationMethod<
   CreateAutonomousDatabaseWalletInput,
   CreateAutonomousDatabaseWalletOutput,
   CreateAutonomousDatabaseWalletError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateAutonomousDatabaseWalletInput,
   output: CreateAutonomousDatabaseWalletOutput,
@@ -5377,7 +5383,7 @@ export const createCloudAutonomousVmCluster: API.OperationMethod<
   CreateCloudAutonomousVmClusterInput,
   CreateCloudAutonomousVmClusterOutput,
   CreateCloudAutonomousVmClusterError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateCloudAutonomousVmClusterInput,
   output: CreateCloudAutonomousVmClusterOutput,
@@ -5410,7 +5416,7 @@ export const createCloudExadataInfrastructure: API.OperationMethod<
   CreateCloudExadataInfrastructureInput,
   CreateCloudExadataInfrastructureOutput,
   CreateCloudExadataInfrastructureError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateCloudExadataInfrastructureInput,
   output: CreateCloudExadataInfrastructureOutput,
@@ -5443,7 +5449,7 @@ export const createCloudVmCluster: API.OperationMethod<
   CreateCloudVmClusterInput,
   CreateCloudVmClusterOutput,
   CreateCloudVmClusterError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateCloudVmClusterInput,
   output: CreateCloudVmClusterOutput,
@@ -5476,7 +5482,7 @@ export const createOdbNetwork: API.OperationMethod<
   CreateOdbNetworkInput,
   CreateOdbNetworkOutput,
   CreateOdbNetworkError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateOdbNetworkInput,
   output: CreateOdbNetworkOutput,
@@ -5510,7 +5516,7 @@ export const createOdbPeeringConnection: API.OperationMethod<
   CreateOdbPeeringConnectionInput,
   CreateOdbPeeringConnectionOutput,
   CreateOdbPeeringConnectionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateOdbPeeringConnectionInput,
   output: CreateOdbPeeringConnectionOutput,
@@ -5542,7 +5548,7 @@ export const deleteAutonomousDatabase: API.OperationMethod<
   DeleteAutonomousDatabaseInput,
   DeleteAutonomousDatabaseOutput,
   DeleteAutonomousDatabaseError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteAutonomousDatabaseInput,
   output: DeleteAutonomousDatabaseOutput,
@@ -5574,7 +5580,7 @@ export const deleteAutonomousDatabaseBackup: API.OperationMethod<
   DeleteAutonomousDatabaseBackupInput,
   DeleteAutonomousDatabaseBackupOutput,
   DeleteAutonomousDatabaseBackupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteAutonomousDatabaseBackupInput,
   output: DeleteAutonomousDatabaseBackupOutput,
@@ -5605,7 +5611,7 @@ export const deleteCloudAutonomousVmCluster: API.OperationMethod<
   DeleteCloudAutonomousVmClusterInput,
   DeleteCloudAutonomousVmClusterOutput,
   DeleteCloudAutonomousVmClusterError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteCloudAutonomousVmClusterInput,
   output: DeleteCloudAutonomousVmClusterOutput,
@@ -5636,7 +5642,7 @@ export const deleteCloudExadataInfrastructure: API.OperationMethod<
   DeleteCloudExadataInfrastructureInput,
   DeleteCloudExadataInfrastructureOutput,
   DeleteCloudExadataInfrastructureError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteCloudExadataInfrastructureInput,
   output: DeleteCloudExadataInfrastructureOutput,
@@ -5667,7 +5673,7 @@ export const deleteCloudVmCluster: API.OperationMethod<
   DeleteCloudVmClusterInput,
   DeleteCloudVmClusterOutput,
   DeleteCloudVmClusterError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteCloudVmClusterInput,
   output: DeleteCloudVmClusterOutput,
@@ -5697,7 +5703,7 @@ export const deleteOdbNetwork: API.OperationMethod<
   DeleteOdbNetworkInput,
   DeleteOdbNetworkOutput,
   DeleteOdbNetworkError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteOdbNetworkInput,
   output: DeleteOdbNetworkOutput,
@@ -5729,7 +5735,7 @@ export const deleteOdbPeeringConnection: API.OperationMethod<
   DeleteOdbPeeringConnectionInput,
   DeleteOdbPeeringConnectionOutput,
   DeleteOdbPeeringConnectionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteOdbPeeringConnectionInput,
   output: DeleteOdbPeeringConnectionOutput,
@@ -5760,7 +5766,7 @@ export const disassociateIamRoleFromResource: API.OperationMethod<
   DisassociateIamRoleFromResourceInput,
   DisassociateIamRoleFromResourceOutput,
   DisassociateIamRoleFromResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DisassociateIamRoleFromResourceInput,
   output: DisassociateIamRoleFromResourceOutput,
@@ -5792,7 +5798,7 @@ export const failoverAutonomousDatabase: API.OperationMethod<
   FailoverAutonomousDatabaseInput,
   FailoverAutonomousDatabaseOutput,
   FailoverAutonomousDatabaseError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: FailoverAutonomousDatabaseInput,
   output: FailoverAutonomousDatabaseOutput,
@@ -5823,7 +5829,7 @@ export const getAutonomousDatabase: API.OperationMethod<
   GetAutonomousDatabaseInput,
   GetAutonomousDatabaseOutput,
   GetAutonomousDatabaseError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetAutonomousDatabaseInput,
   output: GetAutonomousDatabaseOutput,
@@ -5853,7 +5859,7 @@ export const getAutonomousDatabaseBackup: API.OperationMethod<
   GetAutonomousDatabaseBackupInput,
   GetAutonomousDatabaseBackupOutput,
   GetAutonomousDatabaseBackupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetAutonomousDatabaseBackupInput,
   output: GetAutonomousDatabaseBackupOutput,
@@ -5883,7 +5889,7 @@ export const getAutonomousDatabaseWalletDetails: API.OperationMethod<
   GetAutonomousDatabaseWalletDetailsInput,
   GetAutonomousDatabaseWalletDetailsOutput,
   GetAutonomousDatabaseWalletDetailsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetAutonomousDatabaseWalletDetailsInput,
   output: GetAutonomousDatabaseWalletDetailsOutput,
@@ -5913,7 +5919,7 @@ export const getCloudAutonomousVmCluster: API.OperationMethod<
   GetCloudAutonomousVmClusterInput,
   GetCloudAutonomousVmClusterOutput,
   GetCloudAutonomousVmClusterError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetCloudAutonomousVmClusterInput,
   output: GetCloudAutonomousVmClusterOutput,
@@ -5943,7 +5949,7 @@ export const getCloudExadataInfrastructure: API.OperationMethod<
   GetCloudExadataInfrastructureInput,
   GetCloudExadataInfrastructureOutput,
   GetCloudExadataInfrastructureError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetCloudExadataInfrastructureInput,
   output: GetCloudExadataInfrastructureOutput,
@@ -5973,7 +5979,7 @@ export const getCloudExadataInfrastructureUnallocatedResources: API.OperationMet
   GetCloudExadataInfrastructureUnallocatedResourcesInput,
   GetCloudExadataInfrastructureUnallocatedResourcesOutput,
   GetCloudExadataInfrastructureUnallocatedResourcesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetCloudExadataInfrastructureUnallocatedResourcesInput,
   output: GetCloudExadataInfrastructureUnallocatedResourcesOutput,
@@ -6003,7 +6009,7 @@ export const getCloudVmCluster: API.OperationMethod<
   GetCloudVmClusterInput,
   GetCloudVmClusterOutput,
   GetCloudVmClusterError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetCloudVmClusterInput,
   output: GetCloudVmClusterOutput,
@@ -6033,7 +6039,7 @@ export const getDbNode: API.OperationMethod<
   GetDbNodeInput,
   GetDbNodeOutput,
   GetDbNodeError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetDbNodeInput,
   output: GetDbNodeOutput,
@@ -6063,7 +6069,7 @@ export const getDbServer: API.OperationMethod<
   GetDbServerInput,
   GetDbServerOutput,
   GetDbServerError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetDbServerInput,
   output: GetDbServerOutput,
@@ -6092,7 +6098,7 @@ export const getOciOnboardingStatus: API.OperationMethod<
   GetOciOnboardingStatusInput,
   GetOciOnboardingStatusOutput,
   GetOciOnboardingStatusError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetOciOnboardingStatusInput,
   output: GetOciOnboardingStatusOutput,
@@ -6121,7 +6127,7 @@ export const getOdbNetwork: API.OperationMethod<
   GetOdbNetworkInput,
   GetOdbNetworkOutput,
   GetOdbNetworkError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetOdbNetworkInput,
   output: GetOdbNetworkOutput,
@@ -6151,7 +6157,7 @@ export const getOdbPeeringConnection: API.OperationMethod<
   GetOdbPeeringConnectionInput,
   GetOdbPeeringConnectionOutput,
   GetOdbPeeringConnectionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetOdbPeeringConnectionInput,
   output: GetOdbPeeringConnectionOutput,
@@ -6180,7 +6186,7 @@ export const initializeService: API.OperationMethod<
   InitializeServiceInput,
   InitializeServiceOutput,
   InitializeServiceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: InitializeServiceInput,
   output: InitializeServiceOutput,
@@ -6205,27 +6211,13 @@ export type ListAutonomousDatabaseBackupsError =
 /**
  * Lists the backups of the specified Autonomous Database.
  */
-export const listAutonomousDatabaseBackups: API.OperationMethod<
+export const listAutonomousDatabaseBackups: API.PaginatedOperationMethod<
   ListAutonomousDatabaseBackupsInput,
   ListAutonomousDatabaseBackupsOutput,
   ListAutonomousDatabaseBackupsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAutonomousDatabaseBackupsInput,
-  ) => stream.Stream<
-    ListAutonomousDatabaseBackupsOutput,
-    ListAutonomousDatabaseBackupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAutonomousDatabaseBackupsInput,
-  ) => stream.Stream<
-    AutonomousDatabaseBackupSummary,
-    ListAutonomousDatabaseBackupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  AutonomousDatabaseBackupSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListAutonomousDatabaseBackupsInput,
   output: ListAutonomousDatabaseBackupsOutput,
   errors: [
@@ -6244,27 +6236,7 @@ export const listAutonomousDatabaseBackups: API.OperationMethod<
     items: "autonomousDatabaseBackups",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListAutonomousDatabaseBackupsInput,
-  ListAutonomousDatabaseBackupsOutput,
-  ListAutonomousDatabaseBackupsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAutonomousDatabaseBackupsInput,
-  ) => stream.Stream<
-    ListAutonomousDatabaseBackupsOutput,
-    ListAutonomousDatabaseBackupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAutonomousDatabaseBackupsInput,
-  ) => stream.Stream<
-    AutonomousDatabaseBackupSummary,
-    ListAutonomousDatabaseBackupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListAutonomousDatabaseCharacterSetsError =
   | AccessDeniedException
@@ -6275,27 +6247,13 @@ export type ListAutonomousDatabaseCharacterSetsError =
 /**
  * Lists the available character sets for Autonomous Databases.
  */
-export const listAutonomousDatabaseCharacterSets: API.OperationMethod<
+export const listAutonomousDatabaseCharacterSets: API.PaginatedOperationMethod<
   ListAutonomousDatabaseCharacterSetsInput,
   ListAutonomousDatabaseCharacterSetsOutput,
   ListAutonomousDatabaseCharacterSetsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAutonomousDatabaseCharacterSetsInput,
-  ) => stream.Stream<
-    ListAutonomousDatabaseCharacterSetsOutput,
-    ListAutonomousDatabaseCharacterSetsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAutonomousDatabaseCharacterSetsInput,
-  ) => stream.Stream<
-    AutonomousDatabaseCharacterSetSummary,
-    ListAutonomousDatabaseCharacterSetsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  AutonomousDatabaseCharacterSetSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListAutonomousDatabaseCharacterSetsInput,
   output: ListAutonomousDatabaseCharacterSetsOutput,
   errors: [
@@ -6313,27 +6271,7 @@ export const listAutonomousDatabaseCharacterSets: API.OperationMethod<
     items: "autonomousDatabaseCharacterSets",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListAutonomousDatabaseCharacterSetsInput,
-  ListAutonomousDatabaseCharacterSetsOutput,
-  ListAutonomousDatabaseCharacterSetsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAutonomousDatabaseCharacterSetsInput,
-  ) => stream.Stream<
-    ListAutonomousDatabaseCharacterSetsOutput,
-    ListAutonomousDatabaseCharacterSetsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAutonomousDatabaseCharacterSetsInput,
-  ) => stream.Stream<
-    AutonomousDatabaseCharacterSetSummary,
-    ListAutonomousDatabaseCharacterSetsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListAutonomousDatabaseClonesError =
   | AccessDeniedException
@@ -6345,27 +6283,13 @@ export type ListAutonomousDatabaseClonesError =
 /**
  * Lists the clones of the specified Autonomous Database.
  */
-export const listAutonomousDatabaseClones: API.OperationMethod<
+export const listAutonomousDatabaseClones: API.PaginatedOperationMethod<
   ListAutonomousDatabaseClonesInput,
   ListAutonomousDatabaseClonesOutput,
   ListAutonomousDatabaseClonesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAutonomousDatabaseClonesInput,
-  ) => stream.Stream<
-    ListAutonomousDatabaseClonesOutput,
-    ListAutonomousDatabaseClonesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAutonomousDatabaseClonesInput,
-  ) => stream.Stream<
-    AutonomousDatabaseSummary,
-    ListAutonomousDatabaseClonesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  AutonomousDatabaseSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListAutonomousDatabaseClonesInput,
   output: ListAutonomousDatabaseClonesOutput,
   errors: [
@@ -6384,27 +6308,7 @@ export const listAutonomousDatabaseClones: API.OperationMethod<
     items: "autonomousDatabaseClones",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListAutonomousDatabaseClonesInput,
-  ListAutonomousDatabaseClonesOutput,
-  ListAutonomousDatabaseClonesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAutonomousDatabaseClonesInput,
-  ) => stream.Stream<
-    ListAutonomousDatabaseClonesOutput,
-    ListAutonomousDatabaseClonesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAutonomousDatabaseClonesInput,
-  ) => stream.Stream<
-    AutonomousDatabaseSummary,
-    ListAutonomousDatabaseClonesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListAutonomousDatabasePeersError =
   | AccessDeniedException
@@ -6416,27 +6320,13 @@ export type ListAutonomousDatabasePeersError =
 /**
  * Lists the peer databases of the specified Autonomous Database.
  */
-export const listAutonomousDatabasePeers: API.OperationMethod<
+export const listAutonomousDatabasePeers: API.PaginatedOperationMethod<
   ListAutonomousDatabasePeersInput,
   ListAutonomousDatabasePeersOutput,
   ListAutonomousDatabasePeersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAutonomousDatabasePeersInput,
-  ) => stream.Stream<
-    ListAutonomousDatabasePeersOutput,
-    ListAutonomousDatabasePeersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAutonomousDatabasePeersInput,
-  ) => stream.Stream<
-    AutonomousDatabasePeerSummary,
-    ListAutonomousDatabasePeersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  AutonomousDatabasePeerSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListAutonomousDatabasePeersInput,
   output: ListAutonomousDatabasePeersOutput,
   errors: [
@@ -6455,27 +6345,7 @@ export const listAutonomousDatabasePeers: API.OperationMethod<
     items: "autonomousDatabasePeers",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListAutonomousDatabasePeersInput,
-  ListAutonomousDatabasePeersOutput,
-  ListAutonomousDatabasePeersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAutonomousDatabasePeersInput,
-  ) => stream.Stream<
-    ListAutonomousDatabasePeersOutput,
-    ListAutonomousDatabasePeersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAutonomousDatabasePeersInput,
-  ) => stream.Stream<
-    AutonomousDatabasePeerSummary,
-    ListAutonomousDatabasePeersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListAutonomousDatabasesError =
   | AccessDeniedException
@@ -6486,27 +6356,13 @@ export type ListAutonomousDatabasesError =
 /**
  * Returns information about the Autonomous Databases owned by your Amazon Web Services account in the current Amazon Web Services Region.
  */
-export const listAutonomousDatabases: API.OperationMethod<
+export const listAutonomousDatabases: API.PaginatedOperationMethod<
   ListAutonomousDatabasesInput,
   ListAutonomousDatabasesOutput,
   ListAutonomousDatabasesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAutonomousDatabasesInput,
-  ) => stream.Stream<
-    ListAutonomousDatabasesOutput,
-    ListAutonomousDatabasesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAutonomousDatabasesInput,
-  ) => stream.Stream<
-    AutonomousDatabaseSummary,
-    ListAutonomousDatabasesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  AutonomousDatabaseSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListAutonomousDatabasesInput,
   output: ListAutonomousDatabasesOutput,
   errors: [
@@ -6524,27 +6380,7 @@ export const listAutonomousDatabases: API.OperationMethod<
     items: "autonomousDatabases",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListAutonomousDatabasesInput,
-  ListAutonomousDatabasesOutput,
-  ListAutonomousDatabasesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAutonomousDatabasesInput,
-  ) => stream.Stream<
-    ListAutonomousDatabasesOutput,
-    ListAutonomousDatabasesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAutonomousDatabasesInput,
-  ) => stream.Stream<
-    AutonomousDatabaseSummary,
-    ListAutonomousDatabasesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListAutonomousDatabaseVersionsError =
   | AccessDeniedException
@@ -6555,27 +6391,13 @@ export type ListAutonomousDatabaseVersionsError =
 /**
  * Lists the available Oracle Database software versions for Autonomous Databases.
  */
-export const listAutonomousDatabaseVersions: API.OperationMethod<
+export const listAutonomousDatabaseVersions: API.PaginatedOperationMethod<
   ListAutonomousDatabaseVersionsInput,
   ListAutonomousDatabaseVersionsOutput,
   ListAutonomousDatabaseVersionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAutonomousDatabaseVersionsInput,
-  ) => stream.Stream<
-    ListAutonomousDatabaseVersionsOutput,
-    ListAutonomousDatabaseVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAutonomousDatabaseVersionsInput,
-  ) => stream.Stream<
-    AutonomousDatabaseVersionSummary,
-    ListAutonomousDatabaseVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  AutonomousDatabaseVersionSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListAutonomousDatabaseVersionsInput,
   output: ListAutonomousDatabaseVersionsOutput,
   errors: [
@@ -6593,27 +6415,7 @@ export const listAutonomousDatabaseVersions: API.OperationMethod<
     items: "autonomousDatabaseVersions",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListAutonomousDatabaseVersionsInput,
-  ListAutonomousDatabaseVersionsOutput,
-  ListAutonomousDatabaseVersionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAutonomousDatabaseVersionsInput,
-  ) => stream.Stream<
-    ListAutonomousDatabaseVersionsOutput,
-    ListAutonomousDatabaseVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAutonomousDatabaseVersionsInput,
-  ) => stream.Stream<
-    AutonomousDatabaseVersionSummary,
-    ListAutonomousDatabaseVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListAutonomousVirtualMachinesError =
   | AccessDeniedException
@@ -6625,27 +6427,13 @@ export type ListAutonomousVirtualMachinesError =
 /**
  * Lists all Autonomous VMs in an Autonomous VM cluster.
  */
-export const listAutonomousVirtualMachines: API.OperationMethod<
+export const listAutonomousVirtualMachines: API.PaginatedOperationMethod<
   ListAutonomousVirtualMachinesInput,
   ListAutonomousVirtualMachinesOutput,
   ListAutonomousVirtualMachinesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAutonomousVirtualMachinesInput,
-  ) => stream.Stream<
-    ListAutonomousVirtualMachinesOutput,
-    ListAutonomousVirtualMachinesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAutonomousVirtualMachinesInput,
-  ) => stream.Stream<
-    AutonomousVirtualMachineSummary,
-    ListAutonomousVirtualMachinesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  AutonomousVirtualMachineSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListAutonomousVirtualMachinesInput,
   output: ListAutonomousVirtualMachinesOutput,
   errors: [
@@ -6664,27 +6452,7 @@ export const listAutonomousVirtualMachines: API.OperationMethod<
     items: "autonomousVirtualMachines",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListAutonomousVirtualMachinesInput,
-  ListAutonomousVirtualMachinesOutput,
-  ListAutonomousVirtualMachinesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAutonomousVirtualMachinesInput,
-  ) => stream.Stream<
-    ListAutonomousVirtualMachinesOutput,
-    ListAutonomousVirtualMachinesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAutonomousVirtualMachinesInput,
-  ) => stream.Stream<
-    AutonomousVirtualMachineSummary,
-    ListAutonomousVirtualMachinesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListCloudAutonomousVmClustersError =
   | AccessDeniedException
@@ -6696,27 +6464,13 @@ export type ListCloudAutonomousVmClustersError =
 /**
  * Lists all Autonomous VM clusters in a specified Cloud Exadata infrastructure.
  */
-export const listCloudAutonomousVmClusters: API.OperationMethod<
+export const listCloudAutonomousVmClusters: API.PaginatedOperationMethod<
   ListCloudAutonomousVmClustersInput,
   ListCloudAutonomousVmClustersOutput,
   ListCloudAutonomousVmClustersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCloudAutonomousVmClustersInput,
-  ) => stream.Stream<
-    ListCloudAutonomousVmClustersOutput,
-    ListCloudAutonomousVmClustersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCloudAutonomousVmClustersInput,
-  ) => stream.Stream<
-    CloudAutonomousVmClusterSummary,
-    ListCloudAutonomousVmClustersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  CloudAutonomousVmClusterSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListCloudAutonomousVmClustersInput,
   output: ListCloudAutonomousVmClustersOutput,
   errors: [
@@ -6735,27 +6489,7 @@ export const listCloudAutonomousVmClusters: API.OperationMethod<
     items: "cloudAutonomousVmClusters",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListCloudAutonomousVmClustersInput,
-  ListCloudAutonomousVmClustersOutput,
-  ListCloudAutonomousVmClustersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCloudAutonomousVmClustersInput,
-  ) => stream.Stream<
-    ListCloudAutonomousVmClustersOutput,
-    ListCloudAutonomousVmClustersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCloudAutonomousVmClustersInput,
-  ) => stream.Stream<
-    CloudAutonomousVmClusterSummary,
-    ListCloudAutonomousVmClustersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListCloudExadataInfrastructuresError =
   | AccessDeniedException
@@ -6766,27 +6500,13 @@ export type ListCloudExadataInfrastructuresError =
 /**
  * Returns information about the Exadata infrastructures owned by your Amazon Web Services account.
  */
-export const listCloudExadataInfrastructures: API.OperationMethod<
+export const listCloudExadataInfrastructures: API.PaginatedOperationMethod<
   ListCloudExadataInfrastructuresInput,
   ListCloudExadataInfrastructuresOutput,
   ListCloudExadataInfrastructuresError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCloudExadataInfrastructuresInput,
-  ) => stream.Stream<
-    ListCloudExadataInfrastructuresOutput,
-    ListCloudExadataInfrastructuresError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCloudExadataInfrastructuresInput,
-  ) => stream.Stream<
-    CloudExadataInfrastructureSummary,
-    ListCloudExadataInfrastructuresError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  CloudExadataInfrastructureSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListCloudExadataInfrastructuresInput,
   output: ListCloudExadataInfrastructuresOutput,
   errors: [
@@ -6804,27 +6524,7 @@ export const listCloudExadataInfrastructures: API.OperationMethod<
     items: "cloudExadataInfrastructures",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListCloudExadataInfrastructuresInput,
-  ListCloudExadataInfrastructuresOutput,
-  ListCloudExadataInfrastructuresError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCloudExadataInfrastructuresInput,
-  ) => stream.Stream<
-    ListCloudExadataInfrastructuresOutput,
-    ListCloudExadataInfrastructuresError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCloudExadataInfrastructuresInput,
-  ) => stream.Stream<
-    CloudExadataInfrastructureSummary,
-    ListCloudExadataInfrastructuresError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListCloudVmClustersError =
   | AccessDeniedException
@@ -6836,27 +6536,13 @@ export type ListCloudVmClustersError =
 /**
  * Returns information about the VM clusters owned by your Amazon Web Services account or only the ones on the specified Exadata infrastructure.
  */
-export const listCloudVmClusters: API.OperationMethod<
+export const listCloudVmClusters: API.PaginatedOperationMethod<
   ListCloudVmClustersInput,
   ListCloudVmClustersOutput,
   ListCloudVmClustersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCloudVmClustersInput,
-  ) => stream.Stream<
-    ListCloudVmClustersOutput,
-    ListCloudVmClustersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCloudVmClustersInput,
-  ) => stream.Stream<
-    CloudVmClusterSummary,
-    ListCloudVmClustersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  CloudVmClusterSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListCloudVmClustersInput,
   output: ListCloudVmClustersOutput,
   errors: [
@@ -6875,27 +6561,7 @@ export const listCloudVmClusters: API.OperationMethod<
     items: "cloudVmClusters",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListCloudVmClustersInput,
-  ListCloudVmClustersOutput,
-  ListCloudVmClustersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCloudVmClustersInput,
-  ) => stream.Stream<
-    ListCloudVmClustersOutput,
-    ListCloudVmClustersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCloudVmClustersInput,
-  ) => stream.Stream<
-    CloudVmClusterSummary,
-    ListCloudVmClustersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListDbNodesError =
   | AccessDeniedException
@@ -6907,27 +6573,13 @@ export type ListDbNodesError =
 /**
  * Returns information about the DB nodes for the specified VM cluster.
  */
-export const listDbNodes: API.OperationMethod<
+export const listDbNodes: API.PaginatedOperationMethod<
   ListDbNodesInput,
   ListDbNodesOutput,
   ListDbNodesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDbNodesInput,
-  ) => stream.Stream<
-    ListDbNodesOutput,
-    ListDbNodesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDbNodesInput,
-  ) => stream.Stream<
-    DbNodeSummary,
-    ListDbNodesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  DbNodeSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListDbNodesInput,
   output: ListDbNodesOutput,
   errors: [
@@ -6946,27 +6598,7 @@ export const listDbNodes: API.OperationMethod<
     items: "dbNodes",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListDbNodesInput,
-  ListDbNodesOutput,
-  ListDbNodesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDbNodesInput,
-  ) => stream.Stream<
-    ListDbNodesOutput,
-    ListDbNodesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDbNodesInput,
-  ) => stream.Stream<
-    DbNodeSummary,
-    ListDbNodesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListDbServersError =
   | AccessDeniedException
@@ -6978,27 +6610,13 @@ export type ListDbServersError =
 /**
  * Returns information about the database servers that belong to the specified Exadata infrastructure.
  */
-export const listDbServers: API.OperationMethod<
+export const listDbServers: API.PaginatedOperationMethod<
   ListDbServersInput,
   ListDbServersOutput,
   ListDbServersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDbServersInput,
-  ) => stream.Stream<
-    ListDbServersOutput,
-    ListDbServersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDbServersInput,
-  ) => stream.Stream<
-    DbServerSummary,
-    ListDbServersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  DbServerSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListDbServersInput,
   output: ListDbServersOutput,
   errors: [
@@ -7017,27 +6635,7 @@ export const listDbServers: API.OperationMethod<
     items: "dbServers",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListDbServersInput,
-  ListDbServersOutput,
-  ListDbServersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDbServersInput,
-  ) => stream.Stream<
-    ListDbServersOutput,
-    ListDbServersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDbServersInput,
-  ) => stream.Stream<
-    DbServerSummary,
-    ListDbServersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListDbSystemShapesError =
   | AccessDeniedException
@@ -7048,27 +6646,13 @@ export type ListDbSystemShapesError =
 /**
  * Returns information about the shapes that are available for an Exadata infrastructure.
  */
-export const listDbSystemShapes: API.OperationMethod<
+export const listDbSystemShapes: API.PaginatedOperationMethod<
   ListDbSystemShapesInput,
   ListDbSystemShapesOutput,
   ListDbSystemShapesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDbSystemShapesInput,
-  ) => stream.Stream<
-    ListDbSystemShapesOutput,
-    ListDbSystemShapesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDbSystemShapesInput,
-  ) => stream.Stream<
-    DbSystemShapeSummary,
-    ListDbSystemShapesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  DbSystemShapeSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListDbSystemShapesInput,
   output: ListDbSystemShapesOutput,
   errors: [
@@ -7086,27 +6670,7 @@ export const listDbSystemShapes: API.OperationMethod<
     items: "dbSystemShapes",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListDbSystemShapesInput,
-  ListDbSystemShapesOutput,
-  ListDbSystemShapesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDbSystemShapesInput,
-  ) => stream.Stream<
-    ListDbSystemShapesOutput,
-    ListDbSystemShapesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDbSystemShapesInput,
-  ) => stream.Stream<
-    DbSystemShapeSummary,
-    ListDbSystemShapesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListGiVersionsError =
   | AccessDeniedException
@@ -7117,27 +6681,13 @@ export type ListGiVersionsError =
 /**
  * Returns information about Oracle Grid Infrastructure (GI) software versions that are available for a VM cluster for the specified shape.
  */
-export const listGiVersions: API.OperationMethod<
+export const listGiVersions: API.PaginatedOperationMethod<
   ListGiVersionsInput,
   ListGiVersionsOutput,
   ListGiVersionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListGiVersionsInput,
-  ) => stream.Stream<
-    ListGiVersionsOutput,
-    ListGiVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListGiVersionsInput,
-  ) => stream.Stream<
-    GiVersionSummary,
-    ListGiVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  GiVersionSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListGiVersionsInput,
   output: ListGiVersionsOutput,
   errors: [
@@ -7155,27 +6705,7 @@ export const listGiVersions: API.OperationMethod<
     items: "giVersions",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListGiVersionsInput,
-  ListGiVersionsOutput,
-  ListGiVersionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListGiVersionsInput,
-  ) => stream.Stream<
-    ListGiVersionsOutput,
-    ListGiVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListGiVersionsInput,
-  ) => stream.Stream<
-    GiVersionSummary,
-    ListGiVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListOdbNetworksError =
   | AccessDeniedException
@@ -7186,27 +6716,13 @@ export type ListOdbNetworksError =
 /**
  * Returns information about the ODB networks owned by your Amazon Web Services account.
  */
-export const listOdbNetworks: API.OperationMethod<
+export const listOdbNetworks: API.PaginatedOperationMethod<
   ListOdbNetworksInput,
   ListOdbNetworksOutput,
   ListOdbNetworksError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListOdbNetworksInput,
-  ) => stream.Stream<
-    ListOdbNetworksOutput,
-    ListOdbNetworksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListOdbNetworksInput,
-  ) => stream.Stream<
-    OdbNetworkSummary,
-    ListOdbNetworksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  OdbNetworkSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListOdbNetworksInput,
   output: ListOdbNetworksOutput,
   errors: [
@@ -7224,27 +6740,7 @@ export const listOdbNetworks: API.OperationMethod<
     items: "odbNetworks",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListOdbNetworksInput,
-  ListOdbNetworksOutput,
-  ListOdbNetworksError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListOdbNetworksInput,
-  ) => stream.Stream<
-    ListOdbNetworksOutput,
-    ListOdbNetworksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListOdbNetworksInput,
-  ) => stream.Stream<
-    OdbNetworkSummary,
-    ListOdbNetworksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListOdbPeeringConnectionsError =
   | AccessDeniedException
@@ -7256,27 +6752,13 @@ export type ListOdbPeeringConnectionsError =
 /**
  * Lists all ODB peering connections or those associated with a specific ODB network.
  */
-export const listOdbPeeringConnections: API.OperationMethod<
+export const listOdbPeeringConnections: API.PaginatedOperationMethod<
   ListOdbPeeringConnectionsInput,
   ListOdbPeeringConnectionsOutput,
   ListOdbPeeringConnectionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListOdbPeeringConnectionsInput,
-  ) => stream.Stream<
-    ListOdbPeeringConnectionsOutput,
-    ListOdbPeeringConnectionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListOdbPeeringConnectionsInput,
-  ) => stream.Stream<
-    OdbPeeringConnectionSummary,
-    ListOdbPeeringConnectionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  OdbPeeringConnectionSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListOdbPeeringConnectionsInput,
   output: ListOdbPeeringConnectionsOutput,
   errors: [
@@ -7295,27 +6777,7 @@ export const listOdbPeeringConnections: API.OperationMethod<
     items: "odbPeeringConnections",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListOdbPeeringConnectionsInput,
-  ListOdbPeeringConnectionsOutput,
-  ListOdbPeeringConnectionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListOdbPeeringConnectionsInput,
-  ) => stream.Stream<
-    ListOdbPeeringConnectionsOutput,
-    ListOdbPeeringConnectionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListOdbPeeringConnectionsInput,
-  ) => stream.Stream<
-    OdbPeeringConnectionSummary,
-    ListOdbPeeringConnectionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListSystemVersionsError =
   | AccessDeniedException
@@ -7327,27 +6789,13 @@ export type ListSystemVersionsError =
 /**
  * Returns information about the system versions that are available for a VM cluster for the specified `giVersion` and `shape`.
  */
-export const listSystemVersions: API.OperationMethod<
+export const listSystemVersions: API.PaginatedOperationMethod<
   ListSystemVersionsInput,
   ListSystemVersionsOutput,
   ListSystemVersionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSystemVersionsInput,
-  ) => stream.Stream<
-    ListSystemVersionsOutput,
-    ListSystemVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSystemVersionsInput,
-  ) => stream.Stream<
-    SystemVersionSummary,
-    ListSystemVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  SystemVersionSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListSystemVersionsInput,
   output: ListSystemVersionsOutput,
   errors: [
@@ -7366,27 +6814,7 @@ export const listSystemVersions: API.OperationMethod<
     items: "systemVersions",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListSystemVersionsInput,
-  ListSystemVersionsOutput,
-  ListSystemVersionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSystemVersionsInput,
-  ) => stream.Stream<
-    ListSystemVersionsOutput,
-    ListSystemVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSystemVersionsInput,
-  ) => stream.Stream<
-    SystemVersionSummary,
-    ListSystemVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsForResourceError = ResourceNotFoundException | CommonErrors;
 /**
@@ -7396,7 +6824,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceRequest,
   ListTagsForResourceResponse,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -7421,7 +6849,7 @@ export const rebootAutonomousDatabase: API.OperationMethod<
   RebootAutonomousDatabaseInput,
   RebootAutonomousDatabaseOutput,
   RebootAutonomousDatabaseError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RebootAutonomousDatabaseInput,
   output: RebootAutonomousDatabaseOutput,
@@ -7452,7 +6880,7 @@ export const rebootDbNode: API.OperationMethod<
   RebootDbNodeInput,
   RebootDbNodeOutput,
   RebootDbNodeError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RebootDbNodeInput,
   output: RebootDbNodeOutput,
@@ -7483,7 +6911,7 @@ export const restoreAutonomousDatabase: API.OperationMethod<
   RestoreAutonomousDatabaseInput,
   RestoreAutonomousDatabaseOutput,
   RestoreAutonomousDatabaseError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RestoreAutonomousDatabaseInput,
   output: RestoreAutonomousDatabaseOutput,
@@ -7515,7 +6943,7 @@ export const shrinkAutonomousDatabase: API.OperationMethod<
   ShrinkAutonomousDatabaseInput,
   ShrinkAutonomousDatabaseOutput,
   ShrinkAutonomousDatabaseError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ShrinkAutonomousDatabaseInput,
   output: ShrinkAutonomousDatabaseOutput,
@@ -7547,7 +6975,7 @@ export const startAutonomousDatabase: API.OperationMethod<
   StartAutonomousDatabaseInput,
   StartAutonomousDatabaseOutput,
   StartAutonomousDatabaseError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartAutonomousDatabaseInput,
   output: StartAutonomousDatabaseOutput,
@@ -7578,7 +7006,7 @@ export const startDbNode: API.OperationMethod<
   StartDbNodeInput,
   StartDbNodeOutput,
   StartDbNodeError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartDbNodeInput,
   output: StartDbNodeOutput,
@@ -7609,7 +7037,7 @@ export const stopAutonomousDatabase: API.OperationMethod<
   StopAutonomousDatabaseInput,
   StopAutonomousDatabaseOutput,
   StopAutonomousDatabaseError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StopAutonomousDatabaseInput,
   output: StopAutonomousDatabaseOutput,
@@ -7640,7 +7068,7 @@ export const stopDbNode: API.OperationMethod<
   StopDbNodeInput,
   StopDbNodeOutput,
   StopDbNodeError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StopDbNodeInput,
   output: StopDbNodeOutput,
@@ -7671,7 +7099,7 @@ export const switchoverAutonomousDatabase: API.OperationMethod<
   SwitchoverAutonomousDatabaseInput,
   SwitchoverAutonomousDatabaseOutput,
   SwitchoverAutonomousDatabaseError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: SwitchoverAutonomousDatabaseInput,
   output: SwitchoverAutonomousDatabaseOutput,
@@ -7699,7 +7127,7 @@ export const tagResource: API.OperationMethod<
   TagResourceRequest,
   TagResourceResponse,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -7717,7 +7145,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceRequest,
   UntagResourceResponse,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -7742,7 +7170,7 @@ export const updateAutonomousDatabase: API.OperationMethod<
   UpdateAutonomousDatabaseInput,
   UpdateAutonomousDatabaseOutput,
   UpdateAutonomousDatabaseError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateAutonomousDatabaseInput,
   output: UpdateAutonomousDatabaseOutput,
@@ -7774,7 +7202,7 @@ export const updateAutonomousDatabaseBackup: API.OperationMethod<
   UpdateAutonomousDatabaseBackupInput,
   UpdateAutonomousDatabaseBackupOutput,
   UpdateAutonomousDatabaseBackupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateAutonomousDatabaseBackupInput,
   output: UpdateAutonomousDatabaseBackupOutput,
@@ -7806,7 +7234,7 @@ export const updateCloudExadataInfrastructure: API.OperationMethod<
   UpdateCloudExadataInfrastructureInput,
   UpdateCloudExadataInfrastructureOutput,
   UpdateCloudExadataInfrastructureError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateCloudExadataInfrastructureInput,
   output: UpdateCloudExadataInfrastructureOutput,
@@ -7838,7 +7266,7 @@ export const updateOdbNetwork: API.OperationMethod<
   UpdateOdbNetworkInput,
   UpdateOdbNetworkOutput,
   UpdateOdbNetworkError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateOdbNetworkInput,
   output: UpdateOdbNetworkOutput,
@@ -7870,7 +7298,7 @@ export const updateOdbPeeringConnection: API.OperationMethod<
   UpdateOdbPeeringConnectionInput,
   UpdateOdbPeeringConnectionOutput,
   UpdateOdbPeeringConnectionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateOdbPeeringConnectionInput,
   output: UpdateOdbPeeringConnectionOutput,

@@ -1,6 +1,5 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -8,7 +7,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 const svc = T.AwsApiService({
   sdkId: "Kinesis Video Archived Media",
   serviceShapeName: "AWSAcuityReader",
@@ -88,55 +86,55 @@ const rules = T.EndpointResolver((p, _) => {
 export class ClientLimitExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<ClientLimitExceededException>()(
     "ClientLimitExceededException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class InvalidArgumentException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidArgumentException>()(
     "InvalidArgumentException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class InvalidCodecPrivateDataException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidCodecPrivateDataException>()(
     "InvalidCodecPrivateDataException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class InvalidMediaFrameException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidMediaFrameException>()(
     "InvalidMediaFrameException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class MissingCodecPrivateDataException
   extends /*@__PURE__*/ S.TaggedErrorClass<MissingCodecPrivateDataException>()(
     "MissingCodecPrivateDataException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class NoDataRetentionException
   extends /*@__PURE__*/ S.TaggedErrorClass<NoDataRetentionException>()(
     "NoDataRetentionException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class NotAuthorizedException
   extends /*@__PURE__*/ S.TaggedErrorClass<NotAuthorizedException>()(
     "NotAuthorizedException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(401),
   ).pipe(C.withAuthError) {}
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class UnsupportedStreamMediaTypeException
   extends /*@__PURE__*/ S.TaggedErrorClass<UnsupportedStreamMediaTypeException>()(
     "UnsupportedStreamMediaTypeException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export type StreamName = string;
@@ -657,7 +655,7 @@ export const getClip: API.OperationMethod<
   GetClipInput,
   GetClipOutput,
   GetClipError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetClipInput,
   output: GetClipOutput,
@@ -816,7 +814,7 @@ export const getDASHStreamingSessionURL: API.OperationMethod<
   GetDASHStreamingSessionURLInput,
   GetDASHStreamingSessionURLOutput,
   GetDASHStreamingSessionURLError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetDASHStreamingSessionURLInput,
   output: GetDASHStreamingSessionURLOutput,
@@ -1014,7 +1012,7 @@ export const getHLSStreamingSessionURL: API.OperationMethod<
   GetHLSStreamingSessionURLInput,
   GetHLSStreamingSessionURLOutput,
   GetHLSStreamingSessionURLError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetHLSStreamingSessionURLInput,
   output: GetHLSStreamingSessionURLOutput,
@@ -1044,27 +1042,13 @@ export type GetImagesError =
  * Retrieves a list of images corresponding to each timestamp for a given time range,
  * sampling interval, and image format configuration.
  */
-export const getImages: API.OperationMethod<
+export const getImages: API.PaginatedOperationMethod<
   GetImagesInput,
   GetImagesOutput,
   GetImagesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetImagesInput,
-  ) => stream.Stream<
-    GetImagesOutput,
-    GetImagesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetImagesInput,
-  ) => stream.Stream<
-    Image,
-    GetImagesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Image
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetImagesInput,
   output: GetImagesOutput,
   errors: [
@@ -1083,27 +1067,7 @@ export const getImages: API.OperationMethod<
     items: "Images",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetImagesInput,
-  GetImagesOutput,
-  GetImagesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetImagesInput,
-  ) => stream.Stream<
-    GetImagesOutput,
-    GetImagesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetImagesInput,
-  ) => stream.Stream<
-    Image,
-    GetImagesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetMediaForFragmentListError =
   | ClientLimitExceededException
@@ -1145,7 +1109,7 @@ export const getMediaForFragmentList: API.OperationMethod<
   GetMediaForFragmentListInput,
   GetMediaForFragmentListOutput,
   GetMediaForFragmentListError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetMediaForFragmentListInput,
   output: GetMediaForFragmentListOutput,
@@ -1198,27 +1162,13 @@ export type ListFragmentsError =
  * For more information, see the **Errors** section at
  * the bottom of this topic, as well as Common Errors.
  */
-export const listFragments: API.OperationMethod<
+export const listFragments: API.PaginatedOperationMethod<
   ListFragmentsInput,
   ListFragmentsOutput,
   ListFragmentsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListFragmentsInput,
-  ) => stream.Stream<
-    ListFragmentsOutput,
-    ListFragmentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListFragmentsInput,
-  ) => stream.Stream<
-    Fragment,
-    ListFragmentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Fragment
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListFragmentsInput,
   output: ListFragmentsOutput,
   errors: [
@@ -1236,24 +1186,4 @@ export const listFragments: API.OperationMethod<
     items: "Fragments",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListFragmentsInput,
-  ListFragmentsOutput,
-  ListFragmentsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListFragmentsInput,
-  ) => stream.Stream<
-    ListFragmentsOutput,
-    ListFragmentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListFragmentsInput,
-  ) => stream.Stream<
-    Fragment,
-    ListFragmentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;

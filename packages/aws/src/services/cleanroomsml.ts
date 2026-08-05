@@ -1,6 +1,5 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -8,7 +7,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 const svc = T.AwsApiService({
   sdkId: "CleanRoomsML",
   serviceShapeName: "AWSStarkControlService",
@@ -88,32 +86,32 @@ const rules = T.EndpointResolver((p, _) => {
 export class AccessDeniedException
   extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
     "AccessDeniedException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(403),
   ).pipe(C.withAuthError) {}
 export class ConflictException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
     "ConflictException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class InternalServiceException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServiceException>()(
     "InternalServiceException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(500),
   ).pipe(C.withServerError) {}
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class ServiceQuotaExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
     "ServiceQuotaExceededException",
     {
-      message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       quotaName: S.optional(S.String),
       quotaValue: S.optional(S.Number),
     },
@@ -122,13 +120,13 @@ export class ServiceQuotaExceededException
 export class ThrottlingException
   extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
     "ThrottlingException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(429),
   ).pipe(C.withThrottlingError) {}
 export class ValidationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
     "ValidationException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export type UUID = string;
@@ -4393,7 +4391,7 @@ export const cancelTrainedModel: API.OperationMethod<
   CancelTrainedModelRequest,
   CancelTrainedModelResponse,
   CancelTrainedModelError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CancelTrainedModelRequest,
   output: CancelTrainedModelResponse,
@@ -4423,7 +4421,7 @@ export const cancelTrainedModelInferenceJob: API.OperationMethod<
   CancelTrainedModelInferenceJobRequest,
   CancelTrainedModelInferenceJobResponse,
   CancelTrainedModelInferenceJobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CancelTrainedModelInferenceJobRequest,
   output: CancelTrainedModelInferenceJobResponse,
@@ -4453,7 +4451,7 @@ export const createAudienceModel: API.OperationMethod<
   CreateAudienceModelRequest,
   CreateAudienceModelResponse,
   CreateAudienceModelError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateAudienceModelRequest,
   output: CreateAudienceModelResponse,
@@ -4483,7 +4481,7 @@ export const createConfiguredAudienceModel: API.OperationMethod<
   CreateConfiguredAudienceModelRequest,
   CreateConfiguredAudienceModelResponse,
   CreateConfiguredAudienceModelError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateConfiguredAudienceModelRequest,
   output: CreateConfiguredAudienceModelResponse,
@@ -4512,7 +4510,7 @@ export const createConfiguredModelAlgorithm: API.OperationMethod<
   CreateConfiguredModelAlgorithmRequest,
   CreateConfiguredModelAlgorithmResponse,
   CreateConfiguredModelAlgorithmError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateConfiguredModelAlgorithmRequest,
   output: CreateConfiguredModelAlgorithmResponse,
@@ -4542,7 +4540,7 @@ export const createConfiguredModelAlgorithmAssociation: API.OperationMethod<
   CreateConfiguredModelAlgorithmAssociationRequest,
   CreateConfiguredModelAlgorithmAssociationResponse,
   CreateConfiguredModelAlgorithmAssociationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateConfiguredModelAlgorithmAssociationRequest,
   output: CreateConfiguredModelAlgorithmAssociationResponse,
@@ -4574,7 +4572,7 @@ export const createMLInputChannel: API.OperationMethod<
   CreateMLInputChannelRequest,
   CreateMLInputChannelResponse,
   CreateMLInputChannelError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateMLInputChannelRequest,
   output: CreateMLInputChannelResponse,
@@ -4607,7 +4605,7 @@ export const createTrainedModel: API.OperationMethod<
   CreateTrainedModelRequest,
   CreateTrainedModelResponse,
   CreateTrainedModelError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateTrainedModelRequest,
   output: CreateTrainedModelResponse,
@@ -4637,7 +4635,7 @@ export const createTrainingDataset: API.OperationMethod<
   CreateTrainingDatasetRequest,
   CreateTrainingDatasetResponse,
   CreateTrainingDatasetError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateTrainingDatasetRequest,
   output: CreateTrainingDatasetResponse,
@@ -4660,7 +4658,7 @@ export const deleteAudienceGenerationJob: API.OperationMethod<
   DeleteAudienceGenerationJobRequest,
   DeleteAudienceGenerationJobResponse,
   DeleteAudienceGenerationJobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteAudienceGenerationJobRequest,
   output: DeleteAudienceGenerationJobResponse,
@@ -4688,7 +4686,7 @@ export const deleteAudienceModel: API.OperationMethod<
   DeleteAudienceModelRequest,
   DeleteAudienceModelResponse,
   DeleteAudienceModelError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteAudienceModelRequest,
   output: DeleteAudienceModelResponse,
@@ -4716,7 +4714,7 @@ export const deleteConfiguredAudienceModel: API.OperationMethod<
   DeleteConfiguredAudienceModelRequest,
   DeleteConfiguredAudienceModelResponse,
   DeleteConfiguredAudienceModelError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteConfiguredAudienceModelRequest,
   output: DeleteConfiguredAudienceModelResponse,
@@ -4743,7 +4741,7 @@ export const deleteConfiguredAudienceModelPolicy: API.OperationMethod<
   DeleteConfiguredAudienceModelPolicyRequest,
   DeleteConfiguredAudienceModelPolicyResponse,
   DeleteConfiguredAudienceModelPolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteConfiguredAudienceModelPolicyRequest,
   output: DeleteConfiguredAudienceModelPolicyResponse,
@@ -4770,7 +4768,7 @@ export const deleteConfiguredModelAlgorithm: API.OperationMethod<
   DeleteConfiguredModelAlgorithmRequest,
   DeleteConfiguredModelAlgorithmResponse,
   DeleteConfiguredModelAlgorithmError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteConfiguredModelAlgorithmRequest,
   output: DeleteConfiguredModelAlgorithmResponse,
@@ -4799,7 +4797,7 @@ export const deleteConfiguredModelAlgorithmAssociation: API.OperationMethod<
   DeleteConfiguredModelAlgorithmAssociationRequest,
   DeleteConfiguredModelAlgorithmAssociationResponse,
   DeleteConfiguredModelAlgorithmAssociationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteConfiguredModelAlgorithmAssociationRequest,
   output: DeleteConfiguredModelAlgorithmAssociationResponse,
@@ -4828,7 +4826,7 @@ export const deleteMLConfiguration: API.OperationMethod<
   DeleteMLConfigurationRequest,
   DeleteMLConfigurationResponse,
   DeleteMLConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteMLConfigurationRequest,
   output: DeleteMLConfigurationResponse,
@@ -4857,7 +4855,7 @@ export const deleteMLInputChannelData: API.OperationMethod<
   DeleteMLInputChannelDataRequest,
   DeleteMLInputChannelDataResponse,
   DeleteMLInputChannelDataError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteMLInputChannelDataRequest,
   output: DeleteMLInputChannelDataResponse,
@@ -4887,7 +4885,7 @@ export const deleteTrainedModelOutput: API.OperationMethod<
   DeleteTrainedModelOutputRequest,
   DeleteTrainedModelOutputResponse,
   DeleteTrainedModelOutputError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteTrainedModelOutputRequest,
   output: DeleteTrainedModelOutputResponse,
@@ -4916,7 +4914,7 @@ export const deleteTrainingDataset: API.OperationMethod<
   DeleteTrainingDatasetRequest,
   DeleteTrainingDatasetResponse,
   DeleteTrainingDatasetError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteTrainingDatasetRequest,
   output: DeleteTrainingDatasetResponse,
@@ -4943,7 +4941,7 @@ export const getAudienceGenerationJob: API.OperationMethod<
   GetAudienceGenerationJobRequest,
   GetAudienceGenerationJobResponse,
   GetAudienceGenerationJobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetAudienceGenerationJobRequest,
   output: GetAudienceGenerationJobResponse,
@@ -4969,7 +4967,7 @@ export const getAudienceModel: API.OperationMethod<
   GetAudienceModelRequest,
   GetAudienceModelResponse,
   GetAudienceModelError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetAudienceModelRequest,
   output: GetAudienceModelResponse,
@@ -4996,7 +4994,7 @@ export const getCollaborationConfiguredModelAlgorithmAssociation: API.OperationM
   GetCollaborationConfiguredModelAlgorithmAssociationRequest,
   GetCollaborationConfiguredModelAlgorithmAssociationResponse,
   GetCollaborationConfiguredModelAlgorithmAssociationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetCollaborationConfiguredModelAlgorithmAssociationRequest,
   output: GetCollaborationConfiguredModelAlgorithmAssociationResponse,
@@ -5024,7 +5022,7 @@ export const getCollaborationMLInputChannel: API.OperationMethod<
   GetCollaborationMLInputChannelRequest,
   GetCollaborationMLInputChannelResponse,
   GetCollaborationMLInputChannelError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetCollaborationMLInputChannelRequest,
   output: GetCollaborationMLInputChannelResponse,
@@ -5052,7 +5050,7 @@ export const getCollaborationTrainedModel: API.OperationMethod<
   GetCollaborationTrainedModelRequest,
   GetCollaborationTrainedModelResponse,
   GetCollaborationTrainedModelError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetCollaborationTrainedModelRequest,
   output: GetCollaborationTrainedModelResponse,
@@ -5079,7 +5077,7 @@ export const getConfiguredAudienceModel: API.OperationMethod<
   GetConfiguredAudienceModelRequest,
   GetConfiguredAudienceModelResponse,
   GetConfiguredAudienceModelError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetConfiguredAudienceModelRequest,
   output: GetConfiguredAudienceModelResponse,
@@ -5105,7 +5103,7 @@ export const getConfiguredAudienceModelPolicy: API.OperationMethod<
   GetConfiguredAudienceModelPolicyRequest,
   GetConfiguredAudienceModelPolicyResponse,
   GetConfiguredAudienceModelPolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetConfiguredAudienceModelPolicyRequest,
   output: GetConfiguredAudienceModelPolicyResponse,
@@ -5131,7 +5129,7 @@ export const getConfiguredModelAlgorithm: API.OperationMethod<
   GetConfiguredModelAlgorithmRequest,
   GetConfiguredModelAlgorithmResponse,
   GetConfiguredModelAlgorithmError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetConfiguredModelAlgorithmRequest,
   output: GetConfiguredModelAlgorithmResponse,
@@ -5158,7 +5156,7 @@ export const getConfiguredModelAlgorithmAssociation: API.OperationMethod<
   GetConfiguredModelAlgorithmAssociationRequest,
   GetConfiguredModelAlgorithmAssociationResponse,
   GetConfiguredModelAlgorithmAssociationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetConfiguredModelAlgorithmAssociationRequest,
   output: GetConfiguredModelAlgorithmAssociationResponse,
@@ -5186,7 +5184,7 @@ export const getMLConfiguration: API.OperationMethod<
   GetMLConfigurationRequest,
   GetMLConfigurationResponse,
   GetMLConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetMLConfigurationRequest,
   output: GetMLConfigurationResponse,
@@ -5214,7 +5212,7 @@ export const getMLInputChannel: API.OperationMethod<
   GetMLInputChannelRequest,
   GetMLInputChannelResponse,
   GetMLInputChannelError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetMLInputChannelRequest,
   output: GetMLInputChannelResponse,
@@ -5242,7 +5240,7 @@ export const getTrainedModel: API.OperationMethod<
   GetTrainedModelRequest,
   GetTrainedModelResponse,
   GetTrainedModelError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetTrainedModelRequest,
   output: GetTrainedModelResponse,
@@ -5270,7 +5268,7 @@ export const getTrainedModelInferenceJob: API.OperationMethod<
   GetTrainedModelInferenceJobRequest,
   GetTrainedModelInferenceJobResponse,
   GetTrainedModelInferenceJobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetTrainedModelInferenceJobRequest,
   output: GetTrainedModelInferenceJobResponse,
@@ -5297,7 +5295,7 @@ export const getTrainingDataset: API.OperationMethod<
   GetTrainingDatasetRequest,
   GetTrainingDatasetResponse,
   GetTrainingDatasetError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetTrainingDatasetRequest,
   output: GetTrainingDatasetResponse,
@@ -5318,27 +5316,13 @@ export type ListAudienceExportJobsError =
 /**
  * Returns a list of the audience export jobs.
  */
-export const listAudienceExportJobs: API.OperationMethod<
+export const listAudienceExportJobs: API.PaginatedOperationMethod<
   ListAudienceExportJobsRequest,
   ListAudienceExportJobsResponse,
   ListAudienceExportJobsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAudienceExportJobsRequest,
-  ) => stream.Stream<
-    ListAudienceExportJobsResponse,
-    ListAudienceExportJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAudienceExportJobsRequest,
-  ) => stream.Stream<
-    AudienceExportJobSummary,
-    ListAudienceExportJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  AudienceExportJobSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListAudienceExportJobsRequest,
   output: ListAudienceExportJobsResponse,
   errors: [AccessDeniedException, ValidationException],
@@ -5351,27 +5335,7 @@ export const listAudienceExportJobs: API.OperationMethod<
     items: "audienceExportJobs",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListAudienceExportJobsRequest,
-  ListAudienceExportJobsResponse,
-  ListAudienceExportJobsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAudienceExportJobsRequest,
-  ) => stream.Stream<
-    ListAudienceExportJobsResponse,
-    ListAudienceExportJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAudienceExportJobsRequest,
-  ) => stream.Stream<
-    AudienceExportJobSummary,
-    ListAudienceExportJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListAudienceGenerationJobsError =
   | AccessDeniedException
@@ -5380,27 +5344,13 @@ export type ListAudienceGenerationJobsError =
 /**
  * Returns a list of audience generation jobs.
  */
-export const listAudienceGenerationJobs: API.OperationMethod<
+export const listAudienceGenerationJobs: API.PaginatedOperationMethod<
   ListAudienceGenerationJobsRequest,
   ListAudienceGenerationJobsResponse,
   ListAudienceGenerationJobsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAudienceGenerationJobsRequest,
-  ) => stream.Stream<
-    ListAudienceGenerationJobsResponse,
-    ListAudienceGenerationJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAudienceGenerationJobsRequest,
-  ) => stream.Stream<
-    AudienceGenerationJobSummary,
-    ListAudienceGenerationJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  AudienceGenerationJobSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListAudienceGenerationJobsRequest,
   output: ListAudienceGenerationJobsResponse,
   errors: [AccessDeniedException, ValidationException],
@@ -5413,27 +5363,7 @@ export const listAudienceGenerationJobs: API.OperationMethod<
     items: "audienceGenerationJobs",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListAudienceGenerationJobsRequest,
-  ListAudienceGenerationJobsResponse,
-  ListAudienceGenerationJobsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAudienceGenerationJobsRequest,
-  ) => stream.Stream<
-    ListAudienceGenerationJobsResponse,
-    ListAudienceGenerationJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAudienceGenerationJobsRequest,
-  ) => stream.Stream<
-    AudienceGenerationJobSummary,
-    ListAudienceGenerationJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListAudienceModelsError =
   | AccessDeniedException
@@ -5442,27 +5372,13 @@ export type ListAudienceModelsError =
 /**
  * Returns a list of audience models.
  */
-export const listAudienceModels: API.OperationMethod<
+export const listAudienceModels: API.PaginatedOperationMethod<
   ListAudienceModelsRequest,
   ListAudienceModelsResponse,
   ListAudienceModelsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAudienceModelsRequest,
-  ) => stream.Stream<
-    ListAudienceModelsResponse,
-    ListAudienceModelsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAudienceModelsRequest,
-  ) => stream.Stream<
-    AudienceModelSummary,
-    ListAudienceModelsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  AudienceModelSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListAudienceModelsRequest,
   output: ListAudienceModelsResponse,
   errors: [AccessDeniedException, ValidationException],
@@ -5475,27 +5391,7 @@ export const listAudienceModels: API.OperationMethod<
     items: "audienceModels",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListAudienceModelsRequest,
-  ListAudienceModelsResponse,
-  ListAudienceModelsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAudienceModelsRequest,
-  ) => stream.Stream<
-    ListAudienceModelsResponse,
-    ListAudienceModelsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAudienceModelsRequest,
-  ) => stream.Stream<
-    AudienceModelSummary,
-    ListAudienceModelsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListCollaborationConfiguredModelAlgorithmAssociationsError =
   | AccessDeniedException
@@ -5505,27 +5401,13 @@ export type ListCollaborationConfiguredModelAlgorithmAssociationsError =
 /**
  * Returns a list of the configured model algorithm associations in a collaboration.
  */
-export const listCollaborationConfiguredModelAlgorithmAssociations: API.OperationMethod<
+export const listCollaborationConfiguredModelAlgorithmAssociations: API.PaginatedOperationMethod<
   ListCollaborationConfiguredModelAlgorithmAssociationsRequest,
   ListCollaborationConfiguredModelAlgorithmAssociationsResponse,
   ListCollaborationConfiguredModelAlgorithmAssociationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCollaborationConfiguredModelAlgorithmAssociationsRequest,
-  ) => stream.Stream<
-    ListCollaborationConfiguredModelAlgorithmAssociationsResponse,
-    ListCollaborationConfiguredModelAlgorithmAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCollaborationConfiguredModelAlgorithmAssociationsRequest,
-  ) => stream.Stream<
-    CollaborationConfiguredModelAlgorithmAssociationSummary,
-    ListCollaborationConfiguredModelAlgorithmAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  CollaborationConfiguredModelAlgorithmAssociationSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListCollaborationConfiguredModelAlgorithmAssociationsRequest,
   output: ListCollaborationConfiguredModelAlgorithmAssociationsResponse,
   errors: [AccessDeniedException, ThrottlingException, ValidationException],
@@ -5538,27 +5420,7 @@ export const listCollaborationConfiguredModelAlgorithmAssociations: API.Operatio
     items: "collaborationConfiguredModelAlgorithmAssociations",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListCollaborationConfiguredModelAlgorithmAssociationsRequest,
-  ListCollaborationConfiguredModelAlgorithmAssociationsResponse,
-  ListCollaborationConfiguredModelAlgorithmAssociationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCollaborationConfiguredModelAlgorithmAssociationsRequest,
-  ) => stream.Stream<
-    ListCollaborationConfiguredModelAlgorithmAssociationsResponse,
-    ListCollaborationConfiguredModelAlgorithmAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCollaborationConfiguredModelAlgorithmAssociationsRequest,
-  ) => stream.Stream<
-    CollaborationConfiguredModelAlgorithmAssociationSummary,
-    ListCollaborationConfiguredModelAlgorithmAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListCollaborationMLInputChannelsError =
   | AccessDeniedException
@@ -5568,27 +5430,13 @@ export type ListCollaborationMLInputChannelsError =
 /**
  * Returns a list of the ML input channels in a collaboration.
  */
-export const listCollaborationMLInputChannels: API.OperationMethod<
+export const listCollaborationMLInputChannels: API.PaginatedOperationMethod<
   ListCollaborationMLInputChannelsRequest,
   ListCollaborationMLInputChannelsResponse,
   ListCollaborationMLInputChannelsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCollaborationMLInputChannelsRequest,
-  ) => stream.Stream<
-    ListCollaborationMLInputChannelsResponse,
-    ListCollaborationMLInputChannelsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCollaborationMLInputChannelsRequest,
-  ) => stream.Stream<
-    CollaborationMLInputChannelSummary,
-    ListCollaborationMLInputChannelsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  CollaborationMLInputChannelSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListCollaborationMLInputChannelsRequest,
   output: ListCollaborationMLInputChannelsResponse,
   errors: [AccessDeniedException, ThrottlingException, ValidationException],
@@ -5601,27 +5449,7 @@ export const listCollaborationMLInputChannels: API.OperationMethod<
     items: "collaborationMLInputChannelsList",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListCollaborationMLInputChannelsRequest,
-  ListCollaborationMLInputChannelsResponse,
-  ListCollaborationMLInputChannelsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCollaborationMLInputChannelsRequest,
-  ) => stream.Stream<
-    ListCollaborationMLInputChannelsResponse,
-    ListCollaborationMLInputChannelsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCollaborationMLInputChannelsRequest,
-  ) => stream.Stream<
-    CollaborationMLInputChannelSummary,
-    ListCollaborationMLInputChannelsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListCollaborationTrainedModelExportJobsError =
   | AccessDeniedException
@@ -5631,27 +5459,13 @@ export type ListCollaborationTrainedModelExportJobsError =
 /**
  * Returns a list of the export jobs for a trained model in a collaboration.
  */
-export const listCollaborationTrainedModelExportJobs: API.OperationMethod<
+export const listCollaborationTrainedModelExportJobs: API.PaginatedOperationMethod<
   ListCollaborationTrainedModelExportJobsRequest,
   ListCollaborationTrainedModelExportJobsResponse,
   ListCollaborationTrainedModelExportJobsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCollaborationTrainedModelExportJobsRequest,
-  ) => stream.Stream<
-    ListCollaborationTrainedModelExportJobsResponse,
-    ListCollaborationTrainedModelExportJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCollaborationTrainedModelExportJobsRequest,
-  ) => stream.Stream<
-    CollaborationTrainedModelExportJobSummary,
-    ListCollaborationTrainedModelExportJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  CollaborationTrainedModelExportJobSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListCollaborationTrainedModelExportJobsRequest,
   output: ListCollaborationTrainedModelExportJobsResponse,
   errors: [AccessDeniedException, ThrottlingException, ValidationException],
@@ -5664,27 +5478,7 @@ export const listCollaborationTrainedModelExportJobs: API.OperationMethod<
     items: "collaborationTrainedModelExportJobs",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListCollaborationTrainedModelExportJobsRequest,
-  ListCollaborationTrainedModelExportJobsResponse,
-  ListCollaborationTrainedModelExportJobsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCollaborationTrainedModelExportJobsRequest,
-  ) => stream.Stream<
-    ListCollaborationTrainedModelExportJobsResponse,
-    ListCollaborationTrainedModelExportJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCollaborationTrainedModelExportJobsRequest,
-  ) => stream.Stream<
-    CollaborationTrainedModelExportJobSummary,
-    ListCollaborationTrainedModelExportJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListCollaborationTrainedModelInferenceJobsError =
   | AccessDeniedException
@@ -5694,27 +5488,13 @@ export type ListCollaborationTrainedModelInferenceJobsError =
 /**
  * Returns a list of trained model inference jobs in a specified collaboration.
  */
-export const listCollaborationTrainedModelInferenceJobs: API.OperationMethod<
+export const listCollaborationTrainedModelInferenceJobs: API.PaginatedOperationMethod<
   ListCollaborationTrainedModelInferenceJobsRequest,
   ListCollaborationTrainedModelInferenceJobsResponse,
   ListCollaborationTrainedModelInferenceJobsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCollaborationTrainedModelInferenceJobsRequest,
-  ) => stream.Stream<
-    ListCollaborationTrainedModelInferenceJobsResponse,
-    ListCollaborationTrainedModelInferenceJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCollaborationTrainedModelInferenceJobsRequest,
-  ) => stream.Stream<
-    CollaborationTrainedModelInferenceJobSummary,
-    ListCollaborationTrainedModelInferenceJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  CollaborationTrainedModelInferenceJobSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListCollaborationTrainedModelInferenceJobsRequest,
   output: ListCollaborationTrainedModelInferenceJobsResponse,
   errors: [AccessDeniedException, ThrottlingException, ValidationException],
@@ -5727,27 +5507,7 @@ export const listCollaborationTrainedModelInferenceJobs: API.OperationMethod<
     items: "collaborationTrainedModelInferenceJobs",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListCollaborationTrainedModelInferenceJobsRequest,
-  ListCollaborationTrainedModelInferenceJobsResponse,
-  ListCollaborationTrainedModelInferenceJobsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCollaborationTrainedModelInferenceJobsRequest,
-  ) => stream.Stream<
-    ListCollaborationTrainedModelInferenceJobsResponse,
-    ListCollaborationTrainedModelInferenceJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCollaborationTrainedModelInferenceJobsRequest,
-  ) => stream.Stream<
-    CollaborationTrainedModelInferenceJobSummary,
-    ListCollaborationTrainedModelInferenceJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListCollaborationTrainedModelsError =
   | AccessDeniedException
@@ -5757,27 +5517,13 @@ export type ListCollaborationTrainedModelsError =
 /**
  * Returns a list of the trained models in a collaboration.
  */
-export const listCollaborationTrainedModels: API.OperationMethod<
+export const listCollaborationTrainedModels: API.PaginatedOperationMethod<
   ListCollaborationTrainedModelsRequest,
   ListCollaborationTrainedModelsResponse,
   ListCollaborationTrainedModelsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCollaborationTrainedModelsRequest,
-  ) => stream.Stream<
-    ListCollaborationTrainedModelsResponse,
-    ListCollaborationTrainedModelsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCollaborationTrainedModelsRequest,
-  ) => stream.Stream<
-    CollaborationTrainedModelSummary,
-    ListCollaborationTrainedModelsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  CollaborationTrainedModelSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListCollaborationTrainedModelsRequest,
   output: ListCollaborationTrainedModelsResponse,
   errors: [AccessDeniedException, ThrottlingException, ValidationException],
@@ -5790,27 +5536,7 @@ export const listCollaborationTrainedModels: API.OperationMethod<
     items: "collaborationTrainedModels",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListCollaborationTrainedModelsRequest,
-  ListCollaborationTrainedModelsResponse,
-  ListCollaborationTrainedModelsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCollaborationTrainedModelsRequest,
-  ) => stream.Stream<
-    ListCollaborationTrainedModelsResponse,
-    ListCollaborationTrainedModelsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCollaborationTrainedModelsRequest,
-  ) => stream.Stream<
-    CollaborationTrainedModelSummary,
-    ListCollaborationTrainedModelsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListConfiguredAudienceModelsError =
   | AccessDeniedException
@@ -5819,27 +5545,13 @@ export type ListConfiguredAudienceModelsError =
 /**
  * Returns a list of the configured audience models.
  */
-export const listConfiguredAudienceModels: API.OperationMethod<
+export const listConfiguredAudienceModels: API.PaginatedOperationMethod<
   ListConfiguredAudienceModelsRequest,
   ListConfiguredAudienceModelsResponse,
   ListConfiguredAudienceModelsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListConfiguredAudienceModelsRequest,
-  ) => stream.Stream<
-    ListConfiguredAudienceModelsResponse,
-    ListConfiguredAudienceModelsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListConfiguredAudienceModelsRequest,
-  ) => stream.Stream<
-    ConfiguredAudienceModelSummary,
-    ListConfiguredAudienceModelsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ConfiguredAudienceModelSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListConfiguredAudienceModelsRequest,
   output: ListConfiguredAudienceModelsResponse,
   errors: [AccessDeniedException, ValidationException],
@@ -5852,27 +5564,7 @@ export const listConfiguredAudienceModels: API.OperationMethod<
     items: "configuredAudienceModels",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListConfiguredAudienceModelsRequest,
-  ListConfiguredAudienceModelsResponse,
-  ListConfiguredAudienceModelsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListConfiguredAudienceModelsRequest,
-  ) => stream.Stream<
-    ListConfiguredAudienceModelsResponse,
-    ListConfiguredAudienceModelsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListConfiguredAudienceModelsRequest,
-  ) => stream.Stream<
-    ConfiguredAudienceModelSummary,
-    ListConfiguredAudienceModelsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListConfiguredModelAlgorithmAssociationsError =
   | AccessDeniedException
@@ -5882,27 +5574,13 @@ export type ListConfiguredModelAlgorithmAssociationsError =
 /**
  * Returns a list of configured model algorithm associations.
  */
-export const listConfiguredModelAlgorithmAssociations: API.OperationMethod<
+export const listConfiguredModelAlgorithmAssociations: API.PaginatedOperationMethod<
   ListConfiguredModelAlgorithmAssociationsRequest,
   ListConfiguredModelAlgorithmAssociationsResponse,
   ListConfiguredModelAlgorithmAssociationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListConfiguredModelAlgorithmAssociationsRequest,
-  ) => stream.Stream<
-    ListConfiguredModelAlgorithmAssociationsResponse,
-    ListConfiguredModelAlgorithmAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListConfiguredModelAlgorithmAssociationsRequest,
-  ) => stream.Stream<
-    ConfiguredModelAlgorithmAssociationSummary,
-    ListConfiguredModelAlgorithmAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ConfiguredModelAlgorithmAssociationSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListConfiguredModelAlgorithmAssociationsRequest,
   output: ListConfiguredModelAlgorithmAssociationsResponse,
   errors: [AccessDeniedException, ThrottlingException, ValidationException],
@@ -5915,27 +5593,7 @@ export const listConfiguredModelAlgorithmAssociations: API.OperationMethod<
     items: "configuredModelAlgorithmAssociations",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListConfiguredModelAlgorithmAssociationsRequest,
-  ListConfiguredModelAlgorithmAssociationsResponse,
-  ListConfiguredModelAlgorithmAssociationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListConfiguredModelAlgorithmAssociationsRequest,
-  ) => stream.Stream<
-    ListConfiguredModelAlgorithmAssociationsResponse,
-    ListConfiguredModelAlgorithmAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListConfiguredModelAlgorithmAssociationsRequest,
-  ) => stream.Stream<
-    ConfiguredModelAlgorithmAssociationSummary,
-    ListConfiguredModelAlgorithmAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListConfiguredModelAlgorithmsError =
   | AccessDeniedException
@@ -5944,27 +5602,13 @@ export type ListConfiguredModelAlgorithmsError =
 /**
  * Returns a list of configured model algorithms.
  */
-export const listConfiguredModelAlgorithms: API.OperationMethod<
+export const listConfiguredModelAlgorithms: API.PaginatedOperationMethod<
   ListConfiguredModelAlgorithmsRequest,
   ListConfiguredModelAlgorithmsResponse,
   ListConfiguredModelAlgorithmsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListConfiguredModelAlgorithmsRequest,
-  ) => stream.Stream<
-    ListConfiguredModelAlgorithmsResponse,
-    ListConfiguredModelAlgorithmsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListConfiguredModelAlgorithmsRequest,
-  ) => stream.Stream<
-    ConfiguredModelAlgorithmSummary,
-    ListConfiguredModelAlgorithmsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ConfiguredModelAlgorithmSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListConfiguredModelAlgorithmsRequest,
   output: ListConfiguredModelAlgorithmsResponse,
   errors: [AccessDeniedException, ValidationException],
@@ -5977,27 +5621,7 @@ export const listConfiguredModelAlgorithms: API.OperationMethod<
     items: "configuredModelAlgorithms",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListConfiguredModelAlgorithmsRequest,
-  ListConfiguredModelAlgorithmsResponse,
-  ListConfiguredModelAlgorithmsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListConfiguredModelAlgorithmsRequest,
-  ) => stream.Stream<
-    ListConfiguredModelAlgorithmsResponse,
-    ListConfiguredModelAlgorithmsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListConfiguredModelAlgorithmsRequest,
-  ) => stream.Stream<
-    ConfiguredModelAlgorithmSummary,
-    ListConfiguredModelAlgorithmsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListMLInputChannelsError =
   | AccessDeniedException
@@ -6007,27 +5631,13 @@ export type ListMLInputChannelsError =
 /**
  * Returns a list of ML input channels.
  */
-export const listMLInputChannels: API.OperationMethod<
+export const listMLInputChannels: API.PaginatedOperationMethod<
   ListMLInputChannelsRequest,
   ListMLInputChannelsResponse,
   ListMLInputChannelsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListMLInputChannelsRequest,
-  ) => stream.Stream<
-    ListMLInputChannelsResponse,
-    ListMLInputChannelsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListMLInputChannelsRequest,
-  ) => stream.Stream<
-    MLInputChannelSummary,
-    ListMLInputChannelsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  MLInputChannelSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListMLInputChannelsRequest,
   output: ListMLInputChannelsResponse,
   errors: [AccessDeniedException, ThrottlingException, ValidationException],
@@ -6040,27 +5650,7 @@ export const listMLInputChannels: API.OperationMethod<
     items: "mlInputChannelsList",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListMLInputChannelsRequest,
-  ListMLInputChannelsResponse,
-  ListMLInputChannelsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListMLInputChannelsRequest,
-  ) => stream.Stream<
-    ListMLInputChannelsResponse,
-    ListMLInputChannelsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListMLInputChannelsRequest,
-  ) => stream.Stream<
-    MLInputChannelSummary,
-    ListMLInputChannelsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsForResourceError =
   | AccessDeniedException
@@ -6074,7 +5664,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceRequest,
   ListTagsForResourceResponse,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -6096,27 +5686,13 @@ export type ListTrainedModelInferenceJobsError =
 /**
  * Returns a list of trained model inference jobs that match the request parameters.
  */
-export const listTrainedModelInferenceJobs: API.OperationMethod<
+export const listTrainedModelInferenceJobs: API.PaginatedOperationMethod<
   ListTrainedModelInferenceJobsRequest,
   ListTrainedModelInferenceJobsResponse,
   ListTrainedModelInferenceJobsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTrainedModelInferenceJobsRequest,
-  ) => stream.Stream<
-    ListTrainedModelInferenceJobsResponse,
-    ListTrainedModelInferenceJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTrainedModelInferenceJobsRequest,
-  ) => stream.Stream<
-    TrainedModelInferenceJobSummary,
-    ListTrainedModelInferenceJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  TrainedModelInferenceJobSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListTrainedModelInferenceJobsRequest,
   output: ListTrainedModelInferenceJobsResponse,
   errors: [AccessDeniedException, ThrottlingException, ValidationException],
@@ -6129,27 +5705,7 @@ export const listTrainedModelInferenceJobs: API.OperationMethod<
     items: "trainedModelInferenceJobs",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListTrainedModelInferenceJobsRequest,
-  ListTrainedModelInferenceJobsResponse,
-  ListTrainedModelInferenceJobsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTrainedModelInferenceJobsRequest,
-  ) => stream.Stream<
-    ListTrainedModelInferenceJobsResponse,
-    ListTrainedModelInferenceJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTrainedModelInferenceJobsRequest,
-  ) => stream.Stream<
-    TrainedModelInferenceJobSummary,
-    ListTrainedModelInferenceJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTrainedModelsError =
   | AccessDeniedException
@@ -6159,27 +5715,13 @@ export type ListTrainedModelsError =
 /**
  * Returns a list of trained models.
  */
-export const listTrainedModels: API.OperationMethod<
+export const listTrainedModels: API.PaginatedOperationMethod<
   ListTrainedModelsRequest,
   ListTrainedModelsResponse,
   ListTrainedModelsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTrainedModelsRequest,
-  ) => stream.Stream<
-    ListTrainedModelsResponse,
-    ListTrainedModelsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTrainedModelsRequest,
-  ) => stream.Stream<
-    TrainedModelSummary,
-    ListTrainedModelsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  TrainedModelSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListTrainedModelsRequest,
   output: ListTrainedModelsResponse,
   errors: [AccessDeniedException, ThrottlingException, ValidationException],
@@ -6192,27 +5734,7 @@ export const listTrainedModels: API.OperationMethod<
     items: "trainedModels",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListTrainedModelsRequest,
-  ListTrainedModelsResponse,
-  ListTrainedModelsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTrainedModelsRequest,
-  ) => stream.Stream<
-    ListTrainedModelsResponse,
-    ListTrainedModelsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTrainedModelsRequest,
-  ) => stream.Stream<
-    TrainedModelSummary,
-    ListTrainedModelsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTrainedModelVersionsError =
   | AccessDeniedException
@@ -6223,27 +5745,13 @@ export type ListTrainedModelVersionsError =
 /**
  * Returns a list of trained model versions for a specified trained model. This operation allows you to view all versions of a trained model, including information about their status and creation details. You can use this to track the evolution of your trained models and select specific versions for inference or further training.
  */
-export const listTrainedModelVersions: API.OperationMethod<
+export const listTrainedModelVersions: API.PaginatedOperationMethod<
   ListTrainedModelVersionsRequest,
   ListTrainedModelVersionsResponse,
   ListTrainedModelVersionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTrainedModelVersionsRequest,
-  ) => stream.Stream<
-    ListTrainedModelVersionsResponse,
-    ListTrainedModelVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTrainedModelVersionsRequest,
-  ) => stream.Stream<
-    TrainedModelSummary,
-    ListTrainedModelVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  TrainedModelSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListTrainedModelVersionsRequest,
   output: ListTrainedModelVersionsResponse,
   errors: [
@@ -6261,27 +5769,7 @@ export const listTrainedModelVersions: API.OperationMethod<
     items: "trainedModels",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListTrainedModelVersionsRequest,
-  ListTrainedModelVersionsResponse,
-  ListTrainedModelVersionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTrainedModelVersionsRequest,
-  ) => stream.Stream<
-    ListTrainedModelVersionsResponse,
-    ListTrainedModelVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTrainedModelVersionsRequest,
-  ) => stream.Stream<
-    TrainedModelSummary,
-    ListTrainedModelVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTrainingDatasetsError =
   | AccessDeniedException
@@ -6290,27 +5778,13 @@ export type ListTrainingDatasetsError =
 /**
  * Returns a list of training datasets.
  */
-export const listTrainingDatasets: API.OperationMethod<
+export const listTrainingDatasets: API.PaginatedOperationMethod<
   ListTrainingDatasetsRequest,
   ListTrainingDatasetsResponse,
   ListTrainingDatasetsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTrainingDatasetsRequest,
-  ) => stream.Stream<
-    ListTrainingDatasetsResponse,
-    ListTrainingDatasetsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTrainingDatasetsRequest,
-  ) => stream.Stream<
-    TrainingDatasetSummary,
-    ListTrainingDatasetsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  TrainingDatasetSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListTrainingDatasetsRequest,
   output: ListTrainingDatasetsResponse,
   errors: [AccessDeniedException, ValidationException],
@@ -6323,27 +5797,7 @@ export const listTrainingDatasets: API.OperationMethod<
     items: "trainingDatasets",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListTrainingDatasetsRequest,
-  ListTrainingDatasetsResponse,
-  ListTrainingDatasetsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTrainingDatasetsRequest,
-  ) => stream.Stream<
-    ListTrainingDatasetsResponse,
-    ListTrainingDatasetsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTrainingDatasetsRequest,
-  ) => stream.Stream<
-    TrainingDatasetSummary,
-    ListTrainingDatasetsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type PutConfiguredAudienceModelPolicyError =
   | AccessDeniedException
@@ -6357,7 +5811,7 @@ export const putConfiguredAudienceModelPolicy: API.OperationMethod<
   PutConfiguredAudienceModelPolicyRequest,
   PutConfiguredAudienceModelPolicyResponse,
   PutConfiguredAudienceModelPolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutConfiguredAudienceModelPolicyRequest,
   output: PutConfiguredAudienceModelPolicyResponse,
@@ -6383,7 +5837,7 @@ export const putMLConfiguration: API.OperationMethod<
   PutMLConfigurationRequest,
   PutMLConfigurationResponse,
   PutMLConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutMLConfigurationRequest,
   output: PutMLConfigurationResponse,
@@ -6407,7 +5861,7 @@ export const startAudienceExportJob: API.OperationMethod<
   StartAudienceExportJobRequest,
   StartAudienceExportJobResponse,
   StartAudienceExportJobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartAudienceExportJobRequest,
   output: StartAudienceExportJobResponse,
@@ -6438,7 +5892,7 @@ export const startAudienceGenerationJob: API.OperationMethod<
   StartAudienceGenerationJobRequest,
   StartAudienceGenerationJobResponse,
   StartAudienceGenerationJobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartAudienceGenerationJobRequest,
   output: StartAudienceGenerationJobResponse,
@@ -6469,7 +5923,7 @@ export const startTrainedModelExportJob: API.OperationMethod<
   StartTrainedModelExportJobRequest,
   StartTrainedModelExportJobResponse,
   StartTrainedModelExportJobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartTrainedModelExportJobRequest,
   output: StartTrainedModelExportJobResponse,
@@ -6500,7 +5954,7 @@ export const startTrainedModelInferenceJob: API.OperationMethod<
   StartTrainedModelInferenceJobRequest,
   StartTrainedModelInferenceJobResponse,
   StartTrainedModelInferenceJobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartTrainedModelInferenceJobRequest,
   output: StartTrainedModelInferenceJobResponse,
@@ -6529,7 +5983,7 @@ export const tagResource: API.OperationMethod<
   TagResourceRequest,
   TagResourceResponse,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -6555,7 +6009,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceRequest,
   UntagResourceResponse,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -6582,7 +6036,7 @@ export const updateConfiguredAudienceModel: API.OperationMethod<
   UpdateConfiguredAudienceModelRequest,
   UpdateConfiguredAudienceModelResponse,
   UpdateConfiguredAudienceModelError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateConfiguredAudienceModelRequest,
   output: UpdateConfiguredAudienceModelResponse,

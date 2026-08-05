@@ -1,6 +1,5 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -8,7 +7,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 const ns = T.XmlNamespace("http://codedeploy.amazonaws.com/doc/2014-10-06/");
 const svc = T.AwsApiService({
   sdkId: "CodeDeploy",
@@ -89,552 +87,552 @@ const rules = T.EndpointResolver((p, _) => {
 export class AlarmsLimitExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<AlarmsLimitExceededException>()(
     "AlarmsLimitExceededException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class ApplicationAlreadyExistsException
   extends /*@__PURE__*/ S.TaggedErrorClass<ApplicationAlreadyExistsException>()(
     "ApplicationAlreadyExistsException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ).pipe(C.withAlreadyExistsError) {}
 export class ApplicationDoesNotExistException
   extends /*@__PURE__*/ S.TaggedErrorClass<ApplicationDoesNotExistException>()(
     "ApplicationDoesNotExistException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class ApplicationLimitExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<ApplicationLimitExceededException>()(
     "ApplicationLimitExceededException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class ApplicationNameRequiredException
   extends /*@__PURE__*/ S.TaggedErrorClass<ApplicationNameRequiredException>()(
     "ApplicationNameRequiredException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class ArnNotSupportedException
   extends /*@__PURE__*/ S.TaggedErrorClass<ArnNotSupportedException>()(
     "ArnNotSupportedException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class BatchLimitExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<BatchLimitExceededException>()(
     "BatchLimitExceededException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class BucketNameFilterRequiredException
   extends /*@__PURE__*/ S.TaggedErrorClass<BucketNameFilterRequiredException>()(
     "BucketNameFilterRequiredException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class DeploymentAlreadyCompletedException
   extends /*@__PURE__*/ S.TaggedErrorClass<DeploymentAlreadyCompletedException>()(
     "DeploymentAlreadyCompletedException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class DeploymentConfigAlreadyExistsException
   extends /*@__PURE__*/ S.TaggedErrorClass<DeploymentConfigAlreadyExistsException>()(
     "DeploymentConfigAlreadyExistsException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ).pipe(C.withAlreadyExistsError) {}
 export class DeploymentConfigDoesNotExistException
   extends /*@__PURE__*/ S.TaggedErrorClass<DeploymentConfigDoesNotExistException>()(
     "DeploymentConfigDoesNotExistException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class DeploymentConfigInUseException
   extends /*@__PURE__*/ S.TaggedErrorClass<DeploymentConfigInUseException>()(
     "DeploymentConfigInUseException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class DeploymentConfigLimitExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<DeploymentConfigLimitExceededException>()(
     "DeploymentConfigLimitExceededException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class DeploymentConfigNameRequiredException
   extends /*@__PURE__*/ S.TaggedErrorClass<DeploymentConfigNameRequiredException>()(
     "DeploymentConfigNameRequiredException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class DeploymentDoesNotExistException
   extends /*@__PURE__*/ S.TaggedErrorClass<DeploymentDoesNotExistException>()(
     "DeploymentDoesNotExistException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class DeploymentGroupAlreadyExistsException
   extends /*@__PURE__*/ S.TaggedErrorClass<DeploymentGroupAlreadyExistsException>()(
     "DeploymentGroupAlreadyExistsException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ).pipe(C.withAlreadyExistsError) {}
 export class DeploymentGroupDoesNotExistException
   extends /*@__PURE__*/ S.TaggedErrorClass<DeploymentGroupDoesNotExistException>()(
     "DeploymentGroupDoesNotExistException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class DeploymentGroupLimitExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<DeploymentGroupLimitExceededException>()(
     "DeploymentGroupLimitExceededException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class DeploymentGroupNameRequiredException
   extends /*@__PURE__*/ S.TaggedErrorClass<DeploymentGroupNameRequiredException>()(
     "DeploymentGroupNameRequiredException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class DeploymentIdRequiredException
   extends /*@__PURE__*/ S.TaggedErrorClass<DeploymentIdRequiredException>()(
     "DeploymentIdRequiredException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class DeploymentIsNotInReadyStateException
   extends /*@__PURE__*/ S.TaggedErrorClass<DeploymentIsNotInReadyStateException>()(
     "DeploymentIsNotInReadyStateException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class DeploymentLimitExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<DeploymentLimitExceededException>()(
     "DeploymentLimitExceededException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class DeploymentNotStartedException
   extends /*@__PURE__*/ S.TaggedErrorClass<DeploymentNotStartedException>()(
     "DeploymentNotStartedException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class DeploymentTargetDoesNotExistException
   extends /*@__PURE__*/ S.TaggedErrorClass<DeploymentTargetDoesNotExistException>()(
     "DeploymentTargetDoesNotExistException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class DeploymentTargetIdRequiredException
   extends /*@__PURE__*/ S.TaggedErrorClass<DeploymentTargetIdRequiredException>()(
     "DeploymentTargetIdRequiredException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class DeploymentTargetListSizeExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<DeploymentTargetListSizeExceededException>()(
     "DeploymentTargetListSizeExceededException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class DescriptionTooLongException
   extends /*@__PURE__*/ S.TaggedErrorClass<DescriptionTooLongException>()(
     "DescriptionTooLongException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class ECSServiceMappingLimitExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<ECSServiceMappingLimitExceededException>()(
     "ECSServiceMappingLimitExceededException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class GitHubAccountTokenDoesNotExistException
   extends /*@__PURE__*/ S.TaggedErrorClass<GitHubAccountTokenDoesNotExistException>()(
     "GitHubAccountTokenDoesNotExistException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class GitHubAccountTokenNameRequiredException
   extends /*@__PURE__*/ S.TaggedErrorClass<GitHubAccountTokenNameRequiredException>()(
     "GitHubAccountTokenNameRequiredException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class IamArnRequiredException
   extends /*@__PURE__*/ S.TaggedErrorClass<IamArnRequiredException>()(
     "IamArnRequiredException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class IamSessionArnAlreadyRegisteredException
   extends /*@__PURE__*/ S.TaggedErrorClass<IamSessionArnAlreadyRegisteredException>()(
     "IamSessionArnAlreadyRegisteredException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class IamUserArnAlreadyRegisteredException
   extends /*@__PURE__*/ S.TaggedErrorClass<IamUserArnAlreadyRegisteredException>()(
     "IamUserArnAlreadyRegisteredException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class IamUserArnRequiredException
   extends /*@__PURE__*/ S.TaggedErrorClass<IamUserArnRequiredException>()(
     "IamUserArnRequiredException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InstanceDoesNotExistException
   extends /*@__PURE__*/ S.TaggedErrorClass<InstanceDoesNotExistException>()(
     "InstanceDoesNotExistException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InstanceIdRequiredException
   extends /*@__PURE__*/ S.TaggedErrorClass<InstanceIdRequiredException>()(
     "InstanceIdRequiredException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InstanceLimitExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<InstanceLimitExceededException>()(
     "InstanceLimitExceededException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InstanceNameAlreadyRegisteredException
   extends /*@__PURE__*/ S.TaggedErrorClass<InstanceNameAlreadyRegisteredException>()(
     "InstanceNameAlreadyRegisteredException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InstanceNameRequiredException
   extends /*@__PURE__*/ S.TaggedErrorClass<InstanceNameRequiredException>()(
     "InstanceNameRequiredException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InstanceNotRegisteredException
   extends /*@__PURE__*/ S.TaggedErrorClass<InstanceNotRegisteredException>()(
     "InstanceNotRegisteredException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidAlarmConfigException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidAlarmConfigException>()(
     "InvalidAlarmConfigException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidApplicationNameException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidApplicationNameException>()(
     "InvalidApplicationNameException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidArnException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidArnException>()(
     "InvalidArnException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidAutoRollbackConfigException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidAutoRollbackConfigException>()(
     "InvalidAutoRollbackConfigException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidAutoScalingGroupException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidAutoScalingGroupException>()(
     "InvalidAutoScalingGroupException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidBlueGreenDeploymentConfigurationException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidBlueGreenDeploymentConfigurationException>()(
     "InvalidBlueGreenDeploymentConfigurationException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidBucketNameFilterException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidBucketNameFilterException>()(
     "InvalidBucketNameFilterException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidComputePlatformException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidComputePlatformException>()(
     "InvalidComputePlatformException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidDeployedStateFilterException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidDeployedStateFilterException>()(
     "InvalidDeployedStateFilterException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidDeploymentConfigNameException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidDeploymentConfigNameException>()(
     "InvalidDeploymentConfigNameException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidDeploymentGroupNameException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidDeploymentGroupNameException>()(
     "InvalidDeploymentGroupNameException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidDeploymentIdException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidDeploymentIdException>()(
     "InvalidDeploymentIdException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidDeploymentInstanceTypeException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidDeploymentInstanceTypeException>()(
     "InvalidDeploymentInstanceTypeException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidDeploymentStatusException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidDeploymentStatusException>()(
     "InvalidDeploymentStatusException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidDeploymentStyleException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidDeploymentStyleException>()(
     "InvalidDeploymentStyleException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidDeploymentTargetIdException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidDeploymentTargetIdException>()(
     "InvalidDeploymentTargetIdException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidDeploymentWaitTypeException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidDeploymentWaitTypeException>()(
     "InvalidDeploymentWaitTypeException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidEC2TagCombinationException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidEC2TagCombinationException>()(
     "InvalidEC2TagCombinationException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidEC2TagException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidEC2TagException>()(
     "InvalidEC2TagException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidECSServiceException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidECSServiceException>()(
     "InvalidECSServiceException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidExternalIdException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidExternalIdException>()(
     "InvalidExternalIdException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidFileExistsBehaviorException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidFileExistsBehaviorException>()(
     "InvalidFileExistsBehaviorException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidGitHubAccountTokenException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidGitHubAccountTokenException>()(
     "InvalidGitHubAccountTokenException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidGitHubAccountTokenNameException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidGitHubAccountTokenNameException>()(
     "InvalidGitHubAccountTokenNameException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidIamSessionArnException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidIamSessionArnException>()(
     "InvalidIamSessionArnException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidIamUserArnException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidIamUserArnException>()(
     "InvalidIamUserArnException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidIgnoreApplicationStopFailuresValueException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidIgnoreApplicationStopFailuresValueException>()(
     "InvalidIgnoreApplicationStopFailuresValueException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidInputException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidInputException>()(
     "InvalidInputException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidInstanceNameException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidInstanceNameException>()(
     "InvalidInstanceNameException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidInstanceStatusException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidInstanceStatusException>()(
     "InvalidInstanceStatusException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidInstanceTypeException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidInstanceTypeException>()(
     "InvalidInstanceTypeException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidKeyPrefixFilterException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidKeyPrefixFilterException>()(
     "InvalidKeyPrefixFilterException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidLifecycleEventHookExecutionIdException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidLifecycleEventHookExecutionIdException>()(
     "InvalidLifecycleEventHookExecutionIdException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidLifecycleEventHookExecutionStatusException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidLifecycleEventHookExecutionStatusException>()(
     "InvalidLifecycleEventHookExecutionStatusException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidLoadBalancerInfoException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidLoadBalancerInfoException>()(
     "InvalidLoadBalancerInfoException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidMinimumHealthyHostValueException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidMinimumHealthyHostValueException>()(
     "InvalidMinimumHealthyHostValueException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidNextTokenException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidNextTokenException>()(
     "InvalidNextTokenException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidOnPremisesTagCombinationException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidOnPremisesTagCombinationException>()(
     "InvalidOnPremisesTagCombinationException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidOperationException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidOperationException>()(
     "InvalidOperationException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidRegistrationStatusException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidRegistrationStatusException>()(
     "InvalidRegistrationStatusException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidRevisionException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidRevisionException>()(
     "InvalidRevisionException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidRoleException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidRoleException>()(
     "InvalidRoleException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidSortByException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidSortByException>()(
     "InvalidSortByException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidSortOrderException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidSortOrderException>()(
     "InvalidSortOrderException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidTagException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidTagException>()(
     "InvalidTagException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidTagFilterException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidTagFilterException>()(
     "InvalidTagFilterException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidTagsToAddException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidTagsToAddException>()(
     "InvalidTagsToAddException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidTargetFilterNameException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidTargetFilterNameException>()(
     "InvalidTargetFilterNameException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidTargetGroupPairException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidTargetGroupPairException>()(
     "InvalidTargetGroupPairException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidTargetInstancesException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidTargetInstancesException>()(
     "InvalidTargetInstancesException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidTimeRangeException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidTimeRangeException>()(
     "InvalidTimeRangeException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidTrafficRoutingConfigurationException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidTrafficRoutingConfigurationException>()(
     "InvalidTrafficRoutingConfigurationException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidTriggerConfigException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidTriggerConfigException>()(
     "InvalidTriggerConfigException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidUpdateOutdatedInstancesOnlyValueException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidUpdateOutdatedInstancesOnlyValueException>()(
     "InvalidUpdateOutdatedInstancesOnlyValueException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidZonalDeploymentConfigurationException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidZonalDeploymentConfigurationException>()(
     "InvalidZonalDeploymentConfigurationException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class LifecycleEventAlreadyCompletedException
   extends /*@__PURE__*/ S.TaggedErrorClass<LifecycleEventAlreadyCompletedException>()(
     "LifecycleEventAlreadyCompletedException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class LifecycleHookLimitExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<LifecycleHookLimitExceededException>()(
     "LifecycleHookLimitExceededException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class MultipleIamArnsProvidedException
   extends /*@__PURE__*/ S.TaggedErrorClass<MultipleIamArnsProvidedException>()(
     "MultipleIamArnsProvidedException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class OperationNotSupportedException
   extends /*@__PURE__*/ S.TaggedErrorClass<OperationNotSupportedException>()(
     "OperationNotSupportedException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class ResourceArnRequiredException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceArnRequiredException>()(
     "ResourceArnRequiredException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class ResourceValidationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceValidationException>()(
     "ResourceValidationException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class RevisionDoesNotExistException
   extends /*@__PURE__*/ S.TaggedErrorClass<RevisionDoesNotExistException>()(
     "RevisionDoesNotExistException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class RevisionRequiredException
   extends /*@__PURE__*/ S.TaggedErrorClass<RevisionRequiredException>()(
     "RevisionRequiredException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class RoleRequiredException
   extends /*@__PURE__*/ S.TaggedErrorClass<RoleRequiredException>()(
     "RoleRequiredException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class TagLimitExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<TagLimitExceededException>()(
     "TagLimitExceededException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class TagRequiredException
   extends /*@__PURE__*/ S.TaggedErrorClass<TagRequiredException>()(
     "TagRequiredException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class TagSetListLimitExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<TagSetListLimitExceededException>()(
     "TagSetListLimitExceededException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class ThrottlingException
   extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
     "ThrottlingException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class TriggerTargetsLimitExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<TriggerTargetsLimitExceededException>()(
     "TriggerTargetsLimitExceededException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class UnsupportedActionForDeploymentTypeException
   extends /*@__PURE__*/ S.TaggedErrorClass<UnsupportedActionForDeploymentTypeException>()(
     "UnsupportedActionForDeploymentTypeException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export type Key = string;
 export type Value = string;
@@ -3389,7 +3387,7 @@ export const addTagsToOnPremisesInstances: API.OperationMethod<
   AddTagsToOnPremisesInstancesInput,
   AddTagsToOnPremisesInstancesResponse,
   AddTagsToOnPremisesInstancesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AddTagsToOnPremisesInstancesInput,
   output: AddTagsToOnPremisesInstancesResponse,
@@ -3423,7 +3421,7 @@ export const batchGetApplicationRevisions: API.OperationMethod<
   BatchGetApplicationRevisionsInput,
   BatchGetApplicationRevisionsOutput,
   BatchGetApplicationRevisionsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchGetApplicationRevisionsInput,
   output: BatchGetApplicationRevisionsOutput,
@@ -3454,7 +3452,7 @@ export const batchGetApplications: API.OperationMethod<
   BatchGetApplicationsInput,
   BatchGetApplicationsOutput,
   BatchGetApplicationsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchGetApplicationsInput,
   output: BatchGetApplicationsOutput,
@@ -3485,7 +3483,7 @@ export const batchGetDeploymentGroups: API.OperationMethod<
   BatchGetDeploymentGroupsInput,
   BatchGetDeploymentGroupsOutput,
   BatchGetDeploymentGroupsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchGetDeploymentGroupsInput,
   output: BatchGetDeploymentGroupsOutput,
@@ -3525,7 +3523,7 @@ export const batchGetDeploymentInstances: API.OperationMethod<
   BatchGetDeploymentInstancesInput,
   BatchGetDeploymentInstancesOutput,
   BatchGetDeploymentInstancesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchGetDeploymentInstancesInput,
   output: BatchGetDeploymentInstancesOutput,
@@ -3556,7 +3554,7 @@ export const batchGetDeployments: API.OperationMethod<
   BatchGetDeploymentsInput,
   BatchGetDeploymentsOutput,
   BatchGetDeploymentsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchGetDeploymentsInput,
   output: BatchGetDeploymentsOutput,
@@ -3605,7 +3603,7 @@ export const batchGetDeploymentTargets: API.OperationMethod<
   BatchGetDeploymentTargetsInput,
   BatchGetDeploymentTargetsOutput,
   BatchGetDeploymentTargetsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchGetDeploymentTargetsInput,
   output: BatchGetDeploymentTargetsOutput,
@@ -3638,7 +3636,7 @@ export const batchGetOnPremisesInstances: API.OperationMethod<
   BatchGetOnPremisesInstancesInput,
   BatchGetOnPremisesInstancesOutput,
   BatchGetOnPremisesInstancesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchGetOnPremisesInstancesInput,
   output: BatchGetOnPremisesInstancesOutput,
@@ -3673,7 +3671,7 @@ export const continueDeployment: API.OperationMethod<
   ContinueDeploymentInput,
   ContinueDeploymentResponse,
   ContinueDeploymentError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ContinueDeploymentInput,
   output: ContinueDeploymentResponse,
@@ -3707,7 +3705,7 @@ export const createApplication: API.OperationMethod<
   CreateApplicationInput,
   CreateApplicationOutput,
   CreateApplicationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateApplicationInput,
   output: CreateApplicationOutput,
@@ -3759,7 +3757,7 @@ export const createDeployment: API.OperationMethod<
   CreateDeploymentInput,
   CreateDeploymentOutput,
   CreateDeploymentError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateDeploymentInput,
   output: CreateDeploymentOutput,
@@ -3813,7 +3811,7 @@ export const createDeploymentConfig: API.OperationMethod<
   CreateDeploymentConfigInput,
   CreateDeploymentConfigOutput,
   CreateDeploymentConfigError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateDeploymentConfigInput,
   output: CreateDeploymentConfigOutput,
@@ -3874,7 +3872,7 @@ export const createDeploymentGroup: API.OperationMethod<
   CreateDeploymentGroupInput,
   CreateDeploymentGroupOutput,
   CreateDeploymentGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateDeploymentGroupInput,
   output: CreateDeploymentGroupOutput,
@@ -3930,7 +3928,7 @@ export const deleteApplication: API.OperationMethod<
   DeleteApplicationInput,
   DeleteApplicationResponse,
   DeleteApplicationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteApplicationInput,
   output: DeleteApplicationResponse,
@@ -3960,7 +3958,7 @@ export const deleteDeploymentConfig: API.OperationMethod<
   DeleteDeploymentConfigInput,
   DeleteDeploymentConfigResponse,
   DeleteDeploymentConfigError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteDeploymentConfigInput,
   output: DeleteDeploymentConfigResponse,
@@ -3989,7 +3987,7 @@ export const deleteDeploymentGroup: API.OperationMethod<
   DeleteDeploymentGroupInput,
   DeleteDeploymentGroupOutput,
   DeleteDeploymentGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteDeploymentGroupInput,
   output: DeleteDeploymentGroupOutput,
@@ -4019,7 +4017,7 @@ export const deleteGitHubAccountToken: API.OperationMethod<
   DeleteGitHubAccountTokenInput,
   DeleteGitHubAccountTokenOutput,
   DeleteGitHubAccountTokenError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteGitHubAccountTokenInput,
   output: DeleteGitHubAccountTokenOutput,
@@ -4049,7 +4047,7 @@ export const deleteResourcesByExternalId: API.OperationMethod<
   DeleteResourcesByExternalIdInput,
   DeleteResourcesByExternalIdOutput,
   DeleteResourcesByExternalIdError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteResourcesByExternalIdInput,
   output: DeleteResourcesByExternalIdOutput,
@@ -4070,7 +4068,7 @@ export const deregisterOnPremisesInstance: API.OperationMethod<
   DeregisterOnPremisesInstanceInput,
   DeregisterOnPremisesInstanceResponse,
   DeregisterOnPremisesInstanceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeregisterOnPremisesInstanceInput,
   output: DeregisterOnPremisesInstanceResponse,
@@ -4092,7 +4090,7 @@ export const getApplication: API.OperationMethod<
   GetApplicationInput,
   GetApplicationOutput,
   GetApplicationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetApplicationInput,
   output: GetApplicationOutput,
@@ -4121,7 +4119,7 @@ export const getApplicationRevision: API.OperationMethod<
   GetApplicationRevisionInput,
   GetApplicationRevisionOutput,
   GetApplicationRevisionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetApplicationRevisionInput,
   output: GetApplicationRevisionOutput,
@@ -4155,7 +4153,7 @@ export const getDeployment: API.OperationMethod<
   GetDeploymentInput,
   GetDeploymentOutput,
   GetDeploymentError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetDeploymentInput,
   output: GetDeploymentOutput,
@@ -4182,7 +4180,7 @@ export const getDeploymentConfig: API.OperationMethod<
   GetDeploymentConfigInput,
   GetDeploymentConfigOutput,
   GetDeploymentConfigError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetDeploymentConfigInput,
   output: GetDeploymentConfigOutput,
@@ -4213,7 +4211,7 @@ export const getDeploymentGroup: API.OperationMethod<
   GetDeploymentGroupInput,
   GetDeploymentGroupOutput,
   GetDeploymentGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetDeploymentGroupInput,
   output: GetDeploymentGroupOutput,
@@ -4247,7 +4245,7 @@ export const getDeploymentInstance: API.OperationMethod<
   GetDeploymentInstanceInput,
   GetDeploymentInstanceOutput,
   GetDeploymentInstanceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetDeploymentInstanceInput,
   output: GetDeploymentInstanceOutput,
@@ -4282,7 +4280,7 @@ export const getDeploymentTarget: API.OperationMethod<
   GetDeploymentTargetInput,
   GetDeploymentTargetOutput,
   GetDeploymentTargetError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetDeploymentTargetInput,
   output: GetDeploymentTargetOutput,
@@ -4313,7 +4311,7 @@ export const getOnPremisesInstance: API.OperationMethod<
   GetOnPremisesInstanceInput,
   GetOnPremisesInstanceOutput,
   GetOnPremisesInstanceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetOnPremisesInstanceInput,
   output: GetOnPremisesInstanceOutput,
@@ -4342,27 +4340,13 @@ export type ListApplicationRevisionsError =
 /**
  * Lists information about revisions for an application.
  */
-export const listApplicationRevisions: API.OperationMethod<
+export const listApplicationRevisions: API.PaginatedOperationMethod<
   ListApplicationRevisionsInput,
   ListApplicationRevisionsOutput,
   ListApplicationRevisionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListApplicationRevisionsInput,
-  ) => stream.Stream<
-    ListApplicationRevisionsOutput,
-    ListApplicationRevisionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListApplicationRevisionsInput,
-  ) => stream.Stream<
-    RevisionLocation,
-    ListApplicationRevisionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  RevisionLocation
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListApplicationRevisionsInput,
   output: ListApplicationRevisionsOutput,
   errors: [
@@ -4385,53 +4369,19 @@ export const listApplicationRevisions: API.OperationMethod<
     outputToken: "nextToken",
     items: "revisions",
   } as const,
-})) as any as API.OperationMethod<
-  ListApplicationRevisionsInput,
-  ListApplicationRevisionsOutput,
-  ListApplicationRevisionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListApplicationRevisionsInput,
-  ) => stream.Stream<
-    ListApplicationRevisionsOutput,
-    ListApplicationRevisionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListApplicationRevisionsInput,
-  ) => stream.Stream<
-    RevisionLocation,
-    ListApplicationRevisionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListApplicationsError = InvalidNextTokenException | CommonErrors;
 /**
  * Lists the applications registered with the user or Amazon Web Services account.
  */
-export const listApplications: API.OperationMethod<
+export const listApplications: API.PaginatedOperationMethod<
   ListApplicationsInput,
   ListApplicationsOutput,
   ListApplicationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListApplicationsInput,
-  ) => stream.Stream<
-    ListApplicationsOutput,
-    ListApplicationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListApplicationsInput,
-  ) => stream.Stream<
-    ApplicationName,
-    ListApplicationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ApplicationName
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListApplicationsInput,
   output: ListApplicationsOutput,
   errors: [InvalidNextTokenException],
@@ -4443,27 +4393,7 @@ export const listApplications: API.OperationMethod<
     outputToken: "nextToken",
     items: "applications",
   } as const,
-})) as any as API.OperationMethod<
-  ListApplicationsInput,
-  ListApplicationsOutput,
-  ListApplicationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListApplicationsInput,
-  ) => stream.Stream<
-    ListApplicationsOutput,
-    ListApplicationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListApplicationsInput,
-  ) => stream.Stream<
-    ApplicationName,
-    ListApplicationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListDeploymentConfigsError =
   | InvalidNextTokenException
@@ -4471,27 +4401,13 @@ export type ListDeploymentConfigsError =
 /**
  * Lists the deployment configurations with the user or Amazon Web Services account.
  */
-export const listDeploymentConfigs: API.OperationMethod<
+export const listDeploymentConfigs: API.PaginatedOperationMethod<
   ListDeploymentConfigsInput,
   ListDeploymentConfigsOutput,
   ListDeploymentConfigsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDeploymentConfigsInput,
-  ) => stream.Stream<
-    ListDeploymentConfigsOutput,
-    ListDeploymentConfigsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDeploymentConfigsInput,
-  ) => stream.Stream<
-    DeploymentConfigName,
-    ListDeploymentConfigsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  DeploymentConfigName
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListDeploymentConfigsInput,
   output: ListDeploymentConfigsOutput,
   errors: [InvalidNextTokenException],
@@ -4503,27 +4419,7 @@ export const listDeploymentConfigs: API.OperationMethod<
     outputToken: "nextToken",
     items: "deploymentConfigsList",
   } as const,
-})) as any as API.OperationMethod<
-  ListDeploymentConfigsInput,
-  ListDeploymentConfigsOutput,
-  ListDeploymentConfigsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDeploymentConfigsInput,
-  ) => stream.Stream<
-    ListDeploymentConfigsOutput,
-    ListDeploymentConfigsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDeploymentConfigsInput,
-  ) => stream.Stream<
-    DeploymentConfigName,
-    ListDeploymentConfigsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListDeploymentGroupsError =
   | ApplicationDoesNotExistException
@@ -4535,27 +4431,13 @@ export type ListDeploymentGroupsError =
  * Lists the deployment groups for an application registered with the Amazon Web Services
  * user or Amazon Web Services account.
  */
-export const listDeploymentGroups: API.OperationMethod<
+export const listDeploymentGroups: API.PaginatedOperationMethod<
   ListDeploymentGroupsInput,
   ListDeploymentGroupsOutput,
   ListDeploymentGroupsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDeploymentGroupsInput,
-  ) => stream.Stream<
-    ListDeploymentGroupsOutput,
-    ListDeploymentGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDeploymentGroupsInput,
-  ) => stream.Stream<
-    DeploymentGroupName,
-    ListDeploymentGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  DeploymentGroupName
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListDeploymentGroupsInput,
   output: ListDeploymentGroupsOutput,
   errors: [
@@ -4572,27 +4454,7 @@ export const listDeploymentGroups: API.OperationMethod<
     outputToken: "nextToken",
     items: "deploymentGroups",
   } as const,
-})) as any as API.OperationMethod<
-  ListDeploymentGroupsInput,
-  ListDeploymentGroupsOutput,
-  ListDeploymentGroupsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDeploymentGroupsInput,
-  ) => stream.Stream<
-    ListDeploymentGroupsOutput,
-    ListDeploymentGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDeploymentGroupsInput,
-  ) => stream.Stream<
-    DeploymentGroupName,
-    ListDeploymentGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListDeploymentInstancesError =
   | DeploymentDoesNotExistException
@@ -4614,27 +4476,13 @@ export type ListDeploymentInstancesError =
  *
  * Lists the instance for a deployment associated with the user or Amazon Web Services account.
  */
-export const listDeploymentInstances: API.OperationMethod<
+export const listDeploymentInstances: API.PaginatedOperationMethod<
   ListDeploymentInstancesInput,
   ListDeploymentInstancesOutput,
   ListDeploymentInstancesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDeploymentInstancesInput,
-  ) => stream.Stream<
-    ListDeploymentInstancesOutput,
-    ListDeploymentInstancesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDeploymentInstancesInput,
-  ) => stream.Stream<
-    InstanceId,
-    ListDeploymentInstancesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  InstanceId
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListDeploymentInstancesInput,
   output: ListDeploymentInstancesOutput,
   errors: [
@@ -4657,27 +4505,7 @@ export const listDeploymentInstances: API.OperationMethod<
     outputToken: "nextToken",
     items: "instancesList",
   } as const,
-})) as any as API.OperationMethod<
-  ListDeploymentInstancesInput,
-  ListDeploymentInstancesOutput,
-  ListDeploymentInstancesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDeploymentInstancesInput,
-  ) => stream.Stream<
-    ListDeploymentInstancesOutput,
-    ListDeploymentInstancesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDeploymentInstancesInput,
-  ) => stream.Stream<
-    InstanceId,
-    ListDeploymentInstancesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListDeploymentsError =
   | ApplicationDoesNotExistException
@@ -4696,27 +4524,13 @@ export type ListDeploymentsError =
  * Lists the deployments in a deployment group for an application registered with the
  * user or Amazon Web Services account.
  */
-export const listDeployments: API.OperationMethod<
+export const listDeployments: API.PaginatedOperationMethod<
   ListDeploymentsInput,
   ListDeploymentsOutput,
   ListDeploymentsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDeploymentsInput,
-  ) => stream.Stream<
-    ListDeploymentsOutput,
-    ListDeploymentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDeploymentsInput,
-  ) => stream.Stream<
-    DeploymentId,
-    ListDeploymentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  DeploymentId
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListDeploymentsInput,
   output: ListDeploymentsOutput,
   errors: [
@@ -4740,27 +4554,7 @@ export const listDeployments: API.OperationMethod<
     outputToken: "nextToken",
     items: "deployments",
   } as const,
-})) as any as API.OperationMethod<
-  ListDeploymentsInput,
-  ListDeploymentsOutput,
-  ListDeploymentsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDeploymentsInput,
-  ) => stream.Stream<
-    ListDeploymentsOutput,
-    ListDeploymentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDeploymentsInput,
-  ) => stream.Stream<
-    DeploymentId,
-    ListDeploymentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListDeploymentTargetsError =
   | DeploymentDoesNotExistException
@@ -4780,7 +4574,7 @@ export const listDeploymentTargets: API.OperationMethod<
   ListDeploymentTargetsInput,
   ListDeploymentTargetsOutput,
   ListDeploymentTargetsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListDeploymentTargetsInput,
   output: ListDeploymentTargetsOutput,
@@ -4812,7 +4606,7 @@ export const listGitHubAccountTokenNames: API.OperationMethod<
   ListGitHubAccountTokenNamesInput,
   ListGitHubAccountTokenNamesOutput,
   ListGitHubAccountTokenNamesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListGitHubAccountTokenNamesInput,
   output: ListGitHubAccountTokenNamesOutput,
@@ -4842,7 +4636,7 @@ export const listOnPremisesInstances: API.OperationMethod<
   ListOnPremisesInstancesInput,
   ListOnPremisesInstancesOutput,
   ListOnPremisesInstancesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListOnPremisesInstancesInput,
   output: ListOnPremisesInstancesOutput,
@@ -4869,7 +4663,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceInput,
   ListTagsForResourceOutput,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceInput,
   output: ListTagsForResourceOutput,
@@ -4907,7 +4701,7 @@ export const putLifecycleEventHookExecutionStatus: API.OperationMethod<
   PutLifecycleEventHookExecutionStatusInput,
   PutLifecycleEventHookExecutionStatusOutput,
   PutLifecycleEventHookExecutionStatusError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutLifecycleEventHookExecutionStatusInput,
   output: PutLifecycleEventHookExecutionStatusOutput,
@@ -4940,7 +4734,7 @@ export const registerApplicationRevision: API.OperationMethod<
   RegisterApplicationRevisionInput,
   RegisterApplicationRevisionResponse,
   RegisterApplicationRevisionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RegisterApplicationRevisionInput,
   output: RegisterApplicationRevisionResponse,
@@ -4978,7 +4772,7 @@ export const registerOnPremisesInstance: API.OperationMethod<
   RegisterOnPremisesInstanceInput,
   RegisterOnPremisesInstanceResponse,
   RegisterOnPremisesInstanceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RegisterOnPremisesInstanceInput,
   output: RegisterOnPremisesInstanceResponse,
@@ -5015,7 +4809,7 @@ export const removeTagsFromOnPremisesInstances: API.OperationMethod<
   RemoveTagsFromOnPremisesInstancesInput,
   RemoveTagsFromOnPremisesInstancesResponse,
   RemoveTagsFromOnPremisesInstancesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RemoveTagsFromOnPremisesInstancesInput,
   output: RemoveTagsFromOnPremisesInstancesResponse,
@@ -5049,7 +4843,7 @@ export const skipWaitTimeForInstanceTermination: API.OperationMethod<
   SkipWaitTimeForInstanceTerminationInput,
   SkipWaitTimeForInstanceTerminationResponse,
   SkipWaitTimeForInstanceTerminationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: SkipWaitTimeForInstanceTerminationInput,
   output: SkipWaitTimeForInstanceTerminationResponse,
@@ -5081,7 +4875,7 @@ export const stopDeployment: API.OperationMethod<
   StopDeploymentInput,
   StopDeploymentOutput,
   StopDeploymentError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StopDeploymentInput,
   output: StopDeploymentOutput,
@@ -5116,7 +4910,7 @@ export const tagResource: API.OperationMethod<
   TagResourceInput,
   TagResourceOutput,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceInput,
   output: TagResourceOutput,
@@ -5154,7 +4948,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceInput,
   UntagResourceOutput,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceInput,
   output: UntagResourceOutput,
@@ -5186,7 +4980,7 @@ export const updateApplication: API.OperationMethod<
   UpdateApplicationInput,
   UpdateApplicationResponse,
   UpdateApplicationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateApplicationInput,
   output: UpdateApplicationResponse,
@@ -5241,7 +5035,7 @@ export const updateDeploymentGroup: API.OperationMethod<
   UpdateDeploymentGroupInput,
   UpdateDeploymentGroupOutput,
   UpdateDeploymentGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateDeploymentGroupInput,
   output: UpdateDeploymentGroupOutput,

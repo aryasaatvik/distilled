@@ -1,7 +1,6 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as redacted from "effect/Redacted";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -9,7 +8,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 import { SensitiveString } from "../sensitive.ts";
 const ns = T.XmlNamespace("http://codepipeline.amazonaws.com/doc/2015-07-09/");
 const svc = T.AwsApiService({
@@ -91,208 +89,208 @@ const rules = T.EndpointResolver((p, _) => {
 export class ActionExecutionNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ActionExecutionNotFoundException>()(
     "ActionExecutionNotFoundException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class ActionNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ActionNotFoundException>()(
     "ActionNotFoundException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class ActionTypeNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ActionTypeNotFoundException>()(
     "ActionTypeNotFoundException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class ApprovalAlreadyCompletedException
   extends /*@__PURE__*/ S.TaggedErrorClass<ApprovalAlreadyCompletedException>()(
     "ApprovalAlreadyCompletedException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class ConcurrentModificationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConcurrentModificationException>()(
     "ConcurrentModificationException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class ConcurrentPipelineExecutionsLimitExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConcurrentPipelineExecutionsLimitExceededException>()(
     "ConcurrentPipelineExecutionsLimitExceededException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class ConditionNotOverridableException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConditionNotOverridableException>()(
     "ConditionNotOverridableException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class ConflictException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
     "ConflictException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class DuplicatedStopRequestException
   extends /*@__PURE__*/ S.TaggedErrorClass<DuplicatedStopRequestException>()(
     "DuplicatedStopRequestException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidActionDeclarationException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidActionDeclarationException>()(
     "InvalidActionDeclarationException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidApprovalTokenException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidApprovalTokenException>()(
     "InvalidApprovalTokenException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidArnException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidArnException>()(
     "InvalidArnException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidBlockerDeclarationException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidBlockerDeclarationException>()(
     "InvalidBlockerDeclarationException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidClientTokenException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidClientTokenException>()(
     "InvalidClientTokenException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidJobException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidJobException>()(
     "InvalidJobException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidJobStateException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidJobStateException>()(
     "InvalidJobStateException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidNextTokenException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidNextTokenException>()(
     "InvalidNextTokenException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidNonceException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidNonceException>()(
     "InvalidNonceException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidStageDeclarationException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidStageDeclarationException>()(
     "InvalidStageDeclarationException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidStructureException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidStructureException>()(
     "InvalidStructureException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidTagsException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidTagsException>()(
     "InvalidTagsException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidWebhookAuthenticationParametersException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidWebhookAuthenticationParametersException>()(
     "InvalidWebhookAuthenticationParametersException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidWebhookFilterPatternException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidWebhookFilterPatternException>()(
     "InvalidWebhookFilterPatternException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class JobNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<JobNotFoundException>()(
     "JobNotFoundException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class LimitExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<LimitExceededException>()(
     "LimitExceededException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class NotLatestPipelineExecutionException
   extends /*@__PURE__*/ S.TaggedErrorClass<NotLatestPipelineExecutionException>()(
     "NotLatestPipelineExecutionException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class OutputVariablesSizeExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<OutputVariablesSizeExceededException>()(
     "OutputVariablesSizeExceededException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class PipelineExecutionNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<PipelineExecutionNotFoundException>()(
     "PipelineExecutionNotFoundException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class PipelineExecutionNotStoppableException
   extends /*@__PURE__*/ S.TaggedErrorClass<PipelineExecutionNotStoppableException>()(
     "PipelineExecutionNotStoppableException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class PipelineExecutionOutdatedException
   extends /*@__PURE__*/ S.TaggedErrorClass<PipelineExecutionOutdatedException>()(
     "PipelineExecutionOutdatedException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class PipelineNameInUseException
   extends /*@__PURE__*/ S.TaggedErrorClass<PipelineNameInUseException>()(
     "PipelineNameInUseException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class PipelineNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<PipelineNotFoundException>()(
     "PipelineNotFoundException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class PipelineVersionNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<PipelineVersionNotFoundException>()(
     "PipelineVersionNotFoundException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class RequestFailedException
   extends /*@__PURE__*/ S.TaggedErrorClass<RequestFailedException>()(
     "RequestFailedException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class StageNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<StageNotFoundException>()(
     "StageNotFoundException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class StageNotRetryableException
   extends /*@__PURE__*/ S.TaggedErrorClass<StageNotRetryableException>()(
     "StageNotRetryableException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class TooManyTagsException
   extends /*@__PURE__*/ S.TaggedErrorClass<TooManyTagsException>()(
     "TooManyTagsException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class UnableToRollbackStageException
   extends /*@__PURE__*/ S.TaggedErrorClass<UnableToRollbackStageException>()(
     "UnableToRollbackStageException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class ValidationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
     "ValidationException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class WebhookNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<WebhookNotFoundException>()(
     "WebhookNotFoundException",
-    {},
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export type JobId = string;
 export type Nonce = string;
@@ -3779,7 +3777,7 @@ export const acknowledgeJob: API.OperationMethod<
   AcknowledgeJobInput,
   AcknowledgeJobOutput,
   AcknowledgeJobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AcknowledgeJobInput,
   output: AcknowledgeJobOutput,
@@ -3803,7 +3801,7 @@ export const acknowledgeThirdPartyJob: API.OperationMethod<
   AcknowledgeThirdPartyJobInput,
   AcknowledgeThirdPartyJobOutput,
   AcknowledgeThirdPartyJobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AcknowledgeThirdPartyJobInput,
   output: AcknowledgeThirdPartyJobOutput,
@@ -3833,7 +3831,7 @@ export const createCustomActionType: API.OperationMethod<
   CreateCustomActionTypeInput,
   CreateCustomActionTypeOutput,
   CreateCustomActionTypeError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateCustomActionTypeInput,
   output: CreateCustomActionTypeOutput,
@@ -3873,7 +3871,7 @@ export const createPipeline: API.OperationMethod<
   CreatePipelineInput,
   CreatePipelineOutput,
   CreatePipelineError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreatePipelineInput,
   output: CreatePipelineOutput,
@@ -3912,7 +3910,7 @@ export const deleteCustomActionType: API.OperationMethod<
   DeleteCustomActionTypeInput,
   DeleteCustomActionTypeResponse,
   DeleteCustomActionTypeError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteCustomActionTypeInput,
   output: DeleteCustomActionTypeResponse,
@@ -3933,7 +3931,7 @@ export const deletePipeline: API.OperationMethod<
   DeletePipelineInput,
   DeletePipelineResponse,
   DeletePipelineError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeletePipelineInput,
   output: DeletePipelineResponse,
@@ -3957,7 +3955,7 @@ export const deleteWebhook: API.OperationMethod<
   DeleteWebhookInput,
   DeleteWebhookOutput,
   DeleteWebhookError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteWebhookInput,
   output: DeleteWebhookOutput,
@@ -3980,7 +3978,7 @@ export const deregisterWebhookWithThirdParty: API.OperationMethod<
   DeregisterWebhookWithThirdPartyInput,
   DeregisterWebhookWithThirdPartyOutput,
   DeregisterWebhookWithThirdPartyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeregisterWebhookWithThirdPartyInput,
   output: DeregisterWebhookWithThirdPartyOutput,
@@ -4003,7 +4001,7 @@ export const disableStageTransition: API.OperationMethod<
   DisableStageTransitionInput,
   DisableStageTransitionResponse,
   DisableStageTransitionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DisableStageTransitionInput,
   output: DisableStageTransitionResponse,
@@ -4029,7 +4027,7 @@ export const enableStageTransition: API.OperationMethod<
   EnableStageTransitionInput,
   EnableStageTransitionResponse,
   EnableStageTransitionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: EnableStageTransitionInput,
   output: EnableStageTransitionResponse,
@@ -4056,7 +4054,7 @@ export const getActionType: API.OperationMethod<
   GetActionTypeInput,
   GetActionTypeOutput,
   GetActionTypeError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetActionTypeInput,
   output: GetActionTypeOutput,
@@ -4082,7 +4080,7 @@ export const getJobDetails: API.OperationMethod<
   GetJobDetailsInput,
   GetJobDetailsOutput,
   GetJobDetailsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetJobDetailsInput,
   output: GetJobDetailsOutput,
@@ -4106,7 +4104,7 @@ export const getPipeline: API.OperationMethod<
   GetPipelineInput,
   GetPipelineOutput,
   GetPipelineError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetPipelineInput,
   output: GetPipelineOutput,
@@ -4134,7 +4132,7 @@ export const getPipelineExecution: API.OperationMethod<
   GetPipelineExecutionInput,
   GetPipelineExecutionOutput,
   GetPipelineExecutionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetPipelineExecutionInput,
   output: GetPipelineExecutionOutput,
@@ -4164,7 +4162,7 @@ export const getPipelineState: API.OperationMethod<
   GetPipelineStateInput,
   GetPipelineStateOutput,
   GetPipelineStateError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetPipelineStateInput,
   output: GetPipelineStateOutput,
@@ -4193,7 +4191,7 @@ export const getThirdPartyJobDetails: API.OperationMethod<
   GetThirdPartyJobDetailsInput,
   GetThirdPartyJobDetailsOutput,
   GetThirdPartyJobDetailsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetThirdPartyJobDetailsInput,
   output: GetThirdPartyJobDetailsOutput,
@@ -4217,27 +4215,13 @@ export type ListActionExecutionsError =
 /**
  * Lists the action executions that have occurred in a pipeline.
  */
-export const listActionExecutions: API.OperationMethod<
+export const listActionExecutions: API.PaginatedOperationMethod<
   ListActionExecutionsInput,
   ListActionExecutionsOutput,
   ListActionExecutionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListActionExecutionsInput,
-  ) => stream.Stream<
-    ListActionExecutionsOutput,
-    ListActionExecutionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListActionExecutionsInput,
-  ) => stream.Stream<
-    ActionExecutionDetail,
-    ListActionExecutionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ActionExecutionDetail
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListActionExecutionsInput,
   output: ListActionExecutionsOutput,
   errors: [
@@ -4255,27 +4239,7 @@ export const listActionExecutions: API.OperationMethod<
     items: "actionExecutionDetails",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListActionExecutionsInput,
-  ListActionExecutionsOutput,
-  ListActionExecutionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListActionExecutionsInput,
-  ) => stream.Stream<
-    ListActionExecutionsOutput,
-    ListActionExecutionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListActionExecutionsInput,
-  ) => stream.Stream<
-    ActionExecutionDetail,
-    ListActionExecutionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListActionTypesError =
   | InvalidNextTokenException
@@ -4285,27 +4249,13 @@ export type ListActionTypesError =
  * Gets a summary of all CodePipeline action types associated with your
  * account.
  */
-export const listActionTypes: API.OperationMethod<
+export const listActionTypes: API.PaginatedOperationMethod<
   ListActionTypesInput,
   ListActionTypesOutput,
   ListActionTypesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListActionTypesInput,
-  ) => stream.Stream<
-    ListActionTypesOutput,
-    ListActionTypesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListActionTypesInput,
-  ) => stream.Stream<
-    ActionType,
-    ListActionTypesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ActionType
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListActionTypesInput,
   output: ListActionTypesOutput,
   errors: [InvalidNextTokenException, ValidationException],
@@ -4317,27 +4267,7 @@ export const listActionTypes: API.OperationMethod<
     outputToken: "nextToken",
     items: "actionTypes",
   } as const,
-})) as any as API.OperationMethod<
-  ListActionTypesInput,
-  ListActionTypesOutput,
-  ListActionTypesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListActionTypesInput,
-  ) => stream.Stream<
-    ListActionTypesOutput,
-    ListActionTypesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListActionTypesInput,
-  ) => stream.Stream<
-    ActionType,
-    ListActionTypesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListDeployActionExecutionTargetsError =
   | ActionExecutionNotFoundException
@@ -4348,27 +4278,13 @@ export type ListDeployActionExecutionTargetsError =
 /**
  * Lists the targets for the deploy action.
  */
-export const listDeployActionExecutionTargets: API.OperationMethod<
+export const listDeployActionExecutionTargets: API.PaginatedOperationMethod<
   ListDeployActionExecutionTargetsInput,
   ListDeployActionExecutionTargetsOutput,
   ListDeployActionExecutionTargetsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDeployActionExecutionTargetsInput,
-  ) => stream.Stream<
-    ListDeployActionExecutionTargetsOutput,
-    ListDeployActionExecutionTargetsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDeployActionExecutionTargetsInput,
-  ) => stream.Stream<
-    DeployActionExecutionTarget,
-    ListDeployActionExecutionTargetsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  DeployActionExecutionTarget
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListDeployActionExecutionTargetsInput,
   output: ListDeployActionExecutionTargetsOutput,
   errors: [
@@ -4386,27 +4302,7 @@ export const listDeployActionExecutionTargets: API.OperationMethod<
     items: "targets",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListDeployActionExecutionTargetsInput,
-  ListDeployActionExecutionTargetsOutput,
-  ListDeployActionExecutionTargetsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDeployActionExecutionTargetsInput,
-  ) => stream.Stream<
-    ListDeployActionExecutionTargetsOutput,
-    ListDeployActionExecutionTargetsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDeployActionExecutionTargetsInput,
-  ) => stream.Stream<
-    DeployActionExecutionTarget,
-    ListDeployActionExecutionTargetsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListPipelineExecutionsError =
   | InvalidNextTokenException
@@ -4420,27 +4316,13 @@ export type ListPipelineExecutionsError =
  * the operation returns all executions in the current pipeline version beginning on
  * February 1, 2024.
  */
-export const listPipelineExecutions: API.OperationMethod<
+export const listPipelineExecutions: API.PaginatedOperationMethod<
   ListPipelineExecutionsInput,
   ListPipelineExecutionsOutput,
   ListPipelineExecutionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPipelineExecutionsInput,
-  ) => stream.Stream<
-    ListPipelineExecutionsOutput,
-    ListPipelineExecutionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPipelineExecutionsInput,
-  ) => stream.Stream<
-    PipelineExecutionSummary,
-    ListPipelineExecutionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  PipelineExecutionSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListPipelineExecutionsInput,
   output: ListPipelineExecutionsOutput,
   errors: [
@@ -4457,27 +4339,7 @@ export const listPipelineExecutions: API.OperationMethod<
     items: "pipelineExecutionSummaries",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListPipelineExecutionsInput,
-  ListPipelineExecutionsOutput,
-  ListPipelineExecutionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPipelineExecutionsInput,
-  ) => stream.Stream<
-    ListPipelineExecutionsOutput,
-    ListPipelineExecutionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPipelineExecutionsInput,
-  ) => stream.Stream<
-    PipelineExecutionSummary,
-    ListPipelineExecutionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListPipelinesError =
   | InvalidNextTokenException
@@ -4486,27 +4348,13 @@ export type ListPipelinesError =
 /**
  * Gets a summary of all of the pipelines associated with your account.
  */
-export const listPipelines: API.OperationMethod<
+export const listPipelines: API.PaginatedOperationMethod<
   ListPipelinesInput,
   ListPipelinesOutput,
   ListPipelinesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPipelinesInput,
-  ) => stream.Stream<
-    ListPipelinesOutput,
-    ListPipelinesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPipelinesInput,
-  ) => stream.Stream<
-    PipelineSummary,
-    ListPipelinesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  PipelineSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListPipelinesInput,
   output: ListPipelinesOutput,
   errors: [InvalidNextTokenException, ValidationException],
@@ -4519,27 +4367,7 @@ export const listPipelines: API.OperationMethod<
     items: "pipelines",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListPipelinesInput,
-  ListPipelinesOutput,
-  ListPipelinesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPipelinesInput,
-  ) => stream.Stream<
-    ListPipelinesOutput,
-    ListPipelinesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPipelinesInput,
-  ) => stream.Stream<
-    PipelineSummary,
-    ListPipelinesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListRuleExecutionsError =
   | InvalidNextTokenException
@@ -4551,27 +4379,13 @@ export type ListRuleExecutionsError =
  * Lists the rule executions that have occurred in a pipeline configured for conditions
  * with rules.
  */
-export const listRuleExecutions: API.OperationMethod<
+export const listRuleExecutions: API.PaginatedOperationMethod<
   ListRuleExecutionsInput,
   ListRuleExecutionsOutput,
   ListRuleExecutionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListRuleExecutionsInput,
-  ) => stream.Stream<
-    ListRuleExecutionsOutput,
-    ListRuleExecutionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListRuleExecutionsInput,
-  ) => stream.Stream<
-    RuleExecutionDetail,
-    ListRuleExecutionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  RuleExecutionDetail
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListRuleExecutionsInput,
   output: ListRuleExecutionsOutput,
   errors: [
@@ -4589,27 +4403,7 @@ export const listRuleExecutions: API.OperationMethod<
     items: "ruleExecutionDetails",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListRuleExecutionsInput,
-  ListRuleExecutionsOutput,
-  ListRuleExecutionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListRuleExecutionsInput,
-  ) => stream.Stream<
-    ListRuleExecutionsOutput,
-    ListRuleExecutionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListRuleExecutionsInput,
-  ) => stream.Stream<
-    RuleExecutionDetail,
-    ListRuleExecutionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListRuleTypesError =
   | InvalidNextTokenException
@@ -4624,7 +4418,7 @@ export const listRuleTypes: API.OperationMethod<
   ListRuleTypesInput,
   ListRuleTypesOutput,
   ListRuleTypesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListRuleTypesInput,
   output: ListRuleTypesOutput,
@@ -4644,27 +4438,13 @@ export type ListTagsForResourceError =
  * Gets the set of key-value pairs (metadata) that are used to manage the
  * resource.
  */
-export const listTagsForResource: API.OperationMethod<
+export const listTagsForResource: API.PaginatedOperationMethod<
   ListTagsForResourceInput,
   ListTagsForResourceOutput,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTagsForResourceInput,
-  ) => stream.Stream<
-    ListTagsForResourceOutput,
-    ListTagsForResourceError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTagsForResourceInput,
-  ) => stream.Stream<
-    Tag,
-    ListTagsForResourceError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Tag
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListTagsForResourceInput,
   output: ListTagsForResourceOutput,
   errors: [
@@ -4682,27 +4462,7 @@ export const listTagsForResource: API.OperationMethod<
     items: "tags",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListTagsForResourceInput,
-  ListTagsForResourceOutput,
-  ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTagsForResourceInput,
-  ) => stream.Stream<
-    ListTagsForResourceOutput,
-    ListTagsForResourceError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTagsForResourceInput,
-  ) => stream.Stream<
-    Tag,
-    ListTagsForResourceError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListWebhooksError =
   | InvalidNextTokenException
@@ -4715,27 +4475,13 @@ export type ListWebhooksError =
  *
  * If a secret token was provided, it will be redacted in the response.
  */
-export const listWebhooks: API.OperationMethod<
+export const listWebhooks: API.PaginatedOperationMethod<
   ListWebhooksInput,
   ListWebhooksOutput,
   ListWebhooksError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListWebhooksInput,
-  ) => stream.Stream<
-    ListWebhooksOutput,
-    ListWebhooksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListWebhooksInput,
-  ) => stream.Stream<
-    ListWebhookItem,
-    ListWebhooksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ListWebhookItem
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListWebhooksInput,
   output: ListWebhooksOutput,
   errors: [InvalidNextTokenException, ValidationException],
@@ -4748,27 +4494,7 @@ export const listWebhooks: API.OperationMethod<
     items: "webhooks",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListWebhooksInput,
-  ListWebhooksOutput,
-  ListWebhooksError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListWebhooksInput,
-  ) => stream.Stream<
-    ListWebhooksOutput,
-    ListWebhooksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListWebhooksInput,
-  ) => stream.Stream<
-    ListWebhookItem,
-    ListWebhooksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type OverrideStageConditionError =
   | ConcurrentPipelineExecutionsLimitExceededException
@@ -4788,7 +4514,7 @@ export const overrideStageCondition: API.OperationMethod<
   OverrideStageConditionInput,
   OverrideStageConditionResponse,
   OverrideStageConditionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: OverrideStageConditionInput,
   output: OverrideStageConditionResponse,
@@ -4825,7 +4551,7 @@ export const pollForJobs: API.OperationMethod<
   PollForJobsInput,
   PollForJobsOutput,
   PollForJobsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PollForJobsInput,
   output: PollForJobsOutput,
@@ -4851,7 +4577,7 @@ export const pollForThirdPartyJobs: API.OperationMethod<
   PollForThirdPartyJobsInput,
   PollForThirdPartyJobsOutput,
   PollForThirdPartyJobsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PollForThirdPartyJobsInput,
   output: PollForThirdPartyJobsOutput,
@@ -4876,7 +4602,7 @@ export const putActionRevision: API.OperationMethod<
   PutActionRevisionInput,
   PutActionRevisionOutput,
   PutActionRevisionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutActionRevisionInput,
   output: PutActionRevisionOutput,
@@ -4908,7 +4634,7 @@ export const putApprovalResult: API.OperationMethod<
   PutApprovalResultInput,
   PutApprovalResultOutput,
   PutApprovalResultError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutApprovalResultInput,
   output: PutApprovalResultOutput,
@@ -4938,7 +4664,7 @@ export const putJobFailureResult: API.OperationMethod<
   PutJobFailureResultInput,
   PutJobFailureResultResponse,
   PutJobFailureResultError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutJobFailureResultInput,
   output: PutJobFailureResultResponse,
@@ -4962,7 +4688,7 @@ export const putJobSuccessResult: API.OperationMethod<
   PutJobSuccessResultInput,
   PutJobSuccessResultResponse,
   PutJobSuccessResultError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutJobSuccessResultInput,
   output: PutJobSuccessResultResponse,
@@ -4991,7 +4717,7 @@ export const putThirdPartyJobFailureResult: API.OperationMethod<
   PutThirdPartyJobFailureResultInput,
   PutThirdPartyJobFailureResultResponse,
   PutThirdPartyJobFailureResultError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutThirdPartyJobFailureResultInput,
   output: PutThirdPartyJobFailureResultResponse,
@@ -5020,7 +4746,7 @@ export const putThirdPartyJobSuccessResult: API.OperationMethod<
   PutThirdPartyJobSuccessResultInput,
   PutThirdPartyJobSuccessResultResponse,
   PutThirdPartyJobSuccessResultError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutThirdPartyJobSuccessResultInput,
   output: PutThirdPartyJobSuccessResultResponse,
@@ -5069,7 +4795,7 @@ export const putWebhook: API.OperationMethod<
   PutWebhookInput,
   PutWebhookOutput,
   PutWebhookError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutWebhookInput,
   output: PutWebhookOutput,
@@ -5100,7 +4826,7 @@ export const registerWebhookWithThirdParty: API.OperationMethod<
   RegisterWebhookWithThirdPartyInput,
   RegisterWebhookWithThirdPartyOutput,
   RegisterWebhookWithThirdPartyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RegisterWebhookWithThirdPartyInput,
   output: RegisterWebhookWithThirdPartyOutput,
@@ -5133,7 +4859,7 @@ export const retryStageExecution: API.OperationMethod<
   RetryStageExecutionInput,
   RetryStageExecutionOutput,
   RetryStageExecutionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RetryStageExecutionInput,
   output: RetryStageExecutionOutput,
@@ -5167,7 +4893,7 @@ export const rollbackStage: API.OperationMethod<
   RollbackStageInput,
   RollbackStageOutput,
   RollbackStageError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RollbackStageInput,
   output: RollbackStageOutput,
@@ -5199,7 +4925,7 @@ export const startPipelineExecution: API.OperationMethod<
   StartPipelineExecutionInput,
   StartPipelineExecutionOutput,
   StartPipelineExecutionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartPipelineExecutionInput,
   output: StartPipelineExecutionOutput,
@@ -5233,7 +4959,7 @@ export const stopPipelineExecution: API.OperationMethod<
   StopPipelineExecutionInput,
   StopPipelineExecutionOutput,
   StopPipelineExecutionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StopPipelineExecutionInput,
   output: StopPipelineExecutionOutput,
@@ -5265,7 +4991,7 @@ export const tagResource: API.OperationMethod<
   TagResourceInput,
   TagResourceOutput,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceInput,
   output: TagResourceOutput,
@@ -5296,7 +5022,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceInput,
   UntagResourceOutput,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceInput,
   output: UntagResourceOutput,
@@ -5327,7 +5053,7 @@ export const updateActionType: API.OperationMethod<
   UpdateActionTypeInput,
   UpdateActionTypeResponse,
   UpdateActionTypeError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateActionTypeInput,
   output: UpdateActionTypeResponse,
@@ -5359,7 +5085,7 @@ export const updatePipeline: API.OperationMethod<
   UpdatePipelineInput,
   UpdatePipelineOutput,
   UpdatePipelineError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdatePipelineInput,
   output: UpdatePipelineOutput,

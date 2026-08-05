@@ -1,7 +1,6 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as redacted from "effect/Redacted";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -9,7 +8,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 import { SensitiveString } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "DataSync",
@@ -90,13 +88,16 @@ const rules = T.EndpointResolver((p, _) => {
 export class InternalException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalException>()(
     "InternalException",
-    { message: S.optional(S.String), errorCode: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      errorCode: S.optional(S.String),
+    },
   ) {}
 export class InvalidRequestException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidRequestException>()(
     "InvalidRequestException",
     {
-      message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       errorCode: S.optional(S.String),
       datasyncErrorCode: S.optional(S.String),
     },
@@ -105,7 +106,7 @@ export class LocationAccessTestFailed
   extends /*@__PURE__*/ S.TaggedErrorClass<LocationAccessTestFailed>()(
     "LocationAccessTestFailed",
     {
-      message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       errorCode: S.optional(S.String),
       datasyncErrorCode: S.optional(S.String),
     },
@@ -118,7 +119,7 @@ export class LocationNotFound
   extends /*@__PURE__*/ S.TaggedErrorClass<LocationNotFound>()(
     "LocationNotFound",
     {
-      message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       errorCode: S.optional(S.String),
       datasyncErrorCode: S.optional(S.String),
     },
@@ -131,7 +132,7 @@ export class LocationRoleNotAssumable
   extends /*@__PURE__*/ S.TaggedErrorClass<LocationRoleNotAssumable>()(
     "LocationRoleNotAssumable",
     {
-      message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       errorCode: S.optional(S.String),
       datasyncErrorCode: S.optional(S.String),
     },
@@ -144,7 +145,7 @@ export class TaskNotFound
   extends /*@__PURE__*/ S.TaggedErrorClass<TaskNotFound>()(
     "TaskNotFound",
     {
-      message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       errorCode: S.optional(S.String),
       datasyncErrorCode: S.optional(S.String),
     },
@@ -2696,7 +2697,7 @@ export const cancelTaskExecution: API.OperationMethod<
   CancelTaskExecutionRequest,
   CancelTaskExecutionResponse,
   CancelTaskExecutionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CancelTaskExecutionRequest,
   output: CancelTaskExecutionResponse,
@@ -2721,7 +2722,7 @@ export const createAgent: API.OperationMethod<
   CreateAgentRequest,
   CreateAgentResponse,
   CreateAgentError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateAgentRequest,
   output: CreateAgentResponse,
@@ -2747,7 +2748,7 @@ export const createLocationAzureBlob: API.OperationMethod<
   CreateLocationAzureBlobRequest,
   CreateLocationAzureBlobResponse,
   CreateLocationAzureBlobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateLocationAzureBlobRequest,
   output: CreateLocationAzureBlobResponse,
@@ -2776,7 +2777,7 @@ export const createLocationEfs: API.OperationMethod<
   CreateLocationEfsRequest,
   CreateLocationEfsResponse,
   CreateLocationEfsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateLocationEfsRequest,
   output: CreateLocationEfsResponse,
@@ -2807,7 +2808,7 @@ export const createLocationFsxLustre: API.OperationMethod<
   CreateLocationFsxLustreRequest,
   CreateLocationFsxLustreResponse,
   CreateLocationFsxLustreError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateLocationFsxLustreRequest,
   output: CreateLocationFsxLustreResponse,
@@ -2833,7 +2834,7 @@ export const createLocationFsxOntap: API.OperationMethod<
   CreateLocationFsxOntapRequest,
   CreateLocationFsxOntapResponse,
   CreateLocationFsxOntapError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateLocationFsxOntapRequest,
   output: CreateLocationFsxOntapResponse,
@@ -2863,7 +2864,7 @@ export const createLocationFsxOpenZfs: API.OperationMethod<
   CreateLocationFsxOpenZfsRequest,
   CreateLocationFsxOpenZfsResponse,
   CreateLocationFsxOpenZfsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateLocationFsxOpenZfsRequest,
   output: CreateLocationFsxOpenZfsResponse,
@@ -2890,7 +2891,7 @@ export const createLocationFsxWindows: API.OperationMethod<
   CreateLocationFsxWindowsRequest,
   CreateLocationFsxWindowsResponse,
   CreateLocationFsxWindowsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateLocationFsxWindowsRequest,
   output: CreateLocationFsxWindowsResponse,
@@ -2917,7 +2918,7 @@ export const createLocationHdfs: API.OperationMethod<
   CreateLocationHdfsRequest,
   CreateLocationHdfsResponse,
   CreateLocationHdfsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateLocationHdfsRequest,
   output: CreateLocationHdfsResponse,
@@ -2944,7 +2945,7 @@ export const createLocationNfs: API.OperationMethod<
   CreateLocationNfsRequest,
   CreateLocationNfsResponse,
   CreateLocationNfsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateLocationNfsRequest,
   output: CreateLocationNfsResponse,
@@ -2969,7 +2970,7 @@ export const createLocationObjectStorage: API.OperationMethod<
   CreateLocationObjectStorageRequest,
   CreateLocationObjectStorageResponse,
   CreateLocationObjectStorageError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateLocationObjectStorageRequest,
   output: CreateLocationObjectStorageResponse,
@@ -3004,7 +3005,7 @@ export const createLocationS3: API.OperationMethod<
   CreateLocationS3Request,
   CreateLocationS3Response,
   CreateLocationS3Error,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateLocationS3Request,
   output: CreateLocationS3Response,
@@ -3035,7 +3036,7 @@ export const createLocationSmb: API.OperationMethod<
   CreateLocationSmbRequest,
   CreateLocationSmbResponse,
   CreateLocationSmbError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateLocationSmbRequest,
   output: CreateLocationSmbResponse,
@@ -3066,7 +3067,7 @@ export const createTask: API.OperationMethod<
   CreateTaskRequest,
   CreateTaskResponse,
   CreateTaskError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateTaskRequest,
   output: CreateTaskResponse,
@@ -3096,7 +3097,7 @@ export const deleteAgent: API.OperationMethod<
   DeleteAgentRequest,
   DeleteAgentResponse,
   DeleteAgentError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteAgentRequest,
   output: DeleteAgentResponse,
@@ -3118,7 +3119,7 @@ export const deleteLocation: API.OperationMethod<
   DeleteLocationRequest,
   DeleteLocationResponse,
   DeleteLocationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteLocationRequest,
   output: DeleteLocationResponse,
@@ -3140,7 +3141,7 @@ export const deleteTask: API.OperationMethod<
   DeleteTaskRequest,
   DeleteTaskResponse,
   DeleteTaskError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteTaskRequest,
   output: DeleteTaskResponse,
@@ -3162,7 +3163,7 @@ export const describeAgent: API.OperationMethod<
   DescribeAgentRequest,
   DescribeAgentResponse,
   DescribeAgentError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeAgentRequest,
   output: DescribeAgentResponse,
@@ -3184,7 +3185,7 @@ export const describeLocationAzureBlob: API.OperationMethod<
   DescribeLocationAzureBlobRequest,
   DescribeLocationAzureBlobResponse,
   DescribeLocationAzureBlobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeLocationAzureBlobRequest,
   output: DescribeLocationAzureBlobResponse,
@@ -3206,7 +3207,7 @@ export const describeLocationEfs: API.OperationMethod<
   DescribeLocationEfsRequest,
   DescribeLocationEfsResponse,
   DescribeLocationEfsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeLocationEfsRequest,
   output: DescribeLocationEfsResponse,
@@ -3227,7 +3228,7 @@ export const describeLocationFsxLustre: API.OperationMethod<
   DescribeLocationFsxLustreRequest,
   DescribeLocationFsxLustreResponse,
   DescribeLocationFsxLustreError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeLocationFsxLustreRequest,
   output: DescribeLocationFsxLustreResponse,
@@ -3251,7 +3252,7 @@ export const describeLocationFsxOntap: API.OperationMethod<
   DescribeLocationFsxOntapRequest,
   DescribeLocationFsxOntapResponse,
   DescribeLocationFsxOntapError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeLocationFsxOntapRequest,
   output: DescribeLocationFsxOntapResponse,
@@ -3275,7 +3276,7 @@ export const describeLocationFsxOpenZfs: API.OperationMethod<
   DescribeLocationFsxOpenZfsRequest,
   DescribeLocationFsxOpenZfsResponse,
   DescribeLocationFsxOpenZfsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeLocationFsxOpenZfsRequest,
   output: DescribeLocationFsxOpenZfsResponse,
@@ -3296,7 +3297,7 @@ export const describeLocationFsxWindows: API.OperationMethod<
   DescribeLocationFsxWindowsRequest,
   DescribeLocationFsxWindowsResponse,
   DescribeLocationFsxWindowsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeLocationFsxWindowsRequest,
   output: DescribeLocationFsxWindowsResponse,
@@ -3318,7 +3319,7 @@ export const describeLocationHdfs: API.OperationMethod<
   DescribeLocationHdfsRequest,
   DescribeLocationHdfsResponse,
   DescribeLocationHdfsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeLocationHdfsRequest,
   output: DescribeLocationHdfsResponse,
@@ -3340,7 +3341,7 @@ export const describeLocationNfs: API.OperationMethod<
   DescribeLocationNfsRequest,
   DescribeLocationNfsResponse,
   DescribeLocationNfsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeLocationNfsRequest,
   output: DescribeLocationNfsResponse,
@@ -3362,7 +3363,7 @@ export const describeLocationObjectStorage: API.OperationMethod<
   DescribeLocationObjectStorageRequest,
   DescribeLocationObjectStorageResponse,
   DescribeLocationObjectStorageError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeLocationObjectStorageRequest,
   output: DescribeLocationObjectStorageResponse,
@@ -3385,7 +3386,7 @@ export const describeLocationS3: API.OperationMethod<
   DescribeLocationS3Request,
   DescribeLocationS3Response,
   DescribeLocationS3Error,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeLocationS3Request,
   output: DescribeLocationS3Response,
@@ -3407,7 +3408,7 @@ export const describeLocationSmb: API.OperationMethod<
   DescribeLocationSmbRequest,
   DescribeLocationSmbResponse,
   DescribeLocationSmbError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeLocationSmbRequest,
   output: DescribeLocationSmbResponse,
@@ -3430,7 +3431,7 @@ export const describeTask: API.OperationMethod<
   DescribeTaskRequest,
   DescribeTaskResponse,
   DescribeTaskError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeTaskRequest,
   output: DescribeTaskResponse,
@@ -3457,7 +3458,7 @@ export const describeTaskExecution: API.OperationMethod<
   DescribeTaskExecutionRequest,
   DescribeTaskExecutionResponse,
   DescribeTaskExecutionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeTaskExecutionRequest,
   output: DescribeTaskExecutionResponse,
@@ -3485,27 +3486,13 @@ export type ListAgentsError =
  * In situations like this, you can always confirm whether an agent has been created (or deleted)
  * by using DescribeAgent.
  */
-export const listAgents: API.OperationMethod<
+export const listAgents: API.PaginatedOperationMethod<
   ListAgentsRequest,
   ListAgentsResponse,
   ListAgentsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAgentsRequest,
-  ) => stream.Stream<
-    ListAgentsResponse,
-    ListAgentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAgentsRequest,
-  ) => stream.Stream<
-    AgentListEntry,
-    ListAgentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  AgentListEntry
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListAgentsRequest,
   output: ListAgentsResponse,
   errors: [InternalException, InvalidRequestException],
@@ -3518,27 +3505,7 @@ export const listAgents: API.OperationMethod<
     items: "Agents",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListAgentsRequest,
-  ListAgentsResponse,
-  ListAgentsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAgentsRequest,
-  ) => stream.Stream<
-    ListAgentsResponse,
-    ListAgentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAgentsRequest,
-  ) => stream.Stream<
-    AgentListEntry,
-    ListAgentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListLocationsError =
   | InternalException
@@ -3551,27 +3518,13 @@ export type ListLocationsError =
  * returns only a truncated list of your agents), the response contains a token that you can
  * specify in your next request to fetch the next page of locations.
  */
-export const listLocations: API.OperationMethod<
+export const listLocations: API.PaginatedOperationMethod<
   ListLocationsRequest,
   ListLocationsResponse,
   ListLocationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListLocationsRequest,
-  ) => stream.Stream<
-    ListLocationsResponse,
-    ListLocationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListLocationsRequest,
-  ) => stream.Stream<
-    LocationListEntry,
-    ListLocationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  LocationListEntry
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListLocationsRequest,
   output: ListLocationsResponse,
   errors: [InternalException, InvalidRequestException],
@@ -3584,27 +3537,7 @@ export const listLocations: API.OperationMethod<
     items: "Locations",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListLocationsRequest,
-  ListLocationsResponse,
-  ListLocationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListLocationsRequest,
-  ) => stream.Stream<
-    ListLocationsResponse,
-    ListLocationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListLocationsRequest,
-  ) => stream.Stream<
-    LocationListEntry,
-    ListLocationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsForResourceError =
   | InternalException
@@ -3613,27 +3546,13 @@ export type ListTagsForResourceError =
 /**
  * Returns all the tags associated with an Amazon Web Services resource.
  */
-export const listTagsForResource: API.OperationMethod<
+export const listTagsForResource: API.PaginatedOperationMethod<
   ListTagsForResourceRequest,
   ListTagsForResourceResponse,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTagsForResourceRequest,
-  ) => stream.Stream<
-    ListTagsForResourceResponse,
-    ListTagsForResourceError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTagsForResourceRequest,
-  ) => stream.Stream<
-    TagListEntry,
-    ListTagsForResourceError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  TagListEntry
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
   errors: [InternalException, InvalidRequestException],
@@ -3646,27 +3565,7 @@ export const listTagsForResource: API.OperationMethod<
     items: "Tags",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListTagsForResourceRequest,
-  ListTagsForResourceResponse,
-  ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTagsForResourceRequest,
-  ) => stream.Stream<
-    ListTagsForResourceResponse,
-    ListTagsForResourceError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTagsForResourceRequest,
-  ) => stream.Stream<
-    TagListEntry,
-    ListTagsForResourceError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTaskExecutionsError =
   | InternalException
@@ -3675,27 +3574,13 @@ export type ListTaskExecutionsError =
 /**
  * Returns a list of executions for an DataSync transfer task.
  */
-export const listTaskExecutions: API.OperationMethod<
+export const listTaskExecutions: API.PaginatedOperationMethod<
   ListTaskExecutionsRequest,
   ListTaskExecutionsResponse,
   ListTaskExecutionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTaskExecutionsRequest,
-  ) => stream.Stream<
-    ListTaskExecutionsResponse,
-    ListTaskExecutionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTaskExecutionsRequest,
-  ) => stream.Stream<
-    TaskExecutionListEntry,
-    ListTaskExecutionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  TaskExecutionListEntry
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListTaskExecutionsRequest,
   output: ListTaskExecutionsResponse,
   errors: [InternalException, InvalidRequestException],
@@ -3708,27 +3593,7 @@ export const listTaskExecutions: API.OperationMethod<
     items: "TaskExecutions",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListTaskExecutionsRequest,
-  ListTaskExecutionsResponse,
-  ListTaskExecutionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTaskExecutionsRequest,
-  ) => stream.Stream<
-    ListTaskExecutionsResponse,
-    ListTaskExecutionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTaskExecutionsRequest,
-  ) => stream.Stream<
-    TaskExecutionListEntry,
-    ListTaskExecutionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTasksError =
   | InternalException
@@ -3737,27 +3602,13 @@ export type ListTasksError =
 /**
  * Returns a list of the DataSync tasks you created.
  */
-export const listTasks: API.OperationMethod<
+export const listTasks: API.PaginatedOperationMethod<
   ListTasksRequest,
   ListTasksResponse,
   ListTasksError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTasksRequest,
-  ) => stream.Stream<
-    ListTasksResponse,
-    ListTasksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTasksRequest,
-  ) => stream.Stream<
-    TaskListEntry,
-    ListTasksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  TaskListEntry
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListTasksRequest,
   output: ListTasksResponse,
   errors: [InternalException, InvalidRequestException],
@@ -3770,27 +3621,7 @@ export const listTasks: API.OperationMethod<
     items: "Tasks",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListTasksRequest,
-  ListTasksResponse,
-  ListTasksError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTasksRequest,
-  ) => stream.Stream<
-    ListTasksResponse,
-    ListTasksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTasksRequest,
-  ) => stream.Stream<
-    TaskListEntry,
-    ListTasksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type StartTaskExecutionError =
   | InternalException
@@ -3812,7 +3643,7 @@ export const startTaskExecution: API.OperationMethod<
   StartTaskExecutionRequest,
   StartTaskExecutionResponse,
   StartTaskExecutionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartTaskExecutionRequest,
   output: StartTaskExecutionResponse,
@@ -3841,7 +3672,7 @@ export const tagResource: API.OperationMethod<
   TagResourceRequest,
   TagResourceResponse,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -3862,7 +3693,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceRequest,
   UntagResourceResponse,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -3883,7 +3714,7 @@ export const updateAgent: API.OperationMethod<
   UpdateAgentRequest,
   UpdateAgentResponse,
   UpdateAgentError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateAgentRequest,
   output: UpdateAgentResponse,
@@ -3907,7 +3738,7 @@ export const updateLocationAzureBlob: API.OperationMethod<
   UpdateLocationAzureBlobRequest,
   UpdateLocationAzureBlobResponse,
   UpdateLocationAzureBlobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateLocationAzureBlobRequest,
   output: UpdateLocationAzureBlobResponse,
@@ -3932,7 +3763,7 @@ export const updateLocationEfs: API.OperationMethod<
   UpdateLocationEfsRequest,
   UpdateLocationEfsResponse,
   UpdateLocationEfsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateLocationEfsRequest,
   output: UpdateLocationEfsResponse,
@@ -3957,7 +3788,7 @@ export const updateLocationFsxLustre: API.OperationMethod<
   UpdateLocationFsxLustreRequest,
   UpdateLocationFsxLustreResponse,
   UpdateLocationFsxLustreError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateLocationFsxLustreRequest,
   output: UpdateLocationFsxLustreResponse,
@@ -3982,7 +3813,7 @@ export const updateLocationFsxOntap: API.OperationMethod<
   UpdateLocationFsxOntapRequest,
   UpdateLocationFsxOntapResponse,
   UpdateLocationFsxOntapError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateLocationFsxOntapRequest,
   output: UpdateLocationFsxOntapResponse,
@@ -4010,7 +3841,7 @@ export const updateLocationFsxOpenZfs: API.OperationMethod<
   UpdateLocationFsxOpenZfsRequest,
   UpdateLocationFsxOpenZfsResponse,
   UpdateLocationFsxOpenZfsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateLocationFsxOpenZfsRequest,
   output: UpdateLocationFsxOpenZfsResponse,
@@ -4035,7 +3866,7 @@ export const updateLocationFsxWindows: API.OperationMethod<
   UpdateLocationFsxWindowsRequest,
   UpdateLocationFsxWindowsResponse,
   UpdateLocationFsxWindowsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateLocationFsxWindowsRequest,
   output: UpdateLocationFsxWindowsResponse,
@@ -4060,7 +3891,7 @@ export const updateLocationHdfs: API.OperationMethod<
   UpdateLocationHdfsRequest,
   UpdateLocationHdfsResponse,
   UpdateLocationHdfsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateLocationHdfsRequest,
   output: UpdateLocationHdfsResponse,
@@ -4085,7 +3916,7 @@ export const updateLocationNfs: API.OperationMethod<
   UpdateLocationNfsRequest,
   UpdateLocationNfsResponse,
   UpdateLocationNfsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateLocationNfsRequest,
   output: UpdateLocationNfsResponse,
@@ -4110,7 +3941,7 @@ export const updateLocationObjectStorage: API.OperationMethod<
   UpdateLocationObjectStorageRequest,
   UpdateLocationObjectStorageResponse,
   UpdateLocationObjectStorageError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateLocationObjectStorageRequest,
   output: UpdateLocationObjectStorageResponse,
@@ -4139,7 +3970,7 @@ export const updateLocationS3: API.OperationMethod<
   UpdateLocationS3Request,
   UpdateLocationS3Response,
   UpdateLocationS3Error,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateLocationS3Request,
   output: UpdateLocationS3Response,
@@ -4164,7 +3995,7 @@ export const updateLocationSmb: API.OperationMethod<
   UpdateLocationSmbRequest,
   UpdateLocationSmbResponse,
   UpdateLocationSmbError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateLocationSmbRequest,
   output: UpdateLocationSmbResponse,
@@ -4187,7 +4018,7 @@ export const updateTask: API.OperationMethod<
   UpdateTaskRequest,
   UpdateTaskResponse,
   UpdateTaskError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateTaskRequest,
   output: UpdateTaskResponse,
@@ -4214,7 +4045,7 @@ export const updateTaskExecution: API.OperationMethod<
   UpdateTaskExecutionRequest,
   UpdateTaskExecutionResponse,
   UpdateTaskExecutionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateTaskExecutionRequest,
   output: UpdateTaskExecutionResponse,

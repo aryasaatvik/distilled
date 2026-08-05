@@ -7,7 +7,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 const svc = T.AwsApiService({
   sdkId: "neptunedata",
   serviceShapeName: "AmazonNeptuneDataplane",
@@ -87,205 +86,375 @@ const rules = T.EndpointResolver((p, _) => {
 export class AccessDeniedException
   extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
     "AccessDeniedException",
-    { detailedMessage: S.String, requestId: S.String, code: S.String },
+    {
+      detailedMessage: S.String,
+      requestId: S.String,
+      code: S.String,
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(403),
   ).pipe(C.withAuthError) {}
 export class BadRequestException
   extends /*@__PURE__*/ S.TaggedErrorClass<BadRequestException>()(
     "BadRequestException",
-    { detailedMessage: S.String, requestId: S.String, code: S.String },
+    {
+      detailedMessage: S.String,
+      requestId: S.String,
+      code: S.String,
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class BulkLoadIdNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<BulkLoadIdNotFoundException>()(
     "BulkLoadIdNotFoundException",
-    { detailedMessage: S.String, requestId: S.String, code: S.String },
+    {
+      detailedMessage: S.String,
+      requestId: S.String,
+      code: S.String,
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.all(T.HttpError(404), T.Retryable()),
   ).pipe(C.withBadRequestError, C.withRetryableError) {}
 export class CancelledByUserException
   extends /*@__PURE__*/ S.TaggedErrorClass<CancelledByUserException>()(
     "CancelledByUserException",
-    { detailedMessage: S.String, requestId: S.String, code: S.String },
+    {
+      detailedMessage: S.String,
+      requestId: S.String,
+      code: S.String,
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(500),
   ).pipe(C.withServerError) {}
 export class ClientTimeoutException
   extends /*@__PURE__*/ S.TaggedErrorClass<ClientTimeoutException>()(
     "ClientTimeoutException",
-    { detailedMessage: S.String, requestId: S.String, code: S.String },
+    {
+      detailedMessage: S.String,
+      requestId: S.String,
+      code: S.String,
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.all(T.HttpError(408), T.Retryable()),
   ).pipe(C.withTimeoutError, C.withRetryableError) {}
 export class ConcurrentModificationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConcurrentModificationException>()(
     "ConcurrentModificationException",
-    { detailedMessage: S.String, requestId: S.String, code: S.String },
+    {
+      detailedMessage: S.String,
+      requestId: S.String,
+      code: S.String,
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.all(T.HttpError(500), T.Retryable()),
   ).pipe(C.withServerError, C.withRetryableError) {}
 export class ConstraintViolationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConstraintViolationException>()(
     "ConstraintViolationException",
-    { detailedMessage: S.String, requestId: S.String, code: S.String },
+    {
+      detailedMessage: S.String,
+      requestId: S.String,
+      code: S.String,
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.all(T.HttpError(400), T.Retryable()),
   ).pipe(C.withBadRequestError, C.withRetryableError) {}
 export class ExpiredStreamException
   extends /*@__PURE__*/ S.TaggedErrorClass<ExpiredStreamException>()(
     "ExpiredStreamException",
-    { detailedMessage: S.String, requestId: S.String, code: S.String },
+    {
+      detailedMessage: S.String,
+      requestId: S.String,
+      code: S.String,
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class FailureByQueryException
   extends /*@__PURE__*/ S.TaggedErrorClass<FailureByQueryException>()(
     "FailureByQueryException",
-    { detailedMessage: S.String, requestId: S.String, code: S.String },
+    {
+      detailedMessage: S.String,
+      requestId: S.String,
+      code: S.String,
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.all(T.HttpError(500), T.Retryable()),
   ).pipe(C.withServerError, C.withRetryableError) {}
 export class IllegalArgumentException
   extends /*@__PURE__*/ S.TaggedErrorClass<IllegalArgumentException>()(
     "IllegalArgumentException",
-    { detailedMessage: S.String, requestId: S.String, code: S.String },
+    {
+      detailedMessage: S.String,
+      requestId: S.String,
+      code: S.String,
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class InternalFailureException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalFailureException>()(
     "InternalFailureException",
-    { detailedMessage: S.String, requestId: S.String, code: S.String },
+    {
+      detailedMessage: S.String,
+      requestId: S.String,
+      code: S.String,
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(500),
   ).pipe(C.withServerError) {}
 export class InvalidArgumentException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidArgumentException>()(
     "InvalidArgumentException",
-    { detailedMessage: S.String, requestId: S.String, code: S.String },
+    {
+      detailedMessage: S.String,
+      requestId: S.String,
+      code: S.String,
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class InvalidNumericDataException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidNumericDataException>()(
     "InvalidNumericDataException",
-    { detailedMessage: S.String, requestId: S.String, code: S.String },
+    {
+      detailedMessage: S.String,
+      requestId: S.String,
+      code: S.String,
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class InvalidParameterException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidParameterException>()(
     "InvalidParameterException",
-    { detailedMessage: S.String, requestId: S.String, code: S.String },
+    {
+      detailedMessage: S.String,
+      requestId: S.String,
+      code: S.String,
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class LoadUrlAccessDeniedException
   extends /*@__PURE__*/ S.TaggedErrorClass<LoadUrlAccessDeniedException>()(
     "LoadUrlAccessDeniedException",
-    { detailedMessage: S.String, requestId: S.String, code: S.String },
+    {
+      detailedMessage: S.String,
+      requestId: S.String,
+      code: S.String,
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(400),
   ).pipe(C.withBadRequestError, C.withAuthError) {}
 export class MalformedQueryException
   extends /*@__PURE__*/ S.TaggedErrorClass<MalformedQueryException>()(
     "MalformedQueryException",
-    { detailedMessage: S.String, requestId: S.String, code: S.String },
+    {
+      detailedMessage: S.String,
+      requestId: S.String,
+      code: S.String,
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class MemoryLimitExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<MemoryLimitExceededException>()(
     "MemoryLimitExceededException",
-    { detailedMessage: S.String, requestId: S.String, code: S.String },
+    {
+      detailedMessage: S.String,
+      requestId: S.String,
+      code: S.String,
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.all(T.HttpError(500), T.Retryable()),
   ).pipe(C.withServerError, C.withRetryableError) {}
 export class MethodNotAllowedException
   extends /*@__PURE__*/ S.TaggedErrorClass<MethodNotAllowedException>()(
     "MethodNotAllowedException",
-    { detailedMessage: S.String, requestId: S.String, code: S.String },
+    {
+      detailedMessage: S.String,
+      requestId: S.String,
+      code: S.String,
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(405),
   ).pipe(C.withBadRequestError) {}
 export class MissingParameterException
   extends /*@__PURE__*/ S.TaggedErrorClass<MissingParameterException>()(
     "MissingParameterException",
-    { detailedMessage: S.String, requestId: S.String, code: S.String },
+    {
+      detailedMessage: S.String,
+      requestId: S.String,
+      code: S.String,
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class MLResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<MLResourceNotFoundException>()(
     "MLResourceNotFoundException",
-    { detailedMessage: S.String, requestId: S.String, code: S.String },
+    {
+      detailedMessage: S.String,
+      requestId: S.String,
+      code: S.String,
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class ParsingException
   extends /*@__PURE__*/ S.TaggedErrorClass<ParsingException>()(
     "ParsingException",
-    { detailedMessage: S.String, requestId: S.String, code: S.String },
+    {
+      detailedMessage: S.String,
+      requestId: S.String,
+      code: S.String,
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class PreconditionsFailedException
   extends /*@__PURE__*/ S.TaggedErrorClass<PreconditionsFailedException>()(
     "PreconditionsFailedException",
-    { detailedMessage: S.String, requestId: S.String, code: S.String },
+    {
+      detailedMessage: S.String,
+      requestId: S.String,
+      code: S.String,
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class QueryLimitExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<QueryLimitExceededException>()(
     "QueryLimitExceededException",
-    { detailedMessage: S.String, requestId: S.String, code: S.String },
+    {
+      detailedMessage: S.String,
+      requestId: S.String,
+      code: S.String,
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.all(T.HttpError(500), T.Retryable()),
   ).pipe(C.withServerError, C.withRetryableError) {}
 export class QueryLimitException
   extends /*@__PURE__*/ S.TaggedErrorClass<QueryLimitException>()(
     "QueryLimitException",
-    { detailedMessage: S.String, requestId: S.String, code: S.String },
+    {
+      detailedMessage: S.String,
+      requestId: S.String,
+      code: S.String,
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class QueryTooLargeException
   extends /*@__PURE__*/ S.TaggedErrorClass<QueryTooLargeException>()(
     "QueryTooLargeException",
-    { detailedMessage: S.String, requestId: S.String, code: S.String },
+    {
+      detailedMessage: S.String,
+      requestId: S.String,
+      code: S.String,
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class ReadOnlyViolationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ReadOnlyViolationException>()(
     "ReadOnlyViolationException",
-    { detailedMessage: S.String, requestId: S.String, code: S.String },
+    {
+      detailedMessage: S.String,
+      requestId: S.String,
+      code: S.String,
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class S3Exception
   extends /*@__PURE__*/ S.TaggedErrorClass<S3Exception>()(
     "S3Exception",
-    { detailedMessage: S.String, requestId: S.String, code: S.String },
+    {
+      detailedMessage: S.String,
+      requestId: S.String,
+      code: S.String,
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.all(T.HttpError(400), T.Retryable()),
   ).pipe(C.withBadRequestError, C.withRetryableError) {}
 export class ServerShutdownException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServerShutdownException>()(
     "ServerShutdownException",
-    { detailedMessage: S.String, requestId: S.String, code: S.String },
+    {
+      detailedMessage: S.String,
+      requestId: S.String,
+      code: S.String,
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(500),
   ).pipe(C.withServerError) {}
 export class StatisticsNotAvailableException
   extends /*@__PURE__*/ S.TaggedErrorClass<StatisticsNotAvailableException>()(
     "StatisticsNotAvailableException",
-    { detailedMessage: S.String, requestId: S.String, code: S.String },
+    {
+      detailedMessage: S.String,
+      requestId: S.String,
+      code: S.String,
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class StreamRecordsNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<StreamRecordsNotFoundException>()(
     "StreamRecordsNotFoundException",
-    { detailedMessage: S.String, requestId: S.String, code: S.String },
+    {
+      detailedMessage: S.String,
+      requestId: S.String,
+      code: S.String,
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class ThrottlingException
   extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
     "ThrottlingException",
-    { detailedMessage: S.String, requestId: S.String, code: S.String },
+    {
+      detailedMessage: S.String,
+      requestId: S.String,
+      code: S.String,
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.all(T.HttpError(500), T.Retryable()),
   ).pipe(C.withServerError, C.withRetryableError) {}
 export class TimeLimitExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<TimeLimitExceededException>()(
     "TimeLimitExceededException",
-    { detailedMessage: S.String, requestId: S.String, code: S.String },
+    {
+      detailedMessage: S.String,
+      requestId: S.String,
+      code: S.String,
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.all(T.HttpError(500), T.Retryable()),
   ).pipe(C.withServerError, C.withRetryableError) {}
 export class TooManyRequestsException
   extends /*@__PURE__*/ S.TaggedErrorClass<TooManyRequestsException>()(
     "TooManyRequestsException",
-    { detailedMessage: S.String, requestId: S.String, code: S.String },
+    {
+      detailedMessage: S.String,
+      requestId: S.String,
+      code: S.String,
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.all(T.HttpError(429), T.Retryable()),
   ).pipe(C.withThrottlingError, C.withRetryableError) {}
 export class UnsupportedOperationException
   extends /*@__PURE__*/ S.TaggedErrorClass<UnsupportedOperationException>()(
     "UnsupportedOperationException",
-    { detailedMessage: S.String, requestId: S.String, code: S.String },
+    {
+      detailedMessage: S.String,
+      requestId: S.String,
+      code: S.String,
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export interface CancelGremlinQueryInput {
@@ -2352,7 +2521,7 @@ export const cancelGremlinQuery: API.OperationMethod<
   CancelGremlinQueryInput,
   CancelGremlinQueryOutput,
   CancelGremlinQueryError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CancelGremlinQueryInput,
   output: CancelGremlinQueryOutput,
@@ -2401,7 +2570,7 @@ export const cancelLoaderJob: API.OperationMethod<
   CancelLoaderJobInput,
   CancelLoaderJobOutput,
   CancelLoaderJobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CancelLoaderJobInput,
   output: CancelLoaderJobOutput,
@@ -2447,7 +2616,7 @@ export const cancelMLDataProcessingJob: API.OperationMethod<
   CancelMLDataProcessingJobInput,
   CancelMLDataProcessingJobOutput,
   CancelMLDataProcessingJobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CancelMLDataProcessingJobInput,
   output: CancelMLDataProcessingJobOutput,
@@ -2491,7 +2660,7 @@ export const cancelMLModelTrainingJob: API.OperationMethod<
   CancelMLModelTrainingJobInput,
   CancelMLModelTrainingJobOutput,
   CancelMLModelTrainingJobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CancelMLModelTrainingJobInput,
   output: CancelMLModelTrainingJobOutput,
@@ -2535,7 +2704,7 @@ export const cancelMLModelTransformJob: API.OperationMethod<
   CancelMLModelTransformJobInput,
   CancelMLModelTransformJobOutput,
   CancelMLModelTransformJobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CancelMLModelTransformJobInput,
   output: CancelMLModelTransformJobOutput,
@@ -2583,7 +2752,7 @@ export const cancelOpenCypherQuery: API.OperationMethod<
   CancelOpenCypherQueryInput,
   CancelOpenCypherQueryOutput,
   CancelOpenCypherQueryError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CancelOpenCypherQueryInput,
   output: CancelOpenCypherQueryOutput,
@@ -2631,7 +2800,7 @@ export const createMLEndpoint: API.OperationMethod<
   CreateMLEndpointInput,
   CreateMLEndpointOutput,
   CreateMLEndpointError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateMLEndpointInput,
   output: CreateMLEndpointOutput,
@@ -2675,7 +2844,7 @@ export const deleteMLEndpoint: API.OperationMethod<
   DeleteMLEndpointInput,
   DeleteMLEndpointOutput,
   DeleteMLEndpointError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteMLEndpointInput,
   output: DeleteMLEndpointOutput,
@@ -2721,7 +2890,7 @@ export const deletePropertygraphStatistics: API.OperationMethod<
   DeletePropertygraphStatisticsRequest,
   DeletePropertygraphStatisticsOutput,
   DeletePropertygraphStatisticsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeletePropertygraphStatisticsRequest,
   output: DeletePropertygraphStatisticsOutput,
@@ -2769,7 +2938,7 @@ export const deleteSparqlStatistics: API.OperationMethod<
   DeleteSparqlStatisticsRequest,
   DeleteSparqlStatisticsOutput,
   DeleteSparqlStatisticsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteSparqlStatisticsRequest,
   output: DeleteSparqlStatisticsOutput,
@@ -2819,7 +2988,7 @@ export const executeFastReset: API.OperationMethod<
   ExecuteFastResetInput,
   ExecuteFastResetOutput,
   ExecuteFastResetError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ExecuteFastResetInput,
   output: ExecuteFastResetOutput,
@@ -2886,7 +3055,7 @@ export const executeGremlinExplainQuery: API.OperationMethod<
   ExecuteGremlinExplainQueryInput,
   ExecuteGremlinExplainQueryOutput,
   ExecuteGremlinExplainQueryError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ExecuteGremlinExplainQueryInput,
   output: ExecuteGremlinExplainQueryOutput,
@@ -2950,7 +3119,7 @@ export const executeGremlinProfileQuery: API.OperationMethod<
   ExecuteGremlinProfileQueryInput,
   ExecuteGremlinProfileQueryOutput,
   ExecuteGremlinProfileQueryError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ExecuteGremlinProfileQueryInput,
   output: ExecuteGremlinProfileQueryOutput,
@@ -3020,7 +3189,7 @@ export const executeGremlinQuery: API.OperationMethod<
   ExecuteGremlinQueryInput,
   ExecuteGremlinQueryOutput,
   ExecuteGremlinQueryError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ExecuteGremlinQueryInput,
   output: ExecuteGremlinQueryOutput,
@@ -3085,7 +3254,7 @@ export const executeOpenCypherExplainQuery: API.OperationMethod<
   ExecuteOpenCypherExplainQueryInput,
   ExecuteOpenCypherExplainQueryOutput,
   ExecuteOpenCypherExplainQueryError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ExecuteOpenCypherExplainQueryInput,
   output: ExecuteOpenCypherExplainQueryOutput,
@@ -3161,7 +3330,7 @@ export const executeOpenCypherQuery: API.OperationMethod<
   ExecuteOpenCypherQueryInput,
   ExecuteOpenCypherQueryOutput,
   ExecuteOpenCypherQueryError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ExecuteOpenCypherQueryInput,
   output: ExecuteOpenCypherQueryOutput,
@@ -3212,7 +3381,7 @@ export const getEngineStatus: API.OperationMethod<
   GetEngineStatusRequest,
   GetEngineStatusOutput,
   GetEngineStatusError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetEngineStatusRequest,
   output: GetEngineStatusOutput,
@@ -3260,7 +3429,7 @@ export const getGremlinQueryStatus: API.OperationMethod<
   GetGremlinQueryStatusInput,
   GetGremlinQueryStatusOutput,
   GetGremlinQueryStatusError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetGremlinQueryStatusInput,
   output: GetGremlinQueryStatusOutput,
@@ -3313,7 +3482,7 @@ export const getLoaderJobStatus: API.OperationMethod<
   GetLoaderJobStatusInput,
   GetLoaderJobStatusOutput,
   GetLoaderJobStatusError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetLoaderJobStatusInput,
   output: GetLoaderJobStatusOutput,
@@ -3359,7 +3528,7 @@ export const getMLDataProcessingJob: API.OperationMethod<
   GetMLDataProcessingJobInput,
   GetMLDataProcessingJobOutput,
   GetMLDataProcessingJobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetMLDataProcessingJobInput,
   output: GetMLDataProcessingJobOutput,
@@ -3403,7 +3572,7 @@ export const getMLEndpoint: API.OperationMethod<
   GetMLEndpointInput,
   GetMLEndpointOutput,
   GetMLEndpointError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetMLEndpointInput,
   output: GetMLEndpointOutput,
@@ -3447,7 +3616,7 @@ export const getMLModelTrainingJob: API.OperationMethod<
   GetMLModelTrainingJobInput,
   GetMLModelTrainingJobOutput,
   GetMLModelTrainingJobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetMLModelTrainingJobInput,
   output: GetMLModelTrainingJobOutput,
@@ -3491,7 +3660,7 @@ export const getMLModelTransformJob: API.OperationMethod<
   GetMLModelTransformJobInput,
   GetMLModelTransformJobOutput,
   GetMLModelTransformJobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetMLModelTransformJobInput,
   output: GetMLModelTransformJobOutput,
@@ -3543,7 +3712,7 @@ export const getOpenCypherQueryStatus: API.OperationMethod<
   GetOpenCypherQueryStatusInput,
   GetOpenCypherQueryStatusOutput,
   GetOpenCypherQueryStatusError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetOpenCypherQueryStatusInput,
   output: GetOpenCypherQueryStatusOutput,
@@ -3595,7 +3764,7 @@ export const getPropertygraphStatistics: API.OperationMethod<
   GetPropertygraphStatisticsRequest,
   GetPropertygraphStatisticsOutput,
   GetPropertygraphStatisticsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetPropertygraphStatisticsRequest,
   output: GetPropertygraphStatisticsOutput,
@@ -3658,7 +3827,7 @@ export const getPropertygraphStream: API.OperationMethod<
   GetPropertygraphStreamInput,
   GetPropertygraphStreamOutput,
   GetPropertygraphStreamError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetPropertygraphStreamInput,
   output: GetPropertygraphStreamOutput,
@@ -3705,7 +3874,7 @@ export const getPropertygraphSummary: API.OperationMethod<
   GetPropertygraphSummaryInput,
   GetPropertygraphSummaryOutput,
   GetPropertygraphSummaryError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetPropertygraphSummaryInput,
   output: GetPropertygraphSummaryOutput,
@@ -3753,7 +3922,7 @@ export const getRDFGraphSummary: API.OperationMethod<
   GetRDFGraphSummaryInput,
   GetRDFGraphSummaryOutput,
   GetRDFGraphSummaryError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetRDFGraphSummaryInput,
   output: GetRDFGraphSummaryOutput,
@@ -3799,7 +3968,7 @@ export const getSparqlStatistics: API.OperationMethod<
   GetSparqlStatisticsRequest,
   GetSparqlStatisticsOutput,
   GetSparqlStatisticsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetSparqlStatisticsRequest,
   output: GetSparqlStatisticsOutput,
@@ -3854,7 +4023,7 @@ export const getSparqlStream: API.OperationMethod<
   GetSparqlStreamInput,
   GetSparqlStreamOutput,
   GetSparqlStreamError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetSparqlStreamInput,
   output: GetSparqlStreamOutput,
@@ -3906,7 +4075,7 @@ export const listGremlinQueries: API.OperationMethod<
   ListGremlinQueriesInput,
   ListGremlinQueriesOutput,
   ListGremlinQueriesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListGremlinQueriesInput,
   output: ListGremlinQueriesOutput,
@@ -3956,7 +4125,7 @@ export const listLoaderJobs: API.OperationMethod<
   ListLoaderJobsInput,
   ListLoaderJobsOutput,
   ListLoaderJobsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListLoaderJobsInput,
   output: ListLoaderJobsOutput,
@@ -4001,7 +4170,7 @@ export const listMLDataProcessingJobs: API.OperationMethod<
   ListMLDataProcessingJobsInput,
   ListMLDataProcessingJobsOutput,
   ListMLDataProcessingJobsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListMLDataProcessingJobsInput,
   output: ListMLDataProcessingJobsOutput,
@@ -4045,7 +4214,7 @@ export const listMLEndpoints: API.OperationMethod<
   ListMLEndpointsInput,
   ListMLEndpointsOutput,
   ListMLEndpointsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListMLEndpointsInput,
   output: ListMLEndpointsOutput,
@@ -4089,7 +4258,7 @@ export const listMLModelTrainingJobs: API.OperationMethod<
   ListMLModelTrainingJobsInput,
   ListMLModelTrainingJobsOutput,
   ListMLModelTrainingJobsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListMLModelTrainingJobsInput,
   output: ListMLModelTrainingJobsOutput,
@@ -4133,7 +4302,7 @@ export const listMLModelTransformJobs: API.OperationMethod<
   ListMLModelTransformJobsInput,
   ListMLModelTransformJobsOutput,
   ListMLModelTransformJobsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListMLModelTransformJobsInput,
   output: ListMLModelTransformJobsOutput,
@@ -4185,7 +4354,7 @@ export const listOpenCypherQueries: API.OperationMethod<
   ListOpenCypherQueriesInput,
   ListOpenCypherQueriesOutput,
   ListOpenCypherQueriesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListOpenCypherQueriesInput,
   output: ListOpenCypherQueriesOutput,
@@ -4237,7 +4406,7 @@ export const managePropertygraphStatistics: API.OperationMethod<
   ManagePropertygraphStatisticsInput,
   ManagePropertygraphStatisticsOutput,
   ManagePropertygraphStatisticsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ManagePropertygraphStatisticsInput,
   output: ManagePropertygraphStatisticsOutput,
@@ -4285,7 +4454,7 @@ export const manageSparqlStatistics: API.OperationMethod<
   ManageSparqlStatisticsInput,
   ManageSparqlStatisticsOutput,
   ManageSparqlStatisticsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ManageSparqlStatisticsInput,
   output: ManageSparqlStatisticsOutput,
@@ -4334,7 +4503,7 @@ export const startLoaderJob: API.OperationMethod<
   StartLoaderJobInput,
   StartLoaderJobOutput,
   StartLoaderJobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartLoaderJobInput,
   output: StartLoaderJobOutput,
@@ -4381,7 +4550,7 @@ export const startMLDataProcessingJob: API.OperationMethod<
   StartMLDataProcessingJobInput,
   StartMLDataProcessingJobOutput,
   StartMLDataProcessingJobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartMLDataProcessingJobInput,
   output: StartMLDataProcessingJobOutput,
@@ -4425,7 +4594,7 @@ export const startMLModelTrainingJob: API.OperationMethod<
   StartMLModelTrainingJobInput,
   StartMLModelTrainingJobOutput,
   StartMLModelTrainingJobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartMLModelTrainingJobInput,
   output: StartMLModelTrainingJobOutput,
@@ -4469,7 +4638,7 @@ export const startMLModelTransformJob: API.OperationMethod<
   StartMLModelTransformJobInput,
   StartMLModelTransformJobOutput,
   StartMLModelTransformJobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartMLModelTransformJobInput,
   output: StartMLModelTransformJobOutput,

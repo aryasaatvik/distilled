@@ -1,6 +1,5 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -8,7 +7,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 const svc = T.AwsApiService({
   sdkId: "Lex Model Building Service",
   serviceShapeName: "AWSDeepSenseModelBuildingService",
@@ -100,25 +98,25 @@ const rules = T.EndpointResolver((p, _) => {
 export class AccessDeniedException
   extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
     "AccessDeniedException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(403),
   ).pipe(C.withAuthError) {}
 export class BadRequestException
   extends /*@__PURE__*/ S.TaggedErrorClass<BadRequestException>()(
     "BadRequestException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class ConflictException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
     "ConflictException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class InternalFailureException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalFailureException>()(
     "InternalFailureException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(500),
   ).pipe(C.withServerError) {}
 export class LimitExceededException
@@ -126,20 +124,20 @@ export class LimitExceededException
     "LimitExceededException",
     {
       retryAfterSeconds: S.optional(S.String).pipe(T.HttpHeader("Retry-After")),
-      message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
     },
     T.HttpError(429),
   ).pipe(C.withThrottlingError) {}
 export class NotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<NotFoundException>()(
     "NotFoundException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class PreconditionFailedException
   extends /*@__PURE__*/ S.TaggedErrorClass<PreconditionFailedException>()(
     "PreconditionFailedException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(412),
   ) {}
 export class ResourceInUseException
@@ -156,6 +154,7 @@ export class ResourceInUseException
           identifier: "ResourceReference",
         }),
       ),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
     },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
@@ -2705,7 +2704,7 @@ export const createBotVersion: API.OperationMethod<
   CreateBotVersionRequest,
   CreateBotVersionResponse,
   CreateBotVersionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateBotVersionRequest,
   output: CreateBotVersionResponse,
@@ -2751,7 +2750,7 @@ export const createIntentVersion: API.OperationMethod<
   CreateIntentVersionRequest,
   CreateIntentVersionResponse,
   CreateIntentVersionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateIntentVersionRequest,
   output: CreateIntentVersionResponse,
@@ -2797,7 +2796,7 @@ export const createSlotTypeVersion: API.OperationMethod<
   CreateSlotTypeVersionRequest,
   CreateSlotTypeVersionResponse,
   CreateSlotTypeVersionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateSlotTypeVersionRequest,
   output: CreateSlotTypeVersionResponse,
@@ -2847,7 +2846,7 @@ export const deleteBot: API.OperationMethod<
   DeleteBotRequest,
   DeleteBotResponse,
   DeleteBotError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteBotRequest,
   output: DeleteBotResponse,
@@ -2888,7 +2887,7 @@ export const deleteBotAlias: API.OperationMethod<
   DeleteBotAliasRequest,
   DeleteBotAliasResponse,
   DeleteBotAliasError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteBotAliasRequest,
   output: DeleteBotAliasResponse,
@@ -2923,7 +2922,7 @@ export const deleteBotChannelAssociation: API.OperationMethod<
   DeleteBotChannelAssociationRequest,
   DeleteBotChannelAssociationResponse,
   DeleteBotChannelAssociationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteBotChannelAssociationRequest,
   output: DeleteBotChannelAssociationResponse,
@@ -2958,7 +2957,7 @@ export const deleteBotVersion: API.OperationMethod<
   DeleteBotVersionRequest,
   DeleteBotVersionResponse,
   DeleteBotVersionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteBotVersionRequest,
   output: DeleteBotVersionResponse,
@@ -3007,7 +3006,7 @@ export const deleteIntent: API.OperationMethod<
   DeleteIntentRequest,
   DeleteIntentResponse,
   DeleteIntentError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteIntentRequest,
   output: DeleteIntentResponse,
@@ -3043,7 +3042,7 @@ export const deleteIntentVersion: API.OperationMethod<
   DeleteIntentVersionRequest,
   DeleteIntentVersionResponse,
   DeleteIntentVersionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteIntentVersionRequest,
   output: DeleteIntentVersionResponse,
@@ -3092,7 +3091,7 @@ export const deleteSlotType: API.OperationMethod<
   DeleteSlotTypeRequest,
   DeleteSlotTypeResponse,
   DeleteSlotTypeError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteSlotTypeRequest,
   output: DeleteSlotTypeResponse,
@@ -3128,7 +3127,7 @@ export const deleteSlotTypeVersion: API.OperationMethod<
   DeleteSlotTypeVersionRequest,
   DeleteSlotTypeVersionResponse,
   DeleteSlotTypeVersionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteSlotTypeVersionRequest,
   output: DeleteSlotTypeVersionResponse,
@@ -3172,7 +3171,7 @@ export const deleteUtterances: API.OperationMethod<
   DeleteUtterancesRequest,
   DeleteUtterancesResponse,
   DeleteUtterancesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteUtterancesRequest,
   output: DeleteUtterancesResponse,
@@ -3204,7 +3203,7 @@ export const getBot: API.OperationMethod<
   GetBotRequest,
   GetBotResponse,
   GetBotError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetBotRequest,
   output: GetBotResponse,
@@ -3236,7 +3235,7 @@ export const getBotAlias: API.OperationMethod<
   GetBotAliasRequest,
   GetBotAliasResponse,
   GetBotAliasError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetBotAliasRequest,
   output: GetBotAliasResponse,
@@ -3262,27 +3261,13 @@ export type GetBotAliasesError =
  * This operation requires permissions for the
  * `lex:GetBotAliases` action.
  */
-export const getBotAliases: API.OperationMethod<
+export const getBotAliases: API.PaginatedOperationMethod<
   GetBotAliasesRequest,
   GetBotAliasesResponse,
   GetBotAliasesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetBotAliasesRequest,
-  ) => stream.Stream<
-    GetBotAliasesResponse,
-    GetBotAliasesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetBotAliasesRequest,
-  ) => stream.Stream<
-    unknown,
-    GetBotAliasesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetBotAliasesRequest,
   output: GetBotAliasesResponse,
   errors: [
@@ -3298,27 +3283,7 @@ export const getBotAliases: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetBotAliasesRequest,
-  GetBotAliasesResponse,
-  GetBotAliasesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetBotAliasesRequest,
-  ) => stream.Stream<
-    GetBotAliasesResponse,
-    GetBotAliasesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetBotAliasesRequest,
-  ) => stream.Stream<
-    unknown,
-    GetBotAliasesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetBotChannelAssociationError =
   | BadRequestException
@@ -3337,7 +3302,7 @@ export const getBotChannelAssociation: API.OperationMethod<
   GetBotChannelAssociationRequest,
   GetBotChannelAssociationResponse,
   GetBotChannelAssociationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetBotChannelAssociationRequest,
   output: GetBotChannelAssociationResponse,
@@ -3365,27 +3330,13 @@ export type GetBotChannelAssociationsError =
  * permissions for the `lex:GetBotChannelAssociations`
  * action.
  */
-export const getBotChannelAssociations: API.OperationMethod<
+export const getBotChannelAssociations: API.PaginatedOperationMethod<
   GetBotChannelAssociationsRequest,
   GetBotChannelAssociationsResponse,
   GetBotChannelAssociationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetBotChannelAssociationsRequest,
-  ) => stream.Stream<
-    GetBotChannelAssociationsResponse,
-    GetBotChannelAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetBotChannelAssociationsRequest,
-  ) => stream.Stream<
-    unknown,
-    GetBotChannelAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetBotChannelAssociationsRequest,
   output: GetBotChannelAssociationsResponse,
   errors: [
@@ -3401,27 +3352,7 @@ export const getBotChannelAssociations: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetBotChannelAssociationsRequest,
-  GetBotChannelAssociationsResponse,
-  GetBotChannelAssociationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetBotChannelAssociationsRequest,
-  ) => stream.Stream<
-    GetBotChannelAssociationsResponse,
-    GetBotChannelAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetBotChannelAssociationsRequest,
-  ) => stream.Stream<
-    unknown,
-    GetBotChannelAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetBotsError =
   | BadRequestException
@@ -3443,27 +3374,13 @@ export type GetBotsError =
  * This operation requires permission for the `lex:GetBots`
  * action.
  */
-export const getBots: API.OperationMethod<
+export const getBots: API.PaginatedOperationMethod<
   GetBotsRequest,
   GetBotsResponse,
   GetBotsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetBotsRequest,
-  ) => stream.Stream<
-    GetBotsResponse,
-    GetBotsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetBotsRequest,
-  ) => stream.Stream<
-    unknown,
-    GetBotsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetBotsRequest,
   output: GetBotsResponse,
   errors: [
@@ -3480,27 +3397,7 @@ export const getBots: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetBotsRequest,
-  GetBotsResponse,
-  GetBotsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetBotsRequest,
-  ) => stream.Stream<
-    GetBotsResponse,
-    GetBotsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetBotsRequest,
-  ) => stream.Stream<
-    unknown,
-    GetBotsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetBotVersionsError =
   | BadRequestException
@@ -3524,27 +3421,13 @@ export type GetBotVersionsError =
  * This operation requires permissions for the
  * `lex:GetBotVersions` action.
  */
-export const getBotVersions: API.OperationMethod<
+export const getBotVersions: API.PaginatedOperationMethod<
   GetBotVersionsRequest,
   GetBotVersionsResponse,
   GetBotVersionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetBotVersionsRequest,
-  ) => stream.Stream<
-    GetBotVersionsResponse,
-    GetBotVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetBotVersionsRequest,
-  ) => stream.Stream<
-    unknown,
-    GetBotVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetBotVersionsRequest,
   output: GetBotVersionsResponse,
   errors: [
@@ -3561,27 +3444,7 @@ export const getBotVersions: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetBotVersionsRequest,
-  GetBotVersionsResponse,
-  GetBotVersionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetBotVersionsRequest,
-  ) => stream.Stream<
-    GetBotVersionsResponse,
-    GetBotVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetBotVersionsRequest,
-  ) => stream.Stream<
-    unknown,
-    GetBotVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetBuiltinIntentError =
   | BadRequestException
@@ -3599,7 +3462,7 @@ export const getBuiltinIntent: API.OperationMethod<
   GetBuiltinIntentRequest,
   GetBuiltinIntentResponse,
   GetBuiltinIntentError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetBuiltinIntentRequest,
   output: GetBuiltinIntentResponse,
@@ -3626,27 +3489,13 @@ export type GetBuiltinIntentsError =
  * This operation requires permission for the
  * `lex:GetBuiltinIntents` action.
  */
-export const getBuiltinIntents: API.OperationMethod<
+export const getBuiltinIntents: API.PaginatedOperationMethod<
   GetBuiltinIntentsRequest,
   GetBuiltinIntentsResponse,
   GetBuiltinIntentsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetBuiltinIntentsRequest,
-  ) => stream.Stream<
-    GetBuiltinIntentsResponse,
-    GetBuiltinIntentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetBuiltinIntentsRequest,
-  ) => stream.Stream<
-    unknown,
-    GetBuiltinIntentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetBuiltinIntentsRequest,
   output: GetBuiltinIntentsResponse,
   errors: [
@@ -3662,27 +3511,7 @@ export const getBuiltinIntents: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetBuiltinIntentsRequest,
-  GetBuiltinIntentsResponse,
-  GetBuiltinIntentsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetBuiltinIntentsRequest,
-  ) => stream.Stream<
-    GetBuiltinIntentsResponse,
-    GetBuiltinIntentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetBuiltinIntentsRequest,
-  ) => stream.Stream<
-    unknown,
-    GetBuiltinIntentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetBuiltinSlotTypesError =
   | BadRequestException
@@ -3699,27 +3528,13 @@ export type GetBuiltinSlotTypesError =
  * This operation requires permission for the
  * `lex:GetBuiltInSlotTypes` action.
  */
-export const getBuiltinSlotTypes: API.OperationMethod<
+export const getBuiltinSlotTypes: API.PaginatedOperationMethod<
   GetBuiltinSlotTypesRequest,
   GetBuiltinSlotTypesResponse,
   GetBuiltinSlotTypesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetBuiltinSlotTypesRequest,
-  ) => stream.Stream<
-    GetBuiltinSlotTypesResponse,
-    GetBuiltinSlotTypesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetBuiltinSlotTypesRequest,
-  ) => stream.Stream<
-    unknown,
-    GetBuiltinSlotTypesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetBuiltinSlotTypesRequest,
   output: GetBuiltinSlotTypesResponse,
   errors: [
@@ -3735,27 +3550,7 @@ export const getBuiltinSlotTypes: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetBuiltinSlotTypesRequest,
-  GetBuiltinSlotTypesResponse,
-  GetBuiltinSlotTypesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetBuiltinSlotTypesRequest,
-  ) => stream.Stream<
-    GetBuiltinSlotTypesResponse,
-    GetBuiltinSlotTypesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetBuiltinSlotTypesRequest,
-  ) => stream.Stream<
-    unknown,
-    GetBuiltinSlotTypesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetExportError =
   | BadRequestException
@@ -3770,7 +3565,7 @@ export const getExport: API.OperationMethod<
   GetExportRequest,
   GetExportResponse,
   GetExportError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetExportRequest,
   output: GetExportResponse,
@@ -3799,7 +3594,7 @@ export const getImport: API.OperationMethod<
   GetImportRequest,
   GetImportResponse,
   GetImportError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetImportRequest,
   output: GetImportResponse,
@@ -3831,7 +3626,7 @@ export const getIntent: API.OperationMethod<
   GetIntentRequest,
   GetIntentResponse,
   GetIntentError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetIntentRequest,
   output: GetIntentResponse,
@@ -3866,27 +3661,13 @@ export type GetIntentsError =
  * The operation requires permission for the
  * `lex:GetIntents` action.
  */
-export const getIntents: API.OperationMethod<
+export const getIntents: API.PaginatedOperationMethod<
   GetIntentsRequest,
   GetIntentsResponse,
   GetIntentsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetIntentsRequest,
-  ) => stream.Stream<
-    GetIntentsResponse,
-    GetIntentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetIntentsRequest,
-  ) => stream.Stream<
-    unknown,
-    GetIntentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetIntentsRequest,
   output: GetIntentsResponse,
   errors: [
@@ -3903,27 +3684,7 @@ export const getIntents: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetIntentsRequest,
-  GetIntentsResponse,
-  GetIntentsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetIntentsRequest,
-  ) => stream.Stream<
-    GetIntentsResponse,
-    GetIntentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetIntentsRequest,
-  ) => stream.Stream<
-    unknown,
-    GetIntentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetIntentVersionsError =
   | BadRequestException
@@ -3947,27 +3708,13 @@ export type GetIntentVersionsError =
  * This operation requires permissions for the
  * `lex:GetIntentVersions` action.
  */
-export const getIntentVersions: API.OperationMethod<
+export const getIntentVersions: API.PaginatedOperationMethod<
   GetIntentVersionsRequest,
   GetIntentVersionsResponse,
   GetIntentVersionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetIntentVersionsRequest,
-  ) => stream.Stream<
-    GetIntentVersionsResponse,
-    GetIntentVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetIntentVersionsRequest,
-  ) => stream.Stream<
-    unknown,
-    GetIntentVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetIntentVersionsRequest,
   output: GetIntentVersionsResponse,
   errors: [
@@ -3984,27 +3731,7 @@ export const getIntentVersions: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetIntentVersionsRequest,
-  GetIntentVersionsResponse,
-  GetIntentVersionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetIntentVersionsRequest,
-  ) => stream.Stream<
-    GetIntentVersionsResponse,
-    GetIntentVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetIntentVersionsRequest,
-  ) => stream.Stream<
-    unknown,
-    GetIntentVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetMigrationError =
   | BadRequestException
@@ -4021,7 +3748,7 @@ export const getMigration: API.OperationMethod<
   GetMigrationRequest,
   GetMigrationResponse,
   GetMigrationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetMigrationRequest,
   output: GetMigrationResponse,
@@ -4044,27 +3771,13 @@ export type GetMigrationsError =
 /**
  * Gets a list of migrations between Amazon Lex V1 and Amazon Lex V2.
  */
-export const getMigrations: API.OperationMethod<
+export const getMigrations: API.PaginatedOperationMethod<
   GetMigrationsRequest,
   GetMigrationsResponse,
   GetMigrationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetMigrationsRequest,
-  ) => stream.Stream<
-    GetMigrationsResponse,
-    GetMigrationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetMigrationsRequest,
-  ) => stream.Stream<
-    unknown,
-    GetMigrationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetMigrationsRequest,
   output: GetMigrationsResponse,
   errors: [
@@ -4080,27 +3793,7 @@ export const getMigrations: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetMigrationsRequest,
-  GetMigrationsResponse,
-  GetMigrationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetMigrationsRequest,
-  ) => stream.Stream<
-    GetMigrationsResponse,
-    GetMigrationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetMigrationsRequest,
-  ) => stream.Stream<
-    unknown,
-    GetMigrationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetSlotTypeError =
   | BadRequestException
@@ -4120,7 +3813,7 @@ export const getSlotType: API.OperationMethod<
   GetSlotTypeRequest,
   GetSlotTypeResponse,
   GetSlotTypeError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetSlotTypeRequest,
   output: GetSlotTypeResponse,
@@ -4155,27 +3848,13 @@ export type GetSlotTypesError =
  * The operation requires permission for the
  * `lex:GetSlotTypes` action.
  */
-export const getSlotTypes: API.OperationMethod<
+export const getSlotTypes: API.PaginatedOperationMethod<
   GetSlotTypesRequest,
   GetSlotTypesResponse,
   GetSlotTypesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetSlotTypesRequest,
-  ) => stream.Stream<
-    GetSlotTypesResponse,
-    GetSlotTypesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetSlotTypesRequest,
-  ) => stream.Stream<
-    unknown,
-    GetSlotTypesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetSlotTypesRequest,
   output: GetSlotTypesResponse,
   errors: [
@@ -4192,27 +3871,7 @@ export const getSlotTypes: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetSlotTypesRequest,
-  GetSlotTypesResponse,
-  GetSlotTypesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetSlotTypesRequest,
-  ) => stream.Stream<
-    GetSlotTypesResponse,
-    GetSlotTypesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetSlotTypesRequest,
-  ) => stream.Stream<
-    unknown,
-    GetSlotTypesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetSlotTypeVersionsError =
   | BadRequestException
@@ -4236,27 +3895,13 @@ export type GetSlotTypeVersionsError =
  * This operation requires permissions for the
  * `lex:GetSlotTypeVersions` action.
  */
-export const getSlotTypeVersions: API.OperationMethod<
+export const getSlotTypeVersions: API.PaginatedOperationMethod<
   GetSlotTypeVersionsRequest,
   GetSlotTypeVersionsResponse,
   GetSlotTypeVersionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetSlotTypeVersionsRequest,
-  ) => stream.Stream<
-    GetSlotTypeVersionsResponse,
-    GetSlotTypeVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetSlotTypeVersionsRequest,
-  ) => stream.Stream<
-    unknown,
-    GetSlotTypeVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetSlotTypeVersionsRequest,
   output: GetSlotTypeVersionsResponse,
   errors: [
@@ -4273,27 +3918,7 @@ export const getSlotTypeVersions: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetSlotTypeVersionsRequest,
-  GetSlotTypeVersionsResponse,
-  GetSlotTypeVersionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetSlotTypeVersionsRequest,
-  ) => stream.Stream<
-    GetSlotTypeVersionsResponse,
-    GetSlotTypeVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetSlotTypeVersionsRequest,
-  ) => stream.Stream<
-    unknown,
-    GetSlotTypeVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetUtterancesViewError =
   | BadRequestException
@@ -4335,7 +3960,7 @@ export const getUtterancesView: API.OperationMethod<
   GetUtterancesViewRequest,
   GetUtterancesViewResponse,
   GetUtterancesViewError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetUtterancesViewRequest,
   output: GetUtterancesViewResponse,
@@ -4363,7 +3988,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceRequest,
   ListTagsForResourceResponse,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -4410,7 +4035,7 @@ export const putBot: API.OperationMethod<
   PutBotRequest,
   PutBotResponse,
   PutBotError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutBotRequest,
   output: PutBotResponse,
@@ -4446,7 +4071,7 @@ export const putBotAlias: API.OperationMethod<
   PutBotAliasRequest,
   PutBotAliasResponse,
   PutBotAliasError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutBotAliasRequest,
   output: PutBotAliasResponse,
@@ -4527,7 +4152,7 @@ export const putIntent: API.OperationMethod<
   PutIntentRequest,
   PutIntentResponse,
   PutIntentError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutIntentRequest,
   output: PutIntentResponse,
@@ -4574,7 +4199,7 @@ export const putSlotType: API.OperationMethod<
   PutSlotTypeRequest,
   PutSlotTypeResponse,
   PutSlotTypeError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutSlotTypeRequest,
   output: PutSlotTypeResponse,
@@ -4602,7 +4227,7 @@ export const startImport: API.OperationMethod<
   StartImportRequest,
   StartImportResponse,
   StartImportError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartImportRequest,
   output: StartImportResponse,
@@ -4634,7 +4259,7 @@ export const startMigration: API.OperationMethod<
   StartMigrationRequest,
   StartMigrationResponse,
   StartMigrationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartMigrationRequest,
   output: StartMigrationResponse,
@@ -4665,7 +4290,7 @@ export const tagResource: API.OperationMethod<
   TagResourceRequest,
   TagResourceResponse,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -4695,7 +4320,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceRequest,
   UntagResourceResponse,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,

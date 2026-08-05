@@ -1,13 +1,11 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
 import * as T from "../traits.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region as Rgn } from "../region.ts";
 const svc = T.AwsApiService({
   sdkId: "Resource Groups Tagging API",
   serviceShapeName: "ResourceGroupsTaggingAPI_20170126",
@@ -87,32 +85,32 @@ const rules = T.EndpointResolver((p, _) => {
 export class ConcurrentModificationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConcurrentModificationException>()(
     "ConcurrentModificationException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class ConstraintViolationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConstraintViolationException>()(
     "ConstraintViolationException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InternalServiceException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServiceException>()(
     "InternalServiceException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidParameterException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidParameterException>()(
     "InvalidParameterException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class PaginationTokenExpiredException
   extends /*@__PURE__*/ S.TaggedErrorClass<PaginationTokenExpiredException>()(
     "PaginationTokenExpiredException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class ThrottledException
   extends /*@__PURE__*/ S.TaggedErrorClass<ThrottledException>()(
     "ThrottledException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export interface DescribeReportCreationInput {}
 export const DescribeReportCreationInput = /*@__PURE__*/ S.suspend(() =>
@@ -593,7 +591,7 @@ export const describeReportCreation: API.OperationMethod<
   DescribeReportCreationInput,
   DescribeReportCreationOutput,
   DescribeReportCreationError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeReportCreationInput,
   output: DescribeReportCreationOutput,
@@ -631,27 +629,13 @@ export type GetComplianceSummaryError =
  * recieve a `null` value. A null value for `PaginationToken` indicates that
  * there are no more results waiting to be returned.
  */
-export const getComplianceSummary: API.OperationMethod<
+export const getComplianceSummary: API.PaginatedOperationMethod<
   GetComplianceSummaryInput,
   GetComplianceSummaryOutput,
   GetComplianceSummaryError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetComplianceSummaryInput,
-  ) => stream.Stream<
-    GetComplianceSummaryOutput,
-    GetComplianceSummaryError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetComplianceSummaryInput,
-  ) => stream.Stream<
-    Summary,
-    GetComplianceSummaryError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Summary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetComplianceSummaryInput,
   output: GetComplianceSummaryOutput,
   errors: [
@@ -669,27 +653,7 @@ export const getComplianceSummary: API.OperationMethod<
     items: "SummaryList",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetComplianceSummaryInput,
-  GetComplianceSummaryOutput,
-  GetComplianceSummaryError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetComplianceSummaryInput,
-  ) => stream.Stream<
-    GetComplianceSummaryOutput,
-    GetComplianceSummaryError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetComplianceSummaryInput,
-  ) => stream.Stream<
-    Summary,
-    GetComplianceSummaryError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetResourcesError =
   | InternalServiceException
@@ -724,27 +688,13 @@ export type GetResourcesError =
  * To find untagged resources in your account, use Amazon Web Services Resource Explorer with a
  * query that uses `tag:none`. For more information, see Search query syntax reference for Resource Explorer.
  */
-export const getResources: API.OperationMethod<
+export const getResources: API.PaginatedOperationMethod<
   GetResourcesInput,
   GetResourcesOutput,
   GetResourcesError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetResourcesInput,
-  ) => stream.Stream<
-    GetResourcesOutput,
-    GetResourcesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetResourcesInput,
-  ) => stream.Stream<
-    ResourceTagMapping,
-    GetResourcesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ResourceTagMapping
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetResourcesInput,
   output: GetResourcesOutput,
   errors: [
@@ -762,27 +712,7 @@ export const getResources: API.OperationMethod<
     items: "ResourceTagMappingList",
     pageSize: "ResourcesPerPage",
   } as const,
-})) as any as API.OperationMethod<
-  GetResourcesInput,
-  GetResourcesOutput,
-  GetResourcesError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetResourcesInput,
-  ) => stream.Stream<
-    GetResourcesOutput,
-    GetResourcesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetResourcesInput,
-  ) => stream.Stream<
-    ResourceTagMapping,
-    GetResourcesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetTagKeysError =
   | InternalServiceException
@@ -801,27 +731,13 @@ export type GetTagKeysError =
  * recieve a `null` value. A null value for `PaginationToken` indicates that
  * there are no more results waiting to be returned.
  */
-export const getTagKeys: API.OperationMethod<
+export const getTagKeys: API.PaginatedOperationMethod<
   GetTagKeysInput,
   GetTagKeysOutput,
   GetTagKeysError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetTagKeysInput,
-  ) => stream.Stream<
-    GetTagKeysOutput,
-    GetTagKeysError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetTagKeysInput,
-  ) => stream.Stream<
-    TagKey,
-    GetTagKeysError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  TagKey
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetTagKeysInput,
   output: GetTagKeysOutput,
   errors: [
@@ -838,27 +754,7 @@ export const getTagKeys: API.OperationMethod<
     outputToken: "PaginationToken",
     items: "TagKeys",
   } as const,
-})) as any as API.OperationMethod<
-  GetTagKeysInput,
-  GetTagKeysOutput,
-  GetTagKeysError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetTagKeysInput,
-  ) => stream.Stream<
-    GetTagKeysOutput,
-    GetTagKeysError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetTagKeysInput,
-  ) => stream.Stream<
-    TagKey,
-    GetTagKeysError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetTagValuesError =
   | InternalServiceException
@@ -877,27 +773,13 @@ export type GetTagValuesError =
  * recieve a `null` value. A null value for `PaginationToken` indicates that
  * there are no more results waiting to be returned.
  */
-export const getTagValues: API.OperationMethod<
+export const getTagValues: API.PaginatedOperationMethod<
   GetTagValuesInput,
   GetTagValuesOutput,
   GetTagValuesError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetTagValuesInput,
-  ) => stream.Stream<
-    GetTagValuesOutput,
-    GetTagValuesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetTagValuesInput,
-  ) => stream.Stream<
-    TagValue,
-    GetTagValuesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  TagValue
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetTagValuesInput,
   output: GetTagValuesOutput,
   errors: [
@@ -914,27 +796,7 @@ export const getTagValues: API.OperationMethod<
     outputToken: "PaginationToken",
     items: "TagValues",
   } as const,
-})) as any as API.OperationMethod<
-  GetTagValuesInput,
-  GetTagValuesOutput,
-  GetTagValuesError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetTagValuesInput,
-  ) => stream.Stream<
-    GetTagValuesOutput,
-    GetTagValuesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetTagValuesInput,
-  ) => stream.Stream<
-    TagValue,
-    GetTagValuesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListRequiredTagsError =
   | InternalServiceException
@@ -945,27 +807,13 @@ export type ListRequiredTagsError =
 /**
  * Lists the required tags for supported resource types in an Amazon Web Services account.
  */
-export const listRequiredTags: API.OperationMethod<
+export const listRequiredTags: API.PaginatedOperationMethod<
   ListRequiredTagsInput,
   ListRequiredTagsOutput,
   ListRequiredTagsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListRequiredTagsInput,
-  ) => stream.Stream<
-    ListRequiredTagsOutput,
-    ListRequiredTagsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListRequiredTagsInput,
-  ) => stream.Stream<
-    RequiredTag,
-    ListRequiredTagsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  RequiredTag
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListRequiredTagsInput,
   output: ListRequiredTagsOutput,
   errors: [
@@ -983,27 +831,7 @@ export const listRequiredTags: API.OperationMethod<
     items: "RequiredTags",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListRequiredTagsInput,
-  ListRequiredTagsOutput,
-  ListRequiredTagsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListRequiredTagsInput,
-  ) => stream.Stream<
-    ListRequiredTagsOutput,
-    ListRequiredTagsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListRequiredTagsInput,
-  ) => stream.Stream<
-    RequiredTag,
-    ListRequiredTagsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type StartReportCreationError =
   | ConcurrentModificationException
@@ -1039,7 +867,7 @@ export const startReportCreation: API.OperationMethod<
   StartReportCreationInput,
   StartReportCreationOutput,
   StartReportCreationError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartReportCreationInput,
   output: StartReportCreationOutput,
@@ -1116,7 +944,7 @@ export const tagResources: API.OperationMethod<
   TagResourcesInput,
   TagResourcesOutput,
   TagResourcesError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourcesInput,
   output: TagResourcesOutput,
@@ -1171,7 +999,7 @@ export const untagResources: API.OperationMethod<
   UntagResourcesInput,
   UntagResourcesOutput,
   UntagResourcesError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourcesInput,
   output: UntagResourcesOutput,

@@ -1,7 +1,6 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as redacted from "effect/Redacted";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -9,7 +8,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 import { SensitiveString } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "Lex Models V2",
@@ -90,31 +88,31 @@ const rules = T.EndpointResolver((p, _) => {
 export class ConflictException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
     "ConflictException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class InternalServerException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
     "InternalServerException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(500),
   ).pipe(C.withServerError) {}
 export class PreconditionFailedException
   extends /*@__PURE__*/ S.TaggedErrorClass<PreconditionFailedException>()(
     "PreconditionFailedException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(412),
   ) {}
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class ServiceQuotaExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
     "ServiceQuotaExceededException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(402),
   ).pipe(C.withQuotaError) {}
 export class ThrottlingException
@@ -122,14 +120,14 @@ export class ThrottlingException
     "ThrottlingException",
     {
       retryAfterSeconds: S.optional(S.Number).pipe(T.HttpHeader("Retry-After")),
-      message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
     },
     T.HttpError(429),
   ).pipe(C.withThrottlingError) {}
 export class ValidationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
     "ValidationException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export type Id = string;
@@ -10191,7 +10189,7 @@ export const batchCreateCustomVocabularyItem: API.OperationMethod<
   BatchCreateCustomVocabularyItemRequest,
   BatchCreateCustomVocabularyItemResponse,
   BatchCreateCustomVocabularyItemError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchCreateCustomVocabularyItemRequest,
   output: BatchCreateCustomVocabularyItemResponse,
@@ -10222,7 +10220,7 @@ export const batchDeleteCustomVocabularyItem: API.OperationMethod<
   BatchDeleteCustomVocabularyItemRequest,
   BatchDeleteCustomVocabularyItemResponse,
   BatchDeleteCustomVocabularyItemError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchDeleteCustomVocabularyItemRequest,
   output: BatchDeleteCustomVocabularyItemResponse,
@@ -10253,7 +10251,7 @@ export const batchUpdateCustomVocabularyItem: API.OperationMethod<
   BatchUpdateCustomVocabularyItemRequest,
   BatchUpdateCustomVocabularyItemResponse,
   BatchUpdateCustomVocabularyItemError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchUpdateCustomVocabularyItemRequest,
   output: BatchUpdateCustomVocabularyItemResponse,
@@ -10286,7 +10284,7 @@ export const buildBotLocale: API.OperationMethod<
   BuildBotLocaleRequest,
   BuildBotLocaleResponse,
   BuildBotLocaleError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BuildBotLocaleRequest,
   output: BuildBotLocaleResponse,
@@ -10318,7 +10316,7 @@ export const createBot: API.OperationMethod<
   CreateBotRequest,
   CreateBotResponse,
   CreateBotError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateBotRequest,
   output: CreateBotResponse,
@@ -10355,7 +10353,7 @@ export const createBotAlias: API.OperationMethod<
   CreateBotAliasRequest,
   CreateBotAliasResponse,
   CreateBotAliasError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateBotAliasRequest,
   output: CreateBotAliasResponse,
@@ -10390,7 +10388,7 @@ export const createBotLocale: API.OperationMethod<
   CreateBotLocaleRequest,
   CreateBotLocaleResponse,
   CreateBotLocaleError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateBotLocaleRequest,
   output: CreateBotLocaleResponse,
@@ -10422,7 +10420,7 @@ export const createBotReplica: API.OperationMethod<
   CreateBotReplicaRequest,
   CreateBotReplicaResponse,
   CreateBotReplicaError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateBotReplicaRequest,
   output: CreateBotReplicaResponse,
@@ -10458,7 +10456,7 @@ export const createBotVersion: API.OperationMethod<
   CreateBotVersionRequest,
   CreateBotVersionResponse,
   CreateBotVersionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateBotVersionRequest,
   output: CreateBotVersionResponse,
@@ -10500,7 +10498,7 @@ export const createExport: API.OperationMethod<
   CreateExportRequest,
   CreateExportResponse,
   CreateExportError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateExportRequest,
   output: CreateExportResponse,
@@ -10563,7 +10561,7 @@ export const createIntent: API.OperationMethod<
   CreateIntentRequest,
   CreateIntentResponse,
   CreateIntentError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateIntentRequest,
   output: CreateIntentResponse,
@@ -10596,7 +10594,7 @@ export const createResourcePolicy: API.OperationMethod<
   CreateResourcePolicyRequest,
   CreateResourcePolicyResponse,
   CreateResourcePolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateResourcePolicyRequest,
   output: CreateResourcePolicyResponse,
@@ -10637,7 +10635,7 @@ export const createResourcePolicyStatement: API.OperationMethod<
   CreateResourcePolicyStatementRequest,
   CreateResourcePolicyStatementResponse,
   CreateResourcePolicyStatementError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateResourcePolicyStatementRequest,
   output: CreateResourcePolicyStatementResponse,
@@ -10674,7 +10672,7 @@ export const createSlot: API.OperationMethod<
   CreateSlotRequest,
   CreateSlotResponse,
   CreateSlotError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateSlotRequest,
   output: CreateSlotResponse,
@@ -10710,7 +10708,7 @@ export const createSlotType: API.OperationMethod<
   CreateSlotTypeRequest,
   CreateSlotTypeResponse,
   CreateSlotTypeError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateSlotTypeRequest,
   output: CreateSlotTypeResponse,
@@ -10742,7 +10740,7 @@ export const createTestSetDiscrepancyReport: API.OperationMethod<
   CreateTestSetDiscrepancyReportRequest,
   CreateTestSetDiscrepancyReportResponse,
   CreateTestSetDiscrepancyReportError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateTestSetDiscrepancyReportRequest,
   output: CreateTestSetDiscrepancyReportResponse,
@@ -10774,7 +10772,7 @@ export const createUploadUrl: API.OperationMethod<
   CreateUploadUrlRequest,
   CreateUploadUrlResponse,
   CreateUploadUrlError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateUploadUrlRequest,
   output: CreateUploadUrlResponse,
@@ -10816,7 +10814,7 @@ export const deleteBot: API.OperationMethod<
   DeleteBotRequest,
   DeleteBotResponse,
   DeleteBotError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteBotRequest,
   output: DeleteBotResponse,
@@ -10848,7 +10846,7 @@ export const deleteBotAlias: API.OperationMethod<
   DeleteBotAliasRequest,
   DeleteBotAliasResponse,
   DeleteBotAliasError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteBotAliasRequest,
   output: DeleteBotAliasResponse,
@@ -10880,7 +10878,7 @@ export const deleteBotAnalyzerRecommendation: API.OperationMethod<
   DeleteBotAnalyzerRecommendationRequest,
   DeleteBotAnalyzerRecommendationResponse,
   DeleteBotAnalyzerRecommendationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteBotAnalyzerRecommendationRequest,
   output: DeleteBotAnalyzerRecommendationResponse,
@@ -10913,7 +10911,7 @@ export const deleteBotLocale: API.OperationMethod<
   DeleteBotLocaleRequest,
   DeleteBotLocaleResponse,
   DeleteBotLocaleError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteBotLocaleRequest,
   output: DeleteBotLocaleResponse,
@@ -10945,7 +10943,7 @@ export const deleteBotReplica: API.OperationMethod<
   DeleteBotReplicaRequest,
   DeleteBotReplicaResponse,
   DeleteBotReplicaError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteBotReplicaRequest,
   output: DeleteBotReplicaResponse,
@@ -10978,7 +10976,7 @@ export const deleteBotVersion: API.OperationMethod<
   DeleteBotVersionRequest,
   DeleteBotVersionResponse,
   DeleteBotVersionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteBotVersionRequest,
   output: DeleteBotVersionResponse,
@@ -11011,7 +11009,7 @@ export const deleteCustomVocabulary: API.OperationMethod<
   DeleteCustomVocabularyRequest,
   DeleteCustomVocabularyResponse,
   DeleteCustomVocabularyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteCustomVocabularyRequest,
   output: DeleteCustomVocabularyResponse,
@@ -11043,7 +11041,7 @@ export const deleteExport: API.OperationMethod<
   DeleteExportRequest,
   DeleteExportResponse,
   DeleteExportError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteExportRequest,
   output: DeleteExportResponse,
@@ -11074,7 +11072,7 @@ export const deleteImport: API.OperationMethod<
   DeleteImportRequest,
   DeleteImportResponse,
   DeleteImportError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteImportRequest,
   output: DeleteImportResponse,
@@ -11108,7 +11106,7 @@ export const deleteIntent: API.OperationMethod<
   DeleteIntentRequest,
   DeleteIntentResponse,
   DeleteIntentError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteIntentRequest,
   output: DeleteIntentResponse,
@@ -11139,7 +11137,7 @@ export const deleteResourcePolicy: API.OperationMethod<
   DeleteResourcePolicyRequest,
   DeleteResourcePolicyResponse,
   DeleteResourcePolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteResourcePolicyRequest,
   output: DeleteResourcePolicyResponse,
@@ -11174,7 +11172,7 @@ export const deleteResourcePolicyStatement: API.OperationMethod<
   DeleteResourcePolicyStatementRequest,
   DeleteResourcePolicyStatementResponse,
   DeleteResourcePolicyStatementError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteResourcePolicyStatementRequest,
   output: DeleteResourcePolicyStatementResponse,
@@ -11204,7 +11202,7 @@ export const deleteSlot: API.OperationMethod<
   DeleteSlotRequest,
   DeleteSlotResponse,
   DeleteSlotError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteSlotRequest,
   output: DeleteSlotResponse,
@@ -11241,7 +11239,7 @@ export const deleteSlotType: API.OperationMethod<
   DeleteSlotTypeRequest,
   DeleteSlotTypeResponse,
   DeleteSlotTypeError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteSlotTypeRequest,
   output: DeleteSlotTypeResponse,
@@ -11273,7 +11271,7 @@ export const deleteTestSet: API.OperationMethod<
   DeleteTestSetRequest,
   DeleteTestSetResponse,
   DeleteTestSetError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteTestSetRequest,
   output: DeleteTestSetResponse,
@@ -11315,7 +11313,7 @@ export const deleteUtterances: API.OperationMethod<
   DeleteUtterancesRequest,
   DeleteUtterancesResponse,
   DeleteUtterancesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteUtterancesRequest,
   output: DeleteUtterancesResponse,
@@ -11339,7 +11337,7 @@ export const describeBot: API.OperationMethod<
   DescribeBotRequest,
   DescribeBotResponse,
   DescribeBotError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeBotRequest,
   output: DescribeBotResponse,
@@ -11369,7 +11367,7 @@ export const describeBotAlias: API.OperationMethod<
   DescribeBotAliasRequest,
   DescribeBotAliasResponse,
   DescribeBotAliasError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeBotAliasRequest,
   output: DescribeBotAliasResponse,
@@ -11396,27 +11394,13 @@ export type DescribeBotAnalyzerRecommendationError =
  *
  * Recommendations are returned with pagination support. Each recommendation includes the issue location, priority level, detailed description, and proposed fix.
  */
-export const describeBotAnalyzerRecommendation: API.OperationMethod<
+export const describeBotAnalyzerRecommendation: API.PaginatedOperationMethod<
   DescribeBotAnalyzerRecommendationRequest,
   DescribeBotAnalyzerRecommendationResponse,
   DescribeBotAnalyzerRecommendationError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeBotAnalyzerRecommendationRequest,
-  ) => stream.Stream<
-    DescribeBotAnalyzerRecommendationResponse,
-    DescribeBotAnalyzerRecommendationError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeBotAnalyzerRecommendationRequest,
-  ) => stream.Stream<
-    BotAnalyzerRecommendation,
-    DescribeBotAnalyzerRecommendationError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  BotAnalyzerRecommendation
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeBotAnalyzerRecommendationRequest,
   output: DescribeBotAnalyzerRecommendationResponse,
   errors: [
@@ -11434,27 +11418,7 @@ export const describeBotAnalyzerRecommendation: API.OperationMethod<
     items: "botAnalyzerRecommendationList",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeBotAnalyzerRecommendationRequest,
-  DescribeBotAnalyzerRecommendationResponse,
-  DescribeBotAnalyzerRecommendationError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeBotAnalyzerRecommendationRequest,
-  ) => stream.Stream<
-    DescribeBotAnalyzerRecommendationResponse,
-    DescribeBotAnalyzerRecommendationError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeBotAnalyzerRecommendationRequest,
-  ) => stream.Stream<
-    BotAnalyzerRecommendation,
-    DescribeBotAnalyzerRecommendationError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeBotLocaleError =
   | InternalServerException
@@ -11470,7 +11434,7 @@ export const describeBotLocale: API.OperationMethod<
   DescribeBotLocaleRequest,
   DescribeBotLocaleResponse,
   DescribeBotLocaleError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeBotLocaleRequest,
   output: DescribeBotLocaleResponse,
@@ -11503,7 +11467,7 @@ export const describeBotRecommendation: API.OperationMethod<
   DescribeBotRecommendationRequest,
   DescribeBotRecommendationResponse,
   DescribeBotRecommendationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeBotRecommendationRequest,
   output: DescribeBotRecommendationResponse,
@@ -11532,7 +11496,7 @@ export const describeBotReplica: API.OperationMethod<
   DescribeBotReplicaRequest,
   DescribeBotReplicaResponse,
   DescribeBotReplicaError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeBotReplicaRequest,
   output: DescribeBotReplicaResponse,
@@ -11564,7 +11528,7 @@ export const describeBotResourceGeneration: API.OperationMethod<
   DescribeBotResourceGenerationRequest,
   DescribeBotResourceGenerationResponse,
   DescribeBotResourceGenerationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeBotResourceGenerationRequest,
   output: DescribeBotResourceGenerationResponse,
@@ -11593,7 +11557,7 @@ export const describeBotVersion: API.OperationMethod<
   DescribeBotVersionRequest,
   DescribeBotVersionResponse,
   DescribeBotVersionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeBotVersionRequest,
   output: DescribeBotVersionResponse,
@@ -11623,7 +11587,7 @@ export const describeCustomVocabularyMetadata: API.OperationMethod<
   DescribeCustomVocabularyMetadataRequest,
   DescribeCustomVocabularyMetadataResponse,
   DescribeCustomVocabularyMetadataError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeCustomVocabularyMetadataRequest,
   output: DescribeCustomVocabularyMetadataResponse,
@@ -11652,7 +11616,7 @@ export const describeExport: API.OperationMethod<
   DescribeExportRequest,
   DescribeExportResponse,
   DescribeExportError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeExportRequest,
   output: DescribeExportResponse,
@@ -11680,7 +11644,7 @@ export const describeImport: API.OperationMethod<
   DescribeImportRequest,
   DescribeImportResponse,
   DescribeImportError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeImportRequest,
   output: DescribeImportResponse,
@@ -11709,7 +11673,7 @@ export const describeIntent: API.OperationMethod<
   DescribeIntentRequest,
   DescribeIntentResponse,
   DescribeIntentError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeIntentRequest,
   output: DescribeIntentResponse,
@@ -11738,7 +11702,7 @@ export const describeResourcePolicy: API.OperationMethod<
   DescribeResourcePolicyRequest,
   DescribeResourcePolicyResponse,
   DescribeResourcePolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeResourcePolicyRequest,
   output: DescribeResourcePolicyResponse,
@@ -11766,7 +11730,7 @@ export const describeSlot: API.OperationMethod<
   DescribeSlotRequest,
   DescribeSlotResponse,
   DescribeSlotError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeSlotRequest,
   output: DescribeSlotResponse,
@@ -11796,7 +11760,7 @@ export const describeSlotType: API.OperationMethod<
   DescribeSlotTypeRequest,
   DescribeSlotTypeResponse,
   DescribeSlotTypeError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeSlotTypeRequest,
   output: DescribeSlotTypeResponse,
@@ -11826,7 +11790,7 @@ export const describeTestExecution: API.OperationMethod<
   DescribeTestExecutionRequest,
   DescribeTestExecutionResponse,
   DescribeTestExecutionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeTestExecutionRequest,
   output: DescribeTestExecutionResponse,
@@ -11856,7 +11820,7 @@ export const describeTestSet: API.OperationMethod<
   DescribeTestSetRequest,
   DescribeTestSetResponse,
   DescribeTestSetError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeTestSetRequest,
   output: DescribeTestSetResponse,
@@ -11886,7 +11850,7 @@ export const describeTestSetDiscrepancyReport: API.OperationMethod<
   DescribeTestSetDiscrepancyReportRequest,
   DescribeTestSetDiscrepancyReportResponse,
   DescribeTestSetDiscrepancyReportError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeTestSetDiscrepancyReportRequest,
   output: DescribeTestSetDiscrepancyReportResponse,
@@ -11916,7 +11880,7 @@ export const describeTestSetGeneration: API.OperationMethod<
   DescribeTestSetGenerationRequest,
   DescribeTestSetGenerationResponse,
   DescribeTestSetGenerationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeTestSetGenerationRequest,
   output: DescribeTestSetGenerationResponse,
@@ -11948,7 +11912,7 @@ export const generateBotElement: API.OperationMethod<
   GenerateBotElementRequest,
   GenerateBotElementResponse,
   GenerateBotElementError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GenerateBotElementRequest,
   output: GenerateBotElementResponse,
@@ -11980,7 +11944,7 @@ export const getTestExecutionArtifactsUrl: API.OperationMethod<
   GetTestExecutionArtifactsUrlRequest,
   GetTestExecutionArtifactsUrlResponse,
   GetTestExecutionArtifactsUrlError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetTestExecutionArtifactsUrlRequest,
   output: GetTestExecutionArtifactsUrlResponse,
@@ -12028,27 +11992,13 @@ export type ListAggregatedUtterancesError =
  *
  * - You opted out of participating in improving Amazon Lex.
  */
-export const listAggregatedUtterances: API.OperationMethod<
+export const listAggregatedUtterances: API.PaginatedOperationMethod<
   ListAggregatedUtterancesRequest,
   ListAggregatedUtterancesResponse,
   ListAggregatedUtterancesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAggregatedUtterancesRequest,
-  ) => stream.Stream<
-    ListAggregatedUtterancesResponse,
-    ListAggregatedUtterancesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAggregatedUtterancesRequest,
-  ) => stream.Stream<
-    unknown,
-    ListAggregatedUtterancesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListAggregatedUtterancesRequest,
   output: ListAggregatedUtterancesResponse,
   errors: [
@@ -12065,27 +12015,7 @@ export const listAggregatedUtterances: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListAggregatedUtterancesRequest,
-  ListAggregatedUtterancesResponse,
-  ListAggregatedUtterancesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAggregatedUtterancesRequest,
-  ) => stream.Stream<
-    ListAggregatedUtterancesResponse,
-    ListAggregatedUtterancesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAggregatedUtterancesRequest,
-  ) => stream.Stream<
-    unknown,
-    ListAggregatedUtterancesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListBotAliasesError =
   | InternalServerException
@@ -12097,27 +12027,13 @@ export type ListBotAliasesError =
 /**
  * Gets a list of aliases for the specified bot.
  */
-export const listBotAliases: API.OperationMethod<
+export const listBotAliases: API.PaginatedOperationMethod<
   ListBotAliasesRequest,
   ListBotAliasesResponse,
   ListBotAliasesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListBotAliasesRequest,
-  ) => stream.Stream<
-    ListBotAliasesResponse,
-    ListBotAliasesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListBotAliasesRequest,
-  ) => stream.Stream<
-    unknown,
-    ListBotAliasesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListBotAliasesRequest,
   output: ListBotAliasesResponse,
   errors: [
@@ -12135,27 +12051,7 @@ export const listBotAliases: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListBotAliasesRequest,
-  ListBotAliasesResponse,
-  ListBotAliasesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListBotAliasesRequest,
-  ) => stream.Stream<
-    ListBotAliasesResponse,
-    ListBotAliasesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListBotAliasesRequest,
-  ) => stream.Stream<
-    unknown,
-    ListBotAliasesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListBotAliasReplicasError =
   | InternalServerException
@@ -12166,27 +12062,13 @@ export type ListBotAliasReplicasError =
 /**
  * The action to list the replicated bots created from the source bot alias.
  */
-export const listBotAliasReplicas: API.OperationMethod<
+export const listBotAliasReplicas: API.PaginatedOperationMethod<
   ListBotAliasReplicasRequest,
   ListBotAliasReplicasResponse,
   ListBotAliasReplicasError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListBotAliasReplicasRequest,
-  ) => stream.Stream<
-    ListBotAliasReplicasResponse,
-    ListBotAliasReplicasError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListBotAliasReplicasRequest,
-  ) => stream.Stream<
-    unknown,
-    ListBotAliasReplicasError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListBotAliasReplicasRequest,
   output: ListBotAliasReplicasResponse,
   errors: [
@@ -12203,27 +12085,7 @@ export const listBotAliasReplicas: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListBotAliasReplicasRequest,
-  ListBotAliasReplicasResponse,
-  ListBotAliasReplicasError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListBotAliasReplicasRequest,
-  ) => stream.Stream<
-    ListBotAliasReplicasResponse,
-    ListBotAliasReplicasError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListBotAliasReplicasRequest,
-  ) => stream.Stream<
-    unknown,
-    ListBotAliasReplicasError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListBotAnalyzerHistoryError =
   | InternalServerException
@@ -12236,27 +12098,13 @@ export type ListBotAnalyzerHistoryError =
  *
  * The history includes all analysis executions regardless of their status, allowing you to track past analyses and their outcomes.
  */
-export const listBotAnalyzerHistory: API.OperationMethod<
+export const listBotAnalyzerHistory: API.PaginatedOperationMethod<
   ListBotAnalyzerHistoryRequest,
   ListBotAnalyzerHistoryResponse,
   ListBotAnalyzerHistoryError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListBotAnalyzerHistoryRequest,
-  ) => stream.Stream<
-    ListBotAnalyzerHistoryResponse,
-    ListBotAnalyzerHistoryError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListBotAnalyzerHistoryRequest,
-  ) => stream.Stream<
-    BotAnalyzerHistorySummary,
-    ListBotAnalyzerHistoryError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  BotAnalyzerHistorySummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListBotAnalyzerHistoryRequest,
   output: ListBotAnalyzerHistoryResponse,
   errors: [
@@ -12274,27 +12122,7 @@ export const listBotAnalyzerHistory: API.OperationMethod<
     items: "botAnalyzerHistoryList",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListBotAnalyzerHistoryRequest,
-  ListBotAnalyzerHistoryResponse,
-  ListBotAnalyzerHistoryError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListBotAnalyzerHistoryRequest,
-  ) => stream.Stream<
-    ListBotAnalyzerHistoryResponse,
-    ListBotAnalyzerHistoryError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListBotAnalyzerHistoryRequest,
-  ) => stream.Stream<
-    BotAnalyzerHistorySummary,
-    ListBotAnalyzerHistoryError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListBotLocalesError =
   | InternalServerException
@@ -12305,27 +12133,13 @@ export type ListBotLocalesError =
 /**
  * Gets a list of locales for the specified bot.
  */
-export const listBotLocales: API.OperationMethod<
+export const listBotLocales: API.PaginatedOperationMethod<
   ListBotLocalesRequest,
   ListBotLocalesResponse,
   ListBotLocalesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListBotLocalesRequest,
-  ) => stream.Stream<
-    ListBotLocalesResponse,
-    ListBotLocalesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListBotLocalesRequest,
-  ) => stream.Stream<
-    unknown,
-    ListBotLocalesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListBotLocalesRequest,
   output: ListBotLocalesResponse,
   errors: [
@@ -12342,27 +12156,7 @@ export const listBotLocales: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListBotLocalesRequest,
-  ListBotLocalesResponse,
-  ListBotLocalesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListBotLocalesRequest,
-  ) => stream.Stream<
-    ListBotLocalesResponse,
-    ListBotLocalesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListBotLocalesRequest,
-  ) => stream.Stream<
-    unknown,
-    ListBotLocalesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListBotRecommendationsError =
   | InternalServerException
@@ -12374,27 +12168,13 @@ export type ListBotRecommendationsError =
  * Get a list of bot recommendations that meet the specified
  * criteria.
  */
-export const listBotRecommendations: API.OperationMethod<
+export const listBotRecommendations: API.PaginatedOperationMethod<
   ListBotRecommendationsRequest,
   ListBotRecommendationsResponse,
   ListBotRecommendationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListBotRecommendationsRequest,
-  ) => stream.Stream<
-    ListBotRecommendationsResponse,
-    ListBotRecommendationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListBotRecommendationsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListBotRecommendationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListBotRecommendationsRequest,
   output: ListBotRecommendationsResponse,
   errors: [
@@ -12411,27 +12191,7 @@ export const listBotRecommendations: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListBotRecommendationsRequest,
-  ListBotRecommendationsResponse,
-  ListBotRecommendationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListBotRecommendationsRequest,
-  ) => stream.Stream<
-    ListBotRecommendationsResponse,
-    ListBotRecommendationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListBotRecommendationsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListBotRecommendationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListBotReplicasError =
   | InternalServerException
@@ -12446,7 +12206,7 @@ export const listBotReplicas: API.OperationMethod<
   ListBotReplicasRequest,
   ListBotReplicasResponse,
   ListBotReplicasError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListBotReplicasRequest,
   output: ListBotReplicasResponse,
@@ -12470,27 +12230,13 @@ export type ListBotResourceGenerationsError =
 /**
  * Lists the generation requests made for a bot locale.
  */
-export const listBotResourceGenerations: API.OperationMethod<
+export const listBotResourceGenerations: API.PaginatedOperationMethod<
   ListBotResourceGenerationsRequest,
   ListBotResourceGenerationsResponse,
   ListBotResourceGenerationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListBotResourceGenerationsRequest,
-  ) => stream.Stream<
-    ListBotResourceGenerationsResponse,
-    ListBotResourceGenerationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListBotResourceGenerationsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListBotResourceGenerationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListBotResourceGenerationsRequest,
   output: ListBotResourceGenerationsResponse,
   errors: [
@@ -12507,27 +12253,7 @@ export const listBotResourceGenerations: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListBotResourceGenerationsRequest,
-  ListBotResourceGenerationsResponse,
-  ListBotResourceGenerationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListBotResourceGenerationsRequest,
-  ) => stream.Stream<
-    ListBotResourceGenerationsResponse,
-    ListBotResourceGenerationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListBotResourceGenerationsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListBotResourceGenerationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListBotsError =
   | InternalServerException
@@ -12538,27 +12264,13 @@ export type ListBotsError =
 /**
  * Gets a list of available bots.
  */
-export const listBots: API.OperationMethod<
+export const listBots: API.PaginatedOperationMethod<
   ListBotsRequest,
   ListBotsResponse,
   ListBotsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListBotsRequest,
-  ) => stream.Stream<
-    ListBotsResponse,
-    ListBotsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListBotsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListBotsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListBotsRequest,
   output: ListBotsResponse,
   errors: [
@@ -12575,27 +12287,7 @@ export const listBots: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListBotsRequest,
-  ListBotsResponse,
-  ListBotsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListBotsRequest,
-  ) => stream.Stream<
-    ListBotsResponse,
-    ListBotsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListBotsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListBotsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListBotVersionReplicasError =
   | InternalServerException
@@ -12606,27 +12298,13 @@ export type ListBotVersionReplicasError =
 /**
  * Contains information about all the versions replication statuses applicable for Global Resiliency.
  */
-export const listBotVersionReplicas: API.OperationMethod<
+export const listBotVersionReplicas: API.PaginatedOperationMethod<
   ListBotVersionReplicasRequest,
   ListBotVersionReplicasResponse,
   ListBotVersionReplicasError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListBotVersionReplicasRequest,
-  ) => stream.Stream<
-    ListBotVersionReplicasResponse,
-    ListBotVersionReplicasError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListBotVersionReplicasRequest,
-  ) => stream.Stream<
-    unknown,
-    ListBotVersionReplicasError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListBotVersionReplicasRequest,
   output: ListBotVersionReplicasResponse,
   errors: [
@@ -12643,27 +12321,7 @@ export const listBotVersionReplicas: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListBotVersionReplicasRequest,
-  ListBotVersionReplicasResponse,
-  ListBotVersionReplicasError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListBotVersionReplicasRequest,
-  ) => stream.Stream<
-    ListBotVersionReplicasResponse,
-    ListBotVersionReplicasError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListBotVersionReplicasRequest,
-  ) => stream.Stream<
-    unknown,
-    ListBotVersionReplicasError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListBotVersionsError =
   | InternalServerException
@@ -12683,27 +12341,13 @@ export type ListBotVersionsError =
  * The `ListBotVersions` operation always returns at least
  * one version, the `DRAFT` version.
  */
-export const listBotVersions: API.OperationMethod<
+export const listBotVersions: API.PaginatedOperationMethod<
   ListBotVersionsRequest,
   ListBotVersionsResponse,
   ListBotVersionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListBotVersionsRequest,
-  ) => stream.Stream<
-    ListBotVersionsResponse,
-    ListBotVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListBotVersionsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListBotVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListBotVersionsRequest,
   output: ListBotVersionsResponse,
   errors: [
@@ -12720,27 +12364,7 @@ export const listBotVersions: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListBotVersionsRequest,
-  ListBotVersionsResponse,
-  ListBotVersionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListBotVersionsRequest,
-  ) => stream.Stream<
-    ListBotVersionsResponse,
-    ListBotVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListBotVersionsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListBotVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListBuiltInIntentsError =
   | InternalServerException
@@ -12757,27 +12381,13 @@ export type ListBuiltInIntentsError =
  * parameter when you call the `CreateIntent` operation. For
  * more information, see CreateIntent.
  */
-export const listBuiltInIntents: API.OperationMethod<
+export const listBuiltInIntents: API.PaginatedOperationMethod<
   ListBuiltInIntentsRequest,
   ListBuiltInIntentsResponse,
   ListBuiltInIntentsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListBuiltInIntentsRequest,
-  ) => stream.Stream<
-    ListBuiltInIntentsResponse,
-    ListBuiltInIntentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListBuiltInIntentsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListBuiltInIntentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListBuiltInIntentsRequest,
   output: ListBuiltInIntentsResponse,
   errors: [
@@ -12794,27 +12404,7 @@ export const listBuiltInIntents: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListBuiltInIntentsRequest,
-  ListBuiltInIntentsResponse,
-  ListBuiltInIntentsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListBuiltInIntentsRequest,
-  ) => stream.Stream<
-    ListBuiltInIntentsResponse,
-    ListBuiltInIntentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListBuiltInIntentsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListBuiltInIntentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListBuiltInSlotTypesError =
   | InternalServerException
@@ -12826,27 +12416,13 @@ export type ListBuiltInSlotTypesError =
  * Gets a list of built-in slot types that meet the specified
  * criteria.
  */
-export const listBuiltInSlotTypes: API.OperationMethod<
+export const listBuiltInSlotTypes: API.PaginatedOperationMethod<
   ListBuiltInSlotTypesRequest,
   ListBuiltInSlotTypesResponse,
   ListBuiltInSlotTypesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListBuiltInSlotTypesRequest,
-  ) => stream.Stream<
-    ListBuiltInSlotTypesResponse,
-    ListBuiltInSlotTypesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListBuiltInSlotTypesRequest,
-  ) => stream.Stream<
-    unknown,
-    ListBuiltInSlotTypesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListBuiltInSlotTypesRequest,
   output: ListBuiltInSlotTypesResponse,
   errors: [
@@ -12863,27 +12439,7 @@ export const listBuiltInSlotTypes: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListBuiltInSlotTypesRequest,
-  ListBuiltInSlotTypesResponse,
-  ListBuiltInSlotTypesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListBuiltInSlotTypesRequest,
-  ) => stream.Stream<
-    ListBuiltInSlotTypesResponse,
-    ListBuiltInSlotTypesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListBuiltInSlotTypesRequest,
-  ) => stream.Stream<
-    unknown,
-    ListBuiltInSlotTypesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListCustomVocabularyItemsError =
   | InternalServerException
@@ -12896,27 +12452,13 @@ export type ListCustomVocabularyItemsError =
  * Paginated list of custom vocabulary items for a given bot locale's
  * custom vocabulary.
  */
-export const listCustomVocabularyItems: API.OperationMethod<
+export const listCustomVocabularyItems: API.PaginatedOperationMethod<
   ListCustomVocabularyItemsRequest,
   ListCustomVocabularyItemsResponse,
   ListCustomVocabularyItemsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCustomVocabularyItemsRequest,
-  ) => stream.Stream<
-    ListCustomVocabularyItemsResponse,
-    ListCustomVocabularyItemsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCustomVocabularyItemsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListCustomVocabularyItemsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListCustomVocabularyItemsRequest,
   output: ListCustomVocabularyItemsResponse,
   errors: [
@@ -12934,27 +12476,7 @@ export const listCustomVocabularyItems: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListCustomVocabularyItemsRequest,
-  ListCustomVocabularyItemsResponse,
-  ListCustomVocabularyItemsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCustomVocabularyItemsRequest,
-  ) => stream.Stream<
-    ListCustomVocabularyItemsResponse,
-    ListCustomVocabularyItemsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCustomVocabularyItemsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListCustomVocabularyItemsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListExportsError =
   | InternalServerException
@@ -12965,27 +12487,13 @@ export type ListExportsError =
  * Lists the exports for a bot, bot locale, or custom vocabulary.
  * Exports are kept in the list for 7 days.
  */
-export const listExports: API.OperationMethod<
+export const listExports: API.PaginatedOperationMethod<
   ListExportsRequest,
   ListExportsResponse,
   ListExportsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListExportsRequest,
-  ) => stream.Stream<
-    ListExportsResponse,
-    ListExportsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListExportsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListExportsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListExportsRequest,
   output: ListExportsResponse,
   errors: [InternalServerException, ThrottlingException, ValidationException],
@@ -12997,27 +12505,7 @@ export const listExports: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListExportsRequest,
-  ListExportsResponse,
-  ListExportsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListExportsRequest,
-  ) => stream.Stream<
-    ListExportsResponse,
-    ListExportsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListExportsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListExportsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListImportsError =
   | InternalServerException
@@ -13028,27 +12516,13 @@ export type ListImportsError =
  * Lists the imports for a bot, bot locale, or custom vocabulary.
  * Imports are kept in the list for 7 days.
  */
-export const listImports: API.OperationMethod<
+export const listImports: API.PaginatedOperationMethod<
   ListImportsRequest,
   ListImportsResponse,
   ListImportsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListImportsRequest,
-  ) => stream.Stream<
-    ListImportsResponse,
-    ListImportsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListImportsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListImportsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListImportsRequest,
   output: ListImportsResponse,
   errors: [InternalServerException, ThrottlingException, ValidationException],
@@ -13060,27 +12534,7 @@ export const listImports: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListImportsRequest,
-  ListImportsResponse,
-  ListImportsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListImportsRequest,
-  ) => stream.Stream<
-    ListImportsResponse,
-    ListImportsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListImportsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListImportsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListIntentMetricsError =
   | InternalServerException
@@ -13104,27 +12558,13 @@ export type ListIntentMetricsError =
  *
  * Note that an `order` field exists in both `binBy` and `metrics`. You can specify only one `order` in a given request.
  */
-export const listIntentMetrics: API.OperationMethod<
+export const listIntentMetrics: API.PaginatedOperationMethod<
   ListIntentMetricsRequest,
   ListIntentMetricsResponse,
   ListIntentMetricsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListIntentMetricsRequest,
-  ) => stream.Stream<
-    ListIntentMetricsResponse,
-    ListIntentMetricsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListIntentMetricsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListIntentMetricsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListIntentMetricsRequest,
   output: ListIntentMetricsResponse,
   errors: [
@@ -13142,27 +12582,7 @@ export const listIntentMetrics: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListIntentMetricsRequest,
-  ListIntentMetricsResponse,
-  ListIntentMetricsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListIntentMetricsRequest,
-  ) => stream.Stream<
-    ListIntentMetricsResponse,
-    ListIntentMetricsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListIntentMetricsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListIntentMetricsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListIntentPathsError =
   | InternalServerException
@@ -13184,7 +12604,7 @@ export const listIntentPaths: API.OperationMethod<
   ListIntentPathsRequest,
   ListIntentPathsResponse,
   ListIntentPathsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListIntentPathsRequest,
   output: ListIntentPathsResponse,
@@ -13210,27 +12630,13 @@ export type ListIntentsError =
 /**
  * Get a list of intents that meet the specified criteria.
  */
-export const listIntents: API.OperationMethod<
+export const listIntents: API.PaginatedOperationMethod<
   ListIntentsRequest,
   ListIntentsResponse,
   ListIntentsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListIntentsRequest,
-  ) => stream.Stream<
-    ListIntentsResponse,
-    ListIntentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListIntentsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListIntentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListIntentsRequest,
   output: ListIntentsResponse,
   errors: [
@@ -13248,27 +12654,7 @@ export const listIntents: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListIntentsRequest,
-  ListIntentsResponse,
-  ListIntentsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListIntentsRequest,
-  ) => stream.Stream<
-    ListIntentsResponse,
-    ListIntentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListIntentsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListIntentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListIntentStageMetricsError =
   | InternalServerException
@@ -13292,27 +12678,13 @@ export type ListIntentStageMetricsError =
  *
  * Note that an `order` field exists in both `binBy` and `metrics`. You can only specify one `order` in a given request.
  */
-export const listIntentStageMetrics: API.OperationMethod<
+export const listIntentStageMetrics: API.PaginatedOperationMethod<
   ListIntentStageMetricsRequest,
   ListIntentStageMetricsResponse,
   ListIntentStageMetricsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListIntentStageMetricsRequest,
-  ) => stream.Stream<
-    ListIntentStageMetricsResponse,
-    ListIntentStageMetricsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListIntentStageMetricsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListIntentStageMetricsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListIntentStageMetricsRequest,
   output: ListIntentStageMetricsResponse,
   errors: [
@@ -13330,27 +12702,7 @@ export const listIntentStageMetrics: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListIntentStageMetricsRequest,
-  ListIntentStageMetricsResponse,
-  ListIntentStageMetricsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListIntentStageMetricsRequest,
-  ) => stream.Stream<
-    ListIntentStageMetricsResponse,
-    ListIntentStageMetricsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListIntentStageMetricsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListIntentStageMetricsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListRecommendedIntentsError =
   | InternalServerException
@@ -13364,27 +12716,13 @@ export type ListRecommendedIntentsError =
  * recommendation that you can use in your bot. Intents in the
  * response are ordered by relevance.
  */
-export const listRecommendedIntents: API.OperationMethod<
+export const listRecommendedIntents: API.PaginatedOperationMethod<
   ListRecommendedIntentsRequest,
   ListRecommendedIntentsResponse,
   ListRecommendedIntentsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListRecommendedIntentsRequest,
-  ) => stream.Stream<
-    ListRecommendedIntentsResponse,
-    ListRecommendedIntentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListRecommendedIntentsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListRecommendedIntentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListRecommendedIntentsRequest,
   output: ListRecommendedIntentsResponse,
   errors: [
@@ -13402,27 +12740,7 @@ export const listRecommendedIntents: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListRecommendedIntentsRequest,
-  ListRecommendedIntentsResponse,
-  ListRecommendedIntentsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListRecommendedIntentsRequest,
-  ) => stream.Stream<
-    ListRecommendedIntentsResponse,
-    ListRecommendedIntentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListRecommendedIntentsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListRecommendedIntentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListSessionAnalyticsDataError =
   | InternalServerException
@@ -13438,27 +12756,13 @@ export type ListSessionAnalyticsDataError =
  *
  * - Use the `maxResults` field to limit the number of results to return in a single response and the `nextToken` field to return the next batch of results if the response does not return the full set of results.
  */
-export const listSessionAnalyticsData: API.OperationMethod<
+export const listSessionAnalyticsData: API.PaginatedOperationMethod<
   ListSessionAnalyticsDataRequest,
   ListSessionAnalyticsDataResponse,
   ListSessionAnalyticsDataError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSessionAnalyticsDataRequest,
-  ) => stream.Stream<
-    ListSessionAnalyticsDataResponse,
-    ListSessionAnalyticsDataError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSessionAnalyticsDataRequest,
-  ) => stream.Stream<
-    unknown,
-    ListSessionAnalyticsDataError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListSessionAnalyticsDataRequest,
   output: ListSessionAnalyticsDataResponse,
   errors: [
@@ -13476,27 +12780,7 @@ export const listSessionAnalyticsData: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListSessionAnalyticsDataRequest,
-  ListSessionAnalyticsDataResponse,
-  ListSessionAnalyticsDataError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSessionAnalyticsDataRequest,
-  ) => stream.Stream<
-    ListSessionAnalyticsDataResponse,
-    ListSessionAnalyticsDataError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSessionAnalyticsDataRequest,
-  ) => stream.Stream<
-    unknown,
-    ListSessionAnalyticsDataError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListSessionMetricsError =
   | InternalServerException
@@ -13520,27 +12804,13 @@ export type ListSessionMetricsError =
  *
  * Note that an `order` field exists in both `binBy` and `metrics`. Currently, you can specify it in either field, but not in both.
  */
-export const listSessionMetrics: API.OperationMethod<
+export const listSessionMetrics: API.PaginatedOperationMethod<
   ListSessionMetricsRequest,
   ListSessionMetricsResponse,
   ListSessionMetricsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSessionMetricsRequest,
-  ) => stream.Stream<
-    ListSessionMetricsResponse,
-    ListSessionMetricsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSessionMetricsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListSessionMetricsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListSessionMetricsRequest,
   output: ListSessionMetricsResponse,
   errors: [
@@ -13558,27 +12828,7 @@ export const listSessionMetrics: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListSessionMetricsRequest,
-  ListSessionMetricsResponse,
-  ListSessionMetricsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSessionMetricsRequest,
-  ) => stream.Stream<
-    ListSessionMetricsResponse,
-    ListSessionMetricsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSessionMetricsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListSessionMetricsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListSlotsError =
   | InternalServerException
@@ -13589,27 +12839,13 @@ export type ListSlotsError =
 /**
  * Gets a list of slots that match the specified criteria.
  */
-export const listSlots: API.OperationMethod<
+export const listSlots: API.PaginatedOperationMethod<
   ListSlotsRequest,
   ListSlotsResponse,
   ListSlotsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSlotsRequest,
-  ) => stream.Stream<
-    ListSlotsResponse,
-    ListSlotsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSlotsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListSlotsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListSlotsRequest,
   output: ListSlotsResponse,
   errors: [
@@ -13626,27 +12862,7 @@ export const listSlots: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListSlotsRequest,
-  ListSlotsResponse,
-  ListSlotsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSlotsRequest,
-  ) => stream.Stream<
-    ListSlotsResponse,
-    ListSlotsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSlotsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListSlotsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListSlotTypesError =
   | InternalServerException
@@ -13658,27 +12874,13 @@ export type ListSlotTypesError =
 /**
  * Gets a list of slot types that match the specified criteria.
  */
-export const listSlotTypes: API.OperationMethod<
+export const listSlotTypes: API.PaginatedOperationMethod<
   ListSlotTypesRequest,
   ListSlotTypesResponse,
   ListSlotTypesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSlotTypesRequest,
-  ) => stream.Stream<
-    ListSlotTypesResponse,
-    ListSlotTypesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSlotTypesRequest,
-  ) => stream.Stream<
-    unknown,
-    ListSlotTypesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListSlotTypesRequest,
   output: ListSlotTypesResponse,
   errors: [
@@ -13696,27 +12898,7 @@ export const listSlotTypes: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListSlotTypesRequest,
-  ListSlotTypesResponse,
-  ListSlotTypesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSlotTypesRequest,
-  ) => stream.Stream<
-    ListSlotTypesResponse,
-    ListSlotTypesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSlotTypesRequest,
-  ) => stream.Stream<
-    unknown,
-    ListSlotTypesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsForResourceError =
   | InternalServerException
@@ -13732,7 +12914,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceRequest,
   ListTagsForResourceResponse,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -13757,27 +12939,13 @@ export type ListTestExecutionResultItemsError =
 /**
  * Gets a list of test execution result items.
  */
-export const listTestExecutionResultItems: API.OperationMethod<
+export const listTestExecutionResultItems: API.PaginatedOperationMethod<
   ListTestExecutionResultItemsRequest,
   ListTestExecutionResultItemsResponse,
   ListTestExecutionResultItemsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTestExecutionResultItemsRequest,
-  ) => stream.Stream<
-    ListTestExecutionResultItemsResponse,
-    ListTestExecutionResultItemsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTestExecutionResultItemsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListTestExecutionResultItemsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListTestExecutionResultItemsRequest,
   output: ListTestExecutionResultItemsResponse,
   errors: [
@@ -13795,27 +12963,7 @@ export const listTestExecutionResultItems: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListTestExecutionResultItemsRequest,
-  ListTestExecutionResultItemsResponse,
-  ListTestExecutionResultItemsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTestExecutionResultItemsRequest,
-  ) => stream.Stream<
-    ListTestExecutionResultItemsResponse,
-    ListTestExecutionResultItemsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTestExecutionResultItemsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListTestExecutionResultItemsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTestExecutionsError =
   | InternalServerException
@@ -13826,27 +12974,13 @@ export type ListTestExecutionsError =
 /**
  * The list of test set executions.
  */
-export const listTestExecutions: API.OperationMethod<
+export const listTestExecutions: API.PaginatedOperationMethod<
   ListTestExecutionsRequest,
   ListTestExecutionsResponse,
   ListTestExecutionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTestExecutionsRequest,
-  ) => stream.Stream<
-    ListTestExecutionsResponse,
-    ListTestExecutionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTestExecutionsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListTestExecutionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListTestExecutionsRequest,
   output: ListTestExecutionsResponse,
   errors: [
@@ -13863,27 +12997,7 @@ export const listTestExecutions: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListTestExecutionsRequest,
-  ListTestExecutionsResponse,
-  ListTestExecutionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTestExecutionsRequest,
-  ) => stream.Stream<
-    ListTestExecutionsResponse,
-    ListTestExecutionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTestExecutionsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListTestExecutionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTestSetRecordsError =
   | InternalServerException
@@ -13895,27 +13009,13 @@ export type ListTestSetRecordsError =
 /**
  * The list of test set records.
  */
-export const listTestSetRecords: API.OperationMethod<
+export const listTestSetRecords: API.PaginatedOperationMethod<
   ListTestSetRecordsRequest,
   ListTestSetRecordsResponse,
   ListTestSetRecordsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTestSetRecordsRequest,
-  ) => stream.Stream<
-    ListTestSetRecordsResponse,
-    ListTestSetRecordsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTestSetRecordsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListTestSetRecordsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListTestSetRecordsRequest,
   output: ListTestSetRecordsResponse,
   errors: [
@@ -13933,27 +13033,7 @@ export const listTestSetRecords: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListTestSetRecordsRequest,
-  ListTestSetRecordsResponse,
-  ListTestSetRecordsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTestSetRecordsRequest,
-  ) => stream.Stream<
-    ListTestSetRecordsResponse,
-    ListTestSetRecordsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTestSetRecordsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListTestSetRecordsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTestSetsError =
   | InternalServerException
@@ -13964,27 +13044,13 @@ export type ListTestSetsError =
 /**
  * The list of the test sets
  */
-export const listTestSets: API.OperationMethod<
+export const listTestSets: API.PaginatedOperationMethod<
   ListTestSetsRequest,
   ListTestSetsResponse,
   ListTestSetsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTestSetsRequest,
-  ) => stream.Stream<
-    ListTestSetsResponse,
-    ListTestSetsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTestSetsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListTestSetsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListTestSetsRequest,
   output: ListTestSetsResponse,
   errors: [
@@ -14001,27 +13067,7 @@ export const listTestSets: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListTestSetsRequest,
-  ListTestSetsResponse,
-  ListTestSetsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTestSetsRequest,
-  ) => stream.Stream<
-    ListTestSetsResponse,
-    ListTestSetsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTestSetsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListTestSetsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListUtteranceAnalyticsDataError =
   | InternalServerException
@@ -14046,27 +13092,13 @@ export type ListUtteranceAnalyticsDataError =
  *
  * - Use the `maxResults` field to limit the number of results to return in a single response and the `nextToken` field to return the next batch of results if the response does not return the full set of results.
  */
-export const listUtteranceAnalyticsData: API.OperationMethod<
+export const listUtteranceAnalyticsData: API.PaginatedOperationMethod<
   ListUtteranceAnalyticsDataRequest,
   ListUtteranceAnalyticsDataResponse,
   ListUtteranceAnalyticsDataError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListUtteranceAnalyticsDataRequest,
-  ) => stream.Stream<
-    ListUtteranceAnalyticsDataResponse,
-    ListUtteranceAnalyticsDataError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListUtteranceAnalyticsDataRequest,
-  ) => stream.Stream<
-    unknown,
-    ListUtteranceAnalyticsDataError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListUtteranceAnalyticsDataRequest,
   output: ListUtteranceAnalyticsDataResponse,
   errors: [
@@ -14084,27 +13116,7 @@ export const listUtteranceAnalyticsData: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListUtteranceAnalyticsDataRequest,
-  ListUtteranceAnalyticsDataResponse,
-  ListUtteranceAnalyticsDataError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListUtteranceAnalyticsDataRequest,
-  ) => stream.Stream<
-    ListUtteranceAnalyticsDataResponse,
-    ListUtteranceAnalyticsDataError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListUtteranceAnalyticsDataRequest,
-  ) => stream.Stream<
-    unknown,
-    ListUtteranceAnalyticsDataError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListUtteranceMetricsError =
   | InternalServerException
@@ -14133,27 +13145,13 @@ export type ListUtteranceMetricsError =
  *
  * Note that an `order` field exists in both `binBy` and `metrics`. Currently, you can specify it in either field, but not in both.
  */
-export const listUtteranceMetrics: API.OperationMethod<
+export const listUtteranceMetrics: API.PaginatedOperationMethod<
   ListUtteranceMetricsRequest,
   ListUtteranceMetricsResponse,
   ListUtteranceMetricsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListUtteranceMetricsRequest,
-  ) => stream.Stream<
-    ListUtteranceMetricsResponse,
-    ListUtteranceMetricsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListUtteranceMetricsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListUtteranceMetricsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListUtteranceMetricsRequest,
   output: ListUtteranceMetricsResponse,
   errors: [
@@ -14171,27 +13169,7 @@ export const listUtteranceMetrics: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListUtteranceMetricsRequest,
-  ListUtteranceMetricsResponse,
-  ListUtteranceMetricsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListUtteranceMetricsRequest,
-  ) => stream.Stream<
-    ListUtteranceMetricsResponse,
-    ListUtteranceMetricsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListUtteranceMetricsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListUtteranceMetricsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type SearchAssociatedTranscriptsError =
   | InternalServerException
@@ -14208,7 +13186,7 @@ export const searchAssociatedTranscripts: API.OperationMethod<
   SearchAssociatedTranscriptsRequest,
   SearchAssociatedTranscriptsResponse,
   SearchAssociatedTranscriptsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: SearchAssociatedTranscriptsRequest,
   output: SearchAssociatedTranscriptsResponse,
@@ -14240,7 +13218,7 @@ export const startBotAnalyzer: API.OperationMethod<
   StartBotAnalyzerRequest,
   StartBotAnalyzerResponse,
   StartBotAnalyzerError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartBotAnalyzerRequest,
   output: StartBotAnalyzerResponse,
@@ -14273,7 +13251,7 @@ export const startBotRecommendation: API.OperationMethod<
   StartBotRecommendationRequest,
   StartBotRecommendationResponse,
   StartBotRecommendationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartBotRecommendationRequest,
   output: StartBotRecommendationResponse,
@@ -14310,7 +13288,7 @@ export const startBotResourceGeneration: API.OperationMethod<
   StartBotResourceGenerationRequest,
   StartBotResourceGenerationResponse,
   StartBotResourceGenerationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartBotResourceGenerationRequest,
   output: StartBotResourceGenerationResponse,
@@ -14343,7 +13321,7 @@ export const startImport: API.OperationMethod<
   StartImportRequest,
   StartImportResponse,
   StartImportError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartImportRequest,
   output: StartImportResponse,
@@ -14375,7 +13353,7 @@ export const startTestExecution: API.OperationMethod<
   StartTestExecutionRequest,
   StartTestExecutionResponse,
   StartTestExecutionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartTestExecutionRequest,
   output: StartTestExecutionResponse,
@@ -14407,7 +13385,7 @@ export const startTestSetGeneration: API.OperationMethod<
   StartTestSetGenerationRequest,
   StartTestSetGenerationResponse,
   StartTestSetGenerationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartTestSetGenerationRequest,
   output: StartTestSetGenerationResponse,
@@ -14437,7 +13415,7 @@ export const stopBotAnalyzer: API.OperationMethod<
   StopBotAnalyzerRequest,
   StopBotAnalyzerResponse,
   StopBotAnalyzerError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StopBotAnalyzerRequest,
   output: StopBotAnalyzerResponse,
@@ -14468,7 +13446,7 @@ export const stopBotRecommendation: API.OperationMethod<
   StopBotRecommendationRequest,
   StopBotRecommendationResponse,
   StopBotRecommendationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StopBotRecommendationRequest,
   output: StopBotRecommendationResponse,
@@ -14501,7 +13479,7 @@ export const tagResource: API.OperationMethod<
   TagResourceRequest,
   TagResourceResponse,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -14529,7 +13507,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceRequest,
   UntagResourceResponse,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -14559,7 +13537,7 @@ export const updateBot: API.OperationMethod<
   UpdateBotRequest,
   UpdateBotResponse,
   UpdateBotError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateBotRequest,
   output: UpdateBotResponse,
@@ -14591,7 +13569,7 @@ export const updateBotAlias: API.OperationMethod<
   UpdateBotAliasRequest,
   UpdateBotAliasResponse,
   UpdateBotAliasError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateBotAliasRequest,
   output: UpdateBotAliasResponse,
@@ -14623,7 +13601,7 @@ export const updateBotLocale: API.OperationMethod<
   UpdateBotLocaleRequest,
   UpdateBotLocaleResponse,
   UpdateBotLocaleError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateBotLocaleRequest,
   output: UpdateBotLocaleResponse,
@@ -14656,7 +13634,7 @@ export const updateBotRecommendation: API.OperationMethod<
   UpdateBotRecommendationRequest,
   UpdateBotRecommendationResponse,
   UpdateBotRecommendationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateBotRecommendationRequest,
   output: UpdateBotRecommendationResponse,
@@ -14694,7 +13672,7 @@ export const updateExport: API.OperationMethod<
   UpdateExportRequest,
   UpdateExportResponse,
   UpdateExportError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateExportRequest,
   output: UpdateExportResponse,
@@ -14726,7 +13704,7 @@ export const updateIntent: API.OperationMethod<
   UpdateIntentRequest,
   UpdateIntentResponse,
   UpdateIntentError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateIntentRequest,
   output: UpdateIntentResponse,
@@ -14760,7 +13738,7 @@ export const updateResourcePolicy: API.OperationMethod<
   UpdateResourcePolicyRequest,
   UpdateResourcePolicyResponse,
   UpdateResourcePolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateResourcePolicyRequest,
   output: UpdateResourcePolicyResponse,
@@ -14792,7 +13770,7 @@ export const updateSlot: API.OperationMethod<
   UpdateSlotRequest,
   UpdateSlotResponse,
   UpdateSlotError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateSlotRequest,
   output: UpdateSlotResponse,
@@ -14824,7 +13802,7 @@ export const updateSlotType: API.OperationMethod<
   UpdateSlotTypeRequest,
   UpdateSlotTypeResponse,
   UpdateSlotTypeError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateSlotTypeRequest,
   output: UpdateSlotTypeResponse,
@@ -14856,7 +13834,7 @@ export const updateTestSet: API.OperationMethod<
   UpdateTestSetRequest,
   UpdateTestSetResponse,
   UpdateTestSetError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateTestSetRequest,
   output: UpdateTestSetResponse,

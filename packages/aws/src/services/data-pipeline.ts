@@ -1,13 +1,11 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
 import * as T from "../traits.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 const ns = T.XmlNamespace("http://datapipeline.amazonaws.com/doc/2012-10-29/");
 const svc = T.AwsApiService({
   sdkId: "Data Pipeline",
@@ -88,27 +86,27 @@ const rules = T.EndpointResolver((p, _) => {
 export class InternalServiceError
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServiceError>()(
     "InternalServiceError",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidRequestException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidRequestException>()(
     "InvalidRequestException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class PipelineDeletedException
   extends /*@__PURE__*/ S.TaggedErrorClass<PipelineDeletedException>()(
     "PipelineDeletedException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class PipelineNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<PipelineNotFoundException>()(
     "PipelineNotFoundException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class TaskNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<TaskNotFoundException>()(
     "TaskNotFoundException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export type Id = string;
 export type FieldNameString = string;
@@ -943,7 +941,7 @@ export const activatePipeline: API.OperationMethod<
   ActivatePipelineInput,
   ActivatePipelineOutput,
   ActivatePipelineError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ActivatePipelineInput,
   output: ActivatePipelineOutput,
@@ -971,7 +969,7 @@ export const addTags: API.OperationMethod<
   AddTagsInput,
   AddTagsOutput,
   AddTagsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AddTagsInput,
   output: AddTagsOutput,
@@ -1017,7 +1015,7 @@ export const createPipeline: API.OperationMethod<
   CreatePipelineInput,
   CreatePipelineOutput,
   CreatePipelineError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreatePipelineInput,
   output: CreatePipelineOutput,
@@ -1044,7 +1042,7 @@ export const deactivatePipeline: API.OperationMethod<
   DeactivatePipelineInput,
   DeactivatePipelineOutput,
   DeactivatePipelineError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeactivatePipelineInput,
   output: DeactivatePipelineOutput,
@@ -1093,7 +1091,7 @@ export const deletePipeline: API.OperationMethod<
   DeletePipelineInput,
   DeletePipelineResponse,
   DeletePipelineError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeletePipelineInput,
   output: DeletePipelineResponse,
@@ -1164,27 +1162,13 @@ export type DescribeObjectsError =
  * ]
  * }
  */
-export const describeObjects: API.OperationMethod<
+export const describeObjects: API.PaginatedOperationMethod<
   DescribeObjectsInput,
   DescribeObjectsOutput,
   DescribeObjectsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeObjectsInput,
-  ) => stream.Stream<
-    DescribeObjectsOutput,
-    DescribeObjectsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeObjectsInput,
-  ) => stream.Stream<
-    PipelineObject,
-    DescribeObjectsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  PipelineObject
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeObjectsInput,
   output: DescribeObjectsOutput,
   errors: [
@@ -1201,27 +1185,7 @@ export const describeObjects: API.OperationMethod<
     outputToken: "marker",
     items: "pipelineObjects",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeObjectsInput,
-  DescribeObjectsOutput,
-  DescribeObjectsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeObjectsInput,
-  ) => stream.Stream<
-    DescribeObjectsOutput,
-    DescribeObjectsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeObjectsInput,
-  ) => stream.Stream<
-    PipelineObject,
-    DescribeObjectsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribePipelinesError =
   | InternalServiceError
@@ -1289,7 +1253,7 @@ export const describePipelines: API.OperationMethod<
   DescribePipelinesInput,
   DescribePipelinesOutput,
   DescribePipelinesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribePipelinesInput,
   output: DescribePipelinesOutput,
@@ -1338,7 +1302,7 @@ export const evaluateExpression: API.OperationMethod<
   EvaluateExpressionInput,
   EvaluateExpressionOutput,
   EvaluateExpressionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: EvaluateExpressionInput,
   output: EvaluateExpressionOutput,
@@ -1421,7 +1385,7 @@ export const getPipelineDefinition: API.OperationMethod<
   GetPipelineDefinitionInput,
   GetPipelineDefinitionOutput,
   GetPipelineDefinitionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetPipelineDefinitionInput,
   output: GetPipelineDefinitionOutput,
@@ -1468,27 +1432,13 @@ export type ListPipelinesError =
  * ]
  * }
  */
-export const listPipelines: API.OperationMethod<
+export const listPipelines: API.PaginatedOperationMethod<
   ListPipelinesInput,
   ListPipelinesOutput,
   ListPipelinesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPipelinesInput,
-  ) => stream.Stream<
-    ListPipelinesOutput,
-    ListPipelinesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPipelinesInput,
-  ) => stream.Stream<
-    PipelineIdName,
-    ListPipelinesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  PipelineIdName
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListPipelinesInput,
   output: ListPipelinesOutput,
   errors: [InternalServiceError, InvalidRequestException],
@@ -1500,27 +1450,7 @@ export const listPipelines: API.OperationMethod<
     outputToken: "marker",
     items: "pipelineIdList",
   } as const,
-})) as any as API.OperationMethod<
-  ListPipelinesInput,
-  ListPipelinesOutput,
-  ListPipelinesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPipelinesInput,
-  ) => stream.Stream<
-    ListPipelinesOutput,
-    ListPipelinesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPipelinesInput,
-  ) => stream.Stream<
-    PipelineIdName,
-    ListPipelinesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type PollForTaskError =
   | InternalServiceError
@@ -1602,7 +1532,7 @@ export const pollForTask: API.OperationMethod<
   PollForTaskInput,
   PollForTaskOutput,
   PollForTaskError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PollForTaskInput,
   output: PollForTaskOutput,
@@ -1768,7 +1698,7 @@ export const putPipelineDefinition: API.OperationMethod<
   PutPipelineDefinitionInput,
   PutPipelineDefinitionOutput,
   PutPipelineDefinitionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutPipelineDefinitionInput,
   output: PutPipelineDefinitionOutput,
@@ -1820,27 +1750,13 @@ export type QueryObjectsError =
  * ["@SayHello_1_2012-09-25T17:00:00"]
  * }
  */
-export const queryObjects: API.OperationMethod<
+export const queryObjects: API.PaginatedOperationMethod<
   QueryObjectsInput,
   QueryObjectsOutput,
   QueryObjectsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: QueryObjectsInput,
-  ) => stream.Stream<
-    QueryObjectsOutput,
-    QueryObjectsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: QueryObjectsInput,
-  ) => stream.Stream<
-    Id,
-    QueryObjectsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Id
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: QueryObjectsInput,
   output: QueryObjectsOutput,
   errors: [
@@ -1858,27 +1774,7 @@ export const queryObjects: API.OperationMethod<
     items: "ids",
     pageSize: "limit",
   } as const,
-})) as any as API.OperationMethod<
-  QueryObjectsInput,
-  QueryObjectsOutput,
-  QueryObjectsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: QueryObjectsInput,
-  ) => stream.Stream<
-    QueryObjectsOutput,
-    QueryObjectsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: QueryObjectsInput,
-  ) => stream.Stream<
-    Id,
-    QueryObjectsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type RemoveTagsError =
   | InternalServiceError
@@ -1893,7 +1789,7 @@ export const removeTags: API.OperationMethod<
   RemoveTagsInput,
   RemoveTagsOutput,
   RemoveTagsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RemoveTagsInput,
   output: RemoveTagsOutput,
@@ -1951,7 +1847,7 @@ export const reportTaskProgress: API.OperationMethod<
   ReportTaskProgressInput,
   ReportTaskProgressOutput,
   ReportTaskProgressError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ReportTaskProgressInput,
   output: ReportTaskProgressOutput,
@@ -2000,7 +1896,7 @@ export const reportTaskRunnerHeartbeat: API.OperationMethod<
   ReportTaskRunnerHeartbeatInput,
   ReportTaskRunnerHeartbeatOutput,
   ReportTaskRunnerHeartbeatError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ReportTaskRunnerHeartbeatInput,
   output: ReportTaskRunnerHeartbeatOutput,
@@ -2045,7 +1941,7 @@ export const setStatus: API.OperationMethod<
   SetStatusInput,
   SetStatusResponse,
   SetStatusError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: SetStatusInput,
   output: SetStatusResponse,
@@ -2094,7 +1990,7 @@ export const setTaskStatus: API.OperationMethod<
   SetTaskStatusInput,
   SetTaskStatusOutput,
   SetTaskStatusError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: SetTaskStatusInput,
   output: SetTaskStatusOutput,
@@ -2254,7 +2150,7 @@ export const validatePipelineDefinition: API.OperationMethod<
   ValidatePipelineDefinitionInput,
   ValidatePipelineDefinitionOutput,
   ValidatePipelineDefinitionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ValidatePipelineDefinitionInput,
   output: ValidatePipelineDefinitionOutput,

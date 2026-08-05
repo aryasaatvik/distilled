@@ -1,6 +1,5 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -8,7 +7,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 const svc = T.AwsApiService({
   sdkId: "NetworkFlowMonitor",
   serviceShapeName: "NetworkFlowMonitor",
@@ -55,43 +53,43 @@ const rules = T.EndpointResolver((p, _) => {
 export class AccessDeniedException
   extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
     "AccessDeniedException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(403),
   ).pipe(C.withAuthError) {}
 export class ConflictException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
     "ConflictException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class InternalServerException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
     "InternalServerException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(T.HttpError(500), T.Retryable()),
   ).pipe(C.withServerError, C.withRetryableError) {}
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class ServiceQuotaExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
     "ServiceQuotaExceededException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(402),
   ).pipe(C.withQuotaError) {}
 export class ThrottlingException
   extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
     "ThrottlingException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(T.HttpError(429), T.Retryable({ throttling: true })),
   ).pipe(C.withThrottlingError, C.withRetryableError) {}
 export class ValidationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
     "ValidationException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export type ResourceName = string;
@@ -1351,7 +1349,7 @@ export const createMonitor: API.OperationMethod<
   CreateMonitorInput,
   CreateMonitorOutput,
   CreateMonitorError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateMonitorInput,
   output: CreateMonitorOutput,
@@ -1393,7 +1391,7 @@ export const createScope: API.OperationMethod<
   CreateScopeInput,
   CreateScopeOutput,
   CreateScopeError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateScopeInput,
   output: CreateScopeOutput,
@@ -1425,7 +1423,7 @@ export const deleteMonitor: API.OperationMethod<
   DeleteMonitorInput,
   DeleteMonitorOutput,
   DeleteMonitorError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteMonitorInput,
   output: DeleteMonitorOutput,
@@ -1458,7 +1456,7 @@ export const deleteScope: API.OperationMethod<
   DeleteScopeInput,
   DeleteScopeOutput,
   DeleteScopeError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteScopeInput,
   output: DeleteScopeOutput,
@@ -1490,7 +1488,7 @@ export const getMonitor: API.OperationMethod<
   GetMonitorInput,
   GetMonitorOutput,
   GetMonitorError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetMonitorInput,
   output: GetMonitorOutput,
@@ -1521,27 +1519,13 @@ export type GetQueryResultsMonitorTopContributorsError =
  *
  * Top contributors in Network Flow Monitor are network flows with the highest values for a specific metric type. Top contributors can be across all workload insights, for a given scope, or for a specific monitor. Use the applicable call for the top contributors that you want to be returned.
  */
-export const getQueryResultsMonitorTopContributors: API.OperationMethod<
+export const getQueryResultsMonitorTopContributors: API.PaginatedOperationMethod<
   GetQueryResultsMonitorTopContributorsInput,
   GetQueryResultsMonitorTopContributorsOutput,
   GetQueryResultsMonitorTopContributorsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetQueryResultsMonitorTopContributorsInput,
-  ) => stream.Stream<
-    GetQueryResultsMonitorTopContributorsOutput,
-    GetQueryResultsMonitorTopContributorsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetQueryResultsMonitorTopContributorsInput,
-  ) => stream.Stream<
-    MonitorTopContributorsRow,
-    GetQueryResultsMonitorTopContributorsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  MonitorTopContributorsRow
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetQueryResultsMonitorTopContributorsInput,
   output: GetQueryResultsMonitorTopContributorsOutput,
   errors: [
@@ -1561,27 +1545,7 @@ export const getQueryResultsMonitorTopContributors: API.OperationMethod<
     items: "topContributors",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetQueryResultsMonitorTopContributorsInput,
-  GetQueryResultsMonitorTopContributorsOutput,
-  GetQueryResultsMonitorTopContributorsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetQueryResultsMonitorTopContributorsInput,
-  ) => stream.Stream<
-    GetQueryResultsMonitorTopContributorsOutput,
-    GetQueryResultsMonitorTopContributorsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetQueryResultsMonitorTopContributorsInput,
-  ) => stream.Stream<
-    MonitorTopContributorsRow,
-    GetQueryResultsMonitorTopContributorsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetQueryResultsWorkloadInsightsTopContributorsError =
   | AccessDeniedException
@@ -1600,27 +1564,13 @@ export type GetQueryResultsWorkloadInsightsTopContributorsError =
  *
  * Top contributors in Network Flow Monitor are network flows with the highest values for a specific metric type. Top contributors can be across all workload insights, for a given scope, or for a specific monitor. Use the applicable call for the top contributors that you want to be returned.
  */
-export const getQueryResultsWorkloadInsightsTopContributors: API.OperationMethod<
+export const getQueryResultsWorkloadInsightsTopContributors: API.PaginatedOperationMethod<
   GetQueryResultsWorkloadInsightsTopContributorsInput,
   GetQueryResultsWorkloadInsightsTopContributorsOutput,
   GetQueryResultsWorkloadInsightsTopContributorsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetQueryResultsWorkloadInsightsTopContributorsInput,
-  ) => stream.Stream<
-    GetQueryResultsWorkloadInsightsTopContributorsOutput,
-    GetQueryResultsWorkloadInsightsTopContributorsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetQueryResultsWorkloadInsightsTopContributorsInput,
-  ) => stream.Stream<
-    WorkloadInsightsTopContributorsRow,
-    GetQueryResultsWorkloadInsightsTopContributorsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  WorkloadInsightsTopContributorsRow
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetQueryResultsWorkloadInsightsTopContributorsInput,
   output: GetQueryResultsWorkloadInsightsTopContributorsOutput,
   errors: [
@@ -1640,27 +1590,7 @@ export const getQueryResultsWorkloadInsightsTopContributors: API.OperationMethod
     items: "topContributors",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetQueryResultsWorkloadInsightsTopContributorsInput,
-  GetQueryResultsWorkloadInsightsTopContributorsOutput,
-  GetQueryResultsWorkloadInsightsTopContributorsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetQueryResultsWorkloadInsightsTopContributorsInput,
-  ) => stream.Stream<
-    GetQueryResultsWorkloadInsightsTopContributorsOutput,
-    GetQueryResultsWorkloadInsightsTopContributorsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetQueryResultsWorkloadInsightsTopContributorsInput,
-  ) => stream.Stream<
-    WorkloadInsightsTopContributorsRow,
-    GetQueryResultsWorkloadInsightsTopContributorsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetQueryResultsWorkloadInsightsTopContributorsDataError =
   | AccessDeniedException
@@ -1681,27 +1611,13 @@ export type GetQueryResultsWorkloadInsightsTopContributorsDataError =
  *
  * The top contributor network flows overall are for a specific metric type, for example, the number of retransmissions.
  */
-export const getQueryResultsWorkloadInsightsTopContributorsData: API.OperationMethod<
+export const getQueryResultsWorkloadInsightsTopContributorsData: API.PaginatedOperationMethod<
   GetQueryResultsWorkloadInsightsTopContributorsDataInput,
   GetQueryResultsWorkloadInsightsTopContributorsDataOutput,
   GetQueryResultsWorkloadInsightsTopContributorsDataError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetQueryResultsWorkloadInsightsTopContributorsDataInput,
-  ) => stream.Stream<
-    GetQueryResultsWorkloadInsightsTopContributorsDataOutput,
-    GetQueryResultsWorkloadInsightsTopContributorsDataError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetQueryResultsWorkloadInsightsTopContributorsDataInput,
-  ) => stream.Stream<
-    WorkloadInsightsTopContributorsDataPoint,
-    GetQueryResultsWorkloadInsightsTopContributorsDataError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  WorkloadInsightsTopContributorsDataPoint
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetQueryResultsWorkloadInsightsTopContributorsDataInput,
   output: GetQueryResultsWorkloadInsightsTopContributorsDataOutput,
   errors: [
@@ -1721,27 +1637,7 @@ export const getQueryResultsWorkloadInsightsTopContributorsData: API.OperationMe
     items: "datapoints",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetQueryResultsWorkloadInsightsTopContributorsDataInput,
-  GetQueryResultsWorkloadInsightsTopContributorsDataOutput,
-  GetQueryResultsWorkloadInsightsTopContributorsDataError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetQueryResultsWorkloadInsightsTopContributorsDataInput,
-  ) => stream.Stream<
-    GetQueryResultsWorkloadInsightsTopContributorsDataOutput,
-    GetQueryResultsWorkloadInsightsTopContributorsDataError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetQueryResultsWorkloadInsightsTopContributorsDataInput,
-  ) => stream.Stream<
-    WorkloadInsightsTopContributorsDataPoint,
-    GetQueryResultsWorkloadInsightsTopContributorsDataError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetQueryStatusMonitorTopContributorsError =
   | AccessDeniedException
@@ -1761,7 +1657,7 @@ export const getQueryStatusMonitorTopContributors: API.OperationMethod<
   GetQueryStatusMonitorTopContributorsInput,
   GetQueryStatusMonitorTopContributorsOutput,
   GetQueryStatusMonitorTopContributorsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetQueryStatusMonitorTopContributorsInput,
   output: GetQueryStatusMonitorTopContributorsOutput,
@@ -1795,7 +1691,7 @@ export const getQueryStatusWorkloadInsightsTopContributors: API.OperationMethod<
   GetQueryStatusWorkloadInsightsTopContributorsInput,
   GetQueryStatusWorkloadInsightsTopContributorsOutput,
   GetQueryStatusWorkloadInsightsTopContributorsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetQueryStatusWorkloadInsightsTopContributorsInput,
   output: GetQueryStatusWorkloadInsightsTopContributorsOutput,
@@ -1831,7 +1727,7 @@ export const getQueryStatusWorkloadInsightsTopContributorsData: API.OperationMet
   GetQueryStatusWorkloadInsightsTopContributorsDataInput,
   GetQueryStatusWorkloadInsightsTopContributorsDataOutput,
   GetQueryStatusWorkloadInsightsTopContributorsDataError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetQueryStatusWorkloadInsightsTopContributorsDataInput,
   output: GetQueryStatusWorkloadInsightsTopContributorsDataOutput,
@@ -1862,7 +1758,7 @@ export const getScope: API.OperationMethod<
   GetScopeInput,
   GetScopeOutput,
   GetScopeError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetScopeInput,
   output: GetScopeOutput,
@@ -1888,27 +1784,13 @@ export type ListMonitorsError =
 /**
  * List all monitors in an account. Optionally, you can list only monitors that have a specific status, by using the `STATUS` parameter.
  */
-export const listMonitors: API.OperationMethod<
+export const listMonitors: API.PaginatedOperationMethod<
   ListMonitorsInput,
   ListMonitorsOutput,
   ListMonitorsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListMonitorsInput,
-  ) => stream.Stream<
-    ListMonitorsOutput,
-    ListMonitorsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListMonitorsInput,
-  ) => stream.Stream<
-    MonitorSummary,
-    ListMonitorsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  MonitorSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListMonitorsInput,
   output: ListMonitorsOutput,
   errors: [
@@ -1926,27 +1808,7 @@ export const listMonitors: API.OperationMethod<
     items: "monitors",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListMonitorsInput,
-  ListMonitorsOutput,
-  ListMonitorsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListMonitorsInput,
-  ) => stream.Stream<
-    ListMonitorsOutput,
-    ListMonitorsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListMonitorsInput,
-  ) => stream.Stream<
-    MonitorSummary,
-    ListMonitorsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListScopesError =
   | AccessDeniedException
@@ -1958,27 +1820,13 @@ export type ListScopesError =
 /**
  * List all the scopes for an account.
  */
-export const listScopes: API.OperationMethod<
+export const listScopes: API.PaginatedOperationMethod<
   ListScopesInput,
   ListScopesOutput,
   ListScopesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListScopesInput,
-  ) => stream.Stream<
-    ListScopesOutput,
-    ListScopesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListScopesInput,
-  ) => stream.Stream<
-    ScopeSummary,
-    ListScopesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ScopeSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListScopesInput,
   output: ListScopesOutput,
   errors: [
@@ -1997,27 +1845,7 @@ export const listScopes: API.OperationMethod<
     items: "scopes",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListScopesInput,
-  ListScopesOutput,
-  ListScopesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListScopesInput,
-  ) => stream.Stream<
-    ListScopesOutput,
-    ListScopesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListScopesInput,
-  ) => stream.Stream<
-    ScopeSummary,
-    ListScopesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsForResourceError =
   | AccessDeniedException
@@ -2034,7 +1862,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceInput,
   ListTagsForResourceOutput,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceInput,
   output: ListTagsForResourceOutput,
@@ -2069,7 +1897,7 @@ export const startQueryMonitorTopContributors: API.OperationMethod<
   StartQueryMonitorTopContributorsInput,
   StartQueryMonitorTopContributorsOutput,
   StartQueryMonitorTopContributorsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartQueryMonitorTopContributorsInput,
   output: StartQueryMonitorTopContributorsOutput,
@@ -2103,7 +1931,7 @@ export const startQueryWorkloadInsightsTopContributors: API.OperationMethod<
   StartQueryWorkloadInsightsTopContributorsInput,
   StartQueryWorkloadInsightsTopContributorsOutput,
   StartQueryWorkloadInsightsTopContributorsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartQueryWorkloadInsightsTopContributorsInput,
   output: StartQueryWorkloadInsightsTopContributorsOutput,
@@ -2137,7 +1965,7 @@ export const startQueryWorkloadInsightsTopContributorsData: API.OperationMethod<
   StartQueryWorkloadInsightsTopContributorsDataInput,
   StartQueryWorkloadInsightsTopContributorsDataOutput,
   StartQueryWorkloadInsightsTopContributorsDataError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartQueryWorkloadInsightsTopContributorsDataInput,
   output: StartQueryWorkloadInsightsTopContributorsDataOutput,
@@ -2169,7 +1997,7 @@ export const stopQueryMonitorTopContributors: API.OperationMethod<
   StopQueryMonitorTopContributorsInput,
   StopQueryMonitorTopContributorsOutput,
   StopQueryMonitorTopContributorsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StopQueryMonitorTopContributorsInput,
   output: StopQueryMonitorTopContributorsOutput,
@@ -2201,7 +2029,7 @@ export const stopQueryWorkloadInsightsTopContributors: API.OperationMethod<
   StopQueryWorkloadInsightsTopContributorsInput,
   StopQueryWorkloadInsightsTopContributorsOutput,
   StopQueryWorkloadInsightsTopContributorsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StopQueryWorkloadInsightsTopContributorsInput,
   output: StopQueryWorkloadInsightsTopContributorsOutput,
@@ -2233,7 +2061,7 @@ export const stopQueryWorkloadInsightsTopContributorsData: API.OperationMethod<
   StopQueryWorkloadInsightsTopContributorsDataInput,
   StopQueryWorkloadInsightsTopContributorsDataOutput,
   StopQueryWorkloadInsightsTopContributorsDataError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StopQueryWorkloadInsightsTopContributorsDataInput,
   output: StopQueryWorkloadInsightsTopContributorsDataOutput,
@@ -2264,7 +2092,7 @@ export const tagResource: API.OperationMethod<
   TagResourceInput,
   TagResourceOutput,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceInput,
   output: TagResourceOutput,
@@ -2296,7 +2124,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceInput,
   UntagResourceOutput,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceInput,
   output: UntagResourceOutput,
@@ -2327,7 +2155,7 @@ export const updateMonitor: API.OperationMethod<
   UpdateMonitorInput,
   UpdateMonitorOutput,
   UpdateMonitorError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateMonitorInput,
   output: UpdateMonitorOutput,
@@ -2359,7 +2187,7 @@ export const updateScope: API.OperationMethod<
   UpdateScopeInput,
   UpdateScopeOutput,
   UpdateScopeError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateScopeInput,
   output: UpdateScopeOutput,

@@ -1,7 +1,6 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as redacted from "effect/Redacted";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -9,7 +8,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 import { SensitiveString } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "IoTSecureTunneling",
@@ -112,7 +110,7 @@ const rules = T.EndpointResolver((p, _) => {
 export class LimitExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<LimitExceededException>()(
     "LimitExceededException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "LimitExceededException",
@@ -124,7 +122,7 @@ export class LimitExceededException
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "ResourceNotFoundException",
@@ -494,7 +492,7 @@ export const closeTunnel: API.OperationMethod<
   CloseTunnelRequest,
   CloseTunnelResponse,
   CloseTunnelError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CloseTunnelRequest,
   output: CloseTunnelResponse,
@@ -514,7 +512,7 @@ export const describeTunnel: API.OperationMethod<
   DescribeTunnelRequest,
   DescribeTunnelResponse,
   DescribeTunnelError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeTunnelRequest,
   output: DescribeTunnelResponse,
@@ -532,7 +530,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceRequest,
   ListTagsForResourceResponse,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -549,27 +547,13 @@ export type ListTunnelsError = CommonErrors;
  *
  * Requires permission to access the ListTunnels action.
  */
-export const listTunnels: API.OperationMethod<
+export const listTunnels: API.PaginatedOperationMethod<
   ListTunnelsRequest,
   ListTunnelsResponse,
   ListTunnelsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTunnelsRequest,
-  ) => stream.Stream<
-    ListTunnelsResponse,
-    ListTunnelsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTunnelsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListTunnelsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListTunnelsRequest,
   output: ListTunnelsResponse,
   errors: [],
@@ -581,27 +565,7 @@ export const listTunnels: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListTunnelsRequest,
-  ListTunnelsResponse,
-  ListTunnelsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTunnelsRequest,
-  ) => stream.Stream<
-    ListTunnelsResponse,
-    ListTunnelsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTunnelsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListTunnelsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type OpenTunnelError = LimitExceededException | CommonErrors;
 /**
@@ -614,7 +578,7 @@ export const openTunnel: API.OperationMethod<
   OpenTunnelRequest,
   OpenTunnelResponse,
   OpenTunnelError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: OpenTunnelRequest,
   output: OpenTunnelResponse,
@@ -642,7 +606,7 @@ export const rotateTunnelAccessToken: API.OperationMethod<
   RotateTunnelAccessTokenRequest,
   RotateTunnelAccessTokenResponse,
   RotateTunnelAccessTokenError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RotateTunnelAccessTokenRequest,
   output: RotateTunnelAccessTokenResponse,
@@ -660,7 +624,7 @@ export const tagResource: API.OperationMethod<
   TagResourceRequest,
   TagResourceResponse,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -678,7 +642,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceRequest,
   UntagResourceResponse,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,

@@ -1,6 +1,5 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -8,7 +7,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region as Rgn } from "../region.ts";
 const svc = T.AwsApiService({
   sdkId: "Notifications",
   serviceShapeName: "Notifications",
@@ -55,32 +53,32 @@ const rules = T.EndpointResolver((p, _) => {
 export class AccessDeniedException
   extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
     "AccessDeniedException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(403),
   ).pipe(C.withAuthError) {}
 export class ConflictException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
     "ConflictException",
-    { message: S.String, resourceId: S.String },
+    { message: S.String.pipe(T.ErrorMessage()), resourceId: S.String },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class InternalServerException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
     "InternalServerException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.all(T.HttpError(500), T.Retryable()),
   ).pipe(C.withServerError, C.withRetryableError) {}
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { message: S.String, resourceId: S.String },
+    { message: S.String.pipe(T.ErrorMessage()), resourceId: S.String },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class ServiceQuotaExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
     "ServiceQuotaExceededException",
     {
-      message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       resourceType: S.String,
       resourceId: S.optional(S.String),
       serviceCode: S.optional(S.String),
@@ -92,7 +90,7 @@ export class ThrottlingException
   extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
     "ThrottlingException",
     {
-      message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       serviceCode: S.optional(S.String),
       quotaCode: S.optional(S.String),
       retryAfterSeconds: S.optional(S.Number).pipe(T.HttpHeader("Retry-After")),
@@ -103,7 +101,7 @@ export class ValidationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
     "ValidationException",
     {
-      message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       reason: S.optional(S.String),
       fieldList: S.optional(
         S.suspend(() => ValidationExceptionFieldList).annotate({
@@ -2214,7 +2212,7 @@ export const associateChannel: API.OperationMethod<
   AssociateChannelRequest,
   AssociateChannelResponse,
   AssociateChannelError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AssociateChannelRequest,
   output: AssociateChannelResponse,
@@ -2248,7 +2246,7 @@ export const associateManagedNotificationAccountContact: API.OperationMethod<
   AssociateManagedNotificationAccountContactRequest,
   AssociateManagedNotificationAccountContactResponse,
   AssociateManagedNotificationAccountContactError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AssociateManagedNotificationAccountContactRequest,
   output: AssociateManagedNotificationAccountContactResponse,
@@ -2284,7 +2282,7 @@ export const associateManagedNotificationAdditionalChannel: API.OperationMethod<
   AssociateManagedNotificationAdditionalChannelRequest,
   AssociateManagedNotificationAdditionalChannelResponse,
   AssociateManagedNotificationAdditionalChannelError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AssociateManagedNotificationAdditionalChannelRequest,
   output: AssociateManagedNotificationAdditionalChannelResponse,
@@ -2318,7 +2316,7 @@ export const associateOrganizationalUnit: API.OperationMethod<
   AssociateOrganizationalUnitRequest,
   AssociateOrganizationalUnitResponse,
   AssociateOrganizationalUnitError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AssociateOrganizationalUnitRequest,
   output: AssociateOrganizationalUnitResponse,
@@ -2352,7 +2350,7 @@ export const createEventRule: API.OperationMethod<
   CreateEventRuleRequest,
   CreateEventRuleResponse,
   CreateEventRuleError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateEventRuleRequest,
   output: CreateEventRuleResponse,
@@ -2385,7 +2383,7 @@ export const createNotificationConfiguration: API.OperationMethod<
   CreateNotificationConfigurationRequest,
   CreateNotificationConfigurationResponse,
   CreateNotificationConfigurationError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateNotificationConfigurationRequest,
   output: CreateNotificationConfigurationResponse,
@@ -2417,7 +2415,7 @@ export const deleteEventRule: API.OperationMethod<
   DeleteEventRuleRequest,
   DeleteEventRuleResponse,
   DeleteEventRuleError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteEventRuleRequest,
   output: DeleteEventRuleResponse,
@@ -2449,7 +2447,7 @@ export const deleteNotificationConfiguration: API.OperationMethod<
   DeleteNotificationConfigurationRequest,
   DeleteNotificationConfigurationResponse,
   DeleteNotificationConfigurationError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteNotificationConfigurationRequest,
   output: DeleteNotificationConfigurationResponse,
@@ -2483,7 +2481,7 @@ export const deregisterNotificationHub: API.OperationMethod<
   DeregisterNotificationHubRequest,
   DeregisterNotificationHubResponse,
   DeregisterNotificationHubError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeregisterNotificationHubRequest,
   output: DeregisterNotificationHubResponse,
@@ -2516,7 +2514,7 @@ export const disableNotificationsAccessForOrganization: API.OperationMethod<
   DisableNotificationsAccessForOrganizationRequest,
   DisableNotificationsAccessForOrganizationResponse,
   DisableNotificationsAccessForOrganizationError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DisableNotificationsAccessForOrganizationRequest,
   output: DisableNotificationsAccessForOrganizationResponse,
@@ -2548,7 +2546,7 @@ export const disassociateChannel: API.OperationMethod<
   DisassociateChannelRequest,
   DisassociateChannelResponse,
   DisassociateChannelError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DisassociateChannelRequest,
   output: DisassociateChannelResponse,
@@ -2579,7 +2577,7 @@ export const disassociateManagedNotificationAccountContact: API.OperationMethod<
   DisassociateManagedNotificationAccountContactRequest,
   DisassociateManagedNotificationAccountContactResponse,
   DisassociateManagedNotificationAccountContactError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DisassociateManagedNotificationAccountContactRequest,
   output: DisassociateManagedNotificationAccountContactResponse,
@@ -2612,7 +2610,7 @@ export const disassociateManagedNotificationAdditionalChannel: API.OperationMeth
   DisassociateManagedNotificationAdditionalChannelRequest,
   DisassociateManagedNotificationAdditionalChannelResponse,
   DisassociateManagedNotificationAdditionalChannelError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DisassociateManagedNotificationAdditionalChannelRequest,
   output: DisassociateManagedNotificationAdditionalChannelResponse,
@@ -2642,7 +2640,7 @@ export const disassociateOrganizationalUnit: API.OperationMethod<
   DisassociateOrganizationalUnitRequest,
   DisassociateOrganizationalUnitResponse,
   DisassociateOrganizationalUnitError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DisassociateOrganizationalUnitRequest,
   output: DisassociateOrganizationalUnitResponse,
@@ -2674,7 +2672,7 @@ export const enableNotificationsAccessForOrganization: API.OperationMethod<
   EnableNotificationsAccessForOrganizationRequest,
   EnableNotificationsAccessForOrganizationResponse,
   EnableNotificationsAccessForOrganizationError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: EnableNotificationsAccessForOrganizationRequest,
   output: EnableNotificationsAccessForOrganizationResponse,
@@ -2706,7 +2704,7 @@ export const getEventRule: API.OperationMethod<
   GetEventRuleRequest,
   GetEventRuleResponse,
   GetEventRuleError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetEventRuleRequest,
   output: GetEventRuleResponse,
@@ -2736,7 +2734,7 @@ export const getManagedNotificationChildEvent: API.OperationMethod<
   GetManagedNotificationChildEventRequest,
   GetManagedNotificationChildEventResponse,
   GetManagedNotificationChildEventError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetManagedNotificationChildEventRequest,
   output: GetManagedNotificationChildEventResponse,
@@ -2766,7 +2764,7 @@ export const getManagedNotificationConfiguration: API.OperationMethod<
   GetManagedNotificationConfigurationRequest,
   GetManagedNotificationConfigurationResponse,
   GetManagedNotificationConfigurationError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetManagedNotificationConfigurationRequest,
   output: GetManagedNotificationConfigurationResponse,
@@ -2796,7 +2794,7 @@ export const getManagedNotificationEvent: API.OperationMethod<
   GetManagedNotificationEventRequest,
   GetManagedNotificationEventResponse,
   GetManagedNotificationEventError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetManagedNotificationEventRequest,
   output: GetManagedNotificationEventResponse,
@@ -2826,7 +2824,7 @@ export const getNotificationConfiguration: API.OperationMethod<
   GetNotificationConfigurationRequest,
   GetNotificationConfigurationResponse,
   GetNotificationConfigurationError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetNotificationConfigurationRequest,
   output: GetNotificationConfigurationResponse,
@@ -2858,7 +2856,7 @@ export const getNotificationEvent: API.OperationMethod<
   GetNotificationEventRequest,
   GetNotificationEventResponse,
   GetNotificationEventError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetNotificationEventRequest,
   output: GetNotificationEventResponse,
@@ -2887,7 +2885,7 @@ export const getNotificationsAccessForOrganization: API.OperationMethod<
   GetNotificationsAccessForOrganizationRequest,
   GetNotificationsAccessForOrganizationResponse,
   GetNotificationsAccessForOrganizationError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetNotificationsAccessForOrganizationRequest,
   output: GetNotificationsAccessForOrganizationResponse,
@@ -2912,27 +2910,13 @@ export type ListChannelsError =
 /**
  * Returns a list of Channels for a `NotificationConfiguration`.
  */
-export const listChannels: API.OperationMethod<
+export const listChannels: API.PaginatedOperationMethod<
   ListChannelsRequest,
   ListChannelsResponse,
   ListChannelsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListChannelsRequest,
-  ) => stream.Stream<
-    ListChannelsResponse,
-    ListChannelsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListChannelsRequest,
-  ) => stream.Stream<
-    ChannelArn,
-    ListChannelsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ChannelArn
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListChannelsRequest,
   output: ListChannelsResponse,
   errors: [
@@ -2951,27 +2935,7 @@ export const listChannels: API.OperationMethod<
     items: "channels",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListChannelsRequest,
-  ListChannelsResponse,
-  ListChannelsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListChannelsRequest,
-  ) => stream.Stream<
-    ListChannelsResponse,
-    ListChannelsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListChannelsRequest,
-  ) => stream.Stream<
-    ChannelArn,
-    ListChannelsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListEventRulesError =
   | AccessDeniedException
@@ -2983,27 +2947,13 @@ export type ListEventRulesError =
 /**
  * Returns a list of `EventRules` according to specified filters, in reverse chronological order (newest first).
  */
-export const listEventRules: API.OperationMethod<
+export const listEventRules: API.PaginatedOperationMethod<
   ListEventRulesRequest,
   ListEventRulesResponse,
   ListEventRulesError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListEventRulesRequest,
-  ) => stream.Stream<
-    ListEventRulesResponse,
-    ListEventRulesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListEventRulesRequest,
-  ) => stream.Stream<
-    EventRuleStructure,
-    ListEventRulesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  EventRuleStructure
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListEventRulesRequest,
   output: ListEventRulesResponse,
   errors: [
@@ -3022,27 +2972,7 @@ export const listEventRules: API.OperationMethod<
     items: "eventRules",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListEventRulesRequest,
-  ListEventRulesResponse,
-  ListEventRulesError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListEventRulesRequest,
-  ) => stream.Stream<
-    ListEventRulesResponse,
-    ListEventRulesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListEventRulesRequest,
-  ) => stream.Stream<
-    EventRuleStructure,
-    ListEventRulesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListManagedNotificationChannelAssociationsError =
   | AccessDeniedException
@@ -3054,27 +2984,13 @@ export type ListManagedNotificationChannelAssociationsError =
 /**
  * Returns a list of Account contacts and Channels associated with a `ManagedNotificationConfiguration`, in paginated format.
  */
-export const listManagedNotificationChannelAssociations: API.OperationMethod<
+export const listManagedNotificationChannelAssociations: API.PaginatedOperationMethod<
   ListManagedNotificationChannelAssociationsRequest,
   ListManagedNotificationChannelAssociationsResponse,
   ListManagedNotificationChannelAssociationsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListManagedNotificationChannelAssociationsRequest,
-  ) => stream.Stream<
-    ListManagedNotificationChannelAssociationsResponse,
-    ListManagedNotificationChannelAssociationsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListManagedNotificationChannelAssociationsRequest,
-  ) => stream.Stream<
-    ManagedNotificationChannelAssociationSummary,
-    ListManagedNotificationChannelAssociationsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ManagedNotificationChannelAssociationSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListManagedNotificationChannelAssociationsRequest,
   output: ListManagedNotificationChannelAssociationsResponse,
   errors: [
@@ -3093,27 +3009,7 @@ export const listManagedNotificationChannelAssociations: API.OperationMethod<
     items: "channelAssociations",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListManagedNotificationChannelAssociationsRequest,
-  ListManagedNotificationChannelAssociationsResponse,
-  ListManagedNotificationChannelAssociationsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListManagedNotificationChannelAssociationsRequest,
-  ) => stream.Stream<
-    ListManagedNotificationChannelAssociationsResponse,
-    ListManagedNotificationChannelAssociationsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListManagedNotificationChannelAssociationsRequest,
-  ) => stream.Stream<
-    ManagedNotificationChannelAssociationSummary,
-    ListManagedNotificationChannelAssociationsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListManagedNotificationChildEventsError =
   | AccessDeniedException
@@ -3125,27 +3021,13 @@ export type ListManagedNotificationChildEventsError =
 /**
  * Returns a list of `ManagedNotificationChildEvents` for a specified aggregate `ManagedNotificationEvent`, ordered by creation time in reverse chronological order (newest first).
  */
-export const listManagedNotificationChildEvents: API.OperationMethod<
+export const listManagedNotificationChildEvents: API.PaginatedOperationMethod<
   ListManagedNotificationChildEventsRequest,
   ListManagedNotificationChildEventsResponse,
   ListManagedNotificationChildEventsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListManagedNotificationChildEventsRequest,
-  ) => stream.Stream<
-    ListManagedNotificationChildEventsResponse,
-    ListManagedNotificationChildEventsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListManagedNotificationChildEventsRequest,
-  ) => stream.Stream<
-    ManagedNotificationChildEventOverview,
-    ListManagedNotificationChildEventsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ManagedNotificationChildEventOverview
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListManagedNotificationChildEventsRequest,
   output: ListManagedNotificationChildEventsResponse,
   errors: [
@@ -3164,27 +3046,7 @@ export const listManagedNotificationChildEvents: API.OperationMethod<
     items: "managedNotificationChildEvents",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListManagedNotificationChildEventsRequest,
-  ListManagedNotificationChildEventsResponse,
-  ListManagedNotificationChildEventsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListManagedNotificationChildEventsRequest,
-  ) => stream.Stream<
-    ListManagedNotificationChildEventsResponse,
-    ListManagedNotificationChildEventsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListManagedNotificationChildEventsRequest,
-  ) => stream.Stream<
-    ManagedNotificationChildEventOverview,
-    ListManagedNotificationChildEventsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListManagedNotificationConfigurationsError =
   | AccessDeniedException
@@ -3195,27 +3057,13 @@ export type ListManagedNotificationConfigurationsError =
 /**
  * Returns a list of Managed Notification Configurations according to specified filters, ordered by creation time in reverse chronological order (newest first).
  */
-export const listManagedNotificationConfigurations: API.OperationMethod<
+export const listManagedNotificationConfigurations: API.PaginatedOperationMethod<
   ListManagedNotificationConfigurationsRequest,
   ListManagedNotificationConfigurationsResponse,
   ListManagedNotificationConfigurationsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListManagedNotificationConfigurationsRequest,
-  ) => stream.Stream<
-    ListManagedNotificationConfigurationsResponse,
-    ListManagedNotificationConfigurationsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListManagedNotificationConfigurationsRequest,
-  ) => stream.Stream<
-    ManagedNotificationConfigurationStructure,
-    ListManagedNotificationConfigurationsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ManagedNotificationConfigurationStructure
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListManagedNotificationConfigurationsRequest,
   output: ListManagedNotificationConfigurationsResponse,
   errors: [
@@ -3233,27 +3081,7 @@ export const listManagedNotificationConfigurations: API.OperationMethod<
     items: "managedNotificationConfigurations",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListManagedNotificationConfigurationsRequest,
-  ListManagedNotificationConfigurationsResponse,
-  ListManagedNotificationConfigurationsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListManagedNotificationConfigurationsRequest,
-  ) => stream.Stream<
-    ListManagedNotificationConfigurationsResponse,
-    ListManagedNotificationConfigurationsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListManagedNotificationConfigurationsRequest,
-  ) => stream.Stream<
-    ManagedNotificationConfigurationStructure,
-    ListManagedNotificationConfigurationsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListManagedNotificationEventsError =
   | AccessDeniedException
@@ -3264,27 +3092,13 @@ export type ListManagedNotificationEventsError =
 /**
  * Returns a list of Managed Notification Events according to specified filters, ordered by creation time in reverse chronological order (newest first).
  */
-export const listManagedNotificationEvents: API.OperationMethod<
+export const listManagedNotificationEvents: API.PaginatedOperationMethod<
   ListManagedNotificationEventsRequest,
   ListManagedNotificationEventsResponse,
   ListManagedNotificationEventsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListManagedNotificationEventsRequest,
-  ) => stream.Stream<
-    ListManagedNotificationEventsResponse,
-    ListManagedNotificationEventsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListManagedNotificationEventsRequest,
-  ) => stream.Stream<
-    ManagedNotificationEventOverview,
-    ListManagedNotificationEventsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ManagedNotificationEventOverview
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListManagedNotificationEventsRequest,
   output: ListManagedNotificationEventsResponse,
   errors: [
@@ -3302,27 +3116,7 @@ export const listManagedNotificationEvents: API.OperationMethod<
     items: "managedNotificationEvents",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListManagedNotificationEventsRequest,
-  ListManagedNotificationEventsResponse,
-  ListManagedNotificationEventsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListManagedNotificationEventsRequest,
-  ) => stream.Stream<
-    ListManagedNotificationEventsResponse,
-    ListManagedNotificationEventsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListManagedNotificationEventsRequest,
-  ) => stream.Stream<
-    ManagedNotificationEventOverview,
-    ListManagedNotificationEventsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListMemberAccountsError =
   | AccessDeniedException
@@ -3334,27 +3128,13 @@ export type ListMemberAccountsError =
 /**
  * Returns a list of member accounts associated with a notification configuration.
  */
-export const listMemberAccounts: API.OperationMethod<
+export const listMemberAccounts: API.PaginatedOperationMethod<
   ListMemberAccountsRequest,
   ListMemberAccountsResponse,
   ListMemberAccountsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListMemberAccountsRequest,
-  ) => stream.Stream<
-    ListMemberAccountsResponse,
-    ListMemberAccountsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListMemberAccountsRequest,
-  ) => stream.Stream<
-    MemberAccount,
-    ListMemberAccountsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  MemberAccount
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListMemberAccountsRequest,
   output: ListMemberAccountsResponse,
   errors: [
@@ -3373,27 +3153,7 @@ export const listMemberAccounts: API.OperationMethod<
     items: "memberAccounts",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListMemberAccountsRequest,
-  ListMemberAccountsResponse,
-  ListMemberAccountsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListMemberAccountsRequest,
-  ) => stream.Stream<
-    ListMemberAccountsResponse,
-    ListMemberAccountsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListMemberAccountsRequest,
-  ) => stream.Stream<
-    MemberAccount,
-    ListMemberAccountsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListNotificationConfigurationsError =
   | AccessDeniedException
@@ -3404,27 +3164,13 @@ export type ListNotificationConfigurationsError =
 /**
  * Returns a list of abbreviated `NotificationConfigurations` according to specified filters, in reverse chronological order (newest first).
  */
-export const listNotificationConfigurations: API.OperationMethod<
+export const listNotificationConfigurations: API.PaginatedOperationMethod<
   ListNotificationConfigurationsRequest,
   ListNotificationConfigurationsResponse,
   ListNotificationConfigurationsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListNotificationConfigurationsRequest,
-  ) => stream.Stream<
-    ListNotificationConfigurationsResponse,
-    ListNotificationConfigurationsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListNotificationConfigurationsRequest,
-  ) => stream.Stream<
-    NotificationConfigurationStructure,
-    ListNotificationConfigurationsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  NotificationConfigurationStructure
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListNotificationConfigurationsRequest,
   output: ListNotificationConfigurationsResponse,
   errors: [
@@ -3442,27 +3188,7 @@ export const listNotificationConfigurations: API.OperationMethod<
     items: "notificationConfigurations",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListNotificationConfigurationsRequest,
-  ListNotificationConfigurationsResponse,
-  ListNotificationConfigurationsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListNotificationConfigurationsRequest,
-  ) => stream.Stream<
-    ListNotificationConfigurationsResponse,
-    ListNotificationConfigurationsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListNotificationConfigurationsRequest,
-  ) => stream.Stream<
-    NotificationConfigurationStructure,
-    ListNotificationConfigurationsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListNotificationEventsError =
   | AccessDeniedException
@@ -3475,27 +3201,13 @@ export type ListNotificationEventsError =
  *
  * User Notifications stores notifications in the individual Regions you register as notification hubs and the Region of the source event rule. ListNotificationEvents only returns notifications stored in the same Region in which the action is called. User Notifications doesn't backfill notifications to new Regions selected as notification hubs. For this reason, we recommend that you make calls in your oldest registered notification hub. For more information, see Notification hubs in the *Amazon Web Services User Notifications User Guide*.
  */
-export const listNotificationEvents: API.OperationMethod<
+export const listNotificationEvents: API.PaginatedOperationMethod<
   ListNotificationEventsRequest,
   ListNotificationEventsResponse,
   ListNotificationEventsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListNotificationEventsRequest,
-  ) => stream.Stream<
-    ListNotificationEventsResponse,
-    ListNotificationEventsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListNotificationEventsRequest,
-  ) => stream.Stream<
-    NotificationEventOverview,
-    ListNotificationEventsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  NotificationEventOverview
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListNotificationEventsRequest,
   output: ListNotificationEventsResponse,
   errors: [
@@ -3513,27 +3225,7 @@ export const listNotificationEvents: API.OperationMethod<
     items: "notificationEvents",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListNotificationEventsRequest,
-  ListNotificationEventsResponse,
-  ListNotificationEventsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListNotificationEventsRequest,
-  ) => stream.Stream<
-    ListNotificationEventsResponse,
-    ListNotificationEventsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListNotificationEventsRequest,
-  ) => stream.Stream<
-    NotificationEventOverview,
-    ListNotificationEventsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListNotificationHubsError =
   | AccessDeniedException
@@ -3544,27 +3236,13 @@ export type ListNotificationHubsError =
 /**
  * Returns a list of `NotificationHubs`.
  */
-export const listNotificationHubs: API.OperationMethod<
+export const listNotificationHubs: API.PaginatedOperationMethod<
   ListNotificationHubsRequest,
   ListNotificationHubsResponse,
   ListNotificationHubsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListNotificationHubsRequest,
-  ) => stream.Stream<
-    ListNotificationHubsResponse,
-    ListNotificationHubsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListNotificationHubsRequest,
-  ) => stream.Stream<
-    NotificationHubOverview,
-    ListNotificationHubsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  NotificationHubOverview
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListNotificationHubsRequest,
   output: ListNotificationHubsResponse,
   errors: [
@@ -3582,27 +3260,7 @@ export const listNotificationHubs: API.OperationMethod<
     items: "notificationHubs",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListNotificationHubsRequest,
-  ListNotificationHubsResponse,
-  ListNotificationHubsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListNotificationHubsRequest,
-  ) => stream.Stream<
-    ListNotificationHubsResponse,
-    ListNotificationHubsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListNotificationHubsRequest,
-  ) => stream.Stream<
-    NotificationHubOverview,
-    ListNotificationHubsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListOrganizationalUnitsError =
   | AccessDeniedException
@@ -3614,27 +3272,13 @@ export type ListOrganizationalUnitsError =
 /**
  * Returns a list of organizational units associated with a notification configuration.
  */
-export const listOrganizationalUnits: API.OperationMethod<
+export const listOrganizationalUnits: API.PaginatedOperationMethod<
   ListOrganizationalUnitsRequest,
   ListOrganizationalUnitsResponse,
   ListOrganizationalUnitsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListOrganizationalUnitsRequest,
-  ) => stream.Stream<
-    ListOrganizationalUnitsResponse,
-    ListOrganizationalUnitsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListOrganizationalUnitsRequest,
-  ) => stream.Stream<
-    OrganizationalUnitId,
-    ListOrganizationalUnitsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  OrganizationalUnitId
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListOrganizationalUnitsRequest,
   output: ListOrganizationalUnitsResponse,
   errors: [
@@ -3653,27 +3297,7 @@ export const listOrganizationalUnits: API.OperationMethod<
     items: "organizationalUnits",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListOrganizationalUnitsRequest,
-  ListOrganizationalUnitsResponse,
-  ListOrganizationalUnitsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListOrganizationalUnitsRequest,
-  ) => stream.Stream<
-    ListOrganizationalUnitsResponse,
-    ListOrganizationalUnitsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListOrganizationalUnitsRequest,
-  ) => stream.Stream<
-    OrganizationalUnitId,
-    ListOrganizationalUnitsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsForResourceError =
   | AccessDeniedException
@@ -3693,7 +3317,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceRequest,
   ListTagsForResourceResponse,
   ListTagsForResourceError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -3726,7 +3350,7 @@ export const registerNotificationHub: API.OperationMethod<
   RegisterNotificationHubRequest,
   RegisterNotificationHubResponse,
   RegisterNotificationHubError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RegisterNotificationHubRequest,
   output: RegisterNotificationHubResponse,
@@ -3761,7 +3385,7 @@ export const tagResource: API.OperationMethod<
   TagResourceRequest,
   TagResourceResponse,
   TagResourceError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -3793,7 +3417,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceRequest,
   UntagResourceResponse,
   UntagResourceError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -3824,7 +3448,7 @@ export const updateEventRule: API.OperationMethod<
   UpdateEventRuleRequest,
   UpdateEventRuleResponse,
   UpdateEventRuleError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateEventRuleRequest,
   output: UpdateEventRuleResponse,
@@ -3856,7 +3480,7 @@ export const updateNotificationConfiguration: API.OperationMethod<
   UpdateNotificationConfigurationRequest,
   UpdateNotificationConfigurationResponse,
   UpdateNotificationConfigurationError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateNotificationConfigurationRequest,
   output: UpdateNotificationConfigurationResponse,

@@ -1,6 +1,5 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -8,7 +7,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 const svc = T.AwsApiService({
   sdkId: "CloudDirectory",
   serviceShapeName: "AmazonCloudDirectory_20170111",
@@ -91,7 +89,7 @@ const rules = T.EndpointResolver((p, _) => {
 export class AccessDeniedException
   extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
     "AccessDeniedException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(403),
   ).pipe(C.withAuthError) {}
 export class BatchWriteException
@@ -104,205 +102,205 @@ export class BatchWriteException
           identifier: "BatchWriteExceptionType",
         }),
       ),
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
     },
   ) {}
 export class CannotListParentOfRootException
   extends /*@__PURE__*/ S.TaggedErrorClass<CannotListParentOfRootException>()(
     "CannotListParentOfRootException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class DirectoryAlreadyExistsException
   extends /*@__PURE__*/ S.TaggedErrorClass<DirectoryAlreadyExistsException>()(
     "DirectoryAlreadyExistsException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError, C.withAlreadyExistsError) {}
 export class DirectoryDeletedException
   extends /*@__PURE__*/ S.TaggedErrorClass<DirectoryDeletedException>()(
     "DirectoryDeletedException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class DirectoryNotDisabledException
   extends /*@__PURE__*/ S.TaggedErrorClass<DirectoryNotDisabledException>()(
     "DirectoryNotDisabledException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class DirectoryNotEnabledException
   extends /*@__PURE__*/ S.TaggedErrorClass<DirectoryNotEnabledException>()(
     "DirectoryNotEnabledException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class FacetAlreadyExistsException
   extends /*@__PURE__*/ S.TaggedErrorClass<FacetAlreadyExistsException>()(
     "FacetAlreadyExistsException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError, C.withAlreadyExistsError) {}
 export class FacetInUseException
   extends /*@__PURE__*/ S.TaggedErrorClass<FacetInUseException>()(
     "FacetInUseException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class FacetNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<FacetNotFoundException>()(
     "FacetNotFoundException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class FacetValidationException
   extends /*@__PURE__*/ S.TaggedErrorClass<FacetValidationException>()(
     "FacetValidationException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class IncompatibleSchemaException
   extends /*@__PURE__*/ S.TaggedErrorClass<IncompatibleSchemaException>()(
     "IncompatibleSchemaException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class IndexedAttributeMissingException
   extends /*@__PURE__*/ S.TaggedErrorClass<IndexedAttributeMissingException>()(
     "IndexedAttributeMissingException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class InternalServiceException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServiceException>()(
     "InternalServiceException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(500),
   ).pipe(C.withServerError) {}
 export class InvalidArnException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidArnException>()(
     "InvalidArnException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class InvalidAttachmentException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidAttachmentException>()(
     "InvalidAttachmentException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class InvalidFacetUpdateException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidFacetUpdateException>()(
     "InvalidFacetUpdateException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class InvalidNextTokenException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidNextTokenException>()(
     "InvalidNextTokenException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class InvalidRuleException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidRuleException>()(
     "InvalidRuleException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class InvalidSchemaDocException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidSchemaDocException>()(
     "InvalidSchemaDocException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class InvalidTaggingRequestException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidTaggingRequestException>()(
     "InvalidTaggingRequestException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class LimitExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<LimitExceededException>()(
     "LimitExceededException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class LinkNameAlreadyInUseException
   extends /*@__PURE__*/ S.TaggedErrorClass<LinkNameAlreadyInUseException>()(
     "LinkNameAlreadyInUseException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class NotIndexException
   extends /*@__PURE__*/ S.TaggedErrorClass<NotIndexException>()(
     "NotIndexException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class NotNodeException
   extends /*@__PURE__*/ S.TaggedErrorClass<NotNodeException>()(
     "NotNodeException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class NotPolicyException
   extends /*@__PURE__*/ S.TaggedErrorClass<NotPolicyException>()(
     "NotPolicyException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class ObjectAlreadyDetachedException
   extends /*@__PURE__*/ S.TaggedErrorClass<ObjectAlreadyDetachedException>()(
     "ObjectAlreadyDetachedException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class ObjectNotDetachedException
   extends /*@__PURE__*/ S.TaggedErrorClass<ObjectNotDetachedException>()(
     "ObjectNotDetachedException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class RetryableConflictException
   extends /*@__PURE__*/ S.TaggedErrorClass<RetryableConflictException>()(
     "RetryableConflictException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class SchemaAlreadyExistsException
   extends /*@__PURE__*/ S.TaggedErrorClass<SchemaAlreadyExistsException>()(
     "SchemaAlreadyExistsException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError, C.withAlreadyExistsError) {}
 export class SchemaAlreadyPublishedException
   extends /*@__PURE__*/ S.TaggedErrorClass<SchemaAlreadyPublishedException>()(
     "SchemaAlreadyPublishedException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class StillContainsLinksException
   extends /*@__PURE__*/ S.TaggedErrorClass<StillContainsLinksException>()(
     "StillContainsLinksException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class UnsupportedIndexTypeException
   extends /*@__PURE__*/ S.TaggedErrorClass<UnsupportedIndexTypeException>()(
     "UnsupportedIndexTypeException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class ValidationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
     "ValidationException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export type Arn = string;
@@ -4105,7 +4103,7 @@ export const addFacetToObject: API.OperationMethod<
   AddFacetToObjectRequest,
   AddFacetToObjectResponse,
   AddFacetToObjectError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AddFacetToObjectRequest,
   output: AddFacetToObjectResponse,
@@ -4144,7 +4142,7 @@ export const applySchema: API.OperationMethod<
   ApplySchemaRequest,
   ApplySchemaResponse,
   ApplySchemaError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ApplySchemaRequest,
   output: ApplySchemaResponse,
@@ -4189,7 +4187,7 @@ export const attachObject: API.OperationMethod<
   AttachObjectRequest,
   AttachObjectResponse,
   AttachObjectError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AttachObjectRequest,
   output: AttachObjectResponse,
@@ -4230,7 +4228,7 @@ export const attachPolicy: API.OperationMethod<
   AttachPolicyRequest,
   AttachPolicyResponse,
   AttachPolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AttachPolicyRequest,
   output: AttachPolicyResponse,
@@ -4271,7 +4269,7 @@ export const attachToIndex: API.OperationMethod<
   AttachToIndexRequest,
   AttachToIndexResponse,
   AttachToIndexError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AttachToIndexRequest,
   output: AttachToIndexResponse,
@@ -4313,7 +4311,7 @@ export const attachTypedLink: API.OperationMethod<
   AttachTypedLinkRequest,
   AttachTypedLinkResponse,
   AttachTypedLinkError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AttachTypedLinkRequest,
   output: AttachTypedLinkResponse,
@@ -4350,7 +4348,7 @@ export const batchRead: API.OperationMethod<
   BatchReadRequest,
   BatchReadResponse,
   BatchReadError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchReadRequest,
   output: BatchReadResponse,
@@ -4386,7 +4384,7 @@ export const batchWrite: API.OperationMethod<
   BatchWriteRequest,
   BatchWriteResponse,
   BatchWriteError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchWriteRequest,
   output: BatchWriteResponse,
@@ -4426,7 +4424,7 @@ export const createDirectory: API.OperationMethod<
   CreateDirectoryRequest,
   CreateDirectoryResponse,
   CreateDirectoryError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateDirectoryRequest,
   output: CreateDirectoryResponse,
@@ -4465,7 +4463,7 @@ export const createFacet: API.OperationMethod<
   CreateFacetRequest,
   CreateFacetResponse,
   CreateFacetError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateFacetRequest,
   output: CreateFacetResponse,
@@ -4506,7 +4504,7 @@ export const createIndex: API.OperationMethod<
   CreateIndexRequest,
   CreateIndexResponse,
   CreateIndexError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateIndexRequest,
   output: CreateIndexResponse,
@@ -4551,7 +4549,7 @@ export const createObject: API.OperationMethod<
   CreateObjectRequest,
   CreateObjectResponse,
   CreateObjectError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateObjectRequest,
   output: CreateObjectResponse,
@@ -4601,7 +4599,7 @@ export const createSchema: API.OperationMethod<
   CreateSchemaRequest,
   CreateSchemaResponse,
   CreateSchemaError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateSchemaRequest,
   output: CreateSchemaResponse,
@@ -4638,7 +4636,7 @@ export const createTypedLinkFacet: API.OperationMethod<
   CreateTypedLinkFacetRequest,
   CreateTypedLinkFacetResponse,
   CreateTypedLinkFacetError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateTypedLinkFacetRequest,
   output: CreateTypedLinkFacetResponse,
@@ -4679,7 +4677,7 @@ export const deleteDirectory: API.OperationMethod<
   DeleteDirectoryRequest,
   DeleteDirectoryResponse,
   DeleteDirectoryError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteDirectoryRequest,
   output: DeleteDirectoryResponse,
@@ -4719,7 +4717,7 @@ export const deleteFacet: API.OperationMethod<
   DeleteFacetRequest,
   DeleteFacetResponse,
   DeleteFacetError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteFacetRequest,
   output: DeleteFacetResponse,
@@ -4758,7 +4756,7 @@ export const deleteObject: API.OperationMethod<
   DeleteObjectRequest,
   DeleteObjectResponse,
   DeleteObjectError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteObjectRequest,
   output: DeleteObjectResponse,
@@ -4795,7 +4793,7 @@ export const deleteSchema: API.OperationMethod<
   DeleteSchemaRequest,
   DeleteSchemaResponse,
   DeleteSchemaError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteSchemaRequest,
   output: DeleteSchemaResponse,
@@ -4831,7 +4829,7 @@ export const deleteTypedLinkFacet: API.OperationMethod<
   DeleteTypedLinkFacetRequest,
   DeleteTypedLinkFacetResponse,
   DeleteTypedLinkFacetError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteTypedLinkFacetRequest,
   output: DeleteTypedLinkFacetResponse,
@@ -4869,7 +4867,7 @@ export const detachFromIndex: API.OperationMethod<
   DetachFromIndexRequest,
   DetachFromIndexResponse,
   DetachFromIndexError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DetachFromIndexRequest,
   output: DetachFromIndexResponse,
@@ -4909,7 +4907,7 @@ export const detachObject: API.OperationMethod<
   DetachObjectRequest,
   DetachObjectResponse,
   DetachObjectError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DetachObjectRequest,
   output: DetachObjectResponse,
@@ -4947,7 +4945,7 @@ export const detachPolicy: API.OperationMethod<
   DetachPolicyRequest,
   DetachPolicyResponse,
   DetachPolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DetachPolicyRequest,
   output: DetachPolicyResponse,
@@ -4985,7 +4983,7 @@ export const detachTypedLink: API.OperationMethod<
   DetachTypedLinkRequest,
   DetachTypedLinkResponse,
   DetachTypedLinkError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DetachTypedLinkRequest,
   output: DetachTypedLinkResponse,
@@ -5023,7 +5021,7 @@ export const disableDirectory: API.OperationMethod<
   DisableDirectoryRequest,
   DisableDirectoryResponse,
   DisableDirectoryError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DisableDirectoryRequest,
   output: DisableDirectoryResponse,
@@ -5060,7 +5058,7 @@ export const enableDirectory: API.OperationMethod<
   EnableDirectoryRequest,
   EnableDirectoryResponse,
   EnableDirectoryError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: EnableDirectoryRequest,
   output: EnableDirectoryResponse,
@@ -5095,7 +5093,7 @@ export const getAppliedSchemaVersion: API.OperationMethod<
   GetAppliedSchemaVersionRequest,
   GetAppliedSchemaVersionResponse,
   GetAppliedSchemaVersionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetAppliedSchemaVersionRequest,
   output: GetAppliedSchemaVersionResponse,
@@ -5128,7 +5126,7 @@ export const getDirectory: API.OperationMethod<
   GetDirectoryRequest,
   GetDirectoryResponse,
   GetDirectoryError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetDirectoryRequest,
   output: GetDirectoryResponse,
@@ -5163,7 +5161,7 @@ export const getFacet: API.OperationMethod<
   GetFacetRequest,
   GetFacetResponse,
   GetFacetError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetFacetRequest,
   output: GetFacetResponse,
@@ -5200,7 +5198,7 @@ export const getLinkAttributes: API.OperationMethod<
   GetLinkAttributesRequest,
   GetLinkAttributesResponse,
   GetLinkAttributesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetLinkAttributesRequest,
   output: GetLinkAttributesResponse,
@@ -5238,7 +5236,7 @@ export const getObjectAttributes: API.OperationMethod<
   GetObjectAttributesRequest,
   GetObjectAttributesResponse,
   GetObjectAttributesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetObjectAttributesRequest,
   output: GetObjectAttributesResponse,
@@ -5275,7 +5273,7 @@ export const getObjectInformation: API.OperationMethod<
   GetObjectInformationRequest,
   GetObjectInformationResponse,
   GetObjectInformationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetObjectInformationRequest,
   output: GetObjectInformationResponse,
@@ -5310,7 +5308,7 @@ export const getSchemaAsJson: API.OperationMethod<
   GetSchemaAsJsonRequest,
   GetSchemaAsJsonResponse,
   GetSchemaAsJsonError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetSchemaAsJsonRequest,
   output: GetSchemaAsJsonResponse,
@@ -5346,7 +5344,7 @@ export const getTypedLinkFacetInformation: API.OperationMethod<
   GetTypedLinkFacetInformationRequest,
   GetTypedLinkFacetInformationResponse,
   GetTypedLinkFacetInformationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetTypedLinkFacetInformationRequest,
   output: GetTypedLinkFacetInformationResponse,
@@ -5379,27 +5377,13 @@ export type ListAppliedSchemaArnsError =
 /**
  * Lists schema major versions applied to a directory. If `SchemaArn` is provided, lists the minor version.
  */
-export const listAppliedSchemaArns: API.OperationMethod<
+export const listAppliedSchemaArns: API.PaginatedOperationMethod<
   ListAppliedSchemaArnsRequest,
   ListAppliedSchemaArnsResponse,
   ListAppliedSchemaArnsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAppliedSchemaArnsRequest,
-  ) => stream.Stream<
-    ListAppliedSchemaArnsResponse,
-    ListAppliedSchemaArnsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAppliedSchemaArnsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListAppliedSchemaArnsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListAppliedSchemaArnsRequest,
   output: ListAppliedSchemaArnsResponse,
   errors: [
@@ -5420,27 +5404,7 @@ export const listAppliedSchemaArns: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListAppliedSchemaArnsRequest,
-  ListAppliedSchemaArnsResponse,
-  ListAppliedSchemaArnsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAppliedSchemaArnsRequest,
-  ) => stream.Stream<
-    ListAppliedSchemaArnsResponse,
-    ListAppliedSchemaArnsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAppliedSchemaArnsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListAppliedSchemaArnsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListAttachedIndicesError =
   | AccessDeniedException
@@ -5455,27 +5419,13 @@ export type ListAttachedIndicesError =
 /**
  * Lists indices attached to the specified object.
  */
-export const listAttachedIndices: API.OperationMethod<
+export const listAttachedIndices: API.PaginatedOperationMethod<
   ListAttachedIndicesRequest,
   ListAttachedIndicesResponse,
   ListAttachedIndicesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAttachedIndicesRequest,
-  ) => stream.Stream<
-    ListAttachedIndicesResponse,
-    ListAttachedIndicesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAttachedIndicesRequest,
-  ) => stream.Stream<
-    unknown,
-    ListAttachedIndicesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListAttachedIndicesRequest,
   output: ListAttachedIndicesResponse,
   errors: [
@@ -5496,27 +5446,7 @@ export const listAttachedIndices: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListAttachedIndicesRequest,
-  ListAttachedIndicesResponse,
-  ListAttachedIndicesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAttachedIndicesRequest,
-  ) => stream.Stream<
-    ListAttachedIndicesResponse,
-    ListAttachedIndicesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAttachedIndicesRequest,
-  ) => stream.Stream<
-    unknown,
-    ListAttachedIndicesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListDevelopmentSchemaArnsError =
   | AccessDeniedException
@@ -5532,27 +5462,13 @@ export type ListDevelopmentSchemaArnsError =
  * Retrieves each Amazon Resource Name (ARN) of schemas in the development
  * state.
  */
-export const listDevelopmentSchemaArns: API.OperationMethod<
+export const listDevelopmentSchemaArns: API.PaginatedOperationMethod<
   ListDevelopmentSchemaArnsRequest,
   ListDevelopmentSchemaArnsResponse,
   ListDevelopmentSchemaArnsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDevelopmentSchemaArnsRequest,
-  ) => stream.Stream<
-    ListDevelopmentSchemaArnsResponse,
-    ListDevelopmentSchemaArnsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDevelopmentSchemaArnsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListDevelopmentSchemaArnsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListDevelopmentSchemaArnsRequest,
   output: ListDevelopmentSchemaArnsResponse,
   errors: [
@@ -5573,27 +5489,7 @@ export const listDevelopmentSchemaArns: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListDevelopmentSchemaArnsRequest,
-  ListDevelopmentSchemaArnsResponse,
-  ListDevelopmentSchemaArnsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDevelopmentSchemaArnsRequest,
-  ) => stream.Stream<
-    ListDevelopmentSchemaArnsResponse,
-    ListDevelopmentSchemaArnsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDevelopmentSchemaArnsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListDevelopmentSchemaArnsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListDirectoriesError =
   | AccessDeniedException
@@ -5607,27 +5503,13 @@ export type ListDirectoriesError =
 /**
  * Lists directories created within an account.
  */
-export const listDirectories: API.OperationMethod<
+export const listDirectories: API.PaginatedOperationMethod<
   ListDirectoriesRequest,
   ListDirectoriesResponse,
   ListDirectoriesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDirectoriesRequest,
-  ) => stream.Stream<
-    ListDirectoriesResponse,
-    ListDirectoriesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDirectoriesRequest,
-  ) => stream.Stream<
-    unknown,
-    ListDirectoriesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListDirectoriesRequest,
   output: ListDirectoriesResponse,
   errors: [
@@ -5647,27 +5529,7 @@ export const listDirectories: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListDirectoriesRequest,
-  ListDirectoriesResponse,
-  ListDirectoriesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDirectoriesRequest,
-  ) => stream.Stream<
-    ListDirectoriesResponse,
-    ListDirectoriesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDirectoriesRequest,
-  ) => stream.Stream<
-    unknown,
-    ListDirectoriesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListFacetAttributesError =
   | AccessDeniedException
@@ -5683,27 +5545,13 @@ export type ListFacetAttributesError =
 /**
  * Retrieves attributes attached to the facet.
  */
-export const listFacetAttributes: API.OperationMethod<
+export const listFacetAttributes: API.PaginatedOperationMethod<
   ListFacetAttributesRequest,
   ListFacetAttributesResponse,
   ListFacetAttributesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListFacetAttributesRequest,
-  ) => stream.Stream<
-    ListFacetAttributesResponse,
-    ListFacetAttributesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListFacetAttributesRequest,
-  ) => stream.Stream<
-    unknown,
-    ListFacetAttributesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListFacetAttributesRequest,
   output: ListFacetAttributesResponse,
   errors: [
@@ -5725,27 +5573,7 @@ export const listFacetAttributes: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListFacetAttributesRequest,
-  ListFacetAttributesResponse,
-  ListFacetAttributesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListFacetAttributesRequest,
-  ) => stream.Stream<
-    ListFacetAttributesResponse,
-    ListFacetAttributesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListFacetAttributesRequest,
-  ) => stream.Stream<
-    unknown,
-    ListFacetAttributesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListFacetNamesError =
   | AccessDeniedException
@@ -5760,27 +5588,13 @@ export type ListFacetNamesError =
 /**
  * Retrieves the names of facets that exist in a schema.
  */
-export const listFacetNames: API.OperationMethod<
+export const listFacetNames: API.PaginatedOperationMethod<
   ListFacetNamesRequest,
   ListFacetNamesResponse,
   ListFacetNamesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListFacetNamesRequest,
-  ) => stream.Stream<
-    ListFacetNamesResponse,
-    ListFacetNamesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListFacetNamesRequest,
-  ) => stream.Stream<
-    unknown,
-    ListFacetNamesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListFacetNamesRequest,
   output: ListFacetNamesResponse,
   errors: [
@@ -5801,27 +5615,7 @@ export const listFacetNames: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListFacetNamesRequest,
-  ListFacetNamesResponse,
-  ListFacetNamesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListFacetNamesRequest,
-  ) => stream.Stream<
-    ListFacetNamesResponse,
-    ListFacetNamesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListFacetNamesRequest,
-  ) => stream.Stream<
-    unknown,
-    ListFacetNamesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListIncomingTypedLinksError =
   | AccessDeniedException
@@ -5844,7 +5638,7 @@ export const listIncomingTypedLinks: API.OperationMethod<
   ListIncomingTypedLinksRequest,
   ListIncomingTypedLinksResponse,
   ListIncomingTypedLinksError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListIncomingTypedLinksRequest,
   output: ListIncomingTypedLinksResponse,
@@ -5881,27 +5675,13 @@ export type ListIndexError =
 /**
  * Lists objects attached to the specified index.
  */
-export const listIndex: API.OperationMethod<
+export const listIndex: API.PaginatedOperationMethod<
   ListIndexRequest,
   ListIndexResponse,
   ListIndexError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListIndexRequest,
-  ) => stream.Stream<
-    ListIndexResponse,
-    ListIndexError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListIndexRequest,
-  ) => stream.Stream<
-    unknown,
-    ListIndexError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListIndexRequest,
   output: ListIndexResponse,
   errors: [
@@ -5925,27 +5705,7 @@ export const listIndex: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListIndexRequest,
-  ListIndexResponse,
-  ListIndexError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListIndexRequest,
-  ) => stream.Stream<
-    ListIndexResponse,
-    ListIndexError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListIndexRequest,
-  ) => stream.Stream<
-    unknown,
-    ListIndexError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListManagedSchemaArnsError =
   | AccessDeniedException
@@ -5958,27 +5718,13 @@ export type ListManagedSchemaArnsError =
 /**
  * Lists the major version families of each managed schema. If a major version ARN is provided as SchemaArn, the minor version revisions in that family are listed instead.
  */
-export const listManagedSchemaArns: API.OperationMethod<
+export const listManagedSchemaArns: API.PaginatedOperationMethod<
   ListManagedSchemaArnsRequest,
   ListManagedSchemaArnsResponse,
   ListManagedSchemaArnsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListManagedSchemaArnsRequest,
-  ) => stream.Stream<
-    ListManagedSchemaArnsResponse,
-    ListManagedSchemaArnsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListManagedSchemaArnsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListManagedSchemaArnsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListManagedSchemaArnsRequest,
   output: ListManagedSchemaArnsResponse,
   errors: [
@@ -5997,27 +5743,7 @@ export const listManagedSchemaArns: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListManagedSchemaArnsRequest,
-  ListManagedSchemaArnsResponse,
-  ListManagedSchemaArnsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListManagedSchemaArnsRequest,
-  ) => stream.Stream<
-    ListManagedSchemaArnsResponse,
-    ListManagedSchemaArnsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListManagedSchemaArnsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListManagedSchemaArnsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListObjectAttributesError =
   | AccessDeniedException
@@ -6034,27 +5760,13 @@ export type ListObjectAttributesError =
 /**
  * Lists all attributes that are associated with an object.
  */
-export const listObjectAttributes: API.OperationMethod<
+export const listObjectAttributes: API.PaginatedOperationMethod<
   ListObjectAttributesRequest,
   ListObjectAttributesResponse,
   ListObjectAttributesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListObjectAttributesRequest,
-  ) => stream.Stream<
-    ListObjectAttributesResponse,
-    ListObjectAttributesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListObjectAttributesRequest,
-  ) => stream.Stream<
-    unknown,
-    ListObjectAttributesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListObjectAttributesRequest,
   output: ListObjectAttributesResponse,
   errors: [
@@ -6077,27 +5789,7 @@ export const listObjectAttributes: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListObjectAttributesRequest,
-  ListObjectAttributesResponse,
-  ListObjectAttributesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListObjectAttributesRequest,
-  ) => stream.Stream<
-    ListObjectAttributesResponse,
-    ListObjectAttributesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListObjectAttributesRequest,
-  ) => stream.Stream<
-    unknown,
-    ListObjectAttributesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListObjectChildrenError =
   | AccessDeniedException
@@ -6115,27 +5807,13 @@ export type ListObjectChildrenError =
  * Returns a paginated list of child objects that are associated with a given
  * object.
  */
-export const listObjectChildren: API.OperationMethod<
+export const listObjectChildren: API.PaginatedOperationMethod<
   ListObjectChildrenRequest,
   ListObjectChildrenResponse,
   ListObjectChildrenError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListObjectChildrenRequest,
-  ) => stream.Stream<
-    ListObjectChildrenResponse,
-    ListObjectChildrenError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListObjectChildrenRequest,
-  ) => stream.Stream<
-    unknown,
-    ListObjectChildrenError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListObjectChildrenRequest,
   output: ListObjectChildrenResponse,
   errors: [
@@ -6158,27 +5836,7 @@ export const listObjectChildren: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListObjectChildrenRequest,
-  ListObjectChildrenResponse,
-  ListObjectChildrenError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListObjectChildrenRequest,
-  ) => stream.Stream<
-    ListObjectChildrenResponse,
-    ListObjectChildrenError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListObjectChildrenRequest,
-  ) => stream.Stream<
-    unknown,
-    ListObjectChildrenError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListObjectParentPathsError =
   | AccessDeniedException
@@ -6202,27 +5860,13 @@ export type ListObjectParentPathsError =
  * objects are deleted or moved. Paths not leading to the directory root are ignored from the
  * target object.
  */
-export const listObjectParentPaths: API.OperationMethod<
+export const listObjectParentPaths: API.PaginatedOperationMethod<
   ListObjectParentPathsRequest,
   ListObjectParentPathsResponse,
   ListObjectParentPathsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListObjectParentPathsRequest,
-  ) => stream.Stream<
-    ListObjectParentPathsResponse,
-    ListObjectParentPathsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListObjectParentPathsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListObjectParentPathsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListObjectParentPathsRequest,
   output: ListObjectParentPathsResponse,
   errors: [
@@ -6244,27 +5888,7 @@ export const listObjectParentPaths: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListObjectParentPathsRequest,
-  ListObjectParentPathsResponse,
-  ListObjectParentPathsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListObjectParentPathsRequest,
-  ) => stream.Stream<
-    ListObjectParentPathsResponse,
-    ListObjectParentPathsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListObjectParentPathsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListObjectParentPathsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListObjectParentsError =
   | AccessDeniedException
@@ -6282,27 +5906,13 @@ export type ListObjectParentsError =
  * Lists parent objects that are associated with a given object in pagination
  * fashion.
  */
-export const listObjectParents: API.OperationMethod<
+export const listObjectParents: API.PaginatedOperationMethod<
   ListObjectParentsRequest,
   ListObjectParentsResponse,
   ListObjectParentsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListObjectParentsRequest,
-  ) => stream.Stream<
-    ListObjectParentsResponse,
-    ListObjectParentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListObjectParentsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListObjectParentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListObjectParentsRequest,
   output: ListObjectParentsResponse,
   errors: [
@@ -6325,27 +5935,7 @@ export const listObjectParents: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListObjectParentsRequest,
-  ListObjectParentsResponse,
-  ListObjectParentsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListObjectParentsRequest,
-  ) => stream.Stream<
-    ListObjectParentsResponse,
-    ListObjectParentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListObjectParentsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListObjectParentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListObjectPoliciesError =
   | AccessDeniedException
@@ -6361,27 +5951,13 @@ export type ListObjectPoliciesError =
 /**
  * Returns policies attached to an object in pagination fashion.
  */
-export const listObjectPolicies: API.OperationMethod<
+export const listObjectPolicies: API.PaginatedOperationMethod<
   ListObjectPoliciesRequest,
   ListObjectPoliciesResponse,
   ListObjectPoliciesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListObjectPoliciesRequest,
-  ) => stream.Stream<
-    ListObjectPoliciesResponse,
-    ListObjectPoliciesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListObjectPoliciesRequest,
-  ) => stream.Stream<
-    unknown,
-    ListObjectPoliciesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListObjectPoliciesRequest,
   output: ListObjectPoliciesResponse,
   errors: [
@@ -6403,27 +5979,7 @@ export const listObjectPolicies: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListObjectPoliciesRequest,
-  ListObjectPoliciesResponse,
-  ListObjectPoliciesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListObjectPoliciesRequest,
-  ) => stream.Stream<
-    ListObjectPoliciesResponse,
-    ListObjectPoliciesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListObjectPoliciesRequest,
-  ) => stream.Stream<
-    unknown,
-    ListObjectPoliciesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListOutgoingTypedLinksError =
   | AccessDeniedException
@@ -6446,7 +6002,7 @@ export const listOutgoingTypedLinks: API.OperationMethod<
   ListOutgoingTypedLinksRequest,
   ListOutgoingTypedLinksResponse,
   ListOutgoingTypedLinksError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListOutgoingTypedLinksRequest,
   output: ListOutgoingTypedLinksResponse,
@@ -6482,27 +6038,13 @@ export type ListPolicyAttachmentsError =
 /**
  * Returns all of the `ObjectIdentifiers` to which a given policy is attached.
  */
-export const listPolicyAttachments: API.OperationMethod<
+export const listPolicyAttachments: API.PaginatedOperationMethod<
   ListPolicyAttachmentsRequest,
   ListPolicyAttachmentsResponse,
   ListPolicyAttachmentsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPolicyAttachmentsRequest,
-  ) => stream.Stream<
-    ListPolicyAttachmentsResponse,
-    ListPolicyAttachmentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPolicyAttachmentsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListPolicyAttachmentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListPolicyAttachmentsRequest,
   output: ListPolicyAttachmentsResponse,
   errors: [
@@ -6525,27 +6067,7 @@ export const listPolicyAttachments: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListPolicyAttachmentsRequest,
-  ListPolicyAttachmentsResponse,
-  ListPolicyAttachmentsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPolicyAttachmentsRequest,
-  ) => stream.Stream<
-    ListPolicyAttachmentsResponse,
-    ListPolicyAttachmentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPolicyAttachmentsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListPolicyAttachmentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListPublishedSchemaArnsError =
   | AccessDeniedException
@@ -6560,27 +6082,13 @@ export type ListPublishedSchemaArnsError =
 /**
  * Lists the major version families of each published schema. If a major version ARN is provided as `SchemaArn`, the minor version revisions in that family are listed instead.
  */
-export const listPublishedSchemaArns: API.OperationMethod<
+export const listPublishedSchemaArns: API.PaginatedOperationMethod<
   ListPublishedSchemaArnsRequest,
   ListPublishedSchemaArnsResponse,
   ListPublishedSchemaArnsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPublishedSchemaArnsRequest,
-  ) => stream.Stream<
-    ListPublishedSchemaArnsResponse,
-    ListPublishedSchemaArnsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPublishedSchemaArnsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListPublishedSchemaArnsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListPublishedSchemaArnsRequest,
   output: ListPublishedSchemaArnsResponse,
   errors: [
@@ -6601,27 +6109,7 @@ export const listPublishedSchemaArns: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListPublishedSchemaArnsRequest,
-  ListPublishedSchemaArnsResponse,
-  ListPublishedSchemaArnsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPublishedSchemaArnsRequest,
-  ) => stream.Stream<
-    ListPublishedSchemaArnsResponse,
-    ListPublishedSchemaArnsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPublishedSchemaArnsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListPublishedSchemaArnsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsForResourceError =
   | AccessDeniedException
@@ -6638,27 +6126,13 @@ export type ListTagsForResourceError =
  * limit of 50 tags per directory. All 50 tags are returned for a given directory with this API
  * call.
  */
-export const listTagsForResource: API.OperationMethod<
+export const listTagsForResource: API.PaginatedOperationMethod<
   ListTagsForResourceRequest,
   ListTagsForResourceResponse,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTagsForResourceRequest,
-  ) => stream.Stream<
-    ListTagsForResourceResponse,
-    ListTagsForResourceError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTagsForResourceRequest,
-  ) => stream.Stream<
-    unknown,
-    ListTagsForResourceError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
   errors: [
@@ -6679,27 +6153,7 @@ export const listTagsForResource: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListTagsForResourceRequest,
-  ListTagsForResourceResponse,
-  ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTagsForResourceRequest,
-  ) => stream.Stream<
-    ListTagsForResourceResponse,
-    ListTagsForResourceError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTagsForResourceRequest,
-  ) => stream.Stream<
-    unknown,
-    ListTagsForResourceError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTypedLinkFacetAttributesError =
   | AccessDeniedException
@@ -6715,27 +6169,13 @@ export type ListTypedLinkFacetAttributesError =
 /**
  * Returns a paginated list of all attribute definitions for a particular TypedLinkFacet. For more information, see Typed Links.
  */
-export const listTypedLinkFacetAttributes: API.OperationMethod<
+export const listTypedLinkFacetAttributes: API.PaginatedOperationMethod<
   ListTypedLinkFacetAttributesRequest,
   ListTypedLinkFacetAttributesResponse,
   ListTypedLinkFacetAttributesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTypedLinkFacetAttributesRequest,
-  ) => stream.Stream<
-    ListTypedLinkFacetAttributesResponse,
-    ListTypedLinkFacetAttributesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTypedLinkFacetAttributesRequest,
-  ) => stream.Stream<
-    unknown,
-    ListTypedLinkFacetAttributesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListTypedLinkFacetAttributesRequest,
   output: ListTypedLinkFacetAttributesResponse,
   errors: [
@@ -6757,27 +6197,7 @@ export const listTypedLinkFacetAttributes: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListTypedLinkFacetAttributesRequest,
-  ListTypedLinkFacetAttributesResponse,
-  ListTypedLinkFacetAttributesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTypedLinkFacetAttributesRequest,
-  ) => stream.Stream<
-    ListTypedLinkFacetAttributesResponse,
-    ListTypedLinkFacetAttributesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTypedLinkFacetAttributesRequest,
-  ) => stream.Stream<
-    unknown,
-    ListTypedLinkFacetAttributesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTypedLinkFacetNamesError =
   | AccessDeniedException
@@ -6793,27 +6213,13 @@ export type ListTypedLinkFacetNamesError =
  * Returns a paginated list of `TypedLink` facet names for a particular schema.
  * For more information, see Typed Links.
  */
-export const listTypedLinkFacetNames: API.OperationMethod<
+export const listTypedLinkFacetNames: API.PaginatedOperationMethod<
   ListTypedLinkFacetNamesRequest,
   ListTypedLinkFacetNamesResponse,
   ListTypedLinkFacetNamesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTypedLinkFacetNamesRequest,
-  ) => stream.Stream<
-    ListTypedLinkFacetNamesResponse,
-    ListTypedLinkFacetNamesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTypedLinkFacetNamesRequest,
-  ) => stream.Stream<
-    unknown,
-    ListTypedLinkFacetNamesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListTypedLinkFacetNamesRequest,
   output: ListTypedLinkFacetNamesResponse,
   errors: [
@@ -6834,27 +6240,7 @@ export const listTypedLinkFacetNames: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListTypedLinkFacetNamesRequest,
-  ListTypedLinkFacetNamesResponse,
-  ListTypedLinkFacetNamesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTypedLinkFacetNamesRequest,
-  ) => stream.Stream<
-    ListTypedLinkFacetNamesResponse,
-    ListTypedLinkFacetNamesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTypedLinkFacetNamesRequest,
-  ) => stream.Stream<
-    unknown,
-    ListTypedLinkFacetNamesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type LookupPolicyError =
   | AccessDeniedException
@@ -6875,27 +6261,13 @@ export type LookupPolicyError =
  * `policyType`. Paths that don't lead to the root from the target object are ignored. For more
  * information, see Policies.
  */
-export const lookupPolicy: API.OperationMethod<
+export const lookupPolicy: API.PaginatedOperationMethod<
   LookupPolicyRequest,
   LookupPolicyResponse,
   LookupPolicyError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: LookupPolicyRequest,
-  ) => stream.Stream<
-    LookupPolicyResponse,
-    LookupPolicyError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: LookupPolicyRequest,
-  ) => stream.Stream<
-    unknown,
-    LookupPolicyError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: LookupPolicyRequest,
   output: LookupPolicyResponse,
   errors: [
@@ -6917,27 +6289,7 @@ export const lookupPolicy: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  LookupPolicyRequest,
-  LookupPolicyResponse,
-  LookupPolicyError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: LookupPolicyRequest,
-  ) => stream.Stream<
-    LookupPolicyResponse,
-    LookupPolicyError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: LookupPolicyRequest,
-  ) => stream.Stream<
-    unknown,
-    LookupPolicyError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type PublishSchemaError =
   | AccessDeniedException
@@ -6956,7 +6308,7 @@ export const publishSchema: API.OperationMethod<
   PublishSchemaRequest,
   PublishSchemaResponse,
   PublishSchemaError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PublishSchemaRequest,
   output: PublishSchemaResponse,
@@ -6992,7 +6344,7 @@ export const putSchemaFromJson: API.OperationMethod<
   PutSchemaFromJsonRequest,
   PutSchemaFromJsonResponse,
   PutSchemaFromJsonError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutSchemaFromJsonRequest,
   output: PutSchemaFromJsonResponse,
@@ -7029,7 +6381,7 @@ export const removeFacetFromObject: API.OperationMethod<
   RemoveFacetFromObjectRequest,
   RemoveFacetFromObjectResponse,
   RemoveFacetFromObjectError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RemoveFacetFromObjectRequest,
   output: RemoveFacetFromObjectResponse,
@@ -7066,7 +6418,7 @@ export const tagResource: API.OperationMethod<
   TagResourceRequest,
   TagResourceResponse,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -7102,7 +6454,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceRequest,
   UntagResourceResponse,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -7147,7 +6499,7 @@ export const updateFacet: API.OperationMethod<
   UpdateFacetRequest,
   UpdateFacetResponse,
   UpdateFacetError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateFacetRequest,
   output: UpdateFacetResponse,
@@ -7187,7 +6539,7 @@ export const updateLinkAttributes: API.OperationMethod<
   UpdateLinkAttributesRequest,
   UpdateLinkAttributesResponse,
   UpdateLinkAttributesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateLinkAttributesRequest,
   output: UpdateLinkAttributesResponse,
@@ -7226,7 +6578,7 @@ export const updateObjectAttributes: API.OperationMethod<
   UpdateObjectAttributesRequest,
   UpdateObjectAttributesResponse,
   UpdateObjectAttributesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateObjectAttributesRequest,
   output: UpdateObjectAttributesResponse,
@@ -7264,7 +6616,7 @@ export const updateSchema: API.OperationMethod<
   UpdateSchemaRequest,
   UpdateSchemaResponse,
   UpdateSchemaError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateSchemaRequest,
   output: UpdateSchemaResponse,
@@ -7302,7 +6654,7 @@ export const updateTypedLinkFacet: API.OperationMethod<
   UpdateTypedLinkFacetRequest,
   UpdateTypedLinkFacetResponse,
   UpdateTypedLinkFacetError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateTypedLinkFacetRequest,
   output: UpdateTypedLinkFacetResponse,
@@ -7342,7 +6694,7 @@ export const upgradeAppliedSchema: API.OperationMethod<
   UpgradeAppliedSchemaRequest,
   UpgradeAppliedSchemaResponse,
   UpgradeAppliedSchemaError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpgradeAppliedSchemaRequest,
   output: UpgradeAppliedSchemaResponse,
@@ -7380,7 +6732,7 @@ export const upgradePublishedSchema: API.OperationMethod<
   UpgradePublishedSchemaRequest,
   UpgradePublishedSchemaResponse,
   UpgradePublishedSchemaError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpgradePublishedSchemaRequest,
   output: UpgradePublishedSchemaResponse,

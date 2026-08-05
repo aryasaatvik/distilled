@@ -1,7 +1,6 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as redacted from "effect/Redacted";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -9,7 +8,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 import { SensitiveString } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "SageMaker Geospatial",
@@ -90,43 +88,61 @@ const rules = T.EndpointResolver((p, _) => {
 export class AccessDeniedException
   extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
     "AccessDeniedException",
-    { Message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(403),
   ).pipe(C.withAuthError) {}
 export class ConflictException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
     "ConflictException",
-    { Message: S.String, ResourceId: S.optional(S.String) },
+    {
+      message: S.String.pipe(T.ErrorMessage()),
+      ResourceId: S.optional(S.String),
+    },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class InternalServerException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
     "InternalServerException",
-    { Message: S.String, ResourceId: S.optional(S.String) },
+    {
+      message: S.String.pipe(T.ErrorMessage()),
+      ResourceId: S.optional(S.String),
+    },
     T.HttpError(500),
   ).pipe(C.withServerError) {}
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { Message: S.String, ResourceId: S.optional(S.String) },
+    {
+      message: S.String.pipe(T.ErrorMessage()),
+      ResourceId: S.optional(S.String),
+    },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class ServiceQuotaExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
     "ServiceQuotaExceededException",
-    { Message: S.String, ResourceId: S.optional(S.String) },
+    {
+      message: S.String.pipe(T.ErrorMessage()),
+      ResourceId: S.optional(S.String),
+    },
     T.HttpError(402),
   ).pipe(C.withQuotaError) {}
 export class ThrottlingException
   extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
     "ThrottlingException",
-    { Message: S.String, ResourceId: S.optional(S.String) },
+    {
+      message: S.String.pipe(T.ErrorMessage()),
+      ResourceId: S.optional(S.String),
+    },
     T.HttpError(429),
   ).pipe(C.withThrottlingError) {}
 export class ValidationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
     "ValidationException",
-    { Message: S.String, ResourceId: S.optional(S.String) },
+    {
+      message: S.String.pipe(T.ErrorMessage()),
+      ResourceId: S.optional(S.String),
+    },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export type EarthObservationJobArn = string;
@@ -1738,7 +1754,7 @@ export const deleteEarthObservationJob: API.OperationMethod<
   DeleteEarthObservationJobInput,
   DeleteEarthObservationJobOutput,
   DeleteEarthObservationJobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteEarthObservationJobInput,
   output: DeleteEarthObservationJobOutput,
@@ -1770,7 +1786,7 @@ export const deleteVectorEnrichmentJob: API.OperationMethod<
   DeleteVectorEnrichmentJobInput,
   DeleteVectorEnrichmentJobOutput,
   DeleteVectorEnrichmentJobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteVectorEnrichmentJobInput,
   output: DeleteVectorEnrichmentJobOutput,
@@ -1803,7 +1819,7 @@ export const exportEarthObservationJob: API.OperationMethod<
   ExportEarthObservationJobInput,
   ExportEarthObservationJobOutput,
   ExportEarthObservationJobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ExportEarthObservationJobInput,
   output: ExportEarthObservationJobOutput,
@@ -1837,7 +1853,7 @@ export const exportVectorEnrichmentJob: API.OperationMethod<
   ExportVectorEnrichmentJobInput,
   ExportVectorEnrichmentJobOutput,
   ExportVectorEnrichmentJobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ExportVectorEnrichmentJobInput,
   output: ExportVectorEnrichmentJobOutput,
@@ -1869,7 +1885,7 @@ export const getEarthObservationJob: API.OperationMethod<
   GetEarthObservationJobInput,
   GetEarthObservationJobOutput,
   GetEarthObservationJobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetEarthObservationJobInput,
   output: GetEarthObservationJobOutput,
@@ -1899,7 +1915,7 @@ export const getRasterDataCollection: API.OperationMethod<
   GetRasterDataCollectionInput,
   GetRasterDataCollectionOutput,
   GetRasterDataCollectionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetRasterDataCollectionInput,
   output: GetRasterDataCollectionOutput,
@@ -1929,7 +1945,7 @@ export const getTile: API.OperationMethod<
   GetTileInput,
   GetTileOutput,
   GetTileError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetTileInput,
   output: GetTileOutput,
@@ -1959,7 +1975,7 @@ export const getVectorEnrichmentJob: API.OperationMethod<
   GetVectorEnrichmentJobInput,
   GetVectorEnrichmentJobOutput,
   GetVectorEnrichmentJobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetVectorEnrichmentJobInput,
   output: GetVectorEnrichmentJobOutput,
@@ -1985,27 +2001,13 @@ export type ListEarthObservationJobsError =
 /**
  * Use this operation to get a list of the Earth Observation jobs associated with the calling Amazon Web Services account.
  */
-export const listEarthObservationJobs: API.OperationMethod<
+export const listEarthObservationJobs: API.PaginatedOperationMethod<
   ListEarthObservationJobInput,
   ListEarthObservationJobOutput,
   ListEarthObservationJobsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListEarthObservationJobInput,
-  ) => stream.Stream<
-    ListEarthObservationJobOutput,
-    ListEarthObservationJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListEarthObservationJobInput,
-  ) => stream.Stream<
-    ListEarthObservationJobOutputConfig,
-    ListEarthObservationJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ListEarthObservationJobOutputConfig
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListEarthObservationJobInput,
   output: ListEarthObservationJobOutput,
   errors: [
@@ -2023,27 +2025,7 @@ export const listEarthObservationJobs: API.OperationMethod<
     outputToken: "NextToken",
     items: "EarthObservationJobSummaries",
   } as const,
-})) as any as API.OperationMethod<
-  ListEarthObservationJobInput,
-  ListEarthObservationJobOutput,
-  ListEarthObservationJobsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListEarthObservationJobInput,
-  ) => stream.Stream<
-    ListEarthObservationJobOutput,
-    ListEarthObservationJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListEarthObservationJobInput,
-  ) => stream.Stream<
-    ListEarthObservationJobOutputConfig,
-    ListEarthObservationJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListRasterDataCollectionsError =
   | AccessDeniedException
@@ -2055,27 +2037,13 @@ export type ListRasterDataCollectionsError =
 /**
  * Use this operation to get raster data collections.
  */
-export const listRasterDataCollections: API.OperationMethod<
+export const listRasterDataCollections: API.PaginatedOperationMethod<
   ListRasterDataCollectionsInput,
   ListRasterDataCollectionsOutput,
   ListRasterDataCollectionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListRasterDataCollectionsInput,
-  ) => stream.Stream<
-    ListRasterDataCollectionsOutput,
-    ListRasterDataCollectionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListRasterDataCollectionsInput,
-  ) => stream.Stream<
-    RasterDataCollectionMetadata,
-    ListRasterDataCollectionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  RasterDataCollectionMetadata
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListRasterDataCollectionsInput,
   output: ListRasterDataCollectionsOutput,
   errors: [
@@ -2093,27 +2061,7 @@ export const listRasterDataCollections: API.OperationMethod<
     outputToken: "NextToken",
     items: "RasterDataCollectionSummaries",
   } as const,
-})) as any as API.OperationMethod<
-  ListRasterDataCollectionsInput,
-  ListRasterDataCollectionsOutput,
-  ListRasterDataCollectionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListRasterDataCollectionsInput,
-  ) => stream.Stream<
-    ListRasterDataCollectionsOutput,
-    ListRasterDataCollectionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListRasterDataCollectionsInput,
-  ) => stream.Stream<
-    RasterDataCollectionMetadata,
-    ListRasterDataCollectionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsForResourceError =
   | AccessDeniedException
@@ -2129,7 +2077,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceRequest,
   ListTagsForResourceResponse,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -2155,27 +2103,13 @@ export type ListVectorEnrichmentJobsError =
 /**
  * Retrieves a list of vector enrichment jobs.
  */
-export const listVectorEnrichmentJobs: API.OperationMethod<
+export const listVectorEnrichmentJobs: API.PaginatedOperationMethod<
   ListVectorEnrichmentJobInput,
   ListVectorEnrichmentJobOutput,
   ListVectorEnrichmentJobsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListVectorEnrichmentJobInput,
-  ) => stream.Stream<
-    ListVectorEnrichmentJobOutput,
-    ListVectorEnrichmentJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListVectorEnrichmentJobInput,
-  ) => stream.Stream<
-    ListVectorEnrichmentJobOutputConfig,
-    ListVectorEnrichmentJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ListVectorEnrichmentJobOutputConfig
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListVectorEnrichmentJobInput,
   output: ListVectorEnrichmentJobOutput,
   errors: [
@@ -2193,27 +2127,7 @@ export const listVectorEnrichmentJobs: API.OperationMethod<
     outputToken: "NextToken",
     items: "VectorEnrichmentJobSummaries",
   } as const,
-})) as any as API.OperationMethod<
-  ListVectorEnrichmentJobInput,
-  ListVectorEnrichmentJobOutput,
-  ListVectorEnrichmentJobsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListVectorEnrichmentJobInput,
-  ) => stream.Stream<
-    ListVectorEnrichmentJobOutput,
-    ListVectorEnrichmentJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListVectorEnrichmentJobInput,
-  ) => stream.Stream<
-    ListVectorEnrichmentJobOutputConfig,
-    ListVectorEnrichmentJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type SearchRasterDataCollectionError =
   | AccessDeniedException
@@ -2225,27 +2139,13 @@ export type SearchRasterDataCollectionError =
 /**
  * Allows you run image query on a specific raster data collection to get a list of the satellite imagery matching the selected filters.
  */
-export const searchRasterDataCollection: API.OperationMethod<
+export const searchRasterDataCollection: API.PaginatedOperationMethod<
   SearchRasterDataCollectionInput,
   SearchRasterDataCollectionOutput,
   SearchRasterDataCollectionError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: SearchRasterDataCollectionInput,
-  ) => stream.Stream<
-    SearchRasterDataCollectionOutput,
-    SearchRasterDataCollectionError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: SearchRasterDataCollectionInput,
-  ) => stream.Stream<
-    unknown,
-    SearchRasterDataCollectionError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: SearchRasterDataCollectionInput,
   output: SearchRasterDataCollectionOutput,
   errors: [
@@ -2259,27 +2159,7 @@ export const searchRasterDataCollection: API.OperationMethod<
   retry: Retry,
   operationName: "SearchRasterDataCollection",
   pagination: { inputToken: "NextToken", outputToken: "NextToken" } as const,
-})) as any as API.OperationMethod<
-  SearchRasterDataCollectionInput,
-  SearchRasterDataCollectionOutput,
-  SearchRasterDataCollectionError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: SearchRasterDataCollectionInput,
-  ) => stream.Stream<
-    SearchRasterDataCollectionOutput,
-    SearchRasterDataCollectionError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: SearchRasterDataCollectionInput,
-  ) => stream.Stream<
-    unknown,
-    SearchRasterDataCollectionError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type StartEarthObservationJobError =
   | AccessDeniedException
@@ -2297,7 +2177,7 @@ export const startEarthObservationJob: API.OperationMethod<
   StartEarthObservationJobInput,
   StartEarthObservationJobOutput,
   StartEarthObservationJobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartEarthObservationJobInput,
   output: StartEarthObservationJobOutput,
@@ -2331,7 +2211,7 @@ export const startVectorEnrichmentJob: API.OperationMethod<
   StartVectorEnrichmentJobInput,
   StartVectorEnrichmentJobOutput,
   StartVectorEnrichmentJobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartVectorEnrichmentJobInput,
   output: StartVectorEnrichmentJobOutput,
@@ -2364,7 +2244,7 @@ export const stopEarthObservationJob: API.OperationMethod<
   StopEarthObservationJobInput,
   StopEarthObservationJobOutput,
   StopEarthObservationJobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StopEarthObservationJobInput,
   output: StopEarthObservationJobOutput,
@@ -2396,7 +2276,7 @@ export const stopVectorEnrichmentJob: API.OperationMethod<
   StopVectorEnrichmentJobInput,
   StopVectorEnrichmentJobOutput,
   StopVectorEnrichmentJobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StopVectorEnrichmentJobInput,
   output: StopVectorEnrichmentJobOutput,
@@ -2427,7 +2307,7 @@ export const tagResource: API.OperationMethod<
   TagResourceRequest,
   TagResourceResponse,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -2457,7 +2337,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceRequest,
   UntagResourceResponse,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,

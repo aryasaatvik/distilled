@@ -1,13 +1,11 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
 import * as T from "../traits.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 const svc = T.AwsApiService({
   sdkId: "Marketplace Entitlement Service",
   serviceShapeName: "AWSMPEntitlementService",
@@ -121,17 +119,17 @@ const rules = T.EndpointResolver((p, _) => {
 export class InternalServiceErrorException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServiceErrorException>()(
     "InternalServiceErrorException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidParameterException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidParameterException>()(
     "InvalidParameterException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class ThrottlingException
   extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
     "ThrottlingException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export type ProductCode = string;
 export type GetEntitlementFilterName =
@@ -232,27 +230,13 @@ export type GetEntitlementsError =
  * GetEntitlements retrieves entitlement values for a given product. The results can be
  * filtered based on customer identifier, AWS account ID, license ARN, or product dimensions.
  */
-export const getEntitlements: API.OperationMethod<
+export const getEntitlements: API.PaginatedOperationMethod<
   GetEntitlementsRequest,
   GetEntitlementsResult,
   GetEntitlementsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetEntitlementsRequest,
-  ) => stream.Stream<
-    GetEntitlementsResult,
-    GetEntitlementsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetEntitlementsRequest,
-  ) => stream.Stream<
-    unknown,
-    GetEntitlementsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetEntitlementsRequest,
   output: GetEntitlementsResult,
   errors: [
@@ -268,24 +252,4 @@ export const getEntitlements: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetEntitlementsRequest,
-  GetEntitlementsResult,
-  GetEntitlementsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetEntitlementsRequest,
-  ) => stream.Stream<
-    GetEntitlementsResult,
-    GetEntitlementsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetEntitlementsRequest,
-  ) => stream.Stream<
-    unknown,
-    GetEntitlementsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;

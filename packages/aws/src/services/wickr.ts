@@ -1,7 +1,6 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as redacted from "effect/Redacted";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -9,7 +8,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 import { SensitiveString } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "Wickr",
@@ -90,37 +88,37 @@ const rules = T.EndpointResolver((p, _) => {
 export class BadRequestError
   extends /*@__PURE__*/ S.TaggedErrorClass<BadRequestError>()(
     "BadRequestError",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class ForbiddenError
   extends /*@__PURE__*/ S.TaggedErrorClass<ForbiddenError>()(
     "ForbiddenError",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(403),
   ).pipe(C.withAuthError) {}
 export class InternalServerError
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerError>()(
     "InternalServerError",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(500),
   ).pipe(C.withServerError) {}
 export class RateLimitError
   extends /*@__PURE__*/ S.TaggedErrorClass<RateLimitError>()(
     "RateLimitError",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(429),
   ).pipe(C.withThrottlingError) {}
 export class ResourceNotFoundError
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundError>()(
     "ResourceNotFoundError",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class UnauthorizedError
   extends /*@__PURE__*/ S.TaggedErrorClass<UnauthorizedError>()(
     "UnauthorizedError",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(401),
   ).pipe(C.withAuthError) {}
 export class ValidationError
@@ -132,7 +130,7 @@ export class ValidationError
           identifier: "ErrorDetailList",
         }),
       ),
-      message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
     },
     T.HttpError(422),
   ).pipe(C.withBadRequestError) {}
@@ -2552,7 +2550,7 @@ export const batchCreateUser: API.OperationMethod<
   BatchCreateUserRequest,
   BatchCreateUserResponse,
   BatchCreateUserError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchCreateUserRequest,
   output: BatchCreateUserResponse,
@@ -2586,7 +2584,7 @@ export const batchDeleteUser: API.OperationMethod<
   BatchDeleteUserRequest,
   BatchDeleteUserResponse,
   BatchDeleteUserError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchDeleteUserRequest,
   output: BatchDeleteUserResponse,
@@ -2620,7 +2618,7 @@ export const batchLookupUserUname: API.OperationMethod<
   BatchLookupUserUnameRequest,
   BatchLookupUserUnameResponse,
   BatchLookupUserUnameError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchLookupUserUnameRequest,
   output: BatchLookupUserUnameResponse,
@@ -2654,7 +2652,7 @@ export const batchReinviteUser: API.OperationMethod<
   BatchReinviteUserRequest,
   BatchReinviteUserResponse,
   BatchReinviteUserError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchReinviteUserRequest,
   output: BatchReinviteUserResponse,
@@ -2688,7 +2686,7 @@ export const batchResetDevicesForUser: API.OperationMethod<
   BatchResetDevicesForUserRequest,
   BatchResetDevicesForUserResponse,
   BatchResetDevicesForUserError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchResetDevicesForUserRequest,
   output: BatchResetDevicesForUserResponse,
@@ -2722,7 +2720,7 @@ export const batchToggleUserSuspendStatus: API.OperationMethod<
   BatchToggleUserSuspendStatusRequest,
   BatchToggleUserSuspendStatusResponse,
   BatchToggleUserSuspendStatusError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchToggleUserSuspendStatusRequest,
   output: BatchToggleUserSuspendStatusResponse,
@@ -2756,7 +2754,7 @@ export const createBot: API.OperationMethod<
   CreateBotRequest,
   CreateBotResponse,
   CreateBotError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateBotRequest,
   output: CreateBotResponse,
@@ -2790,7 +2788,7 @@ export const createDataRetentionBot: API.OperationMethod<
   CreateDataRetentionBotRequest,
   CreateDataRetentionBotResponse,
   CreateDataRetentionBotError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateDataRetentionBotRequest,
   output: CreateDataRetentionBotResponse,
@@ -2824,7 +2822,7 @@ export const createDataRetentionBotChallenge: API.OperationMethod<
   CreateDataRetentionBotChallengeRequest,
   CreateDataRetentionBotChallengeResponse,
   CreateDataRetentionBotChallengeError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateDataRetentionBotChallengeRequest,
   output: CreateDataRetentionBotChallengeResponse,
@@ -2858,7 +2856,7 @@ export const createNetwork: API.OperationMethod<
   CreateNetworkRequest,
   CreateNetworkResponse,
   CreateNetworkError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateNetworkRequest,
   output: CreateNetworkResponse,
@@ -2892,7 +2890,7 @@ export const createSecurityGroup: API.OperationMethod<
   CreateSecurityGroupRequest,
   CreateSecurityGroupResponse,
   CreateSecurityGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateSecurityGroupRequest,
   output: CreateSecurityGroupResponse,
@@ -2926,7 +2924,7 @@ export const deleteBot: API.OperationMethod<
   DeleteBotRequest,
   DeleteBotResponse,
   DeleteBotError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteBotRequest,
   output: DeleteBotResponse,
@@ -2960,7 +2958,7 @@ export const deleteDataRetentionBot: API.OperationMethod<
   DeleteDataRetentionBotRequest,
   DeleteDataRetentionBotResponse,
   DeleteDataRetentionBotError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteDataRetentionBotRequest,
   output: DeleteDataRetentionBotResponse,
@@ -2994,7 +2992,7 @@ export const deleteNetwork: API.OperationMethod<
   DeleteNetworkRequest,
   DeleteNetworkResponse,
   DeleteNetworkError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteNetworkRequest,
   output: DeleteNetworkResponse,
@@ -3028,7 +3026,7 @@ export const deleteSecurityGroup: API.OperationMethod<
   DeleteSecurityGroupRequest,
   DeleteSecurityGroupResponse,
   DeleteSecurityGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteSecurityGroupRequest,
   output: DeleteSecurityGroupResponse,
@@ -3062,7 +3060,7 @@ export const getBot: API.OperationMethod<
   GetBotRequest,
   GetBotResponse,
   GetBotError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetBotRequest,
   output: GetBotResponse,
@@ -3096,7 +3094,7 @@ export const getBotsCount: API.OperationMethod<
   GetBotsCountRequest,
   GetBotsCountResponse,
   GetBotsCountError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetBotsCountRequest,
   output: GetBotsCountResponse,
@@ -3130,7 +3128,7 @@ export const getDataRetentionBot: API.OperationMethod<
   GetDataRetentionBotRequest,
   GetDataRetentionBotResponse,
   GetDataRetentionBotError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetDataRetentionBotRequest,
   output: GetDataRetentionBotResponse,
@@ -3164,7 +3162,7 @@ export const getGuestUserHistoryCount: API.OperationMethod<
   GetGuestUserHistoryCountRequest,
   GetGuestUserHistoryCountResponse,
   GetGuestUserHistoryCountError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetGuestUserHistoryCountRequest,
   output: GetGuestUserHistoryCountResponse,
@@ -3198,7 +3196,7 @@ export const getNetwork: API.OperationMethod<
   GetNetworkRequest,
   GetNetworkResponse,
   GetNetworkError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetNetworkRequest,
   output: GetNetworkResponse,
@@ -3232,7 +3230,7 @@ export const getNetworkSettings: API.OperationMethod<
   GetNetworkSettingsRequest,
   GetNetworkSettingsResponse,
   GetNetworkSettingsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetNetworkSettingsRequest,
   output: GetNetworkSettingsResponse,
@@ -3266,7 +3264,7 @@ export const getOidcInfo: API.OperationMethod<
   GetOidcInfoRequest,
   GetOidcInfoResponse,
   GetOidcInfoError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetOidcInfoRequest,
   output: GetOidcInfoResponse,
@@ -3300,7 +3298,7 @@ export const getOpentdfConfig: API.OperationMethod<
   GetOpentdfConfigRequest,
   GetOpentdfConfigResponse,
   GetOpentdfConfigError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetOpentdfConfigRequest,
   output: GetOpentdfConfigResponse,
@@ -3334,7 +3332,7 @@ export const getSecurityGroup: API.OperationMethod<
   GetSecurityGroupRequest,
   GetSecurityGroupResponse,
   GetSecurityGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetSecurityGroupRequest,
   output: GetSecurityGroupResponse,
@@ -3368,7 +3366,7 @@ export const getUser: API.OperationMethod<
   GetUserRequest,
   GetUserResponse,
   GetUserError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetUserRequest,
   output: GetUserResponse,
@@ -3402,7 +3400,7 @@ export const getUsersCount: API.OperationMethod<
   GetUsersCountRequest,
   GetUsersCountResponse,
   GetUsersCountError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetUsersCountRequest,
   output: GetUsersCountResponse,
@@ -3432,27 +3430,13 @@ export type ListBlockedGuestUsersError =
 /**
  * Retrieves a paginated list of guest users who have been blocked from a Wickr network. You can filter and sort the results.
  */
-export const listBlockedGuestUsers: API.OperationMethod<
+export const listBlockedGuestUsers: API.PaginatedOperationMethod<
   ListBlockedGuestUsersRequest,
   ListBlockedGuestUsersResponse,
   ListBlockedGuestUsersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListBlockedGuestUsersRequest,
-  ) => stream.Stream<
-    ListBlockedGuestUsersResponse,
-    ListBlockedGuestUsersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListBlockedGuestUsersRequest,
-  ) => stream.Stream<
-    BlockedGuestUser,
-    ListBlockedGuestUsersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  BlockedGuestUser
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListBlockedGuestUsersRequest,
   output: ListBlockedGuestUsersResponse,
   errors: [
@@ -3473,27 +3457,7 @@ export const listBlockedGuestUsers: API.OperationMethod<
     items: "blocklist",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListBlockedGuestUsersRequest,
-  ListBlockedGuestUsersResponse,
-  ListBlockedGuestUsersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListBlockedGuestUsersRequest,
-  ) => stream.Stream<
-    ListBlockedGuestUsersResponse,
-    ListBlockedGuestUsersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListBlockedGuestUsersRequest,
-  ) => stream.Stream<
-    BlockedGuestUser,
-    ListBlockedGuestUsersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListBotsError =
   | BadRequestError
@@ -3507,27 +3471,13 @@ export type ListBotsError =
 /**
  * Retrieves a paginated list of bots in a specified Wickr network. You can filter and sort the results based on various criteria.
  */
-export const listBots: API.OperationMethod<
+export const listBots: API.PaginatedOperationMethod<
   ListBotsRequest,
   ListBotsResponse,
   ListBotsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListBotsRequest,
-  ) => stream.Stream<
-    ListBotsResponse,
-    ListBotsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListBotsRequest,
-  ) => stream.Stream<
-    Bot,
-    ListBotsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Bot
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListBotsRequest,
   output: ListBotsResponse,
   errors: [
@@ -3548,27 +3498,7 @@ export const listBots: API.OperationMethod<
     items: "bots",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListBotsRequest,
-  ListBotsResponse,
-  ListBotsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListBotsRequest,
-  ) => stream.Stream<
-    ListBotsResponse,
-    ListBotsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListBotsRequest,
-  ) => stream.Stream<
-    Bot,
-    ListBotsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListDevicesForUserError =
   | BadRequestError
@@ -3582,27 +3512,13 @@ export type ListDevicesForUserError =
 /**
  * Retrieves a paginated list of devices associated with a specific user in a Wickr network. This operation returns information about all devices where the user has logged into Wickr.
  */
-export const listDevicesForUser: API.OperationMethod<
+export const listDevicesForUser: API.PaginatedOperationMethod<
   ListDevicesForUserRequest,
   ListDevicesForUserResponse,
   ListDevicesForUserError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDevicesForUserRequest,
-  ) => stream.Stream<
-    ListDevicesForUserResponse,
-    ListDevicesForUserError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDevicesForUserRequest,
-  ) => stream.Stream<
-    BasicDeviceObject,
-    ListDevicesForUserError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  BasicDeviceObject
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListDevicesForUserRequest,
   output: ListDevicesForUserResponse,
   errors: [
@@ -3623,27 +3539,7 @@ export const listDevicesForUser: API.OperationMethod<
     items: "devices",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListDevicesForUserRequest,
-  ListDevicesForUserResponse,
-  ListDevicesForUserError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDevicesForUserRequest,
-  ) => stream.Stream<
-    ListDevicesForUserResponse,
-    ListDevicesForUserError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDevicesForUserRequest,
-  ) => stream.Stream<
-    BasicDeviceObject,
-    ListDevicesForUserError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListGuestUsersError =
   | BadRequestError
@@ -3657,27 +3553,13 @@ export type ListGuestUsersError =
 /**
  * Retrieves a paginated list of guest users who have communicated with your Wickr network. Guest users are external users from federated networks who can communicate with network members.
  */
-export const listGuestUsers: API.OperationMethod<
+export const listGuestUsers: API.PaginatedOperationMethod<
   ListGuestUsersRequest,
   ListGuestUsersResponse,
   ListGuestUsersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListGuestUsersRequest,
-  ) => stream.Stream<
-    ListGuestUsersResponse,
-    ListGuestUsersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListGuestUsersRequest,
-  ) => stream.Stream<
-    GuestUser,
-    ListGuestUsersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  GuestUser
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListGuestUsersRequest,
   output: ListGuestUsersResponse,
   errors: [
@@ -3698,27 +3580,7 @@ export const listGuestUsers: API.OperationMethod<
     items: "guestlist",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListGuestUsersRequest,
-  ListGuestUsersResponse,
-  ListGuestUsersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListGuestUsersRequest,
-  ) => stream.Stream<
-    ListGuestUsersResponse,
-    ListGuestUsersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListGuestUsersRequest,
-  ) => stream.Stream<
-    GuestUser,
-    ListGuestUsersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListNetworksError =
   | BadRequestError
@@ -3731,27 +3593,13 @@ export type ListNetworksError =
 /**
  * Retrieves a paginated list of all Wickr networks associated with your Amazon Web Services account. You can sort the results by network ID or name.
  */
-export const listNetworks: API.OperationMethod<
+export const listNetworks: API.PaginatedOperationMethod<
   ListNetworksRequest,
   ListNetworksResponse,
   ListNetworksError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListNetworksRequest,
-  ) => stream.Stream<
-    ListNetworksResponse,
-    ListNetworksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListNetworksRequest,
-  ) => stream.Stream<
-    Network,
-    ListNetworksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Network
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListNetworksRequest,
   output: ListNetworksResponse,
   errors: [
@@ -3771,27 +3619,7 @@ export const listNetworks: API.OperationMethod<
     items: "networks",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListNetworksRequest,
-  ListNetworksResponse,
-  ListNetworksError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListNetworksRequest,
-  ) => stream.Stream<
-    ListNetworksResponse,
-    ListNetworksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListNetworksRequest,
-  ) => stream.Stream<
-    Network,
-    ListNetworksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListSecurityGroupsError =
   | BadRequestError
@@ -3805,27 +3633,13 @@ export type ListSecurityGroupsError =
 /**
  * Retrieves a paginated list of security groups in a specified Wickr network. You can sort the results by various criteria.
  */
-export const listSecurityGroups: API.OperationMethod<
+export const listSecurityGroups: API.PaginatedOperationMethod<
   ListSecurityGroupsRequest,
   ListSecurityGroupsResponse,
   ListSecurityGroupsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSecurityGroupsRequest,
-  ) => stream.Stream<
-    ListSecurityGroupsResponse,
-    ListSecurityGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSecurityGroupsRequest,
-  ) => stream.Stream<
-    SecurityGroup,
-    ListSecurityGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  SecurityGroup
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListSecurityGroupsRequest,
   output: ListSecurityGroupsResponse,
   errors: [
@@ -3846,27 +3660,7 @@ export const listSecurityGroups: API.OperationMethod<
     items: "securityGroups",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListSecurityGroupsRequest,
-  ListSecurityGroupsResponse,
-  ListSecurityGroupsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSecurityGroupsRequest,
-  ) => stream.Stream<
-    ListSecurityGroupsResponse,
-    ListSecurityGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSecurityGroupsRequest,
-  ) => stream.Stream<
-    SecurityGroup,
-    ListSecurityGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListSecurityGroupUsersError =
   | BadRequestError
@@ -3880,27 +3674,13 @@ export type ListSecurityGroupUsersError =
 /**
  * Retrieves a paginated list of users who belong to a specific security group in a Wickr network.
  */
-export const listSecurityGroupUsers: API.OperationMethod<
+export const listSecurityGroupUsers: API.PaginatedOperationMethod<
   ListSecurityGroupUsersRequest,
   ListSecurityGroupUsersResponse,
   ListSecurityGroupUsersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSecurityGroupUsersRequest,
-  ) => stream.Stream<
-    ListSecurityGroupUsersResponse,
-    ListSecurityGroupUsersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSecurityGroupUsersRequest,
-  ) => stream.Stream<
-    User,
-    ListSecurityGroupUsersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  User
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListSecurityGroupUsersRequest,
   output: ListSecurityGroupUsersResponse,
   errors: [
@@ -3921,27 +3701,7 @@ export const listSecurityGroupUsers: API.OperationMethod<
     items: "users",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListSecurityGroupUsersRequest,
-  ListSecurityGroupUsersResponse,
-  ListSecurityGroupUsersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSecurityGroupUsersRequest,
-  ) => stream.Stream<
-    ListSecurityGroupUsersResponse,
-    ListSecurityGroupUsersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSecurityGroupUsersRequest,
-  ) => stream.Stream<
-    User,
-    ListSecurityGroupUsersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListUsersError =
   | BadRequestError
@@ -3955,27 +3715,13 @@ export type ListUsersError =
 /**
  * Retrieves a paginated list of users in a specified Wickr network. You can filter and sort the results based on various criteria such as name, status, or security group membership.
  */
-export const listUsers: API.OperationMethod<
+export const listUsers: API.PaginatedOperationMethod<
   ListUsersRequest,
   ListUsersResponse,
   ListUsersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListUsersRequest,
-  ) => stream.Stream<
-    ListUsersResponse,
-    ListUsersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListUsersRequest,
-  ) => stream.Stream<
-    User,
-    ListUsersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  User
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListUsersRequest,
   output: ListUsersResponse,
   errors: [
@@ -3996,27 +3742,7 @@ export const listUsers: API.OperationMethod<
     items: "users",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListUsersRequest,
-  ListUsersResponse,
-  ListUsersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListUsersRequest,
-  ) => stream.Stream<
-    ListUsersResponse,
-    ListUsersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListUsersRequest,
-  ) => stream.Stream<
-    User,
-    ListUsersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type RegisterOidcConfigError =
   | BadRequestError
@@ -4034,7 +3760,7 @@ export const registerOidcConfig: API.OperationMethod<
   RegisterOidcConfigRequest,
   RegisterOidcConfigResponse,
   RegisterOidcConfigError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RegisterOidcConfigRequest,
   output: RegisterOidcConfigResponse,
@@ -4068,7 +3794,7 @@ export const registerOidcConfigTest: API.OperationMethod<
   RegisterOidcConfigTestRequest,
   RegisterOidcConfigTestResponse,
   RegisterOidcConfigTestError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RegisterOidcConfigTestRequest,
   output: RegisterOidcConfigTestResponse,
@@ -4102,7 +3828,7 @@ export const registerOpentdfConfig: API.OperationMethod<
   RegisterOpentdfConfigRequest,
   RegisterOpentdfConfigResponse,
   RegisterOpentdfConfigError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RegisterOpentdfConfigRequest,
   output: RegisterOpentdfConfigResponse,
@@ -4136,7 +3862,7 @@ export const updateBot: API.OperationMethod<
   UpdateBotRequest,
   UpdateBotResponse,
   UpdateBotError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateBotRequest,
   output: UpdateBotResponse,
@@ -4170,7 +3896,7 @@ export const updateDataRetention: API.OperationMethod<
   UpdateDataRetentionRequest,
   UpdateDataRetentionResponse,
   UpdateDataRetentionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateDataRetentionRequest,
   output: UpdateDataRetentionResponse,
@@ -4204,7 +3930,7 @@ export const updateGuestUser: API.OperationMethod<
   UpdateGuestUserRequest,
   UpdateGuestUserResponse,
   UpdateGuestUserError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateGuestUserRequest,
   output: UpdateGuestUserResponse,
@@ -4238,7 +3964,7 @@ export const updateNetwork: API.OperationMethod<
   UpdateNetworkRequest,
   UpdateNetworkResponse,
   UpdateNetworkError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateNetworkRequest,
   output: UpdateNetworkResponse,
@@ -4272,7 +3998,7 @@ export const updateNetworkSettings: API.OperationMethod<
   UpdateNetworkSettingsRequest,
   UpdateNetworkSettingsResponse,
   UpdateNetworkSettingsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateNetworkSettingsRequest,
   output: UpdateNetworkSettingsResponse,
@@ -4306,7 +4032,7 @@ export const updateSecurityGroup: API.OperationMethod<
   UpdateSecurityGroupRequest,
   UpdateSecurityGroupResponse,
   UpdateSecurityGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateSecurityGroupRequest,
   output: UpdateSecurityGroupResponse,
@@ -4342,7 +4068,7 @@ export const updateUser: API.OperationMethod<
   UpdateUserRequest,
   UpdateUserResponse,
   UpdateUserError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateUserRequest,
   output: UpdateUserResponse,

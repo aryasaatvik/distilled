@@ -1,6 +1,5 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -8,7 +7,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 const ns = T.XmlNamespace("http://autoscaling.amazonaws.com/doc/2011-01-01/");
 const svc = T.AwsApiService({
   sdkId: "Auto Scaling",
@@ -92,7 +90,7 @@ const rules = T.EndpointResolver((p, _) => {
 export class ActiveInstanceRefreshNotFoundFault
   extends /*@__PURE__*/ S.TaggedErrorClass<ActiveInstanceRefreshNotFoundFault>()(
     "ActiveInstanceRefreshNotFoundFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "ActiveInstanceRefreshNotFound",
@@ -104,7 +102,7 @@ export class ActiveInstanceRefreshNotFoundFault
 export class AlreadyExistsFault
   extends /*@__PURE__*/ S.TaggedErrorClass<AlreadyExistsFault>()(
     "AlreadyExistsFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "AlreadyExists", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -113,7 +111,7 @@ export class AlreadyExistsFault
 export class AutoScalingGroupNotFound
   extends /*@__PURE__*/ S.TaggedErrorClass<AutoScalingGroupNotFound>()(
     "AutoScalingGroupNotFound",
-    {},
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.SyntheticError({
       from: "ValidationError",
       message: { includes: "not found" },
@@ -122,7 +120,7 @@ export class AutoScalingGroupNotFound
 export class IdempotentParameterMismatchError
   extends /*@__PURE__*/ S.TaggedErrorClass<IdempotentParameterMismatchError>()(
     "IdempotentParameterMismatchError",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "IdempotentParameterMismatch",
@@ -134,7 +132,7 @@ export class IdempotentParameterMismatchError
 export class InstanceRefreshInProgressFault
   extends /*@__PURE__*/ S.TaggedErrorClass<InstanceRefreshInProgressFault>()(
     "InstanceRefreshInProgressFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "InstanceRefreshInProgress",
@@ -146,7 +144,7 @@ export class InstanceRefreshInProgressFault
 export class InvalidNextToken
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidNextToken>()(
     "InvalidNextToken",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "InvalidNextToken", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -155,7 +153,7 @@ export class InvalidNextToken
 export class IrreversibleInstanceRefreshFault
   extends /*@__PURE__*/ S.TaggedErrorClass<IrreversibleInstanceRefreshFault>()(
     "IrreversibleInstanceRefreshFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "IrreversibleInstanceRefresh",
@@ -167,7 +165,7 @@ export class IrreversibleInstanceRefreshFault
 export class LimitExceededFault
   extends /*@__PURE__*/ S.TaggedErrorClass<LimitExceededFault>()(
     "LimitExceededFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "LimitExceeded", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -176,7 +174,7 @@ export class LimitExceededFault
 export class ResourceContentionFault
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceContentionFault>()(
     "ResourceContentionFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "ResourceContention", httpResponseCode: 500 }),
       T.HttpError(500),
@@ -185,7 +183,7 @@ export class ResourceContentionFault
 export class ResourceInUseFault
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceInUseFault>()(
     "ResourceInUseFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "ResourceInUse", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -194,7 +192,7 @@ export class ResourceInUseFault
 export class ScalingActivityInProgressFault
   extends /*@__PURE__*/ S.TaggedErrorClass<ScalingActivityInProgressFault>()(
     "ScalingActivityInProgressFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "ScalingActivityInProgress",
@@ -206,7 +204,7 @@ export class ScalingActivityInProgressFault
 export class ServiceLinkedRoleFailure
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceLinkedRoleFailure>()(
     "ServiceLinkedRoleFailure",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "ServiceLinkedRoleFailure",
@@ -4720,7 +4718,7 @@ export const attachInstances: API.OperationMethod<
   AttachInstancesQuery,
   AttachInstancesResponse,
   AttachInstancesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AttachInstancesQuery,
   output: AttachInstancesResponse,
@@ -4761,7 +4759,7 @@ export const attachLoadBalancers: API.OperationMethod<
   AttachLoadBalancersType,
   AttachLoadBalancersResultType,
   AttachLoadBalancersError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AttachLoadBalancersType,
   output: AttachLoadBalancersResultType,
@@ -4815,7 +4813,7 @@ export const attachLoadBalancerTargetGroups: API.OperationMethod<
   AttachLoadBalancerTargetGroupsType,
   AttachLoadBalancerTargetGroupsResultType,
   AttachLoadBalancerTargetGroupsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AttachLoadBalancerTargetGroupsType,
   output: AttachLoadBalancerTargetGroupsResultType,
@@ -4861,7 +4859,7 @@ export const attachTrafficSources: API.OperationMethod<
   AttachTrafficSourcesType,
   AttachTrafficSourcesResultType,
   AttachTrafficSourcesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AttachTrafficSourcesType,
   output: AttachTrafficSourcesResultType,
@@ -4885,7 +4883,7 @@ export const batchDeleteScheduledAction: API.OperationMethod<
   BatchDeleteScheduledActionType,
   BatchDeleteScheduledActionAnswer,
   BatchDeleteScheduledActionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchDeleteScheduledActionType,
   output: BatchDeleteScheduledActionAnswer,
@@ -4907,7 +4905,7 @@ export const batchPutScheduledUpdateGroupAction: API.OperationMethod<
   BatchPutScheduledUpdateGroupActionType,
   BatchPutScheduledUpdateGroupActionAnswer,
   BatchPutScheduledUpdateGroupActionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchPutScheduledUpdateGroupActionType,
   output: BatchPutScheduledUpdateGroupActionAnswer,
@@ -4938,7 +4936,7 @@ export const cancelInstanceRefresh: API.OperationMethod<
   CancelInstanceRefreshType,
   CancelInstanceRefreshAnswer,
   CancelInstanceRefreshError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CancelInstanceRefreshType,
   output: CancelInstanceRefreshAnswer,
@@ -4991,7 +4989,7 @@ export const completeLifecycleAction: API.OperationMethod<
   CompleteLifecycleActionType,
   CompleteLifecycleActionAnswer,
   CompleteLifecycleActionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CompleteLifecycleActionType,
   output: CompleteLifecycleActionAnswer,
@@ -5030,7 +5028,7 @@ export const createAutoScalingGroup: API.OperationMethod<
   CreateAutoScalingGroupType,
   CreateAutoScalingGroupResponse,
   CreateAutoScalingGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateAutoScalingGroupType,
   output: CreateAutoScalingGroupResponse,
@@ -5070,7 +5068,7 @@ export const createLaunchConfiguration: API.OperationMethod<
   CreateLaunchConfigurationType,
   CreateLaunchConfigurationResponse,
   CreateLaunchConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateLaunchConfigurationType,
   output: CreateLaunchConfigurationResponse,
@@ -5099,7 +5097,7 @@ export const createOrUpdateTags: API.OperationMethod<
   CreateOrUpdateTagsType,
   CreateOrUpdateTagsResponse,
   CreateOrUpdateTagsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateOrUpdateTagsType,
   output: CreateOrUpdateTagsResponse,
@@ -5147,7 +5145,7 @@ export const deleteAutoScalingGroup: API.OperationMethod<
   DeleteAutoScalingGroupType,
   DeleteAutoScalingGroupResponse,
   DeleteAutoScalingGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteAutoScalingGroupType,
   output: DeleteAutoScalingGroupResponse,
@@ -5175,7 +5173,7 @@ export const deleteLaunchConfiguration: API.OperationMethod<
   LaunchConfigurationNameType,
   DeleteLaunchConfigurationResponse,
   DeleteLaunchConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: LaunchConfigurationNameType,
   output: DeleteLaunchConfigurationResponse,
@@ -5200,7 +5198,7 @@ export const deleteLifecycleHook: API.OperationMethod<
   DeleteLifecycleHookType,
   DeleteLifecycleHookAnswer,
   DeleteLifecycleHookError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteLifecycleHookType,
   output: DeleteLifecycleHookAnswer,
@@ -5220,7 +5218,7 @@ export const deleteNotificationConfiguration: API.OperationMethod<
   DeleteNotificationConfigurationType,
   DeleteNotificationConfigurationResponse,
   DeleteNotificationConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteNotificationConfigurationType,
   output: DeleteNotificationConfigurationResponse,
@@ -5248,7 +5246,7 @@ export const deletePolicy: API.OperationMethod<
   DeletePolicyType,
   DeletePolicyResponse,
   DeletePolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeletePolicyType,
   output: DeletePolicyResponse,
@@ -5269,7 +5267,7 @@ export const deleteScheduledAction: API.OperationMethod<
   DeleteScheduledActionType,
   DeleteScheduledActionResponse,
   DeleteScheduledActionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteScheduledActionType,
   output: DeleteScheduledActionResponse,
@@ -5290,7 +5288,7 @@ export const deleteTags: API.OperationMethod<
   DeleteTagsType,
   DeleteTagsResponse,
   DeleteTagsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteTagsType,
   output: DeleteTagsResponse,
@@ -5316,7 +5314,7 @@ export const deleteWarmPool: API.OperationMethod<
   DeleteWarmPoolType,
   DeleteWarmPoolAnswer,
   DeleteWarmPoolError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteWarmPoolType,
   output: DeleteWarmPoolAnswer,
@@ -5344,7 +5342,7 @@ export const describeAccountLimits: API.OperationMethod<
   DescribeAccountLimitsRequest,
   DescribeAccountLimitsAnswer,
   DescribeAccountLimitsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeAccountLimitsRequest,
   output: DescribeAccountLimitsAnswer,
@@ -5373,7 +5371,7 @@ export const describeAdjustmentTypes: API.OperationMethod<
   DescribeAdjustmentTypesRequest,
   DescribeAdjustmentTypesAnswer,
   DescribeAdjustmentTypesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeAdjustmentTypesRequest,
   output: DescribeAdjustmentTypesAnswer,
@@ -5399,27 +5397,13 @@ export type DescribeAutoScalingGroupsError =
  * information about the instances in a warm pool, you must call the
  * DescribeWarmPool API.
  */
-export const describeAutoScalingGroups: API.OperationMethod<
+export const describeAutoScalingGroups: API.PaginatedOperationMethod<
   AutoScalingGroupNamesType,
   AutoScalingGroupsType,
   DescribeAutoScalingGroupsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: AutoScalingGroupNamesType,
-  ) => stream.Stream<
-    AutoScalingGroupsType,
-    DescribeAutoScalingGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: AutoScalingGroupNamesType,
-  ) => stream.Stream<
-    AutoScalingGroup,
-    DescribeAutoScalingGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  AutoScalingGroup
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: AutoScalingGroupNamesType,
   output: AutoScalingGroupsType,
   errors: [InvalidNextToken, ResourceContentionFault],
@@ -5432,27 +5416,7 @@ export const describeAutoScalingGroups: API.OperationMethod<
     items: "AutoScalingGroups",
     pageSize: "MaxRecords",
   } as const,
-})) as any as API.OperationMethod<
-  AutoScalingGroupNamesType,
-  AutoScalingGroupsType,
-  DescribeAutoScalingGroupsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: AutoScalingGroupNamesType,
-  ) => stream.Stream<
-    AutoScalingGroupsType,
-    DescribeAutoScalingGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: AutoScalingGroupNamesType,
-  ) => stream.Stream<
-    AutoScalingGroup,
-    DescribeAutoScalingGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeAutoScalingInstancesError =
   | InvalidNextToken
@@ -5461,27 +5425,13 @@ export type DescribeAutoScalingInstancesError =
 /**
  * Gets information about the Auto Scaling instances in the account and Region.
  */
-export const describeAutoScalingInstances: API.OperationMethod<
+export const describeAutoScalingInstances: API.PaginatedOperationMethod<
   DescribeAutoScalingInstancesType,
   AutoScalingInstancesType,
   DescribeAutoScalingInstancesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeAutoScalingInstancesType,
-  ) => stream.Stream<
-    AutoScalingInstancesType,
-    DescribeAutoScalingInstancesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeAutoScalingInstancesType,
-  ) => stream.Stream<
-    AutoScalingInstanceDetails,
-    DescribeAutoScalingInstancesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  AutoScalingInstanceDetails
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeAutoScalingInstancesType,
   output: AutoScalingInstancesType,
   errors: [InvalidNextToken, ResourceContentionFault],
@@ -5494,27 +5444,7 @@ export const describeAutoScalingInstances: API.OperationMethod<
     items: "AutoScalingInstances",
     pageSize: "MaxRecords",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeAutoScalingInstancesType,
-  AutoScalingInstancesType,
-  DescribeAutoScalingInstancesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeAutoScalingInstancesType,
-  ) => stream.Stream<
-    AutoScalingInstancesType,
-    DescribeAutoScalingInstancesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeAutoScalingInstancesType,
-  ) => stream.Stream<
-    AutoScalingInstanceDetails,
-    DescribeAutoScalingInstancesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeAutoScalingNotificationTypesError =
   | ResourceContentionFault
@@ -5526,7 +5456,7 @@ export const describeAutoScalingNotificationTypes: API.OperationMethod<
   DescribeAutoScalingNotificationTypesRequest,
   DescribeAutoScalingNotificationTypesAnswer,
   DescribeAutoScalingNotificationTypesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeAutoScalingNotificationTypesRequest,
   output: DescribeAutoScalingNotificationTypesAnswer,
@@ -5555,27 +5485,13 @@ export type DescribeInstanceRefreshesError =
  * is initiated while an instance refresh is in progress, Amazon EC2 Auto Scaling also returns information
  * about the rollback of the instance refresh.
  */
-export const describeInstanceRefreshes: API.OperationMethod<
+export const describeInstanceRefreshes: API.PaginatedOperationMethod<
   DescribeInstanceRefreshesType,
   DescribeInstanceRefreshesAnswer,
   DescribeInstanceRefreshesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeInstanceRefreshesType,
-  ) => stream.Stream<
-    DescribeInstanceRefreshesAnswer,
-    DescribeInstanceRefreshesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeInstanceRefreshesType,
-  ) => stream.Stream<
-    unknown,
-    DescribeInstanceRefreshesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeInstanceRefreshesType,
   output: DescribeInstanceRefreshesAnswer,
   errors: [InvalidNextToken, ResourceContentionFault],
@@ -5587,27 +5503,7 @@ export const describeInstanceRefreshes: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxRecords",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeInstanceRefreshesType,
-  DescribeInstanceRefreshesAnswer,
-  DescribeInstanceRefreshesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeInstanceRefreshesType,
-  ) => stream.Stream<
-    DescribeInstanceRefreshesAnswer,
-    DescribeInstanceRefreshesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeInstanceRefreshesType,
-  ) => stream.Stream<
-    unknown,
-    DescribeInstanceRefreshesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeLaunchConfigurationsError =
   | InvalidNextToken
@@ -5616,27 +5512,13 @@ export type DescribeLaunchConfigurationsError =
 /**
  * Gets information about the launch configurations in the account and Region.
  */
-export const describeLaunchConfigurations: API.OperationMethod<
+export const describeLaunchConfigurations: API.PaginatedOperationMethod<
   LaunchConfigurationNamesType,
   LaunchConfigurationsType,
   DescribeLaunchConfigurationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: LaunchConfigurationNamesType,
-  ) => stream.Stream<
-    LaunchConfigurationsType,
-    DescribeLaunchConfigurationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: LaunchConfigurationNamesType,
-  ) => stream.Stream<
-    LaunchConfiguration,
-    DescribeLaunchConfigurationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  LaunchConfiguration
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: LaunchConfigurationNamesType,
   output: LaunchConfigurationsType,
   errors: [InvalidNextToken, ResourceContentionFault],
@@ -5649,27 +5531,7 @@ export const describeLaunchConfigurations: API.OperationMethod<
     items: "LaunchConfigurations",
     pageSize: "MaxRecords",
   } as const,
-})) as any as API.OperationMethod<
-  LaunchConfigurationNamesType,
-  LaunchConfigurationsType,
-  DescribeLaunchConfigurationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: LaunchConfigurationNamesType,
-  ) => stream.Stream<
-    LaunchConfigurationsType,
-    DescribeLaunchConfigurationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: LaunchConfigurationNamesType,
-  ) => stream.Stream<
-    LaunchConfiguration,
-    DescribeLaunchConfigurationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeLifecycleHooksError =
   | ResourceContentionFault
@@ -5682,7 +5544,7 @@ export const describeLifecycleHooks: API.OperationMethod<
   DescribeLifecycleHooksType,
   DescribeLifecycleHooksAnswer,
   DescribeLifecycleHooksError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeLifecycleHooksType,
   output: DescribeLifecycleHooksAnswer,
@@ -5708,7 +5570,7 @@ export const describeLifecycleHookTypes: API.OperationMethod<
   DescribeLifecycleHookTypesRequest,
   DescribeLifecycleHookTypesAnswer,
   DescribeLifecycleHookTypesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeLifecycleHookTypesRequest,
   output: DescribeLifecycleHookTypesAnswer,
@@ -5758,27 +5620,13 @@ export type DescribeLoadBalancersError =
  * distribute traffic across the instances in your Auto Scaling group in the
  * *Amazon EC2 Auto Scaling User Guide*.
  */
-export const describeLoadBalancers: API.OperationMethod<
+export const describeLoadBalancers: API.PaginatedOperationMethod<
   DescribeLoadBalancersRequest,
   DescribeLoadBalancersResponse,
   DescribeLoadBalancersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeLoadBalancersRequest,
-  ) => stream.Stream<
-    DescribeLoadBalancersResponse,
-    DescribeLoadBalancersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeLoadBalancersRequest,
-  ) => stream.Stream<
-    unknown,
-    DescribeLoadBalancersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeLoadBalancersRequest,
   output: DescribeLoadBalancersResponse,
   errors: [InvalidNextToken, ResourceContentionFault],
@@ -5790,27 +5638,7 @@ export const describeLoadBalancers: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxRecords",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeLoadBalancersRequest,
-  DescribeLoadBalancersResponse,
-  DescribeLoadBalancersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeLoadBalancersRequest,
-  ) => stream.Stream<
-    DescribeLoadBalancersResponse,
-    DescribeLoadBalancersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeLoadBalancersRequest,
-  ) => stream.Stream<
-    unknown,
-    DescribeLoadBalancersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeLoadBalancerTargetGroupsError =
   | InvalidNextToken
@@ -5852,27 +5680,13 @@ export type DescribeLoadBalancerTargetGroupsError =
  * AttachLoadBalancerTargetGroups, but not for target groups that
  * were attached by using AttachTrafficSources.
  */
-export const describeLoadBalancerTargetGroups: API.OperationMethod<
+export const describeLoadBalancerTargetGroups: API.PaginatedOperationMethod<
   DescribeLoadBalancerTargetGroupsRequest,
   DescribeLoadBalancerTargetGroupsResponse,
   DescribeLoadBalancerTargetGroupsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeLoadBalancerTargetGroupsRequest,
-  ) => stream.Stream<
-    DescribeLoadBalancerTargetGroupsResponse,
-    DescribeLoadBalancerTargetGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeLoadBalancerTargetGroupsRequest,
-  ) => stream.Stream<
-    unknown,
-    DescribeLoadBalancerTargetGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeLoadBalancerTargetGroupsRequest,
   output: DescribeLoadBalancerTargetGroupsResponse,
   errors: [InvalidNextToken, ResourceContentionFault],
@@ -5884,27 +5698,7 @@ export const describeLoadBalancerTargetGroups: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxRecords",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeLoadBalancerTargetGroupsRequest,
-  DescribeLoadBalancerTargetGroupsResponse,
-  DescribeLoadBalancerTargetGroupsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeLoadBalancerTargetGroupsRequest,
-  ) => stream.Stream<
-    DescribeLoadBalancerTargetGroupsResponse,
-    DescribeLoadBalancerTargetGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeLoadBalancerTargetGroupsRequest,
-  ) => stream.Stream<
-    unknown,
-    DescribeLoadBalancerTargetGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeMetricCollectionTypesError =
   | ResourceContentionFault
@@ -5916,7 +5710,7 @@ export const describeMetricCollectionTypes: API.OperationMethod<
   DescribeMetricCollectionTypesRequest,
   DescribeMetricCollectionTypesAnswer,
   DescribeMetricCollectionTypesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeMetricCollectionTypesRequest,
   output: DescribeMetricCollectionTypesAnswer,
@@ -5934,27 +5728,13 @@ export type DescribeNotificationConfigurationsError =
  * Gets information about the Amazon SNS notifications that are configured for one or more
  * Auto Scaling groups.
  */
-export const describeNotificationConfigurations: API.OperationMethod<
+export const describeNotificationConfigurations: API.PaginatedOperationMethod<
   DescribeNotificationConfigurationsType,
   DescribeNotificationConfigurationsAnswer,
   DescribeNotificationConfigurationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeNotificationConfigurationsType,
-  ) => stream.Stream<
-    DescribeNotificationConfigurationsAnswer,
-    DescribeNotificationConfigurationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeNotificationConfigurationsType,
-  ) => stream.Stream<
-    NotificationConfiguration,
-    DescribeNotificationConfigurationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  NotificationConfiguration
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeNotificationConfigurationsType,
   output: DescribeNotificationConfigurationsAnswer,
   errors: [InvalidNextToken, ResourceContentionFault],
@@ -5967,27 +5747,7 @@ export const describeNotificationConfigurations: API.OperationMethod<
     items: "NotificationConfigurations",
     pageSize: "MaxRecords",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeNotificationConfigurationsType,
-  DescribeNotificationConfigurationsAnswer,
-  DescribeNotificationConfigurationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeNotificationConfigurationsType,
-  ) => stream.Stream<
-    DescribeNotificationConfigurationsAnswer,
-    DescribeNotificationConfigurationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeNotificationConfigurationsType,
-  ) => stream.Stream<
-    NotificationConfiguration,
-    DescribeNotificationConfigurationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribePoliciesError =
   | InvalidNextToken
@@ -5997,27 +5757,13 @@ export type DescribePoliciesError =
 /**
  * Gets information about the scaling policies in the account and Region.
  */
-export const describePolicies: API.OperationMethod<
+export const describePolicies: API.PaginatedOperationMethod<
   DescribePoliciesType,
   PoliciesType,
   DescribePoliciesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribePoliciesType,
-  ) => stream.Stream<
-    PoliciesType,
-    DescribePoliciesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribePoliciesType,
-  ) => stream.Stream<
-    ScalingPolicy,
-    DescribePoliciesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ScalingPolicy
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribePoliciesType,
   output: PoliciesType,
   errors: [InvalidNextToken, ResourceContentionFault, ServiceLinkedRoleFailure],
@@ -6030,27 +5776,7 @@ export const describePolicies: API.OperationMethod<
     items: "ScalingPolicies",
     pageSize: "MaxRecords",
   } as const,
-})) as any as API.OperationMethod<
-  DescribePoliciesType,
-  PoliciesType,
-  DescribePoliciesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribePoliciesType,
-  ) => stream.Stream<
-    PoliciesType,
-    DescribePoliciesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribePoliciesType,
-  ) => stream.Stream<
-    ScalingPolicy,
-    DescribePoliciesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeScalingActivitiesError =
   | InvalidNextToken
@@ -6069,27 +5795,13 @@ export type DescribeScalingActivitiesError =
  * the `StatusMessage` element in the response indicates the cause of the
  * failure. For help interpreting the `StatusMessage`, see Troubleshooting Amazon EC2 Auto Scaling in the *Amazon EC2 Auto Scaling User Guide*.
  */
-export const describeScalingActivities: API.OperationMethod<
+export const describeScalingActivities: API.PaginatedOperationMethod<
   DescribeScalingActivitiesType,
   ActivitiesType,
   DescribeScalingActivitiesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeScalingActivitiesType,
-  ) => stream.Stream<
-    ActivitiesType,
-    DescribeScalingActivitiesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeScalingActivitiesType,
-  ) => stream.Stream<
-    Activity,
-    DescribeScalingActivitiesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Activity
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeScalingActivitiesType,
   output: ActivitiesType,
   errors: [InvalidNextToken, ResourceContentionFault],
@@ -6102,27 +5814,7 @@ export const describeScalingActivities: API.OperationMethod<
     items: "Activities",
     pageSize: "MaxRecords",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeScalingActivitiesType,
-  ActivitiesType,
-  DescribeScalingActivitiesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeScalingActivitiesType,
-  ) => stream.Stream<
-    ActivitiesType,
-    DescribeScalingActivitiesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeScalingActivitiesType,
-  ) => stream.Stream<
-    Activity,
-    DescribeScalingActivitiesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeScalingProcessTypesError =
   | ResourceContentionFault
@@ -6135,7 +5827,7 @@ export const describeScalingProcessTypes: API.OperationMethod<
   DescribeScalingProcessTypesRequest,
   ProcessesType,
   DescribeScalingProcessTypesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeScalingProcessTypesRequest,
   output: ProcessesType,
@@ -6157,27 +5849,13 @@ export type DescribeScheduledActionsError =
  * To describe the scaling activities for scheduled actions that have already run, call
  * the DescribeScalingActivities API.
  */
-export const describeScheduledActions: API.OperationMethod<
+export const describeScheduledActions: API.PaginatedOperationMethod<
   DescribeScheduledActionsType,
   ScheduledActionsType,
   DescribeScheduledActionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeScheduledActionsType,
-  ) => stream.Stream<
-    ScheduledActionsType,
-    DescribeScheduledActionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeScheduledActionsType,
-  ) => stream.Stream<
-    ScheduledUpdateGroupAction,
-    DescribeScheduledActionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ScheduledUpdateGroupAction
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeScheduledActionsType,
   output: ScheduledActionsType,
   errors: [InvalidNextToken, ResourceContentionFault, AutoScalingGroupNotFound],
@@ -6190,27 +5868,7 @@ export const describeScheduledActions: API.OperationMethod<
     items: "ScheduledUpdateGroupActions",
     pageSize: "MaxRecords",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeScheduledActionsType,
-  ScheduledActionsType,
-  DescribeScheduledActionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeScheduledActionsType,
-  ) => stream.Stream<
-    ScheduledActionsType,
-    DescribeScheduledActionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeScheduledActionsType,
-  ) => stream.Stream<
-    ScheduledUpdateGroupAction,
-    DescribeScheduledActionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeTagsError =
   | InvalidNextToken
@@ -6230,27 +5888,13 @@ export type DescribeTagsError =
  * For more information, see Tag Auto Scaling groups and
  * instances in the *Amazon EC2 Auto Scaling User Guide*.
  */
-export const describeTags: API.OperationMethod<
+export const describeTags: API.PaginatedOperationMethod<
   DescribeTagsType,
   TagsType,
   DescribeTagsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeTagsType,
-  ) => stream.Stream<
-    TagsType,
-    DescribeTagsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeTagsType,
-  ) => stream.Stream<
-    TagDescription,
-    DescribeTagsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  TagDescription
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeTagsType,
   output: TagsType,
   errors: [InvalidNextToken, ResourceContentionFault],
@@ -6263,27 +5907,7 @@ export const describeTags: API.OperationMethod<
     items: "Tags",
     pageSize: "MaxRecords",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeTagsType,
-  TagsType,
-  DescribeTagsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeTagsType,
-  ) => stream.Stream<
-    TagsType,
-    DescribeTagsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeTagsType,
-  ) => stream.Stream<
-    TagDescription,
-    DescribeTagsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeTerminationPolicyTypesError =
   | ResourceContentionFault
@@ -6299,7 +5923,7 @@ export const describeTerminationPolicyTypes: API.OperationMethod<
   DescribeTerminationPolicyTypesRequest,
   DescribeTerminationPolicyTypesAnswer,
   DescribeTerminationPolicyTypesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeTerminationPolicyTypesRequest,
   output: DescribeTerminationPolicyTypesAnswer,
@@ -6322,27 +5946,13 @@ export type DescribeTrafficSourcesError =
  * If you do not provide a traffic source type, then the results include all the traffic
  * sources for the specified Auto Scaling group.
  */
-export const describeTrafficSources: API.OperationMethod<
+export const describeTrafficSources: API.PaginatedOperationMethod<
   DescribeTrafficSourcesRequest,
   DescribeTrafficSourcesResponse,
   DescribeTrafficSourcesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeTrafficSourcesRequest,
-  ) => stream.Stream<
-    DescribeTrafficSourcesResponse,
-    DescribeTrafficSourcesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeTrafficSourcesRequest,
-  ) => stream.Stream<
-    unknown,
-    DescribeTrafficSourcesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeTrafficSourcesRequest,
   output: DescribeTrafficSourcesResponse,
   errors: [InvalidNextToken, ResourceContentionFault],
@@ -6354,27 +5964,7 @@ export const describeTrafficSources: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxRecords",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeTrafficSourcesRequest,
-  DescribeTrafficSourcesResponse,
-  DescribeTrafficSourcesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeTrafficSourcesRequest,
-  ) => stream.Stream<
-    DescribeTrafficSourcesResponse,
-    DescribeTrafficSourcesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeTrafficSourcesRequest,
-  ) => stream.Stream<
-    unknown,
-    DescribeTrafficSourcesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeWarmPoolError =
   | InvalidNextToken
@@ -6387,27 +5977,13 @@ export type DescribeWarmPoolError =
  * For more information, see Warm pools for
  * Amazon EC2 Auto Scaling in the *Amazon EC2 Auto Scaling User Guide*.
  */
-export const describeWarmPool: API.OperationMethod<
+export const describeWarmPool: API.PaginatedOperationMethod<
   DescribeWarmPoolType,
   DescribeWarmPoolAnswer,
   DescribeWarmPoolError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeWarmPoolType,
-  ) => stream.Stream<
-    DescribeWarmPoolAnswer,
-    DescribeWarmPoolError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeWarmPoolType,
-  ) => stream.Stream<
-    Instance,
-    DescribeWarmPoolError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Instance
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeWarmPoolType,
   output: DescribeWarmPoolAnswer,
   errors: [InvalidNextToken, LimitExceededFault, ResourceContentionFault],
@@ -6420,27 +5996,7 @@ export const describeWarmPool: API.OperationMethod<
     items: "Instances",
     pageSize: "MaxRecords",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeWarmPoolType,
-  DescribeWarmPoolAnswer,
-  DescribeWarmPoolError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeWarmPoolType,
-  ) => stream.Stream<
-    DescribeWarmPoolAnswer,
-    DescribeWarmPoolError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeWarmPoolType,
-  ) => stream.Stream<
-    Instance,
-    DescribeWarmPoolError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DetachInstancesError = ResourceContentionFault | CommonErrors;
 /**
@@ -6463,7 +6019,7 @@ export const detachInstances: API.OperationMethod<
   DetachInstancesQuery,
   DetachInstancesAnswer,
   DetachInstancesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DetachInstancesQuery,
   output: DetachInstancesAnswer,
@@ -6496,7 +6052,7 @@ export const detachLoadBalancers: API.OperationMethod<
   DetachLoadBalancersType,
   DetachLoadBalancersResultType,
   DetachLoadBalancersError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DetachLoadBalancersType,
   output: DetachLoadBalancersResultType,
@@ -6533,7 +6089,7 @@ export const detachLoadBalancerTargetGroups: API.OperationMethod<
   DetachLoadBalancerTargetGroupsType,
   DetachLoadBalancerTargetGroupsResultType,
   DetachLoadBalancerTargetGroupsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DetachLoadBalancerTargetGroupsType,
   output: DetachLoadBalancerTargetGroupsResultType,
@@ -6557,7 +6113,7 @@ export const detachTrafficSources: API.OperationMethod<
   DetachTrafficSourcesType,
   DetachTrafficSourcesResultType,
   DetachTrafficSourcesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DetachTrafficSourcesType,
   output: DetachTrafficSourcesResultType,
@@ -6577,7 +6133,7 @@ export const disableMetricsCollection: API.OperationMethod<
   DisableMetricsCollectionQuery,
   DisableMetricsCollectionResponse,
   DisableMetricsCollectionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DisableMetricsCollectionQuery,
   output: DisableMetricsCollectionResponse,
@@ -6603,7 +6159,7 @@ export const enableMetricsCollection: API.OperationMethod<
   EnableMetricsCollectionQuery,
   EnableMetricsCollectionResponse,
   EnableMetricsCollectionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: EnableMetricsCollectionQuery,
   output: EnableMetricsCollectionResponse,
@@ -6633,7 +6189,7 @@ export const enterStandby: API.OperationMethod<
   EnterStandbyQuery,
   EnterStandbyAnswer,
   EnterStandbyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: EnterStandbyQuery,
   output: EnterStandbyAnswer,
@@ -6655,7 +6211,7 @@ export const executePolicy: API.OperationMethod<
   ExecutePolicyType,
   ExecutePolicyResponse,
   ExecutePolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ExecutePolicyType,
   output: ExecutePolicyResponse,
@@ -6680,7 +6236,7 @@ export const exitStandby: API.OperationMethod<
   ExitStandbyQuery,
   ExitStandbyAnswer,
   ExitStandbyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ExitStandbyQuery,
   output: ExitStandbyAnswer,
@@ -6711,7 +6267,7 @@ export const getPredictiveScalingForecast: API.OperationMethod<
   GetPredictiveScalingForecastType,
   GetPredictiveScalingForecastAnswer,
   GetPredictiveScalingForecastError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetPredictiveScalingForecastType,
   output: GetPredictiveScalingForecastAnswer,
@@ -6733,7 +6289,7 @@ export const launchInstances: API.OperationMethod<
   LaunchInstancesRequest,
   LaunchInstancesResult,
   LaunchInstancesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: LaunchInstancesRequest,
   output: LaunchInstancesResult,
@@ -6793,7 +6349,7 @@ export const putLifecycleHook: API.OperationMethod<
   PutLifecycleHookType,
   PutLifecycleHookAnswer,
   PutLifecycleHookError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutLifecycleHookType,
   output: PutLifecycleHookAnswer,
@@ -6830,7 +6386,7 @@ export const putNotificationConfiguration: API.OperationMethod<
   PutNotificationConfigurationType,
   PutNotificationConfigurationResponse,
   PutNotificationConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutNotificationConfigurationType,
   output: PutNotificationConfigurationResponse,
@@ -6869,7 +6425,7 @@ export const putScalingPolicy: API.OperationMethod<
   PutScalingPolicyType,
   PolicyARNType,
   PutScalingPolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutScalingPolicyType,
   output: PolicyARNType,
@@ -6907,7 +6463,7 @@ export const putScheduledUpdateGroupAction: API.OperationMethod<
   PutScheduledUpdateGroupActionType,
   PutScheduledUpdateGroupActionResponse,
   PutScheduledUpdateGroupActionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutScheduledUpdateGroupActionType,
   output: PutScheduledUpdateGroupActionResponse,
@@ -6946,7 +6502,7 @@ export const putWarmPool: API.OperationMethod<
   PutWarmPoolType,
   PutWarmPoolAnswer,
   PutWarmPoolError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutWarmPoolType,
   output: PutWarmPoolAnswer,
@@ -6999,7 +6555,7 @@ export const recordLifecycleActionHeartbeat: API.OperationMethod<
   RecordLifecycleActionHeartbeatType,
   RecordLifecycleActionHeartbeatAnswer,
   RecordLifecycleActionHeartbeatError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RecordLifecycleActionHeartbeatType,
   output: RecordLifecycleActionHeartbeatAnswer,
@@ -7024,7 +6580,7 @@ export const resumeProcesses: API.OperationMethod<
   ScalingProcessQuery,
   ResumeProcessesResponse,
   ResumeProcessesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ScalingProcessQuery,
   output: ResumeProcessesResponse,
@@ -7068,7 +6624,7 @@ export const rollbackInstanceRefresh: API.OperationMethod<
   RollbackInstanceRefreshType,
   RollbackInstanceRefreshAnswer,
   RollbackInstanceRefreshError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RollbackInstanceRefreshType,
   output: RollbackInstanceRefreshAnswer,
@@ -7101,7 +6657,7 @@ export const setDesiredCapacity: API.OperationMethod<
   SetDesiredCapacityType,
   SetDesiredCapacityResponse,
   SetDesiredCapacityError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: SetDesiredCapacityType,
   output: SetDesiredCapacityResponse,
@@ -7123,7 +6679,7 @@ export const setInstanceHealth: API.OperationMethod<
   SetInstanceHealthQuery,
   SetInstanceHealthResponse,
   SetInstanceHealthError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: SetInstanceHealthQuery,
   output: SetInstanceHealthResponse,
@@ -7152,7 +6708,7 @@ export const setInstanceProtection: API.OperationMethod<
   SetInstanceProtectionQuery,
   SetInstanceProtectionAnswer,
   SetInstanceProtectionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: SetInstanceProtectionQuery,
   output: SetInstanceProtectionAnswer,
@@ -7200,7 +6756,7 @@ export const startInstanceRefresh: API.OperationMethod<
   StartInstanceRefreshType,
   StartInstanceRefreshAnswer,
   StartInstanceRefreshError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartInstanceRefreshType,
   output: StartInstanceRefreshAnswer,
@@ -7233,7 +6789,7 @@ export const suspendProcesses: API.OperationMethod<
   ScalingProcessQuery,
   SuspendProcessesResponse,
   SuspendProcessesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ScalingProcessQuery,
   output: SuspendProcessesResponse,
@@ -7269,7 +6825,7 @@ export const terminateInstanceInAutoScalingGroup: API.OperationMethod<
   TerminateInstanceInAutoScalingGroupType,
   ActivityType,
   TerminateInstanceInAutoScalingGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TerminateInstanceInAutoScalingGroupType,
   output: ActivityType,
@@ -7331,7 +6887,7 @@ export const updateAutoScalingGroup: API.OperationMethod<
   UpdateAutoScalingGroupType,
   UpdateAutoScalingGroupResponse,
   UpdateAutoScalingGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateAutoScalingGroupType,
   output: UpdateAutoScalingGroupResponse,

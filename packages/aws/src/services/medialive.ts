@@ -1,7 +1,6 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as redacted from "effect/Redacted";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -9,7 +8,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 import { SensitiveString } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "MediaLive",
@@ -90,44 +88,44 @@ const rules = T.EndpointResolver((p, _) => {
 export class BadGatewayException
   extends /*@__PURE__*/ S.TaggedErrorClass<BadGatewayException>()(
     "BadGatewayException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(502),
   ).pipe(C.withServerError) {}
 export class BadRequestException
   extends /*@__PURE__*/ S.TaggedErrorClass<BadRequestException>()(
     "BadRequestException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class ConflictException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
     "ConflictException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class ForbiddenException
   extends /*@__PURE__*/ S.TaggedErrorClass<ForbiddenException>()(
     "ForbiddenException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(403),
   ).pipe(C.withAuthError) {}
 export class GatewayTimeoutException
   extends /*@__PURE__*/ S.TaggedErrorClass<GatewayTimeoutException>()(
     "GatewayTimeoutException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(504),
   ).pipe(C.withTimeoutError) {}
 export class InternalServerErrorException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerErrorException>()(
     "InternalServerErrorException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(500),
   ).pipe(C.withServerError) {}
 export class MediaLiveRoleNotYetTrusted
   extends /*@__PURE__*/ S.TaggedErrorClass<MediaLiveRoleNotYetTrusted>()(
     "MediaLiveRoleNotYetTrusted",
     {
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       ValidationErrors: S.optional(
         S.suspend(() => __listOfValidationError).annotate({
           identifier: "__listOfValidationError",
@@ -142,20 +140,20 @@ export class MediaLiveRoleNotYetTrusted
 export class NotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<NotFoundException>()(
     "NotFoundException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class TooManyRequestsException
   extends /*@__PURE__*/ S.TaggedErrorClass<TooManyRequestsException>()(
     "TooManyRequestsException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(429),
   ).pipe(C.withThrottlingError) {}
 export class UnprocessableEntityException
   extends /*@__PURE__*/ S.TaggedErrorClass<UnprocessableEntityException>()(
     "UnprocessableEntityException",
     {
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       ValidationErrors: S.optional(
         S.suspend(() => __listOfValidationError).annotate({
           identifier: "__listOfValidationError",
@@ -20237,7 +20235,7 @@ export const acceptInputDeviceTransfer: API.OperationMethod<
   AcceptInputDeviceTransferRequest,
   AcceptInputDeviceTransferResponse,
   AcceptInputDeviceTransferError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AcceptInputDeviceTransferRequest,
   output: AcceptInputDeviceTransferResponse,
@@ -20274,7 +20272,7 @@ export const batchDelete: API.OperationMethod<
   BatchDeleteRequest,
   BatchDeleteResponse,
   BatchDeleteError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchDeleteRequest,
   output: BatchDeleteResponse,
@@ -20310,7 +20308,7 @@ export const batchStart: API.OperationMethod<
   BatchStartRequest,
   BatchStartResponse,
   BatchStartError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchStartRequest,
   output: BatchStartResponse,
@@ -20346,7 +20344,7 @@ export const batchStop: API.OperationMethod<
   BatchStopRequest,
   BatchStopResponse,
   BatchStopError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchStopRequest,
   output: BatchStopResponse,
@@ -20382,7 +20380,7 @@ export const batchUpdateSchedule: API.OperationMethod<
   BatchUpdateScheduleRequest,
   BatchUpdateScheduleResponse,
   BatchUpdateScheduleError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchUpdateScheduleRequest,
   output: BatchUpdateScheduleResponse,
@@ -20419,7 +20417,7 @@ export const cancelInputDeviceTransfer: API.OperationMethod<
   CancelInputDeviceTransferRequest,
   CancelInputDeviceTransferResponse,
   CancelInputDeviceTransferError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CancelInputDeviceTransferRequest,
   output: CancelInputDeviceTransferResponse,
@@ -20456,7 +20454,7 @@ export const claimDevice: API.OperationMethod<
   ClaimDeviceRequest,
   ClaimDeviceResponse,
   ClaimDeviceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ClaimDeviceRequest,
   output: ClaimDeviceResponse,
@@ -20493,7 +20491,7 @@ export const createChannel: API.OperationMethod<
   CreateChannelRequest,
   CreateChannelResponse,
   CreateChannelError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateChannelRequest,
   output: CreateChannelResponse,
@@ -20529,7 +20527,7 @@ export const createChannelPlacementGroup: API.OperationMethod<
   CreateChannelPlacementGroupRequest,
   CreateChannelPlacementGroupResponse,
   CreateChannelPlacementGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateChannelPlacementGroupRequest,
   output: CreateChannelPlacementGroupResponse,
@@ -20562,7 +20560,7 @@ export const createCloudWatchAlarmTemplate: API.OperationMethod<
   CreateCloudWatchAlarmTemplateRequest,
   CreateCloudWatchAlarmTemplateResponse,
   CreateCloudWatchAlarmTemplateError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateCloudWatchAlarmTemplateRequest,
   output: CreateCloudWatchAlarmTemplateResponse,
@@ -20594,7 +20592,7 @@ export const createCloudWatchAlarmTemplateGroup: API.OperationMethod<
   CreateCloudWatchAlarmTemplateGroupRequest,
   CreateCloudWatchAlarmTemplateGroupResponse,
   CreateCloudWatchAlarmTemplateGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateCloudWatchAlarmTemplateGroupRequest,
   output: CreateCloudWatchAlarmTemplateGroupResponse,
@@ -20627,7 +20625,7 @@ export const createCluster: API.OperationMethod<
   CreateClusterRequest,
   CreateClusterResponse,
   CreateClusterError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateClusterRequest,
   output: CreateClusterResponse,
@@ -20660,7 +20658,7 @@ export const createEventBridgeRuleTemplate: API.OperationMethod<
   CreateEventBridgeRuleTemplateRequest,
   CreateEventBridgeRuleTemplateResponse,
   CreateEventBridgeRuleTemplateError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateEventBridgeRuleTemplateRequest,
   output: CreateEventBridgeRuleTemplateResponse,
@@ -20692,7 +20690,7 @@ export const createEventBridgeRuleTemplateGroup: API.OperationMethod<
   CreateEventBridgeRuleTemplateGroupRequest,
   CreateEventBridgeRuleTemplateGroupResponse,
   CreateEventBridgeRuleTemplateGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateEventBridgeRuleTemplateGroupRequest,
   output: CreateEventBridgeRuleTemplateGroupResponse,
@@ -20724,7 +20722,7 @@ export const createInput: API.OperationMethod<
   CreateInputRequest,
   CreateInputResponse,
   CreateInputError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateInputRequest,
   output: CreateInputResponse,
@@ -20756,7 +20754,7 @@ export const createInputSecurityGroup: API.OperationMethod<
   CreateInputSecurityGroupRequest,
   CreateInputSecurityGroupResponse,
   CreateInputSecurityGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateInputSecurityGroupRequest,
   output: CreateInputSecurityGroupResponse,
@@ -20790,7 +20788,7 @@ export const createMultiplex: API.OperationMethod<
   CreateMultiplexRequest,
   CreateMultiplexResponse,
   CreateMultiplexError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateMultiplexRequest,
   output: CreateMultiplexResponse,
@@ -20826,7 +20824,7 @@ export const createMultiplexProgram: API.OperationMethod<
   CreateMultiplexProgramRequest,
   CreateMultiplexProgramResponse,
   CreateMultiplexProgramError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateMultiplexProgramRequest,
   output: CreateMultiplexProgramResponse,
@@ -20861,7 +20859,7 @@ export const createNetwork: API.OperationMethod<
   CreateNetworkRequest,
   CreateNetworkResponse,
   CreateNetworkError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateNetworkRequest,
   output: CreateNetworkResponse,
@@ -20895,7 +20893,7 @@ export const createNode: API.OperationMethod<
   CreateNodeRequest,
   CreateNodeResponse,
   CreateNodeError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateNodeRequest,
   output: CreateNodeResponse,
@@ -20929,7 +20927,7 @@ export const createNodeRegistrationScript: API.OperationMethod<
   CreateNodeRegistrationScriptRequest,
   CreateNodeRegistrationScriptResponse,
   CreateNodeRegistrationScriptError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateNodeRegistrationScriptRequest,
   output: CreateNodeRegistrationScriptResponse,
@@ -20962,7 +20960,7 @@ export const createPartnerInput: API.OperationMethod<
   CreatePartnerInputRequest,
   CreatePartnerInputResponse,
   CreatePartnerInputError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreatePartnerInputRequest,
   output: CreatePartnerInputResponse,
@@ -20995,7 +20993,7 @@ export const createSdiSource: API.OperationMethod<
   CreateSdiSourceRequest,
   CreateSdiSourceResponse,
   CreateSdiSourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateSdiSourceRequest,
   output: CreateSdiSourceResponse,
@@ -21028,7 +21026,7 @@ export const createSignalMap: API.OperationMethod<
   CreateSignalMapRequest,
   CreateSignalMapResponse,
   CreateSignalMapError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateSignalMapRequest,
   output: CreateSignalMapResponse,
@@ -21058,7 +21056,7 @@ export const createTags: API.OperationMethod<
   CreateTagsRequest,
   CreateTagsResponse,
   CreateTagsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateTagsRequest,
   output: CreateTagsResponse,
@@ -21090,7 +21088,7 @@ export const deleteChannel: API.OperationMethod<
   DeleteChannelRequest,
   DeleteChannelResponse,
   DeleteChannelError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteChannelRequest,
   output: DeleteChannelResponse,
@@ -21126,7 +21124,7 @@ export const deleteChannelPlacementGroup: API.OperationMethod<
   DeleteChannelPlacementGroupRequest,
   DeleteChannelPlacementGroupResponse,
   DeleteChannelPlacementGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteChannelPlacementGroupRequest,
   output: DeleteChannelPlacementGroupResponse,
@@ -21160,7 +21158,7 @@ export const deleteCloudWatchAlarmTemplate: API.OperationMethod<
   DeleteCloudWatchAlarmTemplateRequest,
   DeleteCloudWatchAlarmTemplateResponse,
   DeleteCloudWatchAlarmTemplateError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteCloudWatchAlarmTemplateRequest,
   output: DeleteCloudWatchAlarmTemplateResponse,
@@ -21192,7 +21190,7 @@ export const deleteCloudWatchAlarmTemplateGroup: API.OperationMethod<
   DeleteCloudWatchAlarmTemplateGroupRequest,
   DeleteCloudWatchAlarmTemplateGroupResponse,
   DeleteCloudWatchAlarmTemplateGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteCloudWatchAlarmTemplateGroupRequest,
   output: DeleteCloudWatchAlarmTemplateGroupResponse,
@@ -21226,7 +21224,7 @@ export const deleteCluster: API.OperationMethod<
   DeleteClusterRequest,
   DeleteClusterResponse,
   DeleteClusterError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteClusterRequest,
   output: DeleteClusterResponse,
@@ -21260,7 +21258,7 @@ export const deleteEventBridgeRuleTemplate: API.OperationMethod<
   DeleteEventBridgeRuleTemplateRequest,
   DeleteEventBridgeRuleTemplateResponse,
   DeleteEventBridgeRuleTemplateError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteEventBridgeRuleTemplateRequest,
   output: DeleteEventBridgeRuleTemplateResponse,
@@ -21292,7 +21290,7 @@ export const deleteEventBridgeRuleTemplateGroup: API.OperationMethod<
   DeleteEventBridgeRuleTemplateGroupRequest,
   DeleteEventBridgeRuleTemplateGroupResponse,
   DeleteEventBridgeRuleTemplateGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteEventBridgeRuleTemplateGroupRequest,
   output: DeleteEventBridgeRuleTemplateGroupResponse,
@@ -21326,7 +21324,7 @@ export const deleteInput: API.OperationMethod<
   DeleteInputRequest,
   DeleteInputResponse,
   DeleteInputError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteInputRequest,
   output: DeleteInputResponse,
@@ -21361,7 +21359,7 @@ export const deleteInputSecurityGroup: API.OperationMethod<
   DeleteInputSecurityGroupRequest,
   DeleteInputSecurityGroupResponse,
   DeleteInputSecurityGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteInputSecurityGroupRequest,
   output: DeleteInputSecurityGroupResponse,
@@ -21396,7 +21394,7 @@ export const deleteMultiplex: API.OperationMethod<
   DeleteMultiplexRequest,
   DeleteMultiplexResponse,
   DeleteMultiplexError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteMultiplexRequest,
   output: DeleteMultiplexResponse,
@@ -21432,7 +21430,7 @@ export const deleteMultiplexProgram: API.OperationMethod<
   DeleteMultiplexProgramRequest,
   DeleteMultiplexProgramResponse,
   DeleteMultiplexProgramError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteMultiplexProgramRequest,
   output: DeleteMultiplexProgramResponse,
@@ -21468,7 +21466,7 @@ export const deleteNetwork: API.OperationMethod<
   DeleteNetworkRequest,
   DeleteNetworkResponse,
   DeleteNetworkError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteNetworkRequest,
   output: DeleteNetworkResponse,
@@ -21504,7 +21502,7 @@ export const deleteNode: API.OperationMethod<
   DeleteNodeRequest,
   DeleteNodeResponse,
   DeleteNodeError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteNodeRequest,
   output: DeleteNodeResponse,
@@ -21540,7 +21538,7 @@ export const deleteReservation: API.OperationMethod<
   DeleteReservationRequest,
   DeleteReservationResponse,
   DeleteReservationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteReservationRequest,
   output: DeleteReservationResponse,
@@ -21575,7 +21573,7 @@ export const deleteSchedule: API.OperationMethod<
   DeleteScheduleRequest,
   DeleteScheduleResponse,
   DeleteScheduleError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteScheduleRequest,
   output: DeleteScheduleResponse,
@@ -21610,7 +21608,7 @@ export const deleteSdiSource: API.OperationMethod<
   DeleteSdiSourceRequest,
   DeleteSdiSourceResponse,
   DeleteSdiSourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteSdiSourceRequest,
   output: DeleteSdiSourceResponse,
@@ -21644,7 +21642,7 @@ export const deleteSignalMap: API.OperationMethod<
   DeleteSignalMapRequest,
   DeleteSignalMapResponse,
   DeleteSignalMapError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteSignalMapRequest,
   output: DeleteSignalMapResponse,
@@ -21674,7 +21672,7 @@ export const deleteTags: API.OperationMethod<
   DeleteTagsRequest,
   DeleteTagsResponse,
   DeleteTagsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteTagsRequest,
   output: DeleteTagsResponse,
@@ -21704,7 +21702,7 @@ export const describeAccountConfiguration: API.OperationMethod<
   DescribeAccountConfigurationRequest,
   DescribeAccountConfigurationResponse,
   DescribeAccountConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeAccountConfigurationRequest,
   output: DescribeAccountConfigurationResponse,
@@ -21737,7 +21735,7 @@ export const describeChannel: API.OperationMethod<
   DescribeChannelRequest,
   DescribeChannelResponse,
   DescribeChannelError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeChannelRequest,
   output: DescribeChannelResponse,
@@ -21771,7 +21769,7 @@ export const describeChannelPlacementGroup: API.OperationMethod<
   DescribeChannelPlacementGroupRequest,
   DescribeChannelPlacementGroupResponse,
   DescribeChannelPlacementGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeChannelPlacementGroupRequest,
   output: DescribeChannelPlacementGroupResponse,
@@ -21805,7 +21803,7 @@ export const describeCluster: API.OperationMethod<
   DescribeClusterRequest,
   DescribeClusterResponse,
   DescribeClusterError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeClusterRequest,
   output: DescribeClusterResponse,
@@ -21839,7 +21837,7 @@ export const describeInput: API.OperationMethod<
   DescribeInputRequest,
   DescribeInputResponse,
   DescribeInputError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeInputRequest,
   output: DescribeInputResponse,
@@ -21873,7 +21871,7 @@ export const describeInputDevice: API.OperationMethod<
   DescribeInputDeviceRequest,
   DescribeInputDeviceResponse,
   DescribeInputDeviceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeInputDeviceRequest,
   output: DescribeInputDeviceResponse,
@@ -21907,7 +21905,7 @@ export const describeInputDeviceThumbnail: API.OperationMethod<
   DescribeInputDeviceThumbnailRequest,
   DescribeInputDeviceThumbnailResponse,
   DescribeInputDeviceThumbnailError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeInputDeviceThumbnailRequest,
   output: DescribeInputDeviceThumbnailResponse,
@@ -21941,7 +21939,7 @@ export const describeInputSecurityGroup: API.OperationMethod<
   DescribeInputSecurityGroupRequest,
   DescribeInputSecurityGroupResponse,
   DescribeInputSecurityGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeInputSecurityGroupRequest,
   output: DescribeInputSecurityGroupResponse,
@@ -21975,7 +21973,7 @@ export const describeMultiplex: API.OperationMethod<
   DescribeMultiplexRequest,
   DescribeMultiplexResponse,
   DescribeMultiplexError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeMultiplexRequest,
   output: DescribeMultiplexResponse,
@@ -22009,7 +22007,7 @@ export const describeMultiplexProgram: API.OperationMethod<
   DescribeMultiplexProgramRequest,
   DescribeMultiplexProgramResponse,
   DescribeMultiplexProgramError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeMultiplexProgramRequest,
   output: DescribeMultiplexProgramResponse,
@@ -22043,7 +22041,7 @@ export const describeNetwork: API.OperationMethod<
   DescribeNetworkRequest,
   DescribeNetworkResponse,
   DescribeNetworkError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeNetworkRequest,
   output: DescribeNetworkResponse,
@@ -22077,7 +22075,7 @@ export const describeNode: API.OperationMethod<
   DescribeNodeRequest,
   DescribeNodeResponse,
   DescribeNodeError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeNodeRequest,
   output: DescribeNodeResponse,
@@ -22111,7 +22109,7 @@ export const describeOffering: API.OperationMethod<
   DescribeOfferingRequest,
   DescribeOfferingResponse,
   DescribeOfferingError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeOfferingRequest,
   output: DescribeOfferingResponse,
@@ -22145,7 +22143,7 @@ export const describeReservation: API.OperationMethod<
   DescribeReservationRequest,
   DescribeReservationResponse,
   DescribeReservationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeReservationRequest,
   output: DescribeReservationResponse,
@@ -22175,27 +22173,13 @@ export type DescribeScheduleError =
 /**
  * Get a channel schedule
  */
-export const describeSchedule: API.OperationMethod<
+export const describeSchedule: API.PaginatedOperationMethod<
   DescribeScheduleRequest,
   DescribeScheduleResponse,
   DescribeScheduleError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeScheduleRequest,
-  ) => stream.Stream<
-    DescribeScheduleResponse,
-    DescribeScheduleError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeScheduleRequest,
-  ) => stream.Stream<
-    ScheduleAction,
-    DescribeScheduleError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ScheduleAction
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeScheduleRequest,
   output: DescribeScheduleResponse,
   errors: [
@@ -22216,27 +22200,7 @@ export const describeSchedule: API.OperationMethod<
     items: "ScheduleActions",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeScheduleRequest,
-  DescribeScheduleResponse,
-  DescribeScheduleError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeScheduleRequest,
-  ) => stream.Stream<
-    DescribeScheduleResponse,
-    DescribeScheduleError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeScheduleRequest,
-  ) => stream.Stream<
-    ScheduleAction,
-    DescribeScheduleError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeSdiSourceError =
   | BadGatewayException
@@ -22254,7 +22218,7 @@ export const describeSdiSource: API.OperationMethod<
   DescribeSdiSourceRequest,
   DescribeSdiSourceResponse,
   DescribeSdiSourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeSdiSourceRequest,
   output: DescribeSdiSourceResponse,
@@ -22289,7 +22253,7 @@ export const describeThumbnails: API.OperationMethod<
   DescribeThumbnailsRequest,
   DescribeThumbnailsResponse,
   DescribeThumbnailsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeThumbnailsRequest,
   output: DescribeThumbnailsResponse,
@@ -22322,7 +22286,7 @@ export const getCloudWatchAlarmTemplate: API.OperationMethod<
   GetCloudWatchAlarmTemplateRequest,
   GetCloudWatchAlarmTemplateResponse,
   GetCloudWatchAlarmTemplateError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetCloudWatchAlarmTemplateRequest,
   output: GetCloudWatchAlarmTemplateResponse,
@@ -22352,7 +22316,7 @@ export const getCloudWatchAlarmTemplateGroup: API.OperationMethod<
   GetCloudWatchAlarmTemplateGroupRequest,
   GetCloudWatchAlarmTemplateGroupResponse,
   GetCloudWatchAlarmTemplateGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetCloudWatchAlarmTemplateGroupRequest,
   output: GetCloudWatchAlarmTemplateGroupResponse,
@@ -22382,7 +22346,7 @@ export const getEventBridgeRuleTemplate: API.OperationMethod<
   GetEventBridgeRuleTemplateRequest,
   GetEventBridgeRuleTemplateResponse,
   GetEventBridgeRuleTemplateError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetEventBridgeRuleTemplateRequest,
   output: GetEventBridgeRuleTemplateResponse,
@@ -22412,7 +22376,7 @@ export const getEventBridgeRuleTemplateGroup: API.OperationMethod<
   GetEventBridgeRuleTemplateGroupRequest,
   GetEventBridgeRuleTemplateGroupResponse,
   GetEventBridgeRuleTemplateGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetEventBridgeRuleTemplateGroupRequest,
   output: GetEventBridgeRuleTemplateGroupResponse,
@@ -22442,7 +22406,7 @@ export const getSignalMap: API.OperationMethod<
   GetSignalMapRequest,
   GetSignalMapResponse,
   GetSignalMapError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetSignalMapRequest,
   output: GetSignalMapResponse,
@@ -22470,27 +22434,13 @@ export type ListAlertsError =
 /**
  * List the alerts for a channel with optional filtering based on alert state.
  */
-export const listAlerts: API.OperationMethod<
+export const listAlerts: API.PaginatedOperationMethod<
   ListAlertsRequest,
   ListAlertsResponse,
   ListAlertsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAlertsRequest,
-  ) => stream.Stream<
-    ListAlertsResponse,
-    ListAlertsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAlertsRequest,
-  ) => stream.Stream<
-    ChannelAlert,
-    ListAlertsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ChannelAlert
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListAlertsRequest,
   output: ListAlertsResponse,
   errors: [
@@ -22511,27 +22461,7 @@ export const listAlerts: API.OperationMethod<
     items: "Alerts",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListAlertsRequest,
-  ListAlertsResponse,
-  ListAlertsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAlertsRequest,
-  ) => stream.Stream<
-    ListAlertsResponse,
-    ListAlertsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAlertsRequest,
-  ) => stream.Stream<
-    ChannelAlert,
-    ListAlertsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListChannelPlacementGroupsError =
   | BadGatewayException
@@ -22544,27 +22474,13 @@ export type ListChannelPlacementGroupsError =
 /**
  * Retrieve the list of ChannelPlacementGroups in the specified Cluster.
  */
-export const listChannelPlacementGroups: API.OperationMethod<
+export const listChannelPlacementGroups: API.PaginatedOperationMethod<
   ListChannelPlacementGroupsRequest,
   ListChannelPlacementGroupsResponse,
   ListChannelPlacementGroupsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListChannelPlacementGroupsRequest,
-  ) => stream.Stream<
-    ListChannelPlacementGroupsResponse,
-    ListChannelPlacementGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListChannelPlacementGroupsRequest,
-  ) => stream.Stream<
-    DescribeChannelPlacementGroupSummary,
-    ListChannelPlacementGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  DescribeChannelPlacementGroupSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListChannelPlacementGroupsRequest,
   output: ListChannelPlacementGroupsResponse,
   errors: [
@@ -22584,27 +22500,7 @@ export const listChannelPlacementGroups: API.OperationMethod<
     items: "ChannelPlacementGroups",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListChannelPlacementGroupsRequest,
-  ListChannelPlacementGroupsResponse,
-  ListChannelPlacementGroupsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListChannelPlacementGroupsRequest,
-  ) => stream.Stream<
-    ListChannelPlacementGroupsResponse,
-    ListChannelPlacementGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListChannelPlacementGroupsRequest,
-  ) => stream.Stream<
-    DescribeChannelPlacementGroupSummary,
-    ListChannelPlacementGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListChannelsError =
   | BadGatewayException
@@ -22617,27 +22513,13 @@ export type ListChannelsError =
 /**
  * Produces list of channels that have been created
  */
-export const listChannels: API.OperationMethod<
+export const listChannels: API.PaginatedOperationMethod<
   ListChannelsRequest,
   ListChannelsResponse,
   ListChannelsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListChannelsRequest,
-  ) => stream.Stream<
-    ListChannelsResponse,
-    ListChannelsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListChannelsRequest,
-  ) => stream.Stream<
-    ChannelSummary,
-    ListChannelsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ChannelSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListChannelsRequest,
   output: ListChannelsResponse,
   errors: [
@@ -22657,27 +22539,7 @@ export const listChannels: API.OperationMethod<
     items: "Channels",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListChannelsRequest,
-  ListChannelsResponse,
-  ListChannelsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListChannelsRequest,
-  ) => stream.Stream<
-    ListChannelsResponse,
-    ListChannelsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListChannelsRequest,
-  ) => stream.Stream<
-    ChannelSummary,
-    ListChannelsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListCloudWatchAlarmTemplateGroupsError =
   | BadRequestException
@@ -22689,27 +22551,13 @@ export type ListCloudWatchAlarmTemplateGroupsError =
 /**
  * Lists cloudwatch alarm template groups.
  */
-export const listCloudWatchAlarmTemplateGroups: API.OperationMethod<
+export const listCloudWatchAlarmTemplateGroups: API.PaginatedOperationMethod<
   ListCloudWatchAlarmTemplateGroupsRequest,
   ListCloudWatchAlarmTemplateGroupsResponse,
   ListCloudWatchAlarmTemplateGroupsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCloudWatchAlarmTemplateGroupsRequest,
-  ) => stream.Stream<
-    ListCloudWatchAlarmTemplateGroupsResponse,
-    ListCloudWatchAlarmTemplateGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCloudWatchAlarmTemplateGroupsRequest,
-  ) => stream.Stream<
-    CloudWatchAlarmTemplateGroupSummary,
-    ListCloudWatchAlarmTemplateGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  CloudWatchAlarmTemplateGroupSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListCloudWatchAlarmTemplateGroupsRequest,
   output: ListCloudWatchAlarmTemplateGroupsResponse,
   errors: [
@@ -22728,27 +22576,7 @@ export const listCloudWatchAlarmTemplateGroups: API.OperationMethod<
     items: "CloudWatchAlarmTemplateGroups",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListCloudWatchAlarmTemplateGroupsRequest,
-  ListCloudWatchAlarmTemplateGroupsResponse,
-  ListCloudWatchAlarmTemplateGroupsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCloudWatchAlarmTemplateGroupsRequest,
-  ) => stream.Stream<
-    ListCloudWatchAlarmTemplateGroupsResponse,
-    ListCloudWatchAlarmTemplateGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCloudWatchAlarmTemplateGroupsRequest,
-  ) => stream.Stream<
-    CloudWatchAlarmTemplateGroupSummary,
-    ListCloudWatchAlarmTemplateGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListCloudWatchAlarmTemplatesError =
   | BadRequestException
@@ -22760,27 +22588,13 @@ export type ListCloudWatchAlarmTemplatesError =
 /**
  * Lists cloudwatch alarm templates.
  */
-export const listCloudWatchAlarmTemplates: API.OperationMethod<
+export const listCloudWatchAlarmTemplates: API.PaginatedOperationMethod<
   ListCloudWatchAlarmTemplatesRequest,
   ListCloudWatchAlarmTemplatesResponse,
   ListCloudWatchAlarmTemplatesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCloudWatchAlarmTemplatesRequest,
-  ) => stream.Stream<
-    ListCloudWatchAlarmTemplatesResponse,
-    ListCloudWatchAlarmTemplatesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCloudWatchAlarmTemplatesRequest,
-  ) => stream.Stream<
-    CloudWatchAlarmTemplateSummary,
-    ListCloudWatchAlarmTemplatesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  CloudWatchAlarmTemplateSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListCloudWatchAlarmTemplatesRequest,
   output: ListCloudWatchAlarmTemplatesResponse,
   errors: [
@@ -22799,27 +22613,7 @@ export const listCloudWatchAlarmTemplates: API.OperationMethod<
     items: "CloudWatchAlarmTemplates",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListCloudWatchAlarmTemplatesRequest,
-  ListCloudWatchAlarmTemplatesResponse,
-  ListCloudWatchAlarmTemplatesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCloudWatchAlarmTemplatesRequest,
-  ) => stream.Stream<
-    ListCloudWatchAlarmTemplatesResponse,
-    ListCloudWatchAlarmTemplatesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCloudWatchAlarmTemplatesRequest,
-  ) => stream.Stream<
-    CloudWatchAlarmTemplateSummary,
-    ListCloudWatchAlarmTemplatesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListClusterAlertsError =
   | BadGatewayException
@@ -22833,27 +22627,13 @@ export type ListClusterAlertsError =
 /**
  * List the alerts for a cluster with optional filtering based on alert state.
  */
-export const listClusterAlerts: API.OperationMethod<
+export const listClusterAlerts: API.PaginatedOperationMethod<
   ListClusterAlertsRequest,
   ListClusterAlertsResponse,
   ListClusterAlertsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListClusterAlertsRequest,
-  ) => stream.Stream<
-    ListClusterAlertsResponse,
-    ListClusterAlertsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListClusterAlertsRequest,
-  ) => stream.Stream<
-    ClusterAlert,
-    ListClusterAlertsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ClusterAlert
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListClusterAlertsRequest,
   output: ListClusterAlertsResponse,
   errors: [
@@ -22874,27 +22654,7 @@ export const listClusterAlerts: API.OperationMethod<
     items: "Alerts",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListClusterAlertsRequest,
-  ListClusterAlertsResponse,
-  ListClusterAlertsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListClusterAlertsRequest,
-  ) => stream.Stream<
-    ListClusterAlertsResponse,
-    ListClusterAlertsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListClusterAlertsRequest,
-  ) => stream.Stream<
-    ClusterAlert,
-    ListClusterAlertsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListClustersError =
   | BadGatewayException
@@ -22907,27 +22667,13 @@ export type ListClustersError =
 /**
  * Retrieve the list of Clusters.
  */
-export const listClusters: API.OperationMethod<
+export const listClusters: API.PaginatedOperationMethod<
   ListClustersRequest,
   ListClustersResponse,
   ListClustersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListClustersRequest,
-  ) => stream.Stream<
-    ListClustersResponse,
-    ListClustersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListClustersRequest,
-  ) => stream.Stream<
-    DescribeClusterSummary,
-    ListClustersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  DescribeClusterSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListClustersRequest,
   output: ListClustersResponse,
   errors: [
@@ -22947,27 +22693,7 @@ export const listClusters: API.OperationMethod<
     items: "Clusters",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListClustersRequest,
-  ListClustersResponse,
-  ListClustersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListClustersRequest,
-  ) => stream.Stream<
-    ListClustersResponse,
-    ListClustersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListClustersRequest,
-  ) => stream.Stream<
-    DescribeClusterSummary,
-    ListClustersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListEventBridgeRuleTemplateGroupsError =
   | BadRequestException
@@ -22979,27 +22705,13 @@ export type ListEventBridgeRuleTemplateGroupsError =
 /**
  * Lists eventbridge rule template groups.
  */
-export const listEventBridgeRuleTemplateGroups: API.OperationMethod<
+export const listEventBridgeRuleTemplateGroups: API.PaginatedOperationMethod<
   ListEventBridgeRuleTemplateGroupsRequest,
   ListEventBridgeRuleTemplateGroupsResponse,
   ListEventBridgeRuleTemplateGroupsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListEventBridgeRuleTemplateGroupsRequest,
-  ) => stream.Stream<
-    ListEventBridgeRuleTemplateGroupsResponse,
-    ListEventBridgeRuleTemplateGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListEventBridgeRuleTemplateGroupsRequest,
-  ) => stream.Stream<
-    EventBridgeRuleTemplateGroupSummary,
-    ListEventBridgeRuleTemplateGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  EventBridgeRuleTemplateGroupSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListEventBridgeRuleTemplateGroupsRequest,
   output: ListEventBridgeRuleTemplateGroupsResponse,
   errors: [
@@ -23018,27 +22730,7 @@ export const listEventBridgeRuleTemplateGroups: API.OperationMethod<
     items: "EventBridgeRuleTemplateGroups",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListEventBridgeRuleTemplateGroupsRequest,
-  ListEventBridgeRuleTemplateGroupsResponse,
-  ListEventBridgeRuleTemplateGroupsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListEventBridgeRuleTemplateGroupsRequest,
-  ) => stream.Stream<
-    ListEventBridgeRuleTemplateGroupsResponse,
-    ListEventBridgeRuleTemplateGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListEventBridgeRuleTemplateGroupsRequest,
-  ) => stream.Stream<
-    EventBridgeRuleTemplateGroupSummary,
-    ListEventBridgeRuleTemplateGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListEventBridgeRuleTemplatesError =
   | BadRequestException
@@ -23050,27 +22742,13 @@ export type ListEventBridgeRuleTemplatesError =
 /**
  * Lists eventbridge rule templates.
  */
-export const listEventBridgeRuleTemplates: API.OperationMethod<
+export const listEventBridgeRuleTemplates: API.PaginatedOperationMethod<
   ListEventBridgeRuleTemplatesRequest,
   ListEventBridgeRuleTemplatesResponse,
   ListEventBridgeRuleTemplatesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListEventBridgeRuleTemplatesRequest,
-  ) => stream.Stream<
-    ListEventBridgeRuleTemplatesResponse,
-    ListEventBridgeRuleTemplatesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListEventBridgeRuleTemplatesRequest,
-  ) => stream.Stream<
-    EventBridgeRuleTemplateSummary,
-    ListEventBridgeRuleTemplatesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  EventBridgeRuleTemplateSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListEventBridgeRuleTemplatesRequest,
   output: ListEventBridgeRuleTemplatesResponse,
   errors: [
@@ -23089,27 +22767,7 @@ export const listEventBridgeRuleTemplates: API.OperationMethod<
     items: "EventBridgeRuleTemplates",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListEventBridgeRuleTemplatesRequest,
-  ListEventBridgeRuleTemplatesResponse,
-  ListEventBridgeRuleTemplatesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListEventBridgeRuleTemplatesRequest,
-  ) => stream.Stream<
-    ListEventBridgeRuleTemplatesResponse,
-    ListEventBridgeRuleTemplatesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListEventBridgeRuleTemplatesRequest,
-  ) => stream.Stream<
-    EventBridgeRuleTemplateSummary,
-    ListEventBridgeRuleTemplatesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListInputDevicesError =
   | BadGatewayException
@@ -23122,27 +22780,13 @@ export type ListInputDevicesError =
 /**
  * List input devices
  */
-export const listInputDevices: API.OperationMethod<
+export const listInputDevices: API.PaginatedOperationMethod<
   ListInputDevicesRequest,
   ListInputDevicesResponse,
   ListInputDevicesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListInputDevicesRequest,
-  ) => stream.Stream<
-    ListInputDevicesResponse,
-    ListInputDevicesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListInputDevicesRequest,
-  ) => stream.Stream<
-    InputDeviceSummary,
-    ListInputDevicesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  InputDeviceSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListInputDevicesRequest,
   output: ListInputDevicesResponse,
   errors: [
@@ -23162,27 +22806,7 @@ export const listInputDevices: API.OperationMethod<
     items: "InputDevices",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListInputDevicesRequest,
-  ListInputDevicesResponse,
-  ListInputDevicesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListInputDevicesRequest,
-  ) => stream.Stream<
-    ListInputDevicesResponse,
-    ListInputDevicesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListInputDevicesRequest,
-  ) => stream.Stream<
-    InputDeviceSummary,
-    ListInputDevicesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListInputDeviceTransfersError =
   | BadGatewayException
@@ -23196,27 +22820,13 @@ export type ListInputDeviceTransfersError =
 /**
  * List input devices that are currently being transferred. List input devices that you are transferring from your AWS account or input devices that another AWS account is transferring to you.
  */
-export const listInputDeviceTransfers: API.OperationMethod<
+export const listInputDeviceTransfers: API.PaginatedOperationMethod<
   ListInputDeviceTransfersRequest,
   ListInputDeviceTransfersResponse,
   ListInputDeviceTransfersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListInputDeviceTransfersRequest,
-  ) => stream.Stream<
-    ListInputDeviceTransfersResponse,
-    ListInputDeviceTransfersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListInputDeviceTransfersRequest,
-  ) => stream.Stream<
-    TransferringInputDeviceSummary,
-    ListInputDeviceTransfersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  TransferringInputDeviceSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListInputDeviceTransfersRequest,
   output: ListInputDeviceTransfersResponse,
   errors: [
@@ -23237,27 +22847,7 @@ export const listInputDeviceTransfers: API.OperationMethod<
     items: "InputDeviceTransfers",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListInputDeviceTransfersRequest,
-  ListInputDeviceTransfersResponse,
-  ListInputDeviceTransfersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListInputDeviceTransfersRequest,
-  ) => stream.Stream<
-    ListInputDeviceTransfersResponse,
-    ListInputDeviceTransfersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListInputDeviceTransfersRequest,
-  ) => stream.Stream<
-    TransferringInputDeviceSummary,
-    ListInputDeviceTransfersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListInputsError =
   | BadGatewayException
@@ -23270,27 +22860,13 @@ export type ListInputsError =
 /**
  * Produces list of inputs that have been created
  */
-export const listInputs: API.OperationMethod<
+export const listInputs: API.PaginatedOperationMethod<
   ListInputsRequest,
   ListInputsResponse,
   ListInputsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListInputsRequest,
-  ) => stream.Stream<
-    ListInputsResponse,
-    ListInputsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListInputsRequest,
-  ) => stream.Stream<
-    Input,
-    ListInputsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Input
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListInputsRequest,
   output: ListInputsResponse,
   errors: [
@@ -23310,27 +22886,7 @@ export const listInputs: API.OperationMethod<
     items: "Inputs",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListInputsRequest,
-  ListInputsResponse,
-  ListInputsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListInputsRequest,
-  ) => stream.Stream<
-    ListInputsResponse,
-    ListInputsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListInputsRequest,
-  ) => stream.Stream<
-    Input,
-    ListInputsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListInputSecurityGroupsError =
   | BadGatewayException
@@ -23343,27 +22899,13 @@ export type ListInputSecurityGroupsError =
 /**
  * Produces a list of Input Security Groups for an account
  */
-export const listInputSecurityGroups: API.OperationMethod<
+export const listInputSecurityGroups: API.PaginatedOperationMethod<
   ListInputSecurityGroupsRequest,
   ListInputSecurityGroupsResponse,
   ListInputSecurityGroupsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListInputSecurityGroupsRequest,
-  ) => stream.Stream<
-    ListInputSecurityGroupsResponse,
-    ListInputSecurityGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListInputSecurityGroupsRequest,
-  ) => stream.Stream<
-    InputSecurityGroup,
-    ListInputSecurityGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  InputSecurityGroup
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListInputSecurityGroupsRequest,
   output: ListInputSecurityGroupsResponse,
   errors: [
@@ -23383,27 +22925,7 @@ export const listInputSecurityGroups: API.OperationMethod<
     items: "InputSecurityGroups",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListInputSecurityGroupsRequest,
-  ListInputSecurityGroupsResponse,
-  ListInputSecurityGroupsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListInputSecurityGroupsRequest,
-  ) => stream.Stream<
-    ListInputSecurityGroupsResponse,
-    ListInputSecurityGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListInputSecurityGroupsRequest,
-  ) => stream.Stream<
-    InputSecurityGroup,
-    ListInputSecurityGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListMultiplexAlertsError =
   | BadGatewayException
@@ -23417,27 +22939,13 @@ export type ListMultiplexAlertsError =
 /**
  * List the alerts for a multiplex with optional filtering based on alert state.
  */
-export const listMultiplexAlerts: API.OperationMethod<
+export const listMultiplexAlerts: API.PaginatedOperationMethod<
   ListMultiplexAlertsRequest,
   ListMultiplexAlertsResponse,
   ListMultiplexAlertsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListMultiplexAlertsRequest,
-  ) => stream.Stream<
-    ListMultiplexAlertsResponse,
-    ListMultiplexAlertsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListMultiplexAlertsRequest,
-  ) => stream.Stream<
-    MultiplexAlert,
-    ListMultiplexAlertsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  MultiplexAlert
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListMultiplexAlertsRequest,
   output: ListMultiplexAlertsResponse,
   errors: [
@@ -23458,27 +22966,7 @@ export const listMultiplexAlerts: API.OperationMethod<
     items: "Alerts",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListMultiplexAlertsRequest,
-  ListMultiplexAlertsResponse,
-  ListMultiplexAlertsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListMultiplexAlertsRequest,
-  ) => stream.Stream<
-    ListMultiplexAlertsResponse,
-    ListMultiplexAlertsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListMultiplexAlertsRequest,
-  ) => stream.Stream<
-    MultiplexAlert,
-    ListMultiplexAlertsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListMultiplexesError =
   | BadGatewayException
@@ -23491,27 +22979,13 @@ export type ListMultiplexesError =
 /**
  * Retrieve a list of the existing multiplexes.
  */
-export const listMultiplexes: API.OperationMethod<
+export const listMultiplexes: API.PaginatedOperationMethod<
   ListMultiplexesRequest,
   ListMultiplexesResponse,
   ListMultiplexesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListMultiplexesRequest,
-  ) => stream.Stream<
-    ListMultiplexesResponse,
-    ListMultiplexesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListMultiplexesRequest,
-  ) => stream.Stream<
-    MultiplexSummary,
-    ListMultiplexesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  MultiplexSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListMultiplexesRequest,
   output: ListMultiplexesResponse,
   errors: [
@@ -23531,27 +23005,7 @@ export const listMultiplexes: API.OperationMethod<
     items: "Multiplexes",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListMultiplexesRequest,
-  ListMultiplexesResponse,
-  ListMultiplexesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListMultiplexesRequest,
-  ) => stream.Stream<
-    ListMultiplexesResponse,
-    ListMultiplexesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListMultiplexesRequest,
-  ) => stream.Stream<
-    MultiplexSummary,
-    ListMultiplexesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListMultiplexProgramsError =
   | BadGatewayException
@@ -23565,27 +23019,13 @@ export type ListMultiplexProgramsError =
 /**
  * List the programs that currently exist for a specific multiplex.
  */
-export const listMultiplexPrograms: API.OperationMethod<
+export const listMultiplexPrograms: API.PaginatedOperationMethod<
   ListMultiplexProgramsRequest,
   ListMultiplexProgramsResponse,
   ListMultiplexProgramsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListMultiplexProgramsRequest,
-  ) => stream.Stream<
-    ListMultiplexProgramsResponse,
-    ListMultiplexProgramsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListMultiplexProgramsRequest,
-  ) => stream.Stream<
-    MultiplexProgramSummary,
-    ListMultiplexProgramsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  MultiplexProgramSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListMultiplexProgramsRequest,
   output: ListMultiplexProgramsResponse,
   errors: [
@@ -23606,27 +23046,7 @@ export const listMultiplexPrograms: API.OperationMethod<
     items: "MultiplexPrograms",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListMultiplexProgramsRequest,
-  ListMultiplexProgramsResponse,
-  ListMultiplexProgramsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListMultiplexProgramsRequest,
-  ) => stream.Stream<
-    ListMultiplexProgramsResponse,
-    ListMultiplexProgramsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListMultiplexProgramsRequest,
-  ) => stream.Stream<
-    MultiplexProgramSummary,
-    ListMultiplexProgramsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListNetworksError =
   | BadGatewayException
@@ -23639,27 +23059,13 @@ export type ListNetworksError =
 /**
  * Retrieve the list of Networks.
  */
-export const listNetworks: API.OperationMethod<
+export const listNetworks: API.PaginatedOperationMethod<
   ListNetworksRequest,
   ListNetworksResponse,
   ListNetworksError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListNetworksRequest,
-  ) => stream.Stream<
-    ListNetworksResponse,
-    ListNetworksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListNetworksRequest,
-  ) => stream.Stream<
-    DescribeNetworkSummary,
-    ListNetworksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  DescribeNetworkSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListNetworksRequest,
   output: ListNetworksResponse,
   errors: [
@@ -23679,27 +23085,7 @@ export const listNetworks: API.OperationMethod<
     items: "Networks",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListNetworksRequest,
-  ListNetworksResponse,
-  ListNetworksError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListNetworksRequest,
-  ) => stream.Stream<
-    ListNetworksResponse,
-    ListNetworksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListNetworksRequest,
-  ) => stream.Stream<
-    DescribeNetworkSummary,
-    ListNetworksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListNodesError =
   | BadGatewayException
@@ -23712,27 +23098,13 @@ export type ListNodesError =
 /**
  * Retrieve the list of Nodes.
  */
-export const listNodes: API.OperationMethod<
+export const listNodes: API.PaginatedOperationMethod<
   ListNodesRequest,
   ListNodesResponse,
   ListNodesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListNodesRequest,
-  ) => stream.Stream<
-    ListNodesResponse,
-    ListNodesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListNodesRequest,
-  ) => stream.Stream<
-    DescribeNodeSummary,
-    ListNodesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  DescribeNodeSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListNodesRequest,
   output: ListNodesResponse,
   errors: [
@@ -23752,27 +23124,7 @@ export const listNodes: API.OperationMethod<
     items: "Nodes",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListNodesRequest,
-  ListNodesResponse,
-  ListNodesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListNodesRequest,
-  ) => stream.Stream<
-    ListNodesResponse,
-    ListNodesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListNodesRequest,
-  ) => stream.Stream<
-    DescribeNodeSummary,
-    ListNodesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListOfferingsError =
   | BadGatewayException
@@ -23785,27 +23137,13 @@ export type ListOfferingsError =
 /**
  * List offerings available for purchase.
  */
-export const listOfferings: API.OperationMethod<
+export const listOfferings: API.PaginatedOperationMethod<
   ListOfferingsRequest,
   ListOfferingsResponse,
   ListOfferingsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListOfferingsRequest,
-  ) => stream.Stream<
-    ListOfferingsResponse,
-    ListOfferingsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListOfferingsRequest,
-  ) => stream.Stream<
-    Offering,
-    ListOfferingsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Offering
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListOfferingsRequest,
   output: ListOfferingsResponse,
   errors: [
@@ -23825,27 +23163,7 @@ export const listOfferings: API.OperationMethod<
     items: "Offerings",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListOfferingsRequest,
-  ListOfferingsResponse,
-  ListOfferingsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListOfferingsRequest,
-  ) => stream.Stream<
-    ListOfferingsResponse,
-    ListOfferingsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListOfferingsRequest,
-  ) => stream.Stream<
-    Offering,
-    ListOfferingsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListReservationsError =
   | BadGatewayException
@@ -23858,27 +23176,13 @@ export type ListReservationsError =
 /**
  * List purchased reservations.
  */
-export const listReservations: API.OperationMethod<
+export const listReservations: API.PaginatedOperationMethod<
   ListReservationsRequest,
   ListReservationsResponse,
   ListReservationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListReservationsRequest,
-  ) => stream.Stream<
-    ListReservationsResponse,
-    ListReservationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListReservationsRequest,
-  ) => stream.Stream<
-    Reservation,
-    ListReservationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Reservation
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListReservationsRequest,
   output: ListReservationsResponse,
   errors: [
@@ -23898,27 +23202,7 @@ export const listReservations: API.OperationMethod<
     items: "Reservations",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListReservationsRequest,
-  ListReservationsResponse,
-  ListReservationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListReservationsRequest,
-  ) => stream.Stream<
-    ListReservationsResponse,
-    ListReservationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListReservationsRequest,
-  ) => stream.Stream<
-    Reservation,
-    ListReservationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListSdiSourcesError =
   | BadGatewayException
@@ -23931,27 +23215,13 @@ export type ListSdiSourcesError =
 /**
  * List all the SdiSources in the AWS account.
  */
-export const listSdiSources: API.OperationMethod<
+export const listSdiSources: API.PaginatedOperationMethod<
   ListSdiSourcesRequest,
   ListSdiSourcesResponse,
   ListSdiSourcesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSdiSourcesRequest,
-  ) => stream.Stream<
-    ListSdiSourcesResponse,
-    ListSdiSourcesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSdiSourcesRequest,
-  ) => stream.Stream<
-    SdiSourceSummary,
-    ListSdiSourcesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  SdiSourceSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListSdiSourcesRequest,
   output: ListSdiSourcesResponse,
   errors: [
@@ -23971,27 +23241,7 @@ export const listSdiSources: API.OperationMethod<
     items: "SdiSources",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListSdiSourcesRequest,
-  ListSdiSourcesResponse,
-  ListSdiSourcesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSdiSourcesRequest,
-  ) => stream.Stream<
-    ListSdiSourcesResponse,
-    ListSdiSourcesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSdiSourcesRequest,
-  ) => stream.Stream<
-    SdiSourceSummary,
-    ListSdiSourcesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListSignalMapsError =
   | BadRequestException
@@ -24003,27 +23253,13 @@ export type ListSignalMapsError =
 /**
  * Lists signal maps.
  */
-export const listSignalMaps: API.OperationMethod<
+export const listSignalMaps: API.PaginatedOperationMethod<
   ListSignalMapsRequest,
   ListSignalMapsResponse,
   ListSignalMapsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSignalMapsRequest,
-  ) => stream.Stream<
-    ListSignalMapsResponse,
-    ListSignalMapsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSignalMapsRequest,
-  ) => stream.Stream<
-    SignalMapSummary,
-    ListSignalMapsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  SignalMapSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListSignalMapsRequest,
   output: ListSignalMapsResponse,
   errors: [
@@ -24042,27 +23278,7 @@ export const listSignalMaps: API.OperationMethod<
     items: "SignalMaps",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListSignalMapsRequest,
-  ListSignalMapsResponse,
-  ListSignalMapsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSignalMapsRequest,
-  ) => stream.Stream<
-    ListSignalMapsResponse,
-    ListSignalMapsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSignalMapsRequest,
-  ) => stream.Stream<
-    SignalMapSummary,
-    ListSignalMapsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsForResourceError =
   | BadRequestException
@@ -24077,7 +23293,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceRequest,
   ListTagsForResourceResponse,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -24109,7 +23325,7 @@ export const listVersions: API.OperationMethod<
   ListVersionsRequest,
   ListVersionsResponse,
   ListVersionsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListVersionsRequest,
   output: ListVersionsResponse,
@@ -24145,7 +23361,7 @@ export const purchaseOffering: API.OperationMethod<
   PurchaseOfferingRequest,
   PurchaseOfferingResponse,
   PurchaseOfferingError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PurchaseOfferingRequest,
   output: PurchaseOfferingResponse,
@@ -24181,7 +23397,7 @@ export const rebootInputDevice: API.OperationMethod<
   RebootInputDeviceRequest,
   RebootInputDeviceResponse,
   RebootInputDeviceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RebootInputDeviceRequest,
   output: RebootInputDeviceResponse,
@@ -24218,7 +23434,7 @@ export const rejectInputDeviceTransfer: API.OperationMethod<
   RejectInputDeviceTransferRequest,
   RejectInputDeviceTransferResponse,
   RejectInputDeviceTransferError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RejectInputDeviceTransferRequest,
   output: RejectInputDeviceTransferResponse,
@@ -24255,7 +23471,7 @@ export const restartChannelPipelines: API.OperationMethod<
   RestartChannelPipelinesRequest,
   RestartChannelPipelinesResponse,
   RestartChannelPipelinesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RestartChannelPipelinesRequest,
   output: RestartChannelPipelinesResponse,
@@ -24291,7 +23507,7 @@ export const startChannel: API.OperationMethod<
   StartChannelRequest,
   StartChannelResponse,
   StartChannelError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartChannelRequest,
   output: StartChannelResponse,
@@ -24325,7 +23541,7 @@ export const startDeleteMonitorDeployment: API.OperationMethod<
   StartDeleteMonitorDeploymentRequest,
   StartDeleteMonitorDeploymentResponse,
   StartDeleteMonitorDeploymentError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartDeleteMonitorDeploymentRequest,
   output: StartDeleteMonitorDeploymentResponse,
@@ -24359,7 +23575,7 @@ export const startInputDevice: API.OperationMethod<
   StartInputDeviceRequest,
   StartInputDeviceResponse,
   StartInputDeviceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartInputDeviceRequest,
   output: StartInputDeviceResponse,
@@ -24395,7 +23611,7 @@ export const startInputDeviceMaintenanceWindow: API.OperationMethod<
   StartInputDeviceMaintenanceWindowRequest,
   StartInputDeviceMaintenanceWindowResponse,
   StartInputDeviceMaintenanceWindowError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartInputDeviceMaintenanceWindowRequest,
   output: StartInputDeviceMaintenanceWindowResponse,
@@ -24429,7 +23645,7 @@ export const startMonitorDeployment: API.OperationMethod<
   StartMonitorDeploymentRequest,
   StartMonitorDeploymentResponse,
   StartMonitorDeploymentError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartMonitorDeploymentRequest,
   output: StartMonitorDeploymentResponse,
@@ -24463,7 +23679,7 @@ export const startMultiplex: API.OperationMethod<
   StartMultiplexRequest,
   StartMultiplexResponse,
   StartMultiplexError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartMultiplexRequest,
   output: StartMultiplexResponse,
@@ -24497,7 +23713,7 @@ export const startUpdateSignalMap: API.OperationMethod<
   StartUpdateSignalMapRequest,
   StartUpdateSignalMapResponse,
   StartUpdateSignalMapError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartUpdateSignalMapRequest,
   output: StartUpdateSignalMapResponse,
@@ -24531,7 +23747,7 @@ export const stopChannel: API.OperationMethod<
   StopChannelRequest,
   StopChannelResponse,
   StopChannelError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StopChannelRequest,
   output: StopChannelResponse,
@@ -24567,7 +23783,7 @@ export const stopInputDevice: API.OperationMethod<
   StopInputDeviceRequest,
   StopInputDeviceResponse,
   StopInputDeviceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StopInputDeviceRequest,
   output: StopInputDeviceResponse,
@@ -24603,7 +23819,7 @@ export const stopMultiplex: API.OperationMethod<
   StopMultiplexRequest,
   StopMultiplexResponse,
   StopMultiplexError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StopMultiplexRequest,
   output: StopMultiplexResponse,
@@ -24640,7 +23856,7 @@ export const transferInputDevice: API.OperationMethod<
   TransferInputDeviceRequest,
   TransferInputDeviceResponse,
   TransferInputDeviceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TransferInputDeviceRequest,
   output: TransferInputDeviceResponse,
@@ -24676,7 +23892,7 @@ export const updateAccountConfiguration: API.OperationMethod<
   UpdateAccountConfigurationRequest,
   UpdateAccountConfigurationResponse,
   UpdateAccountConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateAccountConfigurationRequest,
   output: UpdateAccountConfigurationResponse,
@@ -24710,7 +23926,7 @@ export const updateChannel: API.OperationMethod<
   UpdateChannelRequest,
   UpdateChannelResponse,
   UpdateChannelError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateChannelRequest,
   output: UpdateChannelResponse,
@@ -24746,7 +23962,7 @@ export const updateChannelClass: API.OperationMethod<
   UpdateChannelClassRequest,
   UpdateChannelClassResponse,
   UpdateChannelClassError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateChannelClassRequest,
   output: UpdateChannelClassResponse,
@@ -24783,7 +23999,7 @@ export const updateChannelPlacementGroup: API.OperationMethod<
   UpdateChannelPlacementGroupRequest,
   UpdateChannelPlacementGroupResponse,
   UpdateChannelPlacementGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateChannelPlacementGroupRequest,
   output: UpdateChannelPlacementGroupResponse,
@@ -24817,7 +24033,7 @@ export const updateCloudWatchAlarmTemplate: API.OperationMethod<
   UpdateCloudWatchAlarmTemplateRequest,
   UpdateCloudWatchAlarmTemplateResponse,
   UpdateCloudWatchAlarmTemplateError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateCloudWatchAlarmTemplateRequest,
   output: UpdateCloudWatchAlarmTemplateResponse,
@@ -24849,7 +24065,7 @@ export const updateCloudWatchAlarmTemplateGroup: API.OperationMethod<
   UpdateCloudWatchAlarmTemplateGroupRequest,
   UpdateCloudWatchAlarmTemplateGroupResponse,
   UpdateCloudWatchAlarmTemplateGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateCloudWatchAlarmTemplateGroupRequest,
   output: UpdateCloudWatchAlarmTemplateGroupResponse,
@@ -24882,7 +24098,7 @@ export const updateCluster: API.OperationMethod<
   UpdateClusterRequest,
   UpdateClusterResponse,
   UpdateClusterError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateClusterRequest,
   output: UpdateClusterResponse,
@@ -24915,7 +24131,7 @@ export const updateEventBridgeRuleTemplate: API.OperationMethod<
   UpdateEventBridgeRuleTemplateRequest,
   UpdateEventBridgeRuleTemplateResponse,
   UpdateEventBridgeRuleTemplateError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateEventBridgeRuleTemplateRequest,
   output: UpdateEventBridgeRuleTemplateResponse,
@@ -24947,7 +24163,7 @@ export const updateEventBridgeRuleTemplateGroup: API.OperationMethod<
   UpdateEventBridgeRuleTemplateGroupRequest,
   UpdateEventBridgeRuleTemplateGroupResponse,
   UpdateEventBridgeRuleTemplateGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateEventBridgeRuleTemplateGroupRequest,
   output: UpdateEventBridgeRuleTemplateGroupResponse,
@@ -24980,7 +24196,7 @@ export const updateInput: API.OperationMethod<
   UpdateInputRequest,
   UpdateInputResponse,
   UpdateInputError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateInputRequest,
   output: UpdateInputResponse,
@@ -25015,7 +24231,7 @@ export const updateInputDevice: API.OperationMethod<
   UpdateInputDeviceRequest,
   UpdateInputDeviceResponse,
   UpdateInputDeviceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateInputDeviceRequest,
   output: UpdateInputDeviceResponse,
@@ -25050,7 +24266,7 @@ export const updateInputSecurityGroup: API.OperationMethod<
   UpdateInputSecurityGroupRequest,
   UpdateInputSecurityGroupResponse,
   UpdateInputSecurityGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateInputSecurityGroupRequest,
   output: UpdateInputSecurityGroupResponse,
@@ -25085,7 +24301,7 @@ export const updateMultiplex: API.OperationMethod<
   UpdateMultiplexRequest,
   UpdateMultiplexResponse,
   UpdateMultiplexError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateMultiplexRequest,
   output: UpdateMultiplexResponse,
@@ -25121,7 +24337,7 @@ export const updateMultiplexProgram: API.OperationMethod<
   UpdateMultiplexProgramRequest,
   UpdateMultiplexProgramResponse,
   UpdateMultiplexProgramError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateMultiplexProgramRequest,
   output: UpdateMultiplexProgramResponse,
@@ -25156,7 +24372,7 @@ export const updateNetwork: API.OperationMethod<
   UpdateNetworkRequest,
   UpdateNetworkResponse,
   UpdateNetworkError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateNetworkRequest,
   output: UpdateNetworkResponse,
@@ -25190,7 +24406,7 @@ export const updateNode: API.OperationMethod<
   UpdateNodeRequest,
   UpdateNodeResponse,
   UpdateNodeError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateNodeRequest,
   output: UpdateNodeResponse,
@@ -25225,7 +24441,7 @@ export const updateNodeState: API.OperationMethod<
   UpdateNodeStateRequest,
   UpdateNodeStateResponse,
   UpdateNodeStateError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateNodeStateRequest,
   output: UpdateNodeStateResponse,
@@ -25261,7 +24477,7 @@ export const updateReservation: API.OperationMethod<
   UpdateReservationRequest,
   UpdateReservationResponse,
   UpdateReservationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateReservationRequest,
   output: UpdateReservationResponse,
@@ -25296,7 +24512,7 @@ export const updateSdiSource: API.OperationMethod<
   UpdateSdiSourceRequest,
   UpdateSdiSourceResponse,
   UpdateSdiSourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateSdiSourceRequest,
   output: UpdateSdiSourceResponse,

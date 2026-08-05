@@ -7,7 +7,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 const svc = T.AwsApiService({
   sdkId: "WorkMailMessageFlow",
   serviceShapeName: "GiraffeMessageInTransitService",
@@ -87,21 +86,21 @@ const rules = T.EndpointResolver((p, _) => {
 export class InvalidContentLocation
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidContentLocation>()(
     "InvalidContentLocation",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class MessageFrozen
   extends /*@__PURE__*/ S.TaggedErrorClass<MessageFrozen>()("MessageFrozen", {
-    message: S.optional(S.String),
+    message: S.optional(S.String).pipe(T.ErrorMessage()),
   }) {}
 export class MessageRejected
   extends /*@__PURE__*/ S.TaggedErrorClass<MessageRejected>()(
     "MessageRejected",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export type MessageIdType = string;
@@ -191,7 +190,7 @@ export const getRawMessageContent: API.OperationMethod<
   GetRawMessageContentRequest,
   GetRawMessageContentResponse,
   GetRawMessageContentError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetRawMessageContentRequest,
   output: GetRawMessageContentResponse,
@@ -224,7 +223,7 @@ export const putRawMessageContent: API.OperationMethod<
   PutRawMessageContentRequest,
   PutRawMessageContentResponse,
   PutRawMessageContentError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutRawMessageContentRequest,
   output: PutRawMessageContentResponse,

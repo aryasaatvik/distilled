@@ -1,6 +1,5 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -8,7 +7,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 const svc = T.AwsApiService({
   sdkId: "MigrationHub Config",
   serviceShapeName: "AWSMigrationHubMultiAccountService",
@@ -88,33 +86,33 @@ const rules = T.EndpointResolver((p, _) => {
 export class AccessDeniedException
   extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
     "AccessDeniedException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ).pipe(C.withAuthError) {}
 export class DryRunOperation
   extends /*@__PURE__*/ S.TaggedErrorClass<DryRunOperation>()(
     "DryRunOperation",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InternalServerError
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerError>()(
     "InternalServerError",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidInputException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidInputException>()(
     "InvalidInputException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class ServiceUnavailableException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceUnavailableException>()(
     "ServiceUnavailableException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ).pipe(C.withServerError) {}
 export class ThrottlingException
   extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
     "ThrottlingException",
     {
-      Message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       RetryAfterSeconds: S.optional(S.Number).pipe(T.HttpHeader("Retry-After")),
     },
     T.HttpError(429),
@@ -259,7 +257,7 @@ export const createHomeRegionControl: API.OperationMethod<
   CreateHomeRegionControlRequest,
   CreateHomeRegionControlResult,
   CreateHomeRegionControlError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateHomeRegionControlRequest,
   output: CreateHomeRegionControlResult,
@@ -290,7 +288,7 @@ export const deleteHomeRegionControl: API.OperationMethod<
   DeleteHomeRegionControlRequest,
   DeleteHomeRegionControlResult,
   DeleteHomeRegionControlError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteHomeRegionControlRequest,
   output: DeleteHomeRegionControlResult,
@@ -317,27 +315,13 @@ export type DescribeHomeRegionControlsError =
  * This API permits filtering on the `ControlId` and `HomeRegion`
  * fields.
  */
-export const describeHomeRegionControls: API.OperationMethod<
+export const describeHomeRegionControls: API.PaginatedOperationMethod<
   DescribeHomeRegionControlsRequest,
   DescribeHomeRegionControlsResult,
   DescribeHomeRegionControlsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeHomeRegionControlsRequest,
-  ) => stream.Stream<
-    DescribeHomeRegionControlsResult,
-    DescribeHomeRegionControlsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeHomeRegionControlsRequest,
-  ) => stream.Stream<
-    unknown,
-    DescribeHomeRegionControlsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeHomeRegionControlsRequest,
   output: DescribeHomeRegionControlsResult,
   errors: [
@@ -355,27 +339,7 @@ export const describeHomeRegionControls: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeHomeRegionControlsRequest,
-  DescribeHomeRegionControlsResult,
-  DescribeHomeRegionControlsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeHomeRegionControlsRequest,
-  ) => stream.Stream<
-    DescribeHomeRegionControlsResult,
-    DescribeHomeRegionControlsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeHomeRegionControlsRequest,
-  ) => stream.Stream<
-    unknown,
-    DescribeHomeRegionControlsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetHomeRegionError =
   | AccessDeniedException
@@ -395,7 +359,7 @@ export const getHomeRegion: API.OperationMethod<
   GetHomeRegionRequest,
   GetHomeRegionResult,
   GetHomeRegionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetHomeRegionRequest,
   output: GetHomeRegionResult,

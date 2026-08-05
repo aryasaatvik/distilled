@@ -1,6 +1,5 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -8,7 +7,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 const svc = T.AwsApiService({
   sdkId: "SSM QuickSetup",
   serviceShapeName: "QuickSetup",
@@ -88,37 +86,37 @@ const rules = T.EndpointResolver((p, _) => {
 export class AccessDeniedException
   extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
     "AccessDeniedException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(403),
   ).pipe(C.withAuthError) {}
 export class ConflictException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
     "ConflictException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class InternalServerException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
     "InternalServerException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(T.HttpError(500), T.Retryable()),
   ).pipe(C.withServerError, C.withRetryableError) {}
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class ThrottlingException
   extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
     "ThrottlingException",
-    { Message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.all(T.HttpError(429), T.Retryable()),
   ).pipe(C.withThrottlingError, C.withRetryableError) {}
 export class ValidationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
     "ValidationException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export type ConfigurationParametersMap = { [key: string]: string | undefined };
@@ -795,7 +793,7 @@ export const createConfigurationManager: API.OperationMethod<
   CreateConfigurationManagerInput,
   CreateConfigurationManagerOutput,
   CreateConfigurationManagerError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateConfigurationManagerInput,
   output: CreateConfigurationManagerOutput,
@@ -826,7 +824,7 @@ export const deleteConfigurationManager: API.OperationMethod<
   DeleteConfigurationManagerInput,
   DeleteConfigurationManagerResponse,
   DeleteConfigurationManagerError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteConfigurationManagerInput,
   output: DeleteConfigurationManagerResponse,
@@ -858,7 +856,7 @@ export const getConfiguration: API.OperationMethod<
   GetConfigurationInput,
   GetConfigurationOutput,
   GetConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetConfigurationInput,
   output: GetConfigurationOutput,
@@ -890,7 +888,7 @@ export const getConfigurationManager: API.OperationMethod<
   GetConfigurationManagerInput,
   GetConfigurationManagerOutput,
   GetConfigurationManagerError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetConfigurationManagerInput,
   output: GetConfigurationManagerOutput,
@@ -920,7 +918,7 @@ export const getServiceSettings: API.OperationMethod<
   GetServiceSettingsRequest,
   GetServiceSettingsOutput,
   GetServiceSettingsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetServiceSettingsRequest,
   output: GetServiceSettingsOutput,
@@ -945,27 +943,13 @@ export type ListConfigurationManagersError =
 /**
  * Returns Quick Setup configuration managers.
  */
-export const listConfigurationManagers: API.OperationMethod<
+export const listConfigurationManagers: API.PaginatedOperationMethod<
   ListConfigurationManagersInput,
   ListConfigurationManagersOutput,
   ListConfigurationManagersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListConfigurationManagersInput,
-  ) => stream.Stream<
-    ListConfigurationManagersOutput,
-    ListConfigurationManagersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListConfigurationManagersInput,
-  ) => stream.Stream<
-    ConfigurationManagerSummary,
-    ListConfigurationManagersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ConfigurationManagerSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListConfigurationManagersInput,
   output: ListConfigurationManagersOutput,
   errors: [
@@ -984,27 +968,7 @@ export const listConfigurationManagers: API.OperationMethod<
     items: "ConfigurationManagersList",
     pageSize: "MaxItems",
   } as const,
-})) as any as API.OperationMethod<
-  ListConfigurationManagersInput,
-  ListConfigurationManagersOutput,
-  ListConfigurationManagersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListConfigurationManagersInput,
-  ) => stream.Stream<
-    ListConfigurationManagersOutput,
-    ListConfigurationManagersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListConfigurationManagersInput,
-  ) => stream.Stream<
-    ConfigurationManagerSummary,
-    ListConfigurationManagersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListConfigurationsError =
   | AccessDeniedException
@@ -1016,27 +980,13 @@ export type ListConfigurationsError =
 /**
  * Returns configurations deployed by Quick Setup in the requesting Amazon Web Services account and Amazon Web Services Region.
  */
-export const listConfigurations: API.OperationMethod<
+export const listConfigurations: API.PaginatedOperationMethod<
   ListConfigurationsInput,
   ListConfigurationsOutput,
   ListConfigurationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListConfigurationsInput,
-  ) => stream.Stream<
-    ListConfigurationsOutput,
-    ListConfigurationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListConfigurationsInput,
-  ) => stream.Stream<
-    ConfigurationSummary,
-    ListConfigurationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ConfigurationSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListConfigurationsInput,
   output: ListConfigurationsOutput,
   errors: [
@@ -1055,27 +1005,7 @@ export const listConfigurations: API.OperationMethod<
     items: "ConfigurationsList",
     pageSize: "MaxItems",
   } as const,
-})) as any as API.OperationMethod<
-  ListConfigurationsInput,
-  ListConfigurationsOutput,
-  ListConfigurationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListConfigurationsInput,
-  ) => stream.Stream<
-    ListConfigurationsOutput,
-    ListConfigurationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListConfigurationsInput,
-  ) => stream.Stream<
-    ConfigurationSummary,
-    ListConfigurationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListQuickSetupTypesError =
   | AccessDeniedException
@@ -1090,7 +1020,7 @@ export const listQuickSetupTypes: API.OperationMethod<
   ListQuickSetupTypesRequest,
   ListQuickSetupTypesOutput,
   ListQuickSetupTypesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListQuickSetupTypesRequest,
   output: ListQuickSetupTypesOutput,
@@ -1120,7 +1050,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceRequest,
   ListTagsForResourceResponse,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -1152,7 +1082,7 @@ export const tagResource: API.OperationMethod<
   TagResourceInput,
   TagResourceResponse,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceInput,
   output: TagResourceResponse,
@@ -1184,7 +1114,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceInput,
   UntagResourceResponse,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceInput,
   output: UntagResourceResponse,
@@ -1216,7 +1146,7 @@ export const updateConfigurationDefinition: API.OperationMethod<
   UpdateConfigurationDefinitionInput,
   UpdateConfigurationDefinitionResponse,
   UpdateConfigurationDefinitionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateConfigurationDefinitionInput,
   output: UpdateConfigurationDefinitionResponse,
@@ -1248,7 +1178,7 @@ export const updateConfigurationManager: API.OperationMethod<
   UpdateConfigurationManagerInput,
   UpdateConfigurationManagerResponse,
   UpdateConfigurationManagerError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateConfigurationManagerInput,
   output: UpdateConfigurationManagerResponse,
@@ -1279,7 +1209,7 @@ export const updateServiceSettings: API.OperationMethod<
   UpdateServiceSettingsInput,
   UpdateServiceSettingsResponse,
   UpdateServiceSettingsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateServiceSettingsInput,
   output: UpdateServiceSettingsResponse,

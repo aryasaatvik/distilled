@@ -8,7 +8,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region as Rgn } from "../region.ts";
 import { SensitiveString } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "SSO OIDC",
@@ -100,49 +99,78 @@ export class AccessDeniedException
         }),
       ),
       error_description: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
     },
     T.HttpError(400),
   ).pipe(C.withBadRequestError, C.withAuthError) {}
 export class AuthorizationPendingException
   extends /*@__PURE__*/ S.TaggedErrorClass<AuthorizationPendingException>()(
     "AuthorizationPendingException",
-    { error: S.optional(S.String), error_description: S.optional(S.String) },
+    {
+      error: S.optional(S.String),
+      error_description: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class ExpiredTokenException
   extends /*@__PURE__*/ S.TaggedErrorClass<ExpiredTokenException>()(
     "ExpiredTokenException",
-    { error: S.optional(S.String), error_description: S.optional(S.String) },
+    {
+      error: S.optional(S.String),
+      error_description: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class InternalServerException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
     "InternalServerException",
-    { error: S.optional(S.String), error_description: S.optional(S.String) },
+    {
+      error: S.optional(S.String),
+      error_description: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(500),
   ).pipe(C.withServerError) {}
 export class InvalidClientException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidClientException>()(
     "InvalidClientException",
-    { error: S.optional(S.String), error_description: S.optional(S.String) },
+    {
+      error: S.optional(S.String),
+      error_description: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(401),
   ).pipe(C.withAuthError) {}
 export class InvalidClientMetadataException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidClientMetadataException>()(
     "InvalidClientMetadataException",
-    { error: S.optional(S.String), error_description: S.optional(S.String) },
+    {
+      error: S.optional(S.String),
+      error_description: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class InvalidGrantException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidGrantException>()(
     "InvalidGrantException",
-    { error: S.optional(S.String), error_description: S.optional(S.String) },
+    {
+      error: S.optional(S.String),
+      error_description: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class InvalidRedirectUriException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidRedirectUriException>()(
     "InvalidRedirectUriException",
-    { error: S.optional(S.String), error_description: S.optional(S.String) },
+    {
+      error: S.optional(S.String),
+      error_description: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class InvalidRequestException
@@ -156,6 +184,7 @@ export class InvalidRequestException
         }),
       ),
       error_description: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
     },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
@@ -167,31 +196,48 @@ export class InvalidRequestRegionException
       error_description: S.optional(S.String),
       endpoint: S.optional(S.String),
       region: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
     },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class InvalidScopeException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidScopeException>()(
     "InvalidScopeException",
-    { error: S.optional(S.String), error_description: S.optional(S.String) },
+    {
+      error: S.optional(S.String),
+      error_description: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class SlowDownException
   extends /*@__PURE__*/ S.TaggedErrorClass<SlowDownException>()(
     "SlowDownException",
-    { error: S.optional(S.String), error_description: S.optional(S.String) },
+    {
+      error: S.optional(S.String),
+      error_description: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class UnauthorizedClientException
   extends /*@__PURE__*/ S.TaggedErrorClass<UnauthorizedClientException>()(
     "UnauthorizedClientException",
-    { error: S.optional(S.String), error_description: S.optional(S.String) },
+    {
+      error: S.optional(S.String),
+      error_description: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(400),
   ).pipe(C.withBadRequestError, C.withAuthError) {}
 export class UnsupportedGrantTypeException
   extends /*@__PURE__*/ S.TaggedErrorClass<UnsupportedGrantTypeException>()(
     "UnsupportedGrantTypeException",
-    { error: S.optional(S.String), error_description: S.optional(S.String) },
+    {
+      error: S.optional(S.String),
+      error_description: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export type ClientId = string;
@@ -479,7 +525,7 @@ export const createToken: API.OperationMethod<
   CreateTokenRequest,
   CreateTokenResponse,
   CreateTokenError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateTokenRequest,
   output: CreateTokenResponse,
@@ -528,7 +574,7 @@ export const createTokenWithIAM: API.OperationMethod<
   CreateTokenWithIAMRequest,
   CreateTokenWithIAMResponse,
   CreateTokenWithIAMError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateTokenWithIAMRequest,
   output: CreateTokenWithIAMResponse,
@@ -569,7 +615,7 @@ export const registerClient: API.OperationMethod<
   RegisterClientRequest,
   RegisterClientResponse,
   RegisterClientError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RegisterClientRequest,
   output: RegisterClientResponse,
@@ -602,7 +648,7 @@ export const startDeviceAuthorization: API.OperationMethod<
   StartDeviceAuthorizationRequest,
   StartDeviceAuthorizationResponse,
   StartDeviceAuthorizationError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartDeviceAuthorizationRequest,
   output: StartDeviceAuthorizationResponse,

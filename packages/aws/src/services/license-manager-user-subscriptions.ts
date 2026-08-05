@@ -1,6 +1,5 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -8,7 +7,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 const svc = T.AwsApiService({
   sdkId: "License Manager User Subscriptions",
   serviceShapeName: "LicenseManagerUserSubscriptions",
@@ -88,39 +86,39 @@ const rules = T.EndpointResolver((p, _) => {
 export class AccessDeniedException
   extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
     "AccessDeniedException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ).pipe(C.withAuthError) {}
 export class ConflictException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
     "ConflictException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InternalServerException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
     "InternalServerException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(500),
   ).pipe(C.withServerError) {}
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class ServiceQuotaExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
     "ServiceQuotaExceededException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class ThrottlingException
   extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
     "ThrottlingException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class ValidationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
     "ValidationException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export type Directory = string;
 export type IpV4 = string;
@@ -1024,7 +1022,7 @@ export const associateUser: API.OperationMethod<
   AssociateUserRequest,
   AssociateUserResponse,
   AssociateUserError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AssociateUserRequest,
   output: AssociateUserResponse,
@@ -1058,7 +1056,7 @@ export const createLicenseServerEndpoint: API.OperationMethod<
   CreateLicenseServerEndpointRequest,
   CreateLicenseServerEndpointResponse,
   CreateLicenseServerEndpointError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateLicenseServerEndpointRequest,
   output: CreateLicenseServerEndpointResponse,
@@ -1092,7 +1090,7 @@ export const deleteLicenseServerEndpoint: API.OperationMethod<
   DeleteLicenseServerEndpointRequest,
   DeleteLicenseServerEndpointResponse,
   DeleteLicenseServerEndpointError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteLicenseServerEndpointRequest,
   output: DeleteLicenseServerEndpointResponse,
@@ -1126,7 +1124,7 @@ export const deregisterIdentityProvider: API.OperationMethod<
   DeregisterIdentityProviderRequest,
   DeregisterIdentityProviderResponse,
   DeregisterIdentityProviderError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeregisterIdentityProviderRequest,
   output: DeregisterIdentityProviderResponse,
@@ -1160,7 +1158,7 @@ export const disassociateUser: API.OperationMethod<
   DisassociateUserRequest,
   DisassociateUserResponse,
   DisassociateUserError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DisassociateUserRequest,
   output: DisassociateUserResponse,
@@ -1190,27 +1188,13 @@ export type ListIdentityProvidersError =
 /**
  * Lists the Active Directory identity providers for user-based subscriptions.
  */
-export const listIdentityProviders: API.OperationMethod<
+export const listIdentityProviders: API.PaginatedOperationMethod<
   ListIdentityProvidersRequest,
   ListIdentityProvidersResponse,
   ListIdentityProvidersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListIdentityProvidersRequest,
-  ) => stream.Stream<
-    ListIdentityProvidersResponse,
-    ListIdentityProvidersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListIdentityProvidersRequest,
-  ) => stream.Stream<
-    IdentityProviderSummary,
-    ListIdentityProvidersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  IdentityProviderSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListIdentityProvidersRequest,
   output: ListIdentityProvidersResponse,
   errors: [
@@ -1231,27 +1215,7 @@ export const listIdentityProviders: API.OperationMethod<
     items: "IdentityProviderSummaries",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListIdentityProvidersRequest,
-  ListIdentityProvidersResponse,
-  ListIdentityProvidersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListIdentityProvidersRequest,
-  ) => stream.Stream<
-    ListIdentityProvidersResponse,
-    ListIdentityProvidersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListIdentityProvidersRequest,
-  ) => stream.Stream<
-    IdentityProviderSummary,
-    ListIdentityProvidersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListInstancesError =
   | AccessDeniedException
@@ -1265,27 +1229,13 @@ export type ListInstancesError =
 /**
  * Lists the EC2 instances providing user-based subscriptions.
  */
-export const listInstances: API.OperationMethod<
+export const listInstances: API.PaginatedOperationMethod<
   ListInstancesRequest,
   ListInstancesResponse,
   ListInstancesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListInstancesRequest,
-  ) => stream.Stream<
-    ListInstancesResponse,
-    ListInstancesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListInstancesRequest,
-  ) => stream.Stream<
-    InstanceSummary,
-    ListInstancesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  InstanceSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListInstancesRequest,
   output: ListInstancesResponse,
   errors: [
@@ -1306,27 +1256,7 @@ export const listInstances: API.OperationMethod<
     items: "InstanceSummaries",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListInstancesRequest,
-  ListInstancesResponse,
-  ListInstancesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListInstancesRequest,
-  ) => stream.Stream<
-    ListInstancesResponse,
-    ListInstancesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListInstancesRequest,
-  ) => stream.Stream<
-    InstanceSummary,
-    ListInstancesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListLicenseServerEndpointsError =
   | AccessDeniedException
@@ -1339,27 +1269,13 @@ export type ListLicenseServerEndpointsError =
 /**
  * List the Remote Desktop Services (RDS) License Server endpoints
  */
-export const listLicenseServerEndpoints: API.OperationMethod<
+export const listLicenseServerEndpoints: API.PaginatedOperationMethod<
   ListLicenseServerEndpointsRequest,
   ListLicenseServerEndpointsResponse,
   ListLicenseServerEndpointsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListLicenseServerEndpointsRequest,
-  ) => stream.Stream<
-    ListLicenseServerEndpointsResponse,
-    ListLicenseServerEndpointsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListLicenseServerEndpointsRequest,
-  ) => stream.Stream<
-    LicenseServerEndpoint,
-    ListLicenseServerEndpointsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  LicenseServerEndpoint
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListLicenseServerEndpointsRequest,
   output: ListLicenseServerEndpointsResponse,
   errors: [
@@ -1379,27 +1295,7 @@ export const listLicenseServerEndpoints: API.OperationMethod<
     items: "LicenseServerEndpoints",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListLicenseServerEndpointsRequest,
-  ListLicenseServerEndpointsResponse,
-  ListLicenseServerEndpointsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListLicenseServerEndpointsRequest,
-  ) => stream.Stream<
-    ListLicenseServerEndpointsResponse,
-    ListLicenseServerEndpointsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListLicenseServerEndpointsRequest,
-  ) => stream.Stream<
-    LicenseServerEndpoint,
-    ListLicenseServerEndpointsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListProductSubscriptionsError =
   | AccessDeniedException
@@ -1413,27 +1309,13 @@ export type ListProductSubscriptionsError =
 /**
  * Lists the user-based subscription products available from an identity provider.
  */
-export const listProductSubscriptions: API.OperationMethod<
+export const listProductSubscriptions: API.PaginatedOperationMethod<
   ListProductSubscriptionsRequest,
   ListProductSubscriptionsResponse,
   ListProductSubscriptionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListProductSubscriptionsRequest,
-  ) => stream.Stream<
-    ListProductSubscriptionsResponse,
-    ListProductSubscriptionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListProductSubscriptionsRequest,
-  ) => stream.Stream<
-    ProductUserSummary,
-    ListProductSubscriptionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ProductUserSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListProductSubscriptionsRequest,
   output: ListProductSubscriptionsResponse,
   errors: [
@@ -1454,27 +1336,7 @@ export const listProductSubscriptions: API.OperationMethod<
     items: "ProductUserSummaries",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListProductSubscriptionsRequest,
-  ListProductSubscriptionsResponse,
-  ListProductSubscriptionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListProductSubscriptionsRequest,
-  ) => stream.Stream<
-    ListProductSubscriptionsResponse,
-    ListProductSubscriptionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListProductSubscriptionsRequest,
-  ) => stream.Stream<
-    ProductUserSummary,
-    ListProductSubscriptionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsForResourceError =
   | InternalServerException
@@ -1488,7 +1350,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceRequest,
   ListTagsForResourceResponse,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -1514,27 +1376,13 @@ export type ListUserAssociationsError =
 /**
  * Lists user associations for an identity provider.
  */
-export const listUserAssociations: API.OperationMethod<
+export const listUserAssociations: API.PaginatedOperationMethod<
   ListUserAssociationsRequest,
   ListUserAssociationsResponse,
   ListUserAssociationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListUserAssociationsRequest,
-  ) => stream.Stream<
-    ListUserAssociationsResponse,
-    ListUserAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListUserAssociationsRequest,
-  ) => stream.Stream<
-    InstanceUserSummary,
-    ListUserAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  InstanceUserSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListUserAssociationsRequest,
   output: ListUserAssociationsResponse,
   errors: [
@@ -1555,27 +1403,7 @@ export const listUserAssociations: API.OperationMethod<
     items: "InstanceUserSummaries",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListUserAssociationsRequest,
-  ListUserAssociationsResponse,
-  ListUserAssociationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListUserAssociationsRequest,
-  ) => stream.Stream<
-    ListUserAssociationsResponse,
-    ListUserAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListUserAssociationsRequest,
-  ) => stream.Stream<
-    InstanceUserSummary,
-    ListUserAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type RegisterIdentityProviderError =
   | AccessDeniedException
@@ -1593,7 +1421,7 @@ export const registerIdentityProvider: API.OperationMethod<
   RegisterIdentityProviderRequest,
   RegisterIdentityProviderResponse,
   RegisterIdentityProviderError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RegisterIdentityProviderRequest,
   output: RegisterIdentityProviderResponse,
@@ -1629,7 +1457,7 @@ export const startProductSubscription: API.OperationMethod<
   StartProductSubscriptionRequest,
   StartProductSubscriptionResponse,
   StartProductSubscriptionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartProductSubscriptionRequest,
   output: StartProductSubscriptionResponse,
@@ -1663,7 +1491,7 @@ export const stopProductSubscription: API.OperationMethod<
   StopProductSubscriptionRequest,
   StopProductSubscriptionResponse,
   StopProductSubscriptionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StopProductSubscriptionRequest,
   output: StopProductSubscriptionResponse,
@@ -1693,7 +1521,7 @@ export const tagResource: API.OperationMethod<
   TagResourceRequest,
   TagResourceResponse,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -1718,7 +1546,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceRequest,
   UntagResourceResponse,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -1741,7 +1569,7 @@ export const updateIdentityProviderSettings: API.OperationMethod<
   UpdateIdentityProviderSettingsRequest,
   UpdateIdentityProviderSettingsResponse,
   UpdateIdentityProviderSettingsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateIdentityProviderSettingsRequest,
   output: UpdateIdentityProviderSettingsResponse,

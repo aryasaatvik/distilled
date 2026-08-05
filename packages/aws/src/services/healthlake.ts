@@ -1,6 +1,5 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -8,7 +7,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 const svc = T.AwsApiService({
   sdkId: "HealthLake",
   serviceShapeName: "HealthLake",
@@ -88,37 +86,37 @@ const rules = T.EndpointResolver((p, _) => {
 export class AccessDeniedException
   extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
     "AccessDeniedException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(403),
   ).pipe(C.withAuthError) {}
 export class ConflictException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
     "ConflictException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class InternalServerException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
     "InternalServerException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(500),
   ).pipe(C.withServerError) {}
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class ThrottlingException
   extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
     "ThrottlingException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(429),
   ).pipe(C.withThrottlingError) {}
 export class ValidationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
     "ValidationException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export type DatastoreName = string;
@@ -862,7 +860,7 @@ export const createFHIRDatastore: API.OperationMethod<
   CreateFHIRDatastoreRequest,
   CreateFHIRDatastoreResponse,
   CreateFHIRDatastoreError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateFHIRDatastoreRequest,
   output: CreateFHIRDatastoreResponse,
@@ -892,7 +890,7 @@ export const deleteFHIRDatastore: API.OperationMethod<
   DeleteFHIRDatastoreRequest,
   DeleteFHIRDatastoreResponse,
   DeleteFHIRDatastoreError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteFHIRDatastoreRequest,
   output: DeleteFHIRDatastoreResponse,
@@ -922,7 +920,7 @@ export const describeFHIRDatastore: API.OperationMethod<
   DescribeFHIRDatastoreRequest,
   DescribeFHIRDatastoreResponse,
   DescribeFHIRDatastoreError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeFHIRDatastoreRequest,
   output: DescribeFHIRDatastoreResponse,
@@ -950,7 +948,7 @@ export const describeFHIRExportJob: API.OperationMethod<
   DescribeFHIRExportJobRequest,
   DescribeFHIRExportJobResponse,
   DescribeFHIRExportJobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeFHIRExportJobRequest,
   output: DescribeFHIRExportJobResponse,
@@ -978,7 +976,7 @@ export const describeFHIRImportJob: API.OperationMethod<
   DescribeFHIRImportJobRequest,
   DescribeFHIRImportJobResponse,
   DescribeFHIRImportJobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeFHIRImportJobRequest,
   output: DescribeFHIRImportJobResponse,
@@ -1002,27 +1000,13 @@ export type ListFHIRDatastoresError =
  * List all FHIR-enabled data stores in a user’s account, regardless of data store
  * status.
  */
-export const listFHIRDatastores: API.OperationMethod<
+export const listFHIRDatastores: API.PaginatedOperationMethod<
   ListFHIRDatastoresRequest,
   ListFHIRDatastoresResponse,
   ListFHIRDatastoresError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListFHIRDatastoresRequest,
-  ) => stream.Stream<
-    ListFHIRDatastoresResponse,
-    ListFHIRDatastoresError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListFHIRDatastoresRequest,
-  ) => stream.Stream<
-    unknown,
-    ListFHIRDatastoresError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListFHIRDatastoresRequest,
   output: ListFHIRDatastoresResponse,
   errors: [InternalServerException, ThrottlingException, ValidationException],
@@ -1034,27 +1018,7 @@ export const listFHIRDatastores: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListFHIRDatastoresRequest,
-  ListFHIRDatastoresResponse,
-  ListFHIRDatastoresError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListFHIRDatastoresRequest,
-  ) => stream.Stream<
-    ListFHIRDatastoresResponse,
-    ListFHIRDatastoresError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListFHIRDatastoresRequest,
-  ) => stream.Stream<
-    unknown,
-    ListFHIRDatastoresError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListFHIRExportJobsError =
   | AccessDeniedException
@@ -1066,27 +1030,13 @@ export type ListFHIRExportJobsError =
 /**
  * Lists all FHIR export jobs associated with an account and their statuses.
  */
-export const listFHIRExportJobs: API.OperationMethod<
+export const listFHIRExportJobs: API.PaginatedOperationMethod<
   ListFHIRExportJobsRequest,
   ListFHIRExportJobsResponse,
   ListFHIRExportJobsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListFHIRExportJobsRequest,
-  ) => stream.Stream<
-    ListFHIRExportJobsResponse,
-    ListFHIRExportJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListFHIRExportJobsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListFHIRExportJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListFHIRExportJobsRequest,
   output: ListFHIRExportJobsResponse,
   errors: [
@@ -1104,27 +1054,7 @@ export const listFHIRExportJobs: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListFHIRExportJobsRequest,
-  ListFHIRExportJobsResponse,
-  ListFHIRExportJobsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListFHIRExportJobsRequest,
-  ) => stream.Stream<
-    ListFHIRExportJobsResponse,
-    ListFHIRExportJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListFHIRExportJobsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListFHIRExportJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListFHIRImportJobsError =
   | AccessDeniedException
@@ -1136,27 +1066,13 @@ export type ListFHIRImportJobsError =
 /**
  * List all FHIR import jobs associated with an account and their statuses.
  */
-export const listFHIRImportJobs: API.OperationMethod<
+export const listFHIRImportJobs: API.PaginatedOperationMethod<
   ListFHIRImportJobsRequest,
   ListFHIRImportJobsResponse,
   ListFHIRImportJobsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListFHIRImportJobsRequest,
-  ) => stream.Stream<
-    ListFHIRImportJobsResponse,
-    ListFHIRImportJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListFHIRImportJobsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListFHIRImportJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListFHIRImportJobsRequest,
   output: ListFHIRImportJobsResponse,
   errors: [
@@ -1174,27 +1090,7 @@ export const listFHIRImportJobs: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListFHIRImportJobsRequest,
-  ListFHIRImportJobsResponse,
-  ListFHIRImportJobsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListFHIRImportJobsRequest,
-  ) => stream.Stream<
-    ListFHIRImportJobsResponse,
-    ListFHIRImportJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListFHIRImportJobsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListFHIRImportJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsForResourceError =
   | ResourceNotFoundException
@@ -1207,7 +1103,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceRequest,
   ListTagsForResourceResponse,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -1231,7 +1127,7 @@ export const startFHIRExportJob: API.OperationMethod<
   StartFHIRExportJobRequest,
   StartFHIRExportJobResponse,
   StartFHIRExportJobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartFHIRExportJobRequest,
   output: StartFHIRExportJobResponse,
@@ -1263,7 +1159,7 @@ export const startFHIRImportJob: API.OperationMethod<
   StartFHIRImportJobRequest,
   StartFHIRImportJobResponse,
   StartFHIRImportJobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartFHIRImportJobRequest,
   output: StartFHIRImportJobResponse,
@@ -1290,7 +1186,7 @@ export const tagResource: API.OperationMethod<
   TagResourceRequest,
   TagResourceResponse,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -1311,7 +1207,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceRequest,
   UntagResourceResponse,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -1336,7 +1232,7 @@ export const updateFHIRDatastore: API.OperationMethod<
   UpdateFHIRDatastoreRequest,
   UpdateFHIRDatastoreResponse,
   UpdateFHIRDatastoreError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateFHIRDatastoreRequest,
   output: UpdateFHIRDatastoreResponse,

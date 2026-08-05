@@ -1,7 +1,6 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as redacted from "effect/Redacted";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -9,7 +8,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region as Rgn } from "../region.ts";
 import { SensitiveString } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "Workspaces Instances",
@@ -57,20 +55,24 @@ const rules = T.EndpointResolver((p, _) => {
 export class AccessDeniedException
   extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
     "AccessDeniedException",
-    { Message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(403),
   ).pipe(C.withAuthError) {}
 export class ConflictException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
     "ConflictException",
-    { Message: S.String, ResourceId: S.String, ResourceType: S.String },
+    {
+      message: S.String.pipe(T.ErrorMessage()),
+      ResourceId: S.String,
+      ResourceType: S.String,
+    },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class InternalServerException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
     "InternalServerException",
     {
-      Message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       RetryAfterSeconds: S.optional(S.Number).pipe(T.HttpHeader("Retry-After")),
     },
     T.all(T.HttpError(500), T.Retryable()),
@@ -78,14 +80,18 @@ export class InternalServerException
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { Message: S.String, ResourceId: S.String, ResourceType: S.String },
+    {
+      message: S.String.pipe(T.ErrorMessage()),
+      ResourceId: S.String,
+      ResourceType: S.String,
+    },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class ServiceQuotaExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
     "ServiceQuotaExceededException",
     {
-      Message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       ResourceId: S.String,
       ResourceType: S.String,
       ServiceCode: S.String,
@@ -97,7 +103,7 @@ export class ThrottlingException
   extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
     "ThrottlingException",
     {
-      Message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       ServiceCode: S.optional(S.String),
       QuotaCode: S.optional(S.String),
       RetryAfterSeconds: S.optional(S.Number).pipe(T.HttpHeader("Retry-After")),
@@ -108,7 +114,7 @@ export class ValidationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
     "ValidationException",
     {
-      Message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       Reason: S.suspend(() => ValidationExceptionReason).annotate({
         identifier: "ValidationExceptionReason",
       }),
@@ -1211,7 +1217,7 @@ export const associateVolume: API.OperationMethod<
   AssociateVolumeRequest,
   AssociateVolumeResponse,
   AssociateVolumeError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AssociateVolumeRequest,
   output: AssociateVolumeResponse,
@@ -1243,7 +1249,7 @@ export const createVolume: API.OperationMethod<
   CreateVolumeRequest,
   CreateVolumeResponse,
   CreateVolumeError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateVolumeRequest,
   output: CreateVolumeResponse,
@@ -1275,7 +1281,7 @@ export const createWorkspaceInstance: API.OperationMethod<
   CreateWorkspaceInstanceRequest,
   CreateWorkspaceInstanceResponse,
   CreateWorkspaceInstanceError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateWorkspaceInstanceRequest,
   output: CreateWorkspaceInstanceResponse,
@@ -1307,7 +1313,7 @@ export const deleteVolume: API.OperationMethod<
   DeleteVolumeRequest,
   DeleteVolumeResponse,
   DeleteVolumeError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteVolumeRequest,
   output: DeleteVolumeResponse,
@@ -1341,7 +1347,7 @@ export const deleteWorkspaceInstance: API.OperationMethod<
   DeleteWorkspaceInstanceRequest,
   DeleteWorkspaceInstanceResponse,
   DeleteWorkspaceInstanceError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteWorkspaceInstanceRequest,
   output: DeleteWorkspaceInstanceResponse,
@@ -1373,7 +1379,7 @@ export const disassociateVolume: API.OperationMethod<
   DisassociateVolumeRequest,
   DisassociateVolumeResponse,
   DisassociateVolumeError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DisassociateVolumeRequest,
   output: DisassociateVolumeResponse,
@@ -1404,7 +1410,7 @@ export const getWorkspaceInstance: API.OperationMethod<
   GetWorkspaceInstanceRequest,
   GetWorkspaceInstanceResponse,
   GetWorkspaceInstanceError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetWorkspaceInstanceRequest,
   output: GetWorkspaceInstanceResponse,
@@ -1429,27 +1435,13 @@ export type ListInstanceTypesError =
 /**
  * Retrieves a list of instance types supported by Amazon WorkSpaces Instances, enabling precise workspace infrastructure configuration.
  */
-export const listInstanceTypes: API.OperationMethod<
+export const listInstanceTypes: API.PaginatedOperationMethod<
   ListInstanceTypesRequest,
   ListInstanceTypesResponse,
   ListInstanceTypesError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListInstanceTypesRequest,
-  ) => stream.Stream<
-    ListInstanceTypesResponse,
-    ListInstanceTypesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListInstanceTypesRequest,
-  ) => stream.Stream<
-    InstanceTypeInfo,
-    ListInstanceTypesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  InstanceTypeInfo
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListInstanceTypesRequest,
   output: ListInstanceTypesResponse,
   errors: [
@@ -1467,27 +1459,7 @@ export const listInstanceTypes: API.OperationMethod<
     items: "InstanceTypes",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListInstanceTypesRequest,
-  ListInstanceTypesResponse,
-  ListInstanceTypesError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListInstanceTypesRequest,
-  ) => stream.Stream<
-    ListInstanceTypesResponse,
-    ListInstanceTypesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListInstanceTypesRequest,
-  ) => stream.Stream<
-    InstanceTypeInfo,
-    ListInstanceTypesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListRegionsError =
   | AccessDeniedException
@@ -1498,27 +1470,13 @@ export type ListRegionsError =
 /**
  * Retrieves a list of AWS regions supported by Amazon WorkSpaces Instances, enabling region discovery for workspace deployments.
  */
-export const listRegions: API.OperationMethod<
+export const listRegions: API.PaginatedOperationMethod<
   ListRegionsRequest,
   ListRegionsResponse,
   ListRegionsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListRegionsRequest,
-  ) => stream.Stream<
-    ListRegionsResponse,
-    ListRegionsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListRegionsRequest,
-  ) => stream.Stream<
-    Region,
-    ListRegionsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Region
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListRegionsRequest,
   output: ListRegionsResponse,
   errors: [
@@ -1536,27 +1494,7 @@ export const listRegions: API.OperationMethod<
     items: "Regions",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListRegionsRequest,
-  ListRegionsResponse,
-  ListRegionsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListRegionsRequest,
-  ) => stream.Stream<
-    ListRegionsResponse,
-    ListRegionsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListRegionsRequest,
-  ) => stream.Stream<
-    Region,
-    ListRegionsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsForResourceError =
   | AccessDeniedException
@@ -1572,7 +1510,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceRequest,
   ListTagsForResourceResponse,
   ListTagsForResourceError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -1597,27 +1535,13 @@ export type ListWorkspaceInstancesError =
 /**
  * Retrieves a collection of WorkSpaces Instances based on specified filters.
  */
-export const listWorkspaceInstances: API.OperationMethod<
+export const listWorkspaceInstances: API.PaginatedOperationMethod<
   ListWorkspaceInstancesRequest,
   ListWorkspaceInstancesResponse,
   ListWorkspaceInstancesError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListWorkspaceInstancesRequest,
-  ) => stream.Stream<
-    ListWorkspaceInstancesResponse,
-    ListWorkspaceInstancesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListWorkspaceInstancesRequest,
-  ) => stream.Stream<
-    WorkspaceInstance,
-    ListWorkspaceInstancesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  WorkspaceInstance
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListWorkspaceInstancesRequest,
   output: ListWorkspaceInstancesResponse,
   errors: [
@@ -1635,27 +1559,7 @@ export const listWorkspaceInstances: API.OperationMethod<
     items: "WorkspaceInstances",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListWorkspaceInstancesRequest,
-  ListWorkspaceInstancesResponse,
-  ListWorkspaceInstancesError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListWorkspaceInstancesRequest,
-  ) => stream.Stream<
-    ListWorkspaceInstancesResponse,
-    ListWorkspaceInstancesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListWorkspaceInstancesRequest,
-  ) => stream.Stream<
-    WorkspaceInstance,
-    ListWorkspaceInstancesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type TagResourceError =
   | AccessDeniedException
@@ -1671,7 +1575,7 @@ export const tagResource: API.OperationMethod<
   TagResourceRequest,
   TagResourceResponse,
   TagResourceError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -1701,7 +1605,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceRequest,
   UntagResourceResponse,
   UntagResourceError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,

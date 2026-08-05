@@ -1,6 +1,5 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -8,7 +7,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 const svc = T.AwsApiService({
   sdkId: "MigrationHubOrchestrator",
   serviceShapeName: "AWSMigrationHubOrchestrator",
@@ -88,37 +86,37 @@ const rules = T.EndpointResolver((p, _) => {
 export class AccessDeniedException
   extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
     "AccessDeniedException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.all(T.HttpError(403), T.Retryable()),
   ).pipe(C.withAuthError, C.withRetryableError) {}
 export class ConflictException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
     "ConflictException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.all(T.HttpError(409), T.Retryable()),
   ).pipe(C.withConflictError, C.withRetryableError) {}
 export class InternalServerException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
     "InternalServerException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(500),
   ).pipe(C.withServerError) {}
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class ThrottlingException
   extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
     "ThrottlingException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(429),
   ).pipe(C.withThrottlingError) {}
 export class ValidationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
     "ValidationException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.all(T.HttpError(400), T.Retryable()),
   ).pipe(C.withBadRequestError, C.withRetryableError) {}
 export type MigrationWorkflowId = string;
@@ -1861,7 +1859,7 @@ export const createTemplate: API.OperationMethod<
   CreateTemplateRequest,
   CreateTemplateResponse,
   CreateTemplateError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateTemplateRequest,
   output: CreateTemplateResponse,
@@ -1890,7 +1888,7 @@ export const createWorkflow: API.OperationMethod<
   CreateMigrationWorkflowRequest,
   CreateMigrationWorkflowResponse,
   CreateWorkflowError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateMigrationWorkflowRequest,
   output: CreateMigrationWorkflowResponse,
@@ -1918,7 +1916,7 @@ export const createWorkflowStep: API.OperationMethod<
   CreateWorkflowStepRequest,
   CreateWorkflowStepResponse,
   CreateWorkflowStepError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateWorkflowStepRequest,
   output: CreateWorkflowStepResponse,
@@ -1946,7 +1944,7 @@ export const createWorkflowStepGroup: API.OperationMethod<
   CreateWorkflowStepGroupRequest,
   CreateWorkflowStepGroupResponse,
   CreateWorkflowStepGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateWorkflowStepGroupRequest,
   output: CreateWorkflowStepGroupResponse,
@@ -1975,7 +1973,7 @@ export const deleteTemplate: API.OperationMethod<
   DeleteTemplateRequest,
   DeleteTemplateResponse,
   DeleteTemplateError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteTemplateRequest,
   output: DeleteTemplateResponse,
@@ -2006,7 +2004,7 @@ export const deleteWorkflow: API.OperationMethod<
   DeleteMigrationWorkflowRequest,
   DeleteMigrationWorkflowResponse,
   DeleteWorkflowError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteMigrationWorkflowRequest,
   output: DeleteMigrationWorkflowResponse,
@@ -2037,7 +2035,7 @@ export const deleteWorkflowStep: API.OperationMethod<
   DeleteWorkflowStepRequest,
   DeleteWorkflowStepResponse,
   DeleteWorkflowStepError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteWorkflowStepRequest,
   output: DeleteWorkflowStepResponse,
@@ -2067,7 +2065,7 @@ export const deleteWorkflowStepGroup: API.OperationMethod<
   DeleteWorkflowStepGroupRequest,
   DeleteWorkflowStepGroupResponse,
   DeleteWorkflowStepGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteWorkflowStepGroupRequest,
   output: DeleteWorkflowStepGroupResponse,
@@ -2096,7 +2094,7 @@ export const getTemplate: API.OperationMethod<
   GetMigrationWorkflowTemplateRequest,
   GetMigrationWorkflowTemplateResponse,
   GetTemplateError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetMigrationWorkflowTemplateRequest,
   output: GetMigrationWorkflowTemplateResponse,
@@ -2125,7 +2123,7 @@ export const getTemplateStep: API.OperationMethod<
   GetTemplateStepRequest,
   GetTemplateStepResponse,
   GetTemplateStepError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetTemplateStepRequest,
   output: GetTemplateStepResponse,
@@ -2155,7 +2153,7 @@ export const getTemplateStepGroup: API.OperationMethod<
   GetTemplateStepGroupRequest,
   GetTemplateStepGroupResponse,
   GetTemplateStepGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetTemplateStepGroupRequest,
   output: GetTemplateStepGroupResponse,
@@ -2185,7 +2183,7 @@ export const getWorkflow: API.OperationMethod<
   GetMigrationWorkflowRequest,
   GetMigrationWorkflowResponse,
   GetWorkflowError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetMigrationWorkflowRequest,
   output: GetMigrationWorkflowResponse,
@@ -2214,7 +2212,7 @@ export const getWorkflowStep: API.OperationMethod<
   GetWorkflowStepRequest,
   GetWorkflowStepResponse,
   GetWorkflowStepError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetWorkflowStepRequest,
   output: GetWorkflowStepResponse,
@@ -2243,7 +2241,7 @@ export const getWorkflowStepGroup: API.OperationMethod<
   GetWorkflowStepGroupRequest,
   GetWorkflowStepGroupResponse,
   GetWorkflowStepGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetWorkflowStepGroupRequest,
   output: GetWorkflowStepGroupResponse,
@@ -2267,27 +2265,13 @@ export type ListPluginsError =
 /**
  * List AWS Migration Hub Orchestrator plugins.
  */
-export const listPlugins: API.OperationMethod<
+export const listPlugins: API.PaginatedOperationMethod<
   ListPluginsRequest,
   ListPluginsResponse,
   ListPluginsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPluginsRequest,
-  ) => stream.Stream<
-    ListPluginsResponse,
-    ListPluginsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPluginsRequest,
-  ) => stream.Stream<
-    PluginSummary,
-    ListPluginsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  PluginSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListPluginsRequest,
   output: ListPluginsResponse,
   errors: [AccessDeniedException, InternalServerException, ValidationException],
@@ -2300,27 +2284,7 @@ export const listPlugins: API.OperationMethod<
     items: "plugins",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListPluginsRequest,
-  ListPluginsResponse,
-  ListPluginsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPluginsRequest,
-  ) => stream.Stream<
-    ListPluginsResponse,
-    ListPluginsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPluginsRequest,
-  ) => stream.Stream<
-    PluginSummary,
-    ListPluginsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsForResourceError =
   | ResourceNotFoundException
@@ -2333,7 +2297,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceRequest,
   ListTagsForResourceResponse,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -2351,27 +2315,13 @@ export type ListTemplatesError =
 /**
  * List the templates available in Migration Hub Orchestrator to create a migration workflow.
  */
-export const listTemplates: API.OperationMethod<
+export const listTemplates: API.PaginatedOperationMethod<
   ListMigrationWorkflowTemplatesRequest,
   ListMigrationWorkflowTemplatesResponse,
   ListTemplatesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListMigrationWorkflowTemplatesRequest,
-  ) => stream.Stream<
-    ListMigrationWorkflowTemplatesResponse,
-    ListTemplatesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListMigrationWorkflowTemplatesRequest,
-  ) => stream.Stream<
-    TemplateSummary,
-    ListTemplatesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  TemplateSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListMigrationWorkflowTemplatesRequest,
   output: ListMigrationWorkflowTemplatesResponse,
   errors: [AccessDeniedException, InternalServerException, ThrottlingException],
@@ -2384,27 +2334,7 @@ export const listTemplates: API.OperationMethod<
     items: "templateSummary",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListMigrationWorkflowTemplatesRequest,
-  ListMigrationWorkflowTemplatesResponse,
-  ListTemplatesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListMigrationWorkflowTemplatesRequest,
-  ) => stream.Stream<
-    ListMigrationWorkflowTemplatesResponse,
-    ListTemplatesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListMigrationWorkflowTemplatesRequest,
-  ) => stream.Stream<
-    TemplateSummary,
-    ListTemplatesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTemplateStepGroupsError =
   | AccessDeniedException
@@ -2415,27 +2345,13 @@ export type ListTemplateStepGroupsError =
 /**
  * List the step groups in a template.
  */
-export const listTemplateStepGroups: API.OperationMethod<
+export const listTemplateStepGroups: API.PaginatedOperationMethod<
   ListTemplateStepGroupsRequest,
   ListTemplateStepGroupsResponse,
   ListTemplateStepGroupsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTemplateStepGroupsRequest,
-  ) => stream.Stream<
-    ListTemplateStepGroupsResponse,
-    ListTemplateStepGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTemplateStepGroupsRequest,
-  ) => stream.Stream<
-    TemplateStepGroupSummary,
-    ListTemplateStepGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  TemplateStepGroupSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListTemplateStepGroupsRequest,
   output: ListTemplateStepGroupsResponse,
   errors: [
@@ -2453,27 +2369,7 @@ export const listTemplateStepGroups: API.OperationMethod<
     items: "templateStepGroupSummary",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListTemplateStepGroupsRequest,
-  ListTemplateStepGroupsResponse,
-  ListTemplateStepGroupsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTemplateStepGroupsRequest,
-  ) => stream.Stream<
-    ListTemplateStepGroupsResponse,
-    ListTemplateStepGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTemplateStepGroupsRequest,
-  ) => stream.Stream<
-    TemplateStepGroupSummary,
-    ListTemplateStepGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTemplateStepsError =
   | AccessDeniedException
@@ -2485,27 +2381,13 @@ export type ListTemplateStepsError =
 /**
  * List the steps in a template.
  */
-export const listTemplateSteps: API.OperationMethod<
+export const listTemplateSteps: API.PaginatedOperationMethod<
   ListTemplateStepsRequest,
   ListTemplateStepsResponse,
   ListTemplateStepsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTemplateStepsRequest,
-  ) => stream.Stream<
-    ListTemplateStepsResponse,
-    ListTemplateStepsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTemplateStepsRequest,
-  ) => stream.Stream<
-    TemplateStepSummary,
-    ListTemplateStepsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  TemplateStepSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListTemplateStepsRequest,
   output: ListTemplateStepsResponse,
   errors: [
@@ -2524,27 +2406,7 @@ export const listTemplateSteps: API.OperationMethod<
     items: "templateStepSummaryList",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListTemplateStepsRequest,
-  ListTemplateStepsResponse,
-  ListTemplateStepsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTemplateStepsRequest,
-  ) => stream.Stream<
-    ListTemplateStepsResponse,
-    ListTemplateStepsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTemplateStepsRequest,
-  ) => stream.Stream<
-    TemplateStepSummary,
-    ListTemplateStepsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListWorkflowsError =
   | AccessDeniedException
@@ -2556,27 +2418,13 @@ export type ListWorkflowsError =
 /**
  * List the migration workflows.
  */
-export const listWorkflows: API.OperationMethod<
+export const listWorkflows: API.PaginatedOperationMethod<
   ListMigrationWorkflowsRequest,
   ListMigrationWorkflowsResponse,
   ListWorkflowsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListMigrationWorkflowsRequest,
-  ) => stream.Stream<
-    ListMigrationWorkflowsResponse,
-    ListWorkflowsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListMigrationWorkflowsRequest,
-  ) => stream.Stream<
-    MigrationWorkflowSummary,
-    ListWorkflowsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  MigrationWorkflowSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListMigrationWorkflowsRequest,
   output: ListMigrationWorkflowsResponse,
   errors: [
@@ -2595,27 +2443,7 @@ export const listWorkflows: API.OperationMethod<
     items: "migrationWorkflowSummary",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListMigrationWorkflowsRequest,
-  ListMigrationWorkflowsResponse,
-  ListWorkflowsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListMigrationWorkflowsRequest,
-  ) => stream.Stream<
-    ListMigrationWorkflowsResponse,
-    ListWorkflowsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListMigrationWorkflowsRequest,
-  ) => stream.Stream<
-    MigrationWorkflowSummary,
-    ListWorkflowsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListWorkflowStepGroupsError =
   | AccessDeniedException
@@ -2627,27 +2455,13 @@ export type ListWorkflowStepGroupsError =
 /**
  * List the step groups in a migration workflow.
  */
-export const listWorkflowStepGroups: API.OperationMethod<
+export const listWorkflowStepGroups: API.PaginatedOperationMethod<
   ListWorkflowStepGroupsRequest,
   ListWorkflowStepGroupsResponse,
   ListWorkflowStepGroupsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListWorkflowStepGroupsRequest,
-  ) => stream.Stream<
-    ListWorkflowStepGroupsResponse,
-    ListWorkflowStepGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListWorkflowStepGroupsRequest,
-  ) => stream.Stream<
-    WorkflowStepGroupSummary,
-    ListWorkflowStepGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  WorkflowStepGroupSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListWorkflowStepGroupsRequest,
   output: ListWorkflowStepGroupsResponse,
   errors: [
@@ -2666,27 +2480,7 @@ export const listWorkflowStepGroups: API.OperationMethod<
     items: "workflowStepGroupsSummary",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListWorkflowStepGroupsRequest,
-  ListWorkflowStepGroupsResponse,
-  ListWorkflowStepGroupsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListWorkflowStepGroupsRequest,
-  ) => stream.Stream<
-    ListWorkflowStepGroupsResponse,
-    ListWorkflowStepGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListWorkflowStepGroupsRequest,
-  ) => stream.Stream<
-    WorkflowStepGroupSummary,
-    ListWorkflowStepGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListWorkflowStepsError =
   | AccessDeniedException
@@ -2697,27 +2491,13 @@ export type ListWorkflowStepsError =
 /**
  * List the steps in a workflow.
  */
-export const listWorkflowSteps: API.OperationMethod<
+export const listWorkflowSteps: API.PaginatedOperationMethod<
   ListWorkflowStepsRequest,
   ListWorkflowStepsResponse,
   ListWorkflowStepsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListWorkflowStepsRequest,
-  ) => stream.Stream<
-    ListWorkflowStepsResponse,
-    ListWorkflowStepsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListWorkflowStepsRequest,
-  ) => stream.Stream<
-    WorkflowStepSummary,
-    ListWorkflowStepsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  WorkflowStepSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListWorkflowStepsRequest,
   output: ListWorkflowStepsResponse,
   errors: [
@@ -2735,27 +2515,7 @@ export const listWorkflowSteps: API.OperationMethod<
     items: "workflowStepsSummary",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListWorkflowStepsRequest,
-  ListWorkflowStepsResponse,
-  ListWorkflowStepsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListWorkflowStepsRequest,
-  ) => stream.Stream<
-    ListWorkflowStepsResponse,
-    ListWorkflowStepsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListWorkflowStepsRequest,
-  ) => stream.Stream<
-    WorkflowStepSummary,
-    ListWorkflowStepsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type RetryWorkflowStepError =
   | AccessDeniedException
@@ -2770,7 +2530,7 @@ export const retryWorkflowStep: API.OperationMethod<
   RetryWorkflowStepRequest,
   RetryWorkflowStepResponse,
   RetryWorkflowStepError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RetryWorkflowStepRequest,
   output: RetryWorkflowStepResponse,
@@ -2799,7 +2559,7 @@ export const startWorkflow: API.OperationMethod<
   StartMigrationWorkflowRequest,
   StartMigrationWorkflowResponse,
   StartWorkflowError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartMigrationWorkflowRequest,
   output: StartMigrationWorkflowResponse,
@@ -2829,7 +2589,7 @@ export const stopWorkflow: API.OperationMethod<
   StopMigrationWorkflowRequest,
   StopMigrationWorkflowResponse,
   StopWorkflowError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StopMigrationWorkflowRequest,
   output: StopMigrationWorkflowResponse,
@@ -2856,7 +2616,7 @@ export const tagResource: API.OperationMethod<
   TagResourceRequest,
   TagResourceResponse,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -2877,7 +2637,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceRequest,
   UntagResourceResponse,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -2901,7 +2661,7 @@ export const updateTemplate: API.OperationMethod<
   UpdateTemplateRequest,
   UpdateTemplateResponse,
   UpdateTemplateError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateTemplateRequest,
   output: UpdateTemplateResponse,
@@ -2931,7 +2691,7 @@ export const updateWorkflow: API.OperationMethod<
   UpdateMigrationWorkflowRequest,
   UpdateMigrationWorkflowResponse,
   UpdateWorkflowError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateMigrationWorkflowRequest,
   output: UpdateMigrationWorkflowResponse,
@@ -2960,7 +2720,7 @@ export const updateWorkflowStep: API.OperationMethod<
   UpdateWorkflowStepRequest,
   UpdateWorkflowStepResponse,
   UpdateWorkflowStepError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateWorkflowStepRequest,
   output: UpdateWorkflowStepResponse,
@@ -2989,7 +2749,7 @@ export const updateWorkflowStepGroup: API.OperationMethod<
   UpdateWorkflowStepGroupRequest,
   UpdateWorkflowStepGroupResponse,
   UpdateWorkflowStepGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateWorkflowStepGroupRequest,
   output: UpdateWorkflowStepGroupResponse,

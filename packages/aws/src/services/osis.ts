@@ -1,6 +1,5 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -8,7 +7,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 const ns = T.XmlNamespace("http://osis.amazonaws.com/doc/2022-01-01");
 const svc = T.AwsApiService({
   sdkId: "OSIS",
@@ -89,55 +87,55 @@ const rules = T.EndpointResolver((p, _) => {
 export class AccessDeniedException
   extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
     "AccessDeniedException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(403),
   ).pipe(C.withAuthError) {}
 export class ConflictException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
     "ConflictException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class DisabledOperationException
   extends /*@__PURE__*/ S.TaggedErrorClass<DisabledOperationException>()(
     "DisabledOperationException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class InternalException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalException>()(
     "InternalException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(500),
   ).pipe(C.withServerError) {}
 export class InvalidPaginationTokenException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidPaginationTokenException>()(
     "InvalidPaginationTokenException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class LimitExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<LimitExceededException>()(
     "LimitExceededException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class ResourceAlreadyExistsException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceAlreadyExistsException>()(
     "ResourceAlreadyExistsException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(409),
   ).pipe(C.withConflictError, C.withAlreadyExistsError) {}
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class ValidationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
     "ValidationException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export type PipelineName = string;
@@ -1288,7 +1286,7 @@ export const createPipeline: API.OperationMethod<
   CreatePipelineRequest,
   CreatePipelineResponse,
   CreatePipelineError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreatePipelineRequest,
   output: CreatePipelineResponse,
@@ -1322,7 +1320,7 @@ export const createPipelineEndpoint: API.OperationMethod<
   CreatePipelineEndpointRequest,
   CreatePipelineEndpointResponse,
   CreatePipelineEndpointError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreatePipelineEndpointRequest,
   output: CreatePipelineEndpointResponse,
@@ -1355,7 +1353,7 @@ export const deletePipeline: API.OperationMethod<
   DeletePipelineRequest,
   DeletePipelineResponse,
   DeletePipelineError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeletePipelineRequest,
   output: DeletePipelineResponse,
@@ -1385,7 +1383,7 @@ export const deletePipelineEndpoint: API.OperationMethod<
   DeletePipelineEndpointRequest,
   DeletePipelineEndpointResponse,
   DeletePipelineEndpointError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeletePipelineEndpointRequest,
   output: DeletePipelineEndpointResponse,
@@ -1415,7 +1413,7 @@ export const deleteResourcePolicy: API.OperationMethod<
   DeleteResourcePolicyRequest,
   DeleteResourcePolicyResponse,
   DeleteResourcePolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteResourcePolicyRequest,
   output: DeleteResourcePolicyResponse,
@@ -1446,7 +1444,7 @@ export const getPipeline: API.OperationMethod<
   GetPipelineRequest,
   GetPipelineResponse,
   GetPipelineError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetPipelineRequest,
   output: GetPipelineResponse,
@@ -1479,7 +1477,7 @@ export const getPipelineBlueprint: API.OperationMethod<
   GetPipelineBlueprintRequest,
   GetPipelineBlueprintResponse,
   GetPipelineBlueprintError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetPipelineBlueprintRequest,
   output: GetPipelineBlueprintResponse,
@@ -1513,7 +1511,7 @@ export const getPipelineChangeProgress: API.OperationMethod<
   GetPipelineChangeProgressRequest,
   GetPipelineChangeProgressResponse,
   GetPipelineChangeProgressError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetPipelineChangeProgressRequest,
   output: GetPipelineChangeProgressResponse,
@@ -1544,7 +1542,7 @@ export const getResourcePolicy: API.OperationMethod<
   GetResourcePolicyRequest,
   GetResourcePolicyResponse,
   GetResourcePolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetResourcePolicyRequest,
   output: GetResourcePolicyResponse,
@@ -1577,7 +1575,7 @@ export const listPipelineBlueprints: API.OperationMethod<
   ListPipelineBlueprintsRequest,
   ListPipelineBlueprintsResponse,
   ListPipelineBlueprintsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListPipelineBlueprintsRequest,
   output: ListPipelineBlueprintsResponse,
@@ -1603,27 +1601,13 @@ export type ListPipelineEndpointConnectionsError =
 /**
  * Lists the pipeline endpoints connected to pipelines in your account.
  */
-export const listPipelineEndpointConnections: API.OperationMethod<
+export const listPipelineEndpointConnections: API.PaginatedOperationMethod<
   ListPipelineEndpointConnectionsRequest,
   ListPipelineEndpointConnectionsResponse,
   ListPipelineEndpointConnectionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPipelineEndpointConnectionsRequest,
-  ) => stream.Stream<
-    ListPipelineEndpointConnectionsResponse,
-    ListPipelineEndpointConnectionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPipelineEndpointConnectionsRequest,
-  ) => stream.Stream<
-    PipelineEndpointConnection,
-    ListPipelineEndpointConnectionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  PipelineEndpointConnection
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListPipelineEndpointConnectionsRequest,
   output: ListPipelineEndpointConnectionsResponse,
   errors: [
@@ -1642,27 +1626,7 @@ export const listPipelineEndpointConnections: API.OperationMethod<
     items: "PipelineEndpointConnections",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListPipelineEndpointConnectionsRequest,
-  ListPipelineEndpointConnectionsResponse,
-  ListPipelineEndpointConnectionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPipelineEndpointConnectionsRequest,
-  ) => stream.Stream<
-    ListPipelineEndpointConnectionsResponse,
-    ListPipelineEndpointConnectionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPipelineEndpointConnectionsRequest,
-  ) => stream.Stream<
-    PipelineEndpointConnection,
-    ListPipelineEndpointConnectionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListPipelineEndpointsError =
   | AccessDeniedException
@@ -1674,27 +1638,13 @@ export type ListPipelineEndpointsError =
 /**
  * Lists all pipeline endpoints in your account.
  */
-export const listPipelineEndpoints: API.OperationMethod<
+export const listPipelineEndpoints: API.PaginatedOperationMethod<
   ListPipelineEndpointsRequest,
   ListPipelineEndpointsResponse,
   ListPipelineEndpointsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPipelineEndpointsRequest,
-  ) => stream.Stream<
-    ListPipelineEndpointsResponse,
-    ListPipelineEndpointsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPipelineEndpointsRequest,
-  ) => stream.Stream<
-    PipelineEndpoint,
-    ListPipelineEndpointsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  PipelineEndpoint
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListPipelineEndpointsRequest,
   output: ListPipelineEndpointsResponse,
   errors: [
@@ -1713,27 +1663,7 @@ export const listPipelineEndpoints: API.OperationMethod<
     items: "PipelineEndpoints",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListPipelineEndpointsRequest,
-  ListPipelineEndpointsResponse,
-  ListPipelineEndpointsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPipelineEndpointsRequest,
-  ) => stream.Stream<
-    ListPipelineEndpointsResponse,
-    ListPipelineEndpointsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPipelineEndpointsRequest,
-  ) => stream.Stream<
-    PipelineEndpoint,
-    ListPipelineEndpointsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListPipelinesError =
   | AccessDeniedException
@@ -1747,27 +1677,13 @@ export type ListPipelinesError =
  * For more information, see Viewing Amazon OpenSearch
  * Ingestion pipelines.
  */
-export const listPipelines: API.OperationMethod<
+export const listPipelines: API.PaginatedOperationMethod<
   ListPipelinesRequest,
   ListPipelinesResponse,
   ListPipelinesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPipelinesRequest,
-  ) => stream.Stream<
-    ListPipelinesResponse,
-    ListPipelinesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPipelinesRequest,
-  ) => stream.Stream<
-    unknown,
-    ListPipelinesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListPipelinesRequest,
   output: ListPipelinesResponse,
   errors: [
@@ -1785,27 +1701,7 @@ export const listPipelines: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListPipelinesRequest,
-  ListPipelinesResponse,
-  ListPipelinesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPipelinesRequest,
-  ) => stream.Stream<
-    ListPipelinesResponse,
-    ListPipelinesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPipelinesRequest,
-  ) => stream.Stream<
-    unknown,
-    ListPipelinesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsForResourceError =
   | AccessDeniedException
@@ -1822,7 +1718,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceRequest,
   ListTagsForResourceResponse,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -1854,7 +1750,7 @@ export const putResourcePolicy: API.OperationMethod<
   PutResourcePolicyRequest,
   PutResourcePolicyResponse,
   PutResourcePolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutResourcePolicyRequest,
   output: PutResourcePolicyResponse,
@@ -1885,7 +1781,7 @@ export const revokePipelineEndpointConnections: API.OperationMethod<
   RevokePipelineEndpointConnectionsRequest,
   RevokePipelineEndpointConnectionsResponse,
   RevokePipelineEndpointConnectionsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RevokePipelineEndpointConnectionsRequest,
   output: RevokePipelineEndpointConnectionsResponse,
@@ -1916,7 +1812,7 @@ export const startPipeline: API.OperationMethod<
   StartPipelineRequest,
   StartPipelineResponse,
   StartPipelineError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartPipelineRequest,
   output: StartPipelineResponse,
@@ -1949,7 +1845,7 @@ export const stopPipeline: API.OperationMethod<
   StopPipelineRequest,
   StopPipelineResponse,
   StopPipelineError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StopPipelineRequest,
   output: StopPipelineResponse,
@@ -1982,7 +1878,7 @@ export const tagResource: API.OperationMethod<
   TagResourceRequest,
   TagResourceResponse,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -2014,7 +1910,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceRequest,
   UntagResourceResponse,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -2046,7 +1942,7 @@ export const updatePipeline: API.OperationMethod<
   UpdatePipelineRequest,
   UpdatePipelineResponse,
   UpdatePipelineError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdatePipelineRequest,
   output: UpdatePipelineResponse,
@@ -2078,7 +1974,7 @@ export const validatePipeline: API.OperationMethod<
   ValidatePipelineRequest,
   ValidatePipelineResponse,
   ValidatePipelineError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ValidatePipelineRequest,
   output: ValidatePipelineResponse,

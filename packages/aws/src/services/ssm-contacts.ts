@@ -1,6 +1,5 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -8,7 +7,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 const svc = T.AwsApiService({
   sdkId: "SSM Contacts",
   serviceShapeName: "SSMContacts",
@@ -88,14 +86,14 @@ const rules = T.EndpointResolver((p, _) => {
 export class AccessDeniedException
   extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
     "AccessDeniedException",
-    { Message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(403),
   ).pipe(C.withAuthError) {}
 export class ConflictException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
     "ConflictException",
     {
-      Message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       ResourceId: S.String,
       ResourceType: S.String,
       DependentEntities: S.optional(
@@ -109,14 +107,14 @@ export class ConflictException
 export class DataEncryptionException
   extends /*@__PURE__*/ S.TaggedErrorClass<DataEncryptionException>()(
     "DataEncryptionException",
-    { Message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class IncidentManagerNotOnboarded
   extends /*@__PURE__*/ S.TaggedErrorClass<IncidentManagerNotOnboarded>()(
     "IncidentManagerNotOnboarded",
     {
-      Message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       Reason: S.optional(
         S.suspend(() => ValidationExceptionReason).annotate({
           identifier: "ValidationExceptionReason",
@@ -137,7 +135,7 @@ export class InternalServerException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
     "InternalServerException",
     {
-      Message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       RetryAfterSeconds: S.optional(S.Number).pipe(T.HttpHeader("Retry-After")),
     },
     T.HttpError(500),
@@ -146,7 +144,7 @@ export class InvalidRotationArn
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidRotationArn>()(
     "InvalidRotationArn",
     {
-      Message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       Reason: S.optional(
         S.suspend(() => ValidationExceptionReason).annotate({
           identifier: "ValidationExceptionReason",
@@ -166,14 +164,18 @@ export class InvalidRotationArn
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { Message: S.String, ResourceId: S.String, ResourceType: S.String },
+    {
+      message: S.String.pipe(T.ErrorMessage()),
+      ResourceId: S.String,
+      ResourceType: S.String,
+    },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class ServiceQuotaExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
     "ServiceQuotaExceededException",
     {
-      Message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       ResourceId: S.optional(S.String),
       ResourceType: S.optional(S.String),
       QuotaCode: S.String,
@@ -185,7 +187,7 @@ export class ThrottlingException
   extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
     "ThrottlingException",
     {
-      Message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       QuotaCode: S.optional(S.String),
       ServiceCode: S.optional(S.String),
       RetryAfterSeconds: S.optional(S.Number).pipe(T.HttpHeader("Retry-After")),
@@ -196,7 +198,7 @@ export class ValidationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
     "ValidationException",
     {
-      Message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       Reason: S.optional(
         S.suspend(() => ValidationExceptionReason).annotate({
           identifier: "ValidationExceptionReason",
@@ -1672,7 +1674,7 @@ export const acceptPage: API.OperationMethod<
   AcceptPageRequest,
   AcceptPageResult,
   AcceptPageError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AcceptPageRequest,
   output: AcceptPageResult,
@@ -1705,7 +1707,7 @@ export const activateContactChannel: API.OperationMethod<
   ActivateContactChannelRequest,
   ActivateContactChannelResult,
   ActivateContactChannelError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ActivateContactChannelRequest,
   output: ActivateContactChannelResult,
@@ -1741,7 +1743,7 @@ export const createContact: API.OperationMethod<
   CreateContactRequest,
   CreateContactResult,
   CreateContactError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateContactRequest,
   output: CreateContactResult,
@@ -1776,7 +1778,7 @@ export const createContactChannel: API.OperationMethod<
   CreateContactChannelRequest,
   CreateContactChannelResult,
   CreateContactChannelError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateContactChannelRequest,
   output: CreateContactChannelResult,
@@ -1811,7 +1813,7 @@ export const createRotation: API.OperationMethod<
   CreateRotationRequest,
   CreateRotationResult,
   CreateRotationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateRotationRequest,
   output: CreateRotationResult,
@@ -1847,7 +1849,7 @@ export const createRotationOverride: API.OperationMethod<
   CreateRotationOverrideRequest,
   CreateRotationOverrideResult,
   CreateRotationOverrideError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateRotationOverrideRequest,
   output: CreateRotationOverrideResult,
@@ -1882,7 +1884,7 @@ export const deactivateContactChannel: API.OperationMethod<
   DeactivateContactChannelRequest,
   DeactivateContactChannelResult,
   DeactivateContactChannelError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeactivateContactChannelRequest,
   output: DeactivateContactChannelResult,
@@ -1919,7 +1921,7 @@ export const deleteContact: API.OperationMethod<
   DeleteContactRequest,
   DeleteContactResult,
   DeleteContactError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteContactRequest,
   output: DeleteContactResult,
@@ -1956,7 +1958,7 @@ export const deleteContactChannel: API.OperationMethod<
   DeleteContactChannelRequest,
   DeleteContactChannelResult,
   DeleteContactChannelError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteContactChannelRequest,
   output: DeleteContactChannelResult,
@@ -1991,7 +1993,7 @@ export const deleteRotation: API.OperationMethod<
   DeleteRotationRequest,
   DeleteRotationResult,
   DeleteRotationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteRotationRequest,
   output: DeleteRotationResult,
@@ -2026,7 +2028,7 @@ export const deleteRotationOverride: API.OperationMethod<
   DeleteRotationOverrideRequest,
   DeleteRotationOverrideResult,
   DeleteRotationOverrideError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteRotationOverrideRequest,
   output: DeleteRotationOverrideResult,
@@ -2061,7 +2063,7 @@ export const describeEngagement: API.OperationMethod<
   DescribeEngagementRequest,
   DescribeEngagementResult,
   DescribeEngagementError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeEngagementRequest,
   output: DescribeEngagementResult,
@@ -2095,7 +2097,7 @@ export const describePage: API.OperationMethod<
   DescribePageRequest,
   DescribePageResult,
   DescribePageError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribePageRequest,
   output: DescribePageResult,
@@ -2129,7 +2131,7 @@ export const getContact: API.OperationMethod<
   GetContactRequest,
   GetContactResult,
   GetContactError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetContactRequest,
   output: GetContactResult,
@@ -2163,7 +2165,7 @@ export const getContactChannel: API.OperationMethod<
   GetContactChannelRequest,
   GetContactChannelResult,
   GetContactChannelError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetContactChannelRequest,
   output: GetContactChannelResult,
@@ -2197,7 +2199,7 @@ export const getContactPolicy: API.OperationMethod<
   GetContactPolicyRequest,
   GetContactPolicyResult,
   GetContactPolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetContactPolicyRequest,
   output: GetContactPolicyResult,
@@ -2230,7 +2232,7 @@ export const getRotation: API.OperationMethod<
   GetRotationRequest,
   GetRotationResult,
   GetRotationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetRotationRequest,
   output: GetRotationResult,
@@ -2264,7 +2266,7 @@ export const getRotationOverride: API.OperationMethod<
   GetRotationOverrideRequest,
   GetRotationOverrideResult,
   GetRotationOverrideError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetRotationOverrideRequest,
   output: GetRotationOverrideResult,
@@ -2294,27 +2296,13 @@ export type ListContactChannelsError =
 /**
  * Lists all contact channels for the specified contact.
  */
-export const listContactChannels: API.OperationMethod<
+export const listContactChannels: API.PaginatedOperationMethod<
   ListContactChannelsRequest,
   ListContactChannelsResult,
   ListContactChannelsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListContactChannelsRequest,
-  ) => stream.Stream<
-    ListContactChannelsResult,
-    ListContactChannelsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListContactChannelsRequest,
-  ) => stream.Stream<
-    ContactChannel,
-    ListContactChannelsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ContactChannel
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListContactChannelsRequest,
   output: ListContactChannelsResult,
   errors: [
@@ -2335,27 +2323,7 @@ export const listContactChannels: API.OperationMethod<
     items: "ContactChannels",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListContactChannelsRequest,
-  ListContactChannelsResult,
-  ListContactChannelsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListContactChannelsRequest,
-  ) => stream.Stream<
-    ListContactChannelsResult,
-    ListContactChannelsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListContactChannelsRequest,
-  ) => stream.Stream<
-    ContactChannel,
-    ListContactChannelsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListContactsError =
   | AccessDeniedException
@@ -2367,27 +2335,13 @@ export type ListContactsError =
 /**
  * Lists all contacts and escalation plans in Incident Manager.
  */
-export const listContacts: API.OperationMethod<
+export const listContacts: API.PaginatedOperationMethod<
   ListContactsRequest,
   ListContactsResult,
   ListContactsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListContactsRequest,
-  ) => stream.Stream<
-    ListContactsResult,
-    ListContactsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListContactsRequest,
-  ) => stream.Stream<
-    Contact,
-    ListContactsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Contact
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListContactsRequest,
   output: ListContactsResult,
   errors: [
@@ -2406,27 +2360,7 @@ export const listContacts: API.OperationMethod<
     items: "Contacts",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListContactsRequest,
-  ListContactsResult,
-  ListContactsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListContactsRequest,
-  ) => stream.Stream<
-    ListContactsResult,
-    ListContactsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListContactsRequest,
-  ) => stream.Stream<
-    Contact,
-    ListContactsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListEngagementsError =
   | AccessDeniedException
@@ -2438,27 +2372,13 @@ export type ListEngagementsError =
 /**
  * Lists all engagements that have happened in an incident.
  */
-export const listEngagements: API.OperationMethod<
+export const listEngagements: API.PaginatedOperationMethod<
   ListEngagementsRequest,
   ListEngagementsResult,
   ListEngagementsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListEngagementsRequest,
-  ) => stream.Stream<
-    ListEngagementsResult,
-    ListEngagementsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListEngagementsRequest,
-  ) => stream.Stream<
-    Engagement,
-    ListEngagementsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Engagement
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListEngagementsRequest,
   output: ListEngagementsResult,
   errors: [
@@ -2477,27 +2397,7 @@ export const listEngagements: API.OperationMethod<
     items: "Engagements",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListEngagementsRequest,
-  ListEngagementsResult,
-  ListEngagementsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListEngagementsRequest,
-  ) => stream.Stream<
-    ListEngagementsResult,
-    ListEngagementsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListEngagementsRequest,
-  ) => stream.Stream<
-    Engagement,
-    ListEngagementsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListPageReceiptsError =
   | AccessDeniedException
@@ -2510,27 +2410,13 @@ export type ListPageReceiptsError =
 /**
  * Lists all of the engagements to contact channels that have been acknowledged.
  */
-export const listPageReceipts: API.OperationMethod<
+export const listPageReceipts: API.PaginatedOperationMethod<
   ListPageReceiptsRequest,
   ListPageReceiptsResult,
   ListPageReceiptsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPageReceiptsRequest,
-  ) => stream.Stream<
-    ListPageReceiptsResult,
-    ListPageReceiptsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPageReceiptsRequest,
-  ) => stream.Stream<
-    Receipt,
-    ListPageReceiptsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Receipt
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListPageReceiptsRequest,
   output: ListPageReceiptsResult,
   errors: [
@@ -2550,27 +2436,7 @@ export const listPageReceipts: API.OperationMethod<
     items: "Receipts",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListPageReceiptsRequest,
-  ListPageReceiptsResult,
-  ListPageReceiptsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPageReceiptsRequest,
-  ) => stream.Stream<
-    ListPageReceiptsResult,
-    ListPageReceiptsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPageReceiptsRequest,
-  ) => stream.Stream<
-    Receipt,
-    ListPageReceiptsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListPageResolutionsError =
   | AccessDeniedException
@@ -2587,27 +2453,13 @@ export type ListPageResolutionsError =
  * indicates the hierarchy of escalation plan > on-call schedule >
  * contact.
  */
-export const listPageResolutions: API.OperationMethod<
+export const listPageResolutions: API.PaginatedOperationMethod<
   ListPageResolutionsRequest,
   ListPageResolutionsResult,
   ListPageResolutionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPageResolutionsRequest,
-  ) => stream.Stream<
-    ListPageResolutionsResult,
-    ListPageResolutionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPageResolutionsRequest,
-  ) => stream.Stream<
-    ResolutionContact,
-    ListPageResolutionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ResolutionContact
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListPageResolutionsRequest,
   output: ListPageResolutionsResult,
   errors: [
@@ -2626,27 +2478,7 @@ export const listPageResolutions: API.OperationMethod<
     outputToken: "NextToken",
     items: "PageResolutions",
   } as const,
-})) as any as API.OperationMethod<
-  ListPageResolutionsRequest,
-  ListPageResolutionsResult,
-  ListPageResolutionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPageResolutionsRequest,
-  ) => stream.Stream<
-    ListPageResolutionsResult,
-    ListPageResolutionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPageResolutionsRequest,
-  ) => stream.Stream<
-    ResolutionContact,
-    ListPageResolutionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListPagesByContactError =
   | AccessDeniedException
@@ -2659,27 +2491,13 @@ export type ListPagesByContactError =
 /**
  * Lists the engagements to a contact's contact channels.
  */
-export const listPagesByContact: API.OperationMethod<
+export const listPagesByContact: API.PaginatedOperationMethod<
   ListPagesByContactRequest,
   ListPagesByContactResult,
   ListPagesByContactError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPagesByContactRequest,
-  ) => stream.Stream<
-    ListPagesByContactResult,
-    ListPagesByContactError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPagesByContactRequest,
-  ) => stream.Stream<
-    Page,
-    ListPagesByContactError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Page
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListPagesByContactRequest,
   output: ListPagesByContactResult,
   errors: [
@@ -2699,27 +2517,7 @@ export const listPagesByContact: API.OperationMethod<
     items: "Pages",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListPagesByContactRequest,
-  ListPagesByContactResult,
-  ListPagesByContactError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPagesByContactRequest,
-  ) => stream.Stream<
-    ListPagesByContactResult,
-    ListPagesByContactError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPagesByContactRequest,
-  ) => stream.Stream<
-    Page,
-    ListPagesByContactError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListPagesByEngagementError =
   | AccessDeniedException
@@ -2732,27 +2530,13 @@ export type ListPagesByEngagementError =
 /**
  * Lists the engagements to contact channels that occurred by engaging a contact.
  */
-export const listPagesByEngagement: API.OperationMethod<
+export const listPagesByEngagement: API.PaginatedOperationMethod<
   ListPagesByEngagementRequest,
   ListPagesByEngagementResult,
   ListPagesByEngagementError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPagesByEngagementRequest,
-  ) => stream.Stream<
-    ListPagesByEngagementResult,
-    ListPagesByEngagementError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPagesByEngagementRequest,
-  ) => stream.Stream<
-    Page,
-    ListPagesByEngagementError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Page
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListPagesByEngagementRequest,
   output: ListPagesByEngagementResult,
   errors: [
@@ -2772,27 +2556,7 @@ export const listPagesByEngagement: API.OperationMethod<
     items: "Pages",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListPagesByEngagementRequest,
-  ListPagesByEngagementResult,
-  ListPagesByEngagementError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPagesByEngagementRequest,
-  ) => stream.Stream<
-    ListPagesByEngagementResult,
-    ListPagesByEngagementError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPagesByEngagementRequest,
-  ) => stream.Stream<
-    Page,
-    ListPagesByEngagementError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListPreviewRotationShiftsError =
   | AccessDeniedException
@@ -2806,27 +2570,13 @@ export type ListPreviewRotationShiftsError =
  *
  * The Incident Manager primarily uses this operation to populate the **Preview** calendar. It is not typically run by end users.
  */
-export const listPreviewRotationShifts: API.OperationMethod<
+export const listPreviewRotationShifts: API.PaginatedOperationMethod<
   ListPreviewRotationShiftsRequest,
   ListPreviewRotationShiftsResult,
   ListPreviewRotationShiftsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPreviewRotationShiftsRequest,
-  ) => stream.Stream<
-    ListPreviewRotationShiftsResult,
-    ListPreviewRotationShiftsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPreviewRotationShiftsRequest,
-  ) => stream.Stream<
-    RotationShift,
-    ListPreviewRotationShiftsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  RotationShift
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListPreviewRotationShiftsRequest,
   output: ListPreviewRotationShiftsResult,
   errors: [
@@ -2845,27 +2595,7 @@ export const listPreviewRotationShifts: API.OperationMethod<
     items: "RotationShifts",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListPreviewRotationShiftsRequest,
-  ListPreviewRotationShiftsResult,
-  ListPreviewRotationShiftsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPreviewRotationShiftsRequest,
-  ) => stream.Stream<
-    ListPreviewRotationShiftsResult,
-    ListPreviewRotationShiftsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPreviewRotationShiftsRequest,
-  ) => stream.Stream<
-    RotationShift,
-    ListPreviewRotationShiftsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListRotationOverridesError =
   | AccessDeniedException
@@ -2879,27 +2609,13 @@ export type ListRotationOverridesError =
 /**
  * Retrieves a list of overrides currently specified for an on-call rotation.
  */
-export const listRotationOverrides: API.OperationMethod<
+export const listRotationOverrides: API.PaginatedOperationMethod<
   ListRotationOverridesRequest,
   ListRotationOverridesResult,
   ListRotationOverridesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListRotationOverridesRequest,
-  ) => stream.Stream<
-    ListRotationOverridesResult,
-    ListRotationOverridesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListRotationOverridesRequest,
-  ) => stream.Stream<
-    RotationOverride,
-    ListRotationOverridesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  RotationOverride
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListRotationOverridesRequest,
   output: ListRotationOverridesResult,
   errors: [
@@ -2920,27 +2636,7 @@ export const listRotationOverrides: API.OperationMethod<
     items: "RotationOverrides",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListRotationOverridesRequest,
-  ListRotationOverridesResult,
-  ListRotationOverridesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListRotationOverridesRequest,
-  ) => stream.Stream<
-    ListRotationOverridesResult,
-    ListRotationOverridesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListRotationOverridesRequest,
-  ) => stream.Stream<
-    RotationOverride,
-    ListRotationOverridesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListRotationsError =
   | AccessDeniedException
@@ -2953,27 +2649,13 @@ export type ListRotationsError =
 /**
  * Retrieves a list of on-call rotations.
  */
-export const listRotations: API.OperationMethod<
+export const listRotations: API.PaginatedOperationMethod<
   ListRotationsRequest,
   ListRotationsResult,
   ListRotationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListRotationsRequest,
-  ) => stream.Stream<
-    ListRotationsResult,
-    ListRotationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListRotationsRequest,
-  ) => stream.Stream<
-    Rotation,
-    ListRotationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Rotation
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListRotationsRequest,
   output: ListRotationsResult,
   errors: [
@@ -2993,27 +2675,7 @@ export const listRotations: API.OperationMethod<
     items: "Rotations",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListRotationsRequest,
-  ListRotationsResult,
-  ListRotationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListRotationsRequest,
-  ) => stream.Stream<
-    ListRotationsResult,
-    ListRotationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListRotationsRequest,
-  ) => stream.Stream<
-    Rotation,
-    ListRotationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListRotationShiftsError =
   | AccessDeniedException
@@ -3028,27 +2690,13 @@ export type ListRotationShiftsError =
 /**
  * Returns a list of shifts generated by an existing rotation in the system.
  */
-export const listRotationShifts: API.OperationMethod<
+export const listRotationShifts: API.PaginatedOperationMethod<
   ListRotationShiftsRequest,
   ListRotationShiftsResult,
   ListRotationShiftsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListRotationShiftsRequest,
-  ) => stream.Stream<
-    ListRotationShiftsResult,
-    ListRotationShiftsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListRotationShiftsRequest,
-  ) => stream.Stream<
-    RotationShift,
-    ListRotationShiftsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  RotationShift
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListRotationShiftsRequest,
   output: ListRotationShiftsResult,
   errors: [
@@ -3070,27 +2718,7 @@ export const listRotationShifts: API.OperationMethod<
     items: "RotationShifts",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListRotationShiftsRequest,
-  ListRotationShiftsResult,
-  ListRotationShiftsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListRotationShiftsRequest,
-  ) => stream.Stream<
-    ListRotationShiftsResult,
-    ListRotationShiftsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListRotationShiftsRequest,
-  ) => stream.Stream<
-    RotationShift,
-    ListRotationShiftsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsForResourceError =
   | AccessDeniedException
@@ -3107,7 +2735,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceRequest,
   ListTagsForResourceResult,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResult,
@@ -3142,7 +2770,7 @@ export const putContactPolicy: API.OperationMethod<
   PutContactPolicyRequest,
   PutContactPolicyResult,
   PutContactPolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutContactPolicyRequest,
   output: PutContactPolicyResult,
@@ -3179,7 +2807,7 @@ export const sendActivationCode: API.OperationMethod<
   SendActivationCodeRequest,
   SendActivationCodeResult,
   SendActivationCodeError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: SendActivationCodeRequest,
   output: SendActivationCodeResult,
@@ -3215,7 +2843,7 @@ export const startEngagement: API.OperationMethod<
   StartEngagementRequest,
   StartEngagementResult,
   StartEngagementError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartEngagementRequest,
   output: StartEngagementResult,
@@ -3249,7 +2877,7 @@ export const stopEngagement: API.OperationMethod<
   StopEngagementRequest,
   StopEngagementResult,
   StopEngagementError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StopEngagementRequest,
   output: StopEngagementResult,
@@ -3283,7 +2911,7 @@ export const tagResource: API.OperationMethod<
   TagResourceRequest,
   TagResourceResult,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResult,
@@ -3316,7 +2944,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceRequest,
   UntagResourceResult,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResult,
@@ -3350,7 +2978,7 @@ export const updateContact: API.OperationMethod<
   UpdateContactRequest,
   UpdateContactResult,
   UpdateContactError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateContactRequest,
   output: UpdateContactResult,
@@ -3386,7 +3014,7 @@ export const updateContactChannel: API.OperationMethod<
   UpdateContactChannelRequest,
   UpdateContactChannelResult,
   UpdateContactChannelError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateContactChannelRequest,
   output: UpdateContactChannelResult,
@@ -3422,7 +3050,7 @@ export const updateRotation: API.OperationMethod<
   UpdateRotationRequest,
   UpdateRotationResult,
   UpdateRotationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateRotationRequest,
   output: UpdateRotationResult,

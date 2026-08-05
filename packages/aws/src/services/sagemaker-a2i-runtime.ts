@@ -1,6 +1,5 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -8,7 +7,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 const svc = T.AwsApiService({
   sdkId: "SageMaker A2I Runtime",
   serviceShapeName: "AmazonSageMakerA2IRuntime",
@@ -88,37 +86,37 @@ const rules = T.EndpointResolver((p, _) => {
 export class ConflictException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
     "ConflictException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class InternalServerException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
     "InternalServerException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(500),
   ).pipe(C.withServerError) {}
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class ServiceQuotaExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
     "ServiceQuotaExceededException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(402),
   ).pipe(C.withQuotaError) {}
 export class ThrottlingException
   extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
     "ThrottlingException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(429),
   ).pipe(C.withThrottlingError) {}
 export class ValidationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
     "ValidationException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export type HumanLoopName = string;
@@ -377,7 +375,7 @@ export const deleteHumanLoop: API.OperationMethod<
   DeleteHumanLoopRequest,
   DeleteHumanLoopResponse,
   DeleteHumanLoopError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteHumanLoopRequest,
   output: DeleteHumanLoopResponse,
@@ -406,7 +404,7 @@ export const describeHumanLoop: API.OperationMethod<
   DescribeHumanLoopRequest,
   DescribeHumanLoopResponse,
   DescribeHumanLoopError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeHumanLoopRequest,
   output: DescribeHumanLoopResponse,
@@ -430,27 +428,13 @@ export type ListHumanLoopsError =
 /**
  * Returns information about human loops, given the specified parameters. If a human loop was deleted, it will not be included.
  */
-export const listHumanLoops: API.OperationMethod<
+export const listHumanLoops: API.PaginatedOperationMethod<
   ListHumanLoopsRequest,
   ListHumanLoopsResponse,
   ListHumanLoopsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListHumanLoopsRequest,
-  ) => stream.Stream<
-    ListHumanLoopsResponse,
-    ListHumanLoopsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListHumanLoopsRequest,
-  ) => stream.Stream<
-    HumanLoopSummary,
-    ListHumanLoopsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  HumanLoopSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListHumanLoopsRequest,
   output: ListHumanLoopsResponse,
   errors: [
@@ -468,27 +452,7 @@ export const listHumanLoops: API.OperationMethod<
     items: "HumanLoopSummaries",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListHumanLoopsRequest,
-  ListHumanLoopsResponse,
-  ListHumanLoopsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListHumanLoopsRequest,
-  ) => stream.Stream<
-    ListHumanLoopsResponse,
-    ListHumanLoopsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListHumanLoopsRequest,
-  ) => stream.Stream<
-    HumanLoopSummary,
-    ListHumanLoopsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type StartHumanLoopError =
   | ConflictException
@@ -504,7 +468,7 @@ export const startHumanLoop: API.OperationMethod<
   StartHumanLoopRequest,
   StartHumanLoopResponse,
   StartHumanLoopError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartHumanLoopRequest,
   output: StartHumanLoopResponse,
@@ -533,7 +497,7 @@ export const stopHumanLoop: API.OperationMethod<
   StopHumanLoopRequest,
   StopHumanLoopResponse,
   StopHumanLoopError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StopHumanLoopRequest,
   output: StopHumanLoopResponse,

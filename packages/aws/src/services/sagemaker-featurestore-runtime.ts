@@ -1,6 +1,5 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -8,7 +7,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 const svc = T.AwsApiService({
   sdkId: "SageMaker FeatureStore Runtime",
   serviceShapeName: "AmazonSageMakerFeatureStoreRuntime",
@@ -88,13 +86,13 @@ const rules = T.EndpointResolver((p, _) => {
 export class AccessForbidden
   extends /*@__PURE__*/ S.TaggedErrorClass<AccessForbidden>()(
     "AccessForbidden",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(403),
   ).pipe(C.withAuthError) {}
 export class FeatureGroupNotFound
   extends /*@__PURE__*/ S.TaggedErrorClass<FeatureGroupNotFound>()(
     "FeatureGroupNotFound",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.SyntheticError({
       from: "ValidationError",
       message: { includes: "Resource Not Found" },
@@ -103,25 +101,25 @@ export class FeatureGroupNotFound
 export class InternalFailure
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalFailure>()(
     "InternalFailure",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(500),
   ).pipe(C.withServerError) {}
 export class ResourceNotFound
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFound>()(
     "ResourceNotFound",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class ServiceUnavailable
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceUnavailable>()(
     "ServiceUnavailable",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(503),
   ).pipe(C.withServerError) {}
 export class ValidationError
   extends /*@__PURE__*/ S.TaggedErrorClass<ValidationError>()(
     "ValidationError",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export type FeatureGroupNameOrArn = string;
@@ -538,7 +536,7 @@ export const batchGetRecord: API.OperationMethod<
   BatchGetRecordRequest,
   BatchGetRecordResponse,
   BatchGetRecordError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchGetRecordRequest,
   output: BatchGetRecordResponse,
@@ -574,7 +572,7 @@ export const batchWriteRecord: API.OperationMethod<
   BatchWriteRecordRequest,
   BatchWriteRecordResponse,
   BatchWriteRecordError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchWriteRecordRequest,
   output: BatchWriteRecordResponse,
@@ -634,7 +632,7 @@ export const deleteRecord: API.OperationMethod<
   DeleteRecordRequest,
   DeleteRecordResponse,
   DeleteRecordError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteRecordRequest,
   output: DeleteRecordResponse,
@@ -667,7 +665,7 @@ export const getRecord: API.OperationMethod<
   GetRecordRequest,
   GetRecordResponse,
   GetRecordError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetRecordRequest,
   output: GetRecordResponse,
@@ -696,27 +694,13 @@ export type ListRecordsError =
  * `FeatureGroup`'s `OnlineStore`. This enables you to discover which
  * records exist without retrieving the full record data.
  */
-export const listRecords: API.OperationMethod<
+export const listRecords: API.PaginatedOperationMethod<
   ListRecordsRequest,
   ListRecordsResponse,
   ListRecordsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListRecordsRequest,
-  ) => stream.Stream<
-    ListRecordsResponse,
-    ListRecordsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListRecordsRequest,
-  ) => stream.Stream<
-    ValueAsString,
-    ListRecordsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ValueAsString
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListRecordsRequest,
   output: ListRecordsResponse,
   errors: [
@@ -735,27 +719,7 @@ export const listRecords: API.OperationMethod<
     items: "RecordIdentifiers",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListRecordsRequest,
-  ListRecordsResponse,
-  ListRecordsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListRecordsRequest,
-  ) => stream.Stream<
-    ListRecordsResponse,
-    ListRecordsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListRecordsRequest,
-  ) => stream.Stream<
-    ValueAsString,
-    ListRecordsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type PutRecordError =
   | AccessForbidden
@@ -789,7 +753,7 @@ export const putRecord: API.OperationMethod<
   PutRecordRequest,
   PutRecordResponse,
   PutRecordError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutRecordRequest,
   output: PutRecordResponse,

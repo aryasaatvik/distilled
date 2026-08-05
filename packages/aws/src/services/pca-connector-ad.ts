@@ -1,6 +1,5 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -8,7 +7,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 const svc = T.AwsApiService({
   sdkId: "Pca Connector Ad",
   serviceShapeName: "PcaConnectorAd",
@@ -88,32 +86,40 @@ const rules = T.EndpointResolver((p, _) => {
 export class AccessDeniedException
   extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
     "AccessDeniedException",
-    { Message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(403),
   ).pipe(C.withAuthError) {}
 export class ConflictException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
     "ConflictException",
-    { Message: S.String, ResourceId: S.String, ResourceType: S.String },
+    {
+      message: S.String.pipe(T.ErrorMessage()),
+      ResourceId: S.String,
+      ResourceType: S.String,
+    },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class InternalServerException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
     "InternalServerException",
-    { Message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.all(T.HttpError(500), T.Retryable()),
   ).pipe(C.withServerError, C.withRetryableError) {}
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { Message: S.String, ResourceId: S.String, ResourceType: S.String },
+    {
+      message: S.String.pipe(T.ErrorMessage()),
+      ResourceId: S.String,
+      ResourceType: S.String,
+    },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class ServiceQuotaExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
     "ServiceQuotaExceededException",
     {
-      Message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       ResourceId: S.String,
       ResourceType: S.String,
       ServiceCode: S.String,
@@ -125,7 +131,7 @@ export class ThrottlingException
   extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
     "ThrottlingException",
     {
-      Message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       ServiceCode: S.optional(S.String),
       QuotaCode: S.optional(S.String),
     },
@@ -135,7 +141,7 @@ export class ValidationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
     "ValidationException",
     {
-      Message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       Reason: S.optional(
         S.suspend(() => ValidationExceptionReason).annotate({
           identifier: "ValidationExceptionReason",
@@ -1903,7 +1909,7 @@ export const createConnector: API.OperationMethod<
   CreateConnectorRequest,
   CreateConnectorResponse,
   CreateConnectorError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateConnectorRequest,
   output: CreateConnectorResponse,
@@ -1937,7 +1943,7 @@ export const createDirectoryRegistration: API.OperationMethod<
   CreateDirectoryRegistrationRequest,
   CreateDirectoryRegistrationResponse,
   CreateDirectoryRegistrationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateDirectoryRegistrationRequest,
   output: CreateDirectoryRegistrationResponse,
@@ -1971,7 +1977,7 @@ export const createServicePrincipalName: API.OperationMethod<
   CreateServicePrincipalNameRequest,
   CreateServicePrincipalNameResponse,
   CreateServicePrincipalNameError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateServicePrincipalNameRequest,
   output: CreateServicePrincipalNameResponse,
@@ -2005,7 +2011,7 @@ export const createTemplate: API.OperationMethod<
   CreateTemplateRequest,
   CreateTemplateResponse,
   CreateTemplateError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateTemplateRequest,
   output: CreateTemplateResponse,
@@ -2040,7 +2046,7 @@ export const createTemplateGroupAccessControlEntry: API.OperationMethod<
   CreateTemplateGroupAccessControlEntryRequest,
   CreateTemplateGroupAccessControlEntryResponse,
   CreateTemplateGroupAccessControlEntryError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateTemplateGroupAccessControlEntryRequest,
   output: CreateTemplateGroupAccessControlEntryResponse,
@@ -2077,7 +2083,7 @@ export const deleteConnector: API.OperationMethod<
   DeleteConnectorRequest,
   DeleteConnectorResponse,
   DeleteConnectorError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteConnectorRequest,
   output: DeleteConnectorResponse,
@@ -2109,7 +2115,7 @@ export const deleteDirectoryRegistration: API.OperationMethod<
   DeleteDirectoryRegistrationRequest,
   DeleteDirectoryRegistrationResponse,
   DeleteDirectoryRegistrationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteDirectoryRegistrationRequest,
   output: DeleteDirectoryRegistrationResponse,
@@ -2140,7 +2146,7 @@ export const deleteServicePrincipalName: API.OperationMethod<
   DeleteServicePrincipalNameRequest,
   DeleteServicePrincipalNameResponse,
   DeleteServicePrincipalNameError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteServicePrincipalNameRequest,
   output: DeleteServicePrincipalNameResponse,
@@ -2172,7 +2178,7 @@ export const deleteTemplate: API.OperationMethod<
   DeleteTemplateRequest,
   DeleteTemplateResponse,
   DeleteTemplateError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteTemplateRequest,
   output: DeleteTemplateResponse,
@@ -2204,7 +2210,7 @@ export const deleteTemplateGroupAccessControlEntry: API.OperationMethod<
   DeleteTemplateGroupAccessControlEntryRequest,
   DeleteTemplateGroupAccessControlEntryResponse,
   DeleteTemplateGroupAccessControlEntryError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteTemplateGroupAccessControlEntryRequest,
   output: DeleteTemplateGroupAccessControlEntryResponse,
@@ -2236,7 +2242,7 @@ export const getConnector: API.OperationMethod<
   GetConnectorRequest,
   GetConnectorResponse,
   GetConnectorError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetConnectorRequest,
   output: GetConnectorResponse,
@@ -2266,7 +2272,7 @@ export const getDirectoryRegistration: API.OperationMethod<
   GetDirectoryRegistrationRequest,
   GetDirectoryRegistrationResponse,
   GetDirectoryRegistrationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetDirectoryRegistrationRequest,
   output: GetDirectoryRegistrationResponse,
@@ -2297,7 +2303,7 @@ export const getServicePrincipalName: API.OperationMethod<
   GetServicePrincipalNameRequest,
   GetServicePrincipalNameResponse,
   GetServicePrincipalNameError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetServicePrincipalNameRequest,
   output: GetServicePrincipalNameResponse,
@@ -2328,7 +2334,7 @@ export const getTemplate: API.OperationMethod<
   GetTemplateRequest,
   GetTemplateResponse,
   GetTemplateError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetTemplateRequest,
   output: GetTemplateResponse,
@@ -2358,7 +2364,7 @@ export const getTemplateGroupAccessControlEntry: API.OperationMethod<
   GetTemplateGroupAccessControlEntryRequest,
   GetTemplateGroupAccessControlEntryResponse,
   GetTemplateGroupAccessControlEntryError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetTemplateGroupAccessControlEntryRequest,
   output: GetTemplateGroupAccessControlEntryResponse,
@@ -2383,27 +2389,13 @@ export type ListConnectorsError =
 /**
  * Lists the connectors that you created by using the https://docs.aws.amazon.com/pca-connector-ad/latest/APIReference/API_CreateConnector action.
  */
-export const listConnectors: API.OperationMethod<
+export const listConnectors: API.PaginatedOperationMethod<
   ListConnectorsRequest,
   ListConnectorsResponse,
   ListConnectorsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListConnectorsRequest,
-  ) => stream.Stream<
-    ListConnectorsResponse,
-    ListConnectorsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListConnectorsRequest,
-  ) => stream.Stream<
-    ConnectorSummary,
-    ListConnectorsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ConnectorSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListConnectorsRequest,
   output: ListConnectorsResponse,
   errors: [
@@ -2421,27 +2413,7 @@ export const listConnectors: API.OperationMethod<
     items: "Connectors",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListConnectorsRequest,
-  ListConnectorsResponse,
-  ListConnectorsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListConnectorsRequest,
-  ) => stream.Stream<
-    ListConnectorsResponse,
-    ListConnectorsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListConnectorsRequest,
-  ) => stream.Stream<
-    ConnectorSummary,
-    ListConnectorsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListDirectoryRegistrationsError =
   | AccessDeniedException
@@ -2453,27 +2425,13 @@ export type ListDirectoryRegistrationsError =
  * Lists the directory registrations that you created by using the https://docs.aws.amazon.com/pca-connector-ad/latest/APIReference/API_CreateDirectoryRegistration
  * action.
  */
-export const listDirectoryRegistrations: API.OperationMethod<
+export const listDirectoryRegistrations: API.PaginatedOperationMethod<
   ListDirectoryRegistrationsRequest,
   ListDirectoryRegistrationsResponse,
   ListDirectoryRegistrationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDirectoryRegistrationsRequest,
-  ) => stream.Stream<
-    ListDirectoryRegistrationsResponse,
-    ListDirectoryRegistrationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDirectoryRegistrationsRequest,
-  ) => stream.Stream<
-    DirectoryRegistrationSummary,
-    ListDirectoryRegistrationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  DirectoryRegistrationSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListDirectoryRegistrationsRequest,
   output: ListDirectoryRegistrationsResponse,
   errors: [
@@ -2491,27 +2449,7 @@ export const listDirectoryRegistrations: API.OperationMethod<
     items: "DirectoryRegistrations",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListDirectoryRegistrationsRequest,
-  ListDirectoryRegistrationsResponse,
-  ListDirectoryRegistrationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDirectoryRegistrationsRequest,
-  ) => stream.Stream<
-    ListDirectoryRegistrationsResponse,
-    ListDirectoryRegistrationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDirectoryRegistrationsRequest,
-  ) => stream.Stream<
-    DirectoryRegistrationSummary,
-    ListDirectoryRegistrationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListServicePrincipalNamesError =
   | AccessDeniedException
@@ -2524,27 +2462,13 @@ export type ListServicePrincipalNamesError =
  * Lists the service principal names that the connector uses to authenticate with
  * Active Directory.
  */
-export const listServicePrincipalNames: API.OperationMethod<
+export const listServicePrincipalNames: API.PaginatedOperationMethod<
   ListServicePrincipalNamesRequest,
   ListServicePrincipalNamesResponse,
   ListServicePrincipalNamesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListServicePrincipalNamesRequest,
-  ) => stream.Stream<
-    ListServicePrincipalNamesResponse,
-    ListServicePrincipalNamesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListServicePrincipalNamesRequest,
-  ) => stream.Stream<
-    ServicePrincipalNameSummary,
-    ListServicePrincipalNamesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ServicePrincipalNameSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListServicePrincipalNamesRequest,
   output: ListServicePrincipalNamesResponse,
   errors: [
@@ -2563,27 +2487,7 @@ export const listServicePrincipalNames: API.OperationMethod<
     items: "ServicePrincipalNames",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListServicePrincipalNamesRequest,
-  ListServicePrincipalNamesResponse,
-  ListServicePrincipalNamesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListServicePrincipalNamesRequest,
-  ) => stream.Stream<
-    ListServicePrincipalNamesResponse,
-    ListServicePrincipalNamesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListServicePrincipalNamesRequest,
-  ) => stream.Stream<
-    ServicePrincipalNameSummary,
-    ListServicePrincipalNamesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsForResourceError =
   | AccessDeniedException
@@ -2599,7 +2503,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceRequest,
   ListTagsForResourceResponse,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -2625,27 +2529,13 @@ export type ListTemplateGroupAccessControlEntriesError =
 /**
  * Lists group access control entries you created.
  */
-export const listTemplateGroupAccessControlEntries: API.OperationMethod<
+export const listTemplateGroupAccessControlEntries: API.PaginatedOperationMethod<
   ListTemplateGroupAccessControlEntriesRequest,
   ListTemplateGroupAccessControlEntriesResponse,
   ListTemplateGroupAccessControlEntriesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTemplateGroupAccessControlEntriesRequest,
-  ) => stream.Stream<
-    ListTemplateGroupAccessControlEntriesResponse,
-    ListTemplateGroupAccessControlEntriesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTemplateGroupAccessControlEntriesRequest,
-  ) => stream.Stream<
-    AccessControlEntrySummary,
-    ListTemplateGroupAccessControlEntriesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  AccessControlEntrySummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListTemplateGroupAccessControlEntriesRequest,
   output: ListTemplateGroupAccessControlEntriesResponse,
   errors: [
@@ -2664,27 +2554,7 @@ export const listTemplateGroupAccessControlEntries: API.OperationMethod<
     items: "AccessControlEntries",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListTemplateGroupAccessControlEntriesRequest,
-  ListTemplateGroupAccessControlEntriesResponse,
-  ListTemplateGroupAccessControlEntriesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTemplateGroupAccessControlEntriesRequest,
-  ) => stream.Stream<
-    ListTemplateGroupAccessControlEntriesResponse,
-    ListTemplateGroupAccessControlEntriesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTemplateGroupAccessControlEntriesRequest,
-  ) => stream.Stream<
-    AccessControlEntrySummary,
-    ListTemplateGroupAccessControlEntriesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTemplatesError =
   | AccessDeniedException
@@ -2696,27 +2566,13 @@ export type ListTemplatesError =
 /**
  * Lists the templates, if any, that are associated with a connector.
  */
-export const listTemplates: API.OperationMethod<
+export const listTemplates: API.PaginatedOperationMethod<
   ListTemplatesRequest,
   ListTemplatesResponse,
   ListTemplatesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTemplatesRequest,
-  ) => stream.Stream<
-    ListTemplatesResponse,
-    ListTemplatesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTemplatesRequest,
-  ) => stream.Stream<
-    TemplateSummary,
-    ListTemplatesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  TemplateSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListTemplatesRequest,
   output: ListTemplatesResponse,
   errors: [
@@ -2735,27 +2591,7 @@ export const listTemplates: API.OperationMethod<
     items: "Templates",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListTemplatesRequest,
-  ListTemplatesResponse,
-  ListTemplatesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTemplatesRequest,
-  ) => stream.Stream<
-    ListTemplatesResponse,
-    ListTemplatesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTemplatesRequest,
-  ) => stream.Stream<
-    TemplateSummary,
-    ListTemplatesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type TagResourceError =
   | AccessDeniedException
@@ -2771,7 +2607,7 @@ export const tagResource: API.OperationMethod<
   TagResourceRequest,
   TagResourceResponse,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -2801,7 +2637,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceRequest,
   UntagResourceResponse,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -2832,7 +2668,7 @@ export const updateTemplate: API.OperationMethod<
   UpdateTemplateRequest,
   UpdateTemplateResponse,
   UpdateTemplateError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateTemplateRequest,
   output: UpdateTemplateResponse,
@@ -2864,7 +2700,7 @@ export const updateTemplateGroupAccessControlEntry: API.OperationMethod<
   UpdateTemplateGroupAccessControlEntryRequest,
   UpdateTemplateGroupAccessControlEntryResponse,
   UpdateTemplateGroupAccessControlEntryError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateTemplateGroupAccessControlEntryRequest,
   output: UpdateTemplateGroupAccessControlEntryResponse,

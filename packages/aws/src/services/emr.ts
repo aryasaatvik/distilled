@@ -1,7 +1,6 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as redacted from "effect/Redacted";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -9,7 +8,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials as Creds } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 import { SensitiveString } from "../sensitive.ts";
 const ns = T.XmlNamespace(
   "http://elasticmapreduce.amazonaws.com/doc/2009-03-31",
@@ -96,7 +94,10 @@ const rules = T.EndpointResolver((p, _) => {
 export class ClusterNotFound
   extends /*@__PURE__*/ S.TaggedErrorClass<ClusterNotFound>()(
     "ClusterNotFound",
-    { ErrorCode: S.optional(S.String), Message: S.optional(S.String) },
+    {
+      ErrorCode: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.SyntheticError({
       from: "InvalidRequestException",
       message: { matches: "^Cluster id .* is not valid" },
@@ -105,7 +106,7 @@ export class ClusterNotFound
 export class InternalServerError
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerError>()(
     "InternalServerError",
-    {},
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "InternalFailure", httpResponseCode: 500 }),
       T.HttpError(500),
@@ -114,17 +115,20 @@ export class InternalServerError
 export class InternalServerException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
     "InternalServerException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidRequestException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidRequestException>()(
     "InvalidRequestException",
-    { ErrorCode: S.optional(S.String), Message: S.optional(S.String) },
+    {
+      ErrorCode: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
   ) {}
 export class JobFlowNotFound
   extends /*@__PURE__*/ S.TaggedErrorClass<JobFlowNotFound>()(
     "JobFlowNotFound",
-    {},
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.SyntheticError({
       from: "ValidationException",
       message: { includes: "Specified job flow ID not valid" },
@@ -133,7 +137,10 @@ export class JobFlowNotFound
 export class SecurityConfigurationAlreadyExists
   extends /*@__PURE__*/ S.TaggedErrorClass<SecurityConfigurationAlreadyExists>()(
     "SecurityConfigurationAlreadyExists",
-    { ErrorCode: S.optional(S.String), Message: S.optional(S.String) },
+    {
+      ErrorCode: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.SyntheticError({
       from: "InvalidRequestException",
       message: {
@@ -144,7 +151,10 @@ export class SecurityConfigurationAlreadyExists
 export class SecurityConfigurationNotFound
   extends /*@__PURE__*/ S.TaggedErrorClass<SecurityConfigurationNotFound>()(
     "SecurityConfigurationNotFound",
-    { ErrorCode: S.optional(S.String), Message: S.optional(S.String) },
+    {
+      ErrorCode: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.SyntheticError({
       from: "InvalidRequestException",
       message: {
@@ -155,7 +165,10 @@ export class SecurityConfigurationNotFound
 export class StudioNotFound
   extends /*@__PURE__*/ S.TaggedErrorClass<StudioNotFound>()(
     "StudioNotFound",
-    { ErrorCode: S.optional(S.String), Message: S.optional(S.String) },
+    {
+      ErrorCode: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.SyntheticError({
       from: "InvalidRequestException",
       message: { includes: "Studio does not exist" },
@@ -164,7 +177,10 @@ export class StudioNotFound
 export class StudioServiceRoleMissingS3Access
   extends /*@__PURE__*/ S.TaggedErrorClass<StudioServiceRoleMissingS3Access>()(
     "StudioServiceRoleMissingS3Access",
-    { ErrorCode: S.optional(S.String), Message: S.optional(S.String) },
+    {
+      ErrorCode: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.SyntheticError({
       from: "InvalidRequestException",
       message: {
@@ -175,7 +191,10 @@ export class StudioServiceRoleMissingS3Access
 export class StudioServiceRoleNotAssumable
   extends /*@__PURE__*/ S.TaggedErrorClass<StudioServiceRoleNotAssumable>()(
     "StudioServiceRoleNotAssumable",
-    { ErrorCode: S.optional(S.String), Message: S.optional(S.String) },
+    {
+      ErrorCode: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.SyntheticError({
       from: "InvalidRequestException",
       message: { includes: "does not have permissions to assume role" },
@@ -5086,7 +5105,7 @@ export const addInstanceFleet: API.OperationMethod<
   AddInstanceFleetInput,
   AddInstanceFleetOutput,
   AddInstanceFleetError,
-  Creds | Region | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AddInstanceFleetInput,
   output: AddInstanceFleetOutput,
@@ -5104,7 +5123,7 @@ export const addInstanceGroups: API.OperationMethod<
   AddInstanceGroupsInput,
   AddInstanceGroupsOutput,
   AddInstanceGroupsError,
-  Creds | Region | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AddInstanceGroupsInput,
   output: AddInstanceGroupsOutput,
@@ -5143,7 +5162,7 @@ export const addJobFlowSteps: API.OperationMethod<
   AddJobFlowStepsInput,
   AddJobFlowStepsOutput,
   AddJobFlowStepsError,
-  Creds | Region | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AddJobFlowStepsInput,
   output: AddJobFlowStepsOutput,
@@ -5168,7 +5187,7 @@ export const addTags: API.OperationMethod<
   AddTagsInput,
   AddTagsOutput,
   AddTagsError,
-  Creds | Region | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AddTagsInput,
   output: AddTagsOutput,
@@ -5193,7 +5212,7 @@ export const cancelSteps: API.OperationMethod<
   CancelStepsInput,
   CancelStepsOutput,
   CancelStepsError,
-  Creds | Region | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CancelStepsInput,
   output: CancelStepsOutput,
@@ -5214,7 +5233,7 @@ export const createPersistentAppUI: API.OperationMethod<
   CreatePersistentAppUIInput,
   CreatePersistentAppUIOutput,
   CreatePersistentAppUIError,
-  Creds | Region | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreatePersistentAppUIInput,
   output: CreatePersistentAppUIOutput,
@@ -5237,7 +5256,7 @@ export const createSecurityConfiguration: API.OperationMethod<
   CreateSecurityConfigurationInput,
   CreateSecurityConfigurationOutput,
   CreateSecurityConfigurationError,
-  Creds | Region | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateSecurityConfigurationInput,
   output: CreateSecurityConfigurationOutput,
@@ -5264,7 +5283,7 @@ export const createStudio: API.OperationMethod<
   CreateStudioInput,
   CreateStudioOutput,
   CreateStudioError,
-  Creds | Region | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateStudioInput,
   output: CreateStudioOutput,
@@ -5294,7 +5313,7 @@ export const createStudioSessionMapping: API.OperationMethod<
   CreateStudioSessionMappingInput,
   CreateStudioSessionMappingResponse,
   CreateStudioSessionMappingError,
-  Creds | Region | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateStudioSessionMappingInput,
   output: CreateStudioSessionMappingResponse,
@@ -5316,7 +5335,7 @@ export const deleteSecurityConfiguration: API.OperationMethod<
   DeleteSecurityConfigurationInput,
   DeleteSecurityConfigurationOutput,
   DeleteSecurityConfigurationError,
-  Creds | Region | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteSecurityConfigurationInput,
   output: DeleteSecurityConfigurationOutput,
@@ -5342,7 +5361,7 @@ export const deleteStudio: API.OperationMethod<
   DeleteStudioInput,
   DeleteStudioResponse,
   DeleteStudioError,
-  Creds | Region | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteStudioInput,
   output: DeleteStudioResponse,
@@ -5363,7 +5382,7 @@ export const deleteStudioSessionMapping: API.OperationMethod<
   DeleteStudioSessionMappingInput,
   DeleteStudioSessionMappingResponse,
   DeleteStudioSessionMappingError,
-  Creds | Region | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteStudioSessionMappingInput,
   output: DeleteStudioSessionMappingResponse,
@@ -5386,7 +5405,7 @@ export const describeCluster: API.OperationMethod<
   DescribeClusterInput,
   DescribeClusterOutput,
   DescribeClusterError,
-  Creds | Region | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeClusterInput,
   output: DescribeClusterOutput,
@@ -5423,7 +5442,7 @@ export const describeJobFlows: API.OperationMethod<
   DescribeJobFlowsInput,
   DescribeJobFlowsOutput,
   DescribeJobFlowsError,
-  Creds | Region | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeJobFlowsInput,
   output: DescribeJobFlowsOutput,
@@ -5444,7 +5463,7 @@ export const describeNotebookExecution: API.OperationMethod<
   DescribeNotebookExecutionInput,
   DescribeNotebookExecutionOutput,
   DescribeNotebookExecutionError,
-  Creds | Region | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeNotebookExecutionInput,
   output: DescribeNotebookExecutionOutput,
@@ -5465,7 +5484,7 @@ export const describePersistentAppUI: API.OperationMethod<
   DescribePersistentAppUIInput,
   DescribePersistentAppUIOutput,
   DescribePersistentAppUIError,
-  Creds | Region | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribePersistentAppUIInput,
   output: DescribePersistentAppUIOutput,
@@ -5488,7 +5507,7 @@ export const describeReleaseLabel: API.OperationMethod<
   DescribeReleaseLabelInput,
   DescribeReleaseLabelOutput,
   DescribeReleaseLabelError,
-  Creds | Region | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeReleaseLabelInput,
   output: DescribeReleaseLabelOutput,
@@ -5511,7 +5530,7 @@ export const describeSecurityConfiguration: API.OperationMethod<
   DescribeSecurityConfigurationInput,
   DescribeSecurityConfigurationOutput,
   DescribeSecurityConfigurationError,
-  Creds | Region | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeSecurityConfigurationInput,
   output: DescribeSecurityConfigurationOutput,
@@ -5536,7 +5555,7 @@ export const describeStep: API.OperationMethod<
   DescribeStepInput,
   DescribeStepOutput,
   DescribeStepError,
-  Creds | Region | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeStepInput,
   output: DescribeStepOutput,
@@ -5559,7 +5578,7 @@ export const describeStudio: API.OperationMethod<
   DescribeStudioInput,
   DescribeStudioOutput,
   DescribeStudioError,
-  Creds | Region | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeStudioInput,
   output: DescribeStudioOutput,
@@ -5577,7 +5596,7 @@ export const getAutoTerminationPolicy: API.OperationMethod<
   GetAutoTerminationPolicyInput,
   GetAutoTerminationPolicyOutput,
   GetAutoTerminationPolicyError,
-  Creds | Region | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetAutoTerminationPolicyInput,
   output: GetAutoTerminationPolicyOutput,
@@ -5600,7 +5619,7 @@ export const getBlockPublicAccessConfiguration: API.OperationMethod<
   GetBlockPublicAccessConfigurationInput,
   GetBlockPublicAccessConfigurationOutput,
   GetBlockPublicAccessConfigurationError,
-  Creds | Region | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetBlockPublicAccessConfigurationInput,
   output: GetBlockPublicAccessConfigurationOutput,
@@ -5624,7 +5643,7 @@ export const getClusterSessionCredentials: API.OperationMethod<
   GetClusterSessionCredentialsInput,
   GetClusterSessionCredentialsOutput,
   GetClusterSessionCredentialsError,
-  Creds | Region | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetClusterSessionCredentialsInput,
   output: GetClusterSessionCredentialsOutput,
@@ -5642,7 +5661,7 @@ export const getManagedScalingPolicy: API.OperationMethod<
   GetManagedScalingPolicyInput,
   GetManagedScalingPolicyOutput,
   GetManagedScalingPolicyError,
-  Creds | Region | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetManagedScalingPolicyInput,
   output: GetManagedScalingPolicyOutput,
@@ -5663,7 +5682,7 @@ export const getOnClusterAppUIPresignedURL: API.OperationMethod<
   GetOnClusterAppUIPresignedURLInput,
   GetOnClusterAppUIPresignedURLOutput,
   GetOnClusterAppUIPresignedURLError,
-  Creds | Region | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetOnClusterAppUIPresignedURLInput,
   output: GetOnClusterAppUIPresignedURLOutput,
@@ -5684,7 +5703,7 @@ export const getPersistentAppUIPresignedURL: API.OperationMethod<
   GetPersistentAppUIPresignedURLInput,
   GetPersistentAppUIPresignedURLOutput,
   GetPersistentAppUIPresignedURLError,
-  Creds | Region | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetPersistentAppUIPresignedURLInput,
   output: GetPersistentAppUIPresignedURLOutput,
@@ -5705,7 +5724,7 @@ export const getSession: API.OperationMethod<
   GetSessionInput,
   GetSessionOutput,
   GetSessionError,
-  Creds | Region | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetSessionInput,
   output: GetSessionOutput,
@@ -5726,7 +5745,7 @@ export const getSessionEndpoint: API.OperationMethod<
   GetSessionEndpointInput,
   GetSessionEndpointOutput,
   GetSessionEndpointError,
-  Creds | Region | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetSessionEndpointInput,
   output: GetSessionEndpointOutput,
@@ -5748,7 +5767,7 @@ export const getStudioSessionMapping: API.OperationMethod<
   GetStudioSessionMappingInput,
   GetStudioSessionMappingOutput,
   GetStudioSessionMappingError,
-  Creds | Region | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetStudioSessionMappingInput,
   output: GetStudioSessionMappingOutput,
@@ -5765,27 +5784,13 @@ export type ListBootstrapActionsError =
 /**
  * Provides information about the bootstrap actions associated with a cluster.
  */
-export const listBootstrapActions: API.OperationMethod<
+export const listBootstrapActions: API.PaginatedOperationMethod<
   ListBootstrapActionsInput,
   ListBootstrapActionsOutput,
   ListBootstrapActionsError,
-  Creds | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListBootstrapActionsInput,
-  ) => stream.Stream<
-    ListBootstrapActionsOutput,
-    ListBootstrapActionsError,
-    Creds | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListBootstrapActionsInput,
-  ) => stream.Stream<
-    Command,
-    ListBootstrapActionsError,
-    Creds | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Creds | HttpClient.HttpClient,
+  Command
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListBootstrapActionsInput,
   output: ListBootstrapActionsOutput,
   errors: [InternalServerException, InvalidRequestException],
@@ -5797,27 +5802,7 @@ export const listBootstrapActions: API.OperationMethod<
     outputToken: "Marker",
     items: "BootstrapActions",
   } as const,
-})) as any as API.OperationMethod<
-  ListBootstrapActionsInput,
-  ListBootstrapActionsOutput,
-  ListBootstrapActionsError,
-  Creds | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListBootstrapActionsInput,
-  ) => stream.Stream<
-    ListBootstrapActionsOutput,
-    ListBootstrapActionsError,
-    Creds | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListBootstrapActionsInput,
-  ) => stream.Stream<
-    Command,
-    ListBootstrapActionsError,
-    Creds | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListClustersError =
   | InternalServerException
@@ -5830,27 +5815,13 @@ export type ListClustersError =
  * unsorted order per call, but returns a marker to track the paging of the cluster list
  * across multiple ListClusters calls.
  */
-export const listClusters: API.OperationMethod<
+export const listClusters: API.PaginatedOperationMethod<
   ListClustersInput,
   ListClustersOutput,
   ListClustersError,
-  Creds | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListClustersInput,
-  ) => stream.Stream<
-    ListClustersOutput,
-    ListClustersError,
-    Creds | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListClustersInput,
-  ) => stream.Stream<
-    ClusterSummary,
-    ListClustersError,
-    Creds | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Creds | HttpClient.HttpClient,
+  ClusterSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListClustersInput,
   output: ListClustersOutput,
   errors: [InternalServerException, InvalidRequestException],
@@ -5862,27 +5833,7 @@ export const listClusters: API.OperationMethod<
     outputToken: "Marker",
     items: "Clusters",
   } as const,
-})) as any as API.OperationMethod<
-  ListClustersInput,
-  ListClustersOutput,
-  ListClustersError,
-  Creds | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListClustersInput,
-  ) => stream.Stream<
-    ListClustersOutput,
-    ListClustersError,
-    Creds | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListClustersInput,
-  ) => stream.Stream<
-    ClusterSummary,
-    ListClustersError,
-    Creds | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListInstanceFleetsError =
   | InternalServerException
@@ -5894,27 +5845,13 @@ export type ListInstanceFleetsError =
  * The instance fleet configuration is available only in Amazon EMR releases
  * 4.8.0 and later, excluding 5.0.x versions.
  */
-export const listInstanceFleets: API.OperationMethod<
+export const listInstanceFleets: API.PaginatedOperationMethod<
   ListInstanceFleetsInput,
   ListInstanceFleetsOutput,
   ListInstanceFleetsError,
-  Creds | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListInstanceFleetsInput,
-  ) => stream.Stream<
-    ListInstanceFleetsOutput,
-    ListInstanceFleetsError,
-    Creds | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListInstanceFleetsInput,
-  ) => stream.Stream<
-    InstanceFleet,
-    ListInstanceFleetsError,
-    Creds | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Creds | HttpClient.HttpClient,
+  InstanceFleet
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListInstanceFleetsInput,
   output: ListInstanceFleetsOutput,
   errors: [InternalServerException, InvalidRequestException],
@@ -5926,27 +5863,7 @@ export const listInstanceFleets: API.OperationMethod<
     outputToken: "Marker",
     items: "InstanceFleets",
   } as const,
-})) as any as API.OperationMethod<
-  ListInstanceFleetsInput,
-  ListInstanceFleetsOutput,
-  ListInstanceFleetsError,
-  Creds | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListInstanceFleetsInput,
-  ) => stream.Stream<
-    ListInstanceFleetsOutput,
-    ListInstanceFleetsError,
-    Creds | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListInstanceFleetsInput,
-  ) => stream.Stream<
-    InstanceFleet,
-    ListInstanceFleetsError,
-    Creds | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListInstanceGroupsError =
   | InternalServerException
@@ -5955,27 +5872,13 @@ export type ListInstanceGroupsError =
 /**
  * Provides all available details about the instance groups in a cluster.
  */
-export const listInstanceGroups: API.OperationMethod<
+export const listInstanceGroups: API.PaginatedOperationMethod<
   ListInstanceGroupsInput,
   ListInstanceGroupsOutput,
   ListInstanceGroupsError,
-  Creds | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListInstanceGroupsInput,
-  ) => stream.Stream<
-    ListInstanceGroupsOutput,
-    ListInstanceGroupsError,
-    Creds | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListInstanceGroupsInput,
-  ) => stream.Stream<
-    InstanceGroup,
-    ListInstanceGroupsError,
-    Creds | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Creds | HttpClient.HttpClient,
+  InstanceGroup
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListInstanceGroupsInput,
   output: ListInstanceGroupsOutput,
   errors: [InternalServerException, InvalidRequestException],
@@ -5987,27 +5890,7 @@ export const listInstanceGroups: API.OperationMethod<
     outputToken: "Marker",
     items: "InstanceGroups",
   } as const,
-})) as any as API.OperationMethod<
-  ListInstanceGroupsInput,
-  ListInstanceGroupsOutput,
-  ListInstanceGroupsError,
-  Creds | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListInstanceGroupsInput,
-  ) => stream.Stream<
-    ListInstanceGroupsOutput,
-    ListInstanceGroupsError,
-    Creds | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListInstanceGroupsInput,
-  ) => stream.Stream<
-    InstanceGroup,
-    ListInstanceGroupsError,
-    Creds | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListInstancesError =
   | InternalServerException
@@ -6019,27 +5902,13 @@ export type ListInstancesError =
  * instances in any of the following states are considered active: AWAITING_FULFILLMENT,
  * PROVISIONING, BOOTSTRAPPING, RUNNING.
  */
-export const listInstances: API.OperationMethod<
+export const listInstances: API.PaginatedOperationMethod<
   ListInstancesInput,
   ListInstancesOutput,
   ListInstancesError,
-  Creds | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListInstancesInput,
-  ) => stream.Stream<
-    ListInstancesOutput,
-    ListInstancesError,
-    Creds | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListInstancesInput,
-  ) => stream.Stream<
-    Instance,
-    ListInstancesError,
-    Creds | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Creds | HttpClient.HttpClient,
+  Instance
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListInstancesInput,
   output: ListInstancesOutput,
   errors: [InternalServerException, InvalidRequestException],
@@ -6051,27 +5920,7 @@ export const listInstances: API.OperationMethod<
     outputToken: "Marker",
     items: "Instances",
   } as const,
-})) as any as API.OperationMethod<
-  ListInstancesInput,
-  ListInstancesOutput,
-  ListInstancesError,
-  Creds | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListInstancesInput,
-  ) => stream.Stream<
-    ListInstancesOutput,
-    ListInstancesError,
-    Creds | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListInstancesInput,
-  ) => stream.Stream<
-    Instance,
-    ListInstancesError,
-    Creds | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListNotebookExecutionsError =
   | InternalServerError
@@ -6083,27 +5932,13 @@ export type ListNotebookExecutionsError =
  * executions and a marker to track the paging of a longer notebook execution list across
  * multiple `ListNotebookExecutions` calls.
  */
-export const listNotebookExecutions: API.OperationMethod<
+export const listNotebookExecutions: API.PaginatedOperationMethod<
   ListNotebookExecutionsInput,
   ListNotebookExecutionsOutput,
   ListNotebookExecutionsError,
-  Creds | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListNotebookExecutionsInput,
-  ) => stream.Stream<
-    ListNotebookExecutionsOutput,
-    ListNotebookExecutionsError,
-    Creds | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListNotebookExecutionsInput,
-  ) => stream.Stream<
-    NotebookExecutionSummary,
-    ListNotebookExecutionsError,
-    Creds | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Creds | HttpClient.HttpClient,
+  NotebookExecutionSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListNotebookExecutionsInput,
   output: ListNotebookExecutionsOutput,
   errors: [InternalServerError, InvalidRequestException],
@@ -6115,27 +5950,7 @@ export const listNotebookExecutions: API.OperationMethod<
     outputToken: "Marker",
     items: "NotebookExecutions",
   } as const,
-})) as any as API.OperationMethod<
-  ListNotebookExecutionsInput,
-  ListNotebookExecutionsOutput,
-  ListNotebookExecutionsError,
-  Creds | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListNotebookExecutionsInput,
-  ) => stream.Stream<
-    ListNotebookExecutionsOutput,
-    ListNotebookExecutionsError,
-    Creds | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListNotebookExecutionsInput,
-  ) => stream.Stream<
-    NotebookExecutionSummary,
-    ListNotebookExecutionsError,
-    Creds | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListReleaseLabelsError =
   | InternalServerException
@@ -6145,27 +5960,13 @@ export type ListReleaseLabelsError =
  * Retrieves release labels of Amazon EMR services in the Region where the API is
  * called.
  */
-export const listReleaseLabels: API.OperationMethod<
+export const listReleaseLabels: API.PaginatedOperationMethod<
   ListReleaseLabelsInput,
   ListReleaseLabelsOutput,
   ListReleaseLabelsError,
-  Creds | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListReleaseLabelsInput,
-  ) => stream.Stream<
-    ListReleaseLabelsOutput,
-    ListReleaseLabelsError,
-    Creds | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListReleaseLabelsInput,
-  ) => stream.Stream<
-    unknown,
-    ListReleaseLabelsError,
-    Creds | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Creds | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListReleaseLabelsInput,
   output: ListReleaseLabelsOutput,
   errors: [InternalServerException, InvalidRequestException],
@@ -6177,27 +5978,7 @@ export const listReleaseLabels: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListReleaseLabelsInput,
-  ListReleaseLabelsOutput,
-  ListReleaseLabelsError,
-  Creds | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListReleaseLabelsInput,
-  ) => stream.Stream<
-    ListReleaseLabelsOutput,
-    ListReleaseLabelsError,
-    Creds | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListReleaseLabelsInput,
-  ) => stream.Stream<
-    unknown,
-    ListReleaseLabelsError,
-    Creds | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListSecurityConfigurationsError =
   | InternalServerException
@@ -6209,27 +5990,13 @@ export type ListSecurityConfigurationsError =
  * returns a marker to track the paging of the cluster list across multiple
  * ListSecurityConfigurations calls.
  */
-export const listSecurityConfigurations: API.OperationMethod<
+export const listSecurityConfigurations: API.PaginatedOperationMethod<
   ListSecurityConfigurationsInput,
   ListSecurityConfigurationsOutput,
   ListSecurityConfigurationsError,
-  Creds | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSecurityConfigurationsInput,
-  ) => stream.Stream<
-    ListSecurityConfigurationsOutput,
-    ListSecurityConfigurationsError,
-    Creds | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSecurityConfigurationsInput,
-  ) => stream.Stream<
-    SecurityConfigurationSummary,
-    ListSecurityConfigurationsError,
-    Creds | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Creds | HttpClient.HttpClient,
+  SecurityConfigurationSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListSecurityConfigurationsInput,
   output: ListSecurityConfigurationsOutput,
   errors: [InternalServerException, InvalidRequestException],
@@ -6241,27 +6008,7 @@ export const listSecurityConfigurations: API.OperationMethod<
     outputToken: "Marker",
     items: "SecurityConfigurations",
   } as const,
-})) as any as API.OperationMethod<
-  ListSecurityConfigurationsInput,
-  ListSecurityConfigurationsOutput,
-  ListSecurityConfigurationsError,
-  Creds | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSecurityConfigurationsInput,
-  ) => stream.Stream<
-    ListSecurityConfigurationsOutput,
-    ListSecurityConfigurationsError,
-    Creds | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSecurityConfigurationsInput,
-  ) => stream.Stream<
-    SecurityConfigurationSummary,
-    ListSecurityConfigurationsError,
-    Creds | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListSessionsError =
   | InternalServerException
@@ -6270,27 +6017,13 @@ export type ListSessionsError =
 /**
  * Lists the sessions on a cluster. You can filter the results by session state. Newer sessions are returned first.
  */
-export const listSessions: API.OperationMethod<
+export const listSessions: API.PaginatedOperationMethod<
   ListSessionsInput,
   ListSessionsOutput,
   ListSessionsError,
-  Creds | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSessionsInput,
-  ) => stream.Stream<
-    ListSessionsOutput,
-    ListSessionsError,
-    Creds | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSessionsInput,
-  ) => stream.Stream<
-    Session,
-    ListSessionsError,
-    Creds | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Creds | HttpClient.HttpClient,
+  Session
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListSessionsInput,
   output: ListSessionsOutput,
   errors: [InternalServerException, InvalidRequestException],
@@ -6302,27 +6035,7 @@ export const listSessions: API.OperationMethod<
     outputToken: "NextToken",
     items: "Sessions",
   } as const,
-})) as any as API.OperationMethod<
-  ListSessionsInput,
-  ListSessionsOutput,
-  ListSessionsError,
-  Creds | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSessionsInput,
-  ) => stream.Stream<
-    ListSessionsOutput,
-    ListSessionsError,
-    Creds | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSessionsInput,
-  ) => stream.Stream<
-    Session,
-    ListSessionsError,
-    Creds | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListStepsError =
   | InternalServerException
@@ -6336,27 +6049,13 @@ export type ListStepsError =
  * using the CLI, specify a `Marker`, which is a pagination token
  * that indicates the next set of steps to retrieve.
  */
-export const listSteps: API.OperationMethod<
+export const listSteps: API.PaginatedOperationMethod<
   ListStepsInput,
   ListStepsOutput,
   ListStepsError,
-  Creds | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListStepsInput,
-  ) => stream.Stream<
-    ListStepsOutput,
-    ListStepsError,
-    Creds | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListStepsInput,
-  ) => stream.Stream<
-    StepSummary,
-    ListStepsError,
-    Creds | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Creds | HttpClient.HttpClient,
+  StepSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListStepsInput,
   output: ListStepsOutput,
   errors: [InternalServerException, InvalidRequestException],
@@ -6368,27 +6067,7 @@ export const listSteps: API.OperationMethod<
     outputToken: "Marker",
     items: "Steps",
   } as const,
-})) as any as API.OperationMethod<
-  ListStepsInput,
-  ListStepsOutput,
-  ListStepsError,
-  Creds | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListStepsInput,
-  ) => stream.Stream<
-    ListStepsOutput,
-    ListStepsError,
-    Creds | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListStepsInput,
-  ) => stream.Stream<
-    StepSummary,
-    ListStepsError,
-    Creds | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListStudiosError =
   | InternalServerException
@@ -6398,27 +6077,13 @@ export type ListStudiosError =
  * Returns a list of all Amazon EMR Studios associated with the Amazon Web Services account. The list includes details such as ID, Studio Access URL, and
  * creation time for each Studio.
  */
-export const listStudios: API.OperationMethod<
+export const listStudios: API.PaginatedOperationMethod<
   ListStudiosInput,
   ListStudiosOutput,
   ListStudiosError,
-  Creds | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListStudiosInput,
-  ) => stream.Stream<
-    ListStudiosOutput,
-    ListStudiosError,
-    Creds | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListStudiosInput,
-  ) => stream.Stream<
-    StudioSummary,
-    ListStudiosError,
-    Creds | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Creds | HttpClient.HttpClient,
+  StudioSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListStudiosInput,
   output: ListStudiosOutput,
   errors: [InternalServerException, InvalidRequestException],
@@ -6430,27 +6095,7 @@ export const listStudios: API.OperationMethod<
     outputToken: "Marker",
     items: "Studios",
   } as const,
-})) as any as API.OperationMethod<
-  ListStudiosInput,
-  ListStudiosOutput,
-  ListStudiosError,
-  Creds | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListStudiosInput,
-  ) => stream.Stream<
-    ListStudiosOutput,
-    ListStudiosError,
-    Creds | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListStudiosInput,
-  ) => stream.Stream<
-    StudioSummary,
-    ListStudiosError,
-    Creds | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListStudioSessionMappingsError =
   | InternalServerError
@@ -6460,27 +6105,13 @@ export type ListStudioSessionMappingsError =
  * Returns a list of all user or group session mappings for the Amazon EMR Studio
  * specified by `StudioId`.
  */
-export const listStudioSessionMappings: API.OperationMethod<
+export const listStudioSessionMappings: API.PaginatedOperationMethod<
   ListStudioSessionMappingsInput,
   ListStudioSessionMappingsOutput,
   ListStudioSessionMappingsError,
-  Creds | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListStudioSessionMappingsInput,
-  ) => stream.Stream<
-    ListStudioSessionMappingsOutput,
-    ListStudioSessionMappingsError,
-    Creds | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListStudioSessionMappingsInput,
-  ) => stream.Stream<
-    SessionMappingSummary,
-    ListStudioSessionMappingsError,
-    Creds | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Creds | HttpClient.HttpClient,
+  SessionMappingSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListStudioSessionMappingsInput,
   output: ListStudioSessionMappingsOutput,
   errors: [InternalServerError, InvalidRequestException],
@@ -6492,27 +6123,7 @@ export const listStudioSessionMappings: API.OperationMethod<
     outputToken: "Marker",
     items: "SessionMappings",
   } as const,
-})) as any as API.OperationMethod<
-  ListStudioSessionMappingsInput,
-  ListStudioSessionMappingsOutput,
-  ListStudioSessionMappingsError,
-  Creds | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListStudioSessionMappingsInput,
-  ) => stream.Stream<
-    ListStudioSessionMappingsOutput,
-    ListStudioSessionMappingsError,
-    Creds | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListStudioSessionMappingsInput,
-  ) => stream.Stream<
-    SessionMappingSummary,
-    ListStudioSessionMappingsError,
-    Creds | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListSupportedInstanceTypesError =
   | InternalServerException
@@ -6522,27 +6133,13 @@ export type ListSupportedInstanceTypesError =
  * A list of the instance types that Amazon EMR supports. You can filter the
  * list by Amazon Web Services Region and Amazon EMR release.
  */
-export const listSupportedInstanceTypes: API.OperationMethod<
+export const listSupportedInstanceTypes: API.PaginatedOperationMethod<
   ListSupportedInstanceTypesInput,
   ListSupportedInstanceTypesOutput,
   ListSupportedInstanceTypesError,
-  Creds | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSupportedInstanceTypesInput,
-  ) => stream.Stream<
-    ListSupportedInstanceTypesOutput,
-    ListSupportedInstanceTypesError,
-    Creds | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSupportedInstanceTypesInput,
-  ) => stream.Stream<
-    unknown,
-    ListSupportedInstanceTypesError,
-    Creds | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Creds | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListSupportedInstanceTypesInput,
   output: ListSupportedInstanceTypesOutput,
   errors: [InternalServerException, InvalidRequestException],
@@ -6550,27 +6147,7 @@ export const listSupportedInstanceTypes: API.OperationMethod<
   retry: Retry,
   operationName: "ListSupportedInstanceTypes",
   pagination: { inputToken: "Marker", outputToken: "Marker" } as const,
-})) as any as API.OperationMethod<
-  ListSupportedInstanceTypesInput,
-  ListSupportedInstanceTypesOutput,
-  ListSupportedInstanceTypesError,
-  Creds | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSupportedInstanceTypesInput,
-  ) => stream.Stream<
-    ListSupportedInstanceTypesOutput,
-    ListSupportedInstanceTypesError,
-    Creds | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSupportedInstanceTypesInput,
-  ) => stream.Stream<
-    unknown,
-    ListSupportedInstanceTypesError,
-    Creds | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ModifyClusterError =
   | InternalServerError
@@ -6584,7 +6161,7 @@ export const modifyCluster: API.OperationMethod<
   ModifyClusterInput,
   ModifyClusterOutput,
   ModifyClusterError,
-  Creds | Region | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ModifyClusterInput,
   output: ModifyClusterOutput,
@@ -6610,7 +6187,7 @@ export const modifyInstanceFleet: API.OperationMethod<
   ModifyInstanceFleetInput,
   ModifyInstanceFleetResponse,
   ModifyInstanceFleetError,
-  Creds | Region | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ModifyInstanceFleetInput,
   output: ModifyInstanceFleetResponse,
@@ -6630,7 +6207,7 @@ export const modifyInstanceGroups: API.OperationMethod<
   ModifyInstanceGroupsInput,
   ModifyInstanceGroupsResponse,
   ModifyInstanceGroupsError,
-  Creds | Region | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ModifyInstanceGroupsInput,
   output: ModifyInstanceGroupsResponse,
@@ -6651,7 +6228,7 @@ export const putAutoScalingPolicy: API.OperationMethod<
   PutAutoScalingPolicyInput,
   PutAutoScalingPolicyOutput,
   PutAutoScalingPolicyError,
-  Creds | Region | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutAutoScalingPolicyInput,
   output: PutAutoScalingPolicyOutput,
@@ -6676,7 +6253,7 @@ export const putAutoTerminationPolicy: API.OperationMethod<
   PutAutoTerminationPolicyInput,
   PutAutoTerminationPolicyOutput,
   PutAutoTerminationPolicyError,
-  Creds | Region | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutAutoTerminationPolicyInput,
   output: PutAutoTerminationPolicyOutput,
@@ -6700,7 +6277,7 @@ export const putBlockPublicAccessConfiguration: API.OperationMethod<
   PutBlockPublicAccessConfigurationInput,
   PutBlockPublicAccessConfigurationOutput,
   PutBlockPublicAccessConfigurationError,
-  Creds | Region | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutBlockPublicAccessConfigurationInput,
   output: PutBlockPublicAccessConfigurationOutput,
@@ -6721,7 +6298,7 @@ export const putManagedScalingPolicy: API.OperationMethod<
   PutManagedScalingPolicyInput,
   PutManagedScalingPolicyOutput,
   PutManagedScalingPolicyError,
-  Creds | Region | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutManagedScalingPolicyInput,
   output: PutManagedScalingPolicyOutput,
@@ -6739,7 +6316,7 @@ export const removeAutoScalingPolicy: API.OperationMethod<
   RemoveAutoScalingPolicyInput,
   RemoveAutoScalingPolicyOutput,
   RemoveAutoScalingPolicyError,
-  Creds | Region | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RemoveAutoScalingPolicyInput,
   output: RemoveAutoScalingPolicyOutput,
@@ -6757,7 +6334,7 @@ export const removeAutoTerminationPolicy: API.OperationMethod<
   RemoveAutoTerminationPolicyInput,
   RemoveAutoTerminationPolicyOutput,
   RemoveAutoTerminationPolicyError,
-  Creds | Region | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RemoveAutoTerminationPolicyInput,
   output: RemoveAutoTerminationPolicyOutput,
@@ -6775,7 +6352,7 @@ export const removeManagedScalingPolicy: API.OperationMethod<
   RemoveManagedScalingPolicyInput,
   RemoveManagedScalingPolicyOutput,
   RemoveManagedScalingPolicyError,
-  Creds | Region | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RemoveManagedScalingPolicyInput,
   output: RemoveManagedScalingPolicyOutput,
@@ -6801,7 +6378,7 @@ export const removeTags: API.OperationMethod<
   RemoveTagsInput,
   RemoveTagsOutput,
   RemoveTagsError,
-  Creds | Region | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RemoveTagsInput,
   output: RemoveTagsOutput,
@@ -6843,7 +6420,7 @@ export const runJobFlow: API.OperationMethod<
   RunJobFlowInput,
   RunJobFlowOutput,
   RunJobFlowError,
-  Creds | Region | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RunJobFlowInput,
   output: RunJobFlowOutput,
@@ -6867,7 +6444,7 @@ export const setKeepJobFlowAliveWhenNoSteps: API.OperationMethod<
   SetKeepJobFlowAliveWhenNoStepsInput,
   SetKeepJobFlowAliveWhenNoStepsResponse,
   SetKeepJobFlowAliveWhenNoStepsError,
-  Creds | Region | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: SetKeepJobFlowAliveWhenNoStepsInput,
   output: SetKeepJobFlowAliveWhenNoStepsResponse,
@@ -6906,7 +6483,7 @@ export const setTerminationProtection: API.OperationMethod<
   SetTerminationProtectionInput,
   SetTerminationProtectionResponse,
   SetTerminationProtectionError,
-  Creds | Region | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: SetTerminationProtectionInput,
   output: SetTerminationProtectionResponse,
@@ -6939,7 +6516,7 @@ export const setUnhealthyNodeReplacement: API.OperationMethod<
   SetUnhealthyNodeReplacementInput,
   SetUnhealthyNodeReplacementResponse,
   SetUnhealthyNodeReplacementError,
-  Creds | Region | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: SetUnhealthyNodeReplacementInput,
   output: SetUnhealthyNodeReplacementResponse,
@@ -6970,7 +6547,7 @@ export const setVisibleToAllUsers: API.OperationMethod<
   SetVisibleToAllUsersInput,
   SetVisibleToAllUsersResponse,
   SetVisibleToAllUsersError,
-  Creds | Region | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: SetVisibleToAllUsersInput,
   output: SetVisibleToAllUsersResponse,
@@ -6991,7 +6568,7 @@ export const startNotebookExecution: API.OperationMethod<
   StartNotebookExecutionInput,
   StartNotebookExecutionOutput,
   StartNotebookExecutionError,
-  Creds | Region | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartNotebookExecutionInput,
   output: StartNotebookExecutionOutput,
@@ -7012,7 +6589,7 @@ export const startSession: API.OperationMethod<
   StartSessionInput,
   StartSessionOutput,
   StartSessionError,
-  Creds | Region | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartSessionInput,
   output: StartSessionOutput,
@@ -7033,7 +6610,7 @@ export const stopNotebookExecution: API.OperationMethod<
   StopNotebookExecutionInput,
   StopNotebookExecutionResponse,
   StopNotebookExecutionError,
-  Creds | Region | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StopNotebookExecutionInput,
   output: StopNotebookExecutionResponse,
@@ -7061,7 +6638,7 @@ export const terminateJobFlows: API.OperationMethod<
   TerminateJobFlowsInput,
   TerminateJobFlowsResponse,
   TerminateJobFlowsError,
-  Creds | Region | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TerminateJobFlowsInput,
   output: TerminateJobFlowsResponse,
@@ -7082,7 +6659,7 @@ export const terminateSession: API.OperationMethod<
   TerminateSessionInput,
   TerminateSessionOutput,
   TerminateSessionError,
-  Creds | Region | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TerminateSessionInput,
   output: TerminateSessionOutput,
@@ -7105,7 +6682,7 @@ export const updateStudio: API.OperationMethod<
   UpdateStudioInput,
   UpdateStudioResponse,
   UpdateStudioError,
-  Creds | Region | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateStudioInput,
   output: UpdateStudioResponse,
@@ -7126,7 +6703,7 @@ export const updateStudioSessionMapping: API.OperationMethod<
   UpdateStudioSessionMappingInput,
   UpdateStudioSessionMappingResponse,
   UpdateStudioSessionMappingError,
-  Creds | Region | HttpClient.HttpClient
+  Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateStudioSessionMappingInput,
   output: UpdateStudioSessionMappingResponse,

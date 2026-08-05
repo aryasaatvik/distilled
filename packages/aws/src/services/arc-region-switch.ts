@@ -1,6 +1,5 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -8,7 +7,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region as Rgn } from "../region.ts";
 const svc = T.AwsApiService({
   sdkId: "ARC Region switch",
   serviceShapeName: "ArcRegionSwitch",
@@ -132,31 +130,31 @@ const rules = T.EndpointResolver((p, _) => {
 export class AccessDeniedException
   extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
     "AccessDeniedException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(403),
   ).pipe(C.withAuthError) {}
 export class IllegalArgumentException
   extends /*@__PURE__*/ S.TaggedErrorClass<IllegalArgumentException>()(
     "IllegalArgumentException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class IllegalStateException
   extends /*@__PURE__*/ S.TaggedErrorClass<IllegalStateException>()(
     "IllegalStateException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class InternalServerException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
     "InternalServerException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(500),
   ).pipe(C.withServerError) {}
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export type PlanArn = string;
@@ -2368,7 +2366,7 @@ export const approvePlanExecutionStep: API.OperationMethod<
   ApprovePlanExecutionStepRequest,
   ApprovePlanExecutionStepResponse,
   ApprovePlanExecutionStepError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ApprovePlanExecutionStepRequest,
   output: ApprovePlanExecutionStepResponse,
@@ -2391,7 +2389,7 @@ export const cancelPlanExecution: API.OperationMethod<
   CancelPlanExecutionRequest,
   CancelPlanExecutionResponse,
   CancelPlanExecutionError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CancelPlanExecutionRequest,
   output: CancelPlanExecutionResponse,
@@ -2411,7 +2409,7 @@ export const createPlan: API.OperationMethod<
   CreatePlanRequest,
   CreatePlanResponse,
   CreatePlanError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreatePlanRequest,
   output: CreatePlanResponse,
@@ -2434,7 +2432,7 @@ export const deletePlan: API.OperationMethod<
   DeletePlanRequest,
   DeletePlanResponse,
   DeletePlanError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeletePlanRequest,
   output: DeletePlanResponse,
@@ -2452,7 +2450,7 @@ export const getPlan: API.OperationMethod<
   GetPlanRequest,
   GetPlanResponse,
   GetPlanError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetPlanRequest,
   output: GetPlanResponse,
@@ -2469,27 +2467,13 @@ export type GetPlanEvaluationStatusError =
 /**
  * Retrieves the evaluation status of a Region switch plan. The evaluation status provides information about the last time the plan was evaluated and any warnings or issues detected.
  */
-export const getPlanEvaluationStatus: API.OperationMethod<
+export const getPlanEvaluationStatus: API.PaginatedOperationMethod<
   GetPlanEvaluationStatusRequest,
   GetPlanEvaluationStatusResponse,
   GetPlanEvaluationStatusError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetPlanEvaluationStatusRequest,
-  ) => stream.Stream<
-    GetPlanEvaluationStatusResponse,
-    GetPlanEvaluationStatusError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetPlanEvaluationStatusRequest,
-  ) => stream.Stream<
-    ResourceWarning,
-    GetPlanEvaluationStatusError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ResourceWarning
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetPlanEvaluationStatusRequest,
   output: GetPlanEvaluationStatusResponse,
   errors: [AccessDeniedException, ResourceNotFoundException],
@@ -2502,27 +2486,7 @@ export const getPlanEvaluationStatus: API.OperationMethod<
     items: "warnings",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetPlanEvaluationStatusRequest,
-  GetPlanEvaluationStatusResponse,
-  GetPlanEvaluationStatusError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetPlanEvaluationStatusRequest,
-  ) => stream.Stream<
-    GetPlanEvaluationStatusResponse,
-    GetPlanEvaluationStatusError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetPlanEvaluationStatusRequest,
-  ) => stream.Stream<
-    ResourceWarning,
-    GetPlanEvaluationStatusError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetPlanExecutionError =
   | AccessDeniedException
@@ -2531,27 +2495,13 @@ export type GetPlanExecutionError =
 /**
  * Retrieves detailed information about a specific plan execution. You must specify the plan ARN and execution ID.
  */
-export const getPlanExecution: API.OperationMethod<
+export const getPlanExecution: API.PaginatedOperationMethod<
   GetPlanExecutionRequest,
   GetPlanExecutionResponse,
   GetPlanExecutionError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetPlanExecutionRequest,
-  ) => stream.Stream<
-    GetPlanExecutionResponse,
-    GetPlanExecutionError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetPlanExecutionRequest,
-  ) => stream.Stream<
-    StepState,
-    GetPlanExecutionError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  StepState
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetPlanExecutionRequest,
   output: GetPlanExecutionResponse,
   errors: [AccessDeniedException, ResourceNotFoundException],
@@ -2564,27 +2514,7 @@ export const getPlanExecution: API.OperationMethod<
     items: "stepStates",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetPlanExecutionRequest,
-  GetPlanExecutionResponse,
-  GetPlanExecutionError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetPlanExecutionRequest,
-  ) => stream.Stream<
-    GetPlanExecutionResponse,
-    GetPlanExecutionError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetPlanExecutionRequest,
-  ) => stream.Stream<
-    StepState,
-    GetPlanExecutionError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetPlanInRegionError =
   | AccessDeniedException
@@ -2597,7 +2527,7 @@ export const getPlanInRegion: API.OperationMethod<
   GetPlanInRegionRequest,
   GetPlanInRegionResponse,
   GetPlanInRegionError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetPlanInRegionRequest,
   output: GetPlanInRegionResponse,
@@ -2614,27 +2544,13 @@ export type ListPlanExecutionEventsError =
 /**
  * Lists the events that occurred during a plan execution. These events provide a detailed timeline of the execution process.
  */
-export const listPlanExecutionEvents: API.OperationMethod<
+export const listPlanExecutionEvents: API.PaginatedOperationMethod<
   ListPlanExecutionEventsRequest,
   ListPlanExecutionEventsResponse,
   ListPlanExecutionEventsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPlanExecutionEventsRequest,
-  ) => stream.Stream<
-    ListPlanExecutionEventsResponse,
-    ListPlanExecutionEventsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPlanExecutionEventsRequest,
-  ) => stream.Stream<
-    ExecutionEvent,
-    ListPlanExecutionEventsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ExecutionEvent
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListPlanExecutionEventsRequest,
   output: ListPlanExecutionEventsResponse,
   errors: [AccessDeniedException, ResourceNotFoundException],
@@ -2647,27 +2563,7 @@ export const listPlanExecutionEvents: API.OperationMethod<
     items: "items",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListPlanExecutionEventsRequest,
-  ListPlanExecutionEventsResponse,
-  ListPlanExecutionEventsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPlanExecutionEventsRequest,
-  ) => stream.Stream<
-    ListPlanExecutionEventsResponse,
-    ListPlanExecutionEventsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPlanExecutionEventsRequest,
-  ) => stream.Stream<
-    ExecutionEvent,
-    ListPlanExecutionEventsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListPlanExecutionsError =
   | AccessDeniedException
@@ -2676,27 +2572,13 @@ export type ListPlanExecutionsError =
 /**
  * Lists the executions of a Region switch plan. This operation returns information about both current and historical executions.
  */
-export const listPlanExecutions: API.OperationMethod<
+export const listPlanExecutions: API.PaginatedOperationMethod<
   ListPlanExecutionsRequest,
   ListPlanExecutionsResponse,
   ListPlanExecutionsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPlanExecutionsRequest,
-  ) => stream.Stream<
-    ListPlanExecutionsResponse,
-    ListPlanExecutionsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPlanExecutionsRequest,
-  ) => stream.Stream<
-    AbbreviatedExecution,
-    ListPlanExecutionsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  AbbreviatedExecution
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListPlanExecutionsRequest,
   output: ListPlanExecutionsResponse,
   errors: [AccessDeniedException, ResourceNotFoundException],
@@ -2709,53 +2591,19 @@ export const listPlanExecutions: API.OperationMethod<
     items: "items",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListPlanExecutionsRequest,
-  ListPlanExecutionsResponse,
-  ListPlanExecutionsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPlanExecutionsRequest,
-  ) => stream.Stream<
-    ListPlanExecutionsResponse,
-    ListPlanExecutionsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPlanExecutionsRequest,
-  ) => stream.Stream<
-    AbbreviatedExecution,
-    ListPlanExecutionsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListPlansError = CommonErrors;
 /**
  * Lists all Region switch plans in your Amazon Web Services account.
  */
-export const listPlans: API.OperationMethod<
+export const listPlans: API.PaginatedOperationMethod<
   ListPlansRequest,
   ListPlansResponse,
   ListPlansError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPlansRequest,
-  ) => stream.Stream<
-    ListPlansResponse,
-    ListPlansError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPlansRequest,
-  ) => stream.Stream<
-    AbbreviatedPlan,
-    ListPlansError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  AbbreviatedPlan
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListPlansRequest,
   output: ListPlansResponse,
   errors: [],
@@ -2768,53 +2616,19 @@ export const listPlans: API.OperationMethod<
     items: "plans",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListPlansRequest,
-  ListPlansResponse,
-  ListPlansError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPlansRequest,
-  ) => stream.Stream<
-    ListPlansResponse,
-    ListPlansError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPlansRequest,
-  ) => stream.Stream<
-    AbbreviatedPlan,
-    ListPlansError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListPlansInRegionError = AccessDeniedException | CommonErrors;
 /**
  * Lists all Region switch plans in your Amazon Web Services account that are available in the current Amazon Web Services Region.
  */
-export const listPlansInRegion: API.OperationMethod<
+export const listPlansInRegion: API.PaginatedOperationMethod<
   ListPlansInRegionRequest,
   ListPlansInRegionResponse,
   ListPlansInRegionError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPlansInRegionRequest,
-  ) => stream.Stream<
-    ListPlansInRegionResponse,
-    ListPlansInRegionError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPlansInRegionRequest,
-  ) => stream.Stream<
-    AbbreviatedPlan,
-    ListPlansInRegionError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  AbbreviatedPlan
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListPlansInRegionRequest,
   output: ListPlansInRegionResponse,
   errors: [AccessDeniedException],
@@ -2827,27 +2641,7 @@ export const listPlansInRegion: API.OperationMethod<
     items: "plans",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListPlansInRegionRequest,
-  ListPlansInRegionResponse,
-  ListPlansInRegionError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPlansInRegionRequest,
-  ) => stream.Stream<
-    ListPlansInRegionResponse,
-    ListPlansInRegionError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPlansInRegionRequest,
-  ) => stream.Stream<
-    AbbreviatedPlan,
-    ListPlansInRegionError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListRoute53HealthChecksError =
   | AccessDeniedException
@@ -2858,27 +2652,13 @@ export type ListRoute53HealthChecksError =
 /**
  * List the Amazon Route 53 health checks.
  */
-export const listRoute53HealthChecks: API.OperationMethod<
+export const listRoute53HealthChecks: API.PaginatedOperationMethod<
   ListRoute53HealthChecksRequest,
   ListRoute53HealthChecksResponse,
   ListRoute53HealthChecksError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListRoute53HealthChecksRequest,
-  ) => stream.Stream<
-    ListRoute53HealthChecksResponse,
-    ListRoute53HealthChecksError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListRoute53HealthChecksRequest,
-  ) => stream.Stream<
-    Route53HealthCheck,
-    ListRoute53HealthChecksError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Route53HealthCheck
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListRoute53HealthChecksRequest,
   output: ListRoute53HealthChecksResponse,
   errors: [
@@ -2896,27 +2676,7 @@ export const listRoute53HealthChecks: API.OperationMethod<
     items: "healthChecks",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListRoute53HealthChecksRequest,
-  ListRoute53HealthChecksResponse,
-  ListRoute53HealthChecksError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListRoute53HealthChecksRequest,
-  ) => stream.Stream<
-    ListRoute53HealthChecksResponse,
-    ListRoute53HealthChecksError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListRoute53HealthChecksRequest,
-  ) => stream.Stream<
-    Route53HealthCheck,
-    ListRoute53HealthChecksError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListRoute53HealthChecksInRegionError =
   | AccessDeniedException
@@ -2927,27 +2687,13 @@ export type ListRoute53HealthChecksInRegionError =
 /**
  * List the Amazon Route 53 health checks in a specific Amazon Web Services Region.
  */
-export const listRoute53HealthChecksInRegion: API.OperationMethod<
+export const listRoute53HealthChecksInRegion: API.PaginatedOperationMethod<
   ListRoute53HealthChecksInRegionRequest,
   ListRoute53HealthChecksInRegionResponse,
   ListRoute53HealthChecksInRegionError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListRoute53HealthChecksInRegionRequest,
-  ) => stream.Stream<
-    ListRoute53HealthChecksInRegionResponse,
-    ListRoute53HealthChecksInRegionError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListRoute53HealthChecksInRegionRequest,
-  ) => stream.Stream<
-    Route53HealthCheck,
-    ListRoute53HealthChecksInRegionError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Route53HealthCheck
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListRoute53HealthChecksInRegionRequest,
   output: ListRoute53HealthChecksInRegionResponse,
   errors: [
@@ -2965,27 +2711,7 @@ export const listRoute53HealthChecksInRegion: API.OperationMethod<
     items: "healthChecks",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListRoute53HealthChecksInRegionRequest,
-  ListRoute53HealthChecksInRegionResponse,
-  ListRoute53HealthChecksInRegionError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListRoute53HealthChecksInRegionRequest,
-  ) => stream.Stream<
-    ListRoute53HealthChecksInRegionResponse,
-    ListRoute53HealthChecksInRegionError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListRoute53HealthChecksInRegionRequest,
-  ) => stream.Stream<
-    Route53HealthCheck,
-    ListRoute53HealthChecksInRegionError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsForResourceError =
   | InternalServerException
@@ -2998,7 +2724,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceRequest,
   ListTagsForResourceResponse,
   ListTagsForResourceError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -3023,7 +2749,7 @@ export const startPlanExecution: API.OperationMethod<
   StartPlanExecutionRequest,
   StartPlanExecutionResponse,
   StartPlanExecutionError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartPlanExecutionRequest,
   output: StartPlanExecutionResponse,
@@ -3049,7 +2775,7 @@ export const tagResource: API.OperationMethod<
   TagResourceRequest,
   TagResourceResponse,
   TagResourceError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -3070,7 +2796,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceRequest,
   UntagResourceResponse,
   UntagResourceError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -3088,7 +2814,7 @@ export const updatePlan: API.OperationMethod<
   UpdatePlanRequest,
   UpdatePlanResponse,
   UpdatePlanError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdatePlanRequest,
   output: UpdatePlanResponse,
@@ -3110,7 +2836,7 @@ export const updatePlanExecution: API.OperationMethod<
   UpdatePlanExecutionRequest,
   UpdatePlanExecutionResponse,
   UpdatePlanExecutionError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdatePlanExecutionRequest,
   output: UpdatePlanExecutionResponse,
@@ -3135,7 +2861,7 @@ export const updatePlanExecutionStep: API.OperationMethod<
   UpdatePlanExecutionStepRequest,
   UpdatePlanExecutionStepResponse,
   UpdatePlanExecutionStepError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdatePlanExecutionStepRequest,
   output: UpdatePlanExecutionStepResponse,

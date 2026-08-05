@@ -1,6 +1,5 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -8,7 +7,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 const svc = T.AwsApiService({
   sdkId: "Neptune Graph",
   serviceShapeName: "AmazonNeptuneGraph",
@@ -124,14 +122,14 @@ const rules = T.EndpointResolver((p, _) => {
 export class AccessDeniedException
   extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
     "AccessDeniedException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(403),
   ).pipe(C.withAuthError) {}
 export class ConflictException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
     "ConflictException",
     {
-      message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       reason: S.optional(
         S.suspend(() => ConflictExceptionReason).annotate({
           identifier: "ConflictExceptionReason",
@@ -143,20 +141,20 @@ export class ConflictException
 export class InternalServerException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
     "InternalServerException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.all(T.HttpError(500), T.Retryable()),
   ).pipe(C.withServerError, C.withRetryableError) {}
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class ServiceQuotaExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
     "ServiceQuotaExceededException",
     {
-      message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       resourceId: S.optional(S.String),
       resourceType: S.optional(S.String),
       serviceCode: S.optional(S.String),
@@ -167,14 +165,14 @@ export class ServiceQuotaExceededException
 export class ThrottlingException
   extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
     "ThrottlingException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.all(T.HttpError(429), T.Retryable({ throttling: true })),
   ).pipe(C.withThrottlingError, C.withRetryableError) {}
 export class UnprocessableException
   extends /*@__PURE__*/ S.TaggedErrorClass<UnprocessableException>()(
     "UnprocessableException",
     {
-      message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       reason: S.suspend(() => UnprocessableExceptionReason).annotate({
         identifier: "UnprocessableExceptionReason",
       }),
@@ -185,7 +183,7 @@ export class ValidationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
     "ValidationException",
     {
-      message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       reason: S.optional(
         S.suspend(() => ValidationExceptionReason).annotate({
           identifier: "ValidationExceptionReason",
@@ -2292,7 +2290,7 @@ export const cancelExportTask: API.OperationMethod<
   CancelExportTaskInput,
   CancelExportTaskOutput,
   CancelExportTaskError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CancelExportTaskInput,
   output: CancelExportTaskOutput,
@@ -2322,7 +2320,7 @@ export const cancelImportTask: API.OperationMethod<
   CancelImportTaskInput,
   CancelImportTaskOutput,
   CancelImportTaskError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CancelImportTaskInput,
   output: CancelImportTaskOutput,
@@ -2352,7 +2350,7 @@ export const cancelQuery: API.OperationMethod<
   CancelQueryInput,
   CancelQueryResponse,
   CancelQueryError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CancelQueryInput,
   output: CancelQueryResponse,
@@ -2383,7 +2381,7 @@ export const createGraph: API.OperationMethod<
   CreateGraphInput,
   CreateGraphOutput,
   CreateGraphError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateGraphInput,
   output: CreateGraphOutput,
@@ -2414,7 +2412,7 @@ export const createGraphSnapshot: API.OperationMethod<
   CreateGraphSnapshotInput,
   CreateGraphSnapshotOutput,
   CreateGraphSnapshotError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateGraphSnapshotInput,
   output: CreateGraphSnapshotOutput,
@@ -2447,7 +2445,7 @@ export const createGraphUsingImportTask: API.OperationMethod<
   CreateGraphUsingImportTaskInput,
   CreateGraphUsingImportTaskOutput,
   CreateGraphUsingImportTaskError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateGraphUsingImportTaskInput,
   output: CreateGraphUsingImportTaskOutput,
@@ -2480,7 +2478,7 @@ export const createPrivateGraphEndpoint: API.OperationMethod<
   CreatePrivateGraphEndpointInput,
   CreatePrivateGraphEndpointOutput,
   CreatePrivateGraphEndpointError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreatePrivateGraphEndpointInput,
   output: CreatePrivateGraphEndpointOutput,
@@ -2511,7 +2509,7 @@ export const deleteGraph: API.OperationMethod<
   DeleteGraphInput,
   DeleteGraphOutput,
   DeleteGraphError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteGraphInput,
   output: DeleteGraphOutput,
@@ -2541,7 +2539,7 @@ export const deleteGraphSnapshot: API.OperationMethod<
   DeleteGraphSnapshotInput,
   DeleteGraphSnapshotOutput,
   DeleteGraphSnapshotError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteGraphSnapshotInput,
   output: DeleteGraphSnapshotOutput,
@@ -2571,7 +2569,7 @@ export const deletePrivateGraphEndpoint: API.OperationMethod<
   DeletePrivateGraphEndpointInput,
   DeletePrivateGraphEndpointOutput,
   DeletePrivateGraphEndpointError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeletePrivateGraphEndpointInput,
   output: DeletePrivateGraphEndpointOutput,
@@ -2610,7 +2608,7 @@ export const executeQuery: API.OperationMethod<
   ExecuteQueryInput,
   ExecuteQueryOutput,
   ExecuteQueryError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ExecuteQueryInput,
   output: ExecuteQueryOutput,
@@ -2641,7 +2639,7 @@ export const getExportTask: API.OperationMethod<
   GetExportTaskInput,
   GetExportTaskOutput,
   GetExportTaskError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetExportTaskInput,
   output: GetExportTaskOutput,
@@ -2669,7 +2667,7 @@ export const getGraph: API.OperationMethod<
   GetGraphInput,
   GetGraphOutput,
   GetGraphError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetGraphInput,
   output: GetGraphOutput,
@@ -2697,7 +2695,7 @@ export const getGraphSnapshot: API.OperationMethod<
   GetGraphSnapshotInput,
   GetGraphSnapshotOutput,
   GetGraphSnapshotError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetGraphSnapshotInput,
   output: GetGraphSnapshotOutput,
@@ -2726,7 +2724,7 @@ export const getGraphSummary: API.OperationMethod<
   GetGraphSummaryInput,
   GetGraphSummaryOutput,
   GetGraphSummaryError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetGraphSummaryInput,
   output: GetGraphSummaryOutput,
@@ -2756,7 +2754,7 @@ export const getImportTask: API.OperationMethod<
   GetImportTaskInput,
   GetImportTaskOutput,
   GetImportTaskError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetImportTaskInput,
   output: GetImportTaskOutput,
@@ -2784,7 +2782,7 @@ export const getPrivateGraphEndpoint: API.OperationMethod<
   GetPrivateGraphEndpointInput,
   GetPrivateGraphEndpointOutput,
   GetPrivateGraphEndpointError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetPrivateGraphEndpointInput,
   output: GetPrivateGraphEndpointOutput,
@@ -2815,7 +2813,7 @@ export const getQuery: API.OperationMethod<
   GetQueryInput,
   GetQueryOutput,
   GetQueryError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetQueryInput,
   output: GetQueryOutput,
@@ -2841,27 +2839,13 @@ export type ListExportTasksError =
 /**
  * Retrieves a list of export tasks.
  */
-export const listExportTasks: API.OperationMethod<
+export const listExportTasks: API.PaginatedOperationMethod<
   ListExportTasksInput,
   ListExportTasksOutput,
   ListExportTasksError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListExportTasksInput,
-  ) => stream.Stream<
-    ListExportTasksOutput,
-    ListExportTasksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListExportTasksInput,
-  ) => stream.Stream<
-    ExportTaskSummary,
-    ListExportTasksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ExportTaskSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListExportTasksInput,
   output: ListExportTasksOutput,
   errors: [
@@ -2879,27 +2863,7 @@ export const listExportTasks: API.OperationMethod<
     items: "tasks",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListExportTasksInput,
-  ListExportTasksOutput,
-  ListExportTasksError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListExportTasksInput,
-  ) => stream.Stream<
-    ListExportTasksOutput,
-    ListExportTasksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListExportTasksInput,
-  ) => stream.Stream<
-    ExportTaskSummary,
-    ListExportTasksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListGraphsError =
   | InternalServerException
@@ -2909,27 +2873,13 @@ export type ListGraphsError =
 /**
  * Lists available Neptune Analytics graphs.
  */
-export const listGraphs: API.OperationMethod<
+export const listGraphs: API.PaginatedOperationMethod<
   ListGraphsInput,
   ListGraphsOutput,
   ListGraphsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListGraphsInput,
-  ) => stream.Stream<
-    ListGraphsOutput,
-    ListGraphsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListGraphsInput,
-  ) => stream.Stream<
-    GraphSummary,
-    ListGraphsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  GraphSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListGraphsInput,
   output: ListGraphsOutput,
   errors: [
@@ -2946,27 +2896,7 @@ export const listGraphs: API.OperationMethod<
     items: "graphs",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListGraphsInput,
-  ListGraphsOutput,
-  ListGraphsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListGraphsInput,
-  ) => stream.Stream<
-    ListGraphsOutput,
-    ListGraphsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListGraphsInput,
-  ) => stream.Stream<
-    GraphSummary,
-    ListGraphsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListGraphSnapshotsError =
   | InternalServerException
@@ -2977,27 +2907,13 @@ export type ListGraphSnapshotsError =
 /**
  * Lists available snapshots of a specified Neptune Analytics graph.
  */
-export const listGraphSnapshots: API.OperationMethod<
+export const listGraphSnapshots: API.PaginatedOperationMethod<
   ListGraphSnapshotsInput,
   ListGraphSnapshotsOutput,
   ListGraphSnapshotsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListGraphSnapshotsInput,
-  ) => stream.Stream<
-    ListGraphSnapshotsOutput,
-    ListGraphSnapshotsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListGraphSnapshotsInput,
-  ) => stream.Stream<
-    GraphSnapshotSummary,
-    ListGraphSnapshotsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  GraphSnapshotSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListGraphSnapshotsInput,
   output: ListGraphSnapshotsOutput,
   errors: [
@@ -3015,27 +2931,7 @@ export const listGraphSnapshots: API.OperationMethod<
     items: "graphSnapshots",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListGraphSnapshotsInput,
-  ListGraphSnapshotsOutput,
-  ListGraphSnapshotsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListGraphSnapshotsInput,
-  ) => stream.Stream<
-    ListGraphSnapshotsOutput,
-    ListGraphSnapshotsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListGraphSnapshotsInput,
-  ) => stream.Stream<
-    GraphSnapshotSummary,
-    ListGraphSnapshotsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListImportTasksError =
   | InternalServerException
@@ -3046,27 +2942,13 @@ export type ListImportTasksError =
 /**
  * Lists import tasks.
  */
-export const listImportTasks: API.OperationMethod<
+export const listImportTasks: API.PaginatedOperationMethod<
   ListImportTasksInput,
   ListImportTasksOutput,
   ListImportTasksError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListImportTasksInput,
-  ) => stream.Stream<
-    ListImportTasksOutput,
-    ListImportTasksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListImportTasksInput,
-  ) => stream.Stream<
-    ImportTaskSummary,
-    ListImportTasksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ImportTaskSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListImportTasksInput,
   output: ListImportTasksOutput,
   errors: [
@@ -3084,27 +2966,7 @@ export const listImportTasks: API.OperationMethod<
     items: "tasks",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListImportTasksInput,
-  ListImportTasksOutput,
-  ListImportTasksError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListImportTasksInput,
-  ) => stream.Stream<
-    ListImportTasksOutput,
-    ListImportTasksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListImportTasksInput,
-  ) => stream.Stream<
-    ImportTaskSummary,
-    ListImportTasksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListPrivateGraphEndpointsError =
   | InternalServerException
@@ -3115,27 +2977,13 @@ export type ListPrivateGraphEndpointsError =
 /**
  * Lists private endpoints for a specified Neptune Analytics graph.
  */
-export const listPrivateGraphEndpoints: API.OperationMethod<
+export const listPrivateGraphEndpoints: API.PaginatedOperationMethod<
   ListPrivateGraphEndpointsInput,
   ListPrivateGraphEndpointsOutput,
   ListPrivateGraphEndpointsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPrivateGraphEndpointsInput,
-  ) => stream.Stream<
-    ListPrivateGraphEndpointsOutput,
-    ListPrivateGraphEndpointsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPrivateGraphEndpointsInput,
-  ) => stream.Stream<
-    PrivateGraphEndpointSummary,
-    ListPrivateGraphEndpointsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  PrivateGraphEndpointSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListPrivateGraphEndpointsInput,
   output: ListPrivateGraphEndpointsOutput,
   errors: [
@@ -3153,27 +3001,7 @@ export const listPrivateGraphEndpoints: API.OperationMethod<
     items: "privateGraphEndpoints",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListPrivateGraphEndpointsInput,
-  ListPrivateGraphEndpointsOutput,
-  ListPrivateGraphEndpointsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPrivateGraphEndpointsInput,
-  ) => stream.Stream<
-    ListPrivateGraphEndpointsOutput,
-    ListPrivateGraphEndpointsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPrivateGraphEndpointsInput,
-  ) => stream.Stream<
-    PrivateGraphEndpointSummary,
-    ListPrivateGraphEndpointsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListQueriesError =
   | AccessDeniedException
@@ -3188,7 +3016,7 @@ export const listQueries: API.OperationMethod<
   ListQueriesInput,
   ListQueriesOutput,
   ListQueriesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListQueriesInput,
   output: ListQueriesOutput,
@@ -3217,7 +3045,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceInput,
   ListTagsForResourceOutput,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceInput,
   output: ListTagsForResourceOutput,
@@ -3246,7 +3074,7 @@ export const resetGraph: API.OperationMethod<
   ResetGraphInput,
   ResetGraphOutput,
   ResetGraphError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ResetGraphInput,
   output: ResetGraphOutput,
@@ -3277,7 +3105,7 @@ export const restoreGraphFromSnapshot: API.OperationMethod<
   RestoreGraphFromSnapshotInput,
   RestoreGraphFromSnapshotOutput,
   RestoreGraphFromSnapshotError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RestoreGraphFromSnapshotInput,
   output: RestoreGraphFromSnapshotOutput,
@@ -3308,7 +3136,7 @@ export const startExportTask: API.OperationMethod<
   StartExportTaskInput,
   StartExportTaskOutput,
   StartExportTaskError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartExportTaskInput,
   output: StartExportTaskOutput,
@@ -3338,7 +3166,7 @@ export const startGraph: API.OperationMethod<
   StartGraphInput,
   StartGraphOutput,
   StartGraphError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartGraphInput,
   output: StartGraphOutput,
@@ -3368,7 +3196,7 @@ export const startImportTask: API.OperationMethod<
   StartImportTaskInput,
   StartImportTaskOutput,
   StartImportTaskError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartImportTaskInput,
   output: StartImportTaskOutput,
@@ -3398,7 +3226,7 @@ export const stopGraph: API.OperationMethod<
   StopGraphInput,
   StopGraphOutput,
   StopGraphError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StopGraphInput,
   output: StopGraphOutput,
@@ -3427,7 +3255,7 @@ export const tagResource: API.OperationMethod<
   TagResourceInput,
   TagResourceOutput,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceInput,
   output: TagResourceOutput,
@@ -3455,7 +3283,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceInput,
   UntagResourceOutput,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceInput,
   output: UntagResourceOutput,
@@ -3484,7 +3312,7 @@ export const updateGraph: API.OperationMethod<
   UpdateGraphInput,
   UpdateGraphOutput,
   UpdateGraphError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateGraphInput,
   output: UpdateGraphOutput,

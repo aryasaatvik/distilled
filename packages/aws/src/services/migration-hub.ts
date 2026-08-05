@@ -1,6 +1,5 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -8,7 +7,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 const svc = T.AwsApiService({
   sdkId: "Migration Hub",
   serviceShapeName: "AWSMigrationHub",
@@ -88,48 +86,48 @@ const rules = T.EndpointResolver((p, _) => {
 export class AccessDeniedException
   extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
     "AccessDeniedException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ).pipe(C.withAuthError) {}
 export class DryRunOperation
   extends /*@__PURE__*/ S.TaggedErrorClass<DryRunOperation>()(
     "DryRunOperation",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class HomeRegionNotSetException
   extends /*@__PURE__*/ S.TaggedErrorClass<HomeRegionNotSetException>()(
     "HomeRegionNotSetException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InternalServerError
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerError>()(
     "InternalServerError",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidInputException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidInputException>()(
     "InvalidInputException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class PolicyErrorException
   extends /*@__PURE__*/ S.TaggedErrorClass<PolicyErrorException>()(
     "PolicyErrorException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class ServiceUnavailableException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceUnavailableException>()(
     "ServiceUnavailableException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ).pipe(C.withServerError) {}
 export class ThrottlingException
   extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
     "ThrottlingException",
     {
-      Message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       RetryAfterSeconds: S.optional(S.Number).pipe(T.HttpHeader("Retry-After")),
     },
     T.HttpError(429),
@@ -137,7 +135,7 @@ export class ThrottlingException
 export class UnauthorizedOperation
   extends /*@__PURE__*/ S.TaggedErrorClass<UnauthorizedOperation>()(
     "UnauthorizedOperation",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ).pipe(C.withAuthError) {}
 export type ProgressUpdateStream = string;
 export type MigrationTaskName = string;
@@ -907,7 +905,7 @@ export const associateCreatedArtifact: API.OperationMethod<
   AssociateCreatedArtifactRequest,
   AssociateCreatedArtifactResult,
   AssociateCreatedArtifactError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AssociateCreatedArtifactRequest,
   output: AssociateCreatedArtifactResult,
@@ -947,7 +945,7 @@ export const associateDiscoveredResource: API.OperationMethod<
   AssociateDiscoveredResourceRequest,
   AssociateDiscoveredResourceResult,
   AssociateDiscoveredResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AssociateDiscoveredResourceRequest,
   output: AssociateDiscoveredResourceResult,
@@ -986,7 +984,7 @@ export const associateSourceResource: API.OperationMethod<
   AssociateSourceResourceRequest,
   AssociateSourceResourceResult,
   AssociateSourceResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AssociateSourceResourceRequest,
   output: AssociateSourceResourceResult,
@@ -1026,7 +1024,7 @@ export const createProgressUpdateStream: API.OperationMethod<
   CreateProgressUpdateStreamRequest,
   CreateProgressUpdateStreamResult,
   CreateProgressUpdateStreamError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateProgressUpdateStreamRequest,
   output: CreateProgressUpdateStreamResult,
@@ -1085,7 +1083,7 @@ export const deleteProgressUpdateStream: API.OperationMethod<
   DeleteProgressUpdateStreamRequest,
   DeleteProgressUpdateStreamResult,
   DeleteProgressUpdateStreamError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteProgressUpdateStreamRequest,
   output: DeleteProgressUpdateStreamResult,
@@ -1122,7 +1120,7 @@ export const describeApplicationState: API.OperationMethod<
   DescribeApplicationStateRequest,
   DescribeApplicationStateResult,
   DescribeApplicationStateError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeApplicationStateRequest,
   output: DescribeApplicationStateResult,
@@ -1157,7 +1155,7 @@ export const describeMigrationTask: API.OperationMethod<
   DescribeMigrationTaskRequest,
   DescribeMigrationTaskResult,
   DescribeMigrationTaskError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeMigrationTaskRequest,
   output: DescribeMigrationTaskResult,
@@ -1204,7 +1202,7 @@ export const disassociateCreatedArtifact: API.OperationMethod<
   DisassociateCreatedArtifactRequest,
   DisassociateCreatedArtifactResult,
   DisassociateCreatedArtifactError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DisassociateCreatedArtifactRequest,
   output: DisassociateCreatedArtifactResult,
@@ -1243,7 +1241,7 @@ export const disassociateDiscoveredResource: API.OperationMethod<
   DisassociateDiscoveredResourceRequest,
   DisassociateDiscoveredResourceResult,
   DisassociateDiscoveredResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DisassociateDiscoveredResourceRequest,
   output: DisassociateDiscoveredResourceResult,
@@ -1280,7 +1278,7 @@ export const disassociateSourceResource: API.OperationMethod<
   DisassociateSourceResourceRequest,
   DisassociateSourceResourceResult,
   DisassociateSourceResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DisassociateSourceResourceRequest,
   output: DisassociateSourceResourceResult,
@@ -1321,7 +1319,7 @@ export const importMigrationTask: API.OperationMethod<
   ImportMigrationTaskRequest,
   ImportMigrationTaskResult,
   ImportMigrationTaskError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ImportMigrationTaskRequest,
   output: ImportMigrationTaskResult,
@@ -1354,27 +1352,13 @@ export type ListApplicationStatesError =
  * `ApplicationIds` parameter, only the migration statuses for those
  * applications will be returned.
  */
-export const listApplicationStates: API.OperationMethod<
+export const listApplicationStates: API.PaginatedOperationMethod<
   ListApplicationStatesRequest,
   ListApplicationStatesResult,
   ListApplicationStatesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListApplicationStatesRequest,
-  ) => stream.Stream<
-    ListApplicationStatesResult,
-    ListApplicationStatesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListApplicationStatesRequest,
-  ) => stream.Stream<
-    ApplicationState,
-    ListApplicationStatesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ApplicationState
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListApplicationStatesRequest,
   output: ListApplicationStatesResult,
   errors: [
@@ -1394,27 +1378,7 @@ export const listApplicationStates: API.OperationMethod<
     items: "ApplicationStateList",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListApplicationStatesRequest,
-  ListApplicationStatesResult,
-  ListApplicationStatesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListApplicationStatesRequest,
-  ) => stream.Stream<
-    ListApplicationStatesResult,
-    ListApplicationStatesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListApplicationStatesRequest,
-  ) => stream.Stream<
-    ApplicationState,
-    ListApplicationStatesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListCreatedArtifactsError =
   | AccessDeniedException
@@ -1437,27 +1401,13 @@ export type ListCreatedArtifactsError =
  *
  * - Lists created artifacts in a paginated interface.
  */
-export const listCreatedArtifacts: API.OperationMethod<
+export const listCreatedArtifacts: API.PaginatedOperationMethod<
   ListCreatedArtifactsRequest,
   ListCreatedArtifactsResult,
   ListCreatedArtifactsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCreatedArtifactsRequest,
-  ) => stream.Stream<
-    ListCreatedArtifactsResult,
-    ListCreatedArtifactsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCreatedArtifactsRequest,
-  ) => stream.Stream<
-    CreatedArtifact,
-    ListCreatedArtifactsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  CreatedArtifact
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListCreatedArtifactsRequest,
   output: ListCreatedArtifactsResult,
   errors: [
@@ -1478,27 +1428,7 @@ export const listCreatedArtifacts: API.OperationMethod<
     items: "CreatedArtifactList",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListCreatedArtifactsRequest,
-  ListCreatedArtifactsResult,
-  ListCreatedArtifactsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCreatedArtifactsRequest,
-  ) => stream.Stream<
-    ListCreatedArtifactsResult,
-    ListCreatedArtifactsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCreatedArtifactsRequest,
-  ) => stream.Stream<
-    CreatedArtifact,
-    ListCreatedArtifactsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListDiscoveredResourcesError =
   | AccessDeniedException
@@ -1512,27 +1442,13 @@ export type ListDiscoveredResourcesError =
 /**
  * Lists discovered resources associated with the given `MigrationTask`.
  */
-export const listDiscoveredResources: API.OperationMethod<
+export const listDiscoveredResources: API.PaginatedOperationMethod<
   ListDiscoveredResourcesRequest,
   ListDiscoveredResourcesResult,
   ListDiscoveredResourcesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDiscoveredResourcesRequest,
-  ) => stream.Stream<
-    ListDiscoveredResourcesResult,
-    ListDiscoveredResourcesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDiscoveredResourcesRequest,
-  ) => stream.Stream<
-    DiscoveredResource,
-    ListDiscoveredResourcesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  DiscoveredResource
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListDiscoveredResourcesRequest,
   output: ListDiscoveredResourcesResult,
   errors: [
@@ -1553,27 +1469,7 @@ export const listDiscoveredResources: API.OperationMethod<
     items: "DiscoveredResourceList",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListDiscoveredResourcesRequest,
-  ListDiscoveredResourcesResult,
-  ListDiscoveredResourcesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDiscoveredResourcesRequest,
-  ) => stream.Stream<
-    ListDiscoveredResourcesResult,
-    ListDiscoveredResourcesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDiscoveredResourcesRequest,
-  ) => stream.Stream<
-    DiscoveredResource,
-    ListDiscoveredResourcesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListMigrationTasksError =
   | AccessDeniedException
@@ -1596,27 +1492,13 @@ export type ListMigrationTasksError =
  *
  * - Lists migration tasks in a paginated interface.
  */
-export const listMigrationTasks: API.OperationMethod<
+export const listMigrationTasks: API.PaginatedOperationMethod<
   ListMigrationTasksRequest,
   ListMigrationTasksResult,
   ListMigrationTasksError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListMigrationTasksRequest,
-  ) => stream.Stream<
-    ListMigrationTasksResult,
-    ListMigrationTasksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListMigrationTasksRequest,
-  ) => stream.Stream<
-    MigrationTaskSummary,
-    ListMigrationTasksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  MigrationTaskSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListMigrationTasksRequest,
   output: ListMigrationTasksResult,
   errors: [
@@ -1638,27 +1520,7 @@ export const listMigrationTasks: API.OperationMethod<
     items: "MigrationTaskSummaryList",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListMigrationTasksRequest,
-  ListMigrationTasksResult,
-  ListMigrationTasksError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListMigrationTasksRequest,
-  ) => stream.Stream<
-    ListMigrationTasksResult,
-    ListMigrationTasksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListMigrationTasksRequest,
-  ) => stream.Stream<
-    MigrationTaskSummary,
-    ListMigrationTasksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListMigrationTaskUpdatesError =
   | AccessDeniedException
@@ -1672,27 +1534,13 @@ export type ListMigrationTaskUpdatesError =
  * This is a paginated API that returns all the migration-task states for the specified
  * `MigrationTaskName` and `ProgressUpdateStream`.
  */
-export const listMigrationTaskUpdates: API.OperationMethod<
+export const listMigrationTaskUpdates: API.PaginatedOperationMethod<
   ListMigrationTaskUpdatesRequest,
   ListMigrationTaskUpdatesResult,
   ListMigrationTaskUpdatesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListMigrationTaskUpdatesRequest,
-  ) => stream.Stream<
-    ListMigrationTaskUpdatesResult,
-    ListMigrationTaskUpdatesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListMigrationTaskUpdatesRequest,
-  ) => stream.Stream<
-    MigrationTaskUpdate,
-    ListMigrationTaskUpdatesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  MigrationTaskUpdate
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListMigrationTaskUpdatesRequest,
   output: ListMigrationTaskUpdatesResult,
   errors: [
@@ -1712,27 +1560,7 @@ export const listMigrationTaskUpdates: API.OperationMethod<
     items: "MigrationTaskUpdateList",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListMigrationTaskUpdatesRequest,
-  ListMigrationTaskUpdatesResult,
-  ListMigrationTaskUpdatesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListMigrationTaskUpdatesRequest,
-  ) => stream.Stream<
-    ListMigrationTaskUpdatesResult,
-    ListMigrationTaskUpdatesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListMigrationTaskUpdatesRequest,
-  ) => stream.Stream<
-    MigrationTaskUpdate,
-    ListMigrationTaskUpdatesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListProgressUpdateStreamsError =
   | AccessDeniedException
@@ -1745,27 +1573,13 @@ export type ListProgressUpdateStreamsError =
 /**
  * Lists progress update streams associated with the user account making this call.
  */
-export const listProgressUpdateStreams: API.OperationMethod<
+export const listProgressUpdateStreams: API.PaginatedOperationMethod<
   ListProgressUpdateStreamsRequest,
   ListProgressUpdateStreamsResult,
   ListProgressUpdateStreamsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListProgressUpdateStreamsRequest,
-  ) => stream.Stream<
-    ListProgressUpdateStreamsResult,
-    ListProgressUpdateStreamsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListProgressUpdateStreamsRequest,
-  ) => stream.Stream<
-    ProgressUpdateStreamSummary,
-    ListProgressUpdateStreamsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ProgressUpdateStreamSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListProgressUpdateStreamsRequest,
   output: ListProgressUpdateStreamsResult,
   errors: [
@@ -1785,27 +1599,7 @@ export const listProgressUpdateStreams: API.OperationMethod<
     items: "ProgressUpdateStreamSummaryList",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListProgressUpdateStreamsRequest,
-  ListProgressUpdateStreamsResult,
-  ListProgressUpdateStreamsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListProgressUpdateStreamsRequest,
-  ) => stream.Stream<
-    ListProgressUpdateStreamsResult,
-    ListProgressUpdateStreamsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListProgressUpdateStreamsRequest,
-  ) => stream.Stream<
-    ProgressUpdateStreamSummary,
-    ListProgressUpdateStreamsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListSourceResourcesError =
   | AccessDeniedException
@@ -1819,27 +1613,13 @@ export type ListSourceResourcesError =
  * Lists all the source resource that are associated with the specified
  * `MigrationTaskName` and `ProgressUpdateStream`.
  */
-export const listSourceResources: API.OperationMethod<
+export const listSourceResources: API.PaginatedOperationMethod<
   ListSourceResourcesRequest,
   ListSourceResourcesResult,
   ListSourceResourcesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSourceResourcesRequest,
-  ) => stream.Stream<
-    ListSourceResourcesResult,
-    ListSourceResourcesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSourceResourcesRequest,
-  ) => stream.Stream<
-    SourceResource,
-    ListSourceResourcesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  SourceResource
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListSourceResourcesRequest,
   output: ListSourceResourcesResult,
   errors: [
@@ -1859,27 +1639,7 @@ export const listSourceResources: API.OperationMethod<
     items: "SourceResourceList",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListSourceResourcesRequest,
-  ListSourceResourcesResult,
-  ListSourceResourcesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSourceResourcesRequest,
-  ) => stream.Stream<
-    ListSourceResourcesResult,
-    ListSourceResourcesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSourceResourcesRequest,
-  ) => stream.Stream<
-    SourceResource,
-    ListSourceResourcesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type NotifyApplicationStateError =
   | AccessDeniedException
@@ -1903,7 +1663,7 @@ export const notifyApplicationState: API.OperationMethod<
   NotifyApplicationStateRequest,
   NotifyApplicationStateResult,
   NotifyApplicationStateError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: NotifyApplicationStateRequest,
   output: NotifyApplicationStateResult,
@@ -1952,7 +1712,7 @@ export const notifyMigrationTaskState: API.OperationMethod<
   NotifyMigrationTaskStateRequest,
   NotifyMigrationTaskStateResult,
   NotifyMigrationTaskStateError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: NotifyMigrationTaskStateRequest,
   output: NotifyMigrationTaskStateResult,
@@ -2007,7 +1767,7 @@ export const putResourceAttributes: API.OperationMethod<
   PutResourceAttributesRequest,
   PutResourceAttributesResult,
   PutResourceAttributesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutResourceAttributesRequest,
   output: PutResourceAttributesResult,

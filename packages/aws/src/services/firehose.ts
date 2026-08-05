@@ -8,7 +8,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 import { SensitiveString } from "../sensitive.ts";
 const ns = T.XmlNamespace("http://firehose.amazonaws.com/doc/2015-08-04");
 const svc = T.AwsApiService({
@@ -90,42 +89,48 @@ const rules = T.EndpointResolver((p, _) => {
 export class ConcurrentModificationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConcurrentModificationException>()(
     "ConcurrentModificationException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidArgumentException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidArgumentException>()(
     "InvalidArgumentException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidKMSResourceException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidKMSResourceException>()(
     "InvalidKMSResourceException",
-    { code: S.optional(S.String), message: S.optional(S.String) },
+    {
+      code: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
   ) {}
 export class InvalidSourceException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidSourceException>()(
     "InvalidSourceException",
-    { code: S.optional(S.String), message: S.optional(S.String) },
+    {
+      code: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
   ) {}
 export class LimitExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<LimitExceededException>()(
     "LimitExceededException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class ResourceInUseException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceInUseException>()(
     "ResourceInUseException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class ServiceUnavailableException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceUnavailableException>()(
     "ServiceUnavailableException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(503),
   ).pipe(C.withServerError) {}
 export type DeliveryStreamName = string;
@@ -2958,7 +2963,7 @@ export const createDeliveryStream: API.OperationMethod<
   CreateDeliveryStreamInput,
   CreateDeliveryStreamOutput,
   CreateDeliveryStreamError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateDeliveryStreamInput,
   output: CreateDeliveryStreamOutput,
@@ -2999,7 +3004,7 @@ export const deleteDeliveryStream: API.OperationMethod<
   DeleteDeliveryStreamInput,
   DeleteDeliveryStreamOutput,
   DeleteDeliveryStreamError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteDeliveryStreamInput,
   output: DeleteDeliveryStreamOutput,
@@ -3026,7 +3031,7 @@ export const describeDeliveryStream: API.OperationMethod<
   DescribeDeliveryStreamInput,
   DescribeDeliveryStreamOutput,
   DescribeDeliveryStreamError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeDeliveryStreamInput,
   output: DescribeDeliveryStreamOutput,
@@ -3052,7 +3057,7 @@ export const listDeliveryStreams: API.OperationMethod<
   ListDeliveryStreamsInput,
   ListDeliveryStreamsOutput,
   ListDeliveryStreamsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListDeliveryStreamsInput,
   output: ListDeliveryStreamsOutput,
@@ -3075,7 +3080,7 @@ export const listTagsForDeliveryStream: API.OperationMethod<
   ListTagsForDeliveryStreamInput,
   ListTagsForDeliveryStreamOutput,
   ListTagsForDeliveryStreamError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForDeliveryStreamInput,
   output: ListTagsForDeliveryStreamOutput,
@@ -3151,7 +3156,7 @@ export const putRecord: API.OperationMethod<
   PutRecordInput,
   PutRecordOutput,
   PutRecordError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutRecordInput,
   output: PutRecordOutput,
@@ -3250,7 +3255,7 @@ export const putRecordBatch: API.OperationMethod<
   PutRecordBatchInput,
   PutRecordBatchOutput,
   PutRecordBatchError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutRecordBatchInput,
   output: PutRecordBatchOutput,
@@ -3325,7 +3330,7 @@ export const startDeliveryStreamEncryption: API.OperationMethod<
   StartDeliveryStreamEncryptionInput,
   StartDeliveryStreamEncryptionOutput,
   StartDeliveryStreamEncryptionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartDeliveryStreamEncryptionInput,
   output: StartDeliveryStreamEncryptionOutput,
@@ -3376,7 +3381,7 @@ export const stopDeliveryStreamEncryption: API.OperationMethod<
   StopDeliveryStreamEncryptionInput,
   StopDeliveryStreamEncryptionOutput,
   StopDeliveryStreamEncryptionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StopDeliveryStreamEncryptionInput,
   output: StopDeliveryStreamEncryptionOutput,
@@ -3415,7 +3420,7 @@ export const tagDeliveryStream: API.OperationMethod<
   TagDeliveryStreamInput,
   TagDeliveryStreamOutput,
   TagDeliveryStreamError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagDeliveryStreamInput,
   output: TagDeliveryStreamOutput,
@@ -3448,7 +3453,7 @@ export const untagDeliveryStream: API.OperationMethod<
   UntagDeliveryStreamInput,
   UntagDeliveryStreamOutput,
   UntagDeliveryStreamError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagDeliveryStreamInput,
   output: UntagDeliveryStreamOutput,
@@ -3503,7 +3508,7 @@ export const updateDestination: API.OperationMethod<
   UpdateDestinationInput,
   UpdateDestinationOutput,
   UpdateDestinationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateDestinationInput,
   output: UpdateDestinationOutput,

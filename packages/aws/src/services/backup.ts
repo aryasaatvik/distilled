@@ -1,7 +1,6 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as redacted from "effect/Redacted";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -9,7 +8,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region as Rgn } from "../region.ts";
 import { SensitiveString } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "Backup",
@@ -92,7 +90,7 @@ export class AlreadyExistsException
     "AlreadyExistsException",
     {
       Code: S.optional(S.String),
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       CreatorRequestId: S.optional(S.String),
       Arn: S.optional(S.String),
       Type: S.optional(S.String),
@@ -104,7 +102,7 @@ export class ConflictException
     "ConflictException",
     {
       Code: S.optional(S.String),
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       Type: S.optional(S.String),
       Context: S.optional(S.String),
     },
@@ -118,7 +116,7 @@ export class DependencyFailureException
     "DependencyFailureException",
     {
       Code: S.optional(S.String),
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       Type: S.optional(S.String),
       Context: S.optional(S.String),
     },
@@ -128,7 +126,7 @@ export class InvalidParameterValueException
     "InvalidParameterValueException",
     {
       Code: S.optional(S.String),
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       Type: S.optional(S.String),
       Context: S.optional(S.String),
     },
@@ -138,7 +136,7 @@ export class InvalidRequestException
     "InvalidRequestException",
     {
       Code: S.optional(S.String),
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       Type: S.optional(S.String),
       Context: S.optional(S.String),
     },
@@ -148,7 +146,7 @@ export class InvalidResourceStateException
     "InvalidResourceStateException",
     {
       Code: S.optional(S.String),
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       Type: S.optional(S.String),
       Context: S.optional(S.String),
     },
@@ -158,7 +156,7 @@ export class LimitExceededException
     "LimitExceededException",
     {
       Code: S.optional(S.String),
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       Type: S.optional(S.String),
       Context: S.optional(S.String),
     },
@@ -168,7 +166,7 @@ export class MissingParameterValueException
     "MissingParameterValueException",
     {
       Code: S.optional(S.String),
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       Type: S.optional(S.String),
       Context: S.optional(S.String),
     },
@@ -178,7 +176,7 @@ export class ResourceNotFoundException
     "ResourceNotFoundException",
     {
       Code: S.optional(S.String),
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       Type: S.optional(S.String),
       Context: S.optional(S.String),
     },
@@ -188,7 +186,7 @@ export class ServiceUnavailableException
     "ServiceUnavailableException",
     {
       Code: S.optional(S.String),
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       Type: S.optional(S.String),
       Context: S.optional(S.String),
     },
@@ -6491,7 +6489,7 @@ export const associateBackupVaultMpaApprovalTeam: API.OperationMethod<
   AssociateBackupVaultMpaApprovalTeamInput,
   AssociateBackupVaultMpaApprovalTeamResponse,
   AssociateBackupVaultMpaApprovalTeamError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AssociateBackupVaultMpaApprovalTeamInput,
   output: AssociateBackupVaultMpaApprovalTeamResponse,
@@ -6522,7 +6520,7 @@ export const cancelLegalHold: API.OperationMethod<
   CancelLegalHoldInput,
   CancelLegalHoldOutput,
   CancelLegalHoldError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CancelLegalHoldInput,
   output: CancelLegalHoldOutput,
@@ -6557,7 +6555,7 @@ export const createBackupPlan: API.OperationMethod<
   CreateBackupPlanInput,
   CreateBackupPlanOutput,
   CreateBackupPlanError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateBackupPlanInput,
   output: CreateBackupPlanOutput,
@@ -6588,7 +6586,7 @@ export const createBackupSelection: API.OperationMethod<
   CreateBackupSelectionInput,
   CreateBackupSelectionOutput,
   CreateBackupSelectionError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateBackupSelectionInput,
   output: CreateBackupSelectionOutput,
@@ -6623,7 +6621,7 @@ export const createBackupVault: API.OperationMethod<
   CreateBackupVaultInput,
   CreateBackupVaultOutput,
   CreateBackupVaultError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateBackupVaultInput,
   output: CreateBackupVaultOutput,
@@ -6656,7 +6654,7 @@ export const createFramework: API.OperationMethod<
   CreateFrameworkInput,
   CreateFrameworkOutput,
   CreateFrameworkError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateFrameworkInput,
   output: CreateFrameworkOutput,
@@ -6688,7 +6686,7 @@ export const createLegalHold: API.OperationMethod<
   CreateLegalHoldInput,
   CreateLegalHoldOutput,
   CreateLegalHoldError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateLegalHoldInput,
   output: CreateLegalHoldOutput,
@@ -6725,7 +6723,7 @@ export const createLogicallyAirGappedBackupVault: API.OperationMethod<
   CreateLogicallyAirGappedBackupVaultInput,
   CreateLogicallyAirGappedBackupVaultOutput,
   CreateLogicallyAirGappedBackupVaultError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateLogicallyAirGappedBackupVaultInput,
   output: CreateLogicallyAirGappedBackupVaultOutput,
@@ -6760,7 +6758,7 @@ export const createReportPlan: API.OperationMethod<
   CreateReportPlanInput,
   CreateReportPlanOutput,
   CreateReportPlanError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateReportPlanInput,
   output: CreateReportPlanOutput,
@@ -6792,7 +6790,7 @@ export const createRestoreAccessBackupVault: API.OperationMethod<
   CreateRestoreAccessBackupVaultInput,
   CreateRestoreAccessBackupVaultOutput,
   CreateRestoreAccessBackupVaultError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateRestoreAccessBackupVaultInput,
   output: CreateRestoreAccessBackupVaultOutput,
@@ -6829,7 +6827,7 @@ export const createRestoreTestingPlan: API.OperationMethod<
   CreateRestoreTestingPlanInput,
   CreateRestoreTestingPlanOutput,
   CreateRestoreTestingPlanError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateRestoreTestingPlanInput,
   output: CreateRestoreTestingPlanOutput,
@@ -6880,7 +6878,7 @@ export const createRestoreTestingSelection: API.OperationMethod<
   CreateRestoreTestingSelectionInput,
   CreateRestoreTestingSelectionOutput,
   CreateRestoreTestingSelectionError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateRestoreTestingSelectionInput,
   output: CreateRestoreTestingSelectionOutput,
@@ -6916,7 +6914,7 @@ export const createTieringConfiguration: API.OperationMethod<
   CreateTieringConfigurationInput,
   CreateTieringConfigurationOutput,
   CreateTieringConfigurationError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateTieringConfigurationInput,
   output: CreateTieringConfigurationOutput,
@@ -6949,7 +6947,7 @@ export const deleteBackupPlan: API.OperationMethod<
   DeleteBackupPlanInput,
   DeleteBackupPlanOutput,
   DeleteBackupPlanError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteBackupPlanInput,
   output: DeleteBackupPlanOutput,
@@ -6979,7 +6977,7 @@ export const deleteBackupSelection: API.OperationMethod<
   DeleteBackupSelectionInput,
   DeleteBackupSelectionResponse,
   DeleteBackupSelectionError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteBackupSelectionInput,
   output: DeleteBackupSelectionResponse,
@@ -7009,7 +7007,7 @@ export const deleteBackupVault: API.OperationMethod<
   DeleteBackupVaultInput,
   DeleteBackupVaultResponse,
   DeleteBackupVaultError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteBackupVaultInput,
   output: DeleteBackupVaultResponse,
@@ -7038,7 +7036,7 @@ export const deleteBackupVaultAccessPolicy: API.OperationMethod<
   DeleteBackupVaultAccessPolicyInput,
   DeleteBackupVaultAccessPolicyResponse,
   DeleteBackupVaultAccessPolicyError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteBackupVaultAccessPolicyInput,
   output: DeleteBackupVaultAccessPolicyResponse,
@@ -7073,7 +7071,7 @@ export const deleteBackupVaultLockConfiguration: API.OperationMethod<
   DeleteBackupVaultLockConfigurationInput,
   DeleteBackupVaultLockConfigurationResponse,
   DeleteBackupVaultLockConfigurationError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteBackupVaultLockConfigurationInput,
   output: DeleteBackupVaultLockConfigurationResponse,
@@ -7102,7 +7100,7 @@ export const deleteBackupVaultNotifications: API.OperationMethod<
   DeleteBackupVaultNotificationsInput,
   DeleteBackupVaultNotificationsResponse,
   DeleteBackupVaultNotificationsError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteBackupVaultNotificationsInput,
   output: DeleteBackupVaultNotificationsResponse,
@@ -7131,7 +7129,7 @@ export const deleteFramework: API.OperationMethod<
   DeleteFrameworkInput,
   DeleteFrameworkResponse,
   DeleteFrameworkError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteFrameworkInput,
   output: DeleteFrameworkResponse,
@@ -7177,7 +7175,7 @@ export const deleteRecoveryPoint: API.OperationMethod<
   DeleteRecoveryPointInput,
   DeleteRecoveryPointResponse,
   DeleteRecoveryPointError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteRecoveryPointInput,
   output: DeleteRecoveryPointResponse,
@@ -7208,7 +7206,7 @@ export const deleteReportPlan: API.OperationMethod<
   DeleteReportPlanInput,
   DeleteReportPlanResponse,
   DeleteReportPlanError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteReportPlanInput,
   output: DeleteReportPlanResponse,
@@ -7238,7 +7236,7 @@ export const deleteRestoreTestingPlan: API.OperationMethod<
   DeleteRestoreTestingPlanInput,
   DeleteRestoreTestingPlanResponse,
   DeleteRestoreTestingPlanError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteRestoreTestingPlanInput,
   output: DeleteRestoreTestingPlanResponse,
@@ -7263,7 +7261,7 @@ export const deleteRestoreTestingSelection: API.OperationMethod<
   DeleteRestoreTestingSelectionInput,
   DeleteRestoreTestingSelectionResponse,
   DeleteRestoreTestingSelectionError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteRestoreTestingSelectionInput,
   output: DeleteRestoreTestingSelectionResponse,
@@ -7286,7 +7284,7 @@ export const deleteTieringConfiguration: API.OperationMethod<
   DeleteTieringConfigurationInput,
   DeleteTieringConfigurationOutput,
   DeleteTieringConfigurationError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteTieringConfigurationInput,
   output: DeleteTieringConfigurationOutput,
@@ -7315,7 +7313,7 @@ export const describeBackupJob: API.OperationMethod<
   DescribeBackupJobInput,
   DescribeBackupJobOutput,
   DescribeBackupJobError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeBackupJobInput,
   output: DescribeBackupJobOutput,
@@ -7344,7 +7342,7 @@ export const describeBackupVault: API.OperationMethod<
   DescribeBackupVaultInput,
   DescribeBackupVaultOutput,
   DescribeBackupVaultError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeBackupVaultInput,
   output: DescribeBackupVaultOutput,
@@ -7372,7 +7370,7 @@ export const describeCopyJob: API.OperationMethod<
   DescribeCopyJobInput,
   DescribeCopyJobOutput,
   DescribeCopyJobError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeCopyJobInput,
   output: DescribeCopyJobOutput,
@@ -7400,7 +7398,7 @@ export const describeFramework: API.OperationMethod<
   DescribeFrameworkInput,
   DescribeFrameworkOutput,
   DescribeFrameworkError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeFrameworkInput,
   output: DescribeFrameworkOutput,
@@ -7426,7 +7424,7 @@ export const describeGlobalSettings: API.OperationMethod<
   DescribeGlobalSettingsInput,
   DescribeGlobalSettingsOutput,
   DescribeGlobalSettingsError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeGlobalSettingsInput,
   output: DescribeGlobalSettingsOutput,
@@ -7451,7 +7449,7 @@ export const describeProtectedResource: API.OperationMethod<
   DescribeProtectedResourceInput,
   DescribeProtectedResourceOutput,
   DescribeProtectedResourceError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeProtectedResourceInput,
   output: DescribeProtectedResourceOutput,
@@ -7480,7 +7478,7 @@ export const describeRecoveryPoint: API.OperationMethod<
   DescribeRecoveryPointInput,
   DescribeRecoveryPointOutput,
   DescribeRecoveryPointError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeRecoveryPointInput,
   output: DescribeRecoveryPointOutput,
@@ -7509,7 +7507,7 @@ export const describeRegionSettings: API.OperationMethod<
   DescribeRegionSettingsInput,
   DescribeRegionSettingsOutput,
   DescribeRegionSettingsError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeRegionSettingsInput,
   output: DescribeRegionSettingsOutput,
@@ -7532,7 +7530,7 @@ export const describeReportJob: API.OperationMethod<
   DescribeReportJobInput,
   DescribeReportJobOutput,
   DescribeReportJobError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeReportJobInput,
   output: DescribeReportJobOutput,
@@ -7559,7 +7557,7 @@ export const describeReportPlan: API.OperationMethod<
   DescribeReportPlanInput,
   DescribeReportPlanOutput,
   DescribeReportPlanError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeReportPlanInput,
   output: DescribeReportPlanOutput,
@@ -7588,7 +7586,7 @@ export const describeRestoreJob: API.OperationMethod<
   DescribeRestoreJobInput,
   DescribeRestoreJobOutput,
   DescribeRestoreJobError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeRestoreJobInput,
   output: DescribeRestoreJobOutput,
@@ -7617,7 +7615,7 @@ export const describeScanJob: API.OperationMethod<
   DescribeScanJobInput,
   DescribeScanJobOutput,
   DescribeScanJobError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeScanJobInput,
   output: DescribeScanJobOutput,
@@ -7646,7 +7644,7 @@ export const disassociateBackupVaultMpaApprovalTeam: API.OperationMethod<
   DisassociateBackupVaultMpaApprovalTeamInput,
   DisassociateBackupVaultMpaApprovalTeamResponse,
   DisassociateBackupVaultMpaApprovalTeamError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DisassociateBackupVaultMpaApprovalTeamInput,
   output: DisassociateBackupVaultMpaApprovalTeamResponse,
@@ -7681,7 +7679,7 @@ export const disassociateRecoveryPoint: API.OperationMethod<
   DisassociateRecoveryPointInput,
   DisassociateRecoveryPointResponse,
   DisassociateRecoveryPointError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DisassociateRecoveryPointInput,
   output: DisassociateRecoveryPointResponse,
@@ -7713,7 +7711,7 @@ export const disassociateRecoveryPointFromParent: API.OperationMethod<
   DisassociateRecoveryPointFromParentInput,
   DisassociateRecoveryPointFromParentResponse,
   DisassociateRecoveryPointFromParentError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DisassociateRecoveryPointFromParentInput,
   output: DisassociateRecoveryPointFromParentResponse,
@@ -7742,7 +7740,7 @@ export const exportBackupPlanTemplate: API.OperationMethod<
   ExportBackupPlanTemplateInput,
   ExportBackupPlanTemplateOutput,
   ExportBackupPlanTemplateError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ExportBackupPlanTemplateInput,
   output: ExportBackupPlanTemplateOutput,
@@ -7771,7 +7769,7 @@ export const getBackupPlan: API.OperationMethod<
   GetBackupPlanInput,
   GetBackupPlanOutput,
   GetBackupPlanError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetBackupPlanInput,
   output: GetBackupPlanOutput,
@@ -7800,7 +7798,7 @@ export const getBackupPlanFromJSON: API.OperationMethod<
   GetBackupPlanFromJSONInput,
   GetBackupPlanFromJSONOutput,
   GetBackupPlanFromJSONError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetBackupPlanFromJSONInput,
   output: GetBackupPlanFromJSONOutput,
@@ -7829,7 +7827,7 @@ export const getBackupPlanFromTemplate: API.OperationMethod<
   GetBackupPlanFromTemplateInput,
   GetBackupPlanFromTemplateOutput,
   GetBackupPlanFromTemplateError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetBackupPlanFromTemplateInput,
   output: GetBackupPlanFromTemplateOutput,
@@ -7858,7 +7856,7 @@ export const getBackupSelection: API.OperationMethod<
   GetBackupSelectionInput,
   GetBackupSelectionOutput,
   GetBackupSelectionError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetBackupSelectionInput,
   output: GetBackupSelectionOutput,
@@ -7887,7 +7885,7 @@ export const getBackupVaultAccessPolicy: API.OperationMethod<
   GetBackupVaultAccessPolicyInput,
   GetBackupVaultAccessPolicyOutput,
   GetBackupVaultAccessPolicyError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetBackupVaultAccessPolicyInput,
   output: GetBackupVaultAccessPolicyOutput,
@@ -7915,7 +7913,7 @@ export const getBackupVaultNotifications: API.OperationMethod<
   GetBackupVaultNotificationsInput,
   GetBackupVaultNotificationsOutput,
   GetBackupVaultNotificationsError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetBackupVaultNotificationsInput,
   output: GetBackupVaultNotificationsOutput,
@@ -7944,7 +7942,7 @@ export const getLegalHold: API.OperationMethod<
   GetLegalHoldInput,
   GetLegalHoldOutput,
   GetLegalHoldError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetLegalHoldInput,
   output: GetLegalHoldOutput,
@@ -7972,7 +7970,7 @@ export const getPITRMalwareScanResults: API.OperationMethod<
   GetPITRMalwareScanResultsInput,
   GetPITRMalwareScanResultsOutput,
   GetPITRMalwareScanResultsError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetPITRMalwareScanResultsInput,
   output: GetPITRMalwareScanResultsOutput,
@@ -8001,7 +7999,7 @@ export const getRecoveryPointIndexDetails: API.OperationMethod<
   GetRecoveryPointIndexDetailsInput,
   GetRecoveryPointIndexDetailsOutput,
   GetRecoveryPointIndexDetailsError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetRecoveryPointIndexDetailsInput,
   output: GetRecoveryPointIndexDetailsOutput,
@@ -8029,7 +8027,7 @@ export const getRecoveryPointRestoreMetadata: API.OperationMethod<
   GetRecoveryPointRestoreMetadataInput,
   GetRecoveryPointRestoreMetadataOutput,
   GetRecoveryPointRestoreMetadataError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetRecoveryPointRestoreMetadataInput,
   output: GetRecoveryPointRestoreMetadataOutput,
@@ -8057,7 +8055,7 @@ export const getRestoreJobMetadata: API.OperationMethod<
   GetRestoreJobMetadataInput,
   GetRestoreJobMetadataOutput,
   GetRestoreJobMetadataError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetRestoreJobMetadataInput,
   output: GetRestoreJobMetadataOutput,
@@ -8088,7 +8086,7 @@ export const getRestoreTestingInferredMetadata: API.OperationMethod<
   GetRestoreTestingInferredMetadataInput,
   GetRestoreTestingInferredMetadataOutput,
   GetRestoreTestingInferredMetadataError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetRestoreTestingInferredMetadataInput,
   output: GetRestoreTestingInferredMetadataOutput,
@@ -8116,7 +8114,7 @@ export const getRestoreTestingPlan: API.OperationMethod<
   GetRestoreTestingPlanInput,
   GetRestoreTestingPlanOutput,
   GetRestoreTestingPlanError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetRestoreTestingPlanInput,
   output: GetRestoreTestingPlanOutput,
@@ -8138,7 +8136,7 @@ export const getRestoreTestingSelection: API.OperationMethod<
   GetRestoreTestingSelectionInput,
   GetRestoreTestingSelectionOutput,
   GetRestoreTestingSelectionError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetRestoreTestingSelectionInput,
   output: GetRestoreTestingSelectionOutput,
@@ -8158,7 +8156,7 @@ export const getSupportedResourceTypes: API.OperationMethod<
   GetSupportedResourceTypesRequest,
   GetSupportedResourceTypesOutput,
   GetSupportedResourceTypesError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetSupportedResourceTypesRequest,
   output: GetSupportedResourceTypesOutput,
@@ -8183,7 +8181,7 @@ export const getTieringConfiguration: API.OperationMethod<
   GetTieringConfigurationInput,
   GetTieringConfigurationOutput,
   GetTieringConfigurationError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetTieringConfigurationInput,
   output: GetTieringConfigurationOutput,
@@ -8206,27 +8204,13 @@ export type ListBackupJobsError =
  * Returns a list of existing backup jobs for an authenticated account for the last 30
  * days. For a longer period of time, consider using these monitoring tools.
  */
-export const listBackupJobs: API.OperationMethod<
+export const listBackupJobs: API.PaginatedOperationMethod<
   ListBackupJobsInput,
   ListBackupJobsOutput,
   ListBackupJobsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListBackupJobsInput,
-  ) => stream.Stream<
-    ListBackupJobsOutput,
-    ListBackupJobsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListBackupJobsInput,
-  ) => stream.Stream<
-    BackupJob,
-    ListBackupJobsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  BackupJob
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListBackupJobsInput,
   output: ListBackupJobsOutput,
   errors: [InvalidParameterValueException, ServiceUnavailableException],
@@ -8239,27 +8223,7 @@ export const listBackupJobs: API.OperationMethod<
     items: "BackupJobs",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListBackupJobsInput,
-  ListBackupJobsOutput,
-  ListBackupJobsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListBackupJobsInput,
-  ) => stream.Stream<
-    ListBackupJobsOutput,
-    ListBackupJobsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListBackupJobsInput,
-  ) => stream.Stream<
-    BackupJob,
-    ListBackupJobsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListBackupJobSummariesError =
   | InvalidParameterValueException
@@ -8276,27 +8240,13 @@ export type ListBackupJobSummariesError =
  * Region, Account, State, ResourceType, MessageCategory,
  * StartTime, EndTime, and Count of included jobs.
  */
-export const listBackupJobSummaries: API.OperationMethod<
+export const listBackupJobSummaries: API.PaginatedOperationMethod<
   ListBackupJobSummariesInput,
   ListBackupJobSummariesOutput,
   ListBackupJobSummariesError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListBackupJobSummariesInput,
-  ) => stream.Stream<
-    ListBackupJobSummariesOutput,
-    ListBackupJobSummariesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListBackupJobSummariesInput,
-  ) => stream.Stream<
-    unknown,
-    ListBackupJobSummariesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListBackupJobSummariesInput,
   output: ListBackupJobSummariesOutput,
   errors: [InvalidParameterValueException, ServiceUnavailableException],
@@ -8308,27 +8258,7 @@ export const listBackupJobSummaries: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListBackupJobSummariesInput,
-  ListBackupJobSummariesOutput,
-  ListBackupJobSummariesError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListBackupJobSummariesInput,
-  ) => stream.Stream<
-    ListBackupJobSummariesOutput,
-    ListBackupJobSummariesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListBackupJobSummariesInput,
-  ) => stream.Stream<
-    unknown,
-    ListBackupJobSummariesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListBackupPlansError =
   | InvalidParameterValueException
@@ -8339,27 +8269,13 @@ export type ListBackupPlansError =
 /**
  * Lists the active backup plans for the account.
  */
-export const listBackupPlans: API.OperationMethod<
+export const listBackupPlans: API.PaginatedOperationMethod<
   ListBackupPlansInput,
   ListBackupPlansOutput,
   ListBackupPlansError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListBackupPlansInput,
-  ) => stream.Stream<
-    ListBackupPlansOutput,
-    ListBackupPlansError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListBackupPlansInput,
-  ) => stream.Stream<
-    BackupPlansListMember,
-    ListBackupPlansError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  BackupPlansListMember
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListBackupPlansInput,
   output: ListBackupPlansOutput,
   errors: [
@@ -8377,27 +8293,7 @@ export const listBackupPlans: API.OperationMethod<
     items: "BackupPlansList",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListBackupPlansInput,
-  ListBackupPlansOutput,
-  ListBackupPlansError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListBackupPlansInput,
-  ) => stream.Stream<
-    ListBackupPlansOutput,
-    ListBackupPlansError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListBackupPlansInput,
-  ) => stream.Stream<
-    BackupPlansListMember,
-    ListBackupPlansError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListBackupPlanTemplatesError =
   | InvalidParameterValueException
@@ -8408,27 +8304,13 @@ export type ListBackupPlanTemplatesError =
 /**
  * Lists the backup plan templates.
  */
-export const listBackupPlanTemplates: API.OperationMethod<
+export const listBackupPlanTemplates: API.PaginatedOperationMethod<
   ListBackupPlanTemplatesInput,
   ListBackupPlanTemplatesOutput,
   ListBackupPlanTemplatesError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListBackupPlanTemplatesInput,
-  ) => stream.Stream<
-    ListBackupPlanTemplatesOutput,
-    ListBackupPlanTemplatesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListBackupPlanTemplatesInput,
-  ) => stream.Stream<
-    BackupPlanTemplatesListMember,
-    ListBackupPlanTemplatesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  BackupPlanTemplatesListMember
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListBackupPlanTemplatesInput,
   output: ListBackupPlanTemplatesOutput,
   errors: [
@@ -8446,27 +8328,7 @@ export const listBackupPlanTemplates: API.OperationMethod<
     items: "BackupPlanTemplatesList",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListBackupPlanTemplatesInput,
-  ListBackupPlanTemplatesOutput,
-  ListBackupPlanTemplatesError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListBackupPlanTemplatesInput,
-  ) => stream.Stream<
-    ListBackupPlanTemplatesOutput,
-    ListBackupPlanTemplatesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListBackupPlanTemplatesInput,
-  ) => stream.Stream<
-    BackupPlanTemplatesListMember,
-    ListBackupPlanTemplatesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListBackupPlanVersionsError =
   | InvalidParameterValueException
@@ -8478,27 +8340,13 @@ export type ListBackupPlanVersionsError =
  * Returns version metadata of your backup plans, including Amazon Resource Names (ARNs),
  * backup plan IDs, creation and deletion dates, plan names, and version IDs.
  */
-export const listBackupPlanVersions: API.OperationMethod<
+export const listBackupPlanVersions: API.PaginatedOperationMethod<
   ListBackupPlanVersionsInput,
   ListBackupPlanVersionsOutput,
   ListBackupPlanVersionsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListBackupPlanVersionsInput,
-  ) => stream.Stream<
-    ListBackupPlanVersionsOutput,
-    ListBackupPlanVersionsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListBackupPlanVersionsInput,
-  ) => stream.Stream<
-    BackupPlansListMember,
-    ListBackupPlanVersionsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  BackupPlansListMember
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListBackupPlanVersionsInput,
   output: ListBackupPlanVersionsOutput,
   errors: [
@@ -8516,27 +8364,7 @@ export const listBackupPlanVersions: API.OperationMethod<
     items: "BackupPlanVersionsList",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListBackupPlanVersionsInput,
-  ListBackupPlanVersionsOutput,
-  ListBackupPlanVersionsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListBackupPlanVersionsInput,
-  ) => stream.Stream<
-    ListBackupPlanVersionsOutput,
-    ListBackupPlanVersionsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListBackupPlanVersionsInput,
-  ) => stream.Stream<
-    BackupPlansListMember,
-    ListBackupPlanVersionsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListBackupSelectionsError =
   | InvalidParameterValueException
@@ -8548,27 +8376,13 @@ export type ListBackupSelectionsError =
  * Returns an array containing metadata of the resources associated with the target backup
  * plan.
  */
-export const listBackupSelections: API.OperationMethod<
+export const listBackupSelections: API.PaginatedOperationMethod<
   ListBackupSelectionsInput,
   ListBackupSelectionsOutput,
   ListBackupSelectionsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListBackupSelectionsInput,
-  ) => stream.Stream<
-    ListBackupSelectionsOutput,
-    ListBackupSelectionsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListBackupSelectionsInput,
-  ) => stream.Stream<
-    BackupSelectionsListMember,
-    ListBackupSelectionsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  BackupSelectionsListMember
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListBackupSelectionsInput,
   output: ListBackupSelectionsOutput,
   errors: [
@@ -8586,27 +8400,7 @@ export const listBackupSelections: API.OperationMethod<
     items: "BackupSelectionsList",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListBackupSelectionsInput,
-  ListBackupSelectionsOutput,
-  ListBackupSelectionsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListBackupSelectionsInput,
-  ) => stream.Stream<
-    ListBackupSelectionsOutput,
-    ListBackupSelectionsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListBackupSelectionsInput,
-  ) => stream.Stream<
-    BackupSelectionsListMember,
-    ListBackupSelectionsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListBackupVaultsError =
   | InvalidParameterValueException
@@ -8618,27 +8412,13 @@ export type ListBackupVaultsError =
  * Returns a list of recovery point storage containers along with information about
  * them.
  */
-export const listBackupVaults: API.OperationMethod<
+export const listBackupVaults: API.PaginatedOperationMethod<
   ListBackupVaultsInput,
   ListBackupVaultsOutput,
   ListBackupVaultsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListBackupVaultsInput,
-  ) => stream.Stream<
-    ListBackupVaultsOutput,
-    ListBackupVaultsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListBackupVaultsInput,
-  ) => stream.Stream<
-    BackupVaultListMember,
-    ListBackupVaultsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  BackupVaultListMember
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListBackupVaultsInput,
   output: ListBackupVaultsOutput,
   errors: [
@@ -8656,27 +8436,7 @@ export const listBackupVaults: API.OperationMethod<
     items: "BackupVaultList",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListBackupVaultsInput,
-  ListBackupVaultsOutput,
-  ListBackupVaultsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListBackupVaultsInput,
-  ) => stream.Stream<
-    ListBackupVaultsOutput,
-    ListBackupVaultsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListBackupVaultsInput,
-  ) => stream.Stream<
-    BackupVaultListMember,
-    ListBackupVaultsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListCopyJobsError =
   | InvalidParameterValueException
@@ -8685,27 +8445,13 @@ export type ListCopyJobsError =
 /**
  * Returns metadata about your copy jobs.
  */
-export const listCopyJobs: API.OperationMethod<
+export const listCopyJobs: API.PaginatedOperationMethod<
   ListCopyJobsInput,
   ListCopyJobsOutput,
   ListCopyJobsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCopyJobsInput,
-  ) => stream.Stream<
-    ListCopyJobsOutput,
-    ListCopyJobsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCopyJobsInput,
-  ) => stream.Stream<
-    CopyJob,
-    ListCopyJobsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  CopyJob
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListCopyJobsInput,
   output: ListCopyJobsOutput,
   errors: [InvalidParameterValueException, ServiceUnavailableException],
@@ -8718,27 +8464,7 @@ export const listCopyJobs: API.OperationMethod<
     items: "CopyJobs",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListCopyJobsInput,
-  ListCopyJobsOutput,
-  ListCopyJobsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCopyJobsInput,
-  ) => stream.Stream<
-    ListCopyJobsOutput,
-    ListCopyJobsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCopyJobsInput,
-  ) => stream.Stream<
-    CopyJob,
-    ListCopyJobsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListCopyJobSummariesError =
   | InvalidParameterValueException
@@ -8755,27 +8481,13 @@ export type ListCopyJobSummariesError =
  * Region, Account, State, RestourceType, MessageCategory,
  * StartTime, EndTime, and Count of included jobs.
  */
-export const listCopyJobSummaries: API.OperationMethod<
+export const listCopyJobSummaries: API.PaginatedOperationMethod<
   ListCopyJobSummariesInput,
   ListCopyJobSummariesOutput,
   ListCopyJobSummariesError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCopyJobSummariesInput,
-  ) => stream.Stream<
-    ListCopyJobSummariesOutput,
-    ListCopyJobSummariesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCopyJobSummariesInput,
-  ) => stream.Stream<
-    unknown,
-    ListCopyJobSummariesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListCopyJobSummariesInput,
   output: ListCopyJobSummariesOutput,
   errors: [InvalidParameterValueException, ServiceUnavailableException],
@@ -8787,27 +8499,7 @@ export const listCopyJobSummaries: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListCopyJobSummariesInput,
-  ListCopyJobSummariesOutput,
-  ListCopyJobSummariesError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCopyJobSummariesInput,
-  ) => stream.Stream<
-    ListCopyJobSummariesOutput,
-    ListCopyJobSummariesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCopyJobSummariesInput,
-  ) => stream.Stream<
-    unknown,
-    ListCopyJobSummariesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListFrameworksError =
   | InvalidParameterValueException
@@ -8816,27 +8508,13 @@ export type ListFrameworksError =
 /**
  * Returns a list of all frameworks for an Amazon Web Services account and Amazon Web Services Region.
  */
-export const listFrameworks: API.OperationMethod<
+export const listFrameworks: API.PaginatedOperationMethod<
   ListFrameworksInput,
   ListFrameworksOutput,
   ListFrameworksError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListFrameworksInput,
-  ) => stream.Stream<
-    ListFrameworksOutput,
-    ListFrameworksError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListFrameworksInput,
-  ) => stream.Stream<
-    unknown,
-    ListFrameworksError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListFrameworksInput,
   output: ListFrameworksOutput,
   errors: [InvalidParameterValueException, ServiceUnavailableException],
@@ -8848,27 +8526,7 @@ export const listFrameworks: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListFrameworksInput,
-  ListFrameworksOutput,
-  ListFrameworksError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListFrameworksInput,
-  ) => stream.Stream<
-    ListFrameworksOutput,
-    ListFrameworksError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListFrameworksInput,
-  ) => stream.Stream<
-    unknown,
-    ListFrameworksError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListIndexedRecoveryPointsError =
   | InvalidParameterValueException
@@ -8883,27 +8541,13 @@ export type ListIndexedRecoveryPointsError =
  * NextToken; SourceResourceArns; CreatedBefore; CreatedAfter;
  * and ResourceType.
  */
-export const listIndexedRecoveryPoints: API.OperationMethod<
+export const listIndexedRecoveryPoints: API.PaginatedOperationMethod<
   ListIndexedRecoveryPointsInput,
   ListIndexedRecoveryPointsOutput,
   ListIndexedRecoveryPointsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListIndexedRecoveryPointsInput,
-  ) => stream.Stream<
-    ListIndexedRecoveryPointsOutput,
-    ListIndexedRecoveryPointsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListIndexedRecoveryPointsInput,
-  ) => stream.Stream<
-    IndexedRecoveryPoint,
-    ListIndexedRecoveryPointsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  IndexedRecoveryPoint
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListIndexedRecoveryPointsInput,
   output: ListIndexedRecoveryPointsOutput,
   errors: [
@@ -8920,27 +8564,7 @@ export const listIndexedRecoveryPoints: API.OperationMethod<
     items: "IndexedRecoveryPoints",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListIndexedRecoveryPointsInput,
-  ListIndexedRecoveryPointsOutput,
-  ListIndexedRecoveryPointsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListIndexedRecoveryPointsInput,
-  ) => stream.Stream<
-    ListIndexedRecoveryPointsOutput,
-    ListIndexedRecoveryPointsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListIndexedRecoveryPointsInput,
-  ) => stream.Stream<
-    IndexedRecoveryPoint,
-    ListIndexedRecoveryPointsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListLegalHoldsError =
   | InvalidParameterValueException
@@ -8949,27 +8573,13 @@ export type ListLegalHoldsError =
 /**
  * This action returns metadata about active and previous legal holds.
  */
-export const listLegalHolds: API.OperationMethod<
+export const listLegalHolds: API.PaginatedOperationMethod<
   ListLegalHoldsInput,
   ListLegalHoldsOutput,
   ListLegalHoldsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListLegalHoldsInput,
-  ) => stream.Stream<
-    ListLegalHoldsOutput,
-    ListLegalHoldsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListLegalHoldsInput,
-  ) => stream.Stream<
-    LegalHold,
-    ListLegalHoldsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  LegalHold
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListLegalHoldsInput,
   output: ListLegalHoldsOutput,
   errors: [InvalidParameterValueException, ServiceUnavailableException],
@@ -8982,27 +8592,7 @@ export const listLegalHolds: API.OperationMethod<
     items: "LegalHolds",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListLegalHoldsInput,
-  ListLegalHoldsOutput,
-  ListLegalHoldsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListLegalHoldsInput,
-  ) => stream.Stream<
-    ListLegalHoldsOutput,
-    ListLegalHoldsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListLegalHoldsInput,
-  ) => stream.Stream<
-    LegalHold,
-    ListLegalHoldsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListProtectedResourcesError =
   | InvalidParameterValueException
@@ -9013,27 +8603,13 @@ export type ListProtectedResourcesError =
  * the time the resource was saved, an Amazon Resource Name (ARN) of the resource, and a
  * resource type.
  */
-export const listProtectedResources: API.OperationMethod<
+export const listProtectedResources: API.PaginatedOperationMethod<
   ListProtectedResourcesInput,
   ListProtectedResourcesOutput,
   ListProtectedResourcesError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListProtectedResourcesInput,
-  ) => stream.Stream<
-    ListProtectedResourcesOutput,
-    ListProtectedResourcesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListProtectedResourcesInput,
-  ) => stream.Stream<
-    ProtectedResource,
-    ListProtectedResourcesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ProtectedResource
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListProtectedResourcesInput,
   output: ListProtectedResourcesOutput,
   errors: [InvalidParameterValueException, ServiceUnavailableException],
@@ -9046,27 +8622,7 @@ export const listProtectedResources: API.OperationMethod<
     items: "Results",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListProtectedResourcesInput,
-  ListProtectedResourcesOutput,
-  ListProtectedResourcesError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListProtectedResourcesInput,
-  ) => stream.Stream<
-    ListProtectedResourcesOutput,
-    ListProtectedResourcesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListProtectedResourcesInput,
-  ) => stream.Stream<
-    ProtectedResource,
-    ListProtectedResourcesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListProtectedResourcesByBackupVaultError =
   | InvalidParameterValueException
@@ -9076,27 +8632,13 @@ export type ListProtectedResourcesByBackupVaultError =
 /**
  * This request lists the protected resources corresponding to each backup vault.
  */
-export const listProtectedResourcesByBackupVault: API.OperationMethod<
+export const listProtectedResourcesByBackupVault: API.PaginatedOperationMethod<
   ListProtectedResourcesByBackupVaultInput,
   ListProtectedResourcesByBackupVaultOutput,
   ListProtectedResourcesByBackupVaultError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListProtectedResourcesByBackupVaultInput,
-  ) => stream.Stream<
-    ListProtectedResourcesByBackupVaultOutput,
-    ListProtectedResourcesByBackupVaultError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListProtectedResourcesByBackupVaultInput,
-  ) => stream.Stream<
-    ProtectedResource,
-    ListProtectedResourcesByBackupVaultError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ProtectedResource
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListProtectedResourcesByBackupVaultInput,
   output: ListProtectedResourcesByBackupVaultOutput,
   errors: [
@@ -9113,27 +8655,7 @@ export const listProtectedResourcesByBackupVault: API.OperationMethod<
     items: "Results",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListProtectedResourcesByBackupVaultInput,
-  ListProtectedResourcesByBackupVaultOutput,
-  ListProtectedResourcesByBackupVaultError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListProtectedResourcesByBackupVaultInput,
-  ) => stream.Stream<
-    ListProtectedResourcesByBackupVaultOutput,
-    ListProtectedResourcesByBackupVaultError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListProtectedResourcesByBackupVaultInput,
-  ) => stream.Stream<
-    ProtectedResource,
-    ListProtectedResourcesByBackupVaultError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListRecoveryPointsByBackupVaultError =
   | InvalidParameterValueException
@@ -9144,27 +8666,13 @@ export type ListRecoveryPointsByBackupVaultError =
 /**
  * Returns detailed information about the recovery points stored in a backup vault.
  */
-export const listRecoveryPointsByBackupVault: API.OperationMethod<
+export const listRecoveryPointsByBackupVault: API.PaginatedOperationMethod<
   ListRecoveryPointsByBackupVaultInput,
   ListRecoveryPointsByBackupVaultOutput,
   ListRecoveryPointsByBackupVaultError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListRecoveryPointsByBackupVaultInput,
-  ) => stream.Stream<
-    ListRecoveryPointsByBackupVaultOutput,
-    ListRecoveryPointsByBackupVaultError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListRecoveryPointsByBackupVaultInput,
-  ) => stream.Stream<
-    RecoveryPointByBackupVault,
-    ListRecoveryPointsByBackupVaultError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  RecoveryPointByBackupVault
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListRecoveryPointsByBackupVaultInput,
   output: ListRecoveryPointsByBackupVaultOutput,
   errors: [
@@ -9182,27 +8690,7 @@ export const listRecoveryPointsByBackupVault: API.OperationMethod<
     items: "RecoveryPoints",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListRecoveryPointsByBackupVaultInput,
-  ListRecoveryPointsByBackupVaultOutput,
-  ListRecoveryPointsByBackupVaultError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListRecoveryPointsByBackupVaultInput,
-  ) => stream.Stream<
-    ListRecoveryPointsByBackupVaultOutput,
-    ListRecoveryPointsByBackupVaultError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListRecoveryPointsByBackupVaultInput,
-  ) => stream.Stream<
-    RecoveryPointByBackupVault,
-    ListRecoveryPointsByBackupVaultError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListRecoveryPointsByLegalHoldError =
   | InvalidParameterValueException
@@ -9213,27 +8701,13 @@ export type ListRecoveryPointsByLegalHoldError =
  * This action returns recovery point ARNs (Amazon Resource Names) of the
  * specified legal hold.
  */
-export const listRecoveryPointsByLegalHold: API.OperationMethod<
+export const listRecoveryPointsByLegalHold: API.PaginatedOperationMethod<
   ListRecoveryPointsByLegalHoldInput,
   ListRecoveryPointsByLegalHoldOutput,
   ListRecoveryPointsByLegalHoldError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListRecoveryPointsByLegalHoldInput,
-  ) => stream.Stream<
-    ListRecoveryPointsByLegalHoldOutput,
-    ListRecoveryPointsByLegalHoldError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListRecoveryPointsByLegalHoldInput,
-  ) => stream.Stream<
-    RecoveryPointMember,
-    ListRecoveryPointsByLegalHoldError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  RecoveryPointMember
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListRecoveryPointsByLegalHoldInput,
   output: ListRecoveryPointsByLegalHoldOutput,
   errors: [
@@ -9250,27 +8724,7 @@ export const listRecoveryPointsByLegalHold: API.OperationMethod<
     items: "RecoveryPoints",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListRecoveryPointsByLegalHoldInput,
-  ListRecoveryPointsByLegalHoldOutput,
-  ListRecoveryPointsByLegalHoldError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListRecoveryPointsByLegalHoldInput,
-  ) => stream.Stream<
-    ListRecoveryPointsByLegalHoldOutput,
-    ListRecoveryPointsByLegalHoldError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListRecoveryPointsByLegalHoldInput,
-  ) => stream.Stream<
-    RecoveryPointMember,
-    ListRecoveryPointsByLegalHoldError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListRecoveryPointsByResourceError =
   | InvalidParameterValueException
@@ -9285,27 +8739,13 @@ export type ListRecoveryPointsByResourceError =
  * For Amazon EFS and Amazon EC2, this action only lists recovery points
  * created by Backup.
  */
-export const listRecoveryPointsByResource: API.OperationMethod<
+export const listRecoveryPointsByResource: API.PaginatedOperationMethod<
   ListRecoveryPointsByResourceInput,
   ListRecoveryPointsByResourceOutput,
   ListRecoveryPointsByResourceError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListRecoveryPointsByResourceInput,
-  ) => stream.Stream<
-    ListRecoveryPointsByResourceOutput,
-    ListRecoveryPointsByResourceError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListRecoveryPointsByResourceInput,
-  ) => stream.Stream<
-    RecoveryPointByResource,
-    ListRecoveryPointsByResourceError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  RecoveryPointByResource
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListRecoveryPointsByResourceInput,
   output: ListRecoveryPointsByResourceOutput,
   errors: [
@@ -9323,27 +8763,7 @@ export const listRecoveryPointsByResource: API.OperationMethod<
     items: "RecoveryPoints",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListRecoveryPointsByResourceInput,
-  ListRecoveryPointsByResourceOutput,
-  ListRecoveryPointsByResourceError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListRecoveryPointsByResourceInput,
-  ) => stream.Stream<
-    ListRecoveryPointsByResourceOutput,
-    ListRecoveryPointsByResourceError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListRecoveryPointsByResourceInput,
-  ) => stream.Stream<
-    RecoveryPointByResource,
-    ListRecoveryPointsByResourceError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListReportJobsError =
   | InvalidParameterValueException
@@ -9353,27 +8773,13 @@ export type ListReportJobsError =
 /**
  * Returns details about your report jobs.
  */
-export const listReportJobs: API.OperationMethod<
+export const listReportJobs: API.PaginatedOperationMethod<
   ListReportJobsInput,
   ListReportJobsOutput,
   ListReportJobsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListReportJobsInput,
-  ) => stream.Stream<
-    ListReportJobsOutput,
-    ListReportJobsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListReportJobsInput,
-  ) => stream.Stream<
-    unknown,
-    ListReportJobsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListReportJobsInput,
   output: ListReportJobsOutput,
   errors: [
@@ -9389,27 +8795,7 @@ export const listReportJobs: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListReportJobsInput,
-  ListReportJobsOutput,
-  ListReportJobsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListReportJobsInput,
-  ) => stream.Stream<
-    ListReportJobsOutput,
-    ListReportJobsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListReportJobsInput,
-  ) => stream.Stream<
-    unknown,
-    ListReportJobsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListReportPlansError =
   | InvalidParameterValueException
@@ -9419,27 +8805,13 @@ export type ListReportPlansError =
  * Returns a list of your report plans. For detailed information about a single report
  * plan, use `DescribeReportPlan`.
  */
-export const listReportPlans: API.OperationMethod<
+export const listReportPlans: API.PaginatedOperationMethod<
   ListReportPlansInput,
   ListReportPlansOutput,
   ListReportPlansError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListReportPlansInput,
-  ) => stream.Stream<
-    ListReportPlansOutput,
-    ListReportPlansError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListReportPlansInput,
-  ) => stream.Stream<
-    unknown,
-    ListReportPlansError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListReportPlansInput,
   output: ListReportPlansOutput,
   errors: [InvalidParameterValueException, ServiceUnavailableException],
@@ -9451,27 +8823,7 @@ export const listReportPlans: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListReportPlansInput,
-  ListReportPlansOutput,
-  ListReportPlansError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListReportPlansInput,
-  ) => stream.Stream<
-    ListReportPlansOutput,
-    ListReportPlansError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListReportPlansInput,
-  ) => stream.Stream<
-    unknown,
-    ListReportPlansError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListRestoreAccessBackupVaultsError =
   | InvalidParameterValueException
@@ -9482,27 +8834,13 @@ export type ListRestoreAccessBackupVaultsError =
 /**
  * Returns a list of restore access backup vaults associated with a specified backup vault.
  */
-export const listRestoreAccessBackupVaults: API.OperationMethod<
+export const listRestoreAccessBackupVaults: API.PaginatedOperationMethod<
   ListRestoreAccessBackupVaultsInput,
   ListRestoreAccessBackupVaultsOutput,
   ListRestoreAccessBackupVaultsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListRestoreAccessBackupVaultsInput,
-  ) => stream.Stream<
-    ListRestoreAccessBackupVaultsOutput,
-    ListRestoreAccessBackupVaultsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListRestoreAccessBackupVaultsInput,
-  ) => stream.Stream<
-    RestoreAccessBackupVaultListMember,
-    ListRestoreAccessBackupVaultsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  RestoreAccessBackupVaultListMember
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListRestoreAccessBackupVaultsInput,
   output: ListRestoreAccessBackupVaultsOutput,
   errors: [
@@ -9520,27 +8858,7 @@ export const listRestoreAccessBackupVaults: API.OperationMethod<
     items: "RestoreAccessBackupVaults",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListRestoreAccessBackupVaultsInput,
-  ListRestoreAccessBackupVaultsOutput,
-  ListRestoreAccessBackupVaultsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListRestoreAccessBackupVaultsInput,
-  ) => stream.Stream<
-    ListRestoreAccessBackupVaultsOutput,
-    ListRestoreAccessBackupVaultsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListRestoreAccessBackupVaultsInput,
-  ) => stream.Stream<
-    RestoreAccessBackupVaultListMember,
-    ListRestoreAccessBackupVaultsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListRestoreJobsError =
   | InvalidParameterValueException
@@ -9552,27 +8870,13 @@ export type ListRestoreJobsError =
  * Returns a list of jobs that Backup initiated to restore a saved resource,
  * including details about the recovery process.
  */
-export const listRestoreJobs: API.OperationMethod<
+export const listRestoreJobs: API.PaginatedOperationMethod<
   ListRestoreJobsInput,
   ListRestoreJobsOutput,
   ListRestoreJobsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListRestoreJobsInput,
-  ) => stream.Stream<
-    ListRestoreJobsOutput,
-    ListRestoreJobsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListRestoreJobsInput,
-  ) => stream.Stream<
-    RestoreJobsListMember,
-    ListRestoreJobsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  RestoreJobsListMember
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListRestoreJobsInput,
   output: ListRestoreJobsOutput,
   errors: [
@@ -9590,27 +8894,7 @@ export const listRestoreJobs: API.OperationMethod<
     items: "RestoreJobs",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListRestoreJobsInput,
-  ListRestoreJobsOutput,
-  ListRestoreJobsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListRestoreJobsInput,
-  ) => stream.Stream<
-    ListRestoreJobsOutput,
-    ListRestoreJobsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListRestoreJobsInput,
-  ) => stream.Stream<
-    RestoreJobsListMember,
-    ListRestoreJobsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListRestoreJobsByProtectedResourceError =
   | InvalidParameterValueException
@@ -9626,27 +8910,13 @@ export type ListRestoreJobsByProtectedResourceError =
  * `ByRecoveryPointCreationDateAfter` , and
  * `ByRecoveryPointCreationDateBefore`.
  */
-export const listRestoreJobsByProtectedResource: API.OperationMethod<
+export const listRestoreJobsByProtectedResource: API.PaginatedOperationMethod<
   ListRestoreJobsByProtectedResourceInput,
   ListRestoreJobsByProtectedResourceOutput,
   ListRestoreJobsByProtectedResourceError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListRestoreJobsByProtectedResourceInput,
-  ) => stream.Stream<
-    ListRestoreJobsByProtectedResourceOutput,
-    ListRestoreJobsByProtectedResourceError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListRestoreJobsByProtectedResourceInput,
-  ) => stream.Stream<
-    RestoreJobsListMember,
-    ListRestoreJobsByProtectedResourceError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  RestoreJobsListMember
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListRestoreJobsByProtectedResourceInput,
   output: ListRestoreJobsByProtectedResourceOutput,
   errors: [
@@ -9664,27 +8934,7 @@ export const listRestoreJobsByProtectedResource: API.OperationMethod<
     items: "RestoreJobs",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListRestoreJobsByProtectedResourceInput,
-  ListRestoreJobsByProtectedResourceOutput,
-  ListRestoreJobsByProtectedResourceError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListRestoreJobsByProtectedResourceInput,
-  ) => stream.Stream<
-    ListRestoreJobsByProtectedResourceOutput,
-    ListRestoreJobsByProtectedResourceError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListRestoreJobsByProtectedResourceInput,
-  ) => stream.Stream<
-    RestoreJobsListMember,
-    ListRestoreJobsByProtectedResourceError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListRestoreJobSummariesError =
   | InvalidParameterValueException
@@ -9701,27 +8951,13 @@ export type ListRestoreJobSummariesError =
  * Region, Account, State, RestourceType, MessageCategory,
  * StartTime, EndTime, and Count of included jobs.
  */
-export const listRestoreJobSummaries: API.OperationMethod<
+export const listRestoreJobSummaries: API.PaginatedOperationMethod<
   ListRestoreJobSummariesInput,
   ListRestoreJobSummariesOutput,
   ListRestoreJobSummariesError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListRestoreJobSummariesInput,
-  ) => stream.Stream<
-    ListRestoreJobSummariesOutput,
-    ListRestoreJobSummariesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListRestoreJobSummariesInput,
-  ) => stream.Stream<
-    unknown,
-    ListRestoreJobSummariesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListRestoreJobSummariesInput,
   output: ListRestoreJobSummariesOutput,
   errors: [InvalidParameterValueException, ServiceUnavailableException],
@@ -9733,27 +8969,7 @@ export const listRestoreJobSummaries: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListRestoreJobSummariesInput,
-  ListRestoreJobSummariesOutput,
-  ListRestoreJobSummariesError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListRestoreJobSummariesInput,
-  ) => stream.Stream<
-    ListRestoreJobSummariesOutput,
-    ListRestoreJobSummariesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListRestoreJobSummariesInput,
-  ) => stream.Stream<
-    unknown,
-    ListRestoreJobSummariesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListRestoreTestingPlansError =
   | InvalidParameterValueException
@@ -9762,27 +8978,13 @@ export type ListRestoreTestingPlansError =
 /**
  * Returns a list of restore testing plans.
  */
-export const listRestoreTestingPlans: API.OperationMethod<
+export const listRestoreTestingPlans: API.PaginatedOperationMethod<
   ListRestoreTestingPlansInput,
   ListRestoreTestingPlansOutput,
   ListRestoreTestingPlansError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListRestoreTestingPlansInput,
-  ) => stream.Stream<
-    ListRestoreTestingPlansOutput,
-    ListRestoreTestingPlansError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListRestoreTestingPlansInput,
-  ) => stream.Stream<
-    RestoreTestingPlanForList,
-    ListRestoreTestingPlansError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  RestoreTestingPlanForList
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListRestoreTestingPlansInput,
   output: ListRestoreTestingPlansOutput,
   errors: [InvalidParameterValueException, ServiceUnavailableException],
@@ -9795,27 +8997,7 @@ export const listRestoreTestingPlans: API.OperationMethod<
     items: "RestoreTestingPlans",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListRestoreTestingPlansInput,
-  ListRestoreTestingPlansOutput,
-  ListRestoreTestingPlansError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListRestoreTestingPlansInput,
-  ) => stream.Stream<
-    ListRestoreTestingPlansOutput,
-    ListRestoreTestingPlansError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListRestoreTestingPlansInput,
-  ) => stream.Stream<
-    RestoreTestingPlanForList,
-    ListRestoreTestingPlansError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListRestoreTestingSelectionsError =
   | InvalidParameterValueException
@@ -9826,27 +9008,13 @@ export type ListRestoreTestingSelectionsError =
  * Returns a list of restore testing selections. Can be filtered
  * by `MaxResults` and `RestoreTestingPlanName`.
  */
-export const listRestoreTestingSelections: API.OperationMethod<
+export const listRestoreTestingSelections: API.PaginatedOperationMethod<
   ListRestoreTestingSelectionsInput,
   ListRestoreTestingSelectionsOutput,
   ListRestoreTestingSelectionsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListRestoreTestingSelectionsInput,
-  ) => stream.Stream<
-    ListRestoreTestingSelectionsOutput,
-    ListRestoreTestingSelectionsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListRestoreTestingSelectionsInput,
-  ) => stream.Stream<
-    RestoreTestingSelectionForList,
-    ListRestoreTestingSelectionsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  RestoreTestingSelectionForList
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListRestoreTestingSelectionsInput,
   output: ListRestoreTestingSelectionsOutput,
   errors: [
@@ -9863,27 +9031,7 @@ export const listRestoreTestingSelections: API.OperationMethod<
     items: "RestoreTestingSelections",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListRestoreTestingSelectionsInput,
-  ListRestoreTestingSelectionsOutput,
-  ListRestoreTestingSelectionsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListRestoreTestingSelectionsInput,
-  ) => stream.Stream<
-    ListRestoreTestingSelectionsOutput,
-    ListRestoreTestingSelectionsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListRestoreTestingSelectionsInput,
-  ) => stream.Stream<
-    RestoreTestingSelectionForList,
-    ListRestoreTestingSelectionsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListScanJobsError =
   | InvalidParameterValueException
@@ -9892,27 +9040,13 @@ export type ListScanJobsError =
 /**
  * Returns a list of existing scan jobs for an authenticated account for the last 30 days.
  */
-export const listScanJobs: API.OperationMethod<
+export const listScanJobs: API.PaginatedOperationMethod<
   ListScanJobsInput,
   ListScanJobsOutput,
   ListScanJobsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListScanJobsInput,
-  ) => stream.Stream<
-    ListScanJobsOutput,
-    ListScanJobsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListScanJobsInput,
-  ) => stream.Stream<
-    ScanJob,
-    ListScanJobsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ScanJob
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListScanJobsInput,
   output: ListScanJobsOutput,
   errors: [InvalidParameterValueException, ServiceUnavailableException],
@@ -9925,27 +9059,7 @@ export const listScanJobs: API.OperationMethod<
     items: "ScanJobs",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListScanJobsInput,
-  ListScanJobsOutput,
-  ListScanJobsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListScanJobsInput,
-  ) => stream.Stream<
-    ListScanJobsOutput,
-    ListScanJobsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListScanJobsInput,
-  ) => stream.Stream<
-    ScanJob,
-    ListScanJobsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListScanJobSummariesError =
   | InvalidParameterValueException
@@ -9954,27 +9068,13 @@ export type ListScanJobSummariesError =
 /**
  * This is a request for a summary of scan jobs created or running within the most recent 30 days.
  */
-export const listScanJobSummaries: API.OperationMethod<
+export const listScanJobSummaries: API.PaginatedOperationMethod<
   ListScanJobSummariesInput,
   ListScanJobSummariesOutput,
   ListScanJobSummariesError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListScanJobSummariesInput,
-  ) => stream.Stream<
-    ListScanJobSummariesOutput,
-    ListScanJobSummariesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListScanJobSummariesInput,
-  ) => stream.Stream<
-    ScanJobSummary,
-    ListScanJobSummariesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ScanJobSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListScanJobSummariesInput,
   output: ListScanJobSummariesOutput,
   errors: [InvalidParameterValueException, ServiceUnavailableException],
@@ -9987,27 +9087,7 @@ export const listScanJobSummaries: API.OperationMethod<
     items: "ScanJobSummaries",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListScanJobSummariesInput,
-  ListScanJobSummariesOutput,
-  ListScanJobSummariesError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListScanJobSummariesInput,
-  ) => stream.Stream<
-    ListScanJobSummariesOutput,
-    ListScanJobSummariesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListScanJobSummariesInput,
-  ) => stream.Stream<
-    ScanJobSummary,
-    ListScanJobSummariesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsError =
   | InvalidParameterValueException
@@ -10032,27 +9112,13 @@ export type ListTagsError =
  * resource types that are fully managed by Backup. These have an ARN that begins
  * `arn:aws:backup` and they are noted in the Feature availability by resource table.
  */
-export const listTags: API.OperationMethod<
+export const listTags: API.PaginatedOperationMethod<
   ListTagsInput,
   ListTagsOutput,
   ListTagsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTagsInput,
-  ) => stream.Stream<
-    ListTagsOutput,
-    ListTagsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTagsInput,
-  ) => stream.Stream<
-    unknown,
-    ListTagsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListTagsInput,
   output: ListTagsOutput,
   errors: [
@@ -10069,27 +9135,7 @@ export const listTags: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListTagsInput,
-  ListTagsOutput,
-  ListTagsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTagsInput,
-  ) => stream.Stream<
-    ListTagsOutput,
-    ListTagsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTagsInput,
-  ) => stream.Stream<
-    unknown,
-    ListTagsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTieringConfigurationsError =
   | InvalidParameterValueException
@@ -10098,27 +9144,13 @@ export type ListTieringConfigurationsError =
 /**
  * Returns a list of tiering configurations.
  */
-export const listTieringConfigurations: API.OperationMethod<
+export const listTieringConfigurations: API.PaginatedOperationMethod<
   ListTieringConfigurationsInput,
   ListTieringConfigurationsOutput,
   ListTieringConfigurationsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTieringConfigurationsInput,
-  ) => stream.Stream<
-    ListTieringConfigurationsOutput,
-    ListTieringConfigurationsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTieringConfigurationsInput,
-  ) => stream.Stream<
-    TieringConfigurationsListMember,
-    ListTieringConfigurationsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  TieringConfigurationsListMember
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListTieringConfigurationsInput,
   output: ListTieringConfigurationsOutput,
   errors: [InvalidParameterValueException, ServiceUnavailableException],
@@ -10131,27 +9163,7 @@ export const listTieringConfigurations: API.OperationMethod<
     items: "TieringConfigurations",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListTieringConfigurationsInput,
-  ListTieringConfigurationsOutput,
-  ListTieringConfigurationsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTieringConfigurationsInput,
-  ) => stream.Stream<
-    ListTieringConfigurationsOutput,
-    ListTieringConfigurationsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTieringConfigurationsInput,
-  ) => stream.Stream<
-    TieringConfigurationsListMember,
-    ListTieringConfigurationsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type PutBackupVaultAccessPolicyError =
   | InvalidParameterValueException
@@ -10168,7 +9180,7 @@ export const putBackupVaultAccessPolicy: API.OperationMethod<
   PutBackupVaultAccessPolicyInput,
   PutBackupVaultAccessPolicyResponse,
   PutBackupVaultAccessPolicyError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutBackupVaultAccessPolicyInput,
   output: PutBackupVaultAccessPolicyResponse,
@@ -10209,7 +9221,7 @@ export const putBackupVaultLockConfiguration: API.OperationMethod<
   PutBackupVaultLockConfigurationInput,
   PutBackupVaultLockConfigurationResponse,
   PutBackupVaultLockConfigurationError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutBackupVaultLockConfigurationInput,
   output: PutBackupVaultLockConfigurationResponse,
@@ -10238,7 +9250,7 @@ export const putBackupVaultNotifications: API.OperationMethod<
   PutBackupVaultNotificationsInput,
   PutBackupVaultNotificationsResponse,
   PutBackupVaultNotificationsError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutBackupVaultNotificationsInput,
   output: PutBackupVaultNotificationsResponse,
@@ -10271,7 +9283,7 @@ export const putRestoreValidationResult: API.OperationMethod<
   PutRestoreValidationResultInput,
   PutRestoreValidationResultResponse,
   PutRestoreValidationResultError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutRestoreValidationResultInput,
   output: PutRestoreValidationResultResponse,
@@ -10301,7 +9313,7 @@ export const revokeRestoreAccessBackupVault: API.OperationMethod<
   RevokeRestoreAccessBackupVaultInput,
   RevokeRestoreAccessBackupVaultResponse,
   RevokeRestoreAccessBackupVaultError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RevokeRestoreAccessBackupVaultInput,
   output: RevokeRestoreAccessBackupVaultResponse,
@@ -10332,7 +9344,7 @@ export const startBackupJob: API.OperationMethod<
   StartBackupJobInput,
   StartBackupJobOutput,
   StartBackupJobError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartBackupJobInput,
   output: StartBackupJobOutput,
@@ -10370,7 +9382,7 @@ export const startCopyJob: API.OperationMethod<
   StartCopyJobInput,
   StartCopyJobOutput,
   StartCopyJobError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartCopyJobInput,
   output: StartCopyJobOutput,
@@ -10400,7 +9412,7 @@ export const startReportJob: API.OperationMethod<
   StartReportJobInput,
   StartReportJobOutput,
   StartReportJobError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartReportJobInput,
   output: StartReportJobOutput,
@@ -10429,7 +9441,7 @@ export const startRestoreJob: API.OperationMethod<
   StartRestoreJobInput,
   StartRestoreJobOutput,
   StartRestoreJobError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartRestoreJobInput,
   output: StartRestoreJobOutput,
@@ -10460,7 +9472,7 @@ export const startScanJob: API.OperationMethod<
   StartScanJobInput,
   StartScanJobOutput,
   StartScanJobError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartScanJobInput,
   output: StartScanJobOutput,
@@ -10511,7 +9523,7 @@ export const stopBackupJob: API.OperationMethod<
   StopBackupJobInput,
   StopBackupJobResponse,
   StopBackupJobError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StopBackupJobInput,
   output: StopBackupJobResponse,
@@ -10541,7 +9553,7 @@ export const tagResource: API.OperationMethod<
   TagResourceInput,
   TagResourceResponse,
   TagResourceError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceInput,
   output: TagResourceResponse,
@@ -10575,7 +9587,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceInput,
   UntagResourceResponse,
   UntagResourceError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceInput,
   output: UntagResourceResponse,
@@ -10603,7 +9615,7 @@ export const updateBackupPlan: API.OperationMethod<
   UpdateBackupPlanInput,
   UpdateBackupPlanOutput,
   UpdateBackupPlanError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateBackupPlanInput,
   output: UpdateBackupPlanOutput,
@@ -10634,7 +9646,7 @@ export const updateFramework: API.OperationMethod<
   UpdateFrameworkInput,
   UpdateFrameworkOutput,
   UpdateFrameworkError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateFrameworkInput,
   output: UpdateFrameworkOutput,
@@ -10665,7 +9677,7 @@ export const updateGlobalSettings: API.OperationMethod<
   UpdateGlobalSettingsInput,
   UpdateGlobalSettingsResponse,
   UpdateGlobalSettingsError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateGlobalSettingsInput,
   output: UpdateGlobalSettingsResponse,
@@ -10696,7 +9708,7 @@ export const updateRecoveryPointIndexSettings: API.OperationMethod<
   UpdateRecoveryPointIndexSettingsInput,
   UpdateRecoveryPointIndexSettingsOutput,
   UpdateRecoveryPointIndexSettingsError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateRecoveryPointIndexSettingsInput,
   output: UpdateRecoveryPointIndexSettingsOutput,
@@ -10744,7 +9756,7 @@ export const updateRecoveryPointLifecycle: API.OperationMethod<
   UpdateRecoveryPointLifecycleInput,
   UpdateRecoveryPointLifecycleOutput,
   UpdateRecoveryPointLifecycleError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateRecoveryPointLifecycleInput,
   output: UpdateRecoveryPointLifecycleOutput,
@@ -10776,7 +9788,7 @@ export const updateRegionSettings: API.OperationMethod<
   UpdateRegionSettingsInput,
   UpdateRegionSettingsResponse,
   UpdateRegionSettingsError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateRegionSettingsInput,
   output: UpdateRegionSettingsResponse,
@@ -10804,7 +9816,7 @@ export const updateReportPlan: API.OperationMethod<
   UpdateReportPlanInput,
   UpdateReportPlanOutput,
   UpdateReportPlanError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateReportPlanInput,
   output: UpdateReportPlanOutput,
@@ -10848,7 +9860,7 @@ export const updateRestoreTestingPlan: API.OperationMethod<
   UpdateRestoreTestingPlanInput,
   UpdateRestoreTestingPlanOutput,
   UpdateRestoreTestingPlanError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateRestoreTestingPlanInput,
   output: UpdateRestoreTestingPlanOutput,
@@ -10883,7 +9895,7 @@ export const updateRestoreTestingSelection: API.OperationMethod<
   UpdateRestoreTestingSelectionInput,
   UpdateRestoreTestingSelectionOutput,
   UpdateRestoreTestingSelectionError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateRestoreTestingSelectionInput,
   output: UpdateRestoreTestingSelectionOutput,
@@ -10925,7 +9937,7 @@ export const updateTieringConfiguration: API.OperationMethod<
   UpdateTieringConfigurationInput,
   UpdateTieringConfigurationOutput,
   UpdateTieringConfigurationError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateTieringConfigurationInput,
   output: UpdateTieringConfigurationOutput,

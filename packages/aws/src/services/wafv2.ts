@@ -7,7 +7,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 const ns = T.XmlNamespace("http://waf.amazonaws.com/doc/2019-07-29/");
 const svc = T.AwsApiService({
   sdkId: "WAFV2",
@@ -88,28 +87,28 @@ const rules = T.EndpointResolver((p, _) => {
 export class WAFAssociatedItemException
   extends /*@__PURE__*/ S.TaggedErrorClass<WAFAssociatedItemException>()(
     "WAFAssociatedItemException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class WAFConfigurationWarningException
   extends /*@__PURE__*/ S.TaggedErrorClass<WAFConfigurationWarningException>()(
     "WAFConfigurationWarningException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class WAFDuplicateItemException
   extends /*@__PURE__*/ S.TaggedErrorClass<WAFDuplicateItemException>()(
     "WAFDuplicateItemException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class WAFExpiredManagedRuleGroupVersionException
   extends /*@__PURE__*/ S.TaggedErrorClass<WAFExpiredManagedRuleGroupVersionException>()(
     "WAFExpiredManagedRuleGroupVersionException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class WAFFeatureNotIncludedInPricingPlanException
   extends /*@__PURE__*/ S.TaggedErrorClass<WAFFeatureNotIncludedInPricingPlanException>()(
     "WAFFeatureNotIncludedInPricingPlanException",
     {
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       DisallowedFeatures: S.optional(
         S.suspend(() => DisallowedFeatures).annotate({
           identifier: "DisallowedFeatures",
@@ -120,18 +119,18 @@ export class WAFFeatureNotIncludedInPricingPlanException
 export class WAFInternalErrorException
   extends /*@__PURE__*/ S.TaggedErrorClass<WAFInternalErrorException>()(
     "WAFInternalErrorException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ).pipe(C.withServerError) {}
 export class WAFInvalidOperationException
   extends /*@__PURE__*/ S.TaggedErrorClass<WAFInvalidOperationException>()(
     "WAFInvalidOperationException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class WAFInvalidParameterException
   extends /*@__PURE__*/ S.TaggedErrorClass<WAFInvalidParameterException>()(
     "WAFInvalidParameterException",
     {
-      message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       Field: S.optional(
         S.suspend(() => ParameterExceptionField).annotate({
           identifier: "ParameterExceptionField",
@@ -144,62 +143,65 @@ export class WAFInvalidParameterException
 export class WAFInvalidPermissionPolicyException
   extends /*@__PURE__*/ S.TaggedErrorClass<WAFInvalidPermissionPolicyException>()(
     "WAFInvalidPermissionPolicyException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class WAFInvalidResourceException
   extends /*@__PURE__*/ S.TaggedErrorClass<WAFInvalidResourceException>()(
     "WAFInvalidResourceException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class WAFLimitsExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<WAFLimitsExceededException>()(
     "WAFLimitsExceededException",
-    { Message: S.optional(S.String), SourceType: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      SourceType: S.optional(S.String),
+    },
   ) {}
 export class WAFLogDestinationPermissionIssueException
   extends /*@__PURE__*/ S.TaggedErrorClass<WAFLogDestinationPermissionIssueException>()(
     "WAFLogDestinationPermissionIssueException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class WAFNonexistentItemException
   extends /*@__PURE__*/ S.TaggedErrorClass<WAFNonexistentItemException>()(
     "WAFNonexistentItemException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class WAFOptimisticLockException
   extends /*@__PURE__*/ S.TaggedErrorClass<WAFOptimisticLockException>()(
     "WAFOptimisticLockException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class WAFServiceLinkedRoleErrorException
   extends /*@__PURE__*/ S.TaggedErrorClass<WAFServiceLinkedRoleErrorException>()(
     "WAFServiceLinkedRoleErrorException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class WAFSubscriptionNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<WAFSubscriptionNotFoundException>()(
     "WAFSubscriptionNotFoundException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class WAFTagOperationException
   extends /*@__PURE__*/ S.TaggedErrorClass<WAFTagOperationException>()(
     "WAFTagOperationException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class WAFTagOperationInternalErrorException
   extends /*@__PURE__*/ S.TaggedErrorClass<WAFTagOperationInternalErrorException>()(
     "WAFTagOperationInternalErrorException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ).pipe(C.withServerError) {}
 export class WAFUnavailableEntityException
   extends /*@__PURE__*/ S.TaggedErrorClass<WAFUnavailableEntityException>()(
     "WAFUnavailableEntityException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class WAFUnsupportedAggregateKeyTypeException
   extends /*@__PURE__*/ S.TaggedErrorClass<WAFUnsupportedAggregateKeyTypeException>()(
     "WAFUnsupportedAggregateKeyTypeException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export type ResourceArn = string;
 export interface AssociateWebACLRequest {
@@ -5157,7 +5159,7 @@ export const associateWebACL: API.OperationMethod<
   AssociateWebACLRequest,
   AssociateWebACLResponse,
   AssociateWebACLError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AssociateWebACLRequest,
   output: AssociateWebACLResponse,
@@ -5204,7 +5206,7 @@ export const checkCapacity: API.OperationMethod<
   CheckCapacityRequest,
   CheckCapacityResponse,
   CheckCapacityError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CheckCapacityRequest,
   output: CheckCapacityResponse,
@@ -5244,7 +5246,7 @@ export const createAPIKey: API.OperationMethod<
   CreateAPIKeyRequest,
   CreateAPIKeyResponse,
   CreateAPIKeyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateAPIKeyRequest,
   output: CreateAPIKeyResponse,
@@ -5279,7 +5281,7 @@ export const createIPSet: API.OperationMethod<
   CreateIPSetRequest,
   CreateIPSetResponse,
   CreateIPSetError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateIPSetRequest,
   output: CreateIPSetResponse,
@@ -5316,7 +5318,7 @@ export const createRegexPatternSet: API.OperationMethod<
   CreateRegexPatternSetRequest,
   CreateRegexPatternSetResponse,
   CreateRegexPatternSetError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateRegexPatternSetRequest,
   output: CreateRegexPatternSetResponse,
@@ -5357,7 +5359,7 @@ export const createRuleGroup: API.OperationMethod<
   CreateRuleGroupRequest,
   CreateRuleGroupResponse,
   CreateRuleGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateRuleGroupRequest,
   output: CreateRuleGroupResponse,
@@ -5404,7 +5406,7 @@ export const createWebACL: API.OperationMethod<
   CreateWebACLRequest,
   CreateWebACLResponse,
   CreateWebACLError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateWebACLRequest,
   output: CreateWebACLResponse,
@@ -5445,7 +5447,7 @@ export const deleteAPIKey: API.OperationMethod<
   DeleteAPIKeyRequest,
   DeleteAPIKeyResponse,
   DeleteAPIKeyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteAPIKeyRequest,
   output: DeleteAPIKeyResponse,
@@ -5477,7 +5479,7 @@ export const deleteFirewallManagerRuleGroups: API.OperationMethod<
   DeleteFirewallManagerRuleGroupsRequest,
   DeleteFirewallManagerRuleGroupsResponse,
   DeleteFirewallManagerRuleGroupsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteFirewallManagerRuleGroupsRequest,
   output: DeleteFirewallManagerRuleGroupsResponse,
@@ -5510,7 +5512,7 @@ export const deleteIPSet: API.OperationMethod<
   DeleteIPSetRequest,
   DeleteIPSetResponse,
   DeleteIPSetError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteIPSetRequest,
   output: DeleteIPSetResponse,
@@ -5543,7 +5545,7 @@ export const deleteLoggingConfiguration: API.OperationMethod<
   DeleteLoggingConfigurationRequest,
   DeleteLoggingConfigurationResponse,
   DeleteLoggingConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteLoggingConfigurationRequest,
   output: DeleteLoggingConfigurationResponse,
@@ -5573,7 +5575,7 @@ export const deletePermissionPolicy: API.OperationMethod<
   DeletePermissionPolicyRequest,
   DeletePermissionPolicyResponse,
   DeletePermissionPolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeletePermissionPolicyRequest,
   output: DeletePermissionPolicyResponse,
@@ -5604,7 +5606,7 @@ export const deleteRegexPatternSet: API.OperationMethod<
   DeleteRegexPatternSetRequest,
   DeleteRegexPatternSetResponse,
   DeleteRegexPatternSetError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteRegexPatternSetRequest,
   output: DeleteRegexPatternSetResponse,
@@ -5640,7 +5642,7 @@ export const deleteRuleGroup: API.OperationMethod<
   DeleteRuleGroupRequest,
   DeleteRuleGroupResponse,
   DeleteRuleGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteRuleGroupRequest,
   output: DeleteRuleGroupResponse,
@@ -5697,7 +5699,7 @@ export const deleteWebACL: API.OperationMethod<
   DeleteWebACLRequest,
   DeleteWebACLResponse,
   DeleteWebACLError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteWebACLRequest,
   output: DeleteWebACLResponse,
@@ -5728,7 +5730,7 @@ export const describeAllManagedProducts: API.OperationMethod<
   DescribeAllManagedProductsRequest,
   DescribeAllManagedProductsResponse,
   DescribeAllManagedProductsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeAllManagedProductsRequest,
   output: DescribeAllManagedProductsResponse,
@@ -5754,7 +5756,7 @@ export const describeManagedProductsByVendor: API.OperationMethod<
   DescribeManagedProductsByVendorRequest,
   DescribeManagedProductsByVendorResponse,
   DescribeManagedProductsByVendorError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeManagedProductsByVendorRequest,
   output: DescribeManagedProductsByVendorResponse,
@@ -5783,7 +5785,7 @@ export const describeManagedRuleGroup: API.OperationMethod<
   DescribeManagedRuleGroupRequest,
   DescribeManagedRuleGroupResponse,
   DescribeManagedRuleGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeManagedRuleGroupRequest,
   output: DescribeManagedRuleGroupResponse,
@@ -5822,7 +5824,7 @@ export const disassociateWebACL: API.OperationMethod<
   DisassociateWebACLRequest,
   DisassociateWebACLResponse,
   DisassociateWebACLError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DisassociateWebACLRequest,
   output: DisassociateWebACLResponse,
@@ -5854,7 +5856,7 @@ export const generateMobileSdkReleaseUrl: API.OperationMethod<
   GenerateMobileSdkReleaseUrlRequest,
   GenerateMobileSdkReleaseUrlResponse,
   GenerateMobileSdkReleaseUrlError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GenerateMobileSdkReleaseUrlRequest,
   output: GenerateMobileSdkReleaseUrlResponse,
@@ -5887,7 +5889,7 @@ export const getDecryptedAPIKey: API.OperationMethod<
   GetDecryptedAPIKeyRequest,
   GetDecryptedAPIKeyResponse,
   GetDecryptedAPIKeyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetDecryptedAPIKeyRequest,
   output: GetDecryptedAPIKeyResponse,
@@ -5916,7 +5918,7 @@ export const getIPSet: API.OperationMethod<
   GetIPSetRequest,
   GetIPSetResponse,
   GetIPSetError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetIPSetRequest,
   output: GetIPSetResponse,
@@ -5944,7 +5946,7 @@ export const getLoggingConfiguration: API.OperationMethod<
   GetLoggingConfigurationRequest,
   GetLoggingConfigurationResponse,
   GetLoggingConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetLoggingConfigurationRequest,
   output: GetLoggingConfigurationResponse,
@@ -5976,7 +5978,7 @@ export const getManagedRuleSet: API.OperationMethod<
   GetManagedRuleSetRequest,
   GetManagedRuleSetResponse,
   GetManagedRuleSetError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetManagedRuleSetRequest,
   output: GetManagedRuleSetResponse,
@@ -6008,7 +6010,7 @@ export const getMobileSdkRelease: API.OperationMethod<
   GetMobileSdkReleaseRequest,
   GetMobileSdkReleaseResponse,
   GetMobileSdkReleaseError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetMobileSdkReleaseRequest,
   output: GetMobileSdkReleaseResponse,
@@ -6037,7 +6039,7 @@ export const getPermissionPolicy: API.OperationMethod<
   GetPermissionPolicyRequest,
   GetPermissionPolicyResponse,
   GetPermissionPolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetPermissionPolicyRequest,
   output: GetPermissionPolicyResponse,
@@ -6084,7 +6086,7 @@ export const getRateBasedStatementManagedKeys: API.OperationMethod<
   GetRateBasedStatementManagedKeysRequest,
   GetRateBasedStatementManagedKeysResponse,
   GetRateBasedStatementManagedKeysError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetRateBasedStatementManagedKeysRequest,
   output: GetRateBasedStatementManagedKeysResponse,
@@ -6113,7 +6115,7 @@ export const getRegexPatternSet: API.OperationMethod<
   GetRegexPatternSetRequest,
   GetRegexPatternSetResponse,
   GetRegexPatternSetError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetRegexPatternSetRequest,
   output: GetRegexPatternSetResponse,
@@ -6141,7 +6143,7 @@ export const getRevenueStatistics: API.OperationMethod<
   GetRevenueStatisticsRequest,
   GetRevenueStatisticsResponse,
   GetRevenueStatisticsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetRevenueStatisticsRequest,
   output: GetRevenueStatisticsResponse,
@@ -6169,7 +6171,7 @@ export const getRevenueStatisticsSummary: API.OperationMethod<
   GetRevenueStatisticsSummaryRequest,
   GetRevenueStatisticsSummaryResponse,
   GetRevenueStatisticsSummaryError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetRevenueStatisticsSummaryRequest,
   output: GetRevenueStatisticsSummaryResponse,
@@ -6197,7 +6199,7 @@ export const getRevenueStatisticsTimeSeries: API.OperationMethod<
   GetRevenueStatisticsTimeSeriesRequest,
   GetRevenueStatisticsTimeSeriesResponse,
   GetRevenueStatisticsTimeSeriesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetRevenueStatisticsTimeSeriesRequest,
   output: GetRevenueStatisticsTimeSeriesResponse,
@@ -6225,7 +6227,7 @@ export const getRuleGroup: API.OperationMethod<
   GetRuleGroupRequest,
   GetRuleGroupResponse,
   GetRuleGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetRuleGroupRequest,
   output: GetRuleGroupResponse,
@@ -6261,7 +6263,7 @@ export const getSampledRequests: API.OperationMethod<
   GetSampledRequestsRequest,
   GetSampledRequestsResponse,
   GetSampledRequestsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetSampledRequestsRequest,
   output: GetSampledRequestsResponse,
@@ -6291,7 +6293,7 @@ export const getTopPathStatisticsByTraffic: API.OperationMethod<
   GetTopPathStatisticsByTrafficRequest,
   GetTopPathStatisticsByTrafficResponse,
   GetTopPathStatisticsByTrafficError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetTopPathStatisticsByTrafficRequest,
   output: GetTopPathStatisticsByTrafficResponse,
@@ -6320,7 +6322,7 @@ export const getWebACL: API.OperationMethod<
   GetWebACLRequest,
   GetWebACLResponse,
   GetWebACLError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetWebACLRequest,
   output: GetWebACLResponse,
@@ -6361,7 +6363,7 @@ export const getWebACLForResource: API.OperationMethod<
   GetWebACLForResourceRequest,
   GetWebACLForResourceResponse,
   GetWebACLForResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetWebACLForResourceRequest,
   output: GetWebACLForResourceResponse,
@@ -6394,7 +6396,7 @@ export const listAPIKeys: API.OperationMethod<
   ListAPIKeysRequest,
   ListAPIKeysResponse,
   ListAPIKeysError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListAPIKeysRequest,
   output: ListAPIKeysResponse,
@@ -6423,7 +6425,7 @@ export const listAvailableManagedRuleGroups: API.OperationMethod<
   ListAvailableManagedRuleGroupsRequest,
   ListAvailableManagedRuleGroupsResponse,
   ListAvailableManagedRuleGroupsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListAvailableManagedRuleGroupsRequest,
   output: ListAvailableManagedRuleGroupsResponse,
@@ -6450,7 +6452,7 @@ export const listAvailableManagedRuleGroupVersions: API.OperationMethod<
   ListAvailableManagedRuleGroupVersionsRequest,
   ListAvailableManagedRuleGroupVersionsResponse,
   ListAvailableManagedRuleGroupVersionsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListAvailableManagedRuleGroupVersionsRequest,
   output: ListAvailableManagedRuleGroupVersionsResponse,
@@ -6478,7 +6480,7 @@ export const listIPSets: API.OperationMethod<
   ListIPSetsRequest,
   ListIPSetsResponse,
   ListIPSetsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListIPSetsRequest,
   output: ListIPSetsResponse,
@@ -6504,7 +6506,7 @@ export const listLoggingConfigurations: API.OperationMethod<
   ListLoggingConfigurationsRequest,
   ListLoggingConfigurationsResponse,
   ListLoggingConfigurationsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListLoggingConfigurationsRequest,
   output: ListLoggingConfigurationsResponse,
@@ -6534,7 +6536,7 @@ export const listManagedRuleSets: API.OperationMethod<
   ListManagedRuleSetsRequest,
   ListManagedRuleSetsResponse,
   ListManagedRuleSetsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListManagedRuleSetsRequest,
   output: ListManagedRuleSetsResponse,
@@ -6564,7 +6566,7 @@ export const listMobileSdkReleases: API.OperationMethod<
   ListMobileSdkReleasesRequest,
   ListMobileSdkReleasesResponse,
   ListMobileSdkReleasesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListMobileSdkReleasesRequest,
   output: ListMobileSdkReleasesResponse,
@@ -6591,7 +6593,7 @@ export const listRegexPatternSets: API.OperationMethod<
   ListRegexPatternSetsRequest,
   ListRegexPatternSetsResponse,
   ListRegexPatternSetsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListRegexPatternSetsRequest,
   output: ListRegexPatternSetsResponse,
@@ -6628,7 +6630,7 @@ export const listResourcesForWebACL: API.OperationMethod<
   ListResourcesForWebACLRequest,
   ListResourcesForWebACLResponse,
   ListResourcesForWebACLError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListResourcesForWebACLRequest,
   output: ListResourcesForWebACLResponse,
@@ -6656,7 +6658,7 @@ export const listRuleGroups: API.OperationMethod<
   ListRuleGroupsRequest,
   ListRuleGroupsResponse,
   ListRuleGroupsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListRuleGroupsRequest,
   output: ListRuleGroupsResponse,
@@ -6683,7 +6685,7 @@ export const listSettlementRecords: API.OperationMethod<
   ListSettlementRecordsRequest,
   ListSettlementRecordsResponse,
   ListSettlementRecordsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListSettlementRecordsRequest,
   output: ListSettlementRecordsResponse,
@@ -6721,7 +6723,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceRequest,
   ListTagsForResourceResponse,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -6751,7 +6753,7 @@ export const listWebACLs: API.OperationMethod<
   ListWebACLsRequest,
   ListWebACLsResponse,
   ListWebACLsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListWebACLsRequest,
   output: ListWebACLsResponse,
@@ -6821,7 +6823,7 @@ export const putLoggingConfiguration: API.OperationMethod<
   PutLoggingConfigurationRequest,
   PutLoggingConfigurationResponse,
   PutLoggingConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutLoggingConfigurationRequest,
   output: PutLoggingConfigurationResponse,
@@ -6868,7 +6870,7 @@ export const putManagedRuleSetVersions: API.OperationMethod<
   PutManagedRuleSetVersionsRequest,
   PutManagedRuleSetVersionsResponse,
   PutManagedRuleSetVersionsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutManagedRuleSetVersionsRequest,
   output: PutManagedRuleSetVersionsResponse,
@@ -6913,7 +6915,7 @@ export const putPermissionPolicy: API.OperationMethod<
   PutPermissionPolicyRequest,
   PutPermissionPolicyResponse,
   PutPermissionPolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutPermissionPolicyRequest,
   output: PutPermissionPolicyResponse,
@@ -6952,7 +6954,7 @@ export const tagResource: API.OperationMethod<
   TagResourceRequest,
   TagResourceResponse,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -6988,7 +6990,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceRequest,
   UntagResourceResponse,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -7045,7 +7047,7 @@ export const updateIPSet: API.OperationMethod<
   UpdateIPSetRequest,
   UpdateIPSetResponse,
   UpdateIPSetError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateIPSetRequest,
   output: UpdateIPSetResponse,
@@ -7083,7 +7085,7 @@ export const updateManagedRuleSetVersionExpiryDate: API.OperationMethod<
   UpdateManagedRuleSetVersionExpiryDateRequest,
   UpdateManagedRuleSetVersionExpiryDateResponse,
   UpdateManagedRuleSetVersionExpiryDateError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateManagedRuleSetVersionExpiryDateRequest,
   output: UpdateManagedRuleSetVersionExpiryDateResponse,
@@ -7139,7 +7141,7 @@ export const updateRegexPatternSet: API.OperationMethod<
   UpdateRegexPatternSetRequest,
   UpdateRegexPatternSetResponse,
   UpdateRegexPatternSetError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateRegexPatternSetRequest,
   output: UpdateRegexPatternSetResponse,
@@ -7202,7 +7204,7 @@ export const updateRuleGroup: API.OperationMethod<
   UpdateRuleGroupRequest,
   UpdateRuleGroupResponse,
   UpdateRuleGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateRuleGroupRequest,
   output: UpdateRuleGroupResponse,
@@ -7272,7 +7274,7 @@ export const updateWebACL: API.OperationMethod<
   UpdateWebACLRequest,
   UpdateWebACLResponse,
   UpdateWebACLError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateWebACLRequest,
   output: UpdateWebACLResponse,

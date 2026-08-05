@@ -41,7 +41,10 @@ import {
   suspendRef,
   PURE,
 } from "@distilled.cloud/core/codegen/emit";
-import type { SdkSpec } from "@distilled.cloud/core/codegen/generator";
+import {
+  errorCategories,
+  type SdkSpec,
+} from "@distilled.cloud/core/codegen/generator";
 import { generateRuleSetCode, type RuleSetObject } from "./compile-rules.ts";
 import type { ServiceSpec, SyntheticError } from "./spec-schema.ts";
 import type { SmithyModel, ServiceShape } from "./model-schema.ts";
@@ -306,15 +309,15 @@ function inferCategoriesFromName(errorName: string): string[] {
 
   // DependencyViolationError - resource can't be deleted/modified because something depends on it
   if (name === "dependencyviolation" || name.endsWith("inuse")) {
-    categories.push("C.withDependencyViolationError");
+    categories.push("DependencyViolationError");
   }
   // AlreadyExistsError - trying to create something that already exists
   if (name.includes("alreadyexists") || name.endsWith("duplicate")) {
-    categories.push("C.withAlreadyExistsError");
+    categories.push("AlreadyExistsError");
   }
   // ConflictError - general conflicts (not dependency or already-exists)
   if (name === "cidrconflict" || name === "idempotentparametermismatch") {
-    categories.push("C.withConflictError");
+    categories.push("ConflictError");
   }
   // AuthError patterns - access denied, unauthorized, auth failures
   if (
@@ -324,15 +327,15 @@ function inferCategoriesFromName(errorName: string): string[] {
     name === "invalidclienttokenid" ||
     name === "signaturedoesnotmatch"
   ) {
-    categories.push("C.withAuthError");
+    categories.push("AuthError");
   }
   // ThrottlingError patterns - rate/quota limits exceeded
   if (name.endsWith("limitexceeded")) {
-    categories.push("C.withThrottlingError");
+    categories.push("ThrottlingError");
   }
   // ServerError patterns - internal errors, service unavailable
   if (name.includes("internalerror") || name.includes("serviceunavailable")) {
-    categories.push("C.withServerError");
+    categories.push("ServerError");
   }
 
   return categories;
@@ -948,7 +951,6 @@ export const awsSpec = (
 
   // Import refs aliased only where a generated schema name conflicts.
   const credsRef = allSchemaNames.has("Credentials") ? "Creds" : "Credentials";
-  const rgnRef = allSchemaNames.has("Region") ? "Rgn" : "Region";
   const commonErrorsRef = allSchemaNames.has("CommonErrors")
     ? "CommonErr"
     : "CommonErrors";
@@ -2120,12 +2122,12 @@ export const awsSpec = (
         const keptMembers = errorPatches
           ? members.filter((m) => !(m.name in errorPatches))
           : members;
-        let fields = keptMembers.length
-          ? `{${keptMembers.map((m) => `${m.name}: ${m.schemaExpr}`).join(", ")}}`
-          : "{}";
+
+        const errorFields: Array<{ name: string; expr: string }> =
+          keptMembers.map((m) => ({ name: m.name, expr: m.schemaExpr }));
 
         if (errorPatches) {
-          const patchedFields: string[] = [];
+          const patchedFields: Array<{ name: string; expr: string }> = [];
           for (const [memberName, patch] of Object.entries(errorPatches)) {
             const traitPipes: string[] = [];
             if (patch.httpHeader) {
@@ -2141,19 +2143,51 @@ export const awsSpec = (
               patch.optional !== false
                 ? `S.optional(${schemaType})`
                 : schemaType;
-            patchedFields.push(
-              `${memberName}: ${
+            patchedFields.push({
+              name: memberName,
+              expr:
                 traitPipes.length > 0
                   ? `${optionalWrapped}.pipe(${traitPipes.join(", ")})`
-                  : optionalWrapped
-              }`,
-            );
+                  : optionalWrapped,
+            });
           }
-          fields =
-            fields === "{}"
-              ? `{${patchedFields.join(", ")}}`
-              : fields.replace(/^\{/, `{${patchedFields.join(", ")}, `);
+          // Patched members lead, matching the previous emission order.
+          errorFields.unshift(...patchedFields);
         }
+
+        // Canonical message member. AWS spells this `message` in most models,
+        // `Message` in the XML-era ones, and omits it entirely from others —
+        // every ec2 error shape declares no members at all. The struct decode
+        // in the response parser drops any key the schema doesn't declare, so
+        // an undeclared message is silently discarded and the caller gets a
+        // typed error carrying nothing (distilled #160).
+        //
+        // Normalize to a single tagged `message` member so `Error.message` is
+        // always the service's real message and consumers never have to know
+        // which spelling a given service used. `Message` is renamed rather
+        // than duplicated — carrying the same text on two properties is what
+        // made the old parser heuristics necessary in the first place. The
+        // response parser folds the `Message` wire key onto `message` before
+        // decoding, so the rename costs nothing on the wire.
+        const messageIdx = errorFields.findIndex((f) => f.name === "message");
+        const capitalIdx = errorFields.findIndex((f) => f.name === "Message");
+        if (messageIdx >= 0) {
+          const f = errorFields[messageIdx]!;
+          f.expr = `${f.expr}.pipe(T.ErrorMessage())`;
+        } else if (capitalIdx >= 0) {
+          const f = errorFields[capitalIdx]!;
+          f.name = "message";
+          f.expr = `${f.expr}.pipe(T.ErrorMessage())`;
+        } else {
+          errorFields.push({
+            name: "message",
+            expr: "S.optional(S.String).pipe(T.ErrorMessage())",
+          });
+        }
+
+        const fields = `{${errorFields
+          .map((f) => `${f.name}: ${f.expr}`)
+          .join(", ")}}`;
 
         const errorTraits = errorShapeIds.get(id);
         const annotations: string[] = [];
@@ -2188,57 +2222,32 @@ export const awsSpec = (
           );
         }
 
-        // HTTP status → category decorators
-        if (errorTraits?.httpError) {
-          const code = errorTraits.httpError;
-          if (code === 401 || code === 403) {
-            categories.push("C.withAuthError");
-          } else if (code === 402) {
-            categories.push("C.withQuotaError");
-          } else if (code === 404) {
-            categories.push("C.withNotFoundError");
-          } else if (
-            code === 400 ||
-            code === 405 ||
-            code === 406 ||
-            code === 410 ||
-            code === 413 ||
-            code === 415 ||
-            code === 422
-          ) {
-            categories.push("C.withBadRequestError");
-          } else if (code === 408 || code === 504) {
-            categories.push("C.withTimeoutError");
-          } else if (code === 409) {
-            categories.push("C.withConflictError");
-          } else if (code === 429) {
-            categories.push("C.withThrottlingError");
-          } else if (code >= 500 && code < 600) {
-            categories.push("C.withServerError");
-          }
-        }
-        if (errorTraits?.retryable) {
-          categories.push("C.withRetryableError");
-          if (
-            errorTraits.retryable.throttling &&
-            !categories.includes("C.withThrottlingError")
-          ) {
-            categories.push("C.withThrottlingError");
-          }
-        }
-        // Spec-file categories (exactly as specified), then name heuristics
-        const specCategories = serviceSpec.errorCategories?.[name] ?? [];
-        for (const cat of specCategories) {
-          const categoryDecorator = `C.with${cat}`;
-          if (!categories.includes(categoryDecorator)) {
-            categories.push(categoryDecorator);
-          }
-        }
-        for (const cat of inferCategoriesFromName(name)) {
-          if (!categories.includes(cat)) {
-            categories.push(cat);
-          }
-        }
+        // Categories come from the shared reading of the standard Smithy
+        // error traits (`smithy.api#httpError` / `smithy.api#retryable`) —
+        // the same one every other SDK uses. The spec file supplies what
+        // this service's model doesn't state, and the name heuristics run
+        // last. `errorTraits` is passed rather than `def.traits` because
+        // spec-file `errorHttpStatus` patches land there.
+        //
+        // AWS deviates on one status: the shared helper folds 404 into
+        // `BadRequestError`, but on AWS a 404 is a genuine not-found (see
+        // apigatewayv2's `NotFoundException`), so it is remapped here.
+        categories.push(
+          ...errorCategories(
+            {
+              "smithy.api#httpError": errorTraits?.httpError,
+              "smithy.api#retryable": errorTraits?.retryable,
+            },
+            [
+              ...(serviceSpec.errorCategories?.[name] ?? []),
+              ...inferCategoriesFromName(name),
+            ],
+          ).map((cat) =>
+            cat === "BadRequestError" && errorTraits?.httpError === 404
+              ? "C.withNotFoundError"
+              : `C.with${cat}`,
+          ),
+        );
 
         let annotationsArg = "";
         if (annotations.length === 1) {
@@ -2366,17 +2375,22 @@ export const awsSpec = (
 
       // Explicit type annotations avoid TypeScript resolving internal
       // imports in emitted .d.ts files (type portability for consumers).
-      const depsType = `${credsRef} | ${rgnRef} | HttpClient.HttpClient`;
+      // `Region` is NOT listed: it's an override resolved with
+      // `Effect.serviceOption`, falling back to AWS_REGION (see region.ts).
+      const depsType = `${credsRef} | HttpClient.HttpClient`;
       let typeAnnotation: string;
       if (paginatedTrait) {
         const itemType = resolvePaginatedItemType(
           opShape,
           paginatedTrait as Record<string, string>,
         );
-        typeAnnotation = `API.OperationMethod<${input}, ${output}, ${errorTypeName}, ${depsType}> & {
-  pages: (input: ${input}) => stream.Stream<${output}, ${errorTypeName}, ${depsType}>;
-  items: (input: ${input}) => stream.Stream<${itemType}, ${errorTypeName}, ${depsType}>;
-}`;
+        // `API.PaginatedOperationMethod` rather than an inline
+        // `OperationMethod & { pages; items }`: the intersection only reaches
+        // the operation object, so `const op = yield* listDomains` came back
+        // as a bare call function with no streaming methods (distilled#145).
+        // The item type still has to be passed explicitly — makePaginated
+        // resolves it from a runtime path string (distilled#404).
+        typeAnnotation = `API.PaginatedOperationMethod<${input}, ${output}, ${errorTypeName}, ${depsType}, ${itemType}>`;
       } else {
         typeAnnotation = `API.OperationMethod<${input}, ${output}, ${errorTypeName}, ${depsType}>`;
       }
@@ -2401,10 +2415,6 @@ export const awsSpec = (
         credsRef === "Creds"
           ? 'import type { Credentials as Creds } from "../credentials.ts";'
           : 'import type { Credentials } from "../credentials.ts";';
-      const regionImport =
-        rgnRef === "Rgn"
-          ? 'import type { Region as Rgn } from "../region.ts";'
-          : 'import type { Region } from "../region.ts";';
       const commonErrorsImport =
         commonErrorsRef === "CommonErr"
           ? 'import type { CommonErrors as CommonErr } from "../errors.ts";'
@@ -2426,7 +2436,6 @@ export const awsSpec = (
         "__CATEGORY_IMPORT__",
         credentialsImport,
         commonErrorsImport,
-        regionImport,
         "__SENSITIVE_IMPORT__",
       ].join("\n");
 

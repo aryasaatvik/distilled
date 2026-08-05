@@ -1,7 +1,6 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as redacted from "effect/Redacted";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -9,7 +8,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "Secrets Manager",
@@ -105,62 +103,62 @@ const rules = T.EndpointResolver((p, _) => {
 export class DecryptionFailure
   extends /*@__PURE__*/ S.TaggedErrorClass<DecryptionFailure>()(
     "DecryptionFailure",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ).pipe(C.withServerError) {}
 export class EncryptionFailure
   extends /*@__PURE__*/ S.TaggedErrorClass<EncryptionFailure>()(
     "EncryptionFailure",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ).pipe(C.withServerError) {}
 export class InternalServiceError
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServiceError>()(
     "InternalServiceError",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ).pipe(C.withServerError, C.withRetryableError) {}
 export class InvalidNextTokenException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidNextTokenException>()(
     "InvalidNextTokenException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ).pipe(C.withBadRequestError) {}
 export class InvalidParameterException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidParameterException>()(
     "InvalidParameterException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ).pipe(C.withBadRequestError) {}
 export class InvalidRequestException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidRequestException>()(
     "InvalidRequestException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ).pipe(C.withBadRequestError) {}
 export class LimitExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<LimitExceededException>()(
     "LimitExceededException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ).pipe(C.withQuotaError) {}
 export class MalformedPolicyDocumentException
   extends /*@__PURE__*/ S.TaggedErrorClass<MalformedPolicyDocumentException>()(
     "MalformedPolicyDocumentException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ).pipe(C.withBadRequestError) {}
 export class PreconditionNotMetException
   extends /*@__PURE__*/ S.TaggedErrorClass<PreconditionNotMetException>()(
     "PreconditionNotMetException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ).pipe(C.withConflictError) {}
 export class PublicPolicyException
   extends /*@__PURE__*/ S.TaggedErrorClass<PublicPolicyException>()(
     "PublicPolicyException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ).pipe(C.withBadRequestError) {}
 export class ResourceExistsException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceExistsException>()(
     "ResourceExistsException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ).pipe(C.withConflictError, C.withAlreadyExistsError) {}
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ).pipe(C.withNotFoundError) {}
 export type SecretIdType = string;
 export type SecretIdListType = string[];
@@ -1214,27 +1212,13 @@ export type BatchGetSecretValueError =
  * IAM policy actions for Secrets Manager and Authentication
  * and access control in Secrets Manager.
  */
-export const batchGetSecretValue: API.OperationMethod<
+export const batchGetSecretValue: API.PaginatedOperationMethod<
   BatchGetSecretValueRequest,
   BatchGetSecretValueResponse,
   BatchGetSecretValueError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: BatchGetSecretValueRequest,
-  ) => stream.Stream<
-    BatchGetSecretValueResponse,
-    BatchGetSecretValueError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: BatchGetSecretValueRequest,
-  ) => stream.Stream<
-    unknown,
-    BatchGetSecretValueError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: BatchGetSecretValueRequest,
   output: BatchGetSecretValueResponse,
   errors: [
@@ -1253,27 +1237,7 @@ export const batchGetSecretValue: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  BatchGetSecretValueRequest,
-  BatchGetSecretValueResponse,
-  BatchGetSecretValueError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: BatchGetSecretValueRequest,
-  ) => stream.Stream<
-    BatchGetSecretValueResponse,
-    BatchGetSecretValueError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: BatchGetSecretValueRequest,
-  ) => stream.Stream<
-    unknown,
-    BatchGetSecretValueError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type CancelRotateSecretError =
   | InternalServiceError
@@ -1307,7 +1271,7 @@ export const cancelRotateSecret: API.OperationMethod<
   CancelRotateSecretRequest,
   CancelRotateSecretResponse,
   CancelRotateSecretError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CancelRotateSecretRequest,
   output: CancelRotateSecretResponse,
@@ -1395,7 +1359,7 @@ export const createSecret: API.OperationMethod<
   CreateSecretRequest,
   CreateSecretResponse,
   CreateSecretError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateSecretRequest,
   output: CreateSecretResponse,
@@ -1438,7 +1402,7 @@ export const deleteResourcePolicy: API.OperationMethod<
   DeleteResourcePolicyRequest,
   DeleteResourcePolicyResponse,
   DeleteResourcePolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteResourcePolicyRequest,
   output: DeleteResourcePolicyResponse,
@@ -1503,7 +1467,7 @@ export const deleteSecret: API.OperationMethod<
   DeleteSecretRequest,
   DeleteSecretResponse,
   DeleteSecretError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteSecretRequest,
   output: DeleteSecretResponse,
@@ -1539,7 +1503,7 @@ export const describeSecret: API.OperationMethod<
   DescribeSecretRequest,
   DescribeSecretResponse,
   DescribeSecretError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeSecretRequest,
   output: DescribeSecretResponse,
@@ -1578,7 +1542,7 @@ export const getRandomPassword: API.OperationMethod<
   GetRandomPasswordRequest,
   GetRandomPasswordResponse,
   GetRandomPasswordError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetRandomPasswordRequest,
   output: GetRandomPasswordResponse,
@@ -1614,7 +1578,7 @@ export const getResourcePolicy: API.OperationMethod<
   GetResourcePolicyRequest,
   GetResourcePolicyResponse,
   GetResourcePolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetResourcePolicyRequest,
   output: GetResourcePolicyResponse,
@@ -1664,7 +1628,7 @@ export const getSecretValue: API.OperationMethod<
   GetSecretValueRequest,
   GetSecretValueResponse,
   GetSecretValueError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetSecretValueRequest,
   output: GetSecretValueResponse,
@@ -1711,27 +1675,13 @@ export type ListSecretsError =
  * IAM policy actions for Secrets Manager and Authentication
  * and access control in Secrets Manager.
  */
-export const listSecrets: API.OperationMethod<
+export const listSecrets: API.PaginatedOperationMethod<
   ListSecretsRequest,
   ListSecretsResponse,
   ListSecretsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSecretsRequest,
-  ) => stream.Stream<
-    ListSecretsResponse,
-    ListSecretsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSecretsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListSecretsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListSecretsRequest,
   output: ListSecretsResponse,
   errors: [
@@ -1748,27 +1698,7 @@ export const listSecrets: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListSecretsRequest,
-  ListSecretsResponse,
-  ListSecretsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSecretsRequest,
-  ) => stream.Stream<
-    ListSecretsResponse,
-    ListSecretsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSecretsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListSecretsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListSecretVersionIdsError =
   | InternalServiceError
@@ -1791,27 +1721,13 @@ export type ListSecretVersionIdsError =
  * IAM policy actions for Secrets Manager and Authentication
  * and access control in Secrets Manager.
  */
-export const listSecretVersionIds: API.OperationMethod<
+export const listSecretVersionIds: API.PaginatedOperationMethod<
   ListSecretVersionIdsRequest,
   ListSecretVersionIdsResponse,
   ListSecretVersionIdsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSecretVersionIdsRequest,
-  ) => stream.Stream<
-    ListSecretVersionIdsResponse,
-    ListSecretVersionIdsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSecretVersionIdsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListSecretVersionIdsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListSecretVersionIdsRequest,
   output: ListSecretVersionIdsResponse,
   errors: [
@@ -1828,27 +1744,7 @@ export const listSecretVersionIds: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListSecretVersionIdsRequest,
-  ListSecretVersionIdsResponse,
-  ListSecretVersionIdsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSecretVersionIdsRequest,
-  ) => stream.Stream<
-    ListSecretVersionIdsResponse,
-    ListSecretVersionIdsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSecretVersionIdsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListSecretVersionIdsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type PutResourcePolicyError =
   | InternalServiceError
@@ -1876,7 +1772,7 @@ export const putResourcePolicy: API.OperationMethod<
   PutResourcePolicyRequest,
   PutResourcePolicyResponse,
   PutResourcePolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutResourcePolicyRequest,
   output: PutResourcePolicyResponse,
@@ -1947,7 +1843,7 @@ export const putSecretValue: API.OperationMethod<
   PutSecretValueRequest,
   PutSecretValueResponse,
   PutSecretValueError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutSecretValueRequest,
   output: PutSecretValueResponse,
@@ -1989,7 +1885,7 @@ export const removeRegionsFromReplication: API.OperationMethod<
   RemoveRegionsFromReplicationRequest,
   RemoveRegionsFromReplicationResponse,
   RemoveRegionsFromReplicationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RemoveRegionsFromReplicationRequest,
   output: RemoveRegionsFromReplicationResponse,
@@ -2030,7 +1926,7 @@ export const replicateSecretToRegions: API.OperationMethod<
   ReplicateSecretToRegionsRequest,
   ReplicateSecretToRegionsResponse,
   ReplicateSecretToRegionsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ReplicateSecretToRegionsRequest,
   output: ReplicateSecretToRegionsResponse,
@@ -2067,7 +1963,7 @@ export const restoreSecret: API.OperationMethod<
   RestoreSecretRequest,
   RestoreSecretResponse,
   RestoreSecretError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RestoreSecretRequest,
   output: RestoreSecretResponse,
@@ -2120,7 +2016,7 @@ export const rotateSecret: API.OperationMethod<
   RotateSecretRequest,
   RotateSecretResponse,
   RotateSecretError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RotateSecretRequest,
   output: RotateSecretResponse,
@@ -2160,7 +2056,7 @@ export const stopReplicationToReplica: API.OperationMethod<
   StopReplicationToReplicaRequest,
   StopReplicationToReplicaResponse,
   StopReplicationToReplicaError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StopReplicationToReplicaRequest,
   output: StopReplicationToReplicaResponse,
@@ -2206,7 +2102,7 @@ export const tagResource: API.OperationMethod<
   TagResourceRequest,
   TagResourceResponse,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -2250,7 +2146,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceRequest,
   UntagResourceResponse,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -2328,7 +2224,7 @@ export const updateSecret: API.OperationMethod<
   UpdateSecretRequest,
   UpdateSecretResponse,
   UpdateSecretError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateSecretRequest,
   output: UpdateSecretResponse,
@@ -2390,7 +2286,7 @@ export const updateSecretVersionStage: API.OperationMethod<
   UpdateSecretVersionStageRequest,
   UpdateSecretVersionStageResponse,
   UpdateSecretVersionStageError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateSecretVersionStageRequest,
   output: UpdateSecretVersionStageResponse,
@@ -2440,7 +2336,7 @@ export const validateResourcePolicy: API.OperationMethod<
   ValidateResourcePolicyRequest,
   ValidateResourcePolicyResponse,
   ValidateResourcePolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ValidateResourcePolicyRequest,
   output: ValidateResourcePolicyResponse,

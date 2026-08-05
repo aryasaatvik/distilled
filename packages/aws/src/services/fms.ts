@@ -1,6 +1,5 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -8,7 +7,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 const svc = T.AwsApiService({
   sdkId: "FMS",
   serviceShapeName: "AWSFMS_20180101",
@@ -88,32 +86,32 @@ const rules = T.EndpointResolver((p, _) => {
 export class InternalErrorException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalErrorException>()(
     "InternalErrorException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ).pipe(C.withServerError) {}
 export class InvalidInputException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidInputException>()(
     "InvalidInputException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidOperationException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidOperationException>()(
     "InvalidOperationException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidTypeException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidTypeException>()(
     "InvalidTypeException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class LimitExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<LimitExceededException>()(
     "LimitExceededException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export type AWSAccountId = string;
 export interface AssociateAdminAccountRequest {
@@ -2979,7 +2977,7 @@ export const associateAdminAccount: API.OperationMethod<
   AssociateAdminAccountRequest,
   AssociateAdminAccountResponse,
   AssociateAdminAccountError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AssociateAdminAccountRequest,
   output: AssociateAdminAccountResponse,
@@ -3008,7 +3006,7 @@ export const associateThirdPartyFirewall: API.OperationMethod<
   AssociateThirdPartyFirewallRequest,
   AssociateThirdPartyFirewallResponse,
   AssociateThirdPartyFirewallError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AssociateThirdPartyFirewallRequest,
   output: AssociateThirdPartyFirewallResponse,
@@ -3037,7 +3035,7 @@ export const batchAssociateResource: API.OperationMethod<
   BatchAssociateResourceRequest,
   BatchAssociateResourceResponse,
   BatchAssociateResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchAssociateResourceRequest,
   output: BatchAssociateResourceResponse,
@@ -3066,7 +3064,7 @@ export const batchDisassociateResource: API.OperationMethod<
   BatchDisassociateResourceRequest,
   BatchDisassociateResourceResponse,
   BatchDisassociateResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchDisassociateResourceRequest,
   output: BatchDisassociateResourceResponse,
@@ -3093,7 +3091,7 @@ export const deleteAppsList: API.OperationMethod<
   DeleteAppsListRequest,
   DeleteAppsListResponse,
   DeleteAppsListError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteAppsListRequest,
   output: DeleteAppsListResponse,
@@ -3120,7 +3118,7 @@ export const deleteNotificationChannel: API.OperationMethod<
   DeleteNotificationChannelRequest,
   DeleteNotificationChannelResponse,
   DeleteNotificationChannelError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteNotificationChannelRequest,
   output: DeleteNotificationChannelResponse,
@@ -3148,7 +3146,7 @@ export const deletePolicy: API.OperationMethod<
   DeletePolicyRequest,
   DeletePolicyResponse,
   DeletePolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeletePolicyRequest,
   output: DeletePolicyResponse,
@@ -3176,7 +3174,7 @@ export const deleteProtocolsList: API.OperationMethod<
   DeleteProtocolsListRequest,
   DeleteProtocolsListResponse,
   DeleteProtocolsListError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteProtocolsListRequest,
   output: DeleteProtocolsListResponse,
@@ -3203,7 +3201,7 @@ export const deleteResourceSet: API.OperationMethod<
   DeleteResourceSetRequest,
   DeleteResourceSetResponse,
   DeleteResourceSetError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteResourceSetRequest,
   output: DeleteResourceSetResponse,
@@ -3232,7 +3230,7 @@ export const disassociateAdminAccount: API.OperationMethod<
   DisassociateAdminAccountRequest,
   DisassociateAdminAccountResponse,
   DisassociateAdminAccountError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DisassociateAdminAccountRequest,
   output: DisassociateAdminAccountResponse,
@@ -3259,7 +3257,7 @@ export const disassociateThirdPartyFirewall: API.OperationMethod<
   DisassociateThirdPartyFirewallRequest,
   DisassociateThirdPartyFirewallResponse,
   DisassociateThirdPartyFirewallError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DisassociateThirdPartyFirewallRequest,
   output: DisassociateThirdPartyFirewallResponse,
@@ -3287,7 +3285,7 @@ export const getAdminAccount: API.OperationMethod<
   GetAdminAccountRequest,
   GetAdminAccountResponse,
   GetAdminAccountError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetAdminAccountRequest,
   output: GetAdminAccountResponse,
@@ -3315,7 +3313,7 @@ export const getAdminScope: API.OperationMethod<
   GetAdminScopeRequest,
   GetAdminScopeResponse,
   GetAdminScopeError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetAdminScopeRequest,
   output: GetAdminScopeResponse,
@@ -3343,7 +3341,7 @@ export const getAppsList: API.OperationMethod<
   GetAppsListRequest,
   GetAppsListResponse,
   GetAppsListError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetAppsListRequest,
   output: GetAppsListResponse,
@@ -3373,7 +3371,7 @@ export const getComplianceDetail: API.OperationMethod<
   GetComplianceDetailRequest,
   GetComplianceDetailResponse,
   GetComplianceDetailError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetComplianceDetailRequest,
   output: GetComplianceDetailResponse,
@@ -3402,7 +3400,7 @@ export const getNotificationChannel: API.OperationMethod<
   GetNotificationChannelRequest,
   GetNotificationChannelResponse,
   GetNotificationChannelError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetNotificationChannelRequest,
   output: GetNotificationChannelResponse,
@@ -3429,7 +3427,7 @@ export const getPolicy: API.OperationMethod<
   GetPolicyRequest,
   GetPolicyResponse,
   GetPolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetPolicyRequest,
   output: GetPolicyResponse,
@@ -3457,7 +3455,7 @@ export const getProtectionStatus: API.OperationMethod<
   GetProtectionStatusRequest,
   GetProtectionStatusResponse,
   GetProtectionStatusError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetProtectionStatusRequest,
   output: GetProtectionStatusResponse,
@@ -3483,7 +3481,7 @@ export const getProtocolsList: API.OperationMethod<
   GetProtocolsListRequest,
   GetProtocolsListResponse,
   GetProtocolsListError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetProtocolsListRequest,
   output: GetProtocolsListResponse,
@@ -3510,7 +3508,7 @@ export const getResourceSet: API.OperationMethod<
   GetResourceSetRequest,
   GetResourceSetResponse,
   GetResourceSetError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetResourceSetRequest,
   output: GetResourceSetResponse,
@@ -3538,7 +3536,7 @@ export const getThirdPartyFirewallAssociationStatus: API.OperationMethod<
   GetThirdPartyFirewallAssociationStatusRequest,
   GetThirdPartyFirewallAssociationStatusResponse,
   GetThirdPartyFirewallAssociationStatusError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetThirdPartyFirewallAssociationStatusRequest,
   output: GetThirdPartyFirewallAssociationStatusResponse,
@@ -3565,7 +3563,7 @@ export const getViolationDetails: API.OperationMethod<
   GetViolationDetailsRequest,
   GetViolationDetailsResponse,
   GetViolationDetailsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetViolationDetailsRequest,
   output: GetViolationDetailsResponse,
@@ -3590,27 +3588,13 @@ export type ListAdminAccountsForOrganizationError =
  *
  * This operation can be called only from the organization's management account.
  */
-export const listAdminAccountsForOrganization: API.OperationMethod<
+export const listAdminAccountsForOrganization: API.PaginatedOperationMethod<
   ListAdminAccountsForOrganizationRequest,
   ListAdminAccountsForOrganizationResponse,
   ListAdminAccountsForOrganizationError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAdminAccountsForOrganizationRequest,
-  ) => stream.Stream<
-    ListAdminAccountsForOrganizationResponse,
-    ListAdminAccountsForOrganizationError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAdminAccountsForOrganizationRequest,
-  ) => stream.Stream<
-    AdminAccountSummary,
-    ListAdminAccountsForOrganizationError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  AdminAccountSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListAdminAccountsForOrganizationRequest,
   output: ListAdminAccountsForOrganizationResponse,
   errors: [
@@ -3628,27 +3612,7 @@ export const listAdminAccountsForOrganization: API.OperationMethod<
     items: "AdminAccounts",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListAdminAccountsForOrganizationRequest,
-  ListAdminAccountsForOrganizationResponse,
-  ListAdminAccountsForOrganizationError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAdminAccountsForOrganizationRequest,
-  ) => stream.Stream<
-    ListAdminAccountsForOrganizationResponse,
-    ListAdminAccountsForOrganizationError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAdminAccountsForOrganizationRequest,
-  ) => stream.Stream<
-    AdminAccountSummary,
-    ListAdminAccountsForOrganizationError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListAdminsManagingAccountError =
   | InternalErrorException
@@ -3658,27 +3622,13 @@ export type ListAdminsManagingAccountError =
 /**
  * Lists the accounts that are managing the specified Organizations member account. This is useful for any member account so that they can view the accounts who are managing their account. This operation only returns the managing administrators that have the requested account within their AdminScope.
  */
-export const listAdminsManagingAccount: API.OperationMethod<
+export const listAdminsManagingAccount: API.PaginatedOperationMethod<
   ListAdminsManagingAccountRequest,
   ListAdminsManagingAccountResponse,
   ListAdminsManagingAccountError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAdminsManagingAccountRequest,
-  ) => stream.Stream<
-    ListAdminsManagingAccountResponse,
-    ListAdminsManagingAccountError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAdminsManagingAccountRequest,
-  ) => stream.Stream<
-    AWSAccountId,
-    ListAdminsManagingAccountError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  AWSAccountId
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListAdminsManagingAccountRequest,
   output: ListAdminsManagingAccountResponse,
   errors: [
@@ -3695,27 +3645,7 @@ export const listAdminsManagingAccount: API.OperationMethod<
     items: "AdminAccounts",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListAdminsManagingAccountRequest,
-  ListAdminsManagingAccountResponse,
-  ListAdminsManagingAccountError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAdminsManagingAccountRequest,
-  ) => stream.Stream<
-    ListAdminsManagingAccountResponse,
-    ListAdminsManagingAccountError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAdminsManagingAccountRequest,
-  ) => stream.Stream<
-    AWSAccountId,
-    ListAdminsManagingAccountError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListAppsListsError =
   | InternalErrorException
@@ -3726,27 +3656,13 @@ export type ListAppsListsError =
 /**
  * Returns an array of `AppsListDataSummary` objects.
  */
-export const listAppsLists: API.OperationMethod<
+export const listAppsLists: API.PaginatedOperationMethod<
   ListAppsListsRequest,
   ListAppsListsResponse,
   ListAppsListsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAppsListsRequest,
-  ) => stream.Stream<
-    ListAppsListsResponse,
-    ListAppsListsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAppsListsRequest,
-  ) => stream.Stream<
-    AppsListDataSummary,
-    ListAppsListsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  AppsListDataSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListAppsListsRequest,
   output: ListAppsListsResponse,
   errors: [
@@ -3764,27 +3680,7 @@ export const listAppsLists: API.OperationMethod<
     items: "AppsLists",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListAppsListsRequest,
-  ListAppsListsResponse,
-  ListAppsListsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAppsListsRequest,
-  ) => stream.Stream<
-    ListAppsListsResponse,
-    ListAppsListsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAppsListsRequest,
-  ) => stream.Stream<
-    AppsListDataSummary,
-    ListAppsListsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListComplianceStatusError =
   | InternalErrorException
@@ -3795,27 +3691,13 @@ export type ListComplianceStatusError =
  * `PolicyComplianceStatus` to get a summary of which member accounts are protected
  * by the specified policy.
  */
-export const listComplianceStatus: API.OperationMethod<
+export const listComplianceStatus: API.PaginatedOperationMethod<
   ListComplianceStatusRequest,
   ListComplianceStatusResponse,
   ListComplianceStatusError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListComplianceStatusRequest,
-  ) => stream.Stream<
-    ListComplianceStatusResponse,
-    ListComplianceStatusError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListComplianceStatusRequest,
-  ) => stream.Stream<
-    PolicyComplianceStatus,
-    ListComplianceStatusError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  PolicyComplianceStatus
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListComplianceStatusRequest,
   output: ListComplianceStatusResponse,
   errors: [InternalErrorException, ResourceNotFoundException],
@@ -3828,27 +3710,7 @@ export const listComplianceStatus: API.OperationMethod<
     items: "PolicyComplianceStatusList",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListComplianceStatusRequest,
-  ListComplianceStatusResponse,
-  ListComplianceStatusError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListComplianceStatusRequest,
-  ) => stream.Stream<
-    ListComplianceStatusResponse,
-    ListComplianceStatusError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListComplianceStatusRequest,
-  ) => stream.Stream<
-    PolicyComplianceStatus,
-    ListComplianceStatusError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListDiscoveredResourcesError =
   | InternalErrorException
@@ -3862,7 +3724,7 @@ export const listDiscoveredResources: API.OperationMethod<
   ListDiscoveredResourcesRequest,
   ListDiscoveredResourcesResponse,
   ListDiscoveredResourcesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListDiscoveredResourcesRequest,
   output: ListDiscoveredResourcesResponse,
@@ -3886,27 +3748,13 @@ export type ListMemberAccountsError =
  *
  * Either an Firewall Manager administrator or the organization's management account can make this request.
  */
-export const listMemberAccounts: API.OperationMethod<
+export const listMemberAccounts: API.PaginatedOperationMethod<
   ListMemberAccountsRequest,
   ListMemberAccountsResponse,
   ListMemberAccountsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListMemberAccountsRequest,
-  ) => stream.Stream<
-    ListMemberAccountsResponse,
-    ListMemberAccountsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListMemberAccountsRequest,
-  ) => stream.Stream<
-    AWSAccountId,
-    ListMemberAccountsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  AWSAccountId
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListMemberAccountsRequest,
   output: ListMemberAccountsResponse,
   errors: [InternalErrorException, ResourceNotFoundException],
@@ -3919,27 +3767,7 @@ export const listMemberAccounts: API.OperationMethod<
     items: "MemberAccounts",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListMemberAccountsRequest,
-  ListMemberAccountsResponse,
-  ListMemberAccountsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListMemberAccountsRequest,
-  ) => stream.Stream<
-    ListMemberAccountsResponse,
-    ListMemberAccountsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListMemberAccountsRequest,
-  ) => stream.Stream<
-    AWSAccountId,
-    ListMemberAccountsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListPoliciesError =
   | InternalErrorException
@@ -3950,27 +3778,13 @@ export type ListPoliciesError =
 /**
  * Returns an array of `PolicySummary` objects.
  */
-export const listPolicies: API.OperationMethod<
+export const listPolicies: API.PaginatedOperationMethod<
   ListPoliciesRequest,
   ListPoliciesResponse,
   ListPoliciesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPoliciesRequest,
-  ) => stream.Stream<
-    ListPoliciesResponse,
-    ListPoliciesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPoliciesRequest,
-  ) => stream.Stream<
-    PolicySummary,
-    ListPoliciesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  PolicySummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListPoliciesRequest,
   output: ListPoliciesResponse,
   errors: [
@@ -3988,27 +3802,7 @@ export const listPolicies: API.OperationMethod<
     items: "PolicyList",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListPoliciesRequest,
-  ListPoliciesResponse,
-  ListPoliciesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPoliciesRequest,
-  ) => stream.Stream<
-    ListPoliciesResponse,
-    ListPoliciesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPoliciesRequest,
-  ) => stream.Stream<
-    PolicySummary,
-    ListPoliciesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListProtocolsListsError =
   | InternalErrorException
@@ -4018,27 +3812,13 @@ export type ListProtocolsListsError =
 /**
  * Returns an array of `ProtocolsListDataSummary` objects.
  */
-export const listProtocolsLists: API.OperationMethod<
+export const listProtocolsLists: API.PaginatedOperationMethod<
   ListProtocolsListsRequest,
   ListProtocolsListsResponse,
   ListProtocolsListsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListProtocolsListsRequest,
-  ) => stream.Stream<
-    ListProtocolsListsResponse,
-    ListProtocolsListsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListProtocolsListsRequest,
-  ) => stream.Stream<
-    ProtocolsListDataSummary,
-    ListProtocolsListsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ProtocolsListDataSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListProtocolsListsRequest,
   output: ListProtocolsListsResponse,
   errors: [
@@ -4055,27 +3835,7 @@ export const listProtocolsLists: API.OperationMethod<
     items: "ProtocolsLists",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListProtocolsListsRequest,
-  ListProtocolsListsResponse,
-  ListProtocolsListsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListProtocolsListsRequest,
-  ) => stream.Stream<
-    ListProtocolsListsResponse,
-    ListProtocolsListsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListProtocolsListsRequest,
-  ) => stream.Stream<
-    ProtocolsListDataSummary,
-    ListProtocolsListsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListResourceSetResourcesError =
   | InternalErrorException
@@ -4090,7 +3850,7 @@ export const listResourceSetResources: API.OperationMethod<
   ListResourceSetResourcesRequest,
   ListResourceSetResourcesResponse,
   ListResourceSetResourcesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListResourceSetResourcesRequest,
   output: ListResourceSetResourcesResponse,
@@ -4117,7 +3877,7 @@ export const listResourceSets: API.OperationMethod<
   ListResourceSetsRequest,
   ListResourceSetsResponse,
   ListResourceSetsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListResourceSetsRequest,
   output: ListResourceSetsResponse,
@@ -4144,7 +3904,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceRequest,
   ListTagsForResourceResponse,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -4168,27 +3928,13 @@ export type ListThirdPartyFirewallFirewallPoliciesError =
 /**
  * Retrieves a list of all of the third-party firewall policies that are associated with the third-party firewall administrator's account.
  */
-export const listThirdPartyFirewallFirewallPolicies: API.OperationMethod<
+export const listThirdPartyFirewallFirewallPolicies: API.PaginatedOperationMethod<
   ListThirdPartyFirewallFirewallPoliciesRequest,
   ListThirdPartyFirewallFirewallPoliciesResponse,
   ListThirdPartyFirewallFirewallPoliciesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListThirdPartyFirewallFirewallPoliciesRequest,
-  ) => stream.Stream<
-    ListThirdPartyFirewallFirewallPoliciesResponse,
-    ListThirdPartyFirewallFirewallPoliciesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListThirdPartyFirewallFirewallPoliciesRequest,
-  ) => stream.Stream<
-    ThirdPartyFirewallFirewallPolicy,
-    ListThirdPartyFirewallFirewallPoliciesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ThirdPartyFirewallFirewallPolicy
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListThirdPartyFirewallFirewallPoliciesRequest,
   output: ListThirdPartyFirewallFirewallPoliciesResponse,
   errors: [
@@ -4206,27 +3952,7 @@ export const listThirdPartyFirewallFirewallPolicies: API.OperationMethod<
     items: "ThirdPartyFirewallFirewallPolicies",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListThirdPartyFirewallFirewallPoliciesRequest,
-  ListThirdPartyFirewallFirewallPoliciesResponse,
-  ListThirdPartyFirewallFirewallPoliciesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListThirdPartyFirewallFirewallPoliciesRequest,
-  ) => stream.Stream<
-    ListThirdPartyFirewallFirewallPoliciesResponse,
-    ListThirdPartyFirewallFirewallPoliciesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListThirdPartyFirewallFirewallPoliciesRequest,
-  ) => stream.Stream<
-    ThirdPartyFirewallFirewallPolicy,
-    ListThirdPartyFirewallFirewallPoliciesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type PutAdminAccountError =
   | InternalErrorException
@@ -4242,7 +3968,7 @@ export const putAdminAccount: API.OperationMethod<
   PutAdminAccountRequest,
   PutAdminAccountResponse,
   PutAdminAccountError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutAdminAccountRequest,
   output: PutAdminAccountResponse,
@@ -4271,7 +3997,7 @@ export const putAppsList: API.OperationMethod<
   PutAppsListRequest,
   PutAppsListResponse,
   PutAppsListError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutAppsListRequest,
   output: PutAppsListResponse,
@@ -4303,7 +4029,7 @@ export const putNotificationChannel: API.OperationMethod<
   PutNotificationChannelRequest,
   PutNotificationChannelResponse,
   PutNotificationChannelError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutNotificationChannelRequest,
   output: PutNotificationChannelResponse,
@@ -4369,7 +4095,7 @@ export const putPolicy: API.OperationMethod<
   PutPolicyRequest,
   PutPolicyResponse,
   PutPolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutPolicyRequest,
   output: PutPolicyResponse,
@@ -4400,7 +4126,7 @@ export const putProtocolsList: API.OperationMethod<
   PutProtocolsListRequest,
   PutProtocolsListResponse,
   PutProtocolsListError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutProtocolsListRequest,
   output: PutProtocolsListResponse,
@@ -4431,7 +4157,7 @@ export const putResourceSet: API.OperationMethod<
   PutResourceSetRequest,
   PutResourceSetResponse,
   PutResourceSetError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutResourceSetRequest,
   output: PutResourceSetResponse,
@@ -4460,7 +4186,7 @@ export const tagResource: API.OperationMethod<
   TagResourceRequest,
   TagResourceResponse,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -4489,7 +4215,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceRequest,
   UntagResourceResponse,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,

@@ -1,7 +1,6 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as redacted from "effect/Redacted";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -9,7 +8,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 import { SensitiveString } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "AmplifyUIBuilder",
@@ -90,43 +88,43 @@ const rules = T.EndpointResolver((p, _) => {
 export class InternalServerException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
     "InternalServerException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(500),
   ).pipe(C.withServerError) {}
 export class InvalidParameterException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidParameterException>()(
     "InvalidParameterException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class ResourceConflictException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceConflictException>()(
     "ResourceConflictException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class ServiceQuotaExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
     "ServiceQuotaExceededException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(402),
   ).pipe(C.withQuotaError) {}
 export class ThrottlingException
   extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
     "ThrottlingException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(429),
   ).pipe(C.withThrottlingError) {}
 export class UnauthorizedException
   extends /*@__PURE__*/ S.TaggedErrorClass<UnauthorizedException>()(
     "UnauthorizedException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(401),
   ).pipe(C.withAuthError) {}
 export type ComponentName = string;
@@ -2621,7 +2619,7 @@ export const createComponent: API.OperationMethod<
   CreateComponentRequest,
   CreateComponentResponse,
   CreateComponentError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateComponentRequest,
   output: CreateComponentResponse,
@@ -2649,7 +2647,7 @@ export const createForm: API.OperationMethod<
   CreateFormRequest,
   CreateFormResponse,
   CreateFormError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateFormRequest,
   output: CreateFormResponse,
@@ -2677,7 +2675,7 @@ export const createTheme: API.OperationMethod<
   CreateThemeRequest,
   CreateThemeResponse,
   CreateThemeError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateThemeRequest,
   output: CreateThemeResponse,
@@ -2704,7 +2702,7 @@ export const deleteComponent: API.OperationMethod<
   DeleteComponentRequest,
   DeleteComponentResponse,
   DeleteComponentError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteComponentRequest,
   output: DeleteComponentResponse,
@@ -2730,7 +2728,7 @@ export const deleteForm: API.OperationMethod<
   DeleteFormRequest,
   DeleteFormResponse,
   DeleteFormError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteFormRequest,
   output: DeleteFormResponse,
@@ -2756,7 +2754,7 @@ export const deleteTheme: API.OperationMethod<
   DeleteThemeRequest,
   DeleteThemeResponse,
   DeleteThemeError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteThemeRequest,
   output: DeleteThemeResponse,
@@ -2782,7 +2780,7 @@ export const exchangeCodeForToken: API.OperationMethod<
   ExchangeCodeForTokenRequest,
   ExchangeCodeForTokenResponse,
   ExchangeCodeForTokenError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ExchangeCodeForTokenRequest,
   output: ExchangeCodeForTokenResponse,
@@ -2799,27 +2797,13 @@ export type ExportComponentsError =
 /**
  * Exports component configurations to code that is ready to integrate into an Amplify app.
  */
-export const exportComponents: API.OperationMethod<
+export const exportComponents: API.PaginatedOperationMethod<
   ExportComponentsRequest,
   ExportComponentsResponse,
   ExportComponentsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ExportComponentsRequest,
-  ) => stream.Stream<
-    ExportComponentsResponse,
-    ExportComponentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ExportComponentsRequest,
-  ) => stream.Stream<
-    Component,
-    ExportComponentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Component
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ExportComponentsRequest,
   output: ExportComponentsResponse,
   errors: [InternalServerException, InvalidParameterException],
@@ -2831,27 +2815,7 @@ export const exportComponents: API.OperationMethod<
     outputToken: "nextToken",
     items: "entities",
   } as const,
-})) as any as API.OperationMethod<
-  ExportComponentsRequest,
-  ExportComponentsResponse,
-  ExportComponentsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ExportComponentsRequest,
-  ) => stream.Stream<
-    ExportComponentsResponse,
-    ExportComponentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ExportComponentsRequest,
-  ) => stream.Stream<
-    Component,
-    ExportComponentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ExportFormsError =
   | InternalServerException
@@ -2860,27 +2824,13 @@ export type ExportFormsError =
 /**
  * Exports form configurations to code that is ready to integrate into an Amplify app.
  */
-export const exportForms: API.OperationMethod<
+export const exportForms: API.PaginatedOperationMethod<
   ExportFormsRequest,
   ExportFormsResponse,
   ExportFormsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ExportFormsRequest,
-  ) => stream.Stream<
-    ExportFormsResponse,
-    ExportFormsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ExportFormsRequest,
-  ) => stream.Stream<
-    Form,
-    ExportFormsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Form
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ExportFormsRequest,
   output: ExportFormsResponse,
   errors: [InternalServerException, InvalidParameterException],
@@ -2892,27 +2842,7 @@ export const exportForms: API.OperationMethod<
     outputToken: "nextToken",
     items: "entities",
   } as const,
-})) as any as API.OperationMethod<
-  ExportFormsRequest,
-  ExportFormsResponse,
-  ExportFormsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ExportFormsRequest,
-  ) => stream.Stream<
-    ExportFormsResponse,
-    ExportFormsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ExportFormsRequest,
-  ) => stream.Stream<
-    Form,
-    ExportFormsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ExportThemesError =
   | InternalServerException
@@ -2921,27 +2851,13 @@ export type ExportThemesError =
 /**
  * Exports theme configurations to code that is ready to integrate into an Amplify app.
  */
-export const exportThemes: API.OperationMethod<
+export const exportThemes: API.PaginatedOperationMethod<
   ExportThemesRequest,
   ExportThemesResponse,
   ExportThemesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ExportThemesRequest,
-  ) => stream.Stream<
-    ExportThemesResponse,
-    ExportThemesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ExportThemesRequest,
-  ) => stream.Stream<
-    Theme,
-    ExportThemesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Theme
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ExportThemesRequest,
   output: ExportThemesResponse,
   errors: [InternalServerException, InvalidParameterException],
@@ -2953,27 +2869,7 @@ export const exportThemes: API.OperationMethod<
     outputToken: "nextToken",
     items: "entities",
   } as const,
-})) as any as API.OperationMethod<
-  ExportThemesRequest,
-  ExportThemesResponse,
-  ExportThemesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ExportThemesRequest,
-  ) => stream.Stream<
-    ExportThemesResponse,
-    ExportThemesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ExportThemesRequest,
-  ) => stream.Stream<
-    Theme,
-    ExportThemesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetCodegenJobError =
   | InternalServerException
@@ -2988,7 +2884,7 @@ export const getCodegenJob: API.OperationMethod<
   GetCodegenJobRequest,
   GetCodegenJobResponse,
   GetCodegenJobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetCodegenJobRequest,
   output: GetCodegenJobResponse,
@@ -3015,7 +2911,7 @@ export const getComponent: API.OperationMethod<
   GetComponentRequest,
   GetComponentResponse,
   GetComponentError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetComponentRequest,
   output: GetComponentResponse,
@@ -3041,7 +2937,7 @@ export const getForm: API.OperationMethod<
   GetFormRequest,
   GetFormResponse,
   GetFormError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetFormRequest,
   output: GetFormResponse,
@@ -3066,7 +2962,7 @@ export const getMetadata: API.OperationMethod<
   GetMetadataRequest,
   GetMetadataResponse,
   GetMetadataError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetMetadataRequest,
   output: GetMetadataResponse,
@@ -3088,7 +2984,7 @@ export const getTheme: API.OperationMethod<
   GetThemeRequest,
   GetThemeResponse,
   GetThemeError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetThemeRequest,
   output: GetThemeResponse,
@@ -3110,27 +3006,13 @@ export type ListCodegenJobsError =
 /**
  * Retrieves a list of code generation jobs for a specified Amplify app and backend environment.
  */
-export const listCodegenJobs: API.OperationMethod<
+export const listCodegenJobs: API.PaginatedOperationMethod<
   ListCodegenJobsRequest,
   ListCodegenJobsResponse,
   ListCodegenJobsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCodegenJobsRequest,
-  ) => stream.Stream<
-    ListCodegenJobsResponse,
-    ListCodegenJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCodegenJobsRequest,
-  ) => stream.Stream<
-    CodegenJobSummary,
-    ListCodegenJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  CodegenJobSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListCodegenJobsRequest,
   output: ListCodegenJobsResponse,
   errors: [
@@ -3147,27 +3029,7 @@ export const listCodegenJobs: API.OperationMethod<
     items: "entities",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListCodegenJobsRequest,
-  ListCodegenJobsResponse,
-  ListCodegenJobsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCodegenJobsRequest,
-  ) => stream.Stream<
-    ListCodegenJobsResponse,
-    ListCodegenJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCodegenJobsRequest,
-  ) => stream.Stream<
-    CodegenJobSummary,
-    ListCodegenJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListComponentsError =
   | InternalServerException
@@ -3177,27 +3039,13 @@ export type ListComponentsError =
  * Retrieves a list of components for a specified Amplify app and backend
  * environment.
  */
-export const listComponents: API.OperationMethod<
+export const listComponents: API.PaginatedOperationMethod<
   ListComponentsRequest,
   ListComponentsResponse,
   ListComponentsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListComponentsRequest,
-  ) => stream.Stream<
-    ListComponentsResponse,
-    ListComponentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListComponentsRequest,
-  ) => stream.Stream<
-    ComponentSummary,
-    ListComponentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ComponentSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListComponentsRequest,
   output: ListComponentsResponse,
   errors: [InternalServerException, InvalidParameterException],
@@ -3210,27 +3058,7 @@ export const listComponents: API.OperationMethod<
     items: "entities",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListComponentsRequest,
-  ListComponentsResponse,
-  ListComponentsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListComponentsRequest,
-  ) => stream.Stream<
-    ListComponentsResponse,
-    ListComponentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListComponentsRequest,
-  ) => stream.Stream<
-    ComponentSummary,
-    ListComponentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListFormsError =
   | InternalServerException
@@ -3239,27 +3067,13 @@ export type ListFormsError =
 /**
  * Retrieves a list of forms for a specified Amplify app and backend environment.
  */
-export const listForms: API.OperationMethod<
+export const listForms: API.PaginatedOperationMethod<
   ListFormsRequest,
   ListFormsResponse,
   ListFormsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListFormsRequest,
-  ) => stream.Stream<
-    ListFormsResponse,
-    ListFormsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListFormsRequest,
-  ) => stream.Stream<
-    FormSummary,
-    ListFormsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  FormSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListFormsRequest,
   output: ListFormsResponse,
   errors: [InternalServerException, InvalidParameterException],
@@ -3272,27 +3086,7 @@ export const listForms: API.OperationMethod<
     items: "entities",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListFormsRequest,
-  ListFormsResponse,
-  ListFormsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListFormsRequest,
-  ) => stream.Stream<
-    ListFormsResponse,
-    ListFormsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListFormsRequest,
-  ) => stream.Stream<
-    FormSummary,
-    ListFormsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsForResourceError =
   | InternalServerException
@@ -3308,7 +3102,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceRequest,
   ListTagsForResourceResponse,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -3332,27 +3126,13 @@ export type ListThemesError =
  * Retrieves a list of themes for a specified Amplify app and backend
  * environment.
  */
-export const listThemes: API.OperationMethod<
+export const listThemes: API.PaginatedOperationMethod<
   ListThemesRequest,
   ListThemesResponse,
   ListThemesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListThemesRequest,
-  ) => stream.Stream<
-    ListThemesResponse,
-    ListThemesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListThemesRequest,
-  ) => stream.Stream<
-    ThemeSummary,
-    ListThemesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ThemeSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListThemesRequest,
   output: ListThemesResponse,
   errors: [InternalServerException, InvalidParameterException],
@@ -3365,27 +3145,7 @@ export const listThemes: API.OperationMethod<
     items: "entities",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListThemesRequest,
-  ListThemesResponse,
-  ListThemesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListThemesRequest,
-  ) => stream.Stream<
-    ListThemesResponse,
-    ListThemesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListThemesRequest,
-  ) => stream.Stream<
-    ThemeSummary,
-    ListThemesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type PutMetadataFlagError =
   | InvalidParameterException
@@ -3398,7 +3158,7 @@ export const putMetadataFlag: API.OperationMethod<
   PutMetadataFlagRequest,
   PutMetadataFlagResponse,
   PutMetadataFlagError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutMetadataFlagRequest,
   output: PutMetadataFlagResponse,
@@ -3418,7 +3178,7 @@ export const refreshToken: API.OperationMethod<
   RefreshTokenRequest,
   RefreshTokenResponse,
   RefreshTokenError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RefreshTokenRequest,
   output: RefreshTokenResponse,
@@ -3440,7 +3200,7 @@ export const startCodegenJob: API.OperationMethod<
   StartCodegenJobRequest,
   StartCodegenJobResponse,
   StartCodegenJobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartCodegenJobRequest,
   output: StartCodegenJobResponse,
@@ -3468,7 +3228,7 @@ export const tagResource: API.OperationMethod<
   TagResourceRequest,
   TagResourceResponse,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -3498,7 +3258,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceRequest,
   UntagResourceResponse,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -3526,7 +3286,7 @@ export const updateComponent: API.OperationMethod<
   UpdateComponentRequest,
   UpdateComponentResponse,
   UpdateComponentError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateComponentRequest,
   output: UpdateComponentResponse,
@@ -3552,7 +3312,7 @@ export const updateForm: API.OperationMethod<
   UpdateFormRequest,
   UpdateFormResponse,
   UpdateFormError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateFormRequest,
   output: UpdateFormResponse,
@@ -3578,7 +3338,7 @@ export const updateTheme: API.OperationMethod<
   UpdateThemeRequest,
   UpdateThemeResponse,
   UpdateThemeError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateThemeRequest,
   output: UpdateThemeResponse,

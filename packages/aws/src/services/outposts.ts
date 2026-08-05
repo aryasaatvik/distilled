@@ -1,7 +1,6 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as redacted from "effect/Redacted";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -9,7 +8,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 import { SensitiveString } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "Outposts",
@@ -93,14 +91,14 @@ const rules = T.EndpointResolver((p, _) => {
 export class AccessDeniedException
   extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
     "AccessDeniedException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(403),
   ).pipe(C.withAuthError) {}
 export class ConflictException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
     "ConflictException",
     {
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       ResourceId: S.optional(S.String),
       ResourceType: S.optional(
         S.suspend(() => ResourceType).annotate({ identifier: "ResourceType" }),
@@ -111,25 +109,25 @@ export class ConflictException
 export class InternalServerException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
     "InternalServerException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(500),
   ).pipe(C.withServerError) {}
 export class NotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<NotFoundException>()(
     "NotFoundException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class ServiceQuotaExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
     "ServiceQuotaExceededException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(402),
   ).pipe(C.withQuotaError) {}
 export class ValidationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
     "ValidationException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export type CapacityTaskId = string;
@@ -2937,7 +2935,7 @@ export const cancelCapacityTask: API.OperationMethod<
   CancelCapacityTaskInput,
   CancelCapacityTaskOutput,
   CancelCapacityTaskError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CancelCapacityTaskInput,
   output: CancelCapacityTaskOutput,
@@ -2967,7 +2965,7 @@ export const cancelOrder: API.OperationMethod<
   CancelOrderInput,
   CancelOrderOutput,
   CancelOrderError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CancelOrderInput,
   output: CancelOrderOutput,
@@ -2998,7 +2996,7 @@ export const createOrder: API.OperationMethod<
   CreateOrderInput,
   CreateOrderOutput,
   CreateOrderError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateOrderInput,
   output: CreateOrderOutput,
@@ -3032,7 +3030,7 @@ export const createOutpost: API.OperationMethod<
   CreateOutpostInput,
   CreateOutpostOutput,
   CreateOutpostError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateOutpostInput,
   output: CreateOutpostOutput,
@@ -3064,7 +3062,7 @@ export const createQuote: API.OperationMethod<
   CreateQuoteInput,
   CreateQuoteOutput,
   CreateQuoteError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateQuoteInput,
   output: CreateQuoteOutput,
@@ -3092,7 +3090,7 @@ export const createRenewal: API.OperationMethod<
   CreateRenewalInput,
   CreateRenewalOutput,
   CreateRenewalError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateRenewalInput,
   output: CreateRenewalOutput,
@@ -3121,7 +3119,7 @@ export const createSite: API.OperationMethod<
   CreateSiteInput,
   CreateSiteOutput,
   CreateSiteError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateSiteInput,
   output: CreateSiteOutput,
@@ -3151,7 +3149,7 @@ export const deleteOutpost: API.OperationMethod<
   DeleteOutpostInput,
   DeleteOutpostOutput,
   DeleteOutpostError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteOutpostInput,
   output: DeleteOutpostOutput,
@@ -3180,7 +3178,7 @@ export const deleteQuote: API.OperationMethod<
   DeleteQuoteInput,
   DeleteQuoteOutput,
   DeleteQuoteError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteQuoteInput,
   output: DeleteQuoteOutput,
@@ -3209,7 +3207,7 @@ export const deleteSite: API.OperationMethod<
   DeleteSiteInput,
   DeleteSiteOutput,
   DeleteSiteError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteSiteInput,
   output: DeleteSiteOutput,
@@ -3238,7 +3236,7 @@ export const getCapacityTask: API.OperationMethod<
   GetCapacityTaskInput,
   GetCapacityTaskOutput,
   GetCapacityTaskError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetCapacityTaskInput,
   output: GetCapacityTaskOutput,
@@ -3266,7 +3264,7 @@ export const getCatalogItem: API.OperationMethod<
   GetCatalogItemInput,
   GetCatalogItemOutput,
   GetCatalogItemError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetCatalogItemInput,
   output: GetCatalogItemOutput,
@@ -3301,7 +3299,7 @@ export const getConnection: API.OperationMethod<
   GetConnectionRequest,
   GetConnectionResponse,
   GetConnectionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetConnectionRequest,
   output: GetConnectionResponse,
@@ -3328,7 +3326,7 @@ export const getOrder: API.OperationMethod<
   GetOrderInput,
   GetOrderOutput,
   GetOrderError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetOrderInput,
   output: GetOrderOutput,
@@ -3351,7 +3349,7 @@ export const getOutpost: API.OperationMethod<
   GetOutpostInput,
   GetOutpostOutput,
   GetOutpostError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetOutpostInput,
   output: GetOutpostOutput,
@@ -3374,27 +3372,13 @@ export type GetOutpostBillingInformationError =
 /**
  * Gets current and historical billing information about the specified Outpost.
  */
-export const getOutpostBillingInformation: API.OperationMethod<
+export const getOutpostBillingInformation: API.PaginatedOperationMethod<
   GetOutpostBillingInformationInput,
   GetOutpostBillingInformationOutput,
   GetOutpostBillingInformationError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetOutpostBillingInformationInput,
-  ) => stream.Stream<
-    GetOutpostBillingInformationOutput,
-    GetOutpostBillingInformationError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetOutpostBillingInformationInput,
-  ) => stream.Stream<
-    Subscription,
-    GetOutpostBillingInformationError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Subscription
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetOutpostBillingInformationInput,
   output: GetOutpostBillingInformationOutput,
   errors: [AccessDeniedException, InternalServerException, NotFoundException],
@@ -3407,27 +3391,7 @@ export const getOutpostBillingInformation: API.OperationMethod<
     items: "Subscriptions",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetOutpostBillingInformationInput,
-  GetOutpostBillingInformationOutput,
-  GetOutpostBillingInformationError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetOutpostBillingInformationInput,
-  ) => stream.Stream<
-    GetOutpostBillingInformationOutput,
-    GetOutpostBillingInformationError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetOutpostBillingInformationInput,
-  ) => stream.Stream<
-    Subscription,
-    GetOutpostBillingInformationError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetOutpostInstanceTypesError =
   | AccessDeniedException
@@ -3438,27 +3402,13 @@ export type GetOutpostInstanceTypesError =
 /**
  * Gets the instance types for the specified Outpost.
  */
-export const getOutpostInstanceTypes: API.OperationMethod<
+export const getOutpostInstanceTypes: API.PaginatedOperationMethod<
   GetOutpostInstanceTypesInput,
   GetOutpostInstanceTypesOutput,
   GetOutpostInstanceTypesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetOutpostInstanceTypesInput,
-  ) => stream.Stream<
-    GetOutpostInstanceTypesOutput,
-    GetOutpostInstanceTypesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetOutpostInstanceTypesInput,
-  ) => stream.Stream<
-    InstanceTypeItem,
-    GetOutpostInstanceTypesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  InstanceTypeItem
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetOutpostInstanceTypesInput,
   output: GetOutpostInstanceTypesOutput,
   errors: [
@@ -3476,27 +3426,7 @@ export const getOutpostInstanceTypes: API.OperationMethod<
     items: "InstanceTypes",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetOutpostInstanceTypesInput,
-  GetOutpostInstanceTypesOutput,
-  GetOutpostInstanceTypesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetOutpostInstanceTypesInput,
-  ) => stream.Stream<
-    GetOutpostInstanceTypesOutput,
-    GetOutpostInstanceTypesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetOutpostInstanceTypesInput,
-  ) => stream.Stream<
-    InstanceTypeItem,
-    GetOutpostInstanceTypesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetOutpostSupportedInstanceTypesError =
   | AccessDeniedException
@@ -3509,27 +3439,13 @@ export type GetOutpostSupportedInstanceTypesError =
  * This will generally include instance types that are not currently configured and therefore
  * cannot be launched with the current Outpost capacity configuration.
  */
-export const getOutpostSupportedInstanceTypes: API.OperationMethod<
+export const getOutpostSupportedInstanceTypes: API.PaginatedOperationMethod<
   GetOutpostSupportedInstanceTypesInput,
   GetOutpostSupportedInstanceTypesOutput,
   GetOutpostSupportedInstanceTypesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetOutpostSupportedInstanceTypesInput,
-  ) => stream.Stream<
-    GetOutpostSupportedInstanceTypesOutput,
-    GetOutpostSupportedInstanceTypesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetOutpostSupportedInstanceTypesInput,
-  ) => stream.Stream<
-    InstanceTypeItem,
-    GetOutpostSupportedInstanceTypesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  InstanceTypeItem
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetOutpostSupportedInstanceTypesInput,
   output: GetOutpostSupportedInstanceTypesOutput,
   errors: [
@@ -3547,27 +3463,7 @@ export const getOutpostSupportedInstanceTypes: API.OperationMethod<
     items: "InstanceTypes",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetOutpostSupportedInstanceTypesInput,
-  GetOutpostSupportedInstanceTypesOutput,
-  GetOutpostSupportedInstanceTypesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetOutpostSupportedInstanceTypesInput,
-  ) => stream.Stream<
-    GetOutpostSupportedInstanceTypesOutput,
-    GetOutpostSupportedInstanceTypesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetOutpostSupportedInstanceTypesInput,
-  ) => stream.Stream<
-    InstanceTypeItem,
-    GetOutpostSupportedInstanceTypesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetQuoteError =
   | AccessDeniedException
@@ -3582,7 +3478,7 @@ export const getQuote: API.OperationMethod<
   GetQuoteInput,
   GetQuoteOutput,
   GetQuoteError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetQuoteInput,
   output: GetQuoteOutput,
@@ -3610,7 +3506,7 @@ export const getRenewalPricing: API.OperationMethod<
   GetRenewalPricingInput,
   GetRenewalPricingOutput,
   GetRenewalPricingError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetRenewalPricingInput,
   output: GetRenewalPricingOutput,
@@ -3638,7 +3534,7 @@ export const getSite: API.OperationMethod<
   GetSiteInput,
   GetSiteOutput,
   GetSiteError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetSiteInput,
   output: GetSiteOutput,
@@ -3666,7 +3562,7 @@ export const getSiteAddress: API.OperationMethod<
   GetSiteAddressInput,
   GetSiteAddressOutput,
   GetSiteAddressError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetSiteAddressInput,
   output: GetSiteAddressOutput,
@@ -3691,27 +3587,13 @@ export type ListAssetInstancesError =
  * A list of Amazon EC2 instances, belonging to all accounts, running on the specified Outpost.
  * Does not include Amazon EBS or Amazon S3 instances.
  */
-export const listAssetInstances: API.OperationMethod<
+export const listAssetInstances: API.PaginatedOperationMethod<
   ListAssetInstancesInput,
   ListAssetInstancesOutput,
   ListAssetInstancesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAssetInstancesInput,
-  ) => stream.Stream<
-    ListAssetInstancesOutput,
-    ListAssetInstancesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAssetInstancesInput,
-  ) => stream.Stream<
-    AssetInstance,
-    ListAssetInstancesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  AssetInstance
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListAssetInstancesInput,
   output: ListAssetInstancesOutput,
   errors: [
@@ -3729,27 +3611,7 @@ export const listAssetInstances: API.OperationMethod<
     items: "AssetInstances",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListAssetInstancesInput,
-  ListAssetInstancesOutput,
-  ListAssetInstancesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAssetInstancesInput,
-  ) => stream.Stream<
-    ListAssetInstancesOutput,
-    ListAssetInstancesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAssetInstancesInput,
-  ) => stream.Stream<
-    AssetInstance,
-    ListAssetInstancesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListAssetsError =
   | AccessDeniedException
@@ -3764,27 +3626,13 @@ export type ListAssetsError =
  * all of the specified filters. For a filter where you can specify multiple values, the results include
  * items that match any of the values that you specify for the filter.
  */
-export const listAssets: API.OperationMethod<
+export const listAssets: API.PaginatedOperationMethod<
   ListAssetsInput,
   ListAssetsOutput,
   ListAssetsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAssetsInput,
-  ) => stream.Stream<
-    ListAssetsOutput,
-    ListAssetsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAssetsInput,
-  ) => stream.Stream<
-    AssetInfo,
-    ListAssetsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  AssetInfo
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListAssetsInput,
   output: ListAssetsOutput,
   errors: [
@@ -3802,27 +3650,7 @@ export const listAssets: API.OperationMethod<
     items: "Assets",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListAssetsInput,
-  ListAssetsOutput,
-  ListAssetsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAssetsInput,
-  ) => stream.Stream<
-    ListAssetsOutput,
-    ListAssetsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAssetsInput,
-  ) => stream.Stream<
-    AssetInfo,
-    ListAssetsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListBlockingInstancesForCapacityTaskError =
   | AccessDeniedException
@@ -3835,27 +3663,13 @@ export type ListBlockingInstancesForCapacityTaskError =
  * initiated the capacity task. Use this list to specify the instances you cannot stop to free up
  * capacity to run the capacity task.
  */
-export const listBlockingInstancesForCapacityTask: API.OperationMethod<
+export const listBlockingInstancesForCapacityTask: API.PaginatedOperationMethod<
   ListBlockingInstancesForCapacityTaskInput,
   ListBlockingInstancesForCapacityTaskOutput,
   ListBlockingInstancesForCapacityTaskError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListBlockingInstancesForCapacityTaskInput,
-  ) => stream.Stream<
-    ListBlockingInstancesForCapacityTaskOutput,
-    ListBlockingInstancesForCapacityTaskError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListBlockingInstancesForCapacityTaskInput,
-  ) => stream.Stream<
-    BlockingInstance,
-    ListBlockingInstancesForCapacityTaskError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  BlockingInstance
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListBlockingInstancesForCapacityTaskInput,
   output: ListBlockingInstancesForCapacityTaskOutput,
   errors: [
@@ -3873,27 +3687,7 @@ export const listBlockingInstancesForCapacityTask: API.OperationMethod<
     items: "BlockingInstances",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListBlockingInstancesForCapacityTaskInput,
-  ListBlockingInstancesForCapacityTaskOutput,
-  ListBlockingInstancesForCapacityTaskError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListBlockingInstancesForCapacityTaskInput,
-  ) => stream.Stream<
-    ListBlockingInstancesForCapacityTaskOutput,
-    ListBlockingInstancesForCapacityTaskError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListBlockingInstancesForCapacityTaskInput,
-  ) => stream.Stream<
-    BlockingInstance,
-    ListBlockingInstancesForCapacityTaskError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListCapacityTasksError =
   | AccessDeniedException
@@ -3908,27 +3702,13 @@ export type ListCapacityTasksError =
  * all of the specified filters. For a filter where you can specify multiple values, the results include
  * items that match any of the values that you specify for the filter.
  */
-export const listCapacityTasks: API.OperationMethod<
+export const listCapacityTasks: API.PaginatedOperationMethod<
   ListCapacityTasksInput,
   ListCapacityTasksOutput,
   ListCapacityTasksError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCapacityTasksInput,
-  ) => stream.Stream<
-    ListCapacityTasksOutput,
-    ListCapacityTasksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCapacityTasksInput,
-  ) => stream.Stream<
-    CapacityTaskSummary,
-    ListCapacityTasksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  CapacityTaskSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListCapacityTasksInput,
   output: ListCapacityTasksOutput,
   errors: [
@@ -3946,27 +3726,7 @@ export const listCapacityTasks: API.OperationMethod<
     items: "CapacityTasks",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListCapacityTasksInput,
-  ListCapacityTasksOutput,
-  ListCapacityTasksError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCapacityTasksInput,
-  ) => stream.Stream<
-    ListCapacityTasksOutput,
-    ListCapacityTasksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCapacityTasksInput,
-  ) => stream.Stream<
-    CapacityTaskSummary,
-    ListCapacityTasksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListCatalogItemsError =
   | AccessDeniedException
@@ -3981,27 +3741,13 @@ export type ListCatalogItemsError =
  * all of the specified filters. For a filter where you can specify multiple values, the results include
  * items that match any of the values that you specify for the filter.
  */
-export const listCatalogItems: API.OperationMethod<
+export const listCatalogItems: API.PaginatedOperationMethod<
   ListCatalogItemsInput,
   ListCatalogItemsOutput,
   ListCatalogItemsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCatalogItemsInput,
-  ) => stream.Stream<
-    ListCatalogItemsOutput,
-    ListCatalogItemsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCatalogItemsInput,
-  ) => stream.Stream<
-    CatalogItem,
-    ListCatalogItemsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  CatalogItem
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListCatalogItemsInput,
   output: ListCatalogItemsOutput,
   errors: [
@@ -4019,27 +3765,7 @@ export const listCatalogItems: API.OperationMethod<
     items: "CatalogItems",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListCatalogItemsInput,
-  ListCatalogItemsOutput,
-  ListCatalogItemsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCatalogItemsInput,
-  ) => stream.Stream<
-    ListCatalogItemsOutput,
-    ListCatalogItemsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCatalogItemsInput,
-  ) => stream.Stream<
-    CatalogItem,
-    ListCatalogItemsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListOrderableInstanceTypesError =
   | AccessDeniedException
@@ -4051,27 +3777,13 @@ export type ListOrderableInstanceTypesError =
  * Lists the instance types that can be ordered for an Outpost. You can filter the results
  * by Outpost generation.
  */
-export const listOrderableInstanceTypes: API.OperationMethod<
+export const listOrderableInstanceTypes: API.PaginatedOperationMethod<
   ListOrderableInstanceTypesInput,
   ListOrderableInstanceTypesOutput,
   ListOrderableInstanceTypesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListOrderableInstanceTypesInput,
-  ) => stream.Stream<
-    ListOrderableInstanceTypesOutput,
-    ListOrderableInstanceTypesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListOrderableInstanceTypesInput,
-  ) => stream.Stream<
-    DetailedInstanceTypeItem,
-    ListOrderableInstanceTypesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  DetailedInstanceTypeItem
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListOrderableInstanceTypesInput,
   output: ListOrderableInstanceTypesOutput,
   errors: [
@@ -4089,27 +3801,7 @@ export const listOrderableInstanceTypes: API.OperationMethod<
     items: "InstanceTypes",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListOrderableInstanceTypesInput,
-  ListOrderableInstanceTypesOutput,
-  ListOrderableInstanceTypesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListOrderableInstanceTypesInput,
-  ) => stream.Stream<
-    ListOrderableInstanceTypesOutput,
-    ListOrderableInstanceTypesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListOrderableInstanceTypesInput,
-  ) => stream.Stream<
-    DetailedInstanceTypeItem,
-    ListOrderableInstanceTypesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListOrdersError =
   | AccessDeniedException
@@ -4120,27 +3812,13 @@ export type ListOrdersError =
 /**
  * Lists the Outpost orders for your Amazon Web Services account.
  */
-export const listOrders: API.OperationMethod<
+export const listOrders: API.PaginatedOperationMethod<
   ListOrdersInput,
   ListOrdersOutput,
   ListOrdersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListOrdersInput,
-  ) => stream.Stream<
-    ListOrdersOutput,
-    ListOrdersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListOrdersInput,
-  ) => stream.Stream<
-    OrderSummary,
-    ListOrdersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  OrderSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListOrdersInput,
   output: ListOrdersOutput,
   errors: [
@@ -4158,27 +3836,7 @@ export const listOrders: API.OperationMethod<
     items: "Orders",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListOrdersInput,
-  ListOrdersOutput,
-  ListOrdersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListOrdersInput,
-  ) => stream.Stream<
-    ListOrdersOutput,
-    ListOrdersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListOrdersInput,
-  ) => stream.Stream<
-    OrderSummary,
-    ListOrdersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListOutpostsError =
   | AccessDeniedException
@@ -4192,27 +3850,13 @@ export type ListOutpostsError =
  * all of the specified filters. For a filter where you can specify multiple values, the results include
  * items that match any of the values that you specify for the filter.
  */
-export const listOutposts: API.OperationMethod<
+export const listOutposts: API.PaginatedOperationMethod<
   ListOutpostsInput,
   ListOutpostsOutput,
   ListOutpostsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListOutpostsInput,
-  ) => stream.Stream<
-    ListOutpostsOutput,
-    ListOutpostsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListOutpostsInput,
-  ) => stream.Stream<
-    Outpost,
-    ListOutpostsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Outpost
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListOutpostsInput,
   output: ListOutpostsOutput,
   errors: [AccessDeniedException, InternalServerException, ValidationException],
@@ -4225,27 +3869,7 @@ export const listOutposts: API.OperationMethod<
     items: "Outposts",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListOutpostsInput,
-  ListOutpostsOutput,
-  ListOutpostsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListOutpostsInput,
-  ) => stream.Stream<
-    ListOutpostsOutput,
-    ListOutpostsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListOutpostsInput,
-  ) => stream.Stream<
-    Outpost,
-    ListOutpostsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListQuotesError =
   | AccessDeniedException
@@ -4254,27 +3878,13 @@ export type ListQuotesError =
 /**
  * Lists the quotes for your Amazon Web Services account.
  */
-export const listQuotes: API.OperationMethod<
+export const listQuotes: API.PaginatedOperationMethod<
   ListQuotesInput,
   ListQuotesOutput,
   ListQuotesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListQuotesInput,
-  ) => stream.Stream<
-    ListQuotesOutput,
-    ListQuotesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListQuotesInput,
-  ) => stream.Stream<
-    QuoteSummary,
-    ListQuotesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  QuoteSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListQuotesInput,
   output: ListQuotesOutput,
   errors: [AccessDeniedException, InternalServerException],
@@ -4287,27 +3897,7 @@ export const listQuotes: API.OperationMethod<
     items: "Quotes",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListQuotesInput,
-  ListQuotesOutput,
-  ListQuotesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListQuotesInput,
-  ) => stream.Stream<
-    ListQuotesOutput,
-    ListQuotesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListQuotesInput,
-  ) => stream.Stream<
-    QuoteSummary,
-    ListQuotesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListSitesError =
   | AccessDeniedException
@@ -4322,27 +3912,13 @@ export type ListSitesError =
  * all of the specified filters. For a filter where you can specify multiple values, the results include
  * items that match any of the values that you specify for the filter.
  */
-export const listSites: API.OperationMethod<
+export const listSites: API.PaginatedOperationMethod<
   ListSitesInput,
   ListSitesOutput,
   ListSitesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSitesInput,
-  ) => stream.Stream<
-    ListSitesOutput,
-    ListSitesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSitesInput,
-  ) => stream.Stream<
-    Site,
-    ListSitesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Site
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListSitesInput,
   output: ListSitesOutput,
   errors: [AccessDeniedException, InternalServerException, ValidationException],
@@ -4355,27 +3931,7 @@ export const listSites: API.OperationMethod<
     items: "Sites",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListSitesInput,
-  ListSitesOutput,
-  ListSitesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSitesInput,
-  ) => stream.Stream<
-    ListSitesOutput,
-    ListSitesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSitesInput,
-  ) => stream.Stream<
-    Site,
-    ListSitesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsForResourceError =
   | InternalServerException
@@ -4389,7 +3945,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceRequest,
   ListTagsForResourceResponse,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -4414,7 +3970,7 @@ export const startCapacityTask: API.OperationMethod<
   StartCapacityTaskInput,
   StartCapacityTaskOutput,
   StartCapacityTaskError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartCapacityTaskInput,
   output: StartCapacityTaskOutput,
@@ -4450,7 +4006,7 @@ export const startConnection: API.OperationMethod<
   StartConnectionRequest,
   StartConnectionResponse,
   StartConnectionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartConnectionRequest,
   output: StartConnectionResponse,
@@ -4479,7 +4035,7 @@ export const startOutpostDecommission: API.OperationMethod<
   StartOutpostDecommissionInput,
   StartOutpostDecommissionOutput,
   StartOutpostDecommissionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartOutpostDecommissionInput,
   output: StartOutpostDecommissionOutput,
@@ -4507,7 +4063,7 @@ export const tagResource: API.OperationMethod<
   TagResourceRequest,
   TagResourceResponse,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -4529,7 +4085,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceRequest,
   UntagResourceResponse,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -4553,7 +4109,7 @@ export const updateOutpost: API.OperationMethod<
   UpdateOutpostInput,
   UpdateOutpostOutput,
   UpdateOutpostError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateOutpostInput,
   output: UpdateOutpostOutput,
@@ -4583,7 +4139,7 @@ export const updateQuote: API.OperationMethod<
   UpdateQuoteInput,
   UpdateQuoteOutput,
   UpdateQuoteError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateQuoteInput,
   output: UpdateQuoteOutput,
@@ -4612,7 +4168,7 @@ export const updateSite: API.OperationMethod<
   UpdateSiteInput,
   UpdateSiteOutput,
   UpdateSiteError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateSiteInput,
   output: UpdateSiteOutput,
@@ -4648,7 +4204,7 @@ export const updateSiteAddress: API.OperationMethod<
   UpdateSiteAddressInput,
   UpdateSiteAddressOutput,
   UpdateSiteAddressError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateSiteAddressInput,
   output: UpdateSiteAddressOutput,
@@ -4683,7 +4239,7 @@ export const updateSiteRackPhysicalProperties: API.OperationMethod<
   UpdateSiteRackPhysicalPropertiesInput,
   UpdateSiteRackPhysicalPropertiesOutput,
   UpdateSiteRackPhysicalPropertiesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateSiteRackPhysicalPropertiesInput,
   output: UpdateSiteRackPhysicalPropertiesOutput,

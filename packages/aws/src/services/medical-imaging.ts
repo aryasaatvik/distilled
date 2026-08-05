@@ -1,7 +1,6 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as redacted from "effect/Redacted";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -9,7 +8,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "Medical Imaging",
@@ -90,55 +88,55 @@ const rules = T.EndpointResolver((p, _) => {
 export class AccessDeniedException
   extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
     "AccessDeniedException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(403),
   ).pipe(C.withAuthError) {}
 export class BadRequestException
   extends /*@__PURE__*/ S.TaggedErrorClass<BadRequestException>()(
     "BadRequestException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class ConflictException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
     "ConflictException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class InternalServerException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
     "InternalServerException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(500),
   ).pipe(C.withServerError) {}
 export class NotAcceptableException
   extends /*@__PURE__*/ S.TaggedErrorClass<NotAcceptableException>()(
     "NotAcceptableException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(406),
   ).pipe(C.withBadRequestError) {}
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class ServiceQuotaExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
     "ServiceQuotaExceededException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(402),
   ).pipe(C.withQuotaError) {}
 export class ThrottlingException
   extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
     "ThrottlingException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(429),
   ).pipe(C.withThrottlingError) {}
 export class ValidationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
     "ValidationException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export type DatastoreId = string;
@@ -1466,7 +1464,7 @@ export const copyImageSet: API.OperationMethod<
   CopyImageSetRequest,
   CopyImageSetResponse,
   CopyImageSetError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CopyImageSetRequest,
   output: CopyImageSetResponse,
@@ -1501,7 +1499,7 @@ export const createDatastore: API.OperationMethod<
   CreateDatastoreRequest,
   CreateDatastoreResponse,
   CreateDatastoreError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateDatastoreRequest,
   output: CreateDatastoreResponse,
@@ -1536,7 +1534,7 @@ export const deleteDatastore: API.OperationMethod<
   DeleteDatastoreRequest,
   DeleteDatastoreResponse,
   DeleteDatastoreError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteDatastoreRequest,
   output: DeleteDatastoreResponse,
@@ -1568,7 +1566,7 @@ export const deleteImageSet: API.OperationMethod<
   DeleteImageSetRequest,
   DeleteImageSetResponse,
   DeleteImageSetError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteImageSetRequest,
   output: DeleteImageSetResponse,
@@ -1600,7 +1598,7 @@ export const getDatastore: API.OperationMethod<
   GetDatastoreRequest,
   GetDatastoreResponse,
   GetDatastoreError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetDatastoreRequest,
   output: GetDatastoreResponse,
@@ -1633,7 +1631,7 @@ export const getDICOMImportJob: API.OperationMethod<
   GetDICOMImportJobRequest,
   GetDICOMImportJobResponse,
   GetDICOMImportJobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetDICOMImportJobRequest,
   output: GetDICOMImportJobResponse,
@@ -1667,7 +1665,7 @@ export const getImageFrame: API.OperationMethod<
   GetImageFrameRequest,
   GetImageFrameResponse,
   GetImageFrameError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetImageFrameRequest,
   output: GetImageFrameResponse,
@@ -1702,7 +1700,7 @@ export const getImageSet: API.OperationMethod<
   GetImageSetRequest,
   GetImageSetResponse,
   GetImageSetError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetImageSetRequest,
   output: GetImageSetResponse,
@@ -1735,7 +1733,7 @@ export const getImageSetMetadata: API.OperationMethod<
   GetImageSetMetadataRequest,
   GetImageSetMetadataResponse,
   GetImageSetMetadataError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetImageSetMetadataRequest,
   output: GetImageSetMetadataResponse,
@@ -1762,27 +1760,13 @@ export type ListDatastoresError =
 /**
  * List data stores.
  */
-export const listDatastores: API.OperationMethod<
+export const listDatastores: API.PaginatedOperationMethod<
   ListDatastoresRequest,
   ListDatastoresResponse,
   ListDatastoresError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDatastoresRequest,
-  ) => stream.Stream<
-    ListDatastoresResponse,
-    ListDatastoresError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDatastoresRequest,
-  ) => stream.Stream<
-    DatastoreSummary,
-    ListDatastoresError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  DatastoreSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListDatastoresRequest,
   output: ListDatastoresResponse,
   errors: [
@@ -1800,27 +1784,7 @@ export const listDatastores: API.OperationMethod<
     items: "datastoreSummaries",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListDatastoresRequest,
-  ListDatastoresResponse,
-  ListDatastoresError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDatastoresRequest,
-  ) => stream.Stream<
-    ListDatastoresResponse,
-    ListDatastoresError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDatastoresRequest,
-  ) => stream.Stream<
-    DatastoreSummary,
-    ListDatastoresError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListDICOMImportJobsError =
   | AccessDeniedException
@@ -1833,27 +1797,13 @@ export type ListDICOMImportJobsError =
 /**
  * List import jobs created for a specific data store.
  */
-export const listDICOMImportJobs: API.OperationMethod<
+export const listDICOMImportJobs: API.PaginatedOperationMethod<
   ListDICOMImportJobsRequest,
   ListDICOMImportJobsResponse,
   ListDICOMImportJobsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDICOMImportJobsRequest,
-  ) => stream.Stream<
-    ListDICOMImportJobsResponse,
-    ListDICOMImportJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDICOMImportJobsRequest,
-  ) => stream.Stream<
-    DICOMImportJobSummary,
-    ListDICOMImportJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  DICOMImportJobSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListDICOMImportJobsRequest,
   output: ListDICOMImportJobsResponse,
   errors: [
@@ -1873,27 +1823,7 @@ export const listDICOMImportJobs: API.OperationMethod<
     items: "jobSummaries",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListDICOMImportJobsRequest,
-  ListDICOMImportJobsResponse,
-  ListDICOMImportJobsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDICOMImportJobsRequest,
-  ) => stream.Stream<
-    ListDICOMImportJobsResponse,
-    ListDICOMImportJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDICOMImportJobsRequest,
-  ) => stream.Stream<
-    DICOMImportJobSummary,
-    ListDICOMImportJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListImageSetVersionsError =
   | AccessDeniedException
@@ -1906,27 +1836,13 @@ export type ListImageSetVersionsError =
 /**
  * List image set versions.
  */
-export const listImageSetVersions: API.OperationMethod<
+export const listImageSetVersions: API.PaginatedOperationMethod<
   ListImageSetVersionsRequest,
   ListImageSetVersionsResponse,
   ListImageSetVersionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListImageSetVersionsRequest,
-  ) => stream.Stream<
-    ListImageSetVersionsResponse,
-    ListImageSetVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListImageSetVersionsRequest,
-  ) => stream.Stream<
-    ImageSetProperties,
-    ListImageSetVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ImageSetProperties
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListImageSetVersionsRequest,
   output: ListImageSetVersionsResponse,
   errors: [
@@ -1947,27 +1863,7 @@ export const listImageSetVersions: API.OperationMethod<
     items: "imageSetPropertiesList",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListImageSetVersionsRequest,
-  ListImageSetVersionsResponse,
-  ListImageSetVersionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListImageSetVersionsRequest,
-  ) => stream.Stream<
-    ListImageSetVersionsResponse,
-    ListImageSetVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListImageSetVersionsRequest,
-  ) => stream.Stream<
-    ImageSetProperties,
-    ListImageSetVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsForResourceError =
   | AccessDeniedException
@@ -1983,7 +1879,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceRequest,
   ListTagsForResourceResponse,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -2014,27 +1910,13 @@ export type SearchImageSetsError =
  *
  * By default, `SearchImageSets` uses the `updatedAt` field for sorting in descending order from newest to oldest.
  */
-export const searchImageSets: API.OperationMethod<
+export const searchImageSets: API.PaginatedOperationMethod<
   SearchImageSetsRequest,
   SearchImageSetsResponse,
   SearchImageSetsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: SearchImageSetsRequest,
-  ) => stream.Stream<
-    SearchImageSetsResponse,
-    SearchImageSetsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: SearchImageSetsRequest,
-  ) => stream.Stream<
-    ImageSetsMetadataSummary,
-    SearchImageSetsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ImageSetsMetadataSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: SearchImageSetsRequest,
   output: SearchImageSetsResponse,
   errors: [
@@ -2055,27 +1937,7 @@ export const searchImageSets: API.OperationMethod<
     items: "imageSetsMetadataSummaries",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  SearchImageSetsRequest,
-  SearchImageSetsResponse,
-  SearchImageSetsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: SearchImageSetsRequest,
-  ) => stream.Stream<
-    SearchImageSetsResponse,
-    SearchImageSetsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: SearchImageSetsRequest,
-  ) => stream.Stream<
-    ImageSetsMetadataSummary,
-    SearchImageSetsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type StartDICOMImportJobError =
   | AccessDeniedException
@@ -2093,7 +1955,7 @@ export const startDICOMImportJob: API.OperationMethod<
   StartDICOMImportJobRequest,
   StartDICOMImportJobResponse,
   StartDICOMImportJobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartDICOMImportJobRequest,
   output: StartDICOMImportJobResponse,
@@ -2125,7 +1987,7 @@ export const tagResource: API.OperationMethod<
   TagResourceRequest,
   TagResourceResponse,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -2155,7 +2017,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceRequest,
   UntagResourceResponse,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -2187,7 +2049,7 @@ export const updateImageSetMetadata: API.OperationMethod<
   UpdateImageSetMetadataRequest,
   UpdateImageSetMetadataResponse,
   UpdateImageSetMetadataError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateImageSetMetadataRequest,
   output: UpdateImageSetMetadataResponse,

@@ -1,6 +1,5 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -8,7 +7,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 const ns = T.XmlNamespace(
   "http://analytics.kinesis.amazonaws.com/doc/2018-05-23",
 );
@@ -91,65 +89,65 @@ const rules = T.EndpointResolver((p, _) => {
 export class CodeValidationException
   extends /*@__PURE__*/ S.TaggedErrorClass<CodeValidationException>()(
     "CodeValidationException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class ConcurrentModificationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConcurrentModificationException>()(
     "ConcurrentModificationException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class InvalidApplicationConfigurationException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidApplicationConfigurationException>()(
     "InvalidApplicationConfigurationException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidArgumentException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidArgumentException>()(
     "InvalidArgumentException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidRequestException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidRequestException>()(
     "InvalidRequestException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class LimitExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<LimitExceededException>()(
     "LimitExceededException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class ResourceInUseException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceInUseException>()(
     "ResourceInUseException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class ResourceProvisionedThroughputExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceProvisionedThroughputExceededException>()(
     "ResourceProvisionedThroughputExceededException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class ServiceUnavailableException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceUnavailableException>()(
     "ServiceUnavailableException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(503),
   ).pipe(C.withServerError) {}
 export class TooManyTagsException
   extends /*@__PURE__*/ S.TaggedErrorClass<TooManyTagsException>()(
     "TooManyTagsException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class UnableToDetectSchemaException
   extends /*@__PURE__*/ S.TaggedErrorClass<UnableToDetectSchemaException>()(
     "UnableToDetectSchemaException",
     {
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       RawInputRecords: S.optional(
         S.suspend(() => RawInputRecords).annotate({
           identifier: "RawInputRecords",
@@ -165,7 +163,7 @@ export class UnableToDetectSchemaException
 export class UnsupportedOperationException
   extends /*@__PURE__*/ S.TaggedErrorClass<UnsupportedOperationException>()(
     "UnsupportedOperationException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export type ApplicationName = string;
 export type ApplicationVersionId = number;
@@ -3299,7 +3297,7 @@ export const addApplicationCloudWatchLoggingOption: API.OperationMethod<
   AddApplicationCloudWatchLoggingOptionRequest,
   AddApplicationCloudWatchLoggingOptionResponse,
   AddApplicationCloudWatchLoggingOptionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AddApplicationCloudWatchLoggingOptionRequest,
   output: AddApplicationCloudWatchLoggingOptionResponse,
@@ -3339,7 +3337,7 @@ export const addApplicationInput: API.OperationMethod<
   AddApplicationInputRequest,
   AddApplicationInputResponse,
   AddApplicationInputError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AddApplicationInputRequest,
   output: AddApplicationInputResponse,
@@ -3372,7 +3370,7 @@ export const addApplicationInputProcessingConfiguration: API.OperationMethod<
   AddApplicationInputProcessingConfigurationRequest,
   AddApplicationInputProcessingConfigurationResponse,
   AddApplicationInputProcessingConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AddApplicationInputProcessingConfigurationRequest,
   output: AddApplicationInputProcessingConfigurationResponse,
@@ -3417,7 +3415,7 @@ export const addApplicationOutput: API.OperationMethod<
   AddApplicationOutputRequest,
   AddApplicationOutputResponse,
   AddApplicationOutputError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AddApplicationOutputRequest,
   output: AddApplicationOutputResponse,
@@ -3453,7 +3451,7 @@ export const addApplicationReferenceDataSource: API.OperationMethod<
   AddApplicationReferenceDataSourceRequest,
   AddApplicationReferenceDataSourceResponse,
   AddApplicationReferenceDataSourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AddApplicationReferenceDataSourceRequest,
   output: AddApplicationReferenceDataSourceResponse,
@@ -3491,7 +3489,7 @@ export const addApplicationVpcConfiguration: API.OperationMethod<
   AddApplicationVpcConfigurationRequest,
   AddApplicationVpcConfigurationResponse,
   AddApplicationVpcConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AddApplicationVpcConfigurationRequest,
   output: AddApplicationVpcConfigurationResponse,
@@ -3526,7 +3524,7 @@ export const createApplication: API.OperationMethod<
   CreateApplicationRequest,
   CreateApplicationResponse,
   CreateApplicationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateApplicationRequest,
   output: CreateApplicationResponse,
@@ -3570,7 +3568,7 @@ export const createApplicationPresignedUrl: API.OperationMethod<
   CreateApplicationPresignedUrlRequest,
   CreateApplicationPresignedUrlResponse,
   CreateApplicationPresignedUrlError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateApplicationPresignedUrlRequest,
   output: CreateApplicationPresignedUrlResponse,
@@ -3600,7 +3598,7 @@ export const createApplicationSnapshot: API.OperationMethod<
   CreateApplicationSnapshotRequest,
   CreateApplicationSnapshotResponse,
   CreateApplicationSnapshotError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateApplicationSnapshotRequest,
   output: CreateApplicationSnapshotResponse,
@@ -3633,7 +3631,7 @@ export const deleteApplication: API.OperationMethod<
   DeleteApplicationRequest,
   DeleteApplicationResponse,
   DeleteApplicationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteApplicationRequest,
   output: DeleteApplicationResponse,
@@ -3665,7 +3663,7 @@ export const deleteApplicationCloudWatchLoggingOption: API.OperationMethod<
   DeleteApplicationCloudWatchLoggingOptionRequest,
   DeleteApplicationCloudWatchLoggingOptionResponse,
   DeleteApplicationCloudWatchLoggingOptionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteApplicationCloudWatchLoggingOptionRequest,
   output: DeleteApplicationCloudWatchLoggingOptionResponse,
@@ -3696,7 +3694,7 @@ export const deleteApplicationInputProcessingConfiguration: API.OperationMethod<
   DeleteApplicationInputProcessingConfigurationRequest,
   DeleteApplicationInputProcessingConfigurationResponse,
   DeleteApplicationInputProcessingConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteApplicationInputProcessingConfigurationRequest,
   output: DeleteApplicationInputProcessingConfigurationResponse,
@@ -3728,7 +3726,7 @@ export const deleteApplicationOutput: API.OperationMethod<
   DeleteApplicationOutputRequest,
   DeleteApplicationOutputResponse,
   DeleteApplicationOutputError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteApplicationOutputRequest,
   output: DeleteApplicationOutputResponse,
@@ -3761,7 +3759,7 @@ export const deleteApplicationReferenceDataSource: API.OperationMethod<
   DeleteApplicationReferenceDataSourceRequest,
   DeleteApplicationReferenceDataSourceResponse,
   DeleteApplicationReferenceDataSourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteApplicationReferenceDataSourceRequest,
   output: DeleteApplicationReferenceDataSourceResponse,
@@ -3792,7 +3790,7 @@ export const deleteApplicationSnapshot: API.OperationMethod<
   DeleteApplicationSnapshotRequest,
   DeleteApplicationSnapshotResponse,
   DeleteApplicationSnapshotError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteApplicationSnapshotRequest,
   output: DeleteApplicationSnapshotResponse,
@@ -3823,7 +3821,7 @@ export const deleteApplicationVpcConfiguration: API.OperationMethod<
   DeleteApplicationVpcConfigurationRequest,
   DeleteApplicationVpcConfigurationResponse,
   DeleteApplicationVpcConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteApplicationVpcConfigurationRequest,
   output: DeleteApplicationVpcConfigurationResponse,
@@ -3854,7 +3852,7 @@ export const describeApplication: API.OperationMethod<
   DescribeApplicationRequest,
   DescribeApplicationResponse,
   DescribeApplicationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeApplicationRequest,
   output: DescribeApplicationResponse,
@@ -3882,7 +3880,7 @@ export const describeApplicationOperation: API.OperationMethod<
   DescribeApplicationOperationRequest,
   DescribeApplicationOperationResponse,
   DescribeApplicationOperationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeApplicationOperationRequest,
   output: DescribeApplicationOperationResponse,
@@ -3908,7 +3906,7 @@ export const describeApplicationSnapshot: API.OperationMethod<
   DescribeApplicationSnapshotRequest,
   DescribeApplicationSnapshotResponse,
   DescribeApplicationSnapshotError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeApplicationSnapshotRequest,
   output: DescribeApplicationSnapshotResponse,
@@ -3936,7 +3934,7 @@ export const describeApplicationVersion: API.OperationMethod<
   DescribeApplicationVersionRequest,
   DescribeApplicationVersionResponse,
   DescribeApplicationVersionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeApplicationVersionRequest,
   output: DescribeApplicationVersionResponse,
@@ -3972,7 +3970,7 @@ export const discoverInputSchema: API.OperationMethod<
   DiscoverInputSchemaRequest,
   DiscoverInputSchemaResponse,
   DiscoverInputSchemaError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DiscoverInputSchemaRequest,
   output: DiscoverInputSchemaResponse,
@@ -4002,27 +4000,13 @@ export type ListApplicationOperationsError =
  *
  * This operation is supported only for Managed Service for Apache Flink.
  */
-export const listApplicationOperations: API.OperationMethod<
+export const listApplicationOperations: API.PaginatedOperationMethod<
   ListApplicationOperationsRequest,
   ListApplicationOperationsResponse,
   ListApplicationOperationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListApplicationOperationsRequest,
-  ) => stream.Stream<
-    ListApplicationOperationsResponse,
-    ListApplicationOperationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListApplicationOperationsRequest,
-  ) => stream.Stream<
-    ApplicationOperationInfo,
-    ListApplicationOperationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ApplicationOperationInfo
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListApplicationOperationsRequest,
   output: ListApplicationOperationsResponse,
   errors: [
@@ -4039,27 +4023,7 @@ export const listApplicationOperations: API.OperationMethod<
     items: "ApplicationOperationInfoList",
     pageSize: "Limit",
   } as const,
-})) as any as API.OperationMethod<
-  ListApplicationOperationsRequest,
-  ListApplicationOperationsResponse,
-  ListApplicationOperationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListApplicationOperationsRequest,
-  ) => stream.Stream<
-    ListApplicationOperationsResponse,
-    ListApplicationOperationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListApplicationOperationsRequest,
-  ) => stream.Stream<
-    ApplicationOperationInfo,
-    ListApplicationOperationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListApplicationsError = InvalidRequestException | CommonErrors;
 /**
@@ -4070,27 +4034,13 @@ export type ListApplicationsError = InvalidRequestException | CommonErrors;
  * If you want detailed information about a specific application, use
  * DescribeApplication.
  */
-export const listApplications: API.OperationMethod<
+export const listApplications: API.PaginatedOperationMethod<
   ListApplicationsRequest,
   ListApplicationsResponse,
   ListApplicationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListApplicationsRequest,
-  ) => stream.Stream<
-    ListApplicationsResponse,
-    ListApplicationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListApplicationsRequest,
-  ) => stream.Stream<
-    ApplicationSummary,
-    ListApplicationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ApplicationSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListApplicationsRequest,
   output: ListApplicationsResponse,
   errors: [InvalidRequestException],
@@ -4103,27 +4053,7 @@ export const listApplications: API.OperationMethod<
     items: "ApplicationSummaries",
     pageSize: "Limit",
   } as const,
-})) as any as API.OperationMethod<
-  ListApplicationsRequest,
-  ListApplicationsResponse,
-  ListApplicationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListApplicationsRequest,
-  ) => stream.Stream<
-    ListApplicationsResponse,
-    ListApplicationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListApplicationsRequest,
-  ) => stream.Stream<
-    ApplicationSummary,
-    ListApplicationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListApplicationSnapshotsError =
   | InvalidArgumentException
@@ -4132,27 +4062,13 @@ export type ListApplicationSnapshotsError =
 /**
  * Lists information about the current application snapshots.
  */
-export const listApplicationSnapshots: API.OperationMethod<
+export const listApplicationSnapshots: API.PaginatedOperationMethod<
   ListApplicationSnapshotsRequest,
   ListApplicationSnapshotsResponse,
   ListApplicationSnapshotsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListApplicationSnapshotsRequest,
-  ) => stream.Stream<
-    ListApplicationSnapshotsResponse,
-    ListApplicationSnapshotsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListApplicationSnapshotsRequest,
-  ) => stream.Stream<
-    SnapshotDetails,
-    ListApplicationSnapshotsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  SnapshotDetails
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListApplicationSnapshotsRequest,
   output: ListApplicationSnapshotsResponse,
   errors: [InvalidArgumentException, UnsupportedOperationException],
@@ -4165,27 +4081,7 @@ export const listApplicationSnapshots: API.OperationMethod<
     items: "SnapshotSummaries",
     pageSize: "Limit",
   } as const,
-})) as any as API.OperationMethod<
-  ListApplicationSnapshotsRequest,
-  ListApplicationSnapshotsResponse,
-  ListApplicationSnapshotsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListApplicationSnapshotsRequest,
-  ) => stream.Stream<
-    ListApplicationSnapshotsResponse,
-    ListApplicationSnapshotsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListApplicationSnapshotsRequest,
-  ) => stream.Stream<
-    SnapshotDetails,
-    ListApplicationSnapshotsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListApplicationVersionsError =
   | InvalidArgumentException
@@ -4200,27 +4096,13 @@ export type ListApplicationVersionsError =
  *
  * This operation is supported only for Managed Service for Apache Flink.
  */
-export const listApplicationVersions: API.OperationMethod<
+export const listApplicationVersions: API.PaginatedOperationMethod<
   ListApplicationVersionsRequest,
   ListApplicationVersionsResponse,
   ListApplicationVersionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListApplicationVersionsRequest,
-  ) => stream.Stream<
-    ListApplicationVersionsResponse,
-    ListApplicationVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListApplicationVersionsRequest,
-  ) => stream.Stream<
-    ApplicationVersionSummary,
-    ListApplicationVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ApplicationVersionSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListApplicationVersionsRequest,
   output: ListApplicationVersionsResponse,
   errors: [
@@ -4237,27 +4119,7 @@ export const listApplicationVersions: API.OperationMethod<
     items: "ApplicationVersionSummaries",
     pageSize: "Limit",
   } as const,
-})) as any as API.OperationMethod<
-  ListApplicationVersionsRequest,
-  ListApplicationVersionsResponse,
-  ListApplicationVersionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListApplicationVersionsRequest,
-  ) => stream.Stream<
-    ListApplicationVersionsResponse,
-    ListApplicationVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListApplicationVersionsRequest,
-  ) => stream.Stream<
-    ApplicationVersionSummary,
-    ListApplicationVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsForResourceError =
   | ConcurrentModificationException
@@ -4272,7 +4134,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceRequest,
   ListTagsForResourceResponse,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -4308,7 +4170,7 @@ export const rollbackApplication: API.OperationMethod<
   RollbackApplicationRequest,
   RollbackApplicationResponse,
   RollbackApplicationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RollbackApplicationRequest,
   output: RollbackApplicationResponse,
@@ -4340,7 +4202,7 @@ export const startApplication: API.OperationMethod<
   StartApplicationRequest,
   StartApplicationResponse,
   StartApplicationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartApplicationRequest,
   output: StartApplicationResponse,
@@ -4378,7 +4240,7 @@ export const stopApplication: API.OperationMethod<
   StopApplicationRequest,
   StopApplicationResponse,
   StopApplicationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StopApplicationRequest,
   output: StopApplicationResponse,
@@ -4411,7 +4273,7 @@ export const tagResource: API.OperationMethod<
   TagResourceRequest,
   TagResourceResponse,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -4442,7 +4304,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceRequest,
   UntagResourceResponse,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -4479,7 +4341,7 @@ export const updateApplication: API.OperationMethod<
   UpdateApplicationRequest,
   UpdateApplicationResponse,
   UpdateApplicationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateApplicationRequest,
   output: UpdateApplicationResponse,
@@ -4529,7 +4391,7 @@ export const updateApplicationMaintenanceConfiguration: API.OperationMethod<
   UpdateApplicationMaintenanceConfigurationRequest,
   UpdateApplicationMaintenanceConfigurationResponse,
   UpdateApplicationMaintenanceConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateApplicationMaintenanceConfigurationRequest,
   output: UpdateApplicationMaintenanceConfigurationResponse,

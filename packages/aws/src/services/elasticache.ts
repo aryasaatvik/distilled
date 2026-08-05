@@ -1,7 +1,6 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as redacted from "effect/Redacted";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -9,7 +8,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 import { SensitiveString } from "../sensitive.ts";
 const ns = T.XmlNamespace("http://elasticache.amazonaws.com/doc/2015-02-02/");
 const svc = T.AwsApiService({
@@ -94,7 +92,7 @@ const rules = T.EndpointResolver((p, _) => {
 export class APICallRateForCustomerExceededFault
   extends /*@__PURE__*/ S.TaggedErrorClass<APICallRateForCustomerExceededFault>()(
     "APICallRateForCustomerExceededFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "APICallRateForCustomerExceeded",
@@ -106,7 +104,7 @@ export class APICallRateForCustomerExceededFault
 export class AuthorizationAlreadyExistsFault
   extends /*@__PURE__*/ S.TaggedErrorClass<AuthorizationAlreadyExistsFault>()(
     "AuthorizationAlreadyExistsFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "AuthorizationAlreadyExists",
@@ -118,7 +116,7 @@ export class AuthorizationAlreadyExistsFault
 export class AuthorizationNotFoundFault
   extends /*@__PURE__*/ S.TaggedErrorClass<AuthorizationNotFoundFault>()(
     "AuthorizationNotFoundFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "AuthorizationNotFound", httpResponseCode: 404 }),
       T.HttpError(404),
@@ -127,7 +125,7 @@ export class AuthorizationNotFoundFault
 export class CacheClusterAlreadyExistsFault
   extends /*@__PURE__*/ S.TaggedErrorClass<CacheClusterAlreadyExistsFault>()(
     "CacheClusterAlreadyExistsFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "CacheClusterAlreadyExists",
@@ -139,7 +137,7 @@ export class CacheClusterAlreadyExistsFault
 export class CacheClusterNotFoundFault
   extends /*@__PURE__*/ S.TaggedErrorClass<CacheClusterNotFoundFault>()(
     "CacheClusterNotFoundFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "CacheClusterNotFound", httpResponseCode: 404 }),
       T.HttpError(404),
@@ -148,7 +146,7 @@ export class CacheClusterNotFoundFault
 export class CacheParameterGroupAlreadyExistsFault
   extends /*@__PURE__*/ S.TaggedErrorClass<CacheParameterGroupAlreadyExistsFault>()(
     "CacheParameterGroupAlreadyExistsFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "CacheParameterGroupAlreadyExists",
@@ -160,7 +158,7 @@ export class CacheParameterGroupAlreadyExistsFault
 export class CacheParameterGroupNotFoundFault
   extends /*@__PURE__*/ S.TaggedErrorClass<CacheParameterGroupNotFoundFault>()(
     "CacheParameterGroupNotFoundFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "CacheParameterGroupNotFound",
@@ -172,7 +170,7 @@ export class CacheParameterGroupNotFoundFault
 export class CacheParameterGroupQuotaExceededFault
   extends /*@__PURE__*/ S.TaggedErrorClass<CacheParameterGroupQuotaExceededFault>()(
     "CacheParameterGroupQuotaExceededFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "CacheParameterGroupQuotaExceeded",
@@ -184,7 +182,7 @@ export class CacheParameterGroupQuotaExceededFault
 export class CacheSecurityGroupAlreadyExistsFault
   extends /*@__PURE__*/ S.TaggedErrorClass<CacheSecurityGroupAlreadyExistsFault>()(
     "CacheSecurityGroupAlreadyExistsFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "CacheSecurityGroupAlreadyExists",
@@ -196,7 +194,7 @@ export class CacheSecurityGroupAlreadyExistsFault
 export class CacheSecurityGroupNotFoundFault
   extends /*@__PURE__*/ S.TaggedErrorClass<CacheSecurityGroupNotFoundFault>()(
     "CacheSecurityGroupNotFoundFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "CacheSecurityGroupNotFound",
@@ -208,7 +206,7 @@ export class CacheSecurityGroupNotFoundFault
 export class CacheSecurityGroupQuotaExceededFault
   extends /*@__PURE__*/ S.TaggedErrorClass<CacheSecurityGroupQuotaExceededFault>()(
     "CacheSecurityGroupQuotaExceededFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "QuotaExceeded.CacheSecurityGroup",
@@ -220,7 +218,7 @@ export class CacheSecurityGroupQuotaExceededFault
 export class CacheSubnetGroupAlreadyExistsFault
   extends /*@__PURE__*/ S.TaggedErrorClass<CacheSubnetGroupAlreadyExistsFault>()(
     "CacheSubnetGroupAlreadyExistsFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "CacheSubnetGroupAlreadyExists",
@@ -232,7 +230,7 @@ export class CacheSubnetGroupAlreadyExistsFault
 export class CacheSubnetGroupInUse
   extends /*@__PURE__*/ S.TaggedErrorClass<CacheSubnetGroupInUse>()(
     "CacheSubnetGroupInUse",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "CacheSubnetGroupInUse", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -241,7 +239,7 @@ export class CacheSubnetGroupInUse
 export class CacheSubnetGroupNotFoundFault
   extends /*@__PURE__*/ S.TaggedErrorClass<CacheSubnetGroupNotFoundFault>()(
     "CacheSubnetGroupNotFoundFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "CacheSubnetGroupNotFoundFault",
@@ -253,7 +251,7 @@ export class CacheSubnetGroupNotFoundFault
 export class CacheSubnetGroupQuotaExceededFault
   extends /*@__PURE__*/ S.TaggedErrorClass<CacheSubnetGroupQuotaExceededFault>()(
     "CacheSubnetGroupQuotaExceededFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "CacheSubnetGroupQuotaExceeded",
@@ -265,7 +263,7 @@ export class CacheSubnetGroupQuotaExceededFault
 export class CacheSubnetQuotaExceededFault
   extends /*@__PURE__*/ S.TaggedErrorClass<CacheSubnetQuotaExceededFault>()(
     "CacheSubnetQuotaExceededFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "CacheSubnetQuotaExceededFault",
@@ -277,7 +275,7 @@ export class CacheSubnetQuotaExceededFault
 export class ClusterQuotaForCustomerExceededFault
   extends /*@__PURE__*/ S.TaggedErrorClass<ClusterQuotaForCustomerExceededFault>()(
     "ClusterQuotaForCustomerExceededFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "ClusterQuotaForCustomerExceeded",
@@ -289,7 +287,7 @@ export class ClusterQuotaForCustomerExceededFault
 export class DefaultUserAssociatedToUserGroupFault
   extends /*@__PURE__*/ S.TaggedErrorClass<DefaultUserAssociatedToUserGroupFault>()(
     "DefaultUserAssociatedToUserGroupFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "DefaultUserAssociatedToUserGroup",
@@ -301,7 +299,7 @@ export class DefaultUserAssociatedToUserGroupFault
 export class DefaultUserRequired
   extends /*@__PURE__*/ S.TaggedErrorClass<DefaultUserRequired>()(
     "DefaultUserRequired",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "DefaultUserRequired", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -310,7 +308,7 @@ export class DefaultUserRequired
 export class DuplicateUserNameFault
   extends /*@__PURE__*/ S.TaggedErrorClass<DuplicateUserNameFault>()(
     "DuplicateUserNameFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "DuplicateUserName", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -319,7 +317,7 @@ export class DuplicateUserNameFault
 export class GlobalReplicationGroupAlreadyExistsFault
   extends /*@__PURE__*/ S.TaggedErrorClass<GlobalReplicationGroupAlreadyExistsFault>()(
     "GlobalReplicationGroupAlreadyExistsFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "GlobalReplicationGroupAlreadyExistsFault",
@@ -331,7 +329,7 @@ export class GlobalReplicationGroupAlreadyExistsFault
 export class GlobalReplicationGroupNotFoundFault
   extends /*@__PURE__*/ S.TaggedErrorClass<GlobalReplicationGroupNotFoundFault>()(
     "GlobalReplicationGroupNotFoundFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "GlobalReplicationGroupNotFoundFault",
@@ -343,7 +341,7 @@ export class GlobalReplicationGroupNotFoundFault
 export class InsufficientCacheClusterCapacityFault
   extends /*@__PURE__*/ S.TaggedErrorClass<InsufficientCacheClusterCapacityFault>()(
     "InsufficientCacheClusterCapacityFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "InsufficientCacheClusterCapacity",
@@ -355,7 +353,7 @@ export class InsufficientCacheClusterCapacityFault
 export class InvalidARNFault
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidARNFault>()(
     "InvalidARNFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "InvalidARN", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -364,7 +362,7 @@ export class InvalidARNFault
 export class InvalidCacheClusterStateFault
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidCacheClusterStateFault>()(
     "InvalidCacheClusterStateFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "InvalidCacheClusterState",
@@ -376,7 +374,7 @@ export class InvalidCacheClusterStateFault
 export class InvalidCacheParameterGroupStateFault
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidCacheParameterGroupStateFault>()(
     "InvalidCacheParameterGroupStateFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "InvalidCacheParameterGroupState",
@@ -388,7 +386,7 @@ export class InvalidCacheParameterGroupStateFault
 export class InvalidCacheSecurityGroupStateFault
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidCacheSecurityGroupStateFault>()(
     "InvalidCacheSecurityGroupStateFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "InvalidCacheSecurityGroupState",
@@ -400,7 +398,7 @@ export class InvalidCacheSecurityGroupStateFault
 export class InvalidCredentialsException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidCredentialsException>()(
     "InvalidCredentialsException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "InvalidCredentialsException",
@@ -412,7 +410,7 @@ export class InvalidCredentialsException
 export class InvalidGlobalReplicationGroupStateFault
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidGlobalReplicationGroupStateFault>()(
     "InvalidGlobalReplicationGroupStateFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "InvalidGlobalReplicationGroupState",
@@ -424,7 +422,7 @@ export class InvalidGlobalReplicationGroupStateFault
 export class InvalidKMSKeyFault
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidKMSKeyFault>()(
     "InvalidKMSKeyFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "InvalidKMSKeyFault", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -433,7 +431,7 @@ export class InvalidKMSKeyFault
 export class InvalidParameterCombinationException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidParameterCombinationException>()(
     "InvalidParameterCombinationException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "InvalidParameterCombination",
@@ -445,7 +443,7 @@ export class InvalidParameterCombinationException
 export class InvalidParameterValueException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidParameterValueException>()(
     "InvalidParameterValueException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "InvalidParameterValue", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -454,7 +452,7 @@ export class InvalidParameterValueException
 export class InvalidReplicationGroupStateFault
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidReplicationGroupStateFault>()(
     "InvalidReplicationGroupStateFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "InvalidReplicationGroupState",
@@ -466,7 +464,7 @@ export class InvalidReplicationGroupStateFault
 export class InvalidServerlessCacheSnapshotStateFault
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidServerlessCacheSnapshotStateFault>()(
     "InvalidServerlessCacheSnapshotStateFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "InvalidServerlessCacheSnapshotStateFault",
@@ -478,7 +476,7 @@ export class InvalidServerlessCacheSnapshotStateFault
 export class InvalidServerlessCacheStateFault
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidServerlessCacheStateFault>()(
     "InvalidServerlessCacheStateFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "InvalidServerlessCacheStateFault",
@@ -490,7 +488,7 @@ export class InvalidServerlessCacheStateFault
 export class InvalidSnapshotStateFault
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidSnapshotStateFault>()(
     "InvalidSnapshotStateFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "InvalidSnapshotState", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -499,7 +497,7 @@ export class InvalidSnapshotStateFault
 export class InvalidSubnet
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidSubnet>()(
     "InvalidSubnet",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "InvalidSubnet", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -508,7 +506,7 @@ export class InvalidSubnet
 export class InvalidUserGroupStateFault
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidUserGroupStateFault>()(
     "InvalidUserGroupStateFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "InvalidUserGroupState", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -517,7 +515,7 @@ export class InvalidUserGroupStateFault
 export class InvalidUserStateFault
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidUserStateFault>()(
     "InvalidUserStateFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "InvalidUserState", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -526,7 +524,7 @@ export class InvalidUserStateFault
 export class InvalidVPCNetworkStateFault
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidVPCNetworkStateFault>()(
     "InvalidVPCNetworkStateFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "InvalidVPCNetworkStateFault",
@@ -538,7 +536,7 @@ export class InvalidVPCNetworkStateFault
 export class NodeGroupNotFoundFault
   extends /*@__PURE__*/ S.TaggedErrorClass<NodeGroupNotFoundFault>()(
     "NodeGroupNotFoundFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "NodeGroupNotFoundFault",
@@ -550,7 +548,7 @@ export class NodeGroupNotFoundFault
 export class NodeGroupsPerReplicationGroupQuotaExceededFault
   extends /*@__PURE__*/ S.TaggedErrorClass<NodeGroupsPerReplicationGroupQuotaExceededFault>()(
     "NodeGroupsPerReplicationGroupQuotaExceededFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "NodeGroupsPerReplicationGroupQuotaExceeded",
@@ -562,7 +560,7 @@ export class NodeGroupsPerReplicationGroupQuotaExceededFault
 export class NodeQuotaForClusterExceededFault
   extends /*@__PURE__*/ S.TaggedErrorClass<NodeQuotaForClusterExceededFault>()(
     "NodeQuotaForClusterExceededFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "NodeQuotaForClusterExceeded",
@@ -574,7 +572,7 @@ export class NodeQuotaForClusterExceededFault
 export class NodeQuotaForCustomerExceededFault
   extends /*@__PURE__*/ S.TaggedErrorClass<NodeQuotaForCustomerExceededFault>()(
     "NodeQuotaForCustomerExceededFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "NodeQuotaForCustomerExceeded",
@@ -586,7 +584,7 @@ export class NodeQuotaForCustomerExceededFault
 export class NoOperationFault
   extends /*@__PURE__*/ S.TaggedErrorClass<NoOperationFault>()(
     "NoOperationFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "NoOperationFault", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -595,7 +593,7 @@ export class NoOperationFault
 export class ReplicationGroupAlreadyExistsFault
   extends /*@__PURE__*/ S.TaggedErrorClass<ReplicationGroupAlreadyExistsFault>()(
     "ReplicationGroupAlreadyExistsFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "ReplicationGroupAlreadyExists",
@@ -607,7 +605,7 @@ export class ReplicationGroupAlreadyExistsFault
 export class ReplicationGroupAlreadyUnderMigrationFault
   extends /*@__PURE__*/ S.TaggedErrorClass<ReplicationGroupAlreadyUnderMigrationFault>()(
     "ReplicationGroupAlreadyUnderMigrationFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "ReplicationGroupAlreadyUnderMigrationFault",
@@ -619,7 +617,7 @@ export class ReplicationGroupAlreadyUnderMigrationFault
 export class ReplicationGroupNotFoundFault
   extends /*@__PURE__*/ S.TaggedErrorClass<ReplicationGroupNotFoundFault>()(
     "ReplicationGroupNotFoundFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "ReplicationGroupNotFoundFault",
@@ -631,7 +629,7 @@ export class ReplicationGroupNotFoundFault
 export class ReplicationGroupNotUnderMigrationFault
   extends /*@__PURE__*/ S.TaggedErrorClass<ReplicationGroupNotUnderMigrationFault>()(
     "ReplicationGroupNotUnderMigrationFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "ReplicationGroupNotUnderMigrationFault",
@@ -643,7 +641,7 @@ export class ReplicationGroupNotUnderMigrationFault
 export class ReservedCacheNodeAlreadyExistsFault
   extends /*@__PURE__*/ S.TaggedErrorClass<ReservedCacheNodeAlreadyExistsFault>()(
     "ReservedCacheNodeAlreadyExistsFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "ReservedCacheNodeAlreadyExists",
@@ -655,7 +653,7 @@ export class ReservedCacheNodeAlreadyExistsFault
 export class ReservedCacheNodeNotFoundFault
   extends /*@__PURE__*/ S.TaggedErrorClass<ReservedCacheNodeNotFoundFault>()(
     "ReservedCacheNodeNotFoundFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "ReservedCacheNodeNotFound",
@@ -667,7 +665,7 @@ export class ReservedCacheNodeNotFoundFault
 export class ReservedCacheNodeQuotaExceededFault
   extends /*@__PURE__*/ S.TaggedErrorClass<ReservedCacheNodeQuotaExceededFault>()(
     "ReservedCacheNodeQuotaExceededFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "ReservedCacheNodeQuotaExceeded",
@@ -679,7 +677,7 @@ export class ReservedCacheNodeQuotaExceededFault
 export class ReservedCacheNodesOfferingNotFoundFault
   extends /*@__PURE__*/ S.TaggedErrorClass<ReservedCacheNodesOfferingNotFoundFault>()(
     "ReservedCacheNodesOfferingNotFoundFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "ReservedCacheNodesOfferingNotFound",
@@ -691,7 +689,7 @@ export class ReservedCacheNodesOfferingNotFoundFault
 export class ServerlessCacheAlreadyExistsFault
   extends /*@__PURE__*/ S.TaggedErrorClass<ServerlessCacheAlreadyExistsFault>()(
     "ServerlessCacheAlreadyExistsFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "ServerlessCacheAlreadyExistsFault",
@@ -703,7 +701,7 @@ export class ServerlessCacheAlreadyExistsFault
 export class ServerlessCacheNotFoundFault
   extends /*@__PURE__*/ S.TaggedErrorClass<ServerlessCacheNotFoundFault>()(
     "ServerlessCacheNotFoundFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "ServerlessCacheNotFoundFault",
@@ -715,7 +713,7 @@ export class ServerlessCacheNotFoundFault
 export class ServerlessCacheQuotaForCustomerExceededFault
   extends /*@__PURE__*/ S.TaggedErrorClass<ServerlessCacheQuotaForCustomerExceededFault>()(
     "ServerlessCacheQuotaForCustomerExceededFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "ServerlessCacheQuotaForCustomerExceededFault",
@@ -727,7 +725,7 @@ export class ServerlessCacheQuotaForCustomerExceededFault
 export class ServerlessCacheSnapshotAlreadyExistsFault
   extends /*@__PURE__*/ S.TaggedErrorClass<ServerlessCacheSnapshotAlreadyExistsFault>()(
     "ServerlessCacheSnapshotAlreadyExistsFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "ServerlessCacheSnapshotAlreadyExistsFault",
@@ -739,7 +737,7 @@ export class ServerlessCacheSnapshotAlreadyExistsFault
 export class ServerlessCacheSnapshotNotFoundFault
   extends /*@__PURE__*/ S.TaggedErrorClass<ServerlessCacheSnapshotNotFoundFault>()(
     "ServerlessCacheSnapshotNotFoundFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "ServerlessCacheSnapshotNotFoundFault",
@@ -751,7 +749,7 @@ export class ServerlessCacheSnapshotNotFoundFault
 export class ServerlessCacheSnapshotQuotaExceededFault
   extends /*@__PURE__*/ S.TaggedErrorClass<ServerlessCacheSnapshotQuotaExceededFault>()(
     "ServerlessCacheSnapshotQuotaExceededFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "ServerlessCacheSnapshotQuotaExceededFault",
@@ -763,7 +761,7 @@ export class ServerlessCacheSnapshotQuotaExceededFault
 export class ServiceLinkedRoleNotFoundFault
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceLinkedRoleNotFoundFault>()(
     "ServiceLinkedRoleNotFoundFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "ServiceLinkedRoleNotFoundFault",
@@ -775,7 +773,7 @@ export class ServiceLinkedRoleNotFoundFault
 export class ServiceUpdateNotFoundFault
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceUpdateNotFoundFault>()(
     "ServiceUpdateNotFoundFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "ServiceUpdateNotFoundFault",
@@ -787,7 +785,7 @@ export class ServiceUpdateNotFoundFault
 export class SnapshotAlreadyExistsFault
   extends /*@__PURE__*/ S.TaggedErrorClass<SnapshotAlreadyExistsFault>()(
     "SnapshotAlreadyExistsFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "SnapshotAlreadyExistsFault",
@@ -799,7 +797,7 @@ export class SnapshotAlreadyExistsFault
 export class SnapshotFeatureNotSupportedFault
   extends /*@__PURE__*/ S.TaggedErrorClass<SnapshotFeatureNotSupportedFault>()(
     "SnapshotFeatureNotSupportedFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "SnapshotFeatureNotSupportedFault",
@@ -811,7 +809,7 @@ export class SnapshotFeatureNotSupportedFault
 export class SnapshotNotFoundFault
   extends /*@__PURE__*/ S.TaggedErrorClass<SnapshotNotFoundFault>()(
     "SnapshotNotFoundFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "SnapshotNotFoundFault", httpResponseCode: 404 }),
       T.HttpError(404),
@@ -820,7 +818,7 @@ export class SnapshotNotFoundFault
 export class SnapshotQuotaExceededFault
   extends /*@__PURE__*/ S.TaggedErrorClass<SnapshotQuotaExceededFault>()(
     "SnapshotQuotaExceededFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "SnapshotQuotaExceededFault",
@@ -832,7 +830,7 @@ export class SnapshotQuotaExceededFault
 export class SubnetInUse
   extends /*@__PURE__*/ S.TaggedErrorClass<SubnetInUse>()(
     "SubnetInUse",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "SubnetInUse", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -841,7 +839,7 @@ export class SubnetInUse
 export class SubnetNotAllowedFault
   extends /*@__PURE__*/ S.TaggedErrorClass<SubnetNotAllowedFault>()(
     "SubnetNotAllowedFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "SubnetNotAllowedFault", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -850,7 +848,7 @@ export class SubnetNotAllowedFault
 export class TagNotFoundFault
   extends /*@__PURE__*/ S.TaggedErrorClass<TagNotFoundFault>()(
     "TagNotFoundFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "TagNotFound", httpResponseCode: 404 }),
       T.HttpError(404),
@@ -859,7 +857,7 @@ export class TagNotFoundFault
 export class TagQuotaPerResourceExceeded
   extends /*@__PURE__*/ S.TaggedErrorClass<TagQuotaPerResourceExceeded>()(
     "TagQuotaPerResourceExceeded",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "TagQuotaPerResourceExceeded",
@@ -871,7 +869,7 @@ export class TagQuotaPerResourceExceeded
 export class TestFailoverNotAvailableFault
   extends /*@__PURE__*/ S.TaggedErrorClass<TestFailoverNotAvailableFault>()(
     "TestFailoverNotAvailableFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "TestFailoverNotAvailableFault",
@@ -883,7 +881,7 @@ export class TestFailoverNotAvailableFault
 export class UserAlreadyExistsFault
   extends /*@__PURE__*/ S.TaggedErrorClass<UserAlreadyExistsFault>()(
     "UserAlreadyExistsFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "UserAlreadyExists", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -892,7 +890,7 @@ export class UserAlreadyExistsFault
 export class UserGroupAlreadyExistsFault
   extends /*@__PURE__*/ S.TaggedErrorClass<UserGroupAlreadyExistsFault>()(
     "UserGroupAlreadyExistsFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "UserGroupAlreadyExists",
@@ -904,7 +902,7 @@ export class UserGroupAlreadyExistsFault
 export class UserGroupNotFoundFault
   extends /*@__PURE__*/ S.TaggedErrorClass<UserGroupNotFoundFault>()(
     "UserGroupNotFoundFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "UserGroupNotFound", httpResponseCode: 404 }),
       T.HttpError(404),
@@ -913,7 +911,7 @@ export class UserGroupNotFoundFault
 export class UserGroupQuotaExceededFault
   extends /*@__PURE__*/ S.TaggedErrorClass<UserGroupQuotaExceededFault>()(
     "UserGroupQuotaExceededFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "UserGroupQuotaExceeded",
@@ -925,7 +923,7 @@ export class UserGroupQuotaExceededFault
 export class UserNotFoundFault
   extends /*@__PURE__*/ S.TaggedErrorClass<UserNotFoundFault>()(
     "UserNotFoundFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "UserNotFound", httpResponseCode: 404 }),
       T.HttpError(404),
@@ -934,7 +932,7 @@ export class UserNotFoundFault
 export class UserQuotaExceededFault
   extends /*@__PURE__*/ S.TaggedErrorClass<UserQuotaExceededFault>()(
     "UserQuotaExceededFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "UserQuotaExceeded", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -5697,7 +5695,7 @@ export const addTagsToResource: API.OperationMethod<
   AddTagsToResourceMessage,
   TagListMessage,
   AddTagsToResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AddTagsToResourceMessage,
   output: TagListMessage,
@@ -5743,7 +5741,7 @@ export const authorizeCacheSecurityGroupIngress: API.OperationMethod<
   AuthorizeCacheSecurityGroupIngressMessage,
   AuthorizeCacheSecurityGroupIngressResult,
   AuthorizeCacheSecurityGroupIngressError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AuthorizeCacheSecurityGroupIngressMessage,
   output: AuthorizeCacheSecurityGroupIngressResult,
@@ -5772,7 +5770,7 @@ export const batchApplyUpdateAction: API.OperationMethod<
   BatchApplyUpdateActionMessage,
   UpdateActionResultsMessage,
   BatchApplyUpdateActionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchApplyUpdateActionMessage,
   output: UpdateActionResultsMessage,
@@ -5795,7 +5793,7 @@ export const batchStopUpdateAction: API.OperationMethod<
   BatchStopUpdateActionMessage,
   UpdateActionResultsMessage,
   BatchStopUpdateActionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchStopUpdateActionMessage,
   output: UpdateActionResultsMessage,
@@ -5817,7 +5815,7 @@ export const completeMigration: API.OperationMethod<
   CompleteMigrationMessage,
   CompleteMigrationResponse,
   CompleteMigrationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CompleteMigrationMessage,
   output: CompleteMigrationResponse,
@@ -5848,7 +5846,7 @@ export const copyServerlessCacheSnapshot: API.OperationMethod<
   CopyServerlessCacheSnapshotRequest,
   CopyServerlessCacheSnapshotResponse,
   CopyServerlessCacheSnapshotError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CopyServerlessCacheSnapshotRequest,
   output: CopyServerlessCacheSnapshotResponse,
@@ -5953,7 +5951,7 @@ export const copySnapshot: API.OperationMethod<
   CopySnapshotMessage,
   CopySnapshotResult,
   CopySnapshotError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CopySnapshotMessage,
   output: CopySnapshotResult,
@@ -5997,7 +5995,7 @@ export const createCacheCluster: API.OperationMethod<
   CreateCacheClusterMessage,
   CreateCacheClusterResult,
   CreateCacheClusterError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateCacheClusterMessage,
   output: CreateCacheClusterResult,
@@ -6049,7 +6047,7 @@ export const createCacheParameterGroup: API.OperationMethod<
   CreateCacheParameterGroupMessage,
   CreateCacheParameterGroupResult,
   CreateCacheParameterGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateCacheParameterGroupMessage,
   output: CreateCacheParameterGroupResult,
@@ -6085,7 +6083,7 @@ export const createCacheSecurityGroup: API.OperationMethod<
   CreateCacheSecurityGroupMessage,
   CreateCacheSecurityGroupResult,
   CreateCacheSecurityGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateCacheSecurityGroupMessage,
   output: CreateCacheSecurityGroupResult,
@@ -6119,7 +6117,7 @@ export const createCacheSubnetGroup: API.OperationMethod<
   CreateCacheSubnetGroupMessage,
   CreateCacheSubnetGroupResult,
   CreateCacheSubnetGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateCacheSubnetGroupMessage,
   output: CreateCacheSubnetGroupResult,
@@ -6161,7 +6159,7 @@ export const createGlobalReplicationGroup: API.OperationMethod<
   CreateGlobalReplicationGroupMessage,
   CreateGlobalReplicationGroupResult,
   CreateGlobalReplicationGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateGlobalReplicationGroupMessage,
   output: CreateGlobalReplicationGroupResult,
@@ -6239,7 +6237,7 @@ export const createReplicationGroup: API.OperationMethod<
   CreateReplicationGroupMessage,
   CreateReplicationGroupResult,
   CreateReplicationGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateReplicationGroupMessage,
   output: CreateReplicationGroupResult,
@@ -6289,7 +6287,7 @@ export const createServerlessCache: API.OperationMethod<
   CreateServerlessCacheRequest,
   CreateServerlessCacheResponse,
   CreateServerlessCacheError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateServerlessCacheRequest,
   output: CreateServerlessCacheResponse,
@@ -6328,7 +6326,7 @@ export const createServerlessCacheSnapshot: API.OperationMethod<
   CreateServerlessCacheSnapshotRequest,
   CreateServerlessCacheSnapshotResponse,
   CreateServerlessCacheSnapshotError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateServerlessCacheSnapshotRequest,
   output: CreateServerlessCacheSnapshotResponse,
@@ -6369,7 +6367,7 @@ export const createSnapshot: API.OperationMethod<
   CreateSnapshotMessage,
   CreateSnapshotResult,
   CreateSnapshotError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateSnapshotMessage,
   output: CreateSnapshotResult,
@@ -6407,7 +6405,7 @@ export const createUser: API.OperationMethod<
   CreateUserMessage,
   User,
   CreateUserError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateUserMessage,
   output: User,
@@ -6443,7 +6441,7 @@ export const createUserGroup: API.OperationMethod<
   CreateUserGroupMessage,
   UserGroup,
   CreateUserGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateUserGroupMessage,
   output: UserGroup,
@@ -6475,7 +6473,7 @@ export const decreaseNodeGroupsInGlobalReplicationGroup: API.OperationMethod<
   DecreaseNodeGroupsInGlobalReplicationGroupMessage,
   DecreaseNodeGroupsInGlobalReplicationGroupResult,
   DecreaseNodeGroupsInGlobalReplicationGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DecreaseNodeGroupsInGlobalReplicationGroupMessage,
   output: DecreaseNodeGroupsInGlobalReplicationGroupResult,
@@ -6514,7 +6512,7 @@ export const decreaseReplicaCount: API.OperationMethod<
   DecreaseReplicaCountMessage,
   DecreaseReplicaCountResult,
   DecreaseReplicaCountError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DecreaseReplicaCountMessage,
   output: DecreaseReplicaCountResult,
@@ -6572,7 +6570,7 @@ export const deleteCacheCluster: API.OperationMethod<
   DeleteCacheClusterMessage,
   DeleteCacheClusterResult,
   DeleteCacheClusterError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteCacheClusterMessage,
   output: DeleteCacheClusterResult,
@@ -6605,7 +6603,7 @@ export const deleteCacheParameterGroup: API.OperationMethod<
   DeleteCacheParameterGroupMessage,
   DeleteCacheParameterGroupResponse,
   DeleteCacheParameterGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteCacheParameterGroupMessage,
   output: DeleteCacheParameterGroupResponse,
@@ -6636,7 +6634,7 @@ export const deleteCacheSecurityGroup: API.OperationMethod<
   DeleteCacheSecurityGroupMessage,
   DeleteCacheSecurityGroupResponse,
   DeleteCacheSecurityGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteCacheSecurityGroupMessage,
   output: DeleteCacheSecurityGroupResponse,
@@ -6665,7 +6663,7 @@ export const deleteCacheSubnetGroup: API.OperationMethod<
   DeleteCacheSubnetGroupMessage,
   DeleteCacheSubnetGroupResponse,
   DeleteCacheSubnetGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteCacheSubnetGroupMessage,
   output: DeleteCacheSubnetGroupResponse,
@@ -6705,7 +6703,7 @@ export const deleteGlobalReplicationGroup: API.OperationMethod<
   DeleteGlobalReplicationGroupMessage,
   DeleteGlobalReplicationGroupResult,
   DeleteGlobalReplicationGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteGlobalReplicationGroupMessage,
   output: DeleteGlobalReplicationGroupResult,
@@ -6748,7 +6746,7 @@ export const deleteReplicationGroup: API.OperationMethod<
   DeleteReplicationGroupMessage,
   DeleteReplicationGroupResult,
   DeleteReplicationGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteReplicationGroupMessage,
   output: DeleteReplicationGroupResult,
@@ -6785,7 +6783,7 @@ export const deleteServerlessCache: API.OperationMethod<
   DeleteServerlessCacheRequest,
   DeleteServerlessCacheResponse,
   DeleteServerlessCacheError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteServerlessCacheRequest,
   output: DeleteServerlessCacheResponse,
@@ -6816,7 +6814,7 @@ export const deleteServerlessCacheSnapshot: API.OperationMethod<
   DeleteServerlessCacheSnapshotRequest,
   DeleteServerlessCacheSnapshotResponse,
   DeleteServerlessCacheSnapshotError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteServerlessCacheSnapshotRequest,
   output: DeleteServerlessCacheSnapshotResponse,
@@ -6848,7 +6846,7 @@ export const deleteSnapshot: API.OperationMethod<
   DeleteSnapshotMessage,
   DeleteSnapshotResult,
   DeleteSnapshotError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteSnapshotMessage,
   output: DeleteSnapshotResult,
@@ -6879,7 +6877,7 @@ export const deleteUser: API.OperationMethod<
   DeleteUserMessage,
   User,
   DeleteUserError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteUserMessage,
   output: User,
@@ -6910,7 +6908,7 @@ export const deleteUserGroup: API.OperationMethod<
   DeleteUserGroupMessage,
   UserGroup,
   DeleteUserGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteUserGroupMessage,
   output: UserGroup,
@@ -6953,27 +6951,13 @@ export type DescribeCacheClustersError =
  * If cache nodes are currently being removed from the cluster, no endpoint information
  * for the removed nodes is displayed.
  */
-export const describeCacheClusters: API.OperationMethod<
+export const describeCacheClusters: API.PaginatedOperationMethod<
   DescribeCacheClustersMessage,
   CacheClusterMessage,
   DescribeCacheClustersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeCacheClustersMessage,
-  ) => stream.Stream<
-    CacheClusterMessage,
-    DescribeCacheClustersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeCacheClustersMessage,
-  ) => stream.Stream<
-    CacheCluster,
-    DescribeCacheClustersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  CacheCluster
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeCacheClustersMessage,
   output: CacheClusterMessage,
   errors: [
@@ -6990,53 +6974,19 @@ export const describeCacheClusters: API.OperationMethod<
     items: "CacheClusters",
     pageSize: "MaxRecords",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeCacheClustersMessage,
-  CacheClusterMessage,
-  DescribeCacheClustersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeCacheClustersMessage,
-  ) => stream.Stream<
-    CacheClusterMessage,
-    DescribeCacheClustersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeCacheClustersMessage,
-  ) => stream.Stream<
-    CacheCluster,
-    DescribeCacheClustersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeCacheEngineVersionsError = CommonErrors;
 /**
  * Returns a list of the available cache engines and their versions.
  */
-export const describeCacheEngineVersions: API.OperationMethod<
+export const describeCacheEngineVersions: API.PaginatedOperationMethod<
   DescribeCacheEngineVersionsMessage,
   CacheEngineVersionMessage,
   DescribeCacheEngineVersionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeCacheEngineVersionsMessage,
-  ) => stream.Stream<
-    CacheEngineVersionMessage,
-    DescribeCacheEngineVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeCacheEngineVersionsMessage,
-  ) => stream.Stream<
-    CacheEngineVersion,
-    DescribeCacheEngineVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  CacheEngineVersion
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeCacheEngineVersionsMessage,
   output: CacheEngineVersionMessage,
   errors: [],
@@ -7049,27 +6999,7 @@ export const describeCacheEngineVersions: API.OperationMethod<
     items: "CacheEngineVersions",
     pageSize: "MaxRecords",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeCacheEngineVersionsMessage,
-  CacheEngineVersionMessage,
-  DescribeCacheEngineVersionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeCacheEngineVersionsMessage,
-  ) => stream.Stream<
-    CacheEngineVersionMessage,
-    DescribeCacheEngineVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeCacheEngineVersionsMessage,
-  ) => stream.Stream<
-    CacheEngineVersion,
-    DescribeCacheEngineVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeCacheParameterGroupsError =
   | CacheParameterGroupNotFoundFault
@@ -7080,27 +7010,13 @@ export type DescribeCacheParameterGroupsError =
  * Returns a list of cache parameter group descriptions. If a cache parameter group name
  * is specified, the list contains only the descriptions for that group.
  */
-export const describeCacheParameterGroups: API.OperationMethod<
+export const describeCacheParameterGroups: API.PaginatedOperationMethod<
   DescribeCacheParameterGroupsMessage,
   CacheParameterGroupsMessage,
   DescribeCacheParameterGroupsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeCacheParameterGroupsMessage,
-  ) => stream.Stream<
-    CacheParameterGroupsMessage,
-    DescribeCacheParameterGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeCacheParameterGroupsMessage,
-  ) => stream.Stream<
-    CacheParameterGroup,
-    DescribeCacheParameterGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  CacheParameterGroup
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeCacheParameterGroupsMessage,
   output: CacheParameterGroupsMessage,
   errors: [
@@ -7117,27 +7033,7 @@ export const describeCacheParameterGroups: API.OperationMethod<
     items: "CacheParameterGroups",
     pageSize: "MaxRecords",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeCacheParameterGroupsMessage,
-  CacheParameterGroupsMessage,
-  DescribeCacheParameterGroupsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeCacheParameterGroupsMessage,
-  ) => stream.Stream<
-    CacheParameterGroupsMessage,
-    DescribeCacheParameterGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeCacheParameterGroupsMessage,
-  ) => stream.Stream<
-    CacheParameterGroup,
-    DescribeCacheParameterGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeCacheParametersError =
   | CacheParameterGroupNotFoundFault
@@ -7147,27 +7043,13 @@ export type DescribeCacheParametersError =
 /**
  * Returns the detailed parameter list for a particular cache parameter group.
  */
-export const describeCacheParameters: API.OperationMethod<
+export const describeCacheParameters: API.PaginatedOperationMethod<
   DescribeCacheParametersMessage,
   CacheParameterGroupDetails,
   DescribeCacheParametersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeCacheParametersMessage,
-  ) => stream.Stream<
-    CacheParameterGroupDetails,
-    DescribeCacheParametersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeCacheParametersMessage,
-  ) => stream.Stream<
-    Parameter,
-    DescribeCacheParametersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Parameter
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeCacheParametersMessage,
   output: CacheParameterGroupDetails,
   errors: [
@@ -7184,27 +7066,7 @@ export const describeCacheParameters: API.OperationMethod<
     items: "Parameters",
     pageSize: "MaxRecords",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeCacheParametersMessage,
-  CacheParameterGroupDetails,
-  DescribeCacheParametersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeCacheParametersMessage,
-  ) => stream.Stream<
-    CacheParameterGroupDetails,
-    DescribeCacheParametersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeCacheParametersMessage,
-  ) => stream.Stream<
-    Parameter,
-    DescribeCacheParametersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeCacheSecurityGroupsError =
   | CacheSecurityGroupNotFoundFault
@@ -7216,27 +7078,13 @@ export type DescribeCacheSecurityGroupsError =
  * specified, the list contains only the description of that group. This applicable only
  * when you have ElastiCache in Classic setup
  */
-export const describeCacheSecurityGroups: API.OperationMethod<
+export const describeCacheSecurityGroups: API.PaginatedOperationMethod<
   DescribeCacheSecurityGroupsMessage,
   CacheSecurityGroupMessage,
   DescribeCacheSecurityGroupsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeCacheSecurityGroupsMessage,
-  ) => stream.Stream<
-    CacheSecurityGroupMessage,
-    DescribeCacheSecurityGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeCacheSecurityGroupsMessage,
-  ) => stream.Stream<
-    CacheSecurityGroup,
-    DescribeCacheSecurityGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  CacheSecurityGroup
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeCacheSecurityGroupsMessage,
   output: CacheSecurityGroupMessage,
   errors: [
@@ -7253,27 +7101,7 @@ export const describeCacheSecurityGroups: API.OperationMethod<
     items: "CacheSecurityGroups",
     pageSize: "MaxRecords",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeCacheSecurityGroupsMessage,
-  CacheSecurityGroupMessage,
-  DescribeCacheSecurityGroupsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeCacheSecurityGroupsMessage,
-  ) => stream.Stream<
-    CacheSecurityGroupMessage,
-    DescribeCacheSecurityGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeCacheSecurityGroupsMessage,
-  ) => stream.Stream<
-    CacheSecurityGroup,
-    DescribeCacheSecurityGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeCacheSubnetGroupsError =
   | CacheSubnetGroupNotFoundFault
@@ -7284,27 +7112,13 @@ export type DescribeCacheSubnetGroupsError =
  * when you have ElastiCache in VPC setup. All ElastiCache clusters now launch in VPC by
  * default.
  */
-export const describeCacheSubnetGroups: API.OperationMethod<
+export const describeCacheSubnetGroups: API.PaginatedOperationMethod<
   DescribeCacheSubnetGroupsMessage,
   CacheSubnetGroupMessage,
   DescribeCacheSubnetGroupsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeCacheSubnetGroupsMessage,
-  ) => stream.Stream<
-    CacheSubnetGroupMessage,
-    DescribeCacheSubnetGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeCacheSubnetGroupsMessage,
-  ) => stream.Stream<
-    CacheSubnetGroup,
-    DescribeCacheSubnetGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  CacheSubnetGroup
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeCacheSubnetGroupsMessage,
   output: CacheSubnetGroupMessage,
   errors: [CacheSubnetGroupNotFoundFault],
@@ -7317,27 +7131,7 @@ export const describeCacheSubnetGroups: API.OperationMethod<
     items: "CacheSubnetGroups",
     pageSize: "MaxRecords",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeCacheSubnetGroupsMessage,
-  CacheSubnetGroupMessage,
-  DescribeCacheSubnetGroupsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeCacheSubnetGroupsMessage,
-  ) => stream.Stream<
-    CacheSubnetGroupMessage,
-    DescribeCacheSubnetGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeCacheSubnetGroupsMessage,
-  ) => stream.Stream<
-    CacheSubnetGroup,
-    DescribeCacheSubnetGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeEngineDefaultParametersError =
   | InvalidParameterCombinationException
@@ -7347,27 +7141,13 @@ export type DescribeEngineDefaultParametersError =
  * Returns the default engine and system parameter information for the specified cache
  * engine.
  */
-export const describeEngineDefaultParameters: API.OperationMethod<
+export const describeEngineDefaultParameters: API.PaginatedOperationMethod<
   DescribeEngineDefaultParametersMessage,
   DescribeEngineDefaultParametersResult,
   DescribeEngineDefaultParametersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeEngineDefaultParametersMessage,
-  ) => stream.Stream<
-    DescribeEngineDefaultParametersResult,
-    DescribeEngineDefaultParametersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeEngineDefaultParametersMessage,
-  ) => stream.Stream<
-    unknown,
-    DescribeEngineDefaultParametersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeEngineDefaultParametersMessage,
   output: DescribeEngineDefaultParametersResult,
   errors: [
@@ -7383,27 +7163,7 @@ export const describeEngineDefaultParameters: API.OperationMethod<
     items: "EngineDefaults.Parameters",
     pageSize: "MaxRecords",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeEngineDefaultParametersMessage,
-  DescribeEngineDefaultParametersResult,
-  DescribeEngineDefaultParametersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeEngineDefaultParametersMessage,
-  ) => stream.Stream<
-    DescribeEngineDefaultParametersResult,
-    DescribeEngineDefaultParametersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeEngineDefaultParametersMessage,
-  ) => stream.Stream<
-    unknown,
-    DescribeEngineDefaultParametersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeEventsError =
   | InvalidParameterCombinationException
@@ -7417,27 +7177,13 @@ export type DescribeEventsError =
  * By default, only the events occurring within the last hour are returned; however, you
  * can retrieve up to 14 days' worth of events if necessary.
  */
-export const describeEvents: API.OperationMethod<
+export const describeEvents: API.PaginatedOperationMethod<
   DescribeEventsMessage,
   EventsMessage,
   DescribeEventsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeEventsMessage,
-  ) => stream.Stream<
-    EventsMessage,
-    DescribeEventsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeEventsMessage,
-  ) => stream.Stream<
-    Event,
-    DescribeEventsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Event
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeEventsMessage,
   output: EventsMessage,
   errors: [
@@ -7453,27 +7199,7 @@ export const describeEvents: API.OperationMethod<
     items: "Events",
     pageSize: "MaxRecords",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeEventsMessage,
-  EventsMessage,
-  DescribeEventsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeEventsMessage,
-  ) => stream.Stream<
-    EventsMessage,
-    DescribeEventsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeEventsMessage,
-  ) => stream.Stream<
-    Event,
-    DescribeEventsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeGlobalReplicationGroupsError =
   | GlobalReplicationGroupNotFoundFault
@@ -7484,27 +7210,13 @@ export type DescribeGlobalReplicationGroupsError =
  * Returns information about a particular global replication group. If no identifier is
  * specified, returns information about all Global datastores.
  */
-export const describeGlobalReplicationGroups: API.OperationMethod<
+export const describeGlobalReplicationGroups: API.PaginatedOperationMethod<
   DescribeGlobalReplicationGroupsMessage,
   DescribeGlobalReplicationGroupsResult,
   DescribeGlobalReplicationGroupsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeGlobalReplicationGroupsMessage,
-  ) => stream.Stream<
-    DescribeGlobalReplicationGroupsResult,
-    DescribeGlobalReplicationGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeGlobalReplicationGroupsMessage,
-  ) => stream.Stream<
-    GlobalReplicationGroup,
-    DescribeGlobalReplicationGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  GlobalReplicationGroup
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeGlobalReplicationGroupsMessage,
   output: DescribeGlobalReplicationGroupsResult,
   errors: [
@@ -7521,27 +7233,7 @@ export const describeGlobalReplicationGroups: API.OperationMethod<
     items: "GlobalReplicationGroups",
     pageSize: "MaxRecords",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeGlobalReplicationGroupsMessage,
-  DescribeGlobalReplicationGroupsResult,
-  DescribeGlobalReplicationGroupsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeGlobalReplicationGroupsMessage,
-  ) => stream.Stream<
-    DescribeGlobalReplicationGroupsResult,
-    DescribeGlobalReplicationGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeGlobalReplicationGroupsMessage,
-  ) => stream.Stream<
-    GlobalReplicationGroup,
-    DescribeGlobalReplicationGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeReplicationGroupsError =
   | InvalidParameterCombinationException
@@ -7555,27 +7247,13 @@ export type DescribeReplicationGroupsError =
  *
  * This operation is valid for Valkey or Redis OSS only.
  */
-export const describeReplicationGroups: API.OperationMethod<
+export const describeReplicationGroups: API.PaginatedOperationMethod<
   DescribeReplicationGroupsMessage,
   ReplicationGroupMessage,
   DescribeReplicationGroupsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeReplicationGroupsMessage,
-  ) => stream.Stream<
-    ReplicationGroupMessage,
-    DescribeReplicationGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeReplicationGroupsMessage,
-  ) => stream.Stream<
-    ReplicationGroup,
-    DescribeReplicationGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ReplicationGroup
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeReplicationGroupsMessage,
   output: ReplicationGroupMessage,
   errors: [
@@ -7592,27 +7270,7 @@ export const describeReplicationGroups: API.OperationMethod<
     items: "ReplicationGroups",
     pageSize: "MaxRecords",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeReplicationGroupsMessage,
-  ReplicationGroupMessage,
-  DescribeReplicationGroupsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeReplicationGroupsMessage,
-  ) => stream.Stream<
-    ReplicationGroupMessage,
-    DescribeReplicationGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeReplicationGroupsMessage,
-  ) => stream.Stream<
-    ReplicationGroup,
-    DescribeReplicationGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeReservedCacheNodesError =
   | InvalidParameterCombinationException
@@ -7623,27 +7281,13 @@ export type DescribeReservedCacheNodesError =
  * Returns information about reserved cache nodes for this account, or about a specified
  * reserved cache node.
  */
-export const describeReservedCacheNodes: API.OperationMethod<
+export const describeReservedCacheNodes: API.PaginatedOperationMethod<
   DescribeReservedCacheNodesMessage,
   ReservedCacheNodeMessage,
   DescribeReservedCacheNodesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeReservedCacheNodesMessage,
-  ) => stream.Stream<
-    ReservedCacheNodeMessage,
-    DescribeReservedCacheNodesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeReservedCacheNodesMessage,
-  ) => stream.Stream<
-    ReservedCacheNode,
-    DescribeReservedCacheNodesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ReservedCacheNode
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeReservedCacheNodesMessage,
   output: ReservedCacheNodeMessage,
   errors: [
@@ -7660,27 +7304,7 @@ export const describeReservedCacheNodes: API.OperationMethod<
     items: "ReservedCacheNodes",
     pageSize: "MaxRecords",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeReservedCacheNodesMessage,
-  ReservedCacheNodeMessage,
-  DescribeReservedCacheNodesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeReservedCacheNodesMessage,
-  ) => stream.Stream<
-    ReservedCacheNodeMessage,
-    DescribeReservedCacheNodesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeReservedCacheNodesMessage,
-  ) => stream.Stream<
-    ReservedCacheNode,
-    DescribeReservedCacheNodesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeReservedCacheNodesOfferingsError =
   | InvalidParameterCombinationException
@@ -7690,27 +7314,13 @@ export type DescribeReservedCacheNodesOfferingsError =
 /**
  * Lists available reserved cache node offerings.
  */
-export const describeReservedCacheNodesOfferings: API.OperationMethod<
+export const describeReservedCacheNodesOfferings: API.PaginatedOperationMethod<
   DescribeReservedCacheNodesOfferingsMessage,
   ReservedCacheNodesOfferingMessage,
   DescribeReservedCacheNodesOfferingsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeReservedCacheNodesOfferingsMessage,
-  ) => stream.Stream<
-    ReservedCacheNodesOfferingMessage,
-    DescribeReservedCacheNodesOfferingsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeReservedCacheNodesOfferingsMessage,
-  ) => stream.Stream<
-    ReservedCacheNodesOffering,
-    DescribeReservedCacheNodesOfferingsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ReservedCacheNodesOffering
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeReservedCacheNodesOfferingsMessage,
   output: ReservedCacheNodesOfferingMessage,
   errors: [
@@ -7727,27 +7337,7 @@ export const describeReservedCacheNodesOfferings: API.OperationMethod<
     items: "ReservedCacheNodesOfferings",
     pageSize: "MaxRecords",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeReservedCacheNodesOfferingsMessage,
-  ReservedCacheNodesOfferingMessage,
-  DescribeReservedCacheNodesOfferingsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeReservedCacheNodesOfferingsMessage,
-  ) => stream.Stream<
-    ReservedCacheNodesOfferingMessage,
-    DescribeReservedCacheNodesOfferingsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeReservedCacheNodesOfferingsMessage,
-  ) => stream.Stream<
-    ReservedCacheNodesOffering,
-    DescribeReservedCacheNodesOfferingsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeServerlessCachesError =
   | InvalidParameterCombinationException
@@ -7759,27 +7349,13 @@ export type DescribeServerlessCachesError =
  * If no identifier is specified, then the API returns information on all the serverless caches belonging to
  * this Amazon Web Services account.
  */
-export const describeServerlessCaches: API.OperationMethod<
+export const describeServerlessCaches: API.PaginatedOperationMethod<
   DescribeServerlessCachesRequest,
   DescribeServerlessCachesResponse,
   DescribeServerlessCachesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeServerlessCachesRequest,
-  ) => stream.Stream<
-    DescribeServerlessCachesResponse,
-    DescribeServerlessCachesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeServerlessCachesRequest,
-  ) => stream.Stream<
-    ServerlessCache,
-    DescribeServerlessCachesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ServerlessCache
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeServerlessCachesRequest,
   output: DescribeServerlessCachesResponse,
   errors: [
@@ -7796,27 +7372,7 @@ export const describeServerlessCaches: API.OperationMethod<
     items: "ServerlessCaches",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeServerlessCachesRequest,
-  DescribeServerlessCachesResponse,
-  DescribeServerlessCachesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeServerlessCachesRequest,
-  ) => stream.Stream<
-    DescribeServerlessCachesResponse,
-    DescribeServerlessCachesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeServerlessCachesRequest,
-  ) => stream.Stream<
-    ServerlessCache,
-    DescribeServerlessCachesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeServerlessCacheSnapshotsError =
   | InvalidParameterCombinationException
@@ -7830,27 +7386,13 @@ export type DescribeServerlessCacheSnapshotsError =
  * It can also describe a single serverless cache snapshot, or the snapshots associated with
  * a particular serverless cache. Available for Valkey, Redis OSS and Serverless Memcached only.
  */
-export const describeServerlessCacheSnapshots: API.OperationMethod<
+export const describeServerlessCacheSnapshots: API.PaginatedOperationMethod<
   DescribeServerlessCacheSnapshotsRequest,
   DescribeServerlessCacheSnapshotsResponse,
   DescribeServerlessCacheSnapshotsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeServerlessCacheSnapshotsRequest,
-  ) => stream.Stream<
-    DescribeServerlessCacheSnapshotsResponse,
-    DescribeServerlessCacheSnapshotsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeServerlessCacheSnapshotsRequest,
-  ) => stream.Stream<
-    ServerlessCacheSnapshot,
-    DescribeServerlessCacheSnapshotsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ServerlessCacheSnapshot
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeServerlessCacheSnapshotsRequest,
   output: DescribeServerlessCacheSnapshotsResponse,
   errors: [
@@ -7868,27 +7410,7 @@ export const describeServerlessCacheSnapshots: API.OperationMethod<
     items: "ServerlessCacheSnapshots",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeServerlessCacheSnapshotsRequest,
-  DescribeServerlessCacheSnapshotsResponse,
-  DescribeServerlessCacheSnapshotsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeServerlessCacheSnapshotsRequest,
-  ) => stream.Stream<
-    DescribeServerlessCacheSnapshotsResponse,
-    DescribeServerlessCacheSnapshotsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeServerlessCacheSnapshotsRequest,
-  ) => stream.Stream<
-    ServerlessCacheSnapshot,
-    DescribeServerlessCacheSnapshotsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeServiceUpdatesError =
   | InvalidParameterCombinationException
@@ -7898,27 +7420,13 @@ export type DescribeServiceUpdatesError =
 /**
  * Returns details of the service updates
  */
-export const describeServiceUpdates: API.OperationMethod<
+export const describeServiceUpdates: API.PaginatedOperationMethod<
   DescribeServiceUpdatesMessage,
   ServiceUpdatesMessage,
   DescribeServiceUpdatesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeServiceUpdatesMessage,
-  ) => stream.Stream<
-    ServiceUpdatesMessage,
-    DescribeServiceUpdatesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeServiceUpdatesMessage,
-  ) => stream.Stream<
-    ServiceUpdate,
-    DescribeServiceUpdatesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ServiceUpdate
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeServiceUpdatesMessage,
   output: ServiceUpdatesMessage,
   errors: [
@@ -7935,27 +7443,7 @@ export const describeServiceUpdates: API.OperationMethod<
     items: "ServiceUpdates",
     pageSize: "MaxRecords",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeServiceUpdatesMessage,
-  ServiceUpdatesMessage,
-  DescribeServiceUpdatesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeServiceUpdatesMessage,
-  ) => stream.Stream<
-    ServiceUpdatesMessage,
-    DescribeServiceUpdatesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeServiceUpdatesMessage,
-  ) => stream.Stream<
-    ServiceUpdate,
-    DescribeServiceUpdatesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeSnapshotsError =
   | CacheClusterNotFoundFault
@@ -7971,27 +7459,13 @@ export type DescribeSnapshotsError =
  *
  * This operation is valid for Valkey or Redis OSS only.
  */
-export const describeSnapshots: API.OperationMethod<
+export const describeSnapshots: API.PaginatedOperationMethod<
   DescribeSnapshotsMessage,
   DescribeSnapshotsListMessage,
   DescribeSnapshotsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeSnapshotsMessage,
-  ) => stream.Stream<
-    DescribeSnapshotsListMessage,
-    DescribeSnapshotsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeSnapshotsMessage,
-  ) => stream.Stream<
-    Snapshot,
-    DescribeSnapshotsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Snapshot
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeSnapshotsMessage,
   output: DescribeSnapshotsListMessage,
   errors: [
@@ -8009,27 +7483,7 @@ export const describeSnapshots: API.OperationMethod<
     items: "Snapshots",
     pageSize: "MaxRecords",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeSnapshotsMessage,
-  DescribeSnapshotsListMessage,
-  DescribeSnapshotsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeSnapshotsMessage,
-  ) => stream.Stream<
-    DescribeSnapshotsListMessage,
-    DescribeSnapshotsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeSnapshotsMessage,
-  ) => stream.Stream<
-    Snapshot,
-    DescribeSnapshotsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeUpdateActionsError =
   | InvalidParameterCombinationException
@@ -8038,27 +7492,13 @@ export type DescribeUpdateActionsError =
 /**
  * Returns details of the update actions
  */
-export const describeUpdateActions: API.OperationMethod<
+export const describeUpdateActions: API.PaginatedOperationMethod<
   DescribeUpdateActionsMessage,
   UpdateActionsMessage,
   DescribeUpdateActionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeUpdateActionsMessage,
-  ) => stream.Stream<
-    UpdateActionsMessage,
-    DescribeUpdateActionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeUpdateActionsMessage,
-  ) => stream.Stream<
-    UpdateAction,
-    DescribeUpdateActionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  UpdateAction
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeUpdateActionsMessage,
   output: UpdateActionsMessage,
   errors: [
@@ -8074,27 +7514,7 @@ export const describeUpdateActions: API.OperationMethod<
     items: "UpdateActions",
     pageSize: "MaxRecords",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeUpdateActionsMessage,
-  UpdateActionsMessage,
-  DescribeUpdateActionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeUpdateActionsMessage,
-  ) => stream.Stream<
-    UpdateActionsMessage,
-    DescribeUpdateActionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeUpdateActionsMessage,
-  ) => stream.Stream<
-    UpdateAction,
-    DescribeUpdateActionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeUserGroupsError =
   | InvalidParameterCombinationException
@@ -8104,27 +7524,13 @@ export type DescribeUserGroupsError =
 /**
  * Returns a list of user groups.
  */
-export const describeUserGroups: API.OperationMethod<
+export const describeUserGroups: API.PaginatedOperationMethod<
   DescribeUserGroupsMessage,
   DescribeUserGroupsResult,
   DescribeUserGroupsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeUserGroupsMessage,
-  ) => stream.Stream<
-    DescribeUserGroupsResult,
-    DescribeUserGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeUserGroupsMessage,
-  ) => stream.Stream<
-    UserGroup,
-    DescribeUserGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  UserGroup
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeUserGroupsMessage,
   output: DescribeUserGroupsResult,
   errors: [
@@ -8141,27 +7547,7 @@ export const describeUserGroups: API.OperationMethod<
     items: "UserGroups",
     pageSize: "MaxRecords",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeUserGroupsMessage,
-  DescribeUserGroupsResult,
-  DescribeUserGroupsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeUserGroupsMessage,
-  ) => stream.Stream<
-    DescribeUserGroupsResult,
-    DescribeUserGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeUserGroupsMessage,
-  ) => stream.Stream<
-    UserGroup,
-    DescribeUserGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeUsersError =
   | InvalidParameterCombinationException
@@ -8171,27 +7557,13 @@ export type DescribeUsersError =
 /**
  * Returns a list of users.
  */
-export const describeUsers: API.OperationMethod<
+export const describeUsers: API.PaginatedOperationMethod<
   DescribeUsersMessage,
   DescribeUsersResult,
   DescribeUsersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeUsersMessage,
-  ) => stream.Stream<
-    DescribeUsersResult,
-    DescribeUsersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeUsersMessage,
-  ) => stream.Stream<
-    User,
-    DescribeUsersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  User
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeUsersMessage,
   output: DescribeUsersResult,
   errors: [
@@ -8208,27 +7580,7 @@ export const describeUsers: API.OperationMethod<
     items: "Users",
     pageSize: "MaxRecords",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeUsersMessage,
-  DescribeUsersResult,
-  DescribeUsersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeUsersMessage,
-  ) => stream.Stream<
-    DescribeUsersResult,
-    DescribeUsersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeUsersMessage,
-  ) => stream.Stream<
-    User,
-    DescribeUsersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DisassociateGlobalReplicationGroupError =
   | GlobalReplicationGroupNotFoundFault
@@ -8245,7 +7597,7 @@ export const disassociateGlobalReplicationGroup: API.OperationMethod<
   DisassociateGlobalReplicationGroupMessage,
   DisassociateGlobalReplicationGroupResult,
   DisassociateGlobalReplicationGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DisassociateGlobalReplicationGroupMessage,
   output: DisassociateGlobalReplicationGroupResult,
@@ -8273,7 +7625,7 @@ export const exportServerlessCacheSnapshot: API.OperationMethod<
   ExportServerlessCacheSnapshotRequest,
   ExportServerlessCacheSnapshotResponse,
   ExportServerlessCacheSnapshotError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ExportServerlessCacheSnapshotRequest,
   output: ExportServerlessCacheSnapshotResponse,
@@ -8302,7 +7654,7 @@ export const failoverGlobalReplicationGroup: API.OperationMethod<
   FailoverGlobalReplicationGroupMessage,
   FailoverGlobalReplicationGroupResult,
   FailoverGlobalReplicationGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: FailoverGlobalReplicationGroupMessage,
   output: FailoverGlobalReplicationGroupResult,
@@ -8329,7 +7681,7 @@ export const increaseNodeGroupsInGlobalReplicationGroup: API.OperationMethod<
   IncreaseNodeGroupsInGlobalReplicationGroupMessage,
   IncreaseNodeGroupsInGlobalReplicationGroupResult,
   IncreaseNodeGroupsInGlobalReplicationGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: IncreaseNodeGroupsInGlobalReplicationGroupMessage,
   output: IncreaseNodeGroupsInGlobalReplicationGroupResult,
@@ -8367,7 +7719,7 @@ export const increaseReplicaCount: API.OperationMethod<
   IncreaseReplicaCountMessage,
   IncreaseReplicaCountResult,
   IncreaseReplicaCountError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: IncreaseReplicaCountMessage,
   output: IncreaseReplicaCountResult,
@@ -8409,7 +7761,7 @@ export const listAllowedNodeTypeModifications: API.OperationMethod<
   ListAllowedNodeTypeModificationsMessage,
   AllowedNodeTypeModificationsMessage,
   ListAllowedNodeTypeModificationsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListAllowedNodeTypeModificationsMessage,
   output: AllowedNodeTypeModificationsMessage,
@@ -8457,7 +7809,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceMessage,
   TagListMessage,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceMessage,
   output: TagListMessage,
@@ -8504,7 +7856,7 @@ export const modifyCacheCluster: API.OperationMethod<
   ModifyCacheClusterMessage,
   ModifyCacheClusterResult,
   ModifyCacheClusterError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ModifyCacheClusterMessage,
   output: ModifyCacheClusterResult,
@@ -8541,7 +7893,7 @@ export const modifyCacheParameterGroup: API.OperationMethod<
   ModifyCacheParameterGroupMessage,
   CacheParameterGroupNameMessage,
   ModifyCacheParameterGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ModifyCacheParameterGroupMessage,
   output: CacheParameterGroupNameMessage,
@@ -8571,7 +7923,7 @@ export const modifyCacheSubnetGroup: API.OperationMethod<
   ModifyCacheSubnetGroupMessage,
   ModifyCacheSubnetGroupResult,
   ModifyCacheSubnetGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ModifyCacheSubnetGroupMessage,
   output: ModifyCacheSubnetGroupResult,
@@ -8599,7 +7951,7 @@ export const modifyGlobalReplicationGroup: API.OperationMethod<
   ModifyGlobalReplicationGroupMessage,
   ModifyGlobalReplicationGroupResult,
   ModifyGlobalReplicationGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ModifyGlobalReplicationGroupMessage,
   output: ModifyGlobalReplicationGroupResult,
@@ -8646,7 +7998,7 @@ export const modifyReplicationGroup: API.OperationMethod<
   ModifyReplicationGroupMessage,
   ModifyReplicationGroupResult,
   ModifyReplicationGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ModifyReplicationGroupMessage,
   output: ModifyReplicationGroupResult,
@@ -8693,7 +8045,7 @@ export const modifyReplicationGroupShardConfiguration: API.OperationMethod<
   ModifyReplicationGroupShardConfigurationMessage,
   ModifyReplicationGroupShardConfigurationResult,
   ModifyReplicationGroupShardConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ModifyReplicationGroupShardConfigurationMessage,
   output: ModifyReplicationGroupShardConfigurationResult,
@@ -8731,7 +8083,7 @@ export const modifyServerlessCache: API.OperationMethod<
   ModifyServerlessCacheRequest,
   ModifyServerlessCacheResponse,
   ModifyServerlessCacheError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ModifyServerlessCacheRequest,
   output: ModifyServerlessCacheResponse,
@@ -8764,7 +8116,7 @@ export const modifyUser: API.OperationMethod<
   ModifyUserMessage,
   User,
   ModifyUserError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ModifyUserMessage,
   output: User,
@@ -8797,7 +8149,7 @@ export const modifyUserGroup: API.OperationMethod<
   ModifyUserGroupMessage,
   UserGroup,
   ModifyUserGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ModifyUserGroupMessage,
   output: UserGroup,
@@ -8832,7 +8184,7 @@ export const purchaseReservedCacheNodesOffering: API.OperationMethod<
   PurchaseReservedCacheNodesOfferingMessage,
   PurchaseReservedCacheNodesOfferingResult,
   PurchaseReservedCacheNodesOfferingError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PurchaseReservedCacheNodesOfferingMessage,
   output: PurchaseReservedCacheNodesOfferingResult,
@@ -8862,7 +8214,7 @@ export const rebalanceSlotsInGlobalReplicationGroup: API.OperationMethod<
   RebalanceSlotsInGlobalReplicationGroupMessage,
   RebalanceSlotsInGlobalReplicationGroupResult,
   RebalanceSlotsInGlobalReplicationGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RebalanceSlotsInGlobalReplicationGroupMessage,
   output: RebalanceSlotsInGlobalReplicationGroupResult,
@@ -8902,7 +8254,7 @@ export const rebootCacheCluster: API.OperationMethod<
   RebootCacheClusterMessage,
   RebootCacheClusterResult,
   RebootCacheClusterError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RebootCacheClusterMessage,
   output: RebootCacheClusterResult,
@@ -8941,7 +8293,7 @@ export const removeTagsFromResource: API.OperationMethod<
   RemoveTagsFromResourceMessage,
   TagListMessage,
   RemoveTagsFromResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RemoveTagsFromResourceMessage,
   output: TagListMessage,
@@ -8985,7 +8337,7 @@ export const resetCacheParameterGroup: API.OperationMethod<
   ResetCacheParameterGroupMessage,
   CacheParameterGroupNameMessage,
   ResetCacheParameterGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ResetCacheParameterGroupMessage,
   output: CacheParameterGroupNameMessage,
@@ -9016,7 +8368,7 @@ export const revokeCacheSecurityGroupIngress: API.OperationMethod<
   RevokeCacheSecurityGroupIngressMessage,
   RevokeCacheSecurityGroupIngressResult,
   RevokeCacheSecurityGroupIngressError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RevokeCacheSecurityGroupIngressMessage,
   output: RevokeCacheSecurityGroupIngressResult,
@@ -9045,7 +8397,7 @@ export const startMigration: API.OperationMethod<
   StartMigrationMessage,
   StartMigrationResponse,
   StartMigrationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartMigrationMessage,
   output: StartMigrationResponse,
@@ -9128,7 +8480,7 @@ export const testFailover: API.OperationMethod<
   TestFailoverMessage,
   TestFailoverResult,
   TestFailoverError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TestFailoverMessage,
   output: TestFailoverResult,
@@ -9161,7 +8513,7 @@ export const testMigration: API.OperationMethod<
   TestMigrationMessage,
   TestMigrationResponse,
   TestMigrationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TestMigrationMessage,
   output: TestMigrationResponse,

@@ -1,6 +1,5 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -8,7 +7,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 const svc = T.AwsApiService({
   sdkId: "Application Auto Scaling",
   serviceShapeName: "AnyScaleFrontendService",
@@ -93,7 +91,7 @@ const rules = T.EndpointResolver((p, _) => {
 export class ConcurrentUpdateException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConcurrentUpdateException>()(
     "ConcurrentUpdateException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "ConcurrentUpdateException",
@@ -105,7 +103,7 @@ export class ConcurrentUpdateException
 export class FailedResourceAccessException
   extends /*@__PURE__*/ S.TaggedErrorClass<FailedResourceAccessException>()(
     "FailedResourceAccessException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "FailedResourceAccessException",
@@ -117,7 +115,7 @@ export class FailedResourceAccessException
 export class InternalServiceException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServiceException>()(
     "InternalServiceException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "InternalServiceException",
@@ -129,7 +127,7 @@ export class InternalServiceException
 export class InvalidNextTokenException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidNextTokenException>()(
     "InvalidNextTokenException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "InvalidNextTokenException",
@@ -141,7 +139,7 @@ export class InvalidNextTokenException
 export class LimitExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<LimitExceededException>()(
     "LimitExceededException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "LimitExceededException",
@@ -153,7 +151,7 @@ export class LimitExceededException
 export class ObjectNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ObjectNotFoundException>()(
     "ObjectNotFoundException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "ObjectNotFoundException",
@@ -165,7 +163,7 @@ export class ObjectNotFoundException
 export class PredictiveScalingForecastNotSupported
   extends /*@__PURE__*/ S.TaggedErrorClass<PredictiveScalingForecastNotSupported>()(
     "PredictiveScalingForecastNotSupported",
-    {},
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.SyntheticError({
       from: "AccessDeniedException",
       message: { includes: "GetPredictiveScalingForecast is not supported" },
@@ -174,19 +172,25 @@ export class PredictiveScalingForecastNotSupported
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { Message: S.optional(S.String), ResourceName: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      ResourceName: S.optional(S.String),
+    },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class TooManyTagsException
   extends /*@__PURE__*/ S.TaggedErrorClass<TooManyTagsException>()(
     "TooManyTagsException",
-    { Message: S.optional(S.String), ResourceName: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      ResourceName: S.optional(S.String),
+    },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class ValidationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
     "ValidationException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "ValidationException", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -1341,7 +1345,7 @@ export const deleteScalingPolicy: API.OperationMethod<
   DeleteScalingPolicyRequest,
   DeleteScalingPolicyResponse,
   DeleteScalingPolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteScalingPolicyRequest,
   output: DeleteScalingPolicyResponse,
@@ -1371,7 +1375,7 @@ export const deleteScheduledAction: API.OperationMethod<
   DeleteScheduledActionRequest,
   DeleteScheduledActionResponse,
   DeleteScheduledActionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteScheduledActionRequest,
   output: DeleteScheduledActionResponse,
@@ -1403,7 +1407,7 @@ export const deregisterScalableTarget: API.OperationMethod<
   DeregisterScalableTargetRequest,
   DeregisterScalableTargetResponse,
   DeregisterScalableTargetError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeregisterScalableTargetRequest,
   output: DeregisterScalableTargetResponse,
@@ -1430,27 +1434,13 @@ export type DescribeScalableTargetsError =
  * You can filter the results using `ResourceIds` and
  * `ScalableDimension`.
  */
-export const describeScalableTargets: API.OperationMethod<
+export const describeScalableTargets: API.PaginatedOperationMethod<
   DescribeScalableTargetsRequest,
   DescribeScalableTargetsResponse,
   DescribeScalableTargetsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeScalableTargetsRequest,
-  ) => stream.Stream<
-    DescribeScalableTargetsResponse,
-    DescribeScalableTargetsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeScalableTargetsRequest,
-  ) => stream.Stream<
-    ScalableTarget,
-    DescribeScalableTargetsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ScalableTarget
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeScalableTargetsRequest,
   output: DescribeScalableTargetsResponse,
   errors: [
@@ -1468,27 +1458,7 @@ export const describeScalableTargets: API.OperationMethod<
     items: "ScalableTargets",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeScalableTargetsRequest,
-  DescribeScalableTargetsResponse,
-  DescribeScalableTargetsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeScalableTargetsRequest,
-  ) => stream.Stream<
-    DescribeScalableTargetsResponse,
-    DescribeScalableTargetsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeScalableTargetsRequest,
-  ) => stream.Stream<
-    ScalableTarget,
-    DescribeScalableTargetsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeScalingActivitiesError =
   | ConcurrentUpdateException
@@ -1505,27 +1475,13 @@ export type DescribeScalingActivitiesError =
  *
  * For information about viewing scaling activities using the Amazon Web Services CLI, see Scaling activities for Application Auto Scaling.
  */
-export const describeScalingActivities: API.OperationMethod<
+export const describeScalingActivities: API.PaginatedOperationMethod<
   DescribeScalingActivitiesRequest,
   DescribeScalingActivitiesResponse,
   DescribeScalingActivitiesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeScalingActivitiesRequest,
-  ) => stream.Stream<
-    DescribeScalingActivitiesResponse,
-    DescribeScalingActivitiesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeScalingActivitiesRequest,
-  ) => stream.Stream<
-    ScalingActivity,
-    DescribeScalingActivitiesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ScalingActivity
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeScalingActivitiesRequest,
   output: DescribeScalingActivitiesResponse,
   errors: [
@@ -1543,27 +1499,7 @@ export const describeScalingActivities: API.OperationMethod<
     items: "ScalingActivities",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeScalingActivitiesRequest,
-  DescribeScalingActivitiesResponse,
-  DescribeScalingActivitiesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeScalingActivitiesRequest,
-  ) => stream.Stream<
-    DescribeScalingActivitiesResponse,
-    DescribeScalingActivitiesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeScalingActivitiesRequest,
-  ) => stream.Stream<
-    ScalingActivity,
-    DescribeScalingActivitiesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeScalingPoliciesError =
   | ConcurrentUpdateException
@@ -1580,27 +1516,13 @@ export type DescribeScalingPoliciesError =
  *
  * For more information, see Target tracking scaling policies and Step scaling policies in the *Application Auto Scaling User Guide*.
  */
-export const describeScalingPolicies: API.OperationMethod<
+export const describeScalingPolicies: API.PaginatedOperationMethod<
   DescribeScalingPoliciesRequest,
   DescribeScalingPoliciesResponse,
   DescribeScalingPoliciesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeScalingPoliciesRequest,
-  ) => stream.Stream<
-    DescribeScalingPoliciesResponse,
-    DescribeScalingPoliciesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeScalingPoliciesRequest,
-  ) => stream.Stream<
-    ScalingPolicy,
-    DescribeScalingPoliciesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ScalingPolicy
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeScalingPoliciesRequest,
   output: DescribeScalingPoliciesResponse,
   errors: [
@@ -1619,27 +1541,7 @@ export const describeScalingPolicies: API.OperationMethod<
     items: "ScalingPolicies",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeScalingPoliciesRequest,
-  DescribeScalingPoliciesResponse,
-  DescribeScalingPoliciesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeScalingPoliciesRequest,
-  ) => stream.Stream<
-    DescribeScalingPoliciesResponse,
-    DescribeScalingPoliciesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeScalingPoliciesRequest,
-  ) => stream.Stream<
-    ScalingPolicy,
-    DescribeScalingPoliciesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeScheduledActionsError =
   | ConcurrentUpdateException
@@ -1655,27 +1557,13 @@ export type DescribeScheduledActionsError =
  *
  * For more information, see Scheduled scaling in the *Application Auto Scaling User Guide*.
  */
-export const describeScheduledActions: API.OperationMethod<
+export const describeScheduledActions: API.PaginatedOperationMethod<
   DescribeScheduledActionsRequest,
   DescribeScheduledActionsResponse,
   DescribeScheduledActionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeScheduledActionsRequest,
-  ) => stream.Stream<
-    DescribeScheduledActionsResponse,
-    DescribeScheduledActionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeScheduledActionsRequest,
-  ) => stream.Stream<
-    ScheduledAction,
-    DescribeScheduledActionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ScheduledAction
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeScheduledActionsRequest,
   output: DescribeScheduledActionsResponse,
   errors: [
@@ -1693,27 +1581,7 @@ export const describeScheduledActions: API.OperationMethod<
     items: "ScheduledActions",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeScheduledActionsRequest,
-  DescribeScheduledActionsResponse,
-  DescribeScheduledActionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeScheduledActionsRequest,
-  ) => stream.Stream<
-    DescribeScheduledActionsResponse,
-    DescribeScheduledActionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeScheduledActionsRequest,
-  ) => stream.Stream<
-    ScheduledAction,
-    DescribeScheduledActionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetPredictiveScalingForecastError =
   | InternalServiceException
@@ -1735,7 +1603,7 @@ export const getPredictiveScalingForecast: API.OperationMethod<
   GetPredictiveScalingForecastRequest,
   GetPredictiveScalingForecastResponse,
   GetPredictiveScalingForecastError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetPredictiveScalingForecastRequest,
   output: GetPredictiveScalingForecastResponse,
@@ -1760,7 +1628,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceRequest,
   ListTagsForResourceResponse,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -1813,7 +1681,7 @@ export const putScalingPolicy: API.OperationMethod<
   PutScalingPolicyRequest,
   PutScalingPolicyResponse,
   PutScalingPolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutScalingPolicyRequest,
   output: PutScalingPolicyResponse,
@@ -1861,7 +1729,7 @@ export const putScheduledAction: API.OperationMethod<
   PutScheduledActionRequest,
   PutScheduledActionResponse,
   PutScheduledActionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutScheduledActionRequest,
   output: PutScheduledActionResponse,
@@ -1926,7 +1794,7 @@ export const registerScalableTarget: API.OperationMethod<
   RegisterScalableTargetRequest,
   RegisterScalableTargetResponse,
   RegisterScalableTargetError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RegisterScalableTargetRequest,
   output: RegisterScalableTargetResponse,
@@ -1969,7 +1837,7 @@ export const tagResource: API.OperationMethod<
   TagResourceRequest,
   TagResourceResponse,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -1995,7 +1863,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceRequest,
   UntagResourceResponse,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,

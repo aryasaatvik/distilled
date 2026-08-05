@@ -1,7 +1,6 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as redacted from "effect/Redacted";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -9,7 +8,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 import { SensitiveString } from "../sensitive.ts";
 const ns = T.XmlNamespace("https://aws.amazon.com/api/v1/");
 const svc = T.AwsApiService({
@@ -91,50 +89,53 @@ const rules = T.EndpointResolver((p, _) => {
 export class ConcurrentModificationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConcurrentModificationException>()(
     "ConcurrentModificationException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class ConflictingOperationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConflictingOperationException>()(
     "ConflictingOperationException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class CustomMetadataLimitExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<CustomMetadataLimitExceededException>()(
     "CustomMetadataLimitExceededException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(429),
   ).pipe(C.withThrottlingError) {}
 export class DeactivatingLastSystemUserException
   extends /*@__PURE__*/ S.TaggedErrorClass<DeactivatingLastSystemUserException>()(
     "DeactivatingLastSystemUserException",
-    { Message: S.optional(S.String), Code: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      Code: S.optional(S.String),
+    },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class DocumentLockedForCommentsException
   extends /*@__PURE__*/ S.TaggedErrorClass<DocumentLockedForCommentsException>()(
     "DocumentLockedForCommentsException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class DraftUploadOutOfSyncException
   extends /*@__PURE__*/ S.TaggedErrorClass<DraftUploadOutOfSyncException>()(
     "DraftUploadOutOfSyncException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class EntityAlreadyExistsException
   extends /*@__PURE__*/ S.TaggedErrorClass<EntityAlreadyExistsException>()(
     "EntityAlreadyExistsException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(409),
   ).pipe(C.withConflictError, C.withAlreadyExistsError) {}
 export class EntityNotExistsException
   extends /*@__PURE__*/ S.TaggedErrorClass<EntityNotExistsException>()(
     "EntityNotExistsException",
     {
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       EntityIds: S.optional(
         S.suspend(() => EntityIdList).annotate({ identifier: "EntityIdList" }),
       ),
@@ -144,103 +145,106 @@ export class EntityNotExistsException
 export class FailedDependencyException
   extends /*@__PURE__*/ S.TaggedErrorClass<FailedDependencyException>()(
     "FailedDependencyException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(424),
   ) {}
 export class IllegalUserStateException
   extends /*@__PURE__*/ S.TaggedErrorClass<IllegalUserStateException>()(
     "IllegalUserStateException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class InvalidArgumentException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidArgumentException>()(
     "InvalidArgumentException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class InvalidCommentOperationException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidCommentOperationException>()(
     "InvalidCommentOperationException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class InvalidOperationException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidOperationException>()(
     "InvalidOperationException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(405),
   ).pipe(C.withBadRequestError) {}
 export class InvalidPasswordException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidPasswordException>()(
     "InvalidPasswordException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(401),
   ).pipe(C.withAuthError) {}
 export class LimitExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<LimitExceededException>()(
     "LimitExceededException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class ProhibitedStateException
   extends /*@__PURE__*/ S.TaggedErrorClass<ProhibitedStateException>()(
     "ProhibitedStateException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class RequestedEntityTooLargeException
   extends /*@__PURE__*/ S.TaggedErrorClass<RequestedEntityTooLargeException>()(
     "RequestedEntityTooLargeException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(413),
   ).pipe(C.withBadRequestError) {}
 export class ResourceAlreadyCheckedOutException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceAlreadyCheckedOutException>()(
     "ResourceAlreadyCheckedOutException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class ServiceUnavailableException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceUnavailableException>()(
     "ServiceUnavailableException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(503),
   ).pipe(C.withServerError) {}
 export class StorageLimitExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<StorageLimitExceededException>()(
     "StorageLimitExceededException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class StorageLimitWillExceedException
   extends /*@__PURE__*/ S.TaggedErrorClass<StorageLimitWillExceedException>()(
     "StorageLimitWillExceedException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(413),
   ).pipe(C.withBadRequestError) {}
 export class TooManyLabelsException
   extends /*@__PURE__*/ S.TaggedErrorClass<TooManyLabelsException>()(
     "TooManyLabelsException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(429),
   ).pipe(C.withThrottlingError) {}
 export class TooManySubscriptionsException
   extends /*@__PURE__*/ S.TaggedErrorClass<TooManySubscriptionsException>()(
     "TooManySubscriptionsException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(429),
   ).pipe(C.withThrottlingError) {}
 export class UnauthorizedOperationException
   extends /*@__PURE__*/ S.TaggedErrorClass<UnauthorizedOperationException>()(
     "UnauthorizedOperationException",
-    { Message: S.optional(S.String), Code: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      Code: S.optional(S.String),
+    },
     T.HttpError(403),
   ).pipe(C.withAuthError) {}
 export class UnauthorizedResourceAccessException
   extends /*@__PURE__*/ S.TaggedErrorClass<UnauthorizedResourceAccessException>()(
     "UnauthorizedResourceAccessException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(404),
   ).pipe(C.withBadRequestError, C.withAuthError) {}
 export type AuthenticationHeaderType = string | redacted.Redacted<string>;
@@ -2850,7 +2854,7 @@ export const abortDocumentVersionUpload: API.OperationMethod<
   AbortDocumentVersionUploadRequest,
   AbortDocumentVersionUploadResponse,
   AbortDocumentVersionUploadError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AbortDocumentVersionUploadRequest,
   output: AbortDocumentVersionUploadResponse,
@@ -2883,7 +2887,7 @@ export const activateUser: API.OperationMethod<
   ActivateUserRequest,
   ActivateUserResponse,
   ActivateUserError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ActivateUserRequest,
   output: ActivateUserResponse,
@@ -2915,7 +2919,7 @@ export const addResourcePermissions: API.OperationMethod<
   AddResourcePermissionsRequest,
   AddResourcePermissionsResponse,
   AddResourcePermissionsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AddResourcePermissionsRequest,
   output: AddResourcePermissionsResponse,
@@ -2948,7 +2952,7 @@ export const createComment: API.OperationMethod<
   CreateCommentRequest,
   CreateCommentResponse,
   CreateCommentError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateCommentRequest,
   output: CreateCommentResponse,
@@ -2984,7 +2988,7 @@ export const createCustomMetadata: API.OperationMethod<
   CreateCustomMetadataRequest,
   CreateCustomMetadataResponse,
   CreateCustomMetadataError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateCustomMetadataRequest,
   output: CreateCustomMetadataResponse,
@@ -3021,7 +3025,7 @@ export const createFolder: API.OperationMethod<
   CreateFolderRequest,
   CreateFolderResponse,
   CreateFolderError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateFolderRequest,
   output: CreateFolderResponse,
@@ -3058,7 +3062,7 @@ export const createLabels: API.OperationMethod<
   CreateLabelsRequest,
   CreateLabelsResponse,
   CreateLabelsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateLabelsRequest,
   output: CreateLabelsResponse,
@@ -3092,7 +3096,7 @@ export const createNotificationSubscription: API.OperationMethod<
   CreateNotificationSubscriptionRequest,
   CreateNotificationSubscriptionResponse,
   CreateNotificationSubscriptionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateNotificationSubscriptionRequest,
   output: CreateNotificationSubscriptionResponse,
@@ -3122,7 +3126,7 @@ export const createUser: API.OperationMethod<
   CreateUserRequest,
   CreateUserResponse,
   CreateUserError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateUserRequest,
   output: CreateUserResponse,
@@ -3153,7 +3157,7 @@ export const deactivateUser: API.OperationMethod<
   DeactivateUserRequest,
   DeactivateUserResponse,
   DeactivateUserError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeactivateUserRequest,
   output: DeactivateUserResponse,
@@ -3185,7 +3189,7 @@ export const deleteComment: API.OperationMethod<
   DeleteCommentRequest,
   DeleteCommentResponse,
   DeleteCommentError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteCommentRequest,
   output: DeleteCommentResponse,
@@ -3218,7 +3222,7 @@ export const deleteCustomMetadata: API.OperationMethod<
   DeleteCustomMetadataRequest,
   DeleteCustomMetadataResponse,
   DeleteCustomMetadataError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteCustomMetadataRequest,
   output: DeleteCustomMetadataResponse,
@@ -3253,7 +3257,7 @@ export const deleteDocument: API.OperationMethod<
   DeleteDocumentRequest,
   DeleteDocumentResponse,
   DeleteDocumentError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteDocumentRequest,
   output: DeleteDocumentResponse,
@@ -3290,7 +3294,7 @@ export const deleteDocumentVersion: API.OperationMethod<
   DeleteDocumentVersionRequest,
   DeleteDocumentVersionResponse,
   DeleteDocumentVersionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteDocumentVersionRequest,
   output: DeleteDocumentVersionResponse,
@@ -3327,7 +3331,7 @@ export const deleteFolder: API.OperationMethod<
   DeleteFolderRequest,
   DeleteFolderResponse,
   DeleteFolderError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteFolderRequest,
   output: DeleteFolderResponse,
@@ -3363,7 +3367,7 @@ export const deleteFolderContents: API.OperationMethod<
   DeleteFolderContentsRequest,
   DeleteFolderContentsResponse,
   DeleteFolderContentsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteFolderContentsRequest,
   output: DeleteFolderContentsResponse,
@@ -3396,7 +3400,7 @@ export const deleteLabels: API.OperationMethod<
   DeleteLabelsRequest,
   DeleteLabelsResponse,
   DeleteLabelsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteLabelsRequest,
   output: DeleteLabelsResponse,
@@ -3426,7 +3430,7 @@ export const deleteNotificationSubscription: API.OperationMethod<
   DeleteNotificationSubscriptionRequest,
   DeleteNotificationSubscriptionResponse,
   DeleteNotificationSubscriptionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteNotificationSubscriptionRequest,
   output: DeleteNotificationSubscriptionResponse,
@@ -3457,7 +3461,7 @@ export const deleteUser: API.OperationMethod<
   DeleteUserRequest,
   DeleteUserResponse,
   DeleteUserError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteUserRequest,
   output: DeleteUserResponse,
@@ -3483,27 +3487,13 @@ export type DescribeActivitiesError =
 /**
  * Describes the user activities in a specified time period.
  */
-export const describeActivities: API.OperationMethod<
+export const describeActivities: API.PaginatedOperationMethod<
   DescribeActivitiesRequest,
   DescribeActivitiesResponse,
   DescribeActivitiesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeActivitiesRequest,
-  ) => stream.Stream<
-    DescribeActivitiesResponse,
-    DescribeActivitiesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeActivitiesRequest,
-  ) => stream.Stream<
-    Activity,
-    DescribeActivitiesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Activity
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeActivitiesRequest,
   output: DescribeActivitiesResponse,
   errors: [
@@ -3522,27 +3512,7 @@ export const describeActivities: API.OperationMethod<
     items: "UserActivities",
     pageSize: "Limit",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeActivitiesRequest,
-  DescribeActivitiesResponse,
-  DescribeActivitiesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeActivitiesRequest,
-  ) => stream.Stream<
-    DescribeActivitiesResponse,
-    DescribeActivitiesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeActivitiesRequest,
-  ) => stream.Stream<
-    Activity,
-    DescribeActivitiesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeCommentsError =
   | EntityNotExistsException
@@ -3555,27 +3525,13 @@ export type DescribeCommentsError =
 /**
  * List all the comments for the specified document version.
  */
-export const describeComments: API.OperationMethod<
+export const describeComments: API.PaginatedOperationMethod<
   DescribeCommentsRequest,
   DescribeCommentsResponse,
   DescribeCommentsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeCommentsRequest,
-  ) => stream.Stream<
-    DescribeCommentsResponse,
-    DescribeCommentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeCommentsRequest,
-  ) => stream.Stream<
-    Comment,
-    DescribeCommentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Comment
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeCommentsRequest,
   output: DescribeCommentsResponse,
   errors: [
@@ -3595,27 +3551,7 @@ export const describeComments: API.OperationMethod<
     items: "Comments",
     pageSize: "Limit",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeCommentsRequest,
-  DescribeCommentsResponse,
-  DescribeCommentsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeCommentsRequest,
-  ) => stream.Stream<
-    DescribeCommentsResponse,
-    DescribeCommentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeCommentsRequest,
-  ) => stream.Stream<
-    Comment,
-    DescribeCommentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeDocumentVersionsError =
   | EntityNotExistsException
@@ -3632,27 +3568,13 @@ export type DescribeDocumentVersionsError =
  *
  * By default, only active versions are returned.
  */
-export const describeDocumentVersions: API.OperationMethod<
+export const describeDocumentVersions: API.PaginatedOperationMethod<
   DescribeDocumentVersionsRequest,
   DescribeDocumentVersionsResponse,
   DescribeDocumentVersionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeDocumentVersionsRequest,
-  ) => stream.Stream<
-    DescribeDocumentVersionsResponse,
-    DescribeDocumentVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeDocumentVersionsRequest,
-  ) => stream.Stream<
-    DocumentVersionMetadata,
-    DescribeDocumentVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  DocumentVersionMetadata
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeDocumentVersionsRequest,
   output: DescribeDocumentVersionsResponse,
   errors: [
@@ -3674,27 +3596,7 @@ export const describeDocumentVersions: API.OperationMethod<
     items: "DocumentVersions",
     pageSize: "Limit",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeDocumentVersionsRequest,
-  DescribeDocumentVersionsResponse,
-  DescribeDocumentVersionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeDocumentVersionsRequest,
-  ) => stream.Stream<
-    DescribeDocumentVersionsResponse,
-    DescribeDocumentVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeDocumentVersionsRequest,
-  ) => stream.Stream<
-    DocumentVersionMetadata,
-    DescribeDocumentVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeFolderContentsError =
   | EntityNotExistsException
@@ -3713,27 +3615,13 @@ export type DescribeFolderContentsError =
  * use to request the next set of results. You can also request initialized
  * documents.
  */
-export const describeFolderContents: API.OperationMethod<
+export const describeFolderContents: API.PaginatedOperationMethod<
   DescribeFolderContentsRequest,
   DescribeFolderContentsResponse,
   DescribeFolderContentsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeFolderContentsRequest,
-  ) => stream.Stream<
-    DescribeFolderContentsResponse,
-    DescribeFolderContentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeFolderContentsRequest,
-  ) => stream.Stream<
-    unknown,
-    DescribeFolderContentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeFolderContentsRequest,
   output: DescribeFolderContentsResponse,
   errors: [
@@ -3752,27 +3640,7 @@ export const describeFolderContents: API.OperationMethod<
     outputToken: "Marker",
     pageSize: "Limit",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeFolderContentsRequest,
-  DescribeFolderContentsResponse,
-  DescribeFolderContentsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeFolderContentsRequest,
-  ) => stream.Stream<
-    DescribeFolderContentsResponse,
-    DescribeFolderContentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeFolderContentsRequest,
-  ) => stream.Stream<
-    unknown,
-    DescribeFolderContentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeGroupsError =
   | FailedDependencyException
@@ -3784,27 +3652,13 @@ export type DescribeGroupsError =
  * Describes the groups specified by the query. Groups are defined by the underlying
  * Active Directory.
  */
-export const describeGroups: API.OperationMethod<
+export const describeGroups: API.PaginatedOperationMethod<
   DescribeGroupsRequest,
   DescribeGroupsResponse,
   DescribeGroupsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeGroupsRequest,
-  ) => stream.Stream<
-    DescribeGroupsResponse,
-    DescribeGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeGroupsRequest,
-  ) => stream.Stream<
-    GroupMetadata,
-    DescribeGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  GroupMetadata
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeGroupsRequest,
   output: DescribeGroupsResponse,
   errors: [
@@ -3822,27 +3676,7 @@ export const describeGroups: API.OperationMethod<
     items: "Groups",
     pageSize: "Limit",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeGroupsRequest,
-  DescribeGroupsResponse,
-  DescribeGroupsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeGroupsRequest,
-  ) => stream.Stream<
-    DescribeGroupsResponse,
-    DescribeGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeGroupsRequest,
-  ) => stream.Stream<
-    GroupMetadata,
-    DescribeGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeNotificationSubscriptionsError =
   | EntityNotExistsException
@@ -3852,27 +3686,13 @@ export type DescribeNotificationSubscriptionsError =
 /**
  * Lists the specified notification subscriptions.
  */
-export const describeNotificationSubscriptions: API.OperationMethod<
+export const describeNotificationSubscriptions: API.PaginatedOperationMethod<
   DescribeNotificationSubscriptionsRequest,
   DescribeNotificationSubscriptionsResponse,
   DescribeNotificationSubscriptionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeNotificationSubscriptionsRequest,
-  ) => stream.Stream<
-    DescribeNotificationSubscriptionsResponse,
-    DescribeNotificationSubscriptionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeNotificationSubscriptionsRequest,
-  ) => stream.Stream<
-    Subscription,
-    DescribeNotificationSubscriptionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Subscription
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeNotificationSubscriptionsRequest,
   output: DescribeNotificationSubscriptionsResponse,
   errors: [
@@ -3889,27 +3709,7 @@ export const describeNotificationSubscriptions: API.OperationMethod<
     items: "Subscriptions",
     pageSize: "Limit",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeNotificationSubscriptionsRequest,
-  DescribeNotificationSubscriptionsResponse,
-  DescribeNotificationSubscriptionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeNotificationSubscriptionsRequest,
-  ) => stream.Stream<
-    DescribeNotificationSubscriptionsResponse,
-    DescribeNotificationSubscriptionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeNotificationSubscriptionsRequest,
-  ) => stream.Stream<
-    Subscription,
-    DescribeNotificationSubscriptionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeResourcePermissionsError =
   | FailedDependencyException
@@ -3921,27 +3721,13 @@ export type DescribeResourcePermissionsError =
 /**
  * Describes the permissions of a specified resource.
  */
-export const describeResourcePermissions: API.OperationMethod<
+export const describeResourcePermissions: API.PaginatedOperationMethod<
   DescribeResourcePermissionsRequest,
   DescribeResourcePermissionsResponse,
   DescribeResourcePermissionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeResourcePermissionsRequest,
-  ) => stream.Stream<
-    DescribeResourcePermissionsResponse,
-    DescribeResourcePermissionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeResourcePermissionsRequest,
-  ) => stream.Stream<
-    Principal,
-    DescribeResourcePermissionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Principal
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeResourcePermissionsRequest,
   output: DescribeResourcePermissionsResponse,
   errors: [
@@ -3960,27 +3746,7 @@ export const describeResourcePermissions: API.OperationMethod<
     items: "Principals",
     pageSize: "Limit",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeResourcePermissionsRequest,
-  DescribeResourcePermissionsResponse,
-  DescribeResourcePermissionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeResourcePermissionsRequest,
-  ) => stream.Stream<
-    DescribeResourcePermissionsResponse,
-    DescribeResourcePermissionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeResourcePermissionsRequest,
-  ) => stream.Stream<
-    Principal,
-    DescribeResourcePermissionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeRootFoldersError =
   | FailedDependencyException
@@ -4001,27 +3767,13 @@ export type DescribeRootFoldersError =
  * Amazon
  * WorkDocs Developer Guide.
  */
-export const describeRootFolders: API.OperationMethod<
+export const describeRootFolders: API.PaginatedOperationMethod<
   DescribeRootFoldersRequest,
   DescribeRootFoldersResponse,
   DescribeRootFoldersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeRootFoldersRequest,
-  ) => stream.Stream<
-    DescribeRootFoldersResponse,
-    DescribeRootFoldersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeRootFoldersRequest,
-  ) => stream.Stream<
-    FolderMetadata,
-    DescribeRootFoldersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  FolderMetadata
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeRootFoldersRequest,
   output: DescribeRootFoldersResponse,
   errors: [
@@ -4040,27 +3792,7 @@ export const describeRootFolders: API.OperationMethod<
     items: "Folders",
     pageSize: "Limit",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeRootFoldersRequest,
-  DescribeRootFoldersResponse,
-  DescribeRootFoldersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeRootFoldersRequest,
-  ) => stream.Stream<
-    DescribeRootFoldersResponse,
-    DescribeRootFoldersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeRootFoldersRequest,
-  ) => stream.Stream<
-    FolderMetadata,
-    DescribeRootFoldersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeUsersError =
   | EntityNotExistsException
@@ -4079,27 +3811,13 @@ export type DescribeUsersError =
  * are more results, the response includes a marker that you can use to request the next
  * set of results.
  */
-export const describeUsers: API.OperationMethod<
+export const describeUsers: API.PaginatedOperationMethod<
   DescribeUsersRequest,
   DescribeUsersResponse,
   DescribeUsersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeUsersRequest,
-  ) => stream.Stream<
-    DescribeUsersResponse,
-    DescribeUsersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeUsersRequest,
-  ) => stream.Stream<
-    User,
-    DescribeUsersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  User
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeUsersRequest,
   output: DescribeUsersResponse,
   errors: [
@@ -4120,27 +3838,7 @@ export const describeUsers: API.OperationMethod<
     items: "Users",
     pageSize: "Limit",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeUsersRequest,
-  DescribeUsersResponse,
-  DescribeUsersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeUsersRequest,
-  ) => stream.Stream<
-    DescribeUsersResponse,
-    DescribeUsersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeUsersRequest,
-  ) => stream.Stream<
-    User,
-    DescribeUsersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetCurrentUserError =
   | EntityNotExistsException
@@ -4163,7 +3861,7 @@ export const getCurrentUser: API.OperationMethod<
   GetCurrentUserRequest,
   GetCurrentUserResponse,
   GetCurrentUserError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetCurrentUserRequest,
   output: GetCurrentUserResponse,
@@ -4195,7 +3893,7 @@ export const getDocument: API.OperationMethod<
   GetDocumentRequest,
   GetDocumentResponse,
   GetDocumentError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetDocumentRequest,
   output: GetDocumentResponse,
@@ -4233,7 +3931,7 @@ export const getDocumentPath: API.OperationMethod<
   GetDocumentPathRequest,
   GetDocumentPathResponse,
   GetDocumentPathError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetDocumentPathRequest,
   output: GetDocumentPathResponse,
@@ -4265,7 +3963,7 @@ export const getDocumentVersion: API.OperationMethod<
   GetDocumentVersionRequest,
   GetDocumentVersionResponse,
   GetDocumentVersionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetDocumentVersionRequest,
   output: GetDocumentVersionResponse,
@@ -4299,7 +3997,7 @@ export const getFolder: API.OperationMethod<
   GetFolderRequest,
   GetFolderResponse,
   GetFolderError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetFolderRequest,
   output: GetFolderResponse,
@@ -4337,7 +4035,7 @@ export const getFolderPath: API.OperationMethod<
   GetFolderPathRequest,
   GetFolderPathResponse,
   GetFolderPathError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetFolderPathRequest,
   output: GetFolderPathResponse,
@@ -4368,7 +4066,7 @@ export const getResources: API.OperationMethod<
   GetResourcesRequest,
   GetResourcesResponse,
   GetResourcesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetResourcesRequest,
   output: GetResourcesResponse,
@@ -4414,7 +4112,7 @@ export const initiateDocumentVersionUpload: API.OperationMethod<
   InitiateDocumentVersionUploadRequest,
   InitiateDocumentVersionUploadResponse,
   InitiateDocumentVersionUploadError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: InitiateDocumentVersionUploadRequest,
   output: InitiateDocumentVersionUploadResponse,
@@ -4452,7 +4150,7 @@ export const removeAllResourcePermissions: API.OperationMethod<
   RemoveAllResourcePermissionsRequest,
   RemoveAllResourcePermissionsResponse,
   RemoveAllResourcePermissionsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RemoveAllResourcePermissionsRequest,
   output: RemoveAllResourcePermissionsResponse,
@@ -4481,7 +4179,7 @@ export const removeResourcePermission: API.OperationMethod<
   RemoveResourcePermissionRequest,
   RemoveResourcePermissionResponse,
   RemoveResourcePermissionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RemoveResourcePermissionRequest,
   output: RemoveResourcePermissionResponse,
@@ -4513,7 +4211,7 @@ export const restoreDocumentVersions: API.OperationMethod<
   RestoreDocumentVersionsRequest,
   RestoreDocumentVersionsResponse,
   RestoreDocumentVersionsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RestoreDocumentVersionsRequest,
   output: RestoreDocumentVersionsResponse,
@@ -4541,27 +4239,13 @@ export type SearchResourcesError =
 /**
  * Searches metadata and the content of folders, documents, document versions, and comments.
  */
-export const searchResources: API.OperationMethod<
+export const searchResources: API.PaginatedOperationMethod<
   SearchResourcesRequest,
   SearchResourcesResponse,
   SearchResourcesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: SearchResourcesRequest,
-  ) => stream.Stream<
-    SearchResourcesResponse,
-    SearchResourcesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: SearchResourcesRequest,
-  ) => stream.Stream<
-    ResponseItem,
-    SearchResourcesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ResponseItem
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: SearchResourcesRequest,
   output: SearchResourcesResponse,
   errors: [
@@ -4579,27 +4263,7 @@ export const searchResources: API.OperationMethod<
     items: "Items",
     pageSize: "Limit",
   } as const,
-})) as any as API.OperationMethod<
-  SearchResourcesRequest,
-  SearchResourcesResponse,
-  SearchResourcesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: SearchResourcesRequest,
-  ) => stream.Stream<
-    SearchResourcesResponse,
-    SearchResourcesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: SearchResourcesRequest,
-  ) => stream.Stream<
-    ResponseItem,
-    SearchResourcesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type UpdateDocumentError =
   | ConcurrentModificationException
@@ -4621,7 +4285,7 @@ export const updateDocument: API.OperationMethod<
   UpdateDocumentRequest,
   UpdateDocumentResponse,
   UpdateDocumentError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateDocumentRequest,
   output: UpdateDocumentResponse,
@@ -4663,7 +4327,7 @@ export const updateDocumentVersion: API.OperationMethod<
   UpdateDocumentVersionRequest,
   UpdateDocumentVersionResponse,
   UpdateDocumentVersionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateDocumentVersionRequest,
   output: UpdateDocumentVersionResponse,
@@ -4702,7 +4366,7 @@ export const updateFolder: API.OperationMethod<
   UpdateFolderRequest,
   UpdateFolderResponse,
   UpdateFolderError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateFolderRequest,
   output: UpdateFolderResponse,
@@ -4742,7 +4406,7 @@ export const updateUser: API.OperationMethod<
   UpdateUserRequest,
   UpdateUserResponse,
   UpdateUserError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateUserRequest,
   output: UpdateUserResponse,

@@ -1,6 +1,5 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -8,7 +7,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 const svc = T.AwsApiService({ sdkId: "RUM", serviceShapeName: "RUM" });
 const auth = T.AwsAuthSigv4({ name: "rum" });
 const ver = T.ServiceVersion("2018-05-10");
@@ -85,14 +83,14 @@ const rules = T.EndpointResolver((p, _) => {
 export class AccessDeniedException
   extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
     "AccessDeniedException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(403),
   ).pipe(C.withAuthError) {}
 export class ConflictException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
     "ConflictException",
     {
-      message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       resourceName: S.String,
       resourceType: S.optional(S.String),
     },
@@ -102,7 +100,7 @@ export class InternalServerException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
     "InternalServerException",
     {
-      message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       retryAfterSeconds: S.optional(S.Number).pipe(T.HttpHeader("Retry-After")),
     },
     T.all(T.HttpError(500), T.Retryable()),
@@ -110,32 +108,32 @@ export class InternalServerException
 export class InvalidPolicyRevisionIdException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidPolicyRevisionIdException>()(
     "InvalidPolicyRevisionIdException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class MalformedPolicyDocumentException
   extends /*@__PURE__*/ S.TaggedErrorClass<MalformedPolicyDocumentException>()(
     "MalformedPolicyDocumentException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class PolicyNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<PolicyNotFoundException>()(
     "PolicyNotFoundException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class PolicySizeLimitExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<PolicySizeLimitExceededException>()(
     "PolicySizeLimitExceededException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
     {
-      message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       resourceName: S.String,
       resourceType: S.optional(S.String),
     },
@@ -144,14 +142,14 @@ export class ResourceNotFoundException
 export class ServiceQuotaExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
     "ServiceQuotaExceededException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(402),
   ).pipe(C.withQuotaError) {}
 export class ThrottlingException
   extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
     "ThrottlingException",
     {
-      message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       serviceCode: S.optional(S.String),
       quotaCode: S.optional(S.String),
       retryAfterSeconds: S.optional(S.Number).pipe(T.HttpHeader("Retry-After")),
@@ -161,7 +159,7 @@ export class ThrottlingException
 export class ValidationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
     "ValidationException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export type AppMonitorName = string;
@@ -1216,7 +1214,7 @@ export const batchCreateRumMetricDefinitions: API.OperationMethod<
   BatchCreateRumMetricDefinitionsRequest,
   BatchCreateRumMetricDefinitionsResponse,
   BatchCreateRumMetricDefinitionsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchCreateRumMetricDefinitionsRequest,
   output: BatchCreateRumMetricDefinitionsResponse,
@@ -1253,7 +1251,7 @@ export const batchDeleteRumMetricDefinitions: API.OperationMethod<
   BatchDeleteRumMetricDefinitionsRequest,
   BatchDeleteRumMetricDefinitionsResponse,
   BatchDeleteRumMetricDefinitionsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchDeleteRumMetricDefinitionsRequest,
   output: BatchDeleteRumMetricDefinitionsResponse,
@@ -1279,27 +1277,13 @@ export type BatchGetRumMetricDefinitionsError =
 /**
  * Retrieves the list of metrics and dimensions that a RUM app monitor is sending to a single destination.
  */
-export const batchGetRumMetricDefinitions: API.OperationMethod<
+export const batchGetRumMetricDefinitions: API.PaginatedOperationMethod<
   BatchGetRumMetricDefinitionsRequest,
   BatchGetRumMetricDefinitionsResponse,
   BatchGetRumMetricDefinitionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: BatchGetRumMetricDefinitionsRequest,
-  ) => stream.Stream<
-    BatchGetRumMetricDefinitionsResponse,
-    BatchGetRumMetricDefinitionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: BatchGetRumMetricDefinitionsRequest,
-  ) => stream.Stream<
-    MetricDefinition,
-    BatchGetRumMetricDefinitionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  MetricDefinition
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: BatchGetRumMetricDefinitionsRequest,
   output: BatchGetRumMetricDefinitionsResponse,
   errors: [
@@ -1317,27 +1301,7 @@ export const batchGetRumMetricDefinitions: API.OperationMethod<
     items: "MetricDefinitions",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  BatchGetRumMetricDefinitionsRequest,
-  BatchGetRumMetricDefinitionsResponse,
-  BatchGetRumMetricDefinitionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: BatchGetRumMetricDefinitionsRequest,
-  ) => stream.Stream<
-    BatchGetRumMetricDefinitionsResponse,
-    BatchGetRumMetricDefinitionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: BatchGetRumMetricDefinitionsRequest,
-  ) => stream.Stream<
-    MetricDefinition,
-    BatchGetRumMetricDefinitionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type CreateAppMonitorError =
   | AccessDeniedException
@@ -1359,7 +1323,7 @@ export const createAppMonitor: API.OperationMethod<
   CreateAppMonitorRequest,
   CreateAppMonitorResponse,
   CreateAppMonitorError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateAppMonitorRequest,
   output: CreateAppMonitorResponse,
@@ -1392,7 +1356,7 @@ export const deleteAppMonitor: API.OperationMethod<
   DeleteAppMonitorRequest,
   DeleteAppMonitorResponse,
   DeleteAppMonitorError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteAppMonitorRequest,
   output: DeleteAppMonitorResponse,
@@ -1426,7 +1390,7 @@ export const deleteResourcePolicy: API.OperationMethod<
   DeleteResourcePolicyRequest,
   DeleteResourcePolicyResponse,
   DeleteResourcePolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteResourcePolicyRequest,
   output: DeleteResourcePolicyResponse,
@@ -1460,7 +1424,7 @@ export const deleteRumMetricsDestination: API.OperationMethod<
   DeleteRumMetricsDestinationRequest,
   DeleteRumMetricsDestinationResponse,
   DeleteRumMetricsDestinationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteRumMetricsDestinationRequest,
   output: DeleteRumMetricsDestinationResponse,
@@ -1491,7 +1455,7 @@ export const getAppMonitor: API.OperationMethod<
   GetAppMonitorRequest,
   GetAppMonitorResponse,
   GetAppMonitorError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetAppMonitorRequest,
   output: GetAppMonitorResponse,
@@ -1517,27 +1481,13 @@ export type GetAppMonitorDataError =
 /**
  * Retrieves the raw performance events that RUM has collected from your web application, so that you can do your own processing or analysis of this data.
  */
-export const getAppMonitorData: API.OperationMethod<
+export const getAppMonitorData: API.PaginatedOperationMethod<
   GetAppMonitorDataRequest,
   GetAppMonitorDataResponse,
   GetAppMonitorDataError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetAppMonitorDataRequest,
-  ) => stream.Stream<
-    GetAppMonitorDataResponse,
-    GetAppMonitorDataError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetAppMonitorDataRequest,
-  ) => stream.Stream<
-    EventData,
-    GetAppMonitorDataError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  EventData
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetAppMonitorDataRequest,
   output: GetAppMonitorDataResponse,
   errors: [
@@ -1556,27 +1506,7 @@ export const getAppMonitorData: API.OperationMethod<
     items: "Events",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetAppMonitorDataRequest,
-  GetAppMonitorDataResponse,
-  GetAppMonitorDataError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetAppMonitorDataRequest,
-  ) => stream.Stream<
-    GetAppMonitorDataResponse,
-    GetAppMonitorDataError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetAppMonitorDataRequest,
-  ) => stream.Stream<
-    EventData,
-    GetAppMonitorDataError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetResourcePolicyError =
   | AccessDeniedException
@@ -1594,7 +1524,7 @@ export const getResourcePolicy: API.OperationMethod<
   GetResourcePolicyRequest,
   GetResourcePolicyResponse,
   GetResourcePolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetResourcePolicyRequest,
   output: GetResourcePolicyResponse,
@@ -1621,27 +1551,13 @@ export type ListAppMonitorsError =
 /**
  * Returns a list of the Amazon CloudWatch RUM app monitors in the account.
  */
-export const listAppMonitors: API.OperationMethod<
+export const listAppMonitors: API.PaginatedOperationMethod<
   ListAppMonitorsRequest,
   ListAppMonitorsResponse,
   ListAppMonitorsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAppMonitorsRequest,
-  ) => stream.Stream<
-    ListAppMonitorsResponse,
-    ListAppMonitorsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAppMonitorsRequest,
-  ) => stream.Stream<
-    AppMonitorSummary,
-    ListAppMonitorsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  AppMonitorSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListAppMonitorsRequest,
   output: ListAppMonitorsResponse,
   errors: [
@@ -1659,27 +1575,7 @@ export const listAppMonitors: API.OperationMethod<
     items: "AppMonitorSummaries",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListAppMonitorsRequest,
-  ListAppMonitorsResponse,
-  ListAppMonitorsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAppMonitorsRequest,
-  ) => stream.Stream<
-    ListAppMonitorsResponse,
-    ListAppMonitorsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAppMonitorsRequest,
-  ) => stream.Stream<
-    AppMonitorSummary,
-    ListAppMonitorsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListRumMetricsDestinationsError =
   | AccessDeniedException
@@ -1692,27 +1588,13 @@ export type ListRumMetricsDestinationsError =
  *
  * For more information about extended metrics, see AddRumMetrics.
  */
-export const listRumMetricsDestinations: API.OperationMethod<
+export const listRumMetricsDestinations: API.PaginatedOperationMethod<
   ListRumMetricsDestinationsRequest,
   ListRumMetricsDestinationsResponse,
   ListRumMetricsDestinationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListRumMetricsDestinationsRequest,
-  ) => stream.Stream<
-    ListRumMetricsDestinationsResponse,
-    ListRumMetricsDestinationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListRumMetricsDestinationsRequest,
-  ) => stream.Stream<
-    MetricDestinationSummary,
-    ListRumMetricsDestinationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  MetricDestinationSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListRumMetricsDestinationsRequest,
   output: ListRumMetricsDestinationsResponse,
   errors: [
@@ -1730,27 +1612,7 @@ export const listRumMetricsDestinations: API.OperationMethod<
     items: "Destinations",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListRumMetricsDestinationsRequest,
-  ListRumMetricsDestinationsResponse,
-  ListRumMetricsDestinationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListRumMetricsDestinationsRequest,
-  ) => stream.Stream<
-    ListRumMetricsDestinationsResponse,
-    ListRumMetricsDestinationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListRumMetricsDestinationsRequest,
-  ) => stream.Stream<
-    MetricDestinationSummary,
-    ListRumMetricsDestinationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsForResourceError =
   | InternalServerException
@@ -1764,7 +1626,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceRequest,
   ListTagsForResourceResponse,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -1796,7 +1658,7 @@ export const putResourcePolicy: API.OperationMethod<
   PutResourcePolicyRequest,
   PutResourcePolicyResponse,
   PutResourcePolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutResourcePolicyRequest,
   output: PutResourcePolicyResponse,
@@ -1832,7 +1694,7 @@ export const putRumEvents: API.OperationMethod<
   PutRumEventsRequest,
   PutRumEventsResponse,
   PutRumEventsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutRumEventsRequest,
   output: PutRumEventsResponse,
@@ -1866,7 +1728,7 @@ export const putRumMetricsDestination: API.OperationMethod<
   PutRumMetricsDestinationRequest,
   PutRumMetricsDestinationResponse,
   PutRumMetricsDestinationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutRumMetricsDestinationRequest,
   output: PutRumMetricsDestinationResponse,
@@ -1905,7 +1767,7 @@ export const tagResource: API.OperationMethod<
   TagResourceRequest,
   TagResourceResponse,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -1931,7 +1793,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceRequest,
   UntagResourceResponse,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -1966,7 +1828,7 @@ export const updateAppMonitor: API.OperationMethod<
   UpdateAppMonitorRequest,
   UpdateAppMonitorResponse,
   UpdateAppMonitorError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateAppMonitorRequest,
   output: UpdateAppMonitorResponse,
@@ -1999,7 +1861,7 @@ export const updateRumMetricDefinition: API.OperationMethod<
   UpdateRumMetricDefinitionRequest,
   UpdateRumMetricDefinitionResponse,
   UpdateRumMetricDefinitionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateRumMetricDefinitionRequest,
   output: UpdateRumMetricDefinitionResponse,

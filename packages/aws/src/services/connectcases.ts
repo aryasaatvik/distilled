@@ -1,7 +1,6 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as redacted from "effect/Redacted";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -9,7 +8,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 import { SensitiveString } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "ConnectCases",
@@ -90,20 +88,20 @@ const rules = T.EndpointResolver((p, _) => {
 export class AccessDeniedException
   extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
     "AccessDeniedException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(403),
   ).pipe(C.withAuthError) {}
 export class ConflictException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
     "ConflictException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class InternalServerException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
     "InternalServerException",
     {
-      message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       retryAfterSeconds: S.optional(S.Number).pipe(T.HttpHeader("Retry-After")),
     },
     T.all(T.HttpError(500), T.Retryable()),
@@ -111,25 +109,29 @@ export class InternalServerException
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { message: S.String, resourceId: S.String, resourceType: S.String },
+    {
+      message: S.String.pipe(T.ErrorMessage()),
+      resourceId: S.String,
+      resourceType: S.String,
+    },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class ServiceQuotaExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
     "ServiceQuotaExceededException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(402),
   ).pipe(C.withQuotaError) {}
 export class ThrottlingException
   extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
     "ThrottlingException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.all(T.HttpError(429), T.Retryable()),
   ).pipe(C.withThrottlingError, C.withRetryableError) {}
 export class ValidationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
     "ValidationException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export type DomainId = string;
@@ -3018,7 +3020,7 @@ export const batchGetCaseRule: API.OperationMethod<
   BatchGetCaseRuleRequest,
   BatchGetCaseRuleResponse,
   BatchGetCaseRuleError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchGetCaseRuleRequest,
   output: BatchGetCaseRuleResponse,
@@ -3048,7 +3050,7 @@ export const batchGetField: API.OperationMethod<
   BatchGetFieldRequest,
   BatchGetFieldResponse,
   BatchGetFieldError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchGetFieldRequest,
   output: BatchGetFieldResponse,
@@ -3079,7 +3081,7 @@ export const batchPutFieldOptions: API.OperationMethod<
   BatchPutFieldOptionsRequest,
   BatchPutFieldOptionsResponse,
   BatchPutFieldOptionsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchPutFieldOptionsRequest,
   output: BatchPutFieldOptionsResponse,
@@ -3121,7 +3123,7 @@ export const createCase: API.OperationMethod<
   CreateCaseRequest,
   CreateCaseResponse,
   CreateCaseError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateCaseRequest,
   output: CreateCaseResponse,
@@ -3154,7 +3156,7 @@ export const createCaseRule: API.OperationMethod<
   CreateCaseRuleRequest,
   CreateCaseRuleResponse,
   CreateCaseRuleError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateCaseRuleRequest,
   output: CreateCaseRuleResponse,
@@ -3189,7 +3191,7 @@ export const createDomain: API.OperationMethod<
   CreateDomainRequest,
   CreateDomainResponse,
   CreateDomainError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateDomainRequest,
   output: CreateDomainResponse,
@@ -3222,7 +3224,7 @@ export const createField: API.OperationMethod<
   CreateFieldRequest,
   CreateFieldResponse,
   CreateFieldError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateFieldRequest,
   output: CreateFieldResponse,
@@ -3262,7 +3264,7 @@ export const createLayout: API.OperationMethod<
   CreateLayoutRequest,
   CreateLayoutResponse,
   CreateLayoutError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateLayoutRequest,
   output: CreateLayoutResponse,
@@ -3325,7 +3327,7 @@ export const createRelatedItem: API.OperationMethod<
   CreateRelatedItemRequest,
   CreateRelatedItemResponse,
   CreateRelatedItemError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateRelatedItemRequest,
   output: CreateRelatedItemResponse,
@@ -3368,7 +3370,7 @@ export const createTemplate: API.OperationMethod<
   CreateTemplateRequest,
   CreateTemplateResponse,
   CreateTemplateError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateTemplateRequest,
   output: CreateTemplateResponse,
@@ -3408,7 +3410,7 @@ export const deleteCase: API.OperationMethod<
   DeleteCaseRequest,
   DeleteCaseResponse,
   DeleteCaseError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteCaseRequest,
   output: DeleteCaseResponse,
@@ -3438,7 +3440,7 @@ export const deleteCaseRule: API.OperationMethod<
   DeleteCaseRuleRequest,
   DeleteCaseRuleResponse,
   DeleteCaseRuleError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteCaseRuleRequest,
   output: DeleteCaseRuleResponse,
@@ -3471,7 +3473,7 @@ export const deleteDomain: API.OperationMethod<
   DeleteDomainRequest,
   DeleteDomainResponse,
   DeleteDomainError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteDomainRequest,
   output: DeleteDomainResponse,
@@ -3530,7 +3532,7 @@ export const deleteField: API.OperationMethod<
   DeleteFieldRequest,
   DeleteFieldResponse,
   DeleteFieldError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteFieldRequest,
   output: DeleteFieldResponse,
@@ -3571,7 +3573,7 @@ export const deleteLayout: API.OperationMethod<
   DeleteLayoutRequest,
   DeleteLayoutResponse,
   DeleteLayoutError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteLayoutRequest,
   output: DeleteLayoutResponse,
@@ -3604,7 +3606,7 @@ export const deleteRelatedItem: API.OperationMethod<
   DeleteRelatedItemRequest,
   DeleteRelatedItemResponse,
   DeleteRelatedItemError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteRelatedItemRequest,
   output: DeleteRelatedItemResponse,
@@ -3645,7 +3647,7 @@ export const deleteTemplate: API.OperationMethod<
   DeleteTemplateRequest,
   DeleteTemplateResponse,
   DeleteTemplateError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteTemplateRequest,
   output: DeleteTemplateResponse,
@@ -3672,27 +3674,13 @@ export type GetCaseError =
 /**
  * Returns information about a specific case if it exists.
  */
-export const getCase: API.OperationMethod<
+export const getCase: API.PaginatedOperationMethod<
   GetCaseRequest,
   GetCaseResponse,
   GetCaseError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetCaseRequest,
-  ) => stream.Stream<
-    GetCaseResponse,
-    GetCaseError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetCaseRequest,
-  ) => stream.Stream<
-    unknown,
-    GetCaseError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetCaseRequest,
   output: GetCaseResponse,
   errors: [
@@ -3706,27 +3694,7 @@ export const getCase: API.OperationMethod<
   retry: Retry,
   operationName: "GetCase",
   pagination: { inputToken: "nextToken", outputToken: "nextToken" } as const,
-})) as any as API.OperationMethod<
-  GetCaseRequest,
-  GetCaseResponse,
-  GetCaseError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetCaseRequest,
-  ) => stream.Stream<
-    GetCaseResponse,
-    GetCaseError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetCaseRequest,
-  ) => stream.Stream<
-    unknown,
-    GetCaseError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetCaseAuditEventsError =
   | AccessDeniedException
@@ -3738,27 +3706,13 @@ export type GetCaseAuditEventsError =
 /**
  * Returns the audit history about a specific case if it exists.
  */
-export const getCaseAuditEvents: API.OperationMethod<
+export const getCaseAuditEvents: API.PaginatedOperationMethod<
   GetCaseAuditEventsRequest,
   GetCaseAuditEventsResponse,
   GetCaseAuditEventsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetCaseAuditEventsRequest,
-  ) => stream.Stream<
-    GetCaseAuditEventsResponse,
-    GetCaseAuditEventsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetCaseAuditEventsRequest,
-  ) => stream.Stream<
-    unknown,
-    GetCaseAuditEventsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetCaseAuditEventsRequest,
   output: GetCaseAuditEventsResponse,
   errors: [
@@ -3776,27 +3730,7 @@ export const getCaseAuditEvents: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetCaseAuditEventsRequest,
-  GetCaseAuditEventsResponse,
-  GetCaseAuditEventsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetCaseAuditEventsRequest,
-  ) => stream.Stream<
-    GetCaseAuditEventsResponse,
-    GetCaseAuditEventsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetCaseAuditEventsRequest,
-  ) => stream.Stream<
-    unknown,
-    GetCaseAuditEventsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetCaseEventConfigurationError =
   | AccessDeniedException
@@ -3812,7 +3746,7 @@ export const getCaseEventConfiguration: API.OperationMethod<
   GetCaseEventConfigurationRequest,
   GetCaseEventConfigurationResponse,
   GetCaseEventConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetCaseEventConfigurationRequest,
   output: GetCaseEventConfigurationResponse,
@@ -3842,7 +3776,7 @@ export const getDomain: API.OperationMethod<
   GetDomainRequest,
   GetDomainResponse,
   GetDomainError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetDomainRequest,
   output: GetDomainResponse,
@@ -3872,7 +3806,7 @@ export const getLayout: API.OperationMethod<
   GetLayoutRequest,
   GetLayoutResponse,
   GetLayoutError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetLayoutRequest,
   output: GetLayoutResponse,
@@ -3910,7 +3844,7 @@ export const getTemplate: API.OperationMethod<
   GetTemplateRequest,
   GetTemplateResponse,
   GetTemplateError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetTemplateRequest,
   output: GetTemplateResponse,
@@ -3936,27 +3870,13 @@ export type ListCaseRulesError =
 /**
  * Lists all case rules in a Cases domain. In the Amazon Connect admin website, case rules are known as *case field conditions*. For more information about case field conditions, see Add case field conditions to a case template.
  */
-export const listCaseRules: API.OperationMethod<
+export const listCaseRules: API.PaginatedOperationMethod<
   ListCaseRulesRequest,
   ListCaseRulesResponse,
   ListCaseRulesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCaseRulesRequest,
-  ) => stream.Stream<
-    ListCaseRulesResponse,
-    ListCaseRulesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCaseRulesRequest,
-  ) => stream.Stream<
-    CaseRuleSummary,
-    ListCaseRulesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  CaseRuleSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListCaseRulesRequest,
   output: ListCaseRulesResponse,
   errors: [
@@ -3975,27 +3895,7 @@ export const listCaseRules: API.OperationMethod<
     items: "caseRules",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListCaseRulesRequest,
-  ListCaseRulesResponse,
-  ListCaseRulesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCaseRulesRequest,
-  ) => stream.Stream<
-    ListCaseRulesResponse,
-    ListCaseRulesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCaseRulesRequest,
-  ) => stream.Stream<
-    CaseRuleSummary,
-    ListCaseRulesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListCasesForContactError =
   | AccessDeniedException
@@ -4007,27 +3907,13 @@ export type ListCasesForContactError =
 /**
  * Lists cases for a given contact.
  */
-export const listCasesForContact: API.OperationMethod<
+export const listCasesForContact: API.PaginatedOperationMethod<
   ListCasesForContactRequest,
   ListCasesForContactResponse,
   ListCasesForContactError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCasesForContactRequest,
-  ) => stream.Stream<
-    ListCasesForContactResponse,
-    ListCasesForContactError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCasesForContactRequest,
-  ) => stream.Stream<
-    unknown,
-    ListCasesForContactError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListCasesForContactRequest,
   output: ListCasesForContactResponse,
   errors: [
@@ -4045,27 +3931,7 @@ export const listCasesForContact: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListCasesForContactRequest,
-  ListCasesForContactResponse,
-  ListCasesForContactError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCasesForContactRequest,
-  ) => stream.Stream<
-    ListCasesForContactResponse,
-    ListCasesForContactError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCasesForContactRequest,
-  ) => stream.Stream<
-    unknown,
-    ListCasesForContactError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListDomainsError =
   | AccessDeniedException
@@ -4076,27 +3942,13 @@ export type ListDomainsError =
 /**
  * Lists all cases domains in the Amazon Web Services account. Each list item is a condensed summary object of the domain.
  */
-export const listDomains: API.OperationMethod<
+export const listDomains: API.PaginatedOperationMethod<
   ListDomainsRequest,
   ListDomainsResponse,
   ListDomainsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDomainsRequest,
-  ) => stream.Stream<
-    ListDomainsResponse,
-    ListDomainsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDomainsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListDomainsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListDomainsRequest,
   output: ListDomainsResponse,
   errors: [
@@ -4113,27 +3965,7 @@ export const listDomains: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListDomainsRequest,
-  ListDomainsResponse,
-  ListDomainsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDomainsRequest,
-  ) => stream.Stream<
-    ListDomainsResponse,
-    ListDomainsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDomainsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListDomainsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListFieldOptionsError =
   | AccessDeniedException
@@ -4145,27 +3977,13 @@ export type ListFieldOptionsError =
 /**
  * Lists all of the field options for a field identifier in the domain.
  */
-export const listFieldOptions: API.OperationMethod<
+export const listFieldOptions: API.PaginatedOperationMethod<
   ListFieldOptionsRequest,
   ListFieldOptionsResponse,
   ListFieldOptionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListFieldOptionsRequest,
-  ) => stream.Stream<
-    ListFieldOptionsResponse,
-    ListFieldOptionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListFieldOptionsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListFieldOptionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListFieldOptionsRequest,
   output: ListFieldOptionsResponse,
   errors: [
@@ -4183,27 +4001,7 @@ export const listFieldOptions: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListFieldOptionsRequest,
-  ListFieldOptionsResponse,
-  ListFieldOptionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListFieldOptionsRequest,
-  ) => stream.Stream<
-    ListFieldOptionsResponse,
-    ListFieldOptionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListFieldOptionsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListFieldOptionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListFieldsError =
   | AccessDeniedException
@@ -4215,27 +4013,13 @@ export type ListFieldsError =
 /**
  * Lists all fields in a Cases domain.
  */
-export const listFields: API.OperationMethod<
+export const listFields: API.PaginatedOperationMethod<
   ListFieldsRequest,
   ListFieldsResponse,
   ListFieldsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListFieldsRequest,
-  ) => stream.Stream<
-    ListFieldsResponse,
-    ListFieldsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListFieldsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListFieldsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListFieldsRequest,
   output: ListFieldsResponse,
   errors: [
@@ -4253,27 +4037,7 @@ export const listFields: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListFieldsRequest,
-  ListFieldsResponse,
-  ListFieldsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListFieldsRequest,
-  ) => stream.Stream<
-    ListFieldsResponse,
-    ListFieldsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListFieldsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListFieldsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListLayoutsError =
   | AccessDeniedException
@@ -4285,27 +4049,13 @@ export type ListLayoutsError =
 /**
  * Lists all layouts in the given cases domain. Each list item is a condensed summary object of the layout.
  */
-export const listLayouts: API.OperationMethod<
+export const listLayouts: API.PaginatedOperationMethod<
   ListLayoutsRequest,
   ListLayoutsResponse,
   ListLayoutsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListLayoutsRequest,
-  ) => stream.Stream<
-    ListLayoutsResponse,
-    ListLayoutsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListLayoutsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListLayoutsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListLayoutsRequest,
   output: ListLayoutsResponse,
   errors: [
@@ -4323,27 +4073,7 @@ export const listLayouts: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListLayoutsRequest,
-  ListLayoutsResponse,
-  ListLayoutsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListLayoutsRequest,
-  ) => stream.Stream<
-    ListLayoutsResponse,
-    ListLayoutsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListLayoutsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListLayoutsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsForResourceError =
   | AccessDeniedException
@@ -4359,7 +4089,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceRequest,
   ListTagsForResourceResponse,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -4395,27 +4125,13 @@ export type ListTemplatesError =
  *
  * - UpdateTemplate
  */
-export const listTemplates: API.OperationMethod<
+export const listTemplates: API.PaginatedOperationMethod<
   ListTemplatesRequest,
   ListTemplatesResponse,
   ListTemplatesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTemplatesRequest,
-  ) => stream.Stream<
-    ListTemplatesResponse,
-    ListTemplatesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTemplatesRequest,
-  ) => stream.Stream<
-    unknown,
-    ListTemplatesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListTemplatesRequest,
   output: ListTemplatesResponse,
   errors: [
@@ -4433,27 +4149,7 @@ export const listTemplates: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListTemplatesRequest,
-  ListTemplatesResponse,
-  ListTemplatesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTemplatesRequest,
-  ) => stream.Stream<
-    ListTemplatesResponse,
-    ListTemplatesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTemplatesRequest,
-  ) => stream.Stream<
-    unknown,
-    ListTemplatesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type PutCaseEventConfigurationError =
   | AccessDeniedException
@@ -4470,7 +4166,7 @@ export const putCaseEventConfiguration: API.OperationMethod<
   PutCaseEventConfigurationRequest,
   PutCaseEventConfigurationResponse,
   PutCaseEventConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutCaseEventConfigurationRequest,
   output: PutCaseEventConfigurationResponse,
@@ -4515,27 +4211,13 @@ export type SearchAllRelatedItemsError =
  *
  * **Endpoints**: See Amazon Connect endpoints and quotas.
  */
-export const searchAllRelatedItems: API.OperationMethod<
+export const searchAllRelatedItems: API.PaginatedOperationMethod<
   SearchAllRelatedItemsRequest,
   SearchAllRelatedItemsResponse,
   SearchAllRelatedItemsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: SearchAllRelatedItemsRequest,
-  ) => stream.Stream<
-    SearchAllRelatedItemsResponse,
-    SearchAllRelatedItemsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: SearchAllRelatedItemsRequest,
-  ) => stream.Stream<
-    SearchAllRelatedItemsResponseItem,
-    SearchAllRelatedItemsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  SearchAllRelatedItemsResponseItem
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: SearchAllRelatedItemsRequest,
   output: SearchAllRelatedItemsResponse,
   errors: [
@@ -4554,27 +4236,7 @@ export const searchAllRelatedItems: API.OperationMethod<
     items: "relatedItems",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  SearchAllRelatedItemsRequest,
-  SearchAllRelatedItemsResponse,
-  SearchAllRelatedItemsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: SearchAllRelatedItemsRequest,
-  ) => stream.Stream<
-    SearchAllRelatedItemsResponse,
-    SearchAllRelatedItemsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: SearchAllRelatedItemsRequest,
-  ) => stream.Stream<
-    SearchAllRelatedItemsResponseItem,
-    SearchAllRelatedItemsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type SearchCasesError =
   | AccessDeniedException
@@ -4588,27 +4250,13 @@ export type SearchCasesError =
  *
  * For `customer_id` you must provide the full customer profile ARN in this format: ` arn:aws:profile:your AWS Region:your AWS account ID:domains/profiles domain name/profiles/profile ID`.
  */
-export const searchCases: API.OperationMethod<
+export const searchCases: API.PaginatedOperationMethod<
   SearchCasesRequest,
   SearchCasesResponse,
   SearchCasesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: SearchCasesRequest,
-  ) => stream.Stream<
-    SearchCasesResponse,
-    SearchCasesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: SearchCasesRequest,
-  ) => stream.Stream<
-    SearchCasesResponseItem,
-    SearchCasesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  SearchCasesResponseItem
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: SearchCasesRequest,
   output: SearchCasesResponse,
   errors: [
@@ -4627,27 +4275,7 @@ export const searchCases: API.OperationMethod<
     items: "cases",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  SearchCasesRequest,
-  SearchCasesResponse,
-  SearchCasesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: SearchCasesRequest,
-  ) => stream.Stream<
-    SearchCasesResponse,
-    SearchCasesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: SearchCasesRequest,
-  ) => stream.Stream<
-    SearchCasesResponseItem,
-    SearchCasesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type SearchRelatedItemsError =
   | AccessDeniedException
@@ -4661,27 +4289,13 @@ export type SearchRelatedItemsError =
  *
  * If no filters are provided, this returns all related items associated with a case.
  */
-export const searchRelatedItems: API.OperationMethod<
+export const searchRelatedItems: API.PaginatedOperationMethod<
   SearchRelatedItemsRequest,
   SearchRelatedItemsResponse,
   SearchRelatedItemsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: SearchRelatedItemsRequest,
-  ) => stream.Stream<
-    SearchRelatedItemsResponse,
-    SearchRelatedItemsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: SearchRelatedItemsRequest,
-  ) => stream.Stream<
-    SearchRelatedItemsResponseItem,
-    SearchRelatedItemsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  SearchRelatedItemsResponseItem
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: SearchRelatedItemsRequest,
   output: SearchRelatedItemsResponse,
   errors: [
@@ -4700,27 +4314,7 @@ export const searchRelatedItems: API.OperationMethod<
     items: "relatedItems",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  SearchRelatedItemsRequest,
-  SearchRelatedItemsResponse,
-  SearchRelatedItemsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: SearchRelatedItemsRequest,
-  ) => stream.Stream<
-    SearchRelatedItemsResponse,
-    SearchRelatedItemsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: SearchRelatedItemsRequest,
-  ) => stream.Stream<
-    SearchRelatedItemsResponseItem,
-    SearchRelatedItemsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type TagResourceError =
   | AccessDeniedException
@@ -4736,7 +4330,7 @@ export const tagResource: API.OperationMethod<
   TagResourceRequest,
   TagResourceResponse,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -4766,7 +4360,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceRequest,
   UntagResourceResponse,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -4800,7 +4394,7 @@ export const updateCase: API.OperationMethod<
   UpdateCaseRequest,
   UpdateCaseResponse,
   UpdateCaseError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateCaseRequest,
   output: UpdateCaseResponse,
@@ -4832,7 +4426,7 @@ export const updateCaseRule: API.OperationMethod<
   UpdateCaseRuleRequest,
   UpdateCaseRuleResponse,
   UpdateCaseRuleError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateCaseRuleRequest,
   output: UpdateCaseRuleResponse,
@@ -4865,7 +4459,7 @@ export const updateField: API.OperationMethod<
   UpdateFieldRequest,
   UpdateFieldResponse,
   UpdateFieldError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateFieldRequest,
   output: UpdateFieldResponse,
@@ -4904,7 +4498,7 @@ export const updateLayout: API.OperationMethod<
   UpdateLayoutRequest,
   UpdateLayoutResponse,
   UpdateLayoutError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateLayoutRequest,
   output: UpdateLayoutResponse,
@@ -4951,7 +4545,7 @@ export const updateRelatedItem: API.OperationMethod<
   UpdateRelatedItemRequest,
   UpdateRelatedItemResponse,
   UpdateRelatedItemError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateRelatedItemRequest,
   output: UpdateRelatedItemResponse,
@@ -4994,7 +4588,7 @@ export const updateTemplate: API.OperationMethod<
   UpdateTemplateRequest,
   UpdateTemplateResponse,
   UpdateTemplateError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateTemplateRequest,
   output: UpdateTemplateResponse,

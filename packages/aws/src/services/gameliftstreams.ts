@@ -1,7 +1,6 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as redacted from "effect/Redacted";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -9,7 +8,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 import { SensitiveString } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "GameLiftStreams",
@@ -57,43 +55,43 @@ const rules = T.EndpointResolver((p, _) => {
 export class AccessDeniedException
   extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
     "AccessDeniedException",
-    { Message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(403),
   ).pipe(C.withAuthError) {}
 export class ConflictException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
     "ConflictException",
-    { Message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class InternalServerException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
     "InternalServerException",
-    { Message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.all(T.HttpError(500), T.Retryable()),
   ).pipe(C.withServerError, C.withRetryableError) {}
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { Message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class ServiceQuotaExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
     "ServiceQuotaExceededException",
-    { Message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(402),
   ).pipe(C.withQuotaError) {}
 export class ThrottlingException
   extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
     "ThrottlingException",
-    { Message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.all(T.HttpError(429), T.Retryable({ throttling: true })),
   ).pipe(C.withThrottlingError, C.withRetryableError) {}
 export class ValidationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
     "ValidationException",
-    { Message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export type Identifier = string;
@@ -1514,7 +1512,7 @@ export const addStreamGroupLocations: API.OperationMethod<
   AddStreamGroupLocationsInput,
   AddStreamGroupLocationsOutput,
   AddStreamGroupLocationsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AddStreamGroupLocationsInput,
   output: AddStreamGroupLocationsOutput,
@@ -1548,7 +1546,7 @@ export const associateApplications: API.OperationMethod<
   AssociateApplicationsInput,
   AssociateApplicationsOutput,
   AssociateApplicationsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AssociateApplicationsInput,
   output: AssociateApplicationsOutput,
@@ -1586,7 +1584,7 @@ export const createApplication: API.OperationMethod<
   CreateApplicationInput,
   CreateApplicationOutput,
   CreateApplicationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateApplicationInput,
   output: CreateApplicationOutput,
@@ -1635,7 +1633,7 @@ export const createStreamGroup: API.OperationMethod<
   CreateStreamGroupInput,
   CreateStreamGroupOutput,
   CreateStreamGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateStreamGroupInput,
   output: CreateStreamGroupOutput,
@@ -1694,7 +1692,7 @@ export const createStreamSessionConnection: API.OperationMethod<
   CreateStreamSessionConnectionInput,
   CreateStreamSessionConnectionOutput,
   CreateStreamSessionConnectionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateStreamSessionConnectionInput,
   output: CreateStreamSessionConnectionOutput,
@@ -1738,7 +1736,7 @@ export const deleteApplication: API.OperationMethod<
   DeleteApplicationInput,
   DeleteApplicationResponse,
   DeleteApplicationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteApplicationInput,
   output: DeleteApplicationResponse,
@@ -1770,7 +1768,7 @@ export const deleteStreamGroup: API.OperationMethod<
   DeleteStreamGroupInput,
   DeleteStreamGroupResponse,
   DeleteStreamGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteStreamGroupInput,
   output: DeleteStreamGroupResponse,
@@ -1803,7 +1801,7 @@ export const disassociateApplications: API.OperationMethod<
   DisassociateApplicationsInput,
   DisassociateApplicationsOutput,
   DisassociateApplicationsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DisassociateApplicationsInput,
   output: DisassociateApplicationsOutput,
@@ -1847,7 +1845,7 @@ export const exportStreamSessionFiles: API.OperationMethod<
   ExportStreamSessionFilesInput,
   ExportStreamSessionFilesOutput,
   ExportStreamSessionFilesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ExportStreamSessionFilesInput,
   output: ExportStreamSessionFilesOutput,
@@ -1877,7 +1875,7 @@ export const getApplication: API.OperationMethod<
   GetApplicationInput,
   GetApplicationOutput,
   GetApplicationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetApplicationInput,
   output: GetApplicationOutput,
@@ -1907,7 +1905,7 @@ export const getStreamGroup: API.OperationMethod<
   GetStreamGroupInput,
   GetStreamGroupOutput,
   GetStreamGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetStreamGroupInput,
   output: GetStreamGroupOutput,
@@ -1937,7 +1935,7 @@ export const getStreamSession: API.OperationMethod<
   GetStreamSessionInput,
   GetStreamSessionOutput,
   GetStreamSessionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetStreamSessionInput,
   output: GetStreamSessionOutput,
@@ -1962,27 +1960,13 @@ export type ListApplicationsError =
 /**
  * Retrieves a list of all Amazon GameLift Streams applications that are associated with the Amazon Web Services account in use. This operation returns applications in all statuses, in no particular order. You can paginate the results as needed.
  */
-export const listApplications: API.OperationMethod<
+export const listApplications: API.PaginatedOperationMethod<
   ListApplicationsInput,
   ListApplicationsOutput,
   ListApplicationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListApplicationsInput,
-  ) => stream.Stream<
-    ListApplicationsOutput,
-    ListApplicationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListApplicationsInput,
-  ) => stream.Stream<
-    ApplicationSummary,
-    ListApplicationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ApplicationSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListApplicationsInput,
   output: ListApplicationsOutput,
   errors: [
@@ -2000,27 +1984,7 @@ export const listApplications: API.OperationMethod<
     items: "Items",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListApplicationsInput,
-  ListApplicationsOutput,
-  ListApplicationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListApplicationsInput,
-  ) => stream.Stream<
-    ListApplicationsOutput,
-    ListApplicationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListApplicationsInput,
-  ) => stream.Stream<
-    ApplicationSummary,
-    ListApplicationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListStreamGroupsError =
   | AccessDeniedException
@@ -2031,27 +1995,13 @@ export type ListStreamGroupsError =
 /**
  * Retrieves a list of all Amazon GameLift Streams stream groups that are associated with the Amazon Web Services account in use. This operation returns stream groups in all statuses, in no particular order. You can paginate the results as needed.
  */
-export const listStreamGroups: API.OperationMethod<
+export const listStreamGroups: API.PaginatedOperationMethod<
   ListStreamGroupsInput,
   ListStreamGroupsOutput,
   ListStreamGroupsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListStreamGroupsInput,
-  ) => stream.Stream<
-    ListStreamGroupsOutput,
-    ListStreamGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListStreamGroupsInput,
-  ) => stream.Stream<
-    StreamGroupSummary,
-    ListStreamGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  StreamGroupSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListStreamGroupsInput,
   output: ListStreamGroupsOutput,
   errors: [
@@ -2069,27 +2019,7 @@ export const listStreamGroups: API.OperationMethod<
     items: "Items",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListStreamGroupsInput,
-  ListStreamGroupsOutput,
-  ListStreamGroupsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListStreamGroupsInput,
-  ) => stream.Stream<
-    ListStreamGroupsOutput,
-    ListStreamGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListStreamGroupsInput,
-  ) => stream.Stream<
-    StreamGroupSummary,
-    ListStreamGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListStreamSessionsError =
   | AccessDeniedException
@@ -2105,27 +2035,13 @@ export type ListStreamSessionsError =
  *
  * This operation returns the requested stream sessions in no particular order.
  */
-export const listStreamSessions: API.OperationMethod<
+export const listStreamSessions: API.PaginatedOperationMethod<
   ListStreamSessionsInput,
   ListStreamSessionsOutput,
   ListStreamSessionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListStreamSessionsInput,
-  ) => stream.Stream<
-    ListStreamSessionsOutput,
-    ListStreamSessionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListStreamSessionsInput,
-  ) => stream.Stream<
-    StreamSessionSummary,
-    ListStreamSessionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  StreamSessionSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListStreamSessionsInput,
   output: ListStreamSessionsOutput,
   errors: [
@@ -2144,27 +2060,7 @@ export const listStreamSessions: API.OperationMethod<
     items: "Items",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListStreamSessionsInput,
-  ListStreamSessionsOutput,
-  ListStreamSessionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListStreamSessionsInput,
-  ) => stream.Stream<
-    ListStreamSessionsOutput,
-    ListStreamSessionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListStreamSessionsInput,
-  ) => stream.Stream<
-    StreamSessionSummary,
-    ListStreamSessionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListStreamSessionsByAccountError =
   | AccessDeniedException
@@ -2179,27 +2075,13 @@ export type ListStreamSessionsByAccountError =
  *
  * We don't recommend using this operation to regularly check stream session statuses because it's costly. Instead, to check status updates for a specific stream session, use GetStreamSession.
  */
-export const listStreamSessionsByAccount: API.OperationMethod<
+export const listStreamSessionsByAccount: API.PaginatedOperationMethod<
   ListStreamSessionsByAccountInput,
   ListStreamSessionsByAccountOutput,
   ListStreamSessionsByAccountError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListStreamSessionsByAccountInput,
-  ) => stream.Stream<
-    ListStreamSessionsByAccountOutput,
-    ListStreamSessionsByAccountError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListStreamSessionsByAccountInput,
-  ) => stream.Stream<
-    StreamSessionSummary,
-    ListStreamSessionsByAccountError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  StreamSessionSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListStreamSessionsByAccountInput,
   output: ListStreamSessionsByAccountOutput,
   errors: [
@@ -2217,27 +2099,7 @@ export const listStreamSessionsByAccount: API.OperationMethod<
     items: "Items",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListStreamSessionsByAccountInput,
-  ListStreamSessionsByAccountOutput,
-  ListStreamSessionsByAccountError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListStreamSessionsByAccountInput,
-  ) => stream.Stream<
-    ListStreamSessionsByAccountOutput,
-    ListStreamSessionsByAccountError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListStreamSessionsByAccountInput,
-  ) => stream.Stream<
-    StreamSessionSummary,
-    ListStreamSessionsByAccountError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsForResourceError =
   | AccessDeniedException
@@ -2258,7 +2120,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceRequest,
   ListTagsForResourceResponse,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -2289,7 +2151,7 @@ export const removeStreamGroupLocations: API.OperationMethod<
   RemoveStreamGroupLocationsInput,
   RemoveStreamGroupLocationsResponse,
   RemoveStreamGroupLocationsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RemoveStreamGroupLocationsInput,
   output: RemoveStreamGroupLocationsResponse,
@@ -2374,7 +2236,7 @@ export const startStreamSession: API.OperationMethod<
   StartStreamSessionInput,
   StartStreamSessionOutput,
   StartStreamSessionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartStreamSessionInput,
   output: StartStreamSessionOutput,
@@ -2414,7 +2276,7 @@ export const tagResource: API.OperationMethod<
   TagResourceRequest,
   TagResourceResponse,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -2443,7 +2305,7 @@ export const terminateStreamSession: API.OperationMethod<
   TerminateStreamSessionInput,
   TerminateStreamSessionResponse,
   TerminateStreamSessionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TerminateStreamSessionInput,
   output: TerminateStreamSessionResponse,
@@ -2472,7 +2334,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceRequest,
   UntagResourceResponse,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -2503,7 +2365,7 @@ export const updateApplication: API.OperationMethod<
   UpdateApplicationInput,
   UpdateApplicationOutput,
   UpdateApplicationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateApplicationInput,
   output: UpdateApplicationOutput,
@@ -2547,7 +2409,7 @@ export const updateStreamGroup: API.OperationMethod<
   UpdateStreamGroupInput,
   UpdateStreamGroupOutput,
   UpdateStreamGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateStreamGroupInput,
   output: UpdateStreamGroupOutput,

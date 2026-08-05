@@ -1,6 +1,5 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -8,7 +7,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 const svc = T.AwsApiService({
   sdkId: "EFS",
   serviceShapeName: "MagnolioAPIService_v20150201",
@@ -144,7 +142,7 @@ export class AccessPointAlreadyExists
     "AccessPointAlreadyExists",
     {
       ErrorCode: S.String,
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       AccessPointId: S.String,
     },
     T.HttpError(409),
@@ -152,37 +150,55 @@ export class AccessPointAlreadyExists
 export class AccessPointLimitExceeded
   extends /*@__PURE__*/ S.TaggedErrorClass<AccessPointLimitExceeded>()(
     "AccessPointLimitExceeded",
-    { ErrorCode: S.String, Message: S.optional(S.String) },
+    {
+      ErrorCode: S.String,
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(403),
   ).pipe(C.withAuthError, C.withThrottlingError) {}
 export class AccessPointNotFound
   extends /*@__PURE__*/ S.TaggedErrorClass<AccessPointNotFound>()(
     "AccessPointNotFound",
-    { ErrorCode: S.String, Message: S.optional(S.String) },
+    {
+      ErrorCode: S.String,
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class AvailabilityZonesMismatch
   extends /*@__PURE__*/ S.TaggedErrorClass<AvailabilityZonesMismatch>()(
     "AvailabilityZonesMismatch",
-    { ErrorCode: S.optional(S.String), Message: S.optional(S.String) },
+    {
+      ErrorCode: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class BadRequest
   extends /*@__PURE__*/ S.TaggedErrorClass<BadRequest>()(
     "BadRequest",
-    { ErrorCode: S.String, Message: S.optional(S.String) },
+    {
+      ErrorCode: S.String,
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class ConflictException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
     "ConflictException",
-    { ErrorCode: S.optional(S.String), Message: S.optional(S.String) },
+    {
+      ErrorCode: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class DependencyTimeout
   extends /*@__PURE__*/ S.TaggedErrorClass<DependencyTimeout>()(
     "DependencyTimeout",
-    { ErrorCode: S.String, Message: S.optional(S.String) },
+    {
+      ErrorCode: S.String,
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(504),
   ).pipe(C.withTimeoutError) {}
 export class FileSystemAlreadyExists
@@ -190,7 +206,7 @@ export class FileSystemAlreadyExists
     "FileSystemAlreadyExists",
     {
       ErrorCode: S.String,
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       FileSystemId: S.String,
     },
     T.HttpError(409),
@@ -198,145 +214,217 @@ export class FileSystemAlreadyExists
 export class FileSystemInUse
   extends /*@__PURE__*/ S.TaggedErrorClass<FileSystemInUse>()(
     "FileSystemInUse",
-    { ErrorCode: S.String, Message: S.optional(S.String) },
+    {
+      ErrorCode: S.String,
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(409),
   ).pipe(C.withConflictError, C.withDependencyViolationError) {}
 export class FileSystemLimitExceeded
   extends /*@__PURE__*/ S.TaggedErrorClass<FileSystemLimitExceeded>()(
     "FileSystemLimitExceeded",
-    { ErrorCode: S.String, Message: S.optional(S.String) },
+    {
+      ErrorCode: S.String,
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(403),
   ).pipe(C.withAuthError, C.withThrottlingError) {}
 export class FileSystemNotFound
   extends /*@__PURE__*/ S.TaggedErrorClass<FileSystemNotFound>()(
     "FileSystemNotFound",
-    { ErrorCode: S.String, Message: S.optional(S.String) },
+    {
+      ErrorCode: S.String,
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class IncorrectFileSystemLifeCycleState
   extends /*@__PURE__*/ S.TaggedErrorClass<IncorrectFileSystemLifeCycleState>()(
     "IncorrectFileSystemLifeCycleState",
-    { ErrorCode: S.String, Message: S.optional(S.String) },
+    {
+      ErrorCode: S.String,
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class IncorrectMountTargetState
   extends /*@__PURE__*/ S.TaggedErrorClass<IncorrectMountTargetState>()(
     "IncorrectMountTargetState",
-    { ErrorCode: S.String, Message: S.optional(S.String) },
+    {
+      ErrorCode: S.String,
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class InsufficientThroughputCapacity
   extends /*@__PURE__*/ S.TaggedErrorClass<InsufficientThroughputCapacity>()(
     "InsufficientThroughputCapacity",
-    { ErrorCode: S.String, Message: S.optional(S.String) },
+    {
+      ErrorCode: S.String,
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(503),
   ).pipe(C.withServerError) {}
 export class InternalServerError
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerError>()(
     "InternalServerError",
-    { ErrorCode: S.String, Message: S.optional(S.String) },
+    {
+      ErrorCode: S.String,
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(500),
   ).pipe(C.withServerError) {}
 export class InvalidPolicyException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidPolicyException>()(
     "InvalidPolicyException",
-    { ErrorCode: S.optional(S.String), Message: S.optional(S.String) },
+    {
+      ErrorCode: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class IpAddressInUse
   extends /*@__PURE__*/ S.TaggedErrorClass<IpAddressInUse>()(
     "IpAddressInUse",
-    { ErrorCode: S.String, Message: S.optional(S.String) },
+    {
+      ErrorCode: S.String,
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(409),
   ).pipe(C.withConflictError, C.withDependencyViolationError) {}
 export class MountTargetConflict
   extends /*@__PURE__*/ S.TaggedErrorClass<MountTargetConflict>()(
     "MountTargetConflict",
-    { ErrorCode: S.String, Message: S.optional(S.String) },
+    {
+      ErrorCode: S.String,
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class MountTargetNotFound
   extends /*@__PURE__*/ S.TaggedErrorClass<MountTargetNotFound>()(
     "MountTargetNotFound",
-    { ErrorCode: S.String, Message: S.optional(S.String) },
+    {
+      ErrorCode: S.String,
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class NetworkInterfaceLimitExceeded
   extends /*@__PURE__*/ S.TaggedErrorClass<NetworkInterfaceLimitExceeded>()(
     "NetworkInterfaceLimitExceeded",
-    { ErrorCode: S.String, Message: S.optional(S.String) },
+    {
+      ErrorCode: S.String,
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(409),
   ).pipe(C.withConflictError, C.withThrottlingError) {}
 export class NoFreeAddressesInSubnet
   extends /*@__PURE__*/ S.TaggedErrorClass<NoFreeAddressesInSubnet>()(
     "NoFreeAddressesInSubnet",
-    { ErrorCode: S.String, Message: S.optional(S.String) },
+    {
+      ErrorCode: S.String,
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class PolicyNotFound
   extends /*@__PURE__*/ S.TaggedErrorClass<PolicyNotFound>()(
     "PolicyNotFound",
-    { ErrorCode: S.optional(S.String), Message: S.optional(S.String) },
+    {
+      ErrorCode: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class ReplicationAlreadyExists
   extends /*@__PURE__*/ S.TaggedErrorClass<ReplicationAlreadyExists>()(
     "ReplicationAlreadyExists",
-    { ErrorCode: S.optional(S.String), Message: S.optional(S.String) },
+    {
+      ErrorCode: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(409),
   ).pipe(C.withConflictError, C.withAlreadyExistsError) {}
 export class ReplicationNotFound
   extends /*@__PURE__*/ S.TaggedErrorClass<ReplicationNotFound>()(
     "ReplicationNotFound",
-    { ErrorCode: S.optional(S.String), Message: S.optional(S.String) },
+    {
+      ErrorCode: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class SecurityGroupLimitExceeded
   extends /*@__PURE__*/ S.TaggedErrorClass<SecurityGroupLimitExceeded>()(
     "SecurityGroupLimitExceeded",
-    { ErrorCode: S.String, Message: S.optional(S.String) },
+    {
+      ErrorCode: S.String,
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(400),
   ).pipe(C.withBadRequestError, C.withThrottlingError) {}
 export class SecurityGroupNotFound
   extends /*@__PURE__*/ S.TaggedErrorClass<SecurityGroupNotFound>()(
     "SecurityGroupNotFound",
-    { ErrorCode: S.String, Message: S.optional(S.String) },
+    {
+      ErrorCode: S.String,
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class SubnetNotFound
   extends /*@__PURE__*/ S.TaggedErrorClass<SubnetNotFound>()(
     "SubnetNotFound",
-    { ErrorCode: S.String, Message: S.optional(S.String) },
+    {
+      ErrorCode: S.String,
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class ThrottlingException
   extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
     "ThrottlingException",
-    { ErrorCode: S.optional(S.String), Message: S.optional(S.String) },
+    {
+      ErrorCode: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(429),
   ).pipe(C.withThrottlingError) {}
 export class ThroughputLimitExceeded
   extends /*@__PURE__*/ S.TaggedErrorClass<ThroughputLimitExceeded>()(
     "ThroughputLimitExceeded",
-    { ErrorCode: S.String, Message: S.optional(S.String) },
+    {
+      ErrorCode: S.String,
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(400),
   ).pipe(C.withBadRequestError, C.withThrottlingError) {}
 export class TooManyRequests
   extends /*@__PURE__*/ S.TaggedErrorClass<TooManyRequests>()(
     "TooManyRequests",
-    { ErrorCode: S.String, Message: S.optional(S.String) },
+    {
+      ErrorCode: S.String,
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(429),
   ).pipe(C.withThrottlingError) {}
 export class UnsupportedAvailabilityZone
   extends /*@__PURE__*/ S.TaggedErrorClass<UnsupportedAvailabilityZone>()(
     "UnsupportedAvailabilityZone",
-    { ErrorCode: S.String, Message: S.optional(S.String) },
+    {
+      ErrorCode: S.String,
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class ValidationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
     "ValidationException",
-    { ErrorCode: S.String, Message: S.optional(S.String) },
+    {
+      ErrorCode: S.String,
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export type ClientToken = string;
@@ -1729,7 +1817,7 @@ export const createAccessPoint: API.OperationMethod<
   CreateAccessPointRequest,
   AccessPointDescription,
   CreateAccessPointError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateAccessPointRequest,
   output: AccessPointDescription,
@@ -1823,7 +1911,7 @@ export const createFileSystem: API.OperationMethod<
   CreateFileSystemRequest,
   FileSystemDescription,
   CreateFileSystemError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateFileSystemRequest,
   output: FileSystemDescription,
@@ -1974,7 +2062,7 @@ export const createMountTarget: API.OperationMethod<
   CreateMountTargetRequest,
   MountTargetDescription,
   CreateMountTargetError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateMountTargetRequest,
   output: MountTargetDescription,
@@ -2039,7 +2127,7 @@ export const createReplicationConfiguration: API.OperationMethod<
   CreateReplicationConfigurationRequest,
   ReplicationConfigurationDescription,
   CreateReplicationConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateReplicationConfigurationRequest,
   output: ReplicationConfigurationDescription,
@@ -2082,7 +2170,7 @@ export const createTags: API.OperationMethod<
   CreateTagsRequest,
   CreateTagsResponse,
   CreateTagsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateTagsRequest,
   output: CreateTagsResponse,
@@ -2108,7 +2196,7 @@ export const deleteAccessPoint: API.OperationMethod<
   DeleteAccessPointRequest,
   DeleteAccessPointResponse,
   DeleteAccessPointError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteAccessPointRequest,
   output: DeleteAccessPointResponse,
@@ -2151,7 +2239,7 @@ export const deleteFileSystem: API.OperationMethod<
   DeleteFileSystemRequest,
   DeleteFileSystemResponse,
   DeleteFileSystemError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteFileSystemRequest,
   output: DeleteFileSystemResponse,
@@ -2183,7 +2271,7 @@ export const deleteFileSystemPolicy: API.OperationMethod<
   DeleteFileSystemPolicyRequest,
   DeleteFileSystemPolicyResponse,
   DeleteFileSystemPolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteFileSystemPolicyRequest,
   output: DeleteFileSystemPolicyResponse,
@@ -2233,7 +2321,7 @@ export const deleteMountTarget: API.OperationMethod<
   DeleteMountTargetRequest,
   DeleteMountTargetResponse,
   DeleteMountTargetError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteMountTargetRequest,
   output: DeleteMountTargetResponse,
@@ -2267,7 +2355,7 @@ export const deleteReplicationConfiguration: API.OperationMethod<
   DeleteReplicationConfigurationRequest,
   DeleteReplicationConfigurationResponse,
   DeleteReplicationConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteReplicationConfigurationRequest,
   output: DeleteReplicationConfigurationResponse,
@@ -2303,7 +2391,7 @@ export const deleteTags: API.OperationMethod<
   DeleteTagsRequest,
   DeleteTagsResponse,
   DeleteTagsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteTagsRequest,
   output: DeleteTagsResponse,
@@ -2328,27 +2416,13 @@ export type DescribeAccessPointsError =
  *
  * This operation requires permissions for the `elasticfilesystem:DescribeAccessPoints` action.
  */
-export const describeAccessPoints: API.OperationMethod<
+export const describeAccessPoints: API.PaginatedOperationMethod<
   DescribeAccessPointsRequest,
   DescribeAccessPointsResponse,
   DescribeAccessPointsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeAccessPointsRequest,
-  ) => stream.Stream<
-    DescribeAccessPointsResponse,
-    DescribeAccessPointsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeAccessPointsRequest,
-  ) => stream.Stream<
-    AccessPointDescription,
-    DescribeAccessPointsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  AccessPointDescription
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeAccessPointsRequest,
   output: DescribeAccessPointsResponse,
   errors: [
@@ -2366,27 +2440,7 @@ export const describeAccessPoints: API.OperationMethod<
     items: "AccessPoints",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeAccessPointsRequest,
-  DescribeAccessPointsResponse,
-  DescribeAccessPointsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeAccessPointsRequest,
-  ) => stream.Stream<
-    DescribeAccessPointsResponse,
-    DescribeAccessPointsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeAccessPointsRequest,
-  ) => stream.Stream<
-    AccessPointDescription,
-    DescribeAccessPointsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeAccountPreferencesError =
   | InternalServerError
@@ -2398,7 +2452,7 @@ export const describeAccountPreferences: API.OperationMethod<
   DescribeAccountPreferencesRequest,
   DescribeAccountPreferencesResponse,
   DescribeAccountPreferencesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeAccountPreferencesRequest,
   output: DescribeAccountPreferencesResponse,
@@ -2422,7 +2476,7 @@ export const describeBackupPolicy: API.OperationMethod<
   DescribeBackupPolicyRequest,
   BackupPolicyDescription,
   DescribeBackupPolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeBackupPolicyRequest,
   output: BackupPolicyDescription,
@@ -2454,7 +2508,7 @@ export const describeFileSystemPolicy: API.OperationMethod<
   DescribeFileSystemPolicyRequest,
   FileSystemPolicyDescription,
   DescribeFileSystemPolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeFileSystemPolicyRequest,
   output: FileSystemPolicyDescription,
@@ -2495,27 +2549,13 @@ export type DescribeFileSystemsError =
  * This operation requires permissions for the
  * `elasticfilesystem:DescribeFileSystems` action.
  */
-export const describeFileSystems: API.OperationMethod<
+export const describeFileSystems: API.PaginatedOperationMethod<
   DescribeFileSystemsRequest,
   DescribeFileSystemsResponse,
   DescribeFileSystemsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeFileSystemsRequest,
-  ) => stream.Stream<
-    DescribeFileSystemsResponse,
-    DescribeFileSystemsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeFileSystemsRequest,
-  ) => stream.Stream<
-    FileSystemDescription,
-    DescribeFileSystemsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  FileSystemDescription
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeFileSystemsRequest,
   output: DescribeFileSystemsResponse,
   errors: [BadRequest, FileSystemNotFound, InternalServerError],
@@ -2528,27 +2568,7 @@ export const describeFileSystems: API.OperationMethod<
     items: "FileSystems",
     pageSize: "MaxItems",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeFileSystemsRequest,
-  DescribeFileSystemsResponse,
-  DescribeFileSystemsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeFileSystemsRequest,
-  ) => stream.Stream<
-    DescribeFileSystemsResponse,
-    DescribeFileSystemsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeFileSystemsRequest,
-  ) => stream.Stream<
-    FileSystemDescription,
-    DescribeFileSystemsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeLifecycleConfigurationError =
   | BadRequest
@@ -2569,7 +2589,7 @@ export const describeLifecycleConfiguration: API.OperationMethod<
   DescribeLifecycleConfigurationRequest,
   LifecycleConfigurationDescription,
   DescribeLifecycleConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeLifecycleConfigurationRequest,
   output: LifecycleConfigurationDescription,
@@ -2596,27 +2616,13 @@ export type DescribeMountTargetsError =
  * that you specify in `FileSystemId`, or on the file system of the mount target that
  * you specify in `MountTargetId`.
  */
-export const describeMountTargets: API.OperationMethod<
+export const describeMountTargets: API.PaginatedOperationMethod<
   DescribeMountTargetsRequest,
   DescribeMountTargetsResponse,
   DescribeMountTargetsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeMountTargetsRequest,
-  ) => stream.Stream<
-    DescribeMountTargetsResponse,
-    DescribeMountTargetsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeMountTargetsRequest,
-  ) => stream.Stream<
-    MountTargetDescription,
-    DescribeMountTargetsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  MountTargetDescription
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeMountTargetsRequest,
   output: DescribeMountTargetsResponse,
   errors: [
@@ -2635,27 +2641,7 @@ export const describeMountTargets: API.OperationMethod<
     items: "MountTargets",
     pageSize: "MaxItems",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeMountTargetsRequest,
-  DescribeMountTargetsResponse,
-  DescribeMountTargetsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeMountTargetsRequest,
-  ) => stream.Stream<
-    DescribeMountTargetsResponse,
-    DescribeMountTargetsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeMountTargetsRequest,
-  ) => stream.Stream<
-    MountTargetDescription,
-    DescribeMountTargetsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeMountTargetSecurityGroupsError =
   | BadRequest
@@ -2680,7 +2666,7 @@ export const describeMountTargetSecurityGroups: API.OperationMethod<
   DescribeMountTargetSecurityGroupsRequest,
   DescribeMountTargetSecurityGroupsResponse,
   DescribeMountTargetSecurityGroupsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeMountTargetSecurityGroupsRequest,
   output: DescribeMountTargetSecurityGroupsResponse,
@@ -2707,27 +2693,13 @@ export type DescribeReplicationConfigurationsError =
  * not specified, all of the replication configurations for the Amazon Web Services account in an
  * Amazon Web Services Region are retrieved.
  */
-export const describeReplicationConfigurations: API.OperationMethod<
+export const describeReplicationConfigurations: API.PaginatedOperationMethod<
   DescribeReplicationConfigurationsRequest,
   DescribeReplicationConfigurationsResponse,
   DescribeReplicationConfigurationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeReplicationConfigurationsRequest,
-  ) => stream.Stream<
-    DescribeReplicationConfigurationsResponse,
-    DescribeReplicationConfigurationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeReplicationConfigurationsRequest,
-  ) => stream.Stream<
-    ReplicationConfigurationDescription,
-    DescribeReplicationConfigurationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ReplicationConfigurationDescription
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeReplicationConfigurationsRequest,
   output: DescribeReplicationConfigurationsResponse,
   errors: [
@@ -2746,27 +2718,7 @@ export const describeReplicationConfigurations: API.OperationMethod<
     items: "Replications",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeReplicationConfigurationsRequest,
-  DescribeReplicationConfigurationsResponse,
-  DescribeReplicationConfigurationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeReplicationConfigurationsRequest,
-  ) => stream.Stream<
-    DescribeReplicationConfigurationsResponse,
-    DescribeReplicationConfigurationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeReplicationConfigurationsRequest,
-  ) => stream.Stream<
-    ReplicationConfigurationDescription,
-    DescribeReplicationConfigurationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeTagsError =
   | BadRequest
@@ -2785,27 +2737,13 @@ export type DescribeTagsError =
  * This operation requires permissions for the
  * `elasticfilesystem:DescribeTags` action.
  */
-export const describeTags: API.OperationMethod<
+export const describeTags: API.PaginatedOperationMethod<
   DescribeTagsRequest,
   DescribeTagsResponse,
   DescribeTagsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeTagsRequest,
-  ) => stream.Stream<
-    DescribeTagsResponse,
-    DescribeTagsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeTagsRequest,
-  ) => stream.Stream<
-    Tag,
-    DescribeTagsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Tag
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeTagsRequest,
   output: DescribeTagsResponse,
   errors: [BadRequest, FileSystemNotFound, InternalServerError],
@@ -2818,27 +2756,7 @@ export const describeTags: API.OperationMethod<
     items: "Tags",
     pageSize: "MaxItems",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeTagsRequest,
-  DescribeTagsResponse,
-  DescribeTagsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeTagsRequest,
-  ) => stream.Stream<
-    DescribeTagsResponse,
-    DescribeTagsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeTagsRequest,
-  ) => stream.Stream<
-    Tag,
-    DescribeTagsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsForResourceError =
   | AccessPointNotFound
@@ -2852,27 +2770,13 @@ export type ListTagsForResourceError =
  *
  * This operation requires permissions for the `elasticfilesystem:DescribeAccessPoints` action.
  */
-export const listTagsForResource: API.OperationMethod<
+export const listTagsForResource: API.PaginatedOperationMethod<
   ListTagsForResourceRequest,
   ListTagsForResourceResponse,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTagsForResourceRequest,
-  ) => stream.Stream<
-    ListTagsForResourceResponse,
-    ListTagsForResourceError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTagsForResourceRequest,
-  ) => stream.Stream<
-    unknown,
-    ListTagsForResourceError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
   errors: [
@@ -2889,27 +2793,7 @@ export const listTagsForResource: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListTagsForResourceRequest,
-  ListTagsForResourceResponse,
-  ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTagsForResourceRequest,
-  ) => stream.Stream<
-    ListTagsForResourceResponse,
-    ListTagsForResourceError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTagsForResourceRequest,
-  ) => stream.Stream<
-    unknown,
-    ListTagsForResourceError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ModifyMountTargetSecurityGroupsError =
   | BadRequest
@@ -2941,7 +2825,7 @@ export const modifyMountTargetSecurityGroups: API.OperationMethod<
   ModifyMountTargetSecurityGroupsRequest,
   ModifyMountTargetSecurityGroupsResponse,
   ModifyMountTargetSecurityGroupsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ModifyMountTargetSecurityGroupsRequest,
   output: ModifyMountTargetSecurityGroupsResponse,
@@ -2977,7 +2861,7 @@ export const putAccountPreferences: API.OperationMethod<
   PutAccountPreferencesRequest,
   PutAccountPreferencesResponse,
   PutAccountPreferencesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutAccountPreferencesRequest,
   output: PutAccountPreferencesResponse,
@@ -3001,7 +2885,7 @@ export const putBackupPolicy: API.OperationMethod<
   PutBackupPolicyRequest,
   BackupPolicyDescription,
   PutBackupPolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutBackupPolicyRequest,
   output: BackupPolicyDescription,
@@ -3042,7 +2926,7 @@ export const putFileSystemPolicy: API.OperationMethod<
   PutFileSystemPolicyRequest,
   FileSystemPolicyDescription,
   PutFileSystemPolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutFileSystemPolicyRequest,
   output: FileSystemPolicyDescription,
@@ -3123,7 +3007,7 @@ export const putLifecycleConfiguration: API.OperationMethod<
   PutLifecycleConfigurationRequest,
   LifecycleConfigurationDescription,
   PutLifecycleConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutLifecycleConfigurationRequest,
   output: LifecycleConfigurationDescription,
@@ -3154,7 +3038,7 @@ export const tagResource: API.OperationMethod<
   TagResourceRequest,
   TagResourceResponse,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -3185,7 +3069,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceRequest,
   UntagResourceResponse,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -3217,7 +3101,7 @@ export const updateFileSystem: API.OperationMethod<
   UpdateFileSystemRequest,
   FileSystemDescription,
   UpdateFileSystemError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateFileSystemRequest,
   output: FileSystemDescription,
@@ -3255,7 +3139,7 @@ export const updateFileSystemProtection: API.OperationMethod<
   UpdateFileSystemProtectionRequest,
   FileSystemProtectionDescription,
   UpdateFileSystemProtectionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateFileSystemProtectionRequest,
   output: FileSystemProtectionDescription,

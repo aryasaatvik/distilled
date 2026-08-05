@@ -1,6 +1,5 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -8,7 +7,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 const svc = T.AwsApiService({
   sdkId: "NetworkManager",
   serviceShapeName: "NetworkManager",
@@ -160,20 +158,24 @@ const rules = T.EndpointResolver((p, _) => {
 export class AccessDeniedException
   extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
     "AccessDeniedException",
-    { Message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(403),
   ).pipe(C.withAuthError) {}
 export class ConflictException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
     "ConflictException",
-    { Message: S.String, ResourceId: S.String, ResourceType: S.String },
+    {
+      message: S.String.pipe(T.ErrorMessage()),
+      ResourceId: S.String,
+      ResourceType: S.String,
+    },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class CoreNetworkPolicyException
   extends /*@__PURE__*/ S.TaggedErrorClass<CoreNetworkPolicyException>()(
     "CoreNetworkPolicyException",
     {
-      Message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       Errors: S.optional(
         S.suspend(() => CoreNetworkPolicyErrorList).annotate({
           identifier: "CoreNetworkPolicyErrorList",
@@ -186,7 +188,7 @@ export class InternalServerException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
     "InternalServerException",
     {
-      Message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       RetryAfterSeconds: S.optional(S.Number).pipe(T.HttpHeader("Retry-After")),
     },
     T.HttpError(500),
@@ -195,7 +197,7 @@ export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
     {
-      Message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       ResourceId: S.String,
       ResourceType: S.String,
       Context: S.optional(
@@ -210,7 +212,7 @@ export class ServiceQuotaExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
     "ServiceQuotaExceededException",
     {
-      Message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       ResourceId: S.optional(S.String),
       ResourceType: S.optional(S.String),
       LimitCode: S.String,
@@ -222,7 +224,7 @@ export class ThrottlingException
   extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
     "ThrottlingException",
     {
-      Message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       RetryAfterSeconds: S.optional(S.Number).pipe(T.HttpHeader("Retry-After")),
     },
     T.HttpError(429),
@@ -231,7 +233,7 @@ export class ValidationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
     "ValidationException",
     {
-      Message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       Reason: S.optional(
         S.suspend(() => ValidationExceptionReason).annotate({
           identifier: "ValidationExceptionReason",
@@ -5544,7 +5546,7 @@ export const acceptAttachment: API.OperationMethod<
   AcceptAttachmentRequest,
   AcceptAttachmentResponse,
   AcceptAttachmentError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AcceptAttachmentRequest,
   output: AcceptAttachmentResponse,
@@ -5581,7 +5583,7 @@ export const associateConnectPeer: API.OperationMethod<
   AssociateConnectPeerRequest,
   AssociateConnectPeerResponse,
   AssociateConnectPeerError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AssociateConnectPeerRequest,
   output: AssociateConnectPeerResponse,
@@ -5625,7 +5627,7 @@ export const associateCustomerGateway: API.OperationMethod<
   AssociateCustomerGatewayRequest,
   AssociateCustomerGatewayResponse,
   AssociateCustomerGatewayError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AssociateCustomerGatewayRequest,
   output: AssociateCustomerGatewayResponse,
@@ -5659,7 +5661,7 @@ export const associateLink: API.OperationMethod<
   AssociateLinkRequest,
   AssociateLinkResponse,
   AssociateLinkError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AssociateLinkRequest,
   output: AssociateLinkResponse,
@@ -5699,7 +5701,7 @@ export const associateTransitGatewayConnectPeer: API.OperationMethod<
   AssociateTransitGatewayConnectPeerRequest,
   AssociateTransitGatewayConnectPeerResponse,
   AssociateTransitGatewayConnectPeerError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AssociateTransitGatewayConnectPeerRequest,
   output: AssociateTransitGatewayConnectPeerResponse,
@@ -5736,7 +5738,7 @@ export const createConnectAttachment: API.OperationMethod<
   CreateConnectAttachmentRequest,
   CreateConnectAttachmentResponse,
   CreateConnectAttachmentError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateConnectAttachmentRequest,
   output: CreateConnectAttachmentResponse,
@@ -5768,7 +5770,7 @@ export const createConnection: API.OperationMethod<
   CreateConnectionRequest,
   CreateConnectionResponse,
   CreateConnectionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateConnectionRequest,
   output: CreateConnectionResponse,
@@ -5801,7 +5803,7 @@ export const createConnectPeer: API.OperationMethod<
   CreateConnectPeerRequest,
   CreateConnectPeerResponse,
   CreateConnectPeerError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateConnectPeerRequest,
   output: CreateConnectPeerResponse,
@@ -5834,7 +5836,7 @@ export const createCoreNetwork: API.OperationMethod<
   CreateCoreNetworkRequest,
   CreateCoreNetworkResponse,
   CreateCoreNetworkError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateCoreNetworkRequest,
   output: CreateCoreNetworkResponse,
@@ -5868,7 +5870,7 @@ export const createCoreNetworkPrefixListAssociation: API.OperationMethod<
   CreateCoreNetworkPrefixListAssociationRequest,
   CreateCoreNetworkPrefixListAssociationResponse,
   CreateCoreNetworkPrefixListAssociationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateCoreNetworkPrefixListAssociationRequest,
   output: CreateCoreNetworkPrefixListAssociationResponse,
@@ -5903,7 +5905,7 @@ export const createDevice: API.OperationMethod<
   CreateDeviceRequest,
   CreateDeviceResponse,
   CreateDeviceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateDeviceRequest,
   output: CreateDeviceResponse,
@@ -5936,7 +5938,7 @@ export const createDirectConnectGatewayAttachment: API.OperationMethod<
   CreateDirectConnectGatewayAttachmentRequest,
   CreateDirectConnectGatewayAttachmentResponse,
   CreateDirectConnectGatewayAttachmentError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateDirectConnectGatewayAttachmentRequest,
   output: CreateDirectConnectGatewayAttachmentResponse,
@@ -5968,7 +5970,7 @@ export const createGlobalNetwork: API.OperationMethod<
   CreateGlobalNetworkRequest,
   CreateGlobalNetworkResponse,
   CreateGlobalNetworkError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateGlobalNetworkRequest,
   output: CreateGlobalNetworkResponse,
@@ -6001,7 +6003,7 @@ export const createLink: API.OperationMethod<
   CreateLinkRequest,
   CreateLinkResponse,
   CreateLinkError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateLinkRequest,
   output: CreateLinkResponse,
@@ -6035,7 +6037,7 @@ export const createSite: API.OperationMethod<
   CreateSiteRequest,
   CreateSiteResponse,
   CreateSiteError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateSiteRequest,
   output: CreateSiteResponse,
@@ -6068,7 +6070,7 @@ export const createSiteToSiteVpnAttachment: API.OperationMethod<
   CreateSiteToSiteVpnAttachmentRequest,
   CreateSiteToSiteVpnAttachmentResponse,
   CreateSiteToSiteVpnAttachmentError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateSiteToSiteVpnAttachmentRequest,
   output: CreateSiteToSiteVpnAttachmentResponse,
@@ -6100,7 +6102,7 @@ export const createTransitGatewayPeering: API.OperationMethod<
   CreateTransitGatewayPeeringRequest,
   CreateTransitGatewayPeeringResponse,
   CreateTransitGatewayPeeringError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateTransitGatewayPeeringRequest,
   output: CreateTransitGatewayPeeringResponse,
@@ -6132,7 +6134,7 @@ export const createTransitGatewayRouteTableAttachment: API.OperationMethod<
   CreateTransitGatewayRouteTableAttachmentRequest,
   CreateTransitGatewayRouteTableAttachmentResponse,
   CreateTransitGatewayRouteTableAttachmentError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateTransitGatewayRouteTableAttachmentRequest,
   output: CreateTransitGatewayRouteTableAttachmentResponse,
@@ -6164,7 +6166,7 @@ export const createVpcAttachment: API.OperationMethod<
   CreateVpcAttachmentRequest,
   CreateVpcAttachmentResponse,
   CreateVpcAttachmentError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateVpcAttachmentRequest,
   output: CreateVpcAttachmentResponse,
@@ -6196,7 +6198,7 @@ export const deleteAttachment: API.OperationMethod<
   DeleteAttachmentRequest,
   DeleteAttachmentResponse,
   DeleteAttachmentError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteAttachmentRequest,
   output: DeleteAttachmentResponse,
@@ -6228,7 +6230,7 @@ export const deleteConnection: API.OperationMethod<
   DeleteConnectionRequest,
   DeleteConnectionResponse,
   DeleteConnectionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteConnectionRequest,
   output: DeleteConnectionResponse,
@@ -6260,7 +6262,7 @@ export const deleteConnectPeer: API.OperationMethod<
   DeleteConnectPeerRequest,
   DeleteConnectPeerResponse,
   DeleteConnectPeerError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteConnectPeerRequest,
   output: DeleteConnectPeerResponse,
@@ -6292,7 +6294,7 @@ export const deleteCoreNetwork: API.OperationMethod<
   DeleteCoreNetworkRequest,
   DeleteCoreNetworkResponse,
   DeleteCoreNetworkError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteCoreNetworkRequest,
   output: DeleteCoreNetworkResponse,
@@ -6324,7 +6326,7 @@ export const deleteCoreNetworkPolicyVersion: API.OperationMethod<
   DeleteCoreNetworkPolicyVersionRequest,
   DeleteCoreNetworkPolicyVersionResponse,
   DeleteCoreNetworkPolicyVersionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteCoreNetworkPolicyVersionRequest,
   output: DeleteCoreNetworkPolicyVersionResponse,
@@ -6357,7 +6359,7 @@ export const deleteCoreNetworkPrefixListAssociation: API.OperationMethod<
   DeleteCoreNetworkPrefixListAssociationRequest,
   DeleteCoreNetworkPrefixListAssociationResponse,
   DeleteCoreNetworkPrefixListAssociationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteCoreNetworkPrefixListAssociationRequest,
   output: DeleteCoreNetworkPrefixListAssociationResponse,
@@ -6391,7 +6393,7 @@ export const deleteDevice: API.OperationMethod<
   DeleteDeviceRequest,
   DeleteDeviceResponse,
   DeleteDeviceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteDeviceRequest,
   output: DeleteDeviceResponse,
@@ -6424,7 +6426,7 @@ export const deleteGlobalNetwork: API.OperationMethod<
   DeleteGlobalNetworkRequest,
   DeleteGlobalNetworkResponse,
   DeleteGlobalNetworkError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteGlobalNetworkRequest,
   output: DeleteGlobalNetworkResponse,
@@ -6457,7 +6459,7 @@ export const deleteLink: API.OperationMethod<
   DeleteLinkRequest,
   DeleteLinkResponse,
   DeleteLinkError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteLinkRequest,
   output: DeleteLinkResponse,
@@ -6489,7 +6491,7 @@ export const deletePeering: API.OperationMethod<
   DeletePeeringRequest,
   DeletePeeringResponse,
   DeletePeeringError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeletePeeringRequest,
   output: DeletePeeringResponse,
@@ -6520,7 +6522,7 @@ export const deleteResourcePolicy: API.OperationMethod<
   DeleteResourcePolicyRequest,
   DeleteResourcePolicyResponse,
   DeleteResourcePolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteResourcePolicyRequest,
   output: DeleteResourcePolicyResponse,
@@ -6551,7 +6553,7 @@ export const deleteSite: API.OperationMethod<
   DeleteSiteRequest,
   DeleteSiteResponse,
   DeleteSiteError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteSiteRequest,
   output: DeleteSiteResponse,
@@ -6584,7 +6586,7 @@ export const deregisterTransitGateway: API.OperationMethod<
   DeregisterTransitGatewayRequest,
   DeregisterTransitGatewayResponse,
   DeregisterTransitGatewayError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeregisterTransitGatewayRequest,
   output: DeregisterTransitGatewayResponse,
@@ -6614,27 +6616,13 @@ export type DescribeGlobalNetworksError =
  * `Get*` action. For example, to list the transit gateways in your global
  * network, use GetTransitGatewayRegistrations.
  */
-export const describeGlobalNetworks: API.OperationMethod<
+export const describeGlobalNetworks: API.PaginatedOperationMethod<
   DescribeGlobalNetworksRequest,
   DescribeGlobalNetworksResponse,
   DescribeGlobalNetworksError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeGlobalNetworksRequest,
-  ) => stream.Stream<
-    DescribeGlobalNetworksResponse,
-    DescribeGlobalNetworksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeGlobalNetworksRequest,
-  ) => stream.Stream<
-    GlobalNetwork,
-    DescribeGlobalNetworksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  GlobalNetwork
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeGlobalNetworksRequest,
   output: DescribeGlobalNetworksResponse,
   errors: [
@@ -6653,27 +6641,7 @@ export const describeGlobalNetworks: API.OperationMethod<
     items: "GlobalNetworks",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeGlobalNetworksRequest,
-  DescribeGlobalNetworksResponse,
-  DescribeGlobalNetworksError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeGlobalNetworksRequest,
-  ) => stream.Stream<
-    DescribeGlobalNetworksResponse,
-    DescribeGlobalNetworksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeGlobalNetworksRequest,
-  ) => stream.Stream<
-    GlobalNetwork,
-    DescribeGlobalNetworksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DisassociateConnectPeerError =
   | AccessDeniedException
@@ -6690,7 +6658,7 @@ export const disassociateConnectPeer: API.OperationMethod<
   DisassociateConnectPeerRequest,
   DisassociateConnectPeerResponse,
   DisassociateConnectPeerError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DisassociateConnectPeerRequest,
   output: DisassociateConnectPeerResponse,
@@ -6722,7 +6690,7 @@ export const disassociateCustomerGateway: API.OperationMethod<
   DisassociateCustomerGatewayRequest,
   DisassociateCustomerGatewayResponse,
   DisassociateCustomerGatewayError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DisassociateCustomerGatewayRequest,
   output: DisassociateCustomerGatewayResponse,
@@ -6755,7 +6723,7 @@ export const disassociateLink: API.OperationMethod<
   DisassociateLinkRequest,
   DisassociateLinkResponse,
   DisassociateLinkError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DisassociateLinkRequest,
   output: DisassociateLinkResponse,
@@ -6787,7 +6755,7 @@ export const disassociateTransitGatewayConnectPeer: API.OperationMethod<
   DisassociateTransitGatewayConnectPeerRequest,
   DisassociateTransitGatewayConnectPeerResponse,
   DisassociateTransitGatewayConnectPeerError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DisassociateTransitGatewayConnectPeerRequest,
   output: DisassociateTransitGatewayConnectPeerResponse,
@@ -6819,7 +6787,7 @@ export const executeCoreNetworkChangeSet: API.OperationMethod<
   ExecuteCoreNetworkChangeSetRequest,
   ExecuteCoreNetworkChangeSetResponse,
   ExecuteCoreNetworkChangeSetError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ExecuteCoreNetworkChangeSetRequest,
   output: ExecuteCoreNetworkChangeSetResponse,
@@ -6850,7 +6818,7 @@ export const getConnectAttachment: API.OperationMethod<
   GetConnectAttachmentRequest,
   GetConnectAttachmentResponse,
   GetConnectAttachmentError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetConnectAttachmentRequest,
   output: GetConnectAttachmentResponse,
@@ -6876,27 +6844,13 @@ export type GetConnectionsError =
 /**
  * Gets information about one or more of your connections in a global network.
  */
-export const getConnections: API.OperationMethod<
+export const getConnections: API.PaginatedOperationMethod<
   GetConnectionsRequest,
   GetConnectionsResponse,
   GetConnectionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetConnectionsRequest,
-  ) => stream.Stream<
-    GetConnectionsResponse,
-    GetConnectionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetConnectionsRequest,
-  ) => stream.Stream<
-    Connection,
-    GetConnectionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Connection
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetConnectionsRequest,
   output: GetConnectionsResponse,
   errors: [
@@ -6915,27 +6869,7 @@ export const getConnections: API.OperationMethod<
     items: "Connections",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetConnectionsRequest,
-  GetConnectionsResponse,
-  GetConnectionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetConnectionsRequest,
-  ) => stream.Stream<
-    GetConnectionsResponse,
-    GetConnectionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetConnectionsRequest,
-  ) => stream.Stream<
-    Connection,
-    GetConnectionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetConnectPeerError =
   | AccessDeniedException
@@ -6951,7 +6885,7 @@ export const getConnectPeer: API.OperationMethod<
   GetConnectPeerRequest,
   GetConnectPeerResponse,
   GetConnectPeerError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetConnectPeerRequest,
   output: GetConnectPeerResponse,
@@ -6978,27 +6912,13 @@ export type GetConnectPeerAssociationsError =
 /**
  * Returns information about a core network Connect peer associations.
  */
-export const getConnectPeerAssociations: API.OperationMethod<
+export const getConnectPeerAssociations: API.PaginatedOperationMethod<
   GetConnectPeerAssociationsRequest,
   GetConnectPeerAssociationsResponse,
   GetConnectPeerAssociationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetConnectPeerAssociationsRequest,
-  ) => stream.Stream<
-    GetConnectPeerAssociationsResponse,
-    GetConnectPeerAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetConnectPeerAssociationsRequest,
-  ) => stream.Stream<
-    ConnectPeerAssociation,
-    GetConnectPeerAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ConnectPeerAssociation
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetConnectPeerAssociationsRequest,
   output: GetConnectPeerAssociationsResponse,
   errors: [
@@ -7018,27 +6938,7 @@ export const getConnectPeerAssociations: API.OperationMethod<
     items: "ConnectPeerAssociations",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetConnectPeerAssociationsRequest,
-  GetConnectPeerAssociationsResponse,
-  GetConnectPeerAssociationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetConnectPeerAssociationsRequest,
-  ) => stream.Stream<
-    GetConnectPeerAssociationsResponse,
-    GetConnectPeerAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetConnectPeerAssociationsRequest,
-  ) => stream.Stream<
-    ConnectPeerAssociation,
-    GetConnectPeerAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetCoreNetworkError =
   | AccessDeniedException
@@ -7054,7 +6954,7 @@ export const getCoreNetwork: API.OperationMethod<
   GetCoreNetworkRequest,
   GetCoreNetworkResponse,
   GetCoreNetworkError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetCoreNetworkRequest,
   output: GetCoreNetworkResponse,
@@ -7080,27 +6980,13 @@ export type GetCoreNetworkChangeEventsError =
 /**
  * Returns information about a core network change event.
  */
-export const getCoreNetworkChangeEvents: API.OperationMethod<
+export const getCoreNetworkChangeEvents: API.PaginatedOperationMethod<
   GetCoreNetworkChangeEventsRequest,
   GetCoreNetworkChangeEventsResponse,
   GetCoreNetworkChangeEventsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetCoreNetworkChangeEventsRequest,
-  ) => stream.Stream<
-    GetCoreNetworkChangeEventsResponse,
-    GetCoreNetworkChangeEventsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetCoreNetworkChangeEventsRequest,
-  ) => stream.Stream<
-    CoreNetworkChangeEvent,
-    GetCoreNetworkChangeEventsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  CoreNetworkChangeEvent
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetCoreNetworkChangeEventsRequest,
   output: GetCoreNetworkChangeEventsResponse,
   errors: [
@@ -7119,27 +7005,7 @@ export const getCoreNetworkChangeEvents: API.OperationMethod<
     items: "CoreNetworkChangeEvents",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetCoreNetworkChangeEventsRequest,
-  GetCoreNetworkChangeEventsResponse,
-  GetCoreNetworkChangeEventsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetCoreNetworkChangeEventsRequest,
-  ) => stream.Stream<
-    GetCoreNetworkChangeEventsResponse,
-    GetCoreNetworkChangeEventsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetCoreNetworkChangeEventsRequest,
-  ) => stream.Stream<
-    CoreNetworkChangeEvent,
-    GetCoreNetworkChangeEventsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetCoreNetworkChangeSetError =
   | AccessDeniedException
@@ -7151,27 +7017,13 @@ export type GetCoreNetworkChangeSetError =
 /**
  * Returns a change set between the LIVE core network policy and a submitted policy.
  */
-export const getCoreNetworkChangeSet: API.OperationMethod<
+export const getCoreNetworkChangeSet: API.PaginatedOperationMethod<
   GetCoreNetworkChangeSetRequest,
   GetCoreNetworkChangeSetResponse,
   GetCoreNetworkChangeSetError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetCoreNetworkChangeSetRequest,
-  ) => stream.Stream<
-    GetCoreNetworkChangeSetResponse,
-    GetCoreNetworkChangeSetError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetCoreNetworkChangeSetRequest,
-  ) => stream.Stream<
-    CoreNetworkChange,
-    GetCoreNetworkChangeSetError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  CoreNetworkChange
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetCoreNetworkChangeSetRequest,
   output: GetCoreNetworkChangeSetResponse,
   errors: [
@@ -7190,27 +7042,7 @@ export const getCoreNetworkChangeSet: API.OperationMethod<
     items: "CoreNetworkChanges",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetCoreNetworkChangeSetRequest,
-  GetCoreNetworkChangeSetResponse,
-  GetCoreNetworkChangeSetError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetCoreNetworkChangeSetRequest,
-  ) => stream.Stream<
-    GetCoreNetworkChangeSetResponse,
-    GetCoreNetworkChangeSetError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetCoreNetworkChangeSetRequest,
-  ) => stream.Stream<
-    CoreNetworkChange,
-    GetCoreNetworkChangeSetError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetCoreNetworkPolicyError =
   | AccessDeniedException
@@ -7226,7 +7058,7 @@ export const getCoreNetworkPolicy: API.OperationMethod<
   GetCoreNetworkPolicyRequest,
   GetCoreNetworkPolicyResponse,
   GetCoreNetworkPolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetCoreNetworkPolicyRequest,
   output: GetCoreNetworkPolicyResponse,
@@ -7254,27 +7086,13 @@ export type GetCustomerGatewayAssociationsError =
  * Gets the association information for customer gateways that are associated with
  * devices and links in your global network.
  */
-export const getCustomerGatewayAssociations: API.OperationMethod<
+export const getCustomerGatewayAssociations: API.PaginatedOperationMethod<
   GetCustomerGatewayAssociationsRequest,
   GetCustomerGatewayAssociationsResponse,
   GetCustomerGatewayAssociationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetCustomerGatewayAssociationsRequest,
-  ) => stream.Stream<
-    GetCustomerGatewayAssociationsResponse,
-    GetCustomerGatewayAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetCustomerGatewayAssociationsRequest,
-  ) => stream.Stream<
-    CustomerGatewayAssociation,
-    GetCustomerGatewayAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  CustomerGatewayAssociation
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetCustomerGatewayAssociationsRequest,
   output: GetCustomerGatewayAssociationsResponse,
   errors: [
@@ -7294,27 +7112,7 @@ export const getCustomerGatewayAssociations: API.OperationMethod<
     items: "CustomerGatewayAssociations",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetCustomerGatewayAssociationsRequest,
-  GetCustomerGatewayAssociationsResponse,
-  GetCustomerGatewayAssociationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetCustomerGatewayAssociationsRequest,
-  ) => stream.Stream<
-    GetCustomerGatewayAssociationsResponse,
-    GetCustomerGatewayAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetCustomerGatewayAssociationsRequest,
-  ) => stream.Stream<
-    CustomerGatewayAssociation,
-    GetCustomerGatewayAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetDevicesError =
   | AccessDeniedException
@@ -7326,27 +7124,13 @@ export type GetDevicesError =
 /**
  * Gets information about one or more of your devices in a global network.
  */
-export const getDevices: API.OperationMethod<
+export const getDevices: API.PaginatedOperationMethod<
   GetDevicesRequest,
   GetDevicesResponse,
   GetDevicesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetDevicesRequest,
-  ) => stream.Stream<
-    GetDevicesResponse,
-    GetDevicesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetDevicesRequest,
-  ) => stream.Stream<
-    Device,
-    GetDevicesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Device
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetDevicesRequest,
   output: GetDevicesResponse,
   errors: [
@@ -7365,27 +7149,7 @@ export const getDevices: API.OperationMethod<
     items: "Devices",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetDevicesRequest,
-  GetDevicesResponse,
-  GetDevicesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetDevicesRequest,
-  ) => stream.Stream<
-    GetDevicesResponse,
-    GetDevicesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetDevicesRequest,
-  ) => stream.Stream<
-    Device,
-    GetDevicesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetDirectConnectGatewayAttachmentError =
   | AccessDeniedException
@@ -7401,7 +7165,7 @@ export const getDirectConnectGatewayAttachment: API.OperationMethod<
   GetDirectConnectGatewayAttachmentRequest,
   GetDirectConnectGatewayAttachmentResponse,
   GetDirectConnectGatewayAttachmentError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetDirectConnectGatewayAttachmentRequest,
   output: GetDirectConnectGatewayAttachmentResponse,
@@ -7428,27 +7192,13 @@ export type GetLinkAssociationsError =
  * Gets the link associations for a device or a link. Either the device ID or the link ID
  * must be specified.
  */
-export const getLinkAssociations: API.OperationMethod<
+export const getLinkAssociations: API.PaginatedOperationMethod<
   GetLinkAssociationsRequest,
   GetLinkAssociationsResponse,
   GetLinkAssociationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetLinkAssociationsRequest,
-  ) => stream.Stream<
-    GetLinkAssociationsResponse,
-    GetLinkAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetLinkAssociationsRequest,
-  ) => stream.Stream<
-    LinkAssociation,
-    GetLinkAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  LinkAssociation
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetLinkAssociationsRequest,
   output: GetLinkAssociationsResponse,
   errors: [
@@ -7467,27 +7217,7 @@ export const getLinkAssociations: API.OperationMethod<
     items: "LinkAssociations",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetLinkAssociationsRequest,
-  GetLinkAssociationsResponse,
-  GetLinkAssociationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetLinkAssociationsRequest,
-  ) => stream.Stream<
-    GetLinkAssociationsResponse,
-    GetLinkAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetLinkAssociationsRequest,
-  ) => stream.Stream<
-    LinkAssociation,
-    GetLinkAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetLinksError =
   | AccessDeniedException
@@ -7501,27 +7231,13 @@ export type GetLinksError =
  *
  * If you specify the site ID, you cannot specify the type or provider in the same request. You can specify the type and provider in the same request.
  */
-export const getLinks: API.OperationMethod<
+export const getLinks: API.PaginatedOperationMethod<
   GetLinksRequest,
   GetLinksResponse,
   GetLinksError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetLinksRequest,
-  ) => stream.Stream<
-    GetLinksResponse,
-    GetLinksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetLinksRequest,
-  ) => stream.Stream<
-    Link,
-    GetLinksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Link
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetLinksRequest,
   output: GetLinksResponse,
   errors: [
@@ -7540,27 +7256,7 @@ export const getLinks: API.OperationMethod<
     items: "Links",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetLinksRequest,
-  GetLinksResponse,
-  GetLinksError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetLinksRequest,
-  ) => stream.Stream<
-    GetLinksResponse,
-    GetLinksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetLinksRequest,
-  ) => stream.Stream<
-    Link,
-    GetLinksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetNetworkResourceCountsError =
   | AccessDeniedException
@@ -7571,27 +7267,13 @@ export type GetNetworkResourceCountsError =
 /**
  * Gets the count of network resources, by resource type, for the specified global network.
  */
-export const getNetworkResourceCounts: API.OperationMethod<
+export const getNetworkResourceCounts: API.PaginatedOperationMethod<
   GetNetworkResourceCountsRequest,
   GetNetworkResourceCountsResponse,
   GetNetworkResourceCountsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetNetworkResourceCountsRequest,
-  ) => stream.Stream<
-    GetNetworkResourceCountsResponse,
-    GetNetworkResourceCountsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetNetworkResourceCountsRequest,
-  ) => stream.Stream<
-    NetworkResourceCount,
-    GetNetworkResourceCountsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  NetworkResourceCount
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetNetworkResourceCountsRequest,
   output: GetNetworkResourceCountsResponse,
   errors: [
@@ -7609,27 +7291,7 @@ export const getNetworkResourceCounts: API.OperationMethod<
     items: "NetworkResourceCounts",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetNetworkResourceCountsRequest,
-  GetNetworkResourceCountsResponse,
-  GetNetworkResourceCountsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetNetworkResourceCountsRequest,
-  ) => stream.Stream<
-    GetNetworkResourceCountsResponse,
-    GetNetworkResourceCountsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetNetworkResourceCountsRequest,
-  ) => stream.Stream<
-    NetworkResourceCount,
-    GetNetworkResourceCountsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetNetworkResourceRelationshipsError =
   | AccessDeniedException
@@ -7641,27 +7303,13 @@ export type GetNetworkResourceRelationshipsError =
 /**
  * Gets the network resource relationships for the specified global network.
  */
-export const getNetworkResourceRelationships: API.OperationMethod<
+export const getNetworkResourceRelationships: API.PaginatedOperationMethod<
   GetNetworkResourceRelationshipsRequest,
   GetNetworkResourceRelationshipsResponse,
   GetNetworkResourceRelationshipsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetNetworkResourceRelationshipsRequest,
-  ) => stream.Stream<
-    GetNetworkResourceRelationshipsResponse,
-    GetNetworkResourceRelationshipsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetNetworkResourceRelationshipsRequest,
-  ) => stream.Stream<
-    Relationship,
-    GetNetworkResourceRelationshipsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Relationship
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetNetworkResourceRelationshipsRequest,
   output: GetNetworkResourceRelationshipsResponse,
   errors: [
@@ -7680,27 +7328,7 @@ export const getNetworkResourceRelationships: API.OperationMethod<
     items: "Relationships",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetNetworkResourceRelationshipsRequest,
-  GetNetworkResourceRelationshipsResponse,
-  GetNetworkResourceRelationshipsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetNetworkResourceRelationshipsRequest,
-  ) => stream.Stream<
-    GetNetworkResourceRelationshipsResponse,
-    GetNetworkResourceRelationshipsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetNetworkResourceRelationshipsRequest,
-  ) => stream.Stream<
-    Relationship,
-    GetNetworkResourceRelationshipsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetNetworkResourcesError =
   | AccessDeniedException
@@ -7714,27 +7342,13 @@ export type GetNetworkResourcesError =
  *
  * The results include information from the corresponding Describe call for the resource, minus any sensitive information such as pre-shared keys.
  */
-export const getNetworkResources: API.OperationMethod<
+export const getNetworkResources: API.PaginatedOperationMethod<
   GetNetworkResourcesRequest,
   GetNetworkResourcesResponse,
   GetNetworkResourcesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetNetworkResourcesRequest,
-  ) => stream.Stream<
-    GetNetworkResourcesResponse,
-    GetNetworkResourcesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetNetworkResourcesRequest,
-  ) => stream.Stream<
-    NetworkResource,
-    GetNetworkResourcesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  NetworkResource
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetNetworkResourcesRequest,
   output: GetNetworkResourcesResponse,
   errors: [
@@ -7753,27 +7367,7 @@ export const getNetworkResources: API.OperationMethod<
     items: "NetworkResources",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetNetworkResourcesRequest,
-  GetNetworkResourcesResponse,
-  GetNetworkResourcesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetNetworkResourcesRequest,
-  ) => stream.Stream<
-    GetNetworkResourcesResponse,
-    GetNetworkResourcesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetNetworkResourcesRequest,
-  ) => stream.Stream<
-    NetworkResource,
-    GetNetworkResourcesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetNetworkRoutesError =
   | AccessDeniedException
@@ -7789,7 +7383,7 @@ export const getNetworkRoutes: API.OperationMethod<
   GetNetworkRoutesRequest,
   GetNetworkRoutesResponse,
   GetNetworkRoutesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetNetworkRoutesRequest,
   output: GetNetworkRoutesResponse,
@@ -7815,27 +7409,13 @@ export type GetNetworkTelemetryError =
 /**
  * Gets the network telemetry of the specified global network.
  */
-export const getNetworkTelemetry: API.OperationMethod<
+export const getNetworkTelemetry: API.PaginatedOperationMethod<
   GetNetworkTelemetryRequest,
   GetNetworkTelemetryResponse,
   GetNetworkTelemetryError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetNetworkTelemetryRequest,
-  ) => stream.Stream<
-    GetNetworkTelemetryResponse,
-    GetNetworkTelemetryError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetNetworkTelemetryRequest,
-  ) => stream.Stream<
-    NetworkTelemetry,
-    GetNetworkTelemetryError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  NetworkTelemetry
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetNetworkTelemetryRequest,
   output: GetNetworkTelemetryResponse,
   errors: [
@@ -7854,27 +7434,7 @@ export const getNetworkTelemetry: API.OperationMethod<
     items: "NetworkTelemetry",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetNetworkTelemetryRequest,
-  GetNetworkTelemetryResponse,
-  GetNetworkTelemetryError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetNetworkTelemetryRequest,
-  ) => stream.Stream<
-    GetNetworkTelemetryResponse,
-    GetNetworkTelemetryError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetNetworkTelemetryRequest,
-  ) => stream.Stream<
-    NetworkTelemetry,
-    GetNetworkTelemetryError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetResourcePolicyError =
   | AccessDeniedException
@@ -7889,7 +7449,7 @@ export const getResourcePolicy: API.OperationMethod<
   GetResourcePolicyRequest,
   GetResourcePolicyResponse,
   GetResourcePolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetResourcePolicyRequest,
   output: GetResourcePolicyResponse,
@@ -7918,7 +7478,7 @@ export const getRouteAnalysis: API.OperationMethod<
   GetRouteAnalysisRequest,
   GetRouteAnalysisResponse,
   GetRouteAnalysisError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetRouteAnalysisRequest,
   output: GetRouteAnalysisResponse,
@@ -7944,27 +7504,13 @@ export type GetSitesError =
 /**
  * Gets information about one or more of your sites in a global network.
  */
-export const getSites: API.OperationMethod<
+export const getSites: API.PaginatedOperationMethod<
   GetSitesRequest,
   GetSitesResponse,
   GetSitesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetSitesRequest,
-  ) => stream.Stream<
-    GetSitesResponse,
-    GetSitesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetSitesRequest,
-  ) => stream.Stream<
-    Site,
-    GetSitesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Site
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetSitesRequest,
   output: GetSitesResponse,
   errors: [
@@ -7983,27 +7529,7 @@ export const getSites: API.OperationMethod<
     items: "Sites",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetSitesRequest,
-  GetSitesResponse,
-  GetSitesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetSitesRequest,
-  ) => stream.Stream<
-    GetSitesResponse,
-    GetSitesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetSitesRequest,
-  ) => stream.Stream<
-    Site,
-    GetSitesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetSiteToSiteVpnAttachmentError =
   | AccessDeniedException
@@ -8019,7 +7545,7 @@ export const getSiteToSiteVpnAttachment: API.OperationMethod<
   GetSiteToSiteVpnAttachmentRequest,
   GetSiteToSiteVpnAttachmentResponse,
   GetSiteToSiteVpnAttachmentError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetSiteToSiteVpnAttachmentRequest,
   output: GetSiteToSiteVpnAttachmentResponse,
@@ -8046,27 +7572,13 @@ export type GetTransitGatewayConnectPeerAssociationsError =
 /**
  * Gets information about one or more of your transit gateway Connect peer associations in a global network.
  */
-export const getTransitGatewayConnectPeerAssociations: API.OperationMethod<
+export const getTransitGatewayConnectPeerAssociations: API.PaginatedOperationMethod<
   GetTransitGatewayConnectPeerAssociationsRequest,
   GetTransitGatewayConnectPeerAssociationsResponse,
   GetTransitGatewayConnectPeerAssociationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetTransitGatewayConnectPeerAssociationsRequest,
-  ) => stream.Stream<
-    GetTransitGatewayConnectPeerAssociationsResponse,
-    GetTransitGatewayConnectPeerAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetTransitGatewayConnectPeerAssociationsRequest,
-  ) => stream.Stream<
-    TransitGatewayConnectPeerAssociation,
-    GetTransitGatewayConnectPeerAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  TransitGatewayConnectPeerAssociation
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetTransitGatewayConnectPeerAssociationsRequest,
   output: GetTransitGatewayConnectPeerAssociationsResponse,
   errors: [
@@ -8086,27 +7598,7 @@ export const getTransitGatewayConnectPeerAssociations: API.OperationMethod<
     items: "TransitGatewayConnectPeerAssociations",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetTransitGatewayConnectPeerAssociationsRequest,
-  GetTransitGatewayConnectPeerAssociationsResponse,
-  GetTransitGatewayConnectPeerAssociationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetTransitGatewayConnectPeerAssociationsRequest,
-  ) => stream.Stream<
-    GetTransitGatewayConnectPeerAssociationsResponse,
-    GetTransitGatewayConnectPeerAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetTransitGatewayConnectPeerAssociationsRequest,
-  ) => stream.Stream<
-    TransitGatewayConnectPeerAssociation,
-    GetTransitGatewayConnectPeerAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetTransitGatewayPeeringError =
   | AccessDeniedException
@@ -8122,7 +7614,7 @@ export const getTransitGatewayPeering: API.OperationMethod<
   GetTransitGatewayPeeringRequest,
   GetTransitGatewayPeeringResponse,
   GetTransitGatewayPeeringError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetTransitGatewayPeeringRequest,
   output: GetTransitGatewayPeeringResponse,
@@ -8149,27 +7641,13 @@ export type GetTransitGatewayRegistrationsError =
  * Gets information about the transit gateway registrations in a specified
  * global network.
  */
-export const getTransitGatewayRegistrations: API.OperationMethod<
+export const getTransitGatewayRegistrations: API.PaginatedOperationMethod<
   GetTransitGatewayRegistrationsRequest,
   GetTransitGatewayRegistrationsResponse,
   GetTransitGatewayRegistrationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetTransitGatewayRegistrationsRequest,
-  ) => stream.Stream<
-    GetTransitGatewayRegistrationsResponse,
-    GetTransitGatewayRegistrationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetTransitGatewayRegistrationsRequest,
-  ) => stream.Stream<
-    TransitGatewayRegistration,
-    GetTransitGatewayRegistrationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  TransitGatewayRegistration
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetTransitGatewayRegistrationsRequest,
   output: GetTransitGatewayRegistrationsResponse,
   errors: [
@@ -8188,27 +7666,7 @@ export const getTransitGatewayRegistrations: API.OperationMethod<
     items: "TransitGatewayRegistrations",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetTransitGatewayRegistrationsRequest,
-  GetTransitGatewayRegistrationsResponse,
-  GetTransitGatewayRegistrationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetTransitGatewayRegistrationsRequest,
-  ) => stream.Stream<
-    GetTransitGatewayRegistrationsResponse,
-    GetTransitGatewayRegistrationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetTransitGatewayRegistrationsRequest,
-  ) => stream.Stream<
-    TransitGatewayRegistration,
-    GetTransitGatewayRegistrationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetTransitGatewayRouteTableAttachmentError =
   | AccessDeniedException
@@ -8224,7 +7682,7 @@ export const getTransitGatewayRouteTableAttachment: API.OperationMethod<
   GetTransitGatewayRouteTableAttachmentRequest,
   GetTransitGatewayRouteTableAttachmentResponse,
   GetTransitGatewayRouteTableAttachmentError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetTransitGatewayRouteTableAttachmentRequest,
   output: GetTransitGatewayRouteTableAttachmentResponse,
@@ -8254,7 +7712,7 @@ export const getVpcAttachment: API.OperationMethod<
   GetVpcAttachmentRequest,
   GetVpcAttachmentResponse,
   GetVpcAttachmentError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetVpcAttachmentRequest,
   output: GetVpcAttachmentResponse,
@@ -8280,27 +7738,13 @@ export type ListAttachmentRoutingPolicyAssociationsError =
 /**
  * Lists the routing policy associations for attachments in a core network.
  */
-export const listAttachmentRoutingPolicyAssociations: API.OperationMethod<
+export const listAttachmentRoutingPolicyAssociations: API.PaginatedOperationMethod<
   ListAttachmentRoutingPolicyAssociationsRequest,
   ListAttachmentRoutingPolicyAssociationsResponse,
   ListAttachmentRoutingPolicyAssociationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAttachmentRoutingPolicyAssociationsRequest,
-  ) => stream.Stream<
-    ListAttachmentRoutingPolicyAssociationsResponse,
-    ListAttachmentRoutingPolicyAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAttachmentRoutingPolicyAssociationsRequest,
-  ) => stream.Stream<
-    AttachmentRoutingPolicyAssociationSummary,
-    ListAttachmentRoutingPolicyAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  AttachmentRoutingPolicyAssociationSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListAttachmentRoutingPolicyAssociationsRequest,
   output: ListAttachmentRoutingPolicyAssociationsResponse,
   errors: [
@@ -8319,27 +7763,7 @@ export const listAttachmentRoutingPolicyAssociations: API.OperationMethod<
     items: "AttachmentRoutingPolicyAssociations",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListAttachmentRoutingPolicyAssociationsRequest,
-  ListAttachmentRoutingPolicyAssociationsResponse,
-  ListAttachmentRoutingPolicyAssociationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAttachmentRoutingPolicyAssociationsRequest,
-  ) => stream.Stream<
-    ListAttachmentRoutingPolicyAssociationsResponse,
-    ListAttachmentRoutingPolicyAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAttachmentRoutingPolicyAssociationsRequest,
-  ) => stream.Stream<
-    AttachmentRoutingPolicyAssociationSummary,
-    ListAttachmentRoutingPolicyAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListAttachmentsError =
   | AccessDeniedException
@@ -8350,27 +7774,13 @@ export type ListAttachmentsError =
 /**
  * Returns a list of core network attachments.
  */
-export const listAttachments: API.OperationMethod<
+export const listAttachments: API.PaginatedOperationMethod<
   ListAttachmentsRequest,
   ListAttachmentsResponse,
   ListAttachmentsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAttachmentsRequest,
-  ) => stream.Stream<
-    ListAttachmentsResponse,
-    ListAttachmentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAttachmentsRequest,
-  ) => stream.Stream<
-    Attachment,
-    ListAttachmentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Attachment
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListAttachmentsRequest,
   output: ListAttachmentsResponse,
   errors: [
@@ -8388,27 +7798,7 @@ export const listAttachments: API.OperationMethod<
     items: "Attachments",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListAttachmentsRequest,
-  ListAttachmentsResponse,
-  ListAttachmentsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAttachmentsRequest,
-  ) => stream.Stream<
-    ListAttachmentsResponse,
-    ListAttachmentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAttachmentsRequest,
-  ) => stream.Stream<
-    Attachment,
-    ListAttachmentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListConnectPeersError =
   | AccessDeniedException
@@ -8419,27 +7809,13 @@ export type ListConnectPeersError =
 /**
  * Returns a list of core network Connect peers.
  */
-export const listConnectPeers: API.OperationMethod<
+export const listConnectPeers: API.PaginatedOperationMethod<
   ListConnectPeersRequest,
   ListConnectPeersResponse,
   ListConnectPeersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListConnectPeersRequest,
-  ) => stream.Stream<
-    ListConnectPeersResponse,
-    ListConnectPeersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListConnectPeersRequest,
-  ) => stream.Stream<
-    ConnectPeerSummary,
-    ListConnectPeersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ConnectPeerSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListConnectPeersRequest,
   output: ListConnectPeersResponse,
   errors: [
@@ -8457,27 +7833,7 @@ export const listConnectPeers: API.OperationMethod<
     items: "ConnectPeers",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListConnectPeersRequest,
-  ListConnectPeersResponse,
-  ListConnectPeersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListConnectPeersRequest,
-  ) => stream.Stream<
-    ListConnectPeersResponse,
-    ListConnectPeersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListConnectPeersRequest,
-  ) => stream.Stream<
-    ConnectPeerSummary,
-    ListConnectPeersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListCoreNetworkPolicyVersionsError =
   | AccessDeniedException
@@ -8489,27 +7845,13 @@ export type ListCoreNetworkPolicyVersionsError =
 /**
  * Returns a list of core network policy versions.
  */
-export const listCoreNetworkPolicyVersions: API.OperationMethod<
+export const listCoreNetworkPolicyVersions: API.PaginatedOperationMethod<
   ListCoreNetworkPolicyVersionsRequest,
   ListCoreNetworkPolicyVersionsResponse,
   ListCoreNetworkPolicyVersionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCoreNetworkPolicyVersionsRequest,
-  ) => stream.Stream<
-    ListCoreNetworkPolicyVersionsResponse,
-    ListCoreNetworkPolicyVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCoreNetworkPolicyVersionsRequest,
-  ) => stream.Stream<
-    CoreNetworkPolicyVersion,
-    ListCoreNetworkPolicyVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  CoreNetworkPolicyVersion
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListCoreNetworkPolicyVersionsRequest,
   output: ListCoreNetworkPolicyVersionsResponse,
   errors: [
@@ -8528,27 +7870,7 @@ export const listCoreNetworkPolicyVersions: API.OperationMethod<
     items: "CoreNetworkPolicyVersions",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListCoreNetworkPolicyVersionsRequest,
-  ListCoreNetworkPolicyVersionsResponse,
-  ListCoreNetworkPolicyVersionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCoreNetworkPolicyVersionsRequest,
-  ) => stream.Stream<
-    ListCoreNetworkPolicyVersionsResponse,
-    ListCoreNetworkPolicyVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCoreNetworkPolicyVersionsRequest,
-  ) => stream.Stream<
-    CoreNetworkPolicyVersion,
-    ListCoreNetworkPolicyVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListCoreNetworkPrefixListAssociationsError =
   | AccessDeniedException
@@ -8560,27 +7882,13 @@ export type ListCoreNetworkPrefixListAssociationsError =
 /**
  * Lists the prefix list associations for a core network.
  */
-export const listCoreNetworkPrefixListAssociations: API.OperationMethod<
+export const listCoreNetworkPrefixListAssociations: API.PaginatedOperationMethod<
   ListCoreNetworkPrefixListAssociationsRequest,
   ListCoreNetworkPrefixListAssociationsResponse,
   ListCoreNetworkPrefixListAssociationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCoreNetworkPrefixListAssociationsRequest,
-  ) => stream.Stream<
-    ListCoreNetworkPrefixListAssociationsResponse,
-    ListCoreNetworkPrefixListAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCoreNetworkPrefixListAssociationsRequest,
-  ) => stream.Stream<
-    PrefixListAssociation,
-    ListCoreNetworkPrefixListAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  PrefixListAssociation
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListCoreNetworkPrefixListAssociationsRequest,
   output: ListCoreNetworkPrefixListAssociationsResponse,
   errors: [
@@ -8599,27 +7907,7 @@ export const listCoreNetworkPrefixListAssociations: API.OperationMethod<
     items: "PrefixListAssociations",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListCoreNetworkPrefixListAssociationsRequest,
-  ListCoreNetworkPrefixListAssociationsResponse,
-  ListCoreNetworkPrefixListAssociationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCoreNetworkPrefixListAssociationsRequest,
-  ) => stream.Stream<
-    ListCoreNetworkPrefixListAssociationsResponse,
-    ListCoreNetworkPrefixListAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCoreNetworkPrefixListAssociationsRequest,
-  ) => stream.Stream<
-    PrefixListAssociation,
-    ListCoreNetworkPrefixListAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListCoreNetworkRoutingInformationError =
   | AccessDeniedException
@@ -8631,27 +7919,13 @@ export type ListCoreNetworkRoutingInformationError =
 /**
  * Lists routing information for a core network, including routes and their attributes.
  */
-export const listCoreNetworkRoutingInformation: API.OperationMethod<
+export const listCoreNetworkRoutingInformation: API.PaginatedOperationMethod<
   ListCoreNetworkRoutingInformationRequest,
   ListCoreNetworkRoutingInformationResponse,
   ListCoreNetworkRoutingInformationError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCoreNetworkRoutingInformationRequest,
-  ) => stream.Stream<
-    ListCoreNetworkRoutingInformationResponse,
-    ListCoreNetworkRoutingInformationError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCoreNetworkRoutingInformationRequest,
-  ) => stream.Stream<
-    CoreNetworkRoutingInformation,
-    ListCoreNetworkRoutingInformationError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  CoreNetworkRoutingInformation
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListCoreNetworkRoutingInformationRequest,
   output: ListCoreNetworkRoutingInformationResponse,
   errors: [
@@ -8670,27 +7944,7 @@ export const listCoreNetworkRoutingInformation: API.OperationMethod<
     items: "CoreNetworkRoutingInformation",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListCoreNetworkRoutingInformationRequest,
-  ListCoreNetworkRoutingInformationResponse,
-  ListCoreNetworkRoutingInformationError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCoreNetworkRoutingInformationRequest,
-  ) => stream.Stream<
-    ListCoreNetworkRoutingInformationResponse,
-    ListCoreNetworkRoutingInformationError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCoreNetworkRoutingInformationRequest,
-  ) => stream.Stream<
-    CoreNetworkRoutingInformation,
-    ListCoreNetworkRoutingInformationError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListCoreNetworksError =
   | AccessDeniedException
@@ -8701,27 +7955,13 @@ export type ListCoreNetworksError =
 /**
  * Returns a list of owned and shared core networks.
  */
-export const listCoreNetworks: API.OperationMethod<
+export const listCoreNetworks: API.PaginatedOperationMethod<
   ListCoreNetworksRequest,
   ListCoreNetworksResponse,
   ListCoreNetworksError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCoreNetworksRequest,
-  ) => stream.Stream<
-    ListCoreNetworksResponse,
-    ListCoreNetworksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCoreNetworksRequest,
-  ) => stream.Stream<
-    CoreNetworkSummary,
-    ListCoreNetworksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  CoreNetworkSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListCoreNetworksRequest,
   output: ListCoreNetworksResponse,
   errors: [
@@ -8739,27 +7979,7 @@ export const listCoreNetworks: API.OperationMethod<
     items: "CoreNetworks",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListCoreNetworksRequest,
-  ListCoreNetworksResponse,
-  ListCoreNetworksError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCoreNetworksRequest,
-  ) => stream.Stream<
-    ListCoreNetworksResponse,
-    ListCoreNetworksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCoreNetworksRequest,
-  ) => stream.Stream<
-    CoreNetworkSummary,
-    ListCoreNetworksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListOrganizationServiceAccessStatusError = CommonErrors;
 /**
@@ -8769,7 +7989,7 @@ export const listOrganizationServiceAccessStatus: API.OperationMethod<
   ListOrganizationServiceAccessStatusRequest,
   ListOrganizationServiceAccessStatusResponse,
   ListOrganizationServiceAccessStatusError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListOrganizationServiceAccessStatusRequest,
   output: ListOrganizationServiceAccessStatusResponse,
@@ -8788,27 +8008,13 @@ export type ListPeeringsError =
 /**
  * Lists the peerings for a core network.
  */
-export const listPeerings: API.OperationMethod<
+export const listPeerings: API.PaginatedOperationMethod<
   ListPeeringsRequest,
   ListPeeringsResponse,
   ListPeeringsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPeeringsRequest,
-  ) => stream.Stream<
-    ListPeeringsResponse,
-    ListPeeringsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPeeringsRequest,
-  ) => stream.Stream<
-    Peering,
-    ListPeeringsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Peering
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListPeeringsRequest,
   output: ListPeeringsResponse,
   errors: [
@@ -8826,27 +8032,7 @@ export const listPeerings: API.OperationMethod<
     items: "Peerings",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListPeeringsRequest,
-  ListPeeringsResponse,
-  ListPeeringsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPeeringsRequest,
-  ) => stream.Stream<
-    ListPeeringsResponse,
-    ListPeeringsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPeeringsRequest,
-  ) => stream.Stream<
-    Peering,
-    ListPeeringsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsForResourceError =
   | AccessDeniedException
@@ -8862,7 +8048,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceRequest,
   ListTagsForResourceResponse,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -8894,7 +8080,7 @@ export const putAttachmentRoutingPolicyLabel: API.OperationMethod<
   PutAttachmentRoutingPolicyLabelRequest,
   PutAttachmentRoutingPolicyLabelResponse,
   PutAttachmentRoutingPolicyLabelError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutAttachmentRoutingPolicyLabelRequest,
   output: PutAttachmentRoutingPolicyLabelResponse,
@@ -8928,7 +8114,7 @@ export const putCoreNetworkPolicy: API.OperationMethod<
   PutCoreNetworkPolicyRequest,
   PutCoreNetworkPolicyResponse,
   PutCoreNetworkPolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutCoreNetworkPolicyRequest,
   output: PutCoreNetworkPolicyResponse,
@@ -8961,7 +8147,7 @@ export const putResourcePolicy: API.OperationMethod<
   PutResourcePolicyRequest,
   PutResourcePolicyResponse,
   PutResourcePolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutResourcePolicyRequest,
   output: PutResourcePolicyResponse,
@@ -8997,7 +8183,7 @@ export const registerTransitGateway: API.OperationMethod<
   RegisterTransitGatewayRequest,
   RegisterTransitGatewayResponse,
   RegisterTransitGatewayError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RegisterTransitGatewayRequest,
   output: RegisterTransitGatewayResponse,
@@ -9029,7 +8215,7 @@ export const rejectAttachment: API.OperationMethod<
   RejectAttachmentRequest,
   RejectAttachmentResponse,
   RejectAttachmentError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RejectAttachmentRequest,
   output: RejectAttachmentResponse,
@@ -9062,7 +8248,7 @@ export const removeAttachmentRoutingPolicyLabel: API.OperationMethod<
   RemoveAttachmentRoutingPolicyLabelRequest,
   RemoveAttachmentRoutingPolicyLabelResponse,
   RemoveAttachmentRoutingPolicyLabelError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RemoveAttachmentRoutingPolicyLabelRequest,
   output: RemoveAttachmentRoutingPolicyLabelResponse,
@@ -9095,7 +8281,7 @@ export const restoreCoreNetworkPolicyVersion: API.OperationMethod<
   RestoreCoreNetworkPolicyVersionRequest,
   RestoreCoreNetworkPolicyVersionResponse,
   RestoreCoreNetworkPolicyVersionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RestoreCoreNetworkPolicyVersionRequest,
   output: RestoreCoreNetworkPolicyVersionResponse,
@@ -9127,7 +8313,7 @@ export const startOrganizationServiceAccessUpdate: API.OperationMethod<
   StartOrganizationServiceAccessUpdateRequest,
   StartOrganizationServiceAccessUpdateResponse,
   StartOrganizationServiceAccessUpdateError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartOrganizationServiceAccessUpdateRequest,
   output: StartOrganizationServiceAccessUpdateResponse,
@@ -9160,7 +8346,7 @@ export const startRouteAnalysis: API.OperationMethod<
   StartRouteAnalysisRequest,
   StartRouteAnalysisResponse,
   StartRouteAnalysisError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartRouteAnalysisRequest,
   output: StartRouteAnalysisResponse,
@@ -9193,7 +8379,7 @@ export const tagResource: API.OperationMethod<
   TagResourceRequest,
   TagResourceResponse,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -9226,7 +8412,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceRequest,
   UntagResourceResponse,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -9259,7 +8445,7 @@ export const updateConnection: API.OperationMethod<
   UpdateConnectionRequest,
   UpdateConnectionResponse,
   UpdateConnectionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateConnectionRequest,
   output: UpdateConnectionResponse,
@@ -9291,7 +8477,7 @@ export const updateCoreNetwork: API.OperationMethod<
   UpdateCoreNetworkRequest,
   UpdateCoreNetworkResponse,
   UpdateCoreNetworkError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateCoreNetworkRequest,
   output: UpdateCoreNetworkResponse,
@@ -9324,7 +8510,7 @@ export const updateDevice: API.OperationMethod<
   UpdateDeviceRequest,
   UpdateDeviceResponse,
   UpdateDeviceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateDeviceRequest,
   output: UpdateDeviceResponse,
@@ -9356,7 +8542,7 @@ export const updateDirectConnectGatewayAttachment: API.OperationMethod<
   UpdateDirectConnectGatewayAttachmentRequest,
   UpdateDirectConnectGatewayAttachmentResponse,
   UpdateDirectConnectGatewayAttachmentError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateDirectConnectGatewayAttachmentRequest,
   output: UpdateDirectConnectGatewayAttachmentResponse,
@@ -9389,7 +8575,7 @@ export const updateGlobalNetwork: API.OperationMethod<
   UpdateGlobalNetworkRequest,
   UpdateGlobalNetworkResponse,
   UpdateGlobalNetworkError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateGlobalNetworkRequest,
   output: UpdateGlobalNetworkResponse,
@@ -9423,7 +8609,7 @@ export const updateLink: API.OperationMethod<
   UpdateLinkRequest,
   UpdateLinkResponse,
   UpdateLinkError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateLinkRequest,
   output: UpdateLinkResponse,
@@ -9456,7 +8642,7 @@ export const updateNetworkResourceMetadata: API.OperationMethod<
   UpdateNetworkResourceMetadataRequest,
   UpdateNetworkResourceMetadataResponse,
   UpdateNetworkResourceMetadataError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateNetworkResourceMetadataRequest,
   output: UpdateNetworkResourceMetadataResponse,
@@ -9489,7 +8675,7 @@ export const updateSite: API.OperationMethod<
   UpdateSiteRequest,
   UpdateSiteResponse,
   UpdateSiteError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateSiteRequest,
   output: UpdateSiteResponse,
@@ -9521,7 +8707,7 @@ export const updateVpcAttachment: API.OperationMethod<
   UpdateVpcAttachmentRequest,
   UpdateVpcAttachmentResponse,
   UpdateVpcAttachmentError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateVpcAttachmentRequest,
   output: UpdateVpcAttachmentResponse,

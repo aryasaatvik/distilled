@@ -1,7 +1,6 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as redacted from "effect/Redacted";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -9,7 +8,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 import { SensitiveString } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "TrustedAdvisor",
@@ -90,37 +88,37 @@ const rules = T.EndpointResolver((p, _) => {
 export class AccessDeniedException
   extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
     "AccessDeniedException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(403),
   ).pipe(C.withAuthError) {}
 export class ConflictException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
     "ConflictException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class InternalServerException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
     "InternalServerException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.all(T.HttpError(500), T.Retryable()),
   ).pipe(C.withServerError, C.withRetryableError) {}
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class ThrottlingException
   extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
     "ThrottlingException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.all(T.HttpError(429), T.Retryable({ throttling: true })),
   ).pipe(C.withThrottlingError, C.withRetryableError) {}
 export class ValidationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
     "ValidationException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export type RecommendationResourceArn = string;
@@ -1137,7 +1135,7 @@ export const batchUpdateRecommendationResourceExclusion: API.OperationMethod<
   BatchUpdateRecommendationResourceExclusionRequest,
   BatchUpdateRecommendationResourceExclusionResponse,
   BatchUpdateRecommendationResourceExclusionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchUpdateRecommendationResourceExclusionRequest,
   output: BatchUpdateRecommendationResourceExclusionResponse,
@@ -1167,7 +1165,7 @@ export const getOrganizationRecommendation: API.OperationMethod<
   GetOrganizationRecommendationRequest,
   GetOrganizationRecommendationResponse,
   GetOrganizationRecommendationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetOrganizationRecommendationRequest,
   output: GetOrganizationRecommendationResponse,
@@ -1197,7 +1195,7 @@ export const getRecommendation: API.OperationMethod<
   GetRecommendationRequest,
   GetRecommendationResponse,
   GetRecommendationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetRecommendationRequest,
   output: GetRecommendationResponse,
@@ -1222,27 +1220,13 @@ export type ListChecksError =
 /**
  * List a filterable set of Checks. This API provides global recommendations, eliminating the need to call the API in each AWS Region.
  */
-export const listChecks: API.OperationMethod<
+export const listChecks: API.PaginatedOperationMethod<
   ListChecksRequest,
   ListChecksResponse,
   ListChecksError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListChecksRequest,
-  ) => stream.Stream<
-    ListChecksResponse,
-    ListChecksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListChecksRequest,
-  ) => stream.Stream<
-    CheckSummary,
-    ListChecksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  CheckSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListChecksRequest,
   output: ListChecksResponse,
   errors: [
@@ -1260,27 +1244,7 @@ export const listChecks: API.OperationMethod<
     items: "checkSummaries",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListChecksRequest,
-  ListChecksResponse,
-  ListChecksError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListChecksRequest,
-  ) => stream.Stream<
-    ListChecksResponse,
-    ListChecksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListChecksRequest,
-  ) => stream.Stream<
-    CheckSummary,
-    ListChecksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListOrganizationRecommendationAccountsError =
   | AccessDeniedException
@@ -1292,27 +1256,13 @@ export type ListOrganizationRecommendationAccountsError =
 /**
  * Lists the accounts that own the resources for an organization aggregate recommendation. This API only supports prioritized recommendations and provides global priority recommendations, eliminating the need to call the API in each AWS Region.
  */
-export const listOrganizationRecommendationAccounts: API.OperationMethod<
+export const listOrganizationRecommendationAccounts: API.PaginatedOperationMethod<
   ListOrganizationRecommendationAccountsRequest,
   ListOrganizationRecommendationAccountsResponse,
   ListOrganizationRecommendationAccountsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListOrganizationRecommendationAccountsRequest,
-  ) => stream.Stream<
-    ListOrganizationRecommendationAccountsResponse,
-    ListOrganizationRecommendationAccountsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListOrganizationRecommendationAccountsRequest,
-  ) => stream.Stream<
-    AccountRecommendationLifecycleSummary,
-    ListOrganizationRecommendationAccountsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  AccountRecommendationLifecycleSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListOrganizationRecommendationAccountsRequest,
   output: ListOrganizationRecommendationAccountsResponse,
   errors: [
@@ -1331,27 +1281,7 @@ export const listOrganizationRecommendationAccounts: API.OperationMethod<
     items: "accountRecommendationLifecycleSummaries",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListOrganizationRecommendationAccountsRequest,
-  ListOrganizationRecommendationAccountsResponse,
-  ListOrganizationRecommendationAccountsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListOrganizationRecommendationAccountsRequest,
-  ) => stream.Stream<
-    ListOrganizationRecommendationAccountsResponse,
-    ListOrganizationRecommendationAccountsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListOrganizationRecommendationAccountsRequest,
-  ) => stream.Stream<
-    AccountRecommendationLifecycleSummary,
-    ListOrganizationRecommendationAccountsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListOrganizationRecommendationResourcesError =
   | AccessDeniedException
@@ -1363,27 +1293,13 @@ export type ListOrganizationRecommendationResourcesError =
 /**
  * List Resources of a Recommendation within an Organization. This API only supports prioritized recommendations and provides global priority recommendations, eliminating the need to call the API in each AWS Region.
  */
-export const listOrganizationRecommendationResources: API.OperationMethod<
+export const listOrganizationRecommendationResources: API.PaginatedOperationMethod<
   ListOrganizationRecommendationResourcesRequest,
   ListOrganizationRecommendationResourcesResponse,
   ListOrganizationRecommendationResourcesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListOrganizationRecommendationResourcesRequest,
-  ) => stream.Stream<
-    ListOrganizationRecommendationResourcesResponse,
-    ListOrganizationRecommendationResourcesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListOrganizationRecommendationResourcesRequest,
-  ) => stream.Stream<
-    OrganizationRecommendationResourceSummary,
-    ListOrganizationRecommendationResourcesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  OrganizationRecommendationResourceSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListOrganizationRecommendationResourcesRequest,
   output: ListOrganizationRecommendationResourcesResponse,
   errors: [
@@ -1402,27 +1318,7 @@ export const listOrganizationRecommendationResources: API.OperationMethod<
     items: "organizationRecommendationResourceSummaries",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListOrganizationRecommendationResourcesRequest,
-  ListOrganizationRecommendationResourcesResponse,
-  ListOrganizationRecommendationResourcesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListOrganizationRecommendationResourcesRequest,
-  ) => stream.Stream<
-    ListOrganizationRecommendationResourcesResponse,
-    ListOrganizationRecommendationResourcesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListOrganizationRecommendationResourcesRequest,
-  ) => stream.Stream<
-    OrganizationRecommendationResourceSummary,
-    ListOrganizationRecommendationResourcesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListOrganizationRecommendationsError =
   | AccessDeniedException
@@ -1433,27 +1329,13 @@ export type ListOrganizationRecommendationsError =
 /**
  * List a filterable set of Recommendations within an Organization. This API only supports prioritized recommendations and provides global priority recommendations, eliminating the need to call the API in each AWS Region.
  */
-export const listOrganizationRecommendations: API.OperationMethod<
+export const listOrganizationRecommendations: API.PaginatedOperationMethod<
   ListOrganizationRecommendationsRequest,
   ListOrganizationRecommendationsResponse,
   ListOrganizationRecommendationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListOrganizationRecommendationsRequest,
-  ) => stream.Stream<
-    ListOrganizationRecommendationsResponse,
-    ListOrganizationRecommendationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListOrganizationRecommendationsRequest,
-  ) => stream.Stream<
-    OrganizationRecommendationSummary,
-    ListOrganizationRecommendationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  OrganizationRecommendationSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListOrganizationRecommendationsRequest,
   output: ListOrganizationRecommendationsResponse,
   errors: [
@@ -1471,27 +1353,7 @@ export const listOrganizationRecommendations: API.OperationMethod<
     items: "organizationRecommendationSummaries",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListOrganizationRecommendationsRequest,
-  ListOrganizationRecommendationsResponse,
-  ListOrganizationRecommendationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListOrganizationRecommendationsRequest,
-  ) => stream.Stream<
-    ListOrganizationRecommendationsResponse,
-    ListOrganizationRecommendationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListOrganizationRecommendationsRequest,
-  ) => stream.Stream<
-    OrganizationRecommendationSummary,
-    ListOrganizationRecommendationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListRecommendationResourcesError =
   | AccessDeniedException
@@ -1503,27 +1365,13 @@ export type ListRecommendationResourcesError =
 /**
  * List Resources of a Recommendation. This API provides global recommendations, eliminating the need to call the API in each AWS Region.
  */
-export const listRecommendationResources: API.OperationMethod<
+export const listRecommendationResources: API.PaginatedOperationMethod<
   ListRecommendationResourcesRequest,
   ListRecommendationResourcesResponse,
   ListRecommendationResourcesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListRecommendationResourcesRequest,
-  ) => stream.Stream<
-    ListRecommendationResourcesResponse,
-    ListRecommendationResourcesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListRecommendationResourcesRequest,
-  ) => stream.Stream<
-    RecommendationResourceSummary,
-    ListRecommendationResourcesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  RecommendationResourceSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListRecommendationResourcesRequest,
   output: ListRecommendationResourcesResponse,
   errors: [
@@ -1542,27 +1390,7 @@ export const listRecommendationResources: API.OperationMethod<
     items: "recommendationResourceSummaries",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListRecommendationResourcesRequest,
-  ListRecommendationResourcesResponse,
-  ListRecommendationResourcesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListRecommendationResourcesRequest,
-  ) => stream.Stream<
-    ListRecommendationResourcesResponse,
-    ListRecommendationResourcesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListRecommendationResourcesRequest,
-  ) => stream.Stream<
-    RecommendationResourceSummary,
-    ListRecommendationResourcesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListRecommendationsError =
   | AccessDeniedException
@@ -1573,27 +1401,13 @@ export type ListRecommendationsError =
 /**
  * List a filterable set of Recommendations. This API provides global recommendations, eliminating the need to call the API in each AWS Region.
  */
-export const listRecommendations: API.OperationMethod<
+export const listRecommendations: API.PaginatedOperationMethod<
   ListRecommendationsRequest,
   ListRecommendationsResponse,
   ListRecommendationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListRecommendationsRequest,
-  ) => stream.Stream<
-    ListRecommendationsResponse,
-    ListRecommendationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListRecommendationsRequest,
-  ) => stream.Stream<
-    RecommendationSummary,
-    ListRecommendationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  RecommendationSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListRecommendationsRequest,
   output: ListRecommendationsResponse,
   errors: [
@@ -1611,27 +1425,7 @@ export const listRecommendations: API.OperationMethod<
     items: "recommendationSummaries",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListRecommendationsRequest,
-  ListRecommendationsResponse,
-  ListRecommendationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListRecommendationsRequest,
-  ) => stream.Stream<
-    ListRecommendationsResponse,
-    ListRecommendationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListRecommendationsRequest,
-  ) => stream.Stream<
-    RecommendationSummary,
-    ListRecommendationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type UpdateOrganizationRecommendationLifecycleError =
   | AccessDeniedException
@@ -1648,7 +1442,7 @@ export const updateOrganizationRecommendationLifecycle: API.OperationMethod<
   UpdateOrganizationRecommendationLifecycleRequest,
   UpdateOrganizationRecommendationLifecycleResponse,
   UpdateOrganizationRecommendationLifecycleError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateOrganizationRecommendationLifecycleRequest,
   output: UpdateOrganizationRecommendationLifecycleResponse,
@@ -1680,7 +1474,7 @@ export const updateRecommendationLifecycle: API.OperationMethod<
   UpdateRecommendationLifecycleRequest,
   UpdateRecommendationLifecycleResponse,
   UpdateRecommendationLifecycleError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateRecommendationLifecycleRequest,
   output: UpdateRecommendationLifecycleResponse,

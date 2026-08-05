@@ -1,6 +1,5 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -8,7 +7,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 const svc = T.AwsApiService({ sdkId: "Braket", serviceShapeName: "Braket" });
 const auth = T.AwsAuthSigv4({ name: "braket" });
 const ver = T.ServiceVersion("2019-09-01");
@@ -85,56 +83,56 @@ const rules = T.EndpointResolver((p, _) => {
 export class AccessDeniedException
   extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
     "AccessDeniedException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(403),
   ).pipe(C.withAuthError) {}
 export class ConflictException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
     "ConflictException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class DeviceOfflineException
   extends /*@__PURE__*/ S.TaggedErrorClass<DeviceOfflineException>()(
     "DeviceOfflineException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(424),
   ) {}
 export class DeviceRetiredException
   extends /*@__PURE__*/ S.TaggedErrorClass<DeviceRetiredException>()(
     "DeviceRetiredException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(410),
   ).pipe(C.withBadRequestError) {}
 export class InternalServiceException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServiceException>()(
     "InternalServiceException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(500),
   ).pipe(C.withServerError) {}
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class ServiceQuotaExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
     "ServiceQuotaExceededException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(402),
   ).pipe(C.withQuotaError) {}
 export class ThrottlingException
   extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
     "ThrottlingException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(429),
   ).pipe(C.withThrottlingError) {}
 export class ValidationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
     "ValidationException",
     {
-      message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       reason: S.optional(S.String),
       programSetValidationFailures: S.optional(
         S.suspend(() => ProgramSetValidationFailuresList).annotate({
@@ -1229,7 +1227,7 @@ export const cancelJob: API.OperationMethod<
   CancelJobRequest,
   CancelJobResponse,
   CancelJobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CancelJobRequest,
   output: CancelJobResponse,
@@ -1261,7 +1259,7 @@ export const cancelQuantumTask: API.OperationMethod<
   CancelQuantumTaskRequest,
   CancelQuantumTaskResponse,
   CancelQuantumTaskError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CancelQuantumTaskRequest,
   output: CancelQuantumTaskResponse,
@@ -1295,7 +1293,7 @@ export const createJob: API.OperationMethod<
   CreateJobRequest,
   CreateJobResponse,
   CreateJobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateJobRequest,
   output: CreateJobResponse,
@@ -1330,7 +1328,7 @@ export const createQuantumTask: API.OperationMethod<
   CreateQuantumTaskRequest,
   CreateQuantumTaskResponse,
   CreateQuantumTaskError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateQuantumTaskRequest,
   output: CreateQuantumTaskResponse,
@@ -1362,7 +1360,7 @@ export const createSpendingLimit: API.OperationMethod<
   CreateSpendingLimitRequest,
   CreateSpendingLimitResponse,
   CreateSpendingLimitError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateSpendingLimitRequest,
   output: CreateSpendingLimitResponse,
@@ -1392,7 +1390,7 @@ export const deleteSpendingLimit: API.OperationMethod<
   DeleteSpendingLimitRequest,
   DeleteSpendingLimitResponse,
   DeleteSpendingLimitError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteSpendingLimitRequest,
   output: DeleteSpendingLimitResponse,
@@ -1424,7 +1422,7 @@ export const getDevice: API.OperationMethod<
   GetDeviceRequest,
   GetDeviceResponse,
   GetDeviceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetDeviceRequest,
   output: GetDeviceResponse,
@@ -1454,7 +1452,7 @@ export const getJob: API.OperationMethod<
   GetJobRequest,
   GetJobResponse,
   GetJobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetJobRequest,
   output: GetJobResponse,
@@ -1484,7 +1482,7 @@ export const getQuantumTask: API.OperationMethod<
   GetQuantumTaskRequest,
   GetQuantumTaskResponse,
   GetQuantumTaskError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetQuantumTaskRequest,
   output: GetQuantumTaskResponse,
@@ -1512,7 +1510,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceRequest,
   ListTagsForResourceResponse,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -1535,27 +1533,13 @@ export type SearchDevicesError =
 /**
  * Searches for devices using the specified filters.
  */
-export const searchDevices: API.OperationMethod<
+export const searchDevices: API.PaginatedOperationMethod<
   SearchDevicesRequest,
   SearchDevicesResponse,
   SearchDevicesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: SearchDevicesRequest,
-  ) => stream.Stream<
-    SearchDevicesResponse,
-    SearchDevicesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: SearchDevicesRequest,
-  ) => stream.Stream<
-    DeviceSummary,
-    SearchDevicesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  DeviceSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: SearchDevicesRequest,
   output: SearchDevicesResponse,
   errors: [
@@ -1573,27 +1557,7 @@ export const searchDevices: API.OperationMethod<
     items: "devices",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  SearchDevicesRequest,
-  SearchDevicesResponse,
-  SearchDevicesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: SearchDevicesRequest,
-  ) => stream.Stream<
-    SearchDevicesResponse,
-    SearchDevicesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: SearchDevicesRequest,
-  ) => stream.Stream<
-    DeviceSummary,
-    SearchDevicesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type SearchJobsError =
   | AccessDeniedException
@@ -1604,27 +1568,13 @@ export type SearchJobsError =
 /**
  * Searches for Amazon Braket hybrid jobs that match the specified filter values.
  */
-export const searchJobs: API.OperationMethod<
+export const searchJobs: API.PaginatedOperationMethod<
   SearchJobsRequest,
   SearchJobsResponse,
   SearchJobsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: SearchJobsRequest,
-  ) => stream.Stream<
-    SearchJobsResponse,
-    SearchJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: SearchJobsRequest,
-  ) => stream.Stream<
-    JobSummary,
-    SearchJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  JobSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: SearchJobsRequest,
   output: SearchJobsResponse,
   errors: [
@@ -1642,27 +1592,7 @@ export const searchJobs: API.OperationMethod<
     items: "jobs",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  SearchJobsRequest,
-  SearchJobsResponse,
-  SearchJobsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: SearchJobsRequest,
-  ) => stream.Stream<
-    SearchJobsResponse,
-    SearchJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: SearchJobsRequest,
-  ) => stream.Stream<
-    JobSummary,
-    SearchJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type SearchQuantumTasksError =
   | AccessDeniedException
@@ -1673,27 +1603,13 @@ export type SearchQuantumTasksError =
 /**
  * Searches for tasks that match the specified filter values.
  */
-export const searchQuantumTasks: API.OperationMethod<
+export const searchQuantumTasks: API.PaginatedOperationMethod<
   SearchQuantumTasksRequest,
   SearchQuantumTasksResponse,
   SearchQuantumTasksError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: SearchQuantumTasksRequest,
-  ) => stream.Stream<
-    SearchQuantumTasksResponse,
-    SearchQuantumTasksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: SearchQuantumTasksRequest,
-  ) => stream.Stream<
-    QuantumTaskSummary,
-    SearchQuantumTasksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  QuantumTaskSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: SearchQuantumTasksRequest,
   output: SearchQuantumTasksResponse,
   errors: [
@@ -1711,27 +1627,7 @@ export const searchQuantumTasks: API.OperationMethod<
     items: "quantumTasks",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  SearchQuantumTasksRequest,
-  SearchQuantumTasksResponse,
-  SearchQuantumTasksError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: SearchQuantumTasksRequest,
-  ) => stream.Stream<
-    SearchQuantumTasksResponse,
-    SearchQuantumTasksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: SearchQuantumTasksRequest,
-  ) => stream.Stream<
-    QuantumTaskSummary,
-    SearchQuantumTasksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type SearchSpendingLimitsError =
   | AccessDeniedException
@@ -1742,27 +1638,13 @@ export type SearchSpendingLimitsError =
 /**
  * Searches and lists spending limits based on specified filters. This operation supports pagination and allows filtering by various criteria to find specific spending limits. We recommend using pagination to ensure that the operation returns quickly and successfully.
  */
-export const searchSpendingLimits: API.OperationMethod<
+export const searchSpendingLimits: API.PaginatedOperationMethod<
   SearchSpendingLimitsRequest,
   SearchSpendingLimitsResponse,
   SearchSpendingLimitsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: SearchSpendingLimitsRequest,
-  ) => stream.Stream<
-    SearchSpendingLimitsResponse,
-    SearchSpendingLimitsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: SearchSpendingLimitsRequest,
-  ) => stream.Stream<
-    SpendingLimitSummary,
-    SearchSpendingLimitsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  SpendingLimitSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: SearchSpendingLimitsRequest,
   output: SearchSpendingLimitsResponse,
   errors: [
@@ -1780,27 +1662,7 @@ export const searchSpendingLimits: API.OperationMethod<
     items: "spendingLimits",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  SearchSpendingLimitsRequest,
-  SearchSpendingLimitsResponse,
-  SearchSpendingLimitsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: SearchSpendingLimitsRequest,
-  ) => stream.Stream<
-    SearchSpendingLimitsResponse,
-    SearchSpendingLimitsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: SearchSpendingLimitsRequest,
-  ) => stream.Stream<
-    SpendingLimitSummary,
-    SearchSpendingLimitsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type TagResourceError =
   | InternalServiceException
@@ -1814,7 +1676,7 @@ export const tagResource: API.OperationMethod<
   TagResourceRequest,
   TagResourceResponse,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -1840,7 +1702,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceRequest,
   UntagResourceResponse,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -1868,7 +1730,7 @@ export const updateSpendingLimit: API.OperationMethod<
   UpdateSpendingLimitRequest,
   UpdateSpendingLimitResponse,
   UpdateSpendingLimitError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateSpendingLimitRequest,
   output: UpdateSpendingLimitResponse,

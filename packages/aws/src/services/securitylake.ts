@@ -1,7 +1,6 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as redacted from "effect/Redacted";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -9,7 +8,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region as Rgn } from "../region.ts";
 import { SensitiveString } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "SecurityLake",
@@ -90,20 +88,23 @@ const rules = T.EndpointResolver((p, _) => {
 export class AccessDeniedException
   extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
     "AccessDeniedException",
-    { message: S.optional(S.String), errorCode: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      errorCode: S.optional(S.String),
+    },
     T.HttpError(403),
   ).pipe(C.withAuthError) {}
 export class BadRequestException
   extends /*@__PURE__*/ S.TaggedErrorClass<BadRequestException>()(
     "BadRequestException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class ConflictException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
     "ConflictException",
     {
-      message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       resourceName: S.optional(S.String),
       resourceType: S.optional(S.String),
     },
@@ -112,14 +113,14 @@ export class ConflictException
 export class InternalServerException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
     "InternalServerException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(T.HttpError(500), T.Retryable()),
   ).pipe(C.withServerError, C.withRetryableError) {}
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
     {
-      message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       resourceName: S.optional(S.String),
       resourceType: S.optional(S.String),
     },
@@ -129,7 +130,7 @@ export class ThrottlingException
   extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
     "ThrottlingException",
     {
-      message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       serviceCode: S.optional(S.String),
       quotaCode: S.optional(S.String),
       retryAfterSeconds: S.optional(S.Number).pipe(T.HttpHeader("Retry-After")),
@@ -139,7 +140,7 @@ export class ThrottlingException
 export class UnauthorizedException
   extends /*@__PURE__*/ S.TaggedErrorClass<UnauthorizedException>()(
     "UnauthorizedException",
-    {},
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ).pipe(C.withAuthError) {}
 export type AwsAccountId = string;
 export type AccountList = string[];
@@ -1541,7 +1542,7 @@ export const createAwsLogSource: API.OperationMethod<
   CreateAwsLogSourceRequest,
   CreateAwsLogSourceResponse,
   CreateAwsLogSourceError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateAwsLogSourceRequest,
   output: CreateAwsLogSourceResponse,
@@ -1581,7 +1582,7 @@ export const createCustomLogSource: API.OperationMethod<
   CreateCustomLogSourceRequest,
   CreateCustomLogSourceResponse,
   CreateCustomLogSourceError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateCustomLogSourceRequest,
   output: CreateCustomLogSourceResponse,
@@ -1629,7 +1630,7 @@ export const createDataLake: API.OperationMethod<
   CreateDataLakeRequest,
   CreateDataLakeResponse,
   CreateDataLakeError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateDataLakeRequest,
   output: CreateDataLakeResponse,
@@ -1664,7 +1665,7 @@ export const createDataLakeExceptionSubscription: API.OperationMethod<
   CreateDataLakeExceptionSubscriptionRequest,
   CreateDataLakeExceptionSubscriptionResponse,
   CreateDataLakeExceptionSubscriptionError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateDataLakeExceptionSubscriptionRequest,
   output: CreateDataLakeExceptionSubscriptionResponse,
@@ -1701,7 +1702,7 @@ export const createDataLakeOrganizationConfiguration: API.OperationMethod<
   CreateDataLakeOrganizationConfigurationRequest,
   CreateDataLakeOrganizationConfigurationResponse,
   CreateDataLakeOrganizationConfigurationError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateDataLakeOrganizationConfigurationRequest,
   output: CreateDataLakeOrganizationConfigurationResponse,
@@ -1735,7 +1736,7 @@ export const createSubscriber: API.OperationMethod<
   CreateSubscriberRequest,
   CreateSubscriberResponse,
   CreateSubscriberError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateSubscriberRequest,
   output: CreateSubscriberResponse,
@@ -1771,7 +1772,7 @@ export const createSubscriberNotification: API.OperationMethod<
   CreateSubscriberNotificationRequest,
   CreateSubscriberNotificationResponse,
   CreateSubscriberNotificationError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateSubscriberNotificationRequest,
   output: CreateSubscriberNotificationResponse,
@@ -1812,7 +1813,7 @@ export const deleteAwsLogSource: API.OperationMethod<
   DeleteAwsLogSourceRequest,
   DeleteAwsLogSourceResponse,
   DeleteAwsLogSourceError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteAwsLogSourceRequest,
   output: DeleteAwsLogSourceResponse,
@@ -1847,7 +1848,7 @@ export const deleteCustomLogSource: API.OperationMethod<
   DeleteCustomLogSourceRequest,
   DeleteCustomLogSourceResponse,
   DeleteCustomLogSourceError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteCustomLogSourceRequest,
   output: DeleteCustomLogSourceResponse,
@@ -1889,7 +1890,7 @@ export const deleteDataLake: API.OperationMethod<
   DeleteDataLakeRequest,
   DeleteDataLakeResponse,
   DeleteDataLakeError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteDataLakeRequest,
   output: DeleteDataLakeResponse,
@@ -1924,7 +1925,7 @@ export const deleteDataLakeExceptionSubscription: API.OperationMethod<
   DeleteDataLakeExceptionSubscriptionRequest,
   DeleteDataLakeExceptionSubscriptionResponse,
   DeleteDataLakeExceptionSubscriptionError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteDataLakeExceptionSubscriptionRequest,
   output: DeleteDataLakeExceptionSubscriptionResponse,
@@ -1959,7 +1960,7 @@ export const deleteDataLakeOrganizationConfiguration: API.OperationMethod<
   DeleteDataLakeOrganizationConfigurationRequest,
   DeleteDataLakeOrganizationConfigurationResponse,
   DeleteDataLakeOrganizationConfigurationError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteDataLakeOrganizationConfigurationRequest,
   output: DeleteDataLakeOrganizationConfigurationResponse,
@@ -1995,7 +1996,7 @@ export const deleteSubscriber: API.OperationMethod<
   DeleteSubscriberRequest,
   DeleteSubscriberResponse,
   DeleteSubscriberError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteSubscriberRequest,
   output: DeleteSubscriberResponse,
@@ -2030,7 +2031,7 @@ export const deleteSubscriberNotification: API.OperationMethod<
   DeleteSubscriberNotificationRequest,
   DeleteSubscriberNotificationResponse,
   DeleteSubscriberNotificationError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteSubscriberNotificationRequest,
   output: DeleteSubscriberNotificationResponse,
@@ -2065,7 +2066,7 @@ export const deregisterDataLakeDelegatedAdministrator: API.OperationMethod<
   DeregisterDataLakeDelegatedAdministratorRequest,
   DeregisterDataLakeDelegatedAdministratorResponse,
   DeregisterDataLakeDelegatedAdministratorError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeregisterDataLakeDelegatedAdministratorRequest,
   output: DeregisterDataLakeDelegatedAdministratorResponse,
@@ -2098,7 +2099,7 @@ export const getDataLakeExceptionSubscription: API.OperationMethod<
   GetDataLakeExceptionSubscriptionRequest,
   GetDataLakeExceptionSubscriptionResponse,
   GetDataLakeExceptionSubscriptionError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetDataLakeExceptionSubscriptionRequest,
   output: GetDataLakeExceptionSubscriptionResponse,
@@ -2133,7 +2134,7 @@ export const getDataLakeOrganizationConfiguration: API.OperationMethod<
   GetDataLakeOrganizationConfigurationRequest,
   GetDataLakeOrganizationConfigurationResponse,
   GetDataLakeOrganizationConfigurationError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetDataLakeOrganizationConfigurationRequest,
   output: GetDataLakeOrganizationConfigurationResponse,
@@ -2163,27 +2164,13 @@ export type GetDataLakeSourcesError =
  * Retrieves a snapshot of the current Region, including whether Amazon Security Lake is enabled
  * for those accounts and which sources Security Lake is collecting data from.
  */
-export const getDataLakeSources: API.OperationMethod<
+export const getDataLakeSources: API.PaginatedOperationMethod<
   GetDataLakeSourcesRequest,
   GetDataLakeSourcesResponse,
   GetDataLakeSourcesError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetDataLakeSourcesRequest,
-  ) => stream.Stream<
-    GetDataLakeSourcesResponse,
-    GetDataLakeSourcesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetDataLakeSourcesRequest,
-  ) => stream.Stream<
-    DataLakeSource,
-    GetDataLakeSourcesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  DataLakeSource
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetDataLakeSourcesRequest,
   output: GetDataLakeSourcesResponse,
   errors: [
@@ -2204,27 +2191,7 @@ export const getDataLakeSources: API.OperationMethod<
     items: "dataLakeSources",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetDataLakeSourcesRequest,
-  GetDataLakeSourcesResponse,
-  GetDataLakeSourcesError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetDataLakeSourcesRequest,
-  ) => stream.Stream<
-    GetDataLakeSourcesResponse,
-    GetDataLakeSourcesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetDataLakeSourcesRequest,
-  ) => stream.Stream<
-    DataLakeSource,
-    GetDataLakeSourcesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetSubscriberError =
   | AccessDeniedException
@@ -2243,7 +2210,7 @@ export const getSubscriber: API.OperationMethod<
   GetSubscriberRequest,
   GetSubscriberResponse,
   GetSubscriberError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetSubscriberRequest,
   output: GetSubscriberResponse,
@@ -2274,27 +2241,13 @@ export type ListDataLakeExceptionsError =
  * Lists the Amazon Security Lake exceptions that you can use to find the source of problems and
  * fix them.
  */
-export const listDataLakeExceptions: API.OperationMethod<
+export const listDataLakeExceptions: API.PaginatedOperationMethod<
   ListDataLakeExceptionsRequest,
   ListDataLakeExceptionsResponse,
   ListDataLakeExceptionsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDataLakeExceptionsRequest,
-  ) => stream.Stream<
-    ListDataLakeExceptionsResponse,
-    ListDataLakeExceptionsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDataLakeExceptionsRequest,
-  ) => stream.Stream<
-    DataLakeException,
-    ListDataLakeExceptionsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  DataLakeException
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListDataLakeExceptionsRequest,
   output: ListDataLakeExceptionsResponse,
   errors: [
@@ -2315,27 +2268,7 @@ export const listDataLakeExceptions: API.OperationMethod<
     items: "exceptions",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListDataLakeExceptionsRequest,
-  ListDataLakeExceptionsResponse,
-  ListDataLakeExceptionsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDataLakeExceptionsRequest,
-  ) => stream.Stream<
-    ListDataLakeExceptionsResponse,
-    ListDataLakeExceptionsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDataLakeExceptionsRequest,
-  ) => stream.Stream<
-    DataLakeException,
-    ListDataLakeExceptionsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListDataLakesError =
   | AccessDeniedException
@@ -2354,7 +2287,7 @@ export const listDataLakes: API.OperationMethod<
   ListDataLakesRequest,
   ListDataLakesResponse,
   ListDataLakesError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListDataLakesRequest,
   output: ListDataLakesResponse,
@@ -2384,27 +2317,13 @@ export type ListLogSourcesError =
 /**
  * Retrieves the log sources.
  */
-export const listLogSources: API.OperationMethod<
+export const listLogSources: API.PaginatedOperationMethod<
   ListLogSourcesRequest,
   ListLogSourcesResponse,
   ListLogSourcesError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListLogSourcesRequest,
-  ) => stream.Stream<
-    ListLogSourcesResponse,
-    ListLogSourcesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListLogSourcesRequest,
-  ) => stream.Stream<
-    LogSource,
-    ListLogSourcesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  LogSource
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListLogSourcesRequest,
   output: ListLogSourcesResponse,
   errors: [
@@ -2425,27 +2344,7 @@ export const listLogSources: API.OperationMethod<
     items: "sources",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListLogSourcesRequest,
-  ListLogSourcesResponse,
-  ListLogSourcesError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListLogSourcesRequest,
-  ) => stream.Stream<
-    ListLogSourcesResponse,
-    ListLogSourcesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListLogSourcesRequest,
-  ) => stream.Stream<
-    LogSource,
-    ListLogSourcesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListSubscribersError =
   | AccessDeniedException
@@ -2460,27 +2359,13 @@ export type ListSubscribersError =
  * Lists all subscribers for the specific Amazon Security Lake account ID. You can retrieve a list
  * of subscriptions associated with a specific organization or Amazon Web Services account.
  */
-export const listSubscribers: API.OperationMethod<
+export const listSubscribers: API.PaginatedOperationMethod<
   ListSubscribersRequest,
   ListSubscribersResponse,
   ListSubscribersError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSubscribersRequest,
-  ) => stream.Stream<
-    ListSubscribersResponse,
-    ListSubscribersError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSubscribersRequest,
-  ) => stream.Stream<
-    SubscriberResource,
-    ListSubscribersError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  SubscriberResource
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListSubscribersRequest,
   output: ListSubscribersResponse,
   errors: [
@@ -2501,27 +2386,7 @@ export const listSubscribers: API.OperationMethod<
     items: "subscribers",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListSubscribersRequest,
-  ListSubscribersResponse,
-  ListSubscribersError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSubscribersRequest,
-  ) => stream.Stream<
-    ListSubscribersResponse,
-    ListSubscribersError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSubscribersRequest,
-  ) => stream.Stream<
-    SubscriberResource,
-    ListSubscribersError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsForResourceError =
   | AccessDeniedException
@@ -2540,7 +2405,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceRequest,
   ListTagsForResourceResponse,
   ListTagsForResourceError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -2575,7 +2440,7 @@ export const registerDataLakeDelegatedAdministrator: API.OperationMethod<
   RegisterDataLakeDelegatedAdministratorRequest,
   RegisterDataLakeDelegatedAdministratorResponse,
   RegisterDataLakeDelegatedAdministratorError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RegisterDataLakeDelegatedAdministratorRequest,
   output: RegisterDataLakeDelegatedAdministratorResponse,
@@ -2615,7 +2480,7 @@ export const tagResource: API.OperationMethod<
   TagResourceRequest,
   TagResourceResponse,
   TagResourceError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -2650,7 +2515,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceRequest,
   UntagResourceResponse,
   UntagResourceError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -2696,7 +2561,7 @@ export const updateDataLake: API.OperationMethod<
   UpdateDataLakeRequest,
   UpdateDataLakeResponse,
   UpdateDataLakeError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateDataLakeRequest,
   output: UpdateDataLakeResponse,
@@ -2731,7 +2596,7 @@ export const updateDataLakeExceptionSubscription: API.OperationMethod<
   UpdateDataLakeExceptionSubscriptionRequest,
   UpdateDataLakeExceptionSubscriptionResponse,
   UpdateDataLakeExceptionSubscriptionError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateDataLakeExceptionSubscriptionRequest,
   output: UpdateDataLakeExceptionSubscriptionResponse,
@@ -2766,7 +2631,7 @@ export const updateSubscriber: API.OperationMethod<
   UpdateSubscriberRequest,
   UpdateSubscriberResponse,
   UpdateSubscriberError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateSubscriberRequest,
   output: UpdateSubscriberResponse,
@@ -2801,7 +2666,7 @@ export const updateSubscriberNotification: API.OperationMethod<
   UpdateSubscriberNotificationRequest,
   UpdateSubscriberNotificationResponse,
   UpdateSubscriberNotificationError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateSubscriberNotificationRequest,
   output: UpdateSubscriberNotificationResponse,

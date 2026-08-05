@@ -1,7 +1,6 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as redacted from "effect/Redacted";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -9,7 +8,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 import { SensitiveString } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "codestar notifications",
@@ -90,49 +88,49 @@ const rules = T.EndpointResolver((p, _) => {
 export class AccessDeniedException
   extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
     "AccessDeniedException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(403),
   ).pipe(C.withAuthError) {}
 export class ConcurrentModificationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConcurrentModificationException>()(
     "ConcurrentModificationException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class ConfigurationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConfigurationException>()(
     "ConfigurationException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class InvalidNextTokenException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidNextTokenException>()(
     "InvalidNextTokenException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class LimitExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<LimitExceededException>()(
     "LimitExceededException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class ResourceAlreadyExistsException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceAlreadyExistsException>()(
     "ResourceAlreadyExistsException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(409),
   ).pipe(C.withConflictError, C.withAlreadyExistsError) {}
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class ValidationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
     "ValidationException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export type NotificationRuleName = string | redacted.Redacted<string>;
@@ -729,7 +727,7 @@ export const createNotificationRule: API.OperationMethod<
   CreateNotificationRuleRequest,
   CreateNotificationRuleResult,
   CreateNotificationRuleError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateNotificationRuleRequest,
   output: CreateNotificationRuleResult,
@@ -758,7 +756,7 @@ export const deleteNotificationRule: API.OperationMethod<
   DeleteNotificationRuleRequest,
   DeleteNotificationRuleResult,
   DeleteNotificationRuleError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteNotificationRuleRequest,
   output: DeleteNotificationRuleResult,
@@ -780,7 +778,7 @@ export const deleteTarget: API.OperationMethod<
   DeleteTargetRequest,
   DeleteTargetResult,
   DeleteTargetError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteTargetRequest,
   output: DeleteTargetResult,
@@ -801,7 +799,7 @@ export const describeNotificationRule: API.OperationMethod<
   DescribeNotificationRuleRequest,
   DescribeNotificationRuleResult,
   DescribeNotificationRuleError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeNotificationRuleRequest,
   output: DescribeNotificationRuleResult,
@@ -818,27 +816,13 @@ export type ListEventTypesError =
 /**
  * Returns information about the event types available for configuring notifications.
  */
-export const listEventTypes: API.OperationMethod<
+export const listEventTypes: API.PaginatedOperationMethod<
   ListEventTypesRequest,
   ListEventTypesResult,
   ListEventTypesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListEventTypesRequest,
-  ) => stream.Stream<
-    ListEventTypesResult,
-    ListEventTypesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListEventTypesRequest,
-  ) => stream.Stream<
-    EventTypeSummary,
-    ListEventTypesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  EventTypeSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListEventTypesRequest,
   output: ListEventTypesResult,
   errors: [InvalidNextTokenException, ValidationException],
@@ -851,27 +835,7 @@ export const listEventTypes: API.OperationMethod<
     items: "EventTypes",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListEventTypesRequest,
-  ListEventTypesResult,
-  ListEventTypesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListEventTypesRequest,
-  ) => stream.Stream<
-    ListEventTypesResult,
-    ListEventTypesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListEventTypesRequest,
-  ) => stream.Stream<
-    EventTypeSummary,
-    ListEventTypesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListNotificationRulesError =
   | InvalidNextTokenException
@@ -880,27 +844,13 @@ export type ListNotificationRulesError =
 /**
  * Returns a list of the notification rules for an Amazon Web Services account.
  */
-export const listNotificationRules: API.OperationMethod<
+export const listNotificationRules: API.PaginatedOperationMethod<
   ListNotificationRulesRequest,
   ListNotificationRulesResult,
   ListNotificationRulesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListNotificationRulesRequest,
-  ) => stream.Stream<
-    ListNotificationRulesResult,
-    ListNotificationRulesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListNotificationRulesRequest,
-  ) => stream.Stream<
-    NotificationRuleSummary,
-    ListNotificationRulesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  NotificationRuleSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListNotificationRulesRequest,
   output: ListNotificationRulesResult,
   errors: [InvalidNextTokenException, ValidationException],
@@ -913,27 +863,7 @@ export const listNotificationRules: API.OperationMethod<
     items: "NotificationRules",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListNotificationRulesRequest,
-  ListNotificationRulesResult,
-  ListNotificationRulesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListNotificationRulesRequest,
-  ) => stream.Stream<
-    ListNotificationRulesResult,
-    ListNotificationRulesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListNotificationRulesRequest,
-  ) => stream.Stream<
-    NotificationRuleSummary,
-    ListNotificationRulesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsForResourceError =
   | ResourceNotFoundException
@@ -946,7 +876,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceRequest,
   ListTagsForResourceResult,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResult,
@@ -963,27 +893,13 @@ export type ListTargetsError =
 /**
  * Returns a list of the notification rule targets for an Amazon Web Services account.
  */
-export const listTargets: API.OperationMethod<
+export const listTargets: API.PaginatedOperationMethod<
   ListTargetsRequest,
   ListTargetsResult,
   ListTargetsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTargetsRequest,
-  ) => stream.Stream<
-    ListTargetsResult,
-    ListTargetsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTargetsRequest,
-  ) => stream.Stream<
-    TargetSummary,
-    ListTargetsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  TargetSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListTargetsRequest,
   output: ListTargetsResult,
   errors: [InvalidNextTokenException, ValidationException],
@@ -996,27 +912,7 @@ export const listTargets: API.OperationMethod<
     items: "Targets",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListTargetsRequest,
-  ListTargetsResult,
-  ListTargetsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTargetsRequest,
-  ) => stream.Stream<
-    ListTargetsResult,
-    ListTargetsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTargetsRequest,
-  ) => stream.Stream<
-    TargetSummary,
-    ListTargetsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type SubscribeError =
   | ConfigurationException
@@ -1032,7 +928,7 @@ export const subscribe: API.OperationMethod<
   SubscribeRequest,
   SubscribeResult,
   SubscribeError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: SubscribeRequest,
   output: SubscribeResult,
@@ -1059,7 +955,7 @@ export const tagResource: API.OperationMethod<
   TagResourceRequest,
   TagResourceResult,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResult,
@@ -1084,7 +980,7 @@ export const unsubscribe: API.OperationMethod<
   UnsubscribeRequest,
   UnsubscribeResult,
   UnsubscribeError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UnsubscribeRequest,
   output: UnsubscribeResult,
@@ -1108,7 +1004,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceRequest,
   UntagResourceResult,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResult,
@@ -1139,7 +1035,7 @@ export const updateNotificationRule: API.OperationMethod<
   UpdateNotificationRuleRequest,
   UpdateNotificationRuleResult,
   UpdateNotificationRuleError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateNotificationRuleRequest,
   output: UpdateNotificationRuleResult,

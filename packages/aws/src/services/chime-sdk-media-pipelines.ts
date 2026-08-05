@@ -1,7 +1,6 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as redacted from "effect/Redacted";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -9,7 +8,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 import { SensitiveString } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "Chime SDK Media Pipelines",
@@ -94,7 +92,7 @@ export class BadRequestException
       Code: S.optional(
         S.suspend(() => ErrorCode).annotate({ identifier: "ErrorCode" }),
       ),
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       RequestId: S.optional(S.String),
     },
     T.HttpError(400),
@@ -106,7 +104,7 @@ export class ConflictException
       Code: S.optional(
         S.suspend(() => ErrorCode).annotate({ identifier: "ErrorCode" }),
       ),
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       RequestId: S.optional(S.String),
     },
     T.HttpError(409),
@@ -118,7 +116,7 @@ export class ForbiddenException
       Code: S.optional(
         S.suspend(() => ErrorCode).annotate({ identifier: "ErrorCode" }),
       ),
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       RequestId: S.optional(S.String),
     },
     T.HttpError(403),
@@ -130,7 +128,7 @@ export class NotFoundException
       Code: S.optional(
         S.suspend(() => ErrorCode).annotate({ identifier: "ErrorCode" }),
       ),
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       RequestId: S.optional(S.String),
     },
     T.HttpError(404),
@@ -142,7 +140,7 @@ export class ResourceLimitExceededException
       Code: S.optional(
         S.suspend(() => ErrorCode).annotate({ identifier: "ErrorCode" }),
       ),
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       RequestId: S.optional(S.String),
     },
     T.HttpError(400),
@@ -154,7 +152,7 @@ export class ServiceFailureException
       Code: S.optional(
         S.suspend(() => ErrorCode).annotate({ identifier: "ErrorCode" }),
       ),
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       RequestId: S.optional(S.String),
     },
     T.HttpError(500),
@@ -166,7 +164,7 @@ export class ServiceUnavailableException
       Code: S.optional(
         S.suspend(() => ErrorCode).annotate({ identifier: "ErrorCode" }),
       ),
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       RequestId: S.optional(S.String),
     },
     T.HttpError(503),
@@ -178,7 +176,7 @@ export class ThrottledClientException
       Code: S.optional(
         S.suspend(() => ErrorCode).annotate({ identifier: "ErrorCode" }),
       ),
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       RequestId: S.optional(S.String),
     },
     T.HttpError(429),
@@ -190,7 +188,7 @@ export class UnauthorizedClientException
       Code: S.optional(
         S.suspend(() => ErrorCode).annotate({ identifier: "ErrorCode" }),
       ),
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       RequestId: S.optional(S.String),
     },
     T.HttpError(401),
@@ -2771,7 +2769,7 @@ export const createMediaCapturePipeline: API.OperationMethod<
   CreateMediaCapturePipelineRequest,
   CreateMediaCapturePipelineResponse,
   CreateMediaCapturePipelineError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateMediaCapturePipelineRequest,
   output: CreateMediaCapturePipelineResponse,
@@ -2805,7 +2803,7 @@ export const createMediaConcatenationPipeline: API.OperationMethod<
   CreateMediaConcatenationPipelineRequest,
   CreateMediaConcatenationPipelineResponse,
   CreateMediaConcatenationPipelineError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateMediaConcatenationPipelineRequest,
   output: CreateMediaConcatenationPipelineResponse,
@@ -2840,7 +2838,7 @@ export const createMediaInsightsPipeline: API.OperationMethod<
   CreateMediaInsightsPipelineRequest,
   CreateMediaInsightsPipelineResponse,
   CreateMediaInsightsPipelineError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateMediaInsightsPipelineRequest,
   output: CreateMediaInsightsPipelineResponse,
@@ -2877,7 +2875,7 @@ export const createMediaInsightsPipelineConfiguration: API.OperationMethod<
   CreateMediaInsightsPipelineConfigurationRequest,
   CreateMediaInsightsPipelineConfigurationResponse,
   CreateMediaInsightsPipelineConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateMediaInsightsPipelineConfigurationRequest,
   output: CreateMediaInsightsPipelineConfigurationResponse,
@@ -2912,7 +2910,7 @@ export const createMediaLiveConnectorPipeline: API.OperationMethod<
   CreateMediaLiveConnectorPipelineRequest,
   CreateMediaLiveConnectorPipelineResponse,
   CreateMediaLiveConnectorPipelineError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateMediaLiveConnectorPipelineRequest,
   output: CreateMediaLiveConnectorPipelineResponse,
@@ -2963,7 +2961,7 @@ export const createMediaPipelineKinesisVideoStreamPool: API.OperationMethod<
   CreateMediaPipelineKinesisVideoStreamPoolRequest,
   CreateMediaPipelineKinesisVideoStreamPoolResponse,
   CreateMediaPipelineKinesisVideoStreamPoolError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateMediaPipelineKinesisVideoStreamPoolRequest,
   output: CreateMediaPipelineKinesisVideoStreamPoolResponse,
@@ -2999,7 +2997,7 @@ export const createMediaStreamPipeline: API.OperationMethod<
   CreateMediaStreamPipelineRequest,
   CreateMediaStreamPipelineResponse,
   CreateMediaStreamPipelineError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateMediaStreamPipelineRequest,
   output: CreateMediaStreamPipelineResponse,
@@ -3034,7 +3032,7 @@ export const deleteMediaCapturePipeline: API.OperationMethod<
   DeleteMediaCapturePipelineRequest,
   DeleteMediaCapturePipelineResponse,
   DeleteMediaCapturePipelineError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteMediaCapturePipelineRequest,
   output: DeleteMediaCapturePipelineResponse,
@@ -3069,7 +3067,7 @@ export const deleteMediaInsightsPipelineConfiguration: API.OperationMethod<
   DeleteMediaInsightsPipelineConfigurationRequest,
   DeleteMediaInsightsPipelineConfigurationResponse,
   DeleteMediaInsightsPipelineConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteMediaInsightsPipelineConfigurationRequest,
   output: DeleteMediaInsightsPipelineConfigurationResponse,
@@ -3105,7 +3103,7 @@ export const deleteMediaPipeline: API.OperationMethod<
   DeleteMediaPipelineRequest,
   DeleteMediaPipelineResponse,
   DeleteMediaPipelineError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteMediaPipelineRequest,
   output: DeleteMediaPipelineResponse,
@@ -3141,7 +3139,7 @@ export const deleteMediaPipelineKinesisVideoStreamPool: API.OperationMethod<
   DeleteMediaPipelineKinesisVideoStreamPoolRequest,
   DeleteMediaPipelineKinesisVideoStreamPoolResponse,
   DeleteMediaPipelineKinesisVideoStreamPoolError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteMediaPipelineKinesisVideoStreamPoolRequest,
   output: DeleteMediaPipelineKinesisVideoStreamPoolResponse,
@@ -3176,7 +3174,7 @@ export const getMediaCapturePipeline: API.OperationMethod<
   GetMediaCapturePipelineRequest,
   GetMediaCapturePipelineResponse,
   GetMediaCapturePipelineError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetMediaCapturePipelineRequest,
   output: GetMediaCapturePipelineResponse,
@@ -3210,7 +3208,7 @@ export const getMediaInsightsPipelineConfiguration: API.OperationMethod<
   GetMediaInsightsPipelineConfigurationRequest,
   GetMediaInsightsPipelineConfigurationResponse,
   GetMediaInsightsPipelineConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetMediaInsightsPipelineConfigurationRequest,
   output: GetMediaInsightsPipelineConfigurationResponse,
@@ -3244,7 +3242,7 @@ export const getMediaPipeline: API.OperationMethod<
   GetMediaPipelineRequest,
   GetMediaPipelineResponse,
   GetMediaPipelineError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetMediaPipelineRequest,
   output: GetMediaPipelineResponse,
@@ -3278,7 +3276,7 @@ export const getMediaPipelineKinesisVideoStreamPool: API.OperationMethod<
   GetMediaPipelineKinesisVideoStreamPoolRequest,
   GetMediaPipelineKinesisVideoStreamPoolResponse,
   GetMediaPipelineKinesisVideoStreamPoolError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetMediaPipelineKinesisVideoStreamPoolRequest,
   output: GetMediaPipelineKinesisVideoStreamPoolResponse,
@@ -3312,7 +3310,7 @@ export const getSpeakerSearchTask: API.OperationMethod<
   GetSpeakerSearchTaskRequest,
   GetSpeakerSearchTaskResponse,
   GetSpeakerSearchTaskError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetSpeakerSearchTaskRequest,
   output: GetSpeakerSearchTaskResponse,
@@ -3346,7 +3344,7 @@ export const getVoiceToneAnalysisTask: API.OperationMethod<
   GetVoiceToneAnalysisTaskRequest,
   GetVoiceToneAnalysisTaskResponse,
   GetVoiceToneAnalysisTaskError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetVoiceToneAnalysisTaskRequest,
   output: GetVoiceToneAnalysisTaskResponse,
@@ -3376,27 +3374,13 @@ export type ListMediaCapturePipelinesError =
 /**
  * Returns a list of media pipelines.
  */
-export const listMediaCapturePipelines: API.OperationMethod<
+export const listMediaCapturePipelines: API.PaginatedOperationMethod<
   ListMediaCapturePipelinesRequest,
   ListMediaCapturePipelinesResponse,
   ListMediaCapturePipelinesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListMediaCapturePipelinesRequest,
-  ) => stream.Stream<
-    ListMediaCapturePipelinesResponse,
-    ListMediaCapturePipelinesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListMediaCapturePipelinesRequest,
-  ) => stream.Stream<
-    unknown,
-    ListMediaCapturePipelinesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListMediaCapturePipelinesRequest,
   output: ListMediaCapturePipelinesResponse,
   errors: [
@@ -3416,27 +3400,7 @@ export const listMediaCapturePipelines: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListMediaCapturePipelinesRequest,
-  ListMediaCapturePipelinesResponse,
-  ListMediaCapturePipelinesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListMediaCapturePipelinesRequest,
-  ) => stream.Stream<
-    ListMediaCapturePipelinesResponse,
-    ListMediaCapturePipelinesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListMediaCapturePipelinesRequest,
-  ) => stream.Stream<
-    unknown,
-    ListMediaCapturePipelinesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListMediaInsightsPipelineConfigurationsError =
   | BadRequestException
@@ -3450,27 +3414,13 @@ export type ListMediaInsightsPipelineConfigurationsError =
 /**
  * Lists the available media insights pipeline configurations.
  */
-export const listMediaInsightsPipelineConfigurations: API.OperationMethod<
+export const listMediaInsightsPipelineConfigurations: API.PaginatedOperationMethod<
   ListMediaInsightsPipelineConfigurationsRequest,
   ListMediaInsightsPipelineConfigurationsResponse,
   ListMediaInsightsPipelineConfigurationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListMediaInsightsPipelineConfigurationsRequest,
-  ) => stream.Stream<
-    ListMediaInsightsPipelineConfigurationsResponse,
-    ListMediaInsightsPipelineConfigurationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListMediaInsightsPipelineConfigurationsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListMediaInsightsPipelineConfigurationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListMediaInsightsPipelineConfigurationsRequest,
   output: ListMediaInsightsPipelineConfigurationsResponse,
   errors: [
@@ -3490,27 +3440,7 @@ export const listMediaInsightsPipelineConfigurations: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListMediaInsightsPipelineConfigurationsRequest,
-  ListMediaInsightsPipelineConfigurationsResponse,
-  ListMediaInsightsPipelineConfigurationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListMediaInsightsPipelineConfigurationsRequest,
-  ) => stream.Stream<
-    ListMediaInsightsPipelineConfigurationsResponse,
-    ListMediaInsightsPipelineConfigurationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListMediaInsightsPipelineConfigurationsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListMediaInsightsPipelineConfigurationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListMediaPipelineKinesisVideoStreamPoolsError =
   | BadRequestException
@@ -3524,27 +3454,13 @@ export type ListMediaPipelineKinesisVideoStreamPoolsError =
 /**
  * Lists the video stream pools in the media pipeline.
  */
-export const listMediaPipelineKinesisVideoStreamPools: API.OperationMethod<
+export const listMediaPipelineKinesisVideoStreamPools: API.PaginatedOperationMethod<
   ListMediaPipelineKinesisVideoStreamPoolsRequest,
   ListMediaPipelineKinesisVideoStreamPoolsResponse,
   ListMediaPipelineKinesisVideoStreamPoolsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListMediaPipelineKinesisVideoStreamPoolsRequest,
-  ) => stream.Stream<
-    ListMediaPipelineKinesisVideoStreamPoolsResponse,
-    ListMediaPipelineKinesisVideoStreamPoolsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListMediaPipelineKinesisVideoStreamPoolsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListMediaPipelineKinesisVideoStreamPoolsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListMediaPipelineKinesisVideoStreamPoolsRequest,
   output: ListMediaPipelineKinesisVideoStreamPoolsResponse,
   errors: [
@@ -3564,27 +3480,7 @@ export const listMediaPipelineKinesisVideoStreamPools: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListMediaPipelineKinesisVideoStreamPoolsRequest,
-  ListMediaPipelineKinesisVideoStreamPoolsResponse,
-  ListMediaPipelineKinesisVideoStreamPoolsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListMediaPipelineKinesisVideoStreamPoolsRequest,
-  ) => stream.Stream<
-    ListMediaPipelineKinesisVideoStreamPoolsResponse,
-    ListMediaPipelineKinesisVideoStreamPoolsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListMediaPipelineKinesisVideoStreamPoolsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListMediaPipelineKinesisVideoStreamPoolsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListMediaPipelinesError =
   | BadRequestException
@@ -3598,27 +3494,13 @@ export type ListMediaPipelinesError =
 /**
  * Returns a list of media pipelines.
  */
-export const listMediaPipelines: API.OperationMethod<
+export const listMediaPipelines: API.PaginatedOperationMethod<
   ListMediaPipelinesRequest,
   ListMediaPipelinesResponse,
   ListMediaPipelinesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListMediaPipelinesRequest,
-  ) => stream.Stream<
-    ListMediaPipelinesResponse,
-    ListMediaPipelinesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListMediaPipelinesRequest,
-  ) => stream.Stream<
-    unknown,
-    ListMediaPipelinesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListMediaPipelinesRequest,
   output: ListMediaPipelinesResponse,
   errors: [
@@ -3638,27 +3520,7 @@ export const listMediaPipelines: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListMediaPipelinesRequest,
-  ListMediaPipelinesResponse,
-  ListMediaPipelinesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListMediaPipelinesRequest,
-  ) => stream.Stream<
-    ListMediaPipelinesResponse,
-    ListMediaPipelinesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListMediaPipelinesRequest,
-  ) => stream.Stream<
-    unknown,
-    ListMediaPipelinesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsForResourceError =
   | BadRequestException
@@ -3676,7 +3538,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceRequest,
   ListTagsForResourceResponse,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -3714,7 +3576,7 @@ export const startSpeakerSearchTask: API.OperationMethod<
   StartSpeakerSearchTaskRequest,
   StartSpeakerSearchTaskResponse,
   StartSpeakerSearchTaskError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartSpeakerSearchTaskRequest,
   output: StartSpeakerSearchTaskResponse,
@@ -3755,7 +3617,7 @@ export const startVoiceToneAnalysisTask: API.OperationMethod<
   StartVoiceToneAnalysisTaskRequest,
   StartVoiceToneAnalysisTaskResponse,
   StartVoiceToneAnalysisTaskError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartVoiceToneAnalysisTaskRequest,
   output: StartVoiceToneAnalysisTaskResponse,
@@ -3791,7 +3653,7 @@ export const stopSpeakerSearchTask: API.OperationMethod<
   StopSpeakerSearchTaskRequest,
   StopSpeakerSearchTaskResponse,
   StopSpeakerSearchTaskError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StopSpeakerSearchTaskRequest,
   output: StopSpeakerSearchTaskResponse,
@@ -3827,7 +3689,7 @@ export const stopVoiceToneAnalysisTask: API.OperationMethod<
   StopVoiceToneAnalysisTaskRequest,
   StopVoiceToneAnalysisTaskResponse,
   StopVoiceToneAnalysisTaskError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StopVoiceToneAnalysisTaskRequest,
   output: StopVoiceToneAnalysisTaskResponse,
@@ -3862,7 +3724,7 @@ export const tagResource: API.OperationMethod<
   TagResourceRequest,
   TagResourceResponse,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -3896,7 +3758,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceRequest,
   UntagResourceResponse,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -3931,7 +3793,7 @@ export const updateMediaInsightsPipelineConfiguration: API.OperationMethod<
   UpdateMediaInsightsPipelineConfigurationRequest,
   UpdateMediaInsightsPipelineConfigurationResponse,
   UpdateMediaInsightsPipelineConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateMediaInsightsPipelineConfigurationRequest,
   output: UpdateMediaInsightsPipelineConfigurationResponse,
@@ -3967,7 +3829,7 @@ export const updateMediaInsightsPipelineStatus: API.OperationMethod<
   UpdateMediaInsightsPipelineStatusRequest,
   UpdateMediaInsightsPipelineStatusResponse,
   UpdateMediaInsightsPipelineStatusError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateMediaInsightsPipelineStatusRequest,
   output: UpdateMediaInsightsPipelineStatusResponse,
@@ -4003,7 +3865,7 @@ export const updateMediaPipelineKinesisVideoStreamPool: API.OperationMethod<
   UpdateMediaPipelineKinesisVideoStreamPoolRequest,
   UpdateMediaPipelineKinesisVideoStreamPoolResponse,
   UpdateMediaPipelineKinesisVideoStreamPoolError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateMediaPipelineKinesisVideoStreamPoolRequest,
   output: UpdateMediaPipelineKinesisVideoStreamPoolResponse,

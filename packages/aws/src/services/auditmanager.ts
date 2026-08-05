@@ -1,7 +1,6 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as redacted from "effect/Redacted";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -9,7 +8,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region as Rgn } from "../region.ts";
 import { SensitiveString } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "AuditManager",
@@ -90,14 +88,14 @@ const rules = T.EndpointResolver((p, _) => {
 export class AccessDeniedException
   extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
     "AccessDeniedException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(403),
   ).pipe(C.withAuthError) {}
 export class AuditManagerMaintenanceMode
   extends /*@__PURE__*/ S.TaggedErrorClass<AuditManagerMaintenanceMode>()(
     "AuditManagerMaintenanceMode",
     {
-      message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       reason: S.optional(
         S.suspend(() => ValidationExceptionReason).annotate({
           identifier: "ValidationExceptionReason",
@@ -117,32 +115,36 @@ export class AuditManagerMaintenanceMode
 export class InternalServerException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
     "InternalServerException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(500),
   ).pipe(C.withServerError) {}
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { message: S.String, resourceId: S.String, resourceType: S.String },
+    {
+      message: S.String.pipe(T.ErrorMessage()),
+      resourceId: S.String,
+      resourceType: S.String,
+    },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class ServiceQuotaExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
     "ServiceQuotaExceededException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(402),
   ).pipe(C.withQuotaError) {}
 export class ThrottlingException
   extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
     "ThrottlingException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(429),
   ).pipe(C.withThrottlingError) {}
 export class ValidationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
     "ValidationException",
     {
-      message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       reason: S.optional(
         S.suspend(() => ValidationExceptionReason).annotate({
           identifier: "ValidationExceptionReason",
@@ -3586,7 +3588,7 @@ export const associateAssessmentReportEvidenceFolder: API.OperationMethod<
   AssociateAssessmentReportEvidenceFolderRequest,
   AssociateAssessmentReportEvidenceFolderResponse,
   AssociateAssessmentReportEvidenceFolderError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AssociateAssessmentReportEvidenceFolderRequest,
   output: AssociateAssessmentReportEvidenceFolderResponse,
@@ -3615,7 +3617,7 @@ export const batchAssociateAssessmentReportEvidence: API.OperationMethod<
   BatchAssociateAssessmentReportEvidenceRequest,
   BatchAssociateAssessmentReportEvidenceResponse,
   BatchAssociateAssessmentReportEvidenceError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchAssociateAssessmentReportEvidenceRequest,
   output: BatchAssociateAssessmentReportEvidenceResponse,
@@ -3643,7 +3645,7 @@ export const batchCreateDelegationByAssessment: API.OperationMethod<
   BatchCreateDelegationByAssessmentRequest,
   BatchCreateDelegationByAssessmentResponse,
   BatchCreateDelegationByAssessmentError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchCreateDelegationByAssessmentRequest,
   output: BatchCreateDelegationByAssessmentResponse,
@@ -3671,7 +3673,7 @@ export const batchDeleteDelegationByAssessment: API.OperationMethod<
   BatchDeleteDelegationByAssessmentRequest,
   BatchDeleteDelegationByAssessmentResponse,
   BatchDeleteDelegationByAssessmentError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchDeleteDelegationByAssessmentRequest,
   output: BatchDeleteDelegationByAssessmentResponse,
@@ -3699,7 +3701,7 @@ export const batchDisassociateAssessmentReportEvidence: API.OperationMethod<
   BatchDisassociateAssessmentReportEvidenceRequest,
   BatchDisassociateAssessmentReportEvidenceResponse,
   BatchDisassociateAssessmentReportEvidenceError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchDisassociateAssessmentReportEvidenceRequest,
   output: BatchDisassociateAssessmentReportEvidenceResponse,
@@ -3747,7 +3749,7 @@ export const batchImportEvidenceToAssessmentControl: API.OperationMethod<
   BatchImportEvidenceToAssessmentControlRequest,
   BatchImportEvidenceToAssessmentControlResponse,
   BatchImportEvidenceToAssessmentControlError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchImportEvidenceToAssessmentControlRequest,
   output: BatchImportEvidenceToAssessmentControlResponse,
@@ -3778,7 +3780,7 @@ export const createAssessment: API.OperationMethod<
   CreateAssessmentRequest,
   CreateAssessmentResponse,
   CreateAssessmentError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateAssessmentRequest,
   output: CreateAssessmentResponse,
@@ -3809,7 +3811,7 @@ export const createAssessmentFramework: API.OperationMethod<
   CreateAssessmentFrameworkRequest,
   CreateAssessmentFrameworkResponse,
   CreateAssessmentFrameworkError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateAssessmentFrameworkRequest,
   output: CreateAssessmentFrameworkResponse,
@@ -3838,7 +3840,7 @@ export const createAssessmentReport: API.OperationMethod<
   CreateAssessmentReportRequest,
   CreateAssessmentReportResponse,
   CreateAssessmentReportError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateAssessmentReportRequest,
   output: CreateAssessmentReportResponse,
@@ -3867,7 +3869,7 @@ export const createControl: API.OperationMethod<
   CreateControlRequest,
   CreateControlResponse,
   CreateControlError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateControlRequest,
   output: CreateControlResponse,
@@ -3896,7 +3898,7 @@ export const deleteAssessment: API.OperationMethod<
   DeleteAssessmentRequest,
   DeleteAssessmentResponse,
   DeleteAssessmentError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteAssessmentRequest,
   output: DeleteAssessmentResponse,
@@ -3924,7 +3926,7 @@ export const deleteAssessmentFramework: API.OperationMethod<
   DeleteAssessmentFrameworkRequest,
   DeleteAssessmentFrameworkResponse,
   DeleteAssessmentFrameworkError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteAssessmentFrameworkRequest,
   output: DeleteAssessmentFrameworkResponse,
@@ -3952,7 +3954,7 @@ export const deleteAssessmentFrameworkShare: API.OperationMethod<
   DeleteAssessmentFrameworkShareRequest,
   DeleteAssessmentFrameworkShareResponse,
   DeleteAssessmentFrameworkShareError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteAssessmentFrameworkShareRequest,
   output: DeleteAssessmentFrameworkShareResponse,
@@ -4000,7 +4002,7 @@ export const deleteAssessmentReport: API.OperationMethod<
   DeleteAssessmentReportRequest,
   DeleteAssessmentReportResponse,
   DeleteAssessmentReportError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteAssessmentReportRequest,
   output: DeleteAssessmentReportResponse,
@@ -4033,7 +4035,7 @@ export const deleteControl: API.OperationMethod<
   DeleteControlRequest,
   DeleteControlResponse,
   DeleteControlError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteControlRequest,
   output: DeleteControlResponse,
@@ -4069,7 +4071,7 @@ export const deregisterAccount: API.OperationMethod<
   DeregisterAccountRequest,
   DeregisterAccountResponse,
   DeregisterAccountError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeregisterAccountRequest,
   output: DeregisterAccountResponse,
@@ -4149,7 +4151,7 @@ export const deregisterOrganizationAdminAccount: API.OperationMethod<
   DeregisterOrganizationAdminAccountRequest,
   DeregisterOrganizationAdminAccountResponse,
   DeregisterOrganizationAdminAccountError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeregisterOrganizationAdminAccountRequest,
   output: DeregisterOrganizationAdminAccountResponse,
@@ -4177,7 +4179,7 @@ export const disassociateAssessmentReportEvidenceFolder: API.OperationMethod<
   DisassociateAssessmentReportEvidenceFolderRequest,
   DisassociateAssessmentReportEvidenceFolderResponse,
   DisassociateAssessmentReportEvidenceFolderError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DisassociateAssessmentReportEvidenceFolderRequest,
   output: DisassociateAssessmentReportEvidenceFolderResponse,
@@ -4200,7 +4202,7 @@ export const getAccountStatus: API.OperationMethod<
   GetAccountStatusRequest,
   GetAccountStatusResponse,
   GetAccountStatusError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetAccountStatusRequest,
   output: GetAccountStatusResponse,
@@ -4223,7 +4225,7 @@ export const getAssessment: API.OperationMethod<
   GetAssessmentRequest,
   GetAssessmentResponse,
   GetAssessmentError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetAssessmentRequest,
   output: GetAssessmentResponse,
@@ -4251,7 +4253,7 @@ export const getAssessmentFramework: API.OperationMethod<
   GetAssessmentFrameworkRequest,
   GetAssessmentFrameworkResponse,
   GetAssessmentFrameworkError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetAssessmentFrameworkRequest,
   output: GetAssessmentFrameworkResponse,
@@ -4279,7 +4281,7 @@ export const getAssessmentReportUrl: API.OperationMethod<
   GetAssessmentReportUrlRequest,
   GetAssessmentReportUrlResponse,
   GetAssessmentReportUrlError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetAssessmentReportUrlRequest,
   output: GetAssessmentReportUrlResponse,
@@ -4303,27 +4305,13 @@ export type GetChangeLogsError =
 /**
  * Gets a list of changelogs from Audit Manager.
  */
-export const getChangeLogs: API.OperationMethod<
+export const getChangeLogs: API.PaginatedOperationMethod<
   GetChangeLogsRequest,
   GetChangeLogsResponse,
   GetChangeLogsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetChangeLogsRequest,
-  ) => stream.Stream<
-    GetChangeLogsResponse,
-    GetChangeLogsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetChangeLogsRequest,
-  ) => stream.Stream<
-    unknown,
-    GetChangeLogsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetChangeLogsRequest,
   output: GetChangeLogsResponse,
   errors: [
@@ -4340,27 +4328,7 @@ export const getChangeLogs: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetChangeLogsRequest,
-  GetChangeLogsResponse,
-  GetChangeLogsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetChangeLogsRequest,
-  ) => stream.Stream<
-    GetChangeLogsResponse,
-    GetChangeLogsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetChangeLogsRequest,
-  ) => stream.Stream<
-    unknown,
-    GetChangeLogsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetControlError =
   | AccessDeniedException
@@ -4375,7 +4343,7 @@ export const getControl: API.OperationMethod<
   GetControlRequest,
   GetControlResponse,
   GetControlError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetControlRequest,
   output: GetControlResponse,
@@ -4398,27 +4366,13 @@ export type GetDelegationsError =
 /**
  * Gets a list of delegations from an audit owner to a delegate.
  */
-export const getDelegations: API.OperationMethod<
+export const getDelegations: API.PaginatedOperationMethod<
   GetDelegationsRequest,
   GetDelegationsResponse,
   GetDelegationsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetDelegationsRequest,
-  ) => stream.Stream<
-    GetDelegationsResponse,
-    GetDelegationsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetDelegationsRequest,
-  ) => stream.Stream<
-    unknown,
-    GetDelegationsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetDelegationsRequest,
   output: GetDelegationsResponse,
   errors: [AccessDeniedException, InternalServerException, ValidationException],
@@ -4430,27 +4384,7 @@ export const getDelegations: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetDelegationsRequest,
-  GetDelegationsResponse,
-  GetDelegationsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetDelegationsRequest,
-  ) => stream.Stream<
-    GetDelegationsResponse,
-    GetDelegationsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetDelegationsRequest,
-  ) => stream.Stream<
-    unknown,
-    GetDelegationsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetEvidenceError =
   | AccessDeniedException
@@ -4465,7 +4399,7 @@ export const getEvidence: API.OperationMethod<
   GetEvidenceRequest,
   GetEvidenceResponse,
   GetEvidenceError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetEvidenceRequest,
   output: GetEvidenceResponse,
@@ -4489,27 +4423,13 @@ export type GetEvidenceByEvidenceFolderError =
 /**
  * Gets all evidence from a specified evidence folder in Audit Manager.
  */
-export const getEvidenceByEvidenceFolder: API.OperationMethod<
+export const getEvidenceByEvidenceFolder: API.PaginatedOperationMethod<
   GetEvidenceByEvidenceFolderRequest,
   GetEvidenceByEvidenceFolderResponse,
   GetEvidenceByEvidenceFolderError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetEvidenceByEvidenceFolderRequest,
-  ) => stream.Stream<
-    GetEvidenceByEvidenceFolderResponse,
-    GetEvidenceByEvidenceFolderError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetEvidenceByEvidenceFolderRequest,
-  ) => stream.Stream<
-    unknown,
-    GetEvidenceByEvidenceFolderError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetEvidenceByEvidenceFolderRequest,
   output: GetEvidenceByEvidenceFolderResponse,
   errors: [
@@ -4526,27 +4446,7 @@ export const getEvidenceByEvidenceFolder: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetEvidenceByEvidenceFolderRequest,
-  GetEvidenceByEvidenceFolderResponse,
-  GetEvidenceByEvidenceFolderError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetEvidenceByEvidenceFolderRequest,
-  ) => stream.Stream<
-    GetEvidenceByEvidenceFolderResponse,
-    GetEvidenceByEvidenceFolderError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetEvidenceByEvidenceFolderRequest,
-  ) => stream.Stream<
-    unknown,
-    GetEvidenceByEvidenceFolderError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetEvidenceFileUploadUrlError =
   | AccessDeniedException
@@ -4574,7 +4474,7 @@ export const getEvidenceFileUploadUrl: API.OperationMethod<
   GetEvidenceFileUploadUrlRequest,
   GetEvidenceFileUploadUrlResponse,
   GetEvidenceFileUploadUrlError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetEvidenceFileUploadUrlRequest,
   output: GetEvidenceFileUploadUrlResponse,
@@ -4602,7 +4502,7 @@ export const getEvidenceFolder: API.OperationMethod<
   GetEvidenceFolderRequest,
   GetEvidenceFolderResponse,
   GetEvidenceFolderError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetEvidenceFolderRequest,
   output: GetEvidenceFolderResponse,
@@ -4626,27 +4526,13 @@ export type GetEvidenceFoldersByAssessmentError =
 /**
  * Gets the evidence folders from a specified assessment in Audit Manager.
  */
-export const getEvidenceFoldersByAssessment: API.OperationMethod<
+export const getEvidenceFoldersByAssessment: API.PaginatedOperationMethod<
   GetEvidenceFoldersByAssessmentRequest,
   GetEvidenceFoldersByAssessmentResponse,
   GetEvidenceFoldersByAssessmentError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetEvidenceFoldersByAssessmentRequest,
-  ) => stream.Stream<
-    GetEvidenceFoldersByAssessmentResponse,
-    GetEvidenceFoldersByAssessmentError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetEvidenceFoldersByAssessmentRequest,
-  ) => stream.Stream<
-    unknown,
-    GetEvidenceFoldersByAssessmentError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetEvidenceFoldersByAssessmentRequest,
   output: GetEvidenceFoldersByAssessmentResponse,
   errors: [
@@ -4663,27 +4549,7 @@ export const getEvidenceFoldersByAssessment: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetEvidenceFoldersByAssessmentRequest,
-  GetEvidenceFoldersByAssessmentResponse,
-  GetEvidenceFoldersByAssessmentError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetEvidenceFoldersByAssessmentRequest,
-  ) => stream.Stream<
-    GetEvidenceFoldersByAssessmentResponse,
-    GetEvidenceFoldersByAssessmentError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetEvidenceFoldersByAssessmentRequest,
-  ) => stream.Stream<
-    unknown,
-    GetEvidenceFoldersByAssessmentError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetEvidenceFoldersByAssessmentControlError =
   | AccessDeniedException
@@ -4695,27 +4561,13 @@ export type GetEvidenceFoldersByAssessmentControlError =
  * Gets a list of evidence folders that are associated with a specified control in an
  * Audit Manager assessment.
  */
-export const getEvidenceFoldersByAssessmentControl: API.OperationMethod<
+export const getEvidenceFoldersByAssessmentControl: API.PaginatedOperationMethod<
   GetEvidenceFoldersByAssessmentControlRequest,
   GetEvidenceFoldersByAssessmentControlResponse,
   GetEvidenceFoldersByAssessmentControlError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetEvidenceFoldersByAssessmentControlRequest,
-  ) => stream.Stream<
-    GetEvidenceFoldersByAssessmentControlResponse,
-    GetEvidenceFoldersByAssessmentControlError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetEvidenceFoldersByAssessmentControlRequest,
-  ) => stream.Stream<
-    unknown,
-    GetEvidenceFoldersByAssessmentControlError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetEvidenceFoldersByAssessmentControlRequest,
   output: GetEvidenceFoldersByAssessmentControlResponse,
   errors: [
@@ -4732,27 +4584,7 @@ export const getEvidenceFoldersByAssessmentControl: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetEvidenceFoldersByAssessmentControlRequest,
-  GetEvidenceFoldersByAssessmentControlResponse,
-  GetEvidenceFoldersByAssessmentControlError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetEvidenceFoldersByAssessmentControlRequest,
-  ) => stream.Stream<
-    GetEvidenceFoldersByAssessmentControlResponse,
-    GetEvidenceFoldersByAssessmentControlError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetEvidenceFoldersByAssessmentControlRequest,
-  ) => stream.Stream<
-    unknown,
-    GetEvidenceFoldersByAssessmentControlError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetInsightsError =
   | AccessDeniedException
@@ -4765,7 +4597,7 @@ export const getInsights: API.OperationMethod<
   GetInsightsRequest,
   GetInsightsResponse,
   GetInsightsError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetInsightsRequest,
   output: GetInsightsResponse,
@@ -4788,7 +4620,7 @@ export const getInsightsByAssessment: API.OperationMethod<
   GetInsightsByAssessmentRequest,
   GetInsightsByAssessmentResponse,
   GetInsightsByAssessmentError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetInsightsByAssessmentRequest,
   output: GetInsightsByAssessmentResponse,
@@ -4817,7 +4649,7 @@ export const getOrganizationAdminAccount: API.OperationMethod<
   GetOrganizationAdminAccountRequest,
   GetOrganizationAdminAccountResponse,
   GetOrganizationAdminAccountError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetOrganizationAdminAccountRequest,
   output: GetOrganizationAdminAccountResponse,
@@ -4855,7 +4687,7 @@ export const getServicesInScope: API.OperationMethod<
   GetServicesInScopeRequest,
   GetServicesInScopeResponse,
   GetServicesInScopeError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetServicesInScopeRequest,
   output: GetServicesInScopeResponse,
@@ -4876,7 +4708,7 @@ export const getSettings: API.OperationMethod<
   GetSettingsRequest,
   GetSettingsResponse,
   GetSettingsError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetSettingsRequest,
   output: GetSettingsResponse,
@@ -4901,27 +4733,13 @@ export type ListAssessmentControlInsightsByControlDomainError =
  * `lastUpdated` date of `controlInsightsByAssessment`. If neither
  * of these conditions are met, no data is listed for that control.
  */
-export const listAssessmentControlInsightsByControlDomain: API.OperationMethod<
+export const listAssessmentControlInsightsByControlDomain: API.PaginatedOperationMethod<
   ListAssessmentControlInsightsByControlDomainRequest,
   ListAssessmentControlInsightsByControlDomainResponse,
   ListAssessmentControlInsightsByControlDomainError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAssessmentControlInsightsByControlDomainRequest,
-  ) => stream.Stream<
-    ListAssessmentControlInsightsByControlDomainResponse,
-    ListAssessmentControlInsightsByControlDomainError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAssessmentControlInsightsByControlDomainRequest,
-  ) => stream.Stream<
-    unknown,
-    ListAssessmentControlInsightsByControlDomainError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListAssessmentControlInsightsByControlDomainRequest,
   output: ListAssessmentControlInsightsByControlDomainResponse,
   errors: [
@@ -4938,27 +4756,7 @@ export const listAssessmentControlInsightsByControlDomain: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListAssessmentControlInsightsByControlDomainRequest,
-  ListAssessmentControlInsightsByControlDomainResponse,
-  ListAssessmentControlInsightsByControlDomainError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAssessmentControlInsightsByControlDomainRequest,
-  ) => stream.Stream<
-    ListAssessmentControlInsightsByControlDomainResponse,
-    ListAssessmentControlInsightsByControlDomainError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAssessmentControlInsightsByControlDomainRequest,
-  ) => stream.Stream<
-    unknown,
-    ListAssessmentControlInsightsByControlDomainError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListAssessmentFrameworksError =
   | AccessDeniedException
@@ -4969,27 +4767,13 @@ export type ListAssessmentFrameworksError =
  * Returns a list of the frameworks that are available in the Audit Manager framework
  * library.
  */
-export const listAssessmentFrameworks: API.OperationMethod<
+export const listAssessmentFrameworks: API.PaginatedOperationMethod<
   ListAssessmentFrameworksRequest,
   ListAssessmentFrameworksResponse,
   ListAssessmentFrameworksError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAssessmentFrameworksRequest,
-  ) => stream.Stream<
-    ListAssessmentFrameworksResponse,
-    ListAssessmentFrameworksError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAssessmentFrameworksRequest,
-  ) => stream.Stream<
-    unknown,
-    ListAssessmentFrameworksError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListAssessmentFrameworksRequest,
   output: ListAssessmentFrameworksResponse,
   errors: [AccessDeniedException, InternalServerException, ValidationException],
@@ -5001,27 +4785,7 @@ export const listAssessmentFrameworks: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListAssessmentFrameworksRequest,
-  ListAssessmentFrameworksResponse,
-  ListAssessmentFrameworksError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAssessmentFrameworksRequest,
-  ) => stream.Stream<
-    ListAssessmentFrameworksResponse,
-    ListAssessmentFrameworksError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAssessmentFrameworksRequest,
-  ) => stream.Stream<
-    unknown,
-    ListAssessmentFrameworksError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListAssessmentFrameworkShareRequestsError =
   | AccessDeniedException
@@ -5031,27 +4795,13 @@ export type ListAssessmentFrameworkShareRequestsError =
 /**
  * Returns a list of sent or received share requests for custom frameworks in Audit Manager.
  */
-export const listAssessmentFrameworkShareRequests: API.OperationMethod<
+export const listAssessmentFrameworkShareRequests: API.PaginatedOperationMethod<
   ListAssessmentFrameworkShareRequestsRequest,
   ListAssessmentFrameworkShareRequestsResponse,
   ListAssessmentFrameworkShareRequestsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAssessmentFrameworkShareRequestsRequest,
-  ) => stream.Stream<
-    ListAssessmentFrameworkShareRequestsResponse,
-    ListAssessmentFrameworkShareRequestsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAssessmentFrameworkShareRequestsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListAssessmentFrameworkShareRequestsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListAssessmentFrameworkShareRequestsRequest,
   output: ListAssessmentFrameworkShareRequestsResponse,
   errors: [AccessDeniedException, InternalServerException, ValidationException],
@@ -5063,27 +4813,7 @@ export const listAssessmentFrameworkShareRequests: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListAssessmentFrameworkShareRequestsRequest,
-  ListAssessmentFrameworkShareRequestsResponse,
-  ListAssessmentFrameworkShareRequestsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAssessmentFrameworkShareRequestsRequest,
-  ) => stream.Stream<
-    ListAssessmentFrameworkShareRequestsResponse,
-    ListAssessmentFrameworkShareRequestsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAssessmentFrameworkShareRequestsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListAssessmentFrameworkShareRequestsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListAssessmentReportsError =
   | AccessDeniedException
@@ -5093,27 +4823,13 @@ export type ListAssessmentReportsError =
 /**
  * Returns a list of assessment reports created in Audit Manager.
  */
-export const listAssessmentReports: API.OperationMethod<
+export const listAssessmentReports: API.PaginatedOperationMethod<
   ListAssessmentReportsRequest,
   ListAssessmentReportsResponse,
   ListAssessmentReportsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAssessmentReportsRequest,
-  ) => stream.Stream<
-    ListAssessmentReportsResponse,
-    ListAssessmentReportsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAssessmentReportsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListAssessmentReportsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListAssessmentReportsRequest,
   output: ListAssessmentReportsResponse,
   errors: [AccessDeniedException, InternalServerException, ValidationException],
@@ -5125,27 +4841,7 @@ export const listAssessmentReports: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListAssessmentReportsRequest,
-  ListAssessmentReportsResponse,
-  ListAssessmentReportsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAssessmentReportsRequest,
-  ) => stream.Stream<
-    ListAssessmentReportsResponse,
-    ListAssessmentReportsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAssessmentReportsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListAssessmentReportsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListAssessmentsError =
   | AccessDeniedException
@@ -5155,27 +4851,13 @@ export type ListAssessmentsError =
 /**
  * Returns a list of current and past assessments from Audit Manager.
  */
-export const listAssessments: API.OperationMethod<
+export const listAssessments: API.PaginatedOperationMethod<
   ListAssessmentsRequest,
   ListAssessmentsResponse,
   ListAssessmentsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAssessmentsRequest,
-  ) => stream.Stream<
-    ListAssessmentsResponse,
-    ListAssessmentsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAssessmentsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListAssessmentsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListAssessmentsRequest,
   output: ListAssessmentsResponse,
   errors: [AccessDeniedException, InternalServerException, ValidationException],
@@ -5187,27 +4869,7 @@ export const listAssessments: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListAssessmentsRequest,
-  ListAssessmentsResponse,
-  ListAssessmentsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAssessmentsRequest,
-  ) => stream.Stream<
-    ListAssessmentsResponse,
-    ListAssessmentsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAssessmentsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListAssessmentsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListControlDomainInsightsError =
   | AccessDeniedException
@@ -5231,27 +4893,13 @@ export type ListControlDomainInsightsError =
  * `controlDomainInsights`. If this condition isn’t met, no data is listed
  * for that control domain.
  */
-export const listControlDomainInsights: API.OperationMethod<
+export const listControlDomainInsights: API.PaginatedOperationMethod<
   ListControlDomainInsightsRequest,
   ListControlDomainInsightsResponse,
   ListControlDomainInsightsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListControlDomainInsightsRequest,
-  ) => stream.Stream<
-    ListControlDomainInsightsResponse,
-    ListControlDomainInsightsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListControlDomainInsightsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListControlDomainInsightsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListControlDomainInsightsRequest,
   output: ListControlDomainInsightsResponse,
   errors: [
@@ -5268,27 +4916,7 @@ export const listControlDomainInsights: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListControlDomainInsightsRequest,
-  ListControlDomainInsightsResponse,
-  ListControlDomainInsightsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListControlDomainInsightsRequest,
-  ) => stream.Stream<
-    ListControlDomainInsightsResponse,
-    ListControlDomainInsightsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListControlDomainInsightsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListControlDomainInsightsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListControlDomainInsightsByAssessmentError =
   | AccessDeniedException
@@ -5311,27 +4939,13 @@ export type ListControlDomainInsightsByAssessmentError =
  * `controlDomainInsights`. If this condition isn’t met, no data is listed
  * for that domain.
  */
-export const listControlDomainInsightsByAssessment: API.OperationMethod<
+export const listControlDomainInsightsByAssessment: API.PaginatedOperationMethod<
   ListControlDomainInsightsByAssessmentRequest,
   ListControlDomainInsightsByAssessmentResponse,
   ListControlDomainInsightsByAssessmentError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListControlDomainInsightsByAssessmentRequest,
-  ) => stream.Stream<
-    ListControlDomainInsightsByAssessmentResponse,
-    ListControlDomainInsightsByAssessmentError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListControlDomainInsightsByAssessmentRequest,
-  ) => stream.Stream<
-    unknown,
-    ListControlDomainInsightsByAssessmentError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListControlDomainInsightsByAssessmentRequest,
   output: ListControlDomainInsightsByAssessmentResponse,
   errors: [
@@ -5348,27 +4962,7 @@ export const listControlDomainInsightsByAssessment: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListControlDomainInsightsByAssessmentRequest,
-  ListControlDomainInsightsByAssessmentResponse,
-  ListControlDomainInsightsByAssessmentError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListControlDomainInsightsByAssessmentRequest,
-  ) => stream.Stream<
-    ListControlDomainInsightsByAssessmentResponse,
-    ListControlDomainInsightsByAssessmentError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListControlDomainInsightsByAssessmentRequest,
-  ) => stream.Stream<
-    unknown,
-    ListControlDomainInsightsByAssessmentError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListControlInsightsByControlDomainError =
   | AccessDeniedException
@@ -5385,27 +4979,13 @@ export type ListControlInsightsByControlDomainError =
  * `controlInsightsMetadata`. If neither of these conditions are met, no data
  * is listed for that control.
  */
-export const listControlInsightsByControlDomain: API.OperationMethod<
+export const listControlInsightsByControlDomain: API.PaginatedOperationMethod<
   ListControlInsightsByControlDomainRequest,
   ListControlInsightsByControlDomainResponse,
   ListControlInsightsByControlDomainError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListControlInsightsByControlDomainRequest,
-  ) => stream.Stream<
-    ListControlInsightsByControlDomainResponse,
-    ListControlInsightsByControlDomainError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListControlInsightsByControlDomainRequest,
-  ) => stream.Stream<
-    unknown,
-    ListControlInsightsByControlDomainError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListControlInsightsByControlDomainRequest,
   output: ListControlInsightsByControlDomainResponse,
   errors: [
@@ -5422,27 +5002,7 @@ export const listControlInsightsByControlDomain: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListControlInsightsByControlDomainRequest,
-  ListControlInsightsByControlDomainResponse,
-  ListControlInsightsByControlDomainError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListControlInsightsByControlDomainRequest,
-  ) => stream.Stream<
-    ListControlInsightsByControlDomainResponse,
-    ListControlInsightsByControlDomainError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListControlInsightsByControlDomainRequest,
-  ) => stream.Stream<
-    unknown,
-    ListControlInsightsByControlDomainError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListControlsError =
   | AccessDeniedException
@@ -5452,27 +5012,13 @@ export type ListControlsError =
 /**
  * Returns a list of controls from Audit Manager.
  */
-export const listControls: API.OperationMethod<
+export const listControls: API.PaginatedOperationMethod<
   ListControlsRequest,
   ListControlsResponse,
   ListControlsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListControlsRequest,
-  ) => stream.Stream<
-    ListControlsResponse,
-    ListControlsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListControlsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListControlsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListControlsRequest,
   output: ListControlsResponse,
   errors: [AccessDeniedException, InternalServerException, ValidationException],
@@ -5484,27 +5030,7 @@ export const listControls: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListControlsRequest,
-  ListControlsResponse,
-  ListControlsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListControlsRequest,
-  ) => stream.Stream<
-    ListControlsResponse,
-    ListControlsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListControlsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListControlsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListKeywordsForDataSourceError =
   | AccessDeniedException
@@ -5515,27 +5041,13 @@ export type ListKeywordsForDataSourceError =
  * Returns a list of keywords that are pre-mapped to the specified control data
  * source.
  */
-export const listKeywordsForDataSource: API.OperationMethod<
+export const listKeywordsForDataSource: API.PaginatedOperationMethod<
   ListKeywordsForDataSourceRequest,
   ListKeywordsForDataSourceResponse,
   ListKeywordsForDataSourceError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListKeywordsForDataSourceRequest,
-  ) => stream.Stream<
-    ListKeywordsForDataSourceResponse,
-    ListKeywordsForDataSourceError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListKeywordsForDataSourceRequest,
-  ) => stream.Stream<
-    unknown,
-    ListKeywordsForDataSourceError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListKeywordsForDataSourceRequest,
   output: ListKeywordsForDataSourceResponse,
   errors: [AccessDeniedException, InternalServerException, ValidationException],
@@ -5547,27 +5059,7 @@ export const listKeywordsForDataSource: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListKeywordsForDataSourceRequest,
-  ListKeywordsForDataSourceResponse,
-  ListKeywordsForDataSourceError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListKeywordsForDataSourceRequest,
-  ) => stream.Stream<
-    ListKeywordsForDataSourceResponse,
-    ListKeywordsForDataSourceError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListKeywordsForDataSourceRequest,
-  ) => stream.Stream<
-    unknown,
-    ListKeywordsForDataSourceError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListNotificationsError =
   | AccessDeniedException
@@ -5577,27 +5069,13 @@ export type ListNotificationsError =
 /**
  * Returns a list of all Audit Manager notifications.
  */
-export const listNotifications: API.OperationMethod<
+export const listNotifications: API.PaginatedOperationMethod<
   ListNotificationsRequest,
   ListNotificationsResponse,
   ListNotificationsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListNotificationsRequest,
-  ) => stream.Stream<
-    ListNotificationsResponse,
-    ListNotificationsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListNotificationsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListNotificationsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListNotificationsRequest,
   output: ListNotificationsResponse,
   errors: [AccessDeniedException, InternalServerException, ValidationException],
@@ -5609,27 +5087,7 @@ export const listNotifications: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListNotificationsRequest,
-  ListNotificationsResponse,
-  ListNotificationsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListNotificationsRequest,
-  ) => stream.Stream<
-    ListNotificationsResponse,
-    ListNotificationsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListNotificationsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListNotificationsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsForResourceError =
   | InternalServerException
@@ -5643,7 +5101,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceRequest,
   ListTagsForResourceResponse,
   ListTagsForResourceError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -5672,7 +5130,7 @@ export const registerAccount: API.OperationMethod<
   RegisterAccountRequest,
   RegisterAccountResponse,
   RegisterAccountError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RegisterAccountRequest,
   output: RegisterAccountResponse,
@@ -5704,7 +5162,7 @@ export const registerOrganizationAdminAccount: API.OperationMethod<
   RegisterOrganizationAdminAccountRequest,
   RegisterOrganizationAdminAccountResponse,
   RegisterOrganizationAdminAccountError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RegisterOrganizationAdminAccountRequest,
   output: RegisterOrganizationAdminAccountResponse,
@@ -5767,7 +5225,7 @@ export const startAssessmentFrameworkShare: API.OperationMethod<
   StartAssessmentFrameworkShareRequest,
   StartAssessmentFrameworkShareResponse,
   StartAssessmentFrameworkShareError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartAssessmentFrameworkShareRequest,
   output: StartAssessmentFrameworkShareResponse,
@@ -5794,7 +5252,7 @@ export const tagResource: API.OperationMethod<
   TagResourceRequest,
   TagResourceResponse,
   TagResourceError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -5820,7 +5278,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceRequest,
   UntagResourceResponse,
   UntagResourceError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -5849,7 +5307,7 @@ export const updateAssessment: API.OperationMethod<
   UpdateAssessmentRequest,
   UpdateAssessmentResponse,
   UpdateAssessmentError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateAssessmentRequest,
   output: UpdateAssessmentResponse,
@@ -5879,7 +5337,7 @@ export const updateAssessmentControl: API.OperationMethod<
   UpdateAssessmentControlRequest,
   UpdateAssessmentControlResponse,
   UpdateAssessmentControlError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateAssessmentControlRequest,
   output: UpdateAssessmentControlResponse,
@@ -5907,7 +5365,7 @@ export const updateAssessmentControlSetStatus: API.OperationMethod<
   UpdateAssessmentControlSetStatusRequest,
   UpdateAssessmentControlSetStatusResponse,
   UpdateAssessmentControlSetStatusError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateAssessmentControlSetStatusRequest,
   output: UpdateAssessmentControlSetStatusResponse,
@@ -5936,7 +5394,7 @@ export const updateAssessmentFramework: API.OperationMethod<
   UpdateAssessmentFrameworkRequest,
   UpdateAssessmentFrameworkResponse,
   UpdateAssessmentFrameworkError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateAssessmentFrameworkRequest,
   output: UpdateAssessmentFrameworkResponse,
@@ -5966,7 +5424,7 @@ export const updateAssessmentFrameworkShare: API.OperationMethod<
   UpdateAssessmentFrameworkShareRequest,
   UpdateAssessmentFrameworkShareResponse,
   UpdateAssessmentFrameworkShareError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateAssessmentFrameworkShareRequest,
   output: UpdateAssessmentFrameworkShareResponse,
@@ -5996,7 +5454,7 @@ export const updateAssessmentStatus: API.OperationMethod<
   UpdateAssessmentStatusRequest,
   UpdateAssessmentStatusResponse,
   UpdateAssessmentStatusError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateAssessmentStatusRequest,
   output: UpdateAssessmentStatusResponse,
@@ -6025,7 +5483,7 @@ export const updateControl: API.OperationMethod<
   UpdateControlRequest,
   UpdateControlResponse,
   UpdateControlError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateControlRequest,
   output: UpdateControlResponse,
@@ -6052,7 +5510,7 @@ export const updateSettings: API.OperationMethod<
   UpdateSettingsRequest,
   UpdateSettingsResponse,
   UpdateSettingsError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateSettingsRequest,
   output: UpdateSettingsResponse,
@@ -6075,7 +5533,7 @@ export const validateAssessmentReportIntegrity: API.OperationMethod<
   ValidateAssessmentReportIntegrityRequest,
   ValidateAssessmentReportIntegrityResponse,
   ValidateAssessmentReportIntegrityError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ValidateAssessmentReportIntegrityRequest,
   output: ValidateAssessmentReportIntegrityResponse,

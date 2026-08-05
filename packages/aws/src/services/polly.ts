@@ -9,7 +9,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 import { SensitiveString } from "../sensitive.ts";
 const ns = T.XmlNamespace("http://polly.amazonaws.com/doc/v1");
 const svc = T.AwsApiService({ sdkId: "Polly", serviceShapeName: "Parrot_v1" });
@@ -88,104 +87,104 @@ const rules = T.EndpointResolver((p, _) => {
 export class EngineNotSupportedException
   extends /*@__PURE__*/ S.TaggedErrorClass<EngineNotSupportedException>()(
     "EngineNotSupportedException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class InvalidLexiconException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidLexiconException>()(
     "InvalidLexiconException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class InvalidNextTokenException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidNextTokenException>()(
     "InvalidNextTokenException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class InvalidS3BucketException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidS3BucketException>()(
     "InvalidS3BucketException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class InvalidS3KeyException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidS3KeyException>()(
     "InvalidS3KeyException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class InvalidSampleRateException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidSampleRateException>()(
     "InvalidSampleRateException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class InvalidSnsTopicArnException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidSnsTopicArnException>()(
     "InvalidSnsTopicArnException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class InvalidSsmlException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidSsmlException>()(
     "InvalidSsmlException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class InvalidTaskIdException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidTaskIdException>()(
     "InvalidTaskIdException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class LanguageNotSupportedException
   extends /*@__PURE__*/ S.TaggedErrorClass<LanguageNotSupportedException>()(
     "LanguageNotSupportedException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class LexiconNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<LexiconNotFoundException>()(
     "LexiconNotFoundException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class LexiconSizeExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<LexiconSizeExceededException>()(
     "LexiconSizeExceededException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class MarksNotSupportedForFormatException
   extends /*@__PURE__*/ S.TaggedErrorClass<MarksNotSupportedForFormatException>()(
     "MarksNotSupportedForFormatException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class MaxLexemeLengthExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<MaxLexemeLengthExceededException>()(
     "MaxLexemeLengthExceededException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class MaxLexiconsNumberExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<MaxLexiconsNumberExceededException>()(
     "MaxLexiconsNumberExceededException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class ServiceFailureException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceFailureException>()(
     "ServiceFailureException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(500),
   ).pipe(C.withServerError) {}
 export class ServiceQuotaExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
     "ServiceQuotaExceededException",
     {
-      message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       quotaCode: S.suspend(() => QuotaCode).annotate({
         identifier: "QuotaCode",
       }),
@@ -198,26 +197,26 @@ export class ServiceQuotaExceededException
 export class SsmlMarksNotSupportedForTextTypeException
   extends /*@__PURE__*/ S.TaggedErrorClass<SsmlMarksNotSupportedForTextTypeException>()(
     "SsmlMarksNotSupportedForTextTypeException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class SynthesisTaskNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<SynthesisTaskNotFoundException>()(
     "SynthesisTaskNotFoundException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class TextLengthExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<TextLengthExceededException>()(
     "TextLengthExceededException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class ThrottlingException
   extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
     "ThrottlingException",
     {
-      message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       throttlingReasons: S.optional(
         S.suspend(() => ThrottlingReasonList).annotate({
           identifier: "ThrottlingReasonList",
@@ -232,20 +231,20 @@ export class ThrottlingException
 export class UnsupportedPlsAlphabetException
   extends /*@__PURE__*/ S.TaggedErrorClass<UnsupportedPlsAlphabetException>()(
     "UnsupportedPlsAlphabetException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class UnsupportedPlsLanguageException
   extends /*@__PURE__*/ S.TaggedErrorClass<UnsupportedPlsLanguageException>()(
     "UnsupportedPlsLanguageException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class ValidationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
     "ValidationException",
     {
-      message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       reason: S.suspend(() => ValidationExceptionReason).annotate({
         identifier: "ValidationExceptionReason",
       }),
@@ -1158,7 +1157,7 @@ export const deleteLexicon: API.OperationMethod<
   DeleteLexiconInput,
   DeleteLexiconOutput,
   DeleteLexiconError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteLexiconInput,
   output: DeleteLexiconOutput,
@@ -1198,7 +1197,7 @@ export const describeVoices: API.OperationMethod<
   DescribeVoicesInput,
   DescribeVoicesOutput,
   DescribeVoicesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeVoicesInput,
   output: DescribeVoicesOutput,
@@ -1220,7 +1219,7 @@ export const getLexicon: API.OperationMethod<
   GetLexiconInput,
   GetLexiconOutput,
   GetLexiconError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetLexiconInput,
   output: GetLexiconOutput,
@@ -1245,7 +1244,7 @@ export const getSpeechSynthesisTask: API.OperationMethod<
   GetSpeechSynthesisTaskInput,
   GetSpeechSynthesisTaskOutput,
   GetSpeechSynthesisTaskError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetSpeechSynthesisTaskInput,
   output: GetSpeechSynthesisTaskOutput,
@@ -1270,7 +1269,7 @@ export const listLexicons: API.OperationMethod<
   ListLexiconsInput,
   ListLexiconsOutput,
   ListLexiconsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListLexiconsInput,
   output: ListLexiconsOutput,
@@ -1289,27 +1288,13 @@ export type ListSpeechSynthesisTasksError =
  * creation date. This operation can filter the tasks by their status, for
  * example, allowing users to list only tasks that are completed.
  */
-export const listSpeechSynthesisTasks: API.OperationMethod<
+export const listSpeechSynthesisTasks: API.PaginatedOperationMethod<
   ListSpeechSynthesisTasksInput,
   ListSpeechSynthesisTasksOutput,
   ListSpeechSynthesisTasksError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSpeechSynthesisTasksInput,
-  ) => stream.Stream<
-    ListSpeechSynthesisTasksOutput,
-    ListSpeechSynthesisTasksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSpeechSynthesisTasksInput,
-  ) => stream.Stream<
-    unknown,
-    ListSpeechSynthesisTasksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListSpeechSynthesisTasksInput,
   output: ListSpeechSynthesisTasksOutput,
   errors: [InvalidNextTokenException, ServiceFailureException],
@@ -1321,27 +1306,7 @@ export const listSpeechSynthesisTasks: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListSpeechSynthesisTasksInput,
-  ListSpeechSynthesisTasksOutput,
-  ListSpeechSynthesisTasksError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSpeechSynthesisTasksInput,
-  ) => stream.Stream<
-    ListSpeechSynthesisTasksOutput,
-    ListSpeechSynthesisTasksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSpeechSynthesisTasksInput,
-  ) => stream.Stream<
-    unknown,
-    ListSpeechSynthesisTasksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type PutLexiconError =
   | InvalidLexiconException
@@ -1365,7 +1330,7 @@ export const putLexicon: API.OperationMethod<
   PutLexiconInput,
   PutLexiconOutput,
   PutLexiconError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutLexiconInput,
   output: PutLexiconOutput,
@@ -1402,7 +1367,7 @@ export const startSpeechSynthesisStream: API.OperationMethod<
   StartSpeechSynthesisStreamInput,
   StartSpeechSynthesisStreamOutput,
   StartSpeechSynthesisStreamError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartSpeechSynthesisStreamInput,
   output: StartSpeechSynthesisStreamOutput,
@@ -1447,7 +1412,7 @@ export const startSpeechSynthesisTask: API.OperationMethod<
   StartSpeechSynthesisTaskInput,
   StartSpeechSynthesisTaskOutput,
   StartSpeechSynthesisTaskError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartSpeechSynthesisTaskInput,
   output: StartSpeechSynthesisTaskOutput,
@@ -1492,7 +1457,7 @@ export const synthesizeSpeech: API.OperationMethod<
   SynthesizeSpeechInput,
   SynthesizeSpeechOutput,
   SynthesizeSpeechError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: SynthesizeSpeechInput,
   output: SynthesizeSpeechOutput,

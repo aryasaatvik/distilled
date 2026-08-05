@@ -1,7 +1,6 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as redacted from "effect/Redacted";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -9,7 +8,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 import { SensitiveString } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "RolesAnywhere",
@@ -90,25 +88,25 @@ const rules = T.EndpointResolver((p, _) => {
 export class AccessDeniedException
   extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
     "AccessDeniedException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(403),
   ).pipe(C.withAuthError) {}
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class TooManyTagsException
   extends /*@__PURE__*/ S.TaggedErrorClass<TooManyTagsException>()(
     "TooManyTagsException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class ValidationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
     "ValidationException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export type ResourceName = string;
@@ -967,7 +965,7 @@ export const createProfile: API.OperationMethod<
   CreateProfileRequest,
   ProfileDetailResponse,
   CreateProfileError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateProfileRequest,
   output: ProfileDetailResponse,
@@ -990,7 +988,7 @@ export const createTrustAnchor: API.OperationMethod<
   CreateTrustAnchorRequest,
   TrustAnchorDetailResponse,
   CreateTrustAnchorError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateTrustAnchorRequest,
   output: TrustAnchorDetailResponse,
@@ -1012,7 +1010,7 @@ export const deleteAttributeMapping: API.OperationMethod<
   DeleteAttributeMappingRequest,
   DeleteAttributeMappingResponse,
   DeleteAttributeMappingError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteAttributeMappingRequest,
   output: DeleteAttributeMappingResponse,
@@ -1039,7 +1037,7 @@ export const deleteCrl: API.OperationMethod<
   ScalarCrlRequest,
   CrlDetailResponse,
   DeleteCrlError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ScalarCrlRequest,
   output: CrlDetailResponse,
@@ -1062,7 +1060,7 @@ export const deleteProfile: API.OperationMethod<
   ScalarProfileRequest,
   ProfileDetailResponse,
   DeleteProfileError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ScalarProfileRequest,
   output: ProfileDetailResponse,
@@ -1085,7 +1083,7 @@ export const deleteTrustAnchor: API.OperationMethod<
   ScalarTrustAnchorRequest,
   TrustAnchorDetailResponse,
   DeleteTrustAnchorError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ScalarTrustAnchorRequest,
   output: TrustAnchorDetailResponse,
@@ -1114,7 +1112,7 @@ export const disableCrl: API.OperationMethod<
   DisableCrlRequest,
   CrlDetailResponse,
   DisableCrlError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DisableCrlRequest,
   output: CrlDetailResponse,
@@ -1143,7 +1141,7 @@ export const disableProfile: API.OperationMethod<
   DisableProfileRequest,
   ProfileDetailResponse,
   DisableProfileError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DisableProfileRequest,
   output: ProfileDetailResponse,
@@ -1173,7 +1171,7 @@ export const disableTrustAnchor: API.OperationMethod<
   DisableTrustAnchorRequest,
   TrustAnchorDetailResponse,
   DisableTrustAnchorError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DisableTrustAnchorRequest,
   output: TrustAnchorDetailResponse,
@@ -1202,7 +1200,7 @@ export const enableCrl: API.OperationMethod<
   EnableCrlRequest,
   CrlDetailResponse,
   EnableCrlError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: EnableCrlRequest,
   output: CrlDetailResponse,
@@ -1231,7 +1229,7 @@ export const enableProfile: API.OperationMethod<
   EnableProfileRequest,
   ProfileDetailResponse,
   EnableProfileError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: EnableProfileRequest,
   output: ProfileDetailResponse,
@@ -1261,7 +1259,7 @@ export const enableTrustAnchor: API.OperationMethod<
   EnableTrustAnchorRequest,
   TrustAnchorDetailResponse,
   EnableTrustAnchorError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: EnableTrustAnchorRequest,
   output: TrustAnchorDetailResponse,
@@ -1285,7 +1283,7 @@ export const getCrl: API.OperationMethod<
   GetCrlRequest,
   CrlDetailResponse,
   GetCrlError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetCrlRequest,
   output: CrlDetailResponse,
@@ -1314,7 +1312,7 @@ export const getProfile: API.OperationMethod<
   GetProfileRequest,
   ProfileDetailResponse,
   GetProfileError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetProfileRequest,
   output: ProfileDetailResponse,
@@ -1337,7 +1335,7 @@ export const getSubject: API.OperationMethod<
   ScalarSubjectRequest,
   SubjectDetailResponse,
   GetSubjectError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ScalarSubjectRequest,
   output: SubjectDetailResponse,
@@ -1368,7 +1366,7 @@ export const getTrustAnchor: API.OperationMethod<
   GetTrustAnchorRequest,
   TrustAnchorDetailResponse,
   GetTrustAnchorError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetTrustAnchorRequest,
   output: TrustAnchorDetailResponse,
@@ -1395,7 +1393,7 @@ export const importCrl: API.OperationMethod<
   ImportCrlRequest,
   CrlDetailResponse,
   ImportCrlError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ImportCrlRequest,
   output: CrlDetailResponse,
@@ -1414,27 +1412,13 @@ export type ListCrlsError =
  *
  * **Required permissions: ** `rolesanywhere:ListCrls`.
  */
-export const listCrls: API.OperationMethod<
+export const listCrls: API.PaginatedOperationMethod<
   ListRequest,
   ListCrlsResponse,
   ListCrlsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListRequest,
-  ) => stream.Stream<
-    ListCrlsResponse,
-    ListCrlsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListRequest,
-  ) => stream.Stream<
-    CrlDetail,
-    ListCrlsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  CrlDetail
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListRequest,
   output: ListCrlsResponse,
   errors: [AccessDeniedException, ValidationException],
@@ -1446,27 +1430,7 @@ export const listCrls: API.OperationMethod<
     outputToken: "nextToken",
     items: "crls",
   } as const,
-})) as any as API.OperationMethod<
-  ListRequest,
-  ListCrlsResponse,
-  ListCrlsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListRequest,
-  ) => stream.Stream<
-    ListCrlsResponse,
-    ListCrlsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListRequest,
-  ) => stream.Stream<
-    CrlDetail,
-    ListCrlsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export interface ListProfilesRequest extends ListRequest {}
 export const ListProfilesRequest = /*@__PURE__*/ ListRequest.pipe(
@@ -1483,27 +1447,13 @@ export type ListProfilesError =
  *
  * **Required permissions: ** `rolesanywhere:ListProfiles`.
  */
-export const listProfiles: API.OperationMethod<
+export const listProfiles: API.PaginatedOperationMethod<
   ListProfilesRequest,
   ListProfilesResponse,
   ListProfilesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListProfilesRequest,
-  ) => stream.Stream<
-    ListProfilesResponse,
-    ListProfilesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListProfilesRequest,
-  ) => stream.Stream<
-    ProfileDetail,
-    ListProfilesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ProfileDetail
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListProfilesRequest,
   output: ListProfilesResponse,
   errors: [AccessDeniedException, ValidationException],
@@ -1515,27 +1465,7 @@ export const listProfiles: API.OperationMethod<
     outputToken: "nextToken",
     items: "profiles",
   } as const,
-})) as any as API.OperationMethod<
-  ListProfilesRequest,
-  ListProfilesResponse,
-  ListProfilesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListProfilesRequest,
-  ) => stream.Stream<
-    ListProfilesResponse,
-    ListProfilesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListProfilesRequest,
-  ) => stream.Stream<
-    ProfileDetail,
-    ListProfilesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export interface ListSubjectsRequest extends ListRequest {}
 export const ListSubjectsRequest = /*@__PURE__*/ ListRequest.pipe(
@@ -1552,27 +1482,13 @@ export type ListSubjectsError =
  *
  * **Required permissions: ** `rolesanywhere:ListSubjects`.
  */
-export const listSubjects: API.OperationMethod<
+export const listSubjects: API.PaginatedOperationMethod<
   ListSubjectsRequest,
   ListSubjectsResponse,
   ListSubjectsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSubjectsRequest,
-  ) => stream.Stream<
-    ListSubjectsResponse,
-    ListSubjectsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSubjectsRequest,
-  ) => stream.Stream<
-    SubjectSummary,
-    ListSubjectsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  SubjectSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListSubjectsRequest,
   output: ListSubjectsResponse,
   errors: [AccessDeniedException, ValidationException],
@@ -1584,27 +1500,7 @@ export const listSubjects: API.OperationMethod<
     outputToken: "nextToken",
     items: "subjects",
   } as const,
-})) as any as API.OperationMethod<
-  ListSubjectsRequest,
-  ListSubjectsResponse,
-  ListSubjectsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSubjectsRequest,
-  ) => stream.Stream<
-    ListSubjectsResponse,
-    ListSubjectsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSubjectsRequest,
-  ) => stream.Stream<
-    SubjectSummary,
-    ListSubjectsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsForResourceError =
   | AccessDeniedException
@@ -1620,7 +1516,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceRequest,
   ListTagsForResourceResponse,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -1649,27 +1545,13 @@ export type ListTrustAnchorsError =
  *
  * **Required permissions: ** `rolesanywhere:ListTrustAnchors`.
  */
-export const listTrustAnchors: API.OperationMethod<
+export const listTrustAnchors: API.PaginatedOperationMethod<
   ListTrustAnchorsRequest,
   ListTrustAnchorsResponse,
   ListTrustAnchorsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTrustAnchorsRequest,
-  ) => stream.Stream<
-    ListTrustAnchorsResponse,
-    ListTrustAnchorsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTrustAnchorsRequest,
-  ) => stream.Stream<
-    TrustAnchorDetail,
-    ListTrustAnchorsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  TrustAnchorDetail
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListTrustAnchorsRequest,
   output: ListTrustAnchorsResponse,
   errors: [AccessDeniedException, ValidationException],
@@ -1681,27 +1563,7 @@ export const listTrustAnchors: API.OperationMethod<
     outputToken: "nextToken",
     items: "trustAnchors",
   } as const,
-})) as any as API.OperationMethod<
-  ListTrustAnchorsRequest,
-  ListTrustAnchorsResponse,
-  ListTrustAnchorsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTrustAnchorsRequest,
-  ) => stream.Stream<
-    ListTrustAnchorsResponse,
-    ListTrustAnchorsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTrustAnchorsRequest,
-  ) => stream.Stream<
-    TrustAnchorDetail,
-    ListTrustAnchorsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type PutAttributeMappingError =
   | AccessDeniedException
@@ -1715,7 +1577,7 @@ export const putAttributeMapping: API.OperationMethod<
   PutAttributeMappingRequest,
   PutAttributeMappingResponse,
   PutAttributeMappingError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutAttributeMappingRequest,
   output: PutAttributeMappingResponse,
@@ -1745,7 +1607,7 @@ export const putNotificationSettings: API.OperationMethod<
   PutNotificationSettingsRequest,
   PutNotificationSettingsResponse,
   PutNotificationSettingsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutNotificationSettingsRequest,
   output: PutNotificationSettingsResponse,
@@ -1773,7 +1635,7 @@ export const resetNotificationSettings: API.OperationMethod<
   ResetNotificationSettingsRequest,
   ResetNotificationSettingsResponse,
   ResetNotificationSettingsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ResetNotificationSettingsRequest,
   output: ResetNotificationSettingsResponse,
@@ -1802,7 +1664,7 @@ export const tagResource: API.OperationMethod<
   TagResourceRequest,
   TagResourceResponse,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -1831,7 +1693,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceRequest,
   UntagResourceResponse,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -1859,7 +1721,7 @@ export const updateCrl: API.OperationMethod<
   UpdateCrlRequest,
   CrlDetailResponse,
   UpdateCrlError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateCrlRequest,
   output: CrlDetailResponse,
@@ -1887,7 +1749,7 @@ export const updateProfile: API.OperationMethod<
   UpdateProfileRequest,
   ProfileDetailResponse,
   UpdateProfileError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateProfileRequest,
   output: ProfileDetailResponse,
@@ -1915,7 +1777,7 @@ export const updateTrustAnchor: API.OperationMethod<
   UpdateTrustAnchorRequest,
   TrustAnchorDetailResponse,
   UpdateTrustAnchorError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateTrustAnchorRequest,
   output: TrustAnchorDetailResponse,

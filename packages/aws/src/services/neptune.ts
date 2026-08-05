@@ -1,7 +1,6 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as redacted from "effect/Redacted";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -9,7 +8,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 import { SensitiveString } from "../sensitive.ts";
 const ns = T.XmlNamespace("http://rds.amazonaws.com/doc/2014-10-31/");
 const svc = T.AwsApiService({
@@ -94,7 +92,7 @@ const rules = T.EndpointResolver((p, _) => {
 export class AuthorizationNotFoundFault
   extends /*@__PURE__*/ S.TaggedErrorClass<AuthorizationNotFoundFault>()(
     "AuthorizationNotFoundFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "AuthorizationNotFound", httpResponseCode: 404 }),
       T.HttpError(404),
@@ -103,7 +101,7 @@ export class AuthorizationNotFoundFault
 export class CertificateNotFoundFault
   extends /*@__PURE__*/ S.TaggedErrorClass<CertificateNotFoundFault>()(
     "CertificateNotFoundFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "CertificateNotFound", httpResponseCode: 404 }),
       T.HttpError(404),
@@ -112,7 +110,7 @@ export class CertificateNotFoundFault
 export class DBClusterAlreadyExistsFault
   extends /*@__PURE__*/ S.TaggedErrorClass<DBClusterAlreadyExistsFault>()(
     "DBClusterAlreadyExistsFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "DBClusterAlreadyExistsFault",
@@ -124,7 +122,7 @@ export class DBClusterAlreadyExistsFault
 export class DBClusterEndpointAlreadyExistsFault
   extends /*@__PURE__*/ S.TaggedErrorClass<DBClusterEndpointAlreadyExistsFault>()(
     "DBClusterEndpointAlreadyExistsFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "DBClusterEndpointAlreadyExistsFault",
@@ -136,7 +134,7 @@ export class DBClusterEndpointAlreadyExistsFault
 export class DBClusterEndpointNotFoundFault
   extends /*@__PURE__*/ S.TaggedErrorClass<DBClusterEndpointNotFoundFault>()(
     "DBClusterEndpointNotFoundFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "DBClusterEndpointNotFoundFault",
@@ -148,7 +146,7 @@ export class DBClusterEndpointNotFoundFault
 export class DBClusterEndpointQuotaExceededFault
   extends /*@__PURE__*/ S.TaggedErrorClass<DBClusterEndpointQuotaExceededFault>()(
     "DBClusterEndpointQuotaExceededFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "DBClusterEndpointQuotaExceededFault",
@@ -160,7 +158,7 @@ export class DBClusterEndpointQuotaExceededFault
 export class DBClusterNotFoundFault
   extends /*@__PURE__*/ S.TaggedErrorClass<DBClusterNotFoundFault>()(
     "DBClusterNotFoundFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "DBClusterNotFoundFault",
@@ -172,7 +170,7 @@ export class DBClusterNotFoundFault
 export class DBClusterParameterGroupNotFoundFault
   extends /*@__PURE__*/ S.TaggedErrorClass<DBClusterParameterGroupNotFoundFault>()(
     "DBClusterParameterGroupNotFoundFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "DBClusterParameterGroupNotFound",
@@ -184,7 +182,7 @@ export class DBClusterParameterGroupNotFoundFault
 export class DBClusterQuotaExceededFault
   extends /*@__PURE__*/ S.TaggedErrorClass<DBClusterQuotaExceededFault>()(
     "DBClusterQuotaExceededFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "DBClusterQuotaExceededFault",
@@ -196,7 +194,7 @@ export class DBClusterQuotaExceededFault
 export class DBClusterRoleAlreadyExistsFault
   extends /*@__PURE__*/ S.TaggedErrorClass<DBClusterRoleAlreadyExistsFault>()(
     "DBClusterRoleAlreadyExistsFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "DBClusterRoleAlreadyExists",
@@ -208,7 +206,7 @@ export class DBClusterRoleAlreadyExistsFault
 export class DBClusterRoleNotFoundFault
   extends /*@__PURE__*/ S.TaggedErrorClass<DBClusterRoleNotFoundFault>()(
     "DBClusterRoleNotFoundFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "DBClusterRoleNotFound", httpResponseCode: 404 }),
       T.HttpError(404),
@@ -217,7 +215,7 @@ export class DBClusterRoleNotFoundFault
 export class DBClusterRoleQuotaExceededFault
   extends /*@__PURE__*/ S.TaggedErrorClass<DBClusterRoleQuotaExceededFault>()(
     "DBClusterRoleQuotaExceededFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "DBClusterRoleQuotaExceeded",
@@ -229,7 +227,7 @@ export class DBClusterRoleQuotaExceededFault
 export class DBClusterSnapshotAlreadyExistsFault
   extends /*@__PURE__*/ S.TaggedErrorClass<DBClusterSnapshotAlreadyExistsFault>()(
     "DBClusterSnapshotAlreadyExistsFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "DBClusterSnapshotAlreadyExistsFault",
@@ -241,7 +239,7 @@ export class DBClusterSnapshotAlreadyExistsFault
 export class DBClusterSnapshotNotFoundFault
   extends /*@__PURE__*/ S.TaggedErrorClass<DBClusterSnapshotNotFoundFault>()(
     "DBClusterSnapshotNotFoundFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "DBClusterSnapshotNotFoundFault",
@@ -253,7 +251,7 @@ export class DBClusterSnapshotNotFoundFault
 export class DBInstanceAlreadyExistsFault
   extends /*@__PURE__*/ S.TaggedErrorClass<DBInstanceAlreadyExistsFault>()(
     "DBInstanceAlreadyExistsFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "DBInstanceAlreadyExists",
@@ -265,7 +263,7 @@ export class DBInstanceAlreadyExistsFault
 export class DBInstanceNotFoundFault
   extends /*@__PURE__*/ S.TaggedErrorClass<DBInstanceNotFoundFault>()(
     "DBInstanceNotFoundFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "DBInstanceNotFound", httpResponseCode: 404 }),
       T.HttpError(404),
@@ -274,7 +272,7 @@ export class DBInstanceNotFoundFault
 export class DBParameterGroupAlreadyExistsFault
   extends /*@__PURE__*/ S.TaggedErrorClass<DBParameterGroupAlreadyExistsFault>()(
     "DBParameterGroupAlreadyExistsFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "DBParameterGroupAlreadyExists",
@@ -286,7 +284,7 @@ export class DBParameterGroupAlreadyExistsFault
 export class DBParameterGroupNotFoundFault
   extends /*@__PURE__*/ S.TaggedErrorClass<DBParameterGroupNotFoundFault>()(
     "DBParameterGroupNotFoundFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "DBParameterGroupNotFound",
@@ -298,7 +296,7 @@ export class DBParameterGroupNotFoundFault
 export class DBParameterGroupQuotaExceededFault
   extends /*@__PURE__*/ S.TaggedErrorClass<DBParameterGroupQuotaExceededFault>()(
     "DBParameterGroupQuotaExceededFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "DBParameterGroupQuotaExceeded",
@@ -310,7 +308,7 @@ export class DBParameterGroupQuotaExceededFault
 export class DBSecurityGroupNotFoundFault
   extends /*@__PURE__*/ S.TaggedErrorClass<DBSecurityGroupNotFoundFault>()(
     "DBSecurityGroupNotFoundFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "DBSecurityGroupNotFound",
@@ -322,7 +320,7 @@ export class DBSecurityGroupNotFoundFault
 export class DBSnapshotAlreadyExistsFault
   extends /*@__PURE__*/ S.TaggedErrorClass<DBSnapshotAlreadyExistsFault>()(
     "DBSnapshotAlreadyExistsFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "DBSnapshotAlreadyExists",
@@ -334,7 +332,7 @@ export class DBSnapshotAlreadyExistsFault
 export class DBSnapshotNotFoundFault
   extends /*@__PURE__*/ S.TaggedErrorClass<DBSnapshotNotFoundFault>()(
     "DBSnapshotNotFoundFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "DBSnapshotNotFound", httpResponseCode: 404 }),
       T.HttpError(404),
@@ -343,7 +341,7 @@ export class DBSnapshotNotFoundFault
 export class DBSubnetGroupAlreadyExistsFault
   extends /*@__PURE__*/ S.TaggedErrorClass<DBSubnetGroupAlreadyExistsFault>()(
     "DBSubnetGroupAlreadyExistsFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "DBSubnetGroupAlreadyExists",
@@ -355,7 +353,7 @@ export class DBSubnetGroupAlreadyExistsFault
 export class DBSubnetGroupDoesNotCoverEnoughAZs
   extends /*@__PURE__*/ S.TaggedErrorClass<DBSubnetGroupDoesNotCoverEnoughAZs>()(
     "DBSubnetGroupDoesNotCoverEnoughAZs",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "DBSubnetGroupDoesNotCoverEnoughAZs",
@@ -367,7 +365,7 @@ export class DBSubnetGroupDoesNotCoverEnoughAZs
 export class DBSubnetGroupNotFoundFault
   extends /*@__PURE__*/ S.TaggedErrorClass<DBSubnetGroupNotFoundFault>()(
     "DBSubnetGroupNotFoundFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "DBSubnetGroupNotFoundFault",
@@ -379,7 +377,7 @@ export class DBSubnetGroupNotFoundFault
 export class DBSubnetGroupQuotaExceededFault
   extends /*@__PURE__*/ S.TaggedErrorClass<DBSubnetGroupQuotaExceededFault>()(
     "DBSubnetGroupQuotaExceededFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "DBSubnetGroupQuotaExceeded",
@@ -391,7 +389,7 @@ export class DBSubnetGroupQuotaExceededFault
 export class DBSubnetQuotaExceededFault
   extends /*@__PURE__*/ S.TaggedErrorClass<DBSubnetQuotaExceededFault>()(
     "DBSubnetQuotaExceededFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "DBSubnetQuotaExceededFault",
@@ -403,7 +401,7 @@ export class DBSubnetQuotaExceededFault
 export class DBUpgradeDependencyFailureFault
   extends /*@__PURE__*/ S.TaggedErrorClass<DBUpgradeDependencyFailureFault>()(
     "DBUpgradeDependencyFailureFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "DBUpgradeDependencyFailure",
@@ -415,7 +413,7 @@ export class DBUpgradeDependencyFailureFault
 export class DomainNotFoundFault
   extends /*@__PURE__*/ S.TaggedErrorClass<DomainNotFoundFault>()(
     "DomainNotFoundFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "DomainNotFoundFault", httpResponseCode: 404 }),
       T.HttpError(404),
@@ -424,7 +422,7 @@ export class DomainNotFoundFault
 export class EventSubscriptionQuotaExceededFault
   extends /*@__PURE__*/ S.TaggedErrorClass<EventSubscriptionQuotaExceededFault>()(
     "EventSubscriptionQuotaExceededFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "EventSubscriptionQuotaExceeded",
@@ -436,7 +434,7 @@ export class EventSubscriptionQuotaExceededFault
 export class GlobalClusterAlreadyExistsFault
   extends /*@__PURE__*/ S.TaggedErrorClass<GlobalClusterAlreadyExistsFault>()(
     "GlobalClusterAlreadyExistsFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "GlobalClusterAlreadyExistsFault",
@@ -448,7 +446,7 @@ export class GlobalClusterAlreadyExistsFault
 export class GlobalClusterNotFoundFault
   extends /*@__PURE__*/ S.TaggedErrorClass<GlobalClusterNotFoundFault>()(
     "GlobalClusterNotFoundFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "GlobalClusterNotFoundFault",
@@ -460,7 +458,7 @@ export class GlobalClusterNotFoundFault
 export class GlobalClusterQuotaExceededFault
   extends /*@__PURE__*/ S.TaggedErrorClass<GlobalClusterQuotaExceededFault>()(
     "GlobalClusterQuotaExceededFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "GlobalClusterQuotaExceededFault",
@@ -472,7 +470,7 @@ export class GlobalClusterQuotaExceededFault
 export class InstanceQuotaExceededFault
   extends /*@__PURE__*/ S.TaggedErrorClass<InstanceQuotaExceededFault>()(
     "InstanceQuotaExceededFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "InstanceQuotaExceeded", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -481,7 +479,7 @@ export class InstanceQuotaExceededFault
 export class InsufficientDBClusterCapacityFault
   extends /*@__PURE__*/ S.TaggedErrorClass<InsufficientDBClusterCapacityFault>()(
     "InsufficientDBClusterCapacityFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "InsufficientDBClusterCapacityFault",
@@ -493,7 +491,7 @@ export class InsufficientDBClusterCapacityFault
 export class InsufficientDBInstanceCapacityFault
   extends /*@__PURE__*/ S.TaggedErrorClass<InsufficientDBInstanceCapacityFault>()(
     "InsufficientDBInstanceCapacityFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "InsufficientDBInstanceCapacity",
@@ -505,7 +503,7 @@ export class InsufficientDBInstanceCapacityFault
 export class InsufficientStorageClusterCapacityFault
   extends /*@__PURE__*/ S.TaggedErrorClass<InsufficientStorageClusterCapacityFault>()(
     "InsufficientStorageClusterCapacityFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "InsufficientStorageClusterCapacity",
@@ -517,7 +515,7 @@ export class InsufficientStorageClusterCapacityFault
 export class InvalidDBClusterEndpointStateFault
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidDBClusterEndpointStateFault>()(
     "InvalidDBClusterEndpointStateFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "InvalidDBClusterEndpointStateFault",
@@ -529,7 +527,7 @@ export class InvalidDBClusterEndpointStateFault
 export class InvalidDBClusterSnapshotStateFault
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidDBClusterSnapshotStateFault>()(
     "InvalidDBClusterSnapshotStateFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "InvalidDBClusterSnapshotStateFault",
@@ -541,7 +539,7 @@ export class InvalidDBClusterSnapshotStateFault
 export class InvalidDBClusterStateFault
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidDBClusterStateFault>()(
     "InvalidDBClusterStateFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "InvalidDBClusterStateFault",
@@ -553,7 +551,7 @@ export class InvalidDBClusterStateFault
 export class InvalidDBInstanceStateFault
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidDBInstanceStateFault>()(
     "InvalidDBInstanceStateFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "InvalidDBInstanceState",
@@ -565,7 +563,7 @@ export class InvalidDBInstanceStateFault
 export class InvalidDBParameterGroupStateFault
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidDBParameterGroupStateFault>()(
     "InvalidDBParameterGroupStateFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "InvalidDBParameterGroupState",
@@ -577,7 +575,7 @@ export class InvalidDBParameterGroupStateFault
 export class InvalidDBSecurityGroupStateFault
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidDBSecurityGroupStateFault>()(
     "InvalidDBSecurityGroupStateFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "InvalidDBSecurityGroupState",
@@ -589,7 +587,7 @@ export class InvalidDBSecurityGroupStateFault
 export class InvalidDBSnapshotStateFault
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidDBSnapshotStateFault>()(
     "InvalidDBSnapshotStateFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "InvalidDBSnapshotState",
@@ -601,7 +599,7 @@ export class InvalidDBSnapshotStateFault
 export class InvalidDBSubnetGroupStateFault
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidDBSubnetGroupStateFault>()(
     "InvalidDBSubnetGroupStateFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "InvalidDBSubnetGroupStateFault",
@@ -613,7 +611,7 @@ export class InvalidDBSubnetGroupStateFault
 export class InvalidDBSubnetStateFault
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidDBSubnetStateFault>()(
     "InvalidDBSubnetStateFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "InvalidDBSubnetStateFault",
@@ -625,7 +623,7 @@ export class InvalidDBSubnetStateFault
 export class InvalidEventSubscriptionStateFault
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidEventSubscriptionStateFault>()(
     "InvalidEventSubscriptionStateFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "InvalidEventSubscriptionState",
@@ -637,7 +635,7 @@ export class InvalidEventSubscriptionStateFault
 export class InvalidGlobalClusterStateFault
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidGlobalClusterStateFault>()(
     "InvalidGlobalClusterStateFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "InvalidGlobalClusterStateFault",
@@ -649,7 +647,7 @@ export class InvalidGlobalClusterStateFault
 export class InvalidRestoreFault
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidRestoreFault>()(
     "InvalidRestoreFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "InvalidRestoreFault", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -658,7 +656,7 @@ export class InvalidRestoreFault
 export class InvalidSubnet
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidSubnet>()(
     "InvalidSubnet",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "InvalidSubnet", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -667,7 +665,7 @@ export class InvalidSubnet
 export class InvalidVPCNetworkStateFault
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidVPCNetworkStateFault>()(
     "InvalidVPCNetworkStateFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "InvalidVPCNetworkStateFault",
@@ -679,7 +677,7 @@ export class InvalidVPCNetworkStateFault
 export class KMSKeyNotAccessibleFault
   extends /*@__PURE__*/ S.TaggedErrorClass<KMSKeyNotAccessibleFault>()(
     "KMSKeyNotAccessibleFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "KMSKeyNotAccessibleFault",
@@ -691,7 +689,7 @@ export class KMSKeyNotAccessibleFault
 export class NetworkTypeNotSupportedFault
   extends /*@__PURE__*/ S.TaggedErrorClass<NetworkTypeNotSupportedFault>()(
     "NetworkTypeNotSupportedFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "NetworkTypeNotSupported",
@@ -703,7 +701,7 @@ export class NetworkTypeNotSupportedFault
 export class OptionGroupNotFoundFault
   extends /*@__PURE__*/ S.TaggedErrorClass<OptionGroupNotFoundFault>()(
     "OptionGroupNotFoundFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "OptionGroupNotFoundFault",
@@ -715,7 +713,7 @@ export class OptionGroupNotFoundFault
 export class ProvisionedIopsNotAvailableInAZFault
   extends /*@__PURE__*/ S.TaggedErrorClass<ProvisionedIopsNotAvailableInAZFault>()(
     "ProvisionedIopsNotAvailableInAZFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "ProvisionedIopsNotAvailableInAZFault",
@@ -727,7 +725,7 @@ export class ProvisionedIopsNotAvailableInAZFault
 export class ResourceNotFoundFault
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundFault>()(
     "ResourceNotFoundFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "ResourceNotFoundFault", httpResponseCode: 404 }),
       T.HttpError(404),
@@ -736,7 +734,7 @@ export class ResourceNotFoundFault
 export class SharedSnapshotQuotaExceededFault
   extends /*@__PURE__*/ S.TaggedErrorClass<SharedSnapshotQuotaExceededFault>()(
     "SharedSnapshotQuotaExceededFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "SharedSnapshotQuotaExceeded",
@@ -748,7 +746,7 @@ export class SharedSnapshotQuotaExceededFault
 export class SnapshotQuotaExceededFault
   extends /*@__PURE__*/ S.TaggedErrorClass<SnapshotQuotaExceededFault>()(
     "SnapshotQuotaExceededFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "SnapshotQuotaExceeded", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -757,7 +755,7 @@ export class SnapshotQuotaExceededFault
 export class SNSInvalidTopicFault
   extends /*@__PURE__*/ S.TaggedErrorClass<SNSInvalidTopicFault>()(
     "SNSInvalidTopicFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "SNSInvalidTopic", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -766,7 +764,7 @@ export class SNSInvalidTopicFault
 export class SNSNoAuthorizationFault
   extends /*@__PURE__*/ S.TaggedErrorClass<SNSNoAuthorizationFault>()(
     "SNSNoAuthorizationFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "SNSNoAuthorization", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -775,7 +773,7 @@ export class SNSNoAuthorizationFault
 export class SNSTopicArnNotFoundFault
   extends /*@__PURE__*/ S.TaggedErrorClass<SNSTopicArnNotFoundFault>()(
     "SNSTopicArnNotFoundFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "SNSTopicArnNotFound", httpResponseCode: 404 }),
       T.HttpError(404),
@@ -784,7 +782,7 @@ export class SNSTopicArnNotFoundFault
 export class SourceNotFoundFault
   extends /*@__PURE__*/ S.TaggedErrorClass<SourceNotFoundFault>()(
     "SourceNotFoundFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "SourceNotFound", httpResponseCode: 404 }),
       T.HttpError(404),
@@ -793,7 +791,7 @@ export class SourceNotFoundFault
 export class StorageQuotaExceededFault
   extends /*@__PURE__*/ S.TaggedErrorClass<StorageQuotaExceededFault>()(
     "StorageQuotaExceededFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "StorageQuotaExceeded", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -802,7 +800,7 @@ export class StorageQuotaExceededFault
 export class StorageTypeNotSupportedFault
   extends /*@__PURE__*/ S.TaggedErrorClass<StorageTypeNotSupportedFault>()(
     "StorageTypeNotSupportedFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "StorageTypeNotSupported",
@@ -814,7 +812,7 @@ export class StorageTypeNotSupportedFault
 export class SubnetAlreadyInUse
   extends /*@__PURE__*/ S.TaggedErrorClass<SubnetAlreadyInUse>()(
     "SubnetAlreadyInUse",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "SubnetAlreadyInUse", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -823,7 +821,7 @@ export class SubnetAlreadyInUse
 export class SubscriptionAlreadyExistFault
   extends /*@__PURE__*/ S.TaggedErrorClass<SubscriptionAlreadyExistFault>()(
     "SubscriptionAlreadyExistFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "SubscriptionAlreadyExist",
@@ -835,7 +833,7 @@ export class SubscriptionAlreadyExistFault
 export class SubscriptionCategoryNotFoundFault
   extends /*@__PURE__*/ S.TaggedErrorClass<SubscriptionCategoryNotFoundFault>()(
     "SubscriptionCategoryNotFoundFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "SubscriptionCategoryNotFound",
@@ -847,7 +845,7 @@ export class SubscriptionCategoryNotFoundFault
 export class SubscriptionNotFoundFault
   extends /*@__PURE__*/ S.TaggedErrorClass<SubscriptionNotFoundFault>()(
     "SubscriptionNotFoundFault",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "SubscriptionNotFound", httpResponseCode: 404 }),
       T.HttpError(404),
@@ -4890,7 +4888,7 @@ export const addRoleToDBCluster: API.OperationMethod<
   AddRoleToDBClusterMessage,
   AddRoleToDBClusterResponse,
   AddRoleToDBClusterError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AddRoleToDBClusterMessage,
   output: AddRoleToDBClusterResponse,
@@ -4916,7 +4914,7 @@ export const addSourceIdentifierToSubscription: API.OperationMethod<
   AddSourceIdentifierToSubscriptionMessage,
   AddSourceIdentifierToSubscriptionResult,
   AddSourceIdentifierToSubscriptionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AddSourceIdentifierToSubscriptionMessage,
   output: AddSourceIdentifierToSubscriptionResult,
@@ -4940,7 +4938,7 @@ export const addTagsToResource: API.OperationMethod<
   AddTagsToResourceMessage,
   AddTagsToResourceResponse,
   AddTagsToResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AddTagsToResourceMessage,
   output: AddTagsToResourceResponse,
@@ -4964,7 +4962,7 @@ export const applyPendingMaintenanceAction: API.OperationMethod<
   ApplyPendingMaintenanceActionMessage,
   ApplyPendingMaintenanceActionResult,
   ApplyPendingMaintenanceActionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ApplyPendingMaintenanceActionMessage,
   output: ApplyPendingMaintenanceActionResult,
@@ -4986,7 +4984,7 @@ export const copyDBClusterParameterGroup: API.OperationMethod<
   CopyDBClusterParameterGroupMessage,
   CopyDBClusterParameterGroupResult,
   CopyDBClusterParameterGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CopyDBClusterParameterGroupMessage,
   output: CopyDBClusterParameterGroupResult,
@@ -5019,7 +5017,7 @@ export const copyDBClusterSnapshot: API.OperationMethod<
   CopyDBClusterSnapshotMessage,
   CopyDBClusterSnapshotResult,
   CopyDBClusterSnapshotError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CopyDBClusterSnapshotMessage,
   output: CopyDBClusterSnapshotResult,
@@ -5048,7 +5046,7 @@ export const copyDBParameterGroup: API.OperationMethod<
   CopyDBParameterGroupMessage,
   CopyDBParameterGroupResult,
   CopyDBParameterGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CopyDBParameterGroupMessage,
   output: CopyDBParameterGroupResult,
@@ -5097,7 +5095,7 @@ export const createDBCluster: API.OperationMethod<
   CreateDBClusterMessage,
   CreateDBClusterResult,
   CreateDBClusterError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateDBClusterMessage,
   output: CreateDBClusterResult,
@@ -5141,7 +5139,7 @@ export const createDBClusterEndpoint: API.OperationMethod<
   CreateDBClusterEndpointMessage,
   CreateDBClusterEndpointOutput,
   CreateDBClusterEndpointError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateDBClusterEndpointMessage,
   output: CreateDBClusterEndpointOutput,
@@ -5194,7 +5192,7 @@ export const createDBClusterParameterGroup: API.OperationMethod<
   CreateDBClusterParameterGroupMessage,
   CreateDBClusterParameterGroupResult,
   CreateDBClusterParameterGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateDBClusterParameterGroupMessage,
   output: CreateDBClusterParameterGroupResult,
@@ -5221,7 +5219,7 @@ export const createDBClusterSnapshot: API.OperationMethod<
   CreateDBClusterSnapshotMessage,
   CreateDBClusterSnapshotResult,
   CreateDBClusterSnapshotError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateDBClusterSnapshotMessage,
   output: CreateDBClusterSnapshotResult,
@@ -5264,7 +5262,7 @@ export const createDBInstance: API.OperationMethod<
   CreateDBInstanceMessage,
   CreateDBInstanceResult,
   CreateDBInstanceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateDBInstanceMessage,
   output: CreateDBInstanceResult,
@@ -5323,7 +5321,7 @@ export const createDBParameterGroup: API.OperationMethod<
   CreateDBParameterGroupMessage,
   CreateDBParameterGroupResult,
   CreateDBParameterGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateDBParameterGroupMessage,
   output: CreateDBParameterGroupResult,
@@ -5351,7 +5349,7 @@ export const createDBSubnetGroup: API.OperationMethod<
   CreateDBSubnetGroupMessage,
   CreateDBSubnetGroupResult,
   CreateDBSubnetGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateDBSubnetGroupMessage,
   output: CreateDBSubnetGroupResult,
@@ -5399,7 +5397,7 @@ export const createEventSubscription: API.OperationMethod<
   CreateEventSubscriptionMessage,
   CreateEventSubscriptionResult,
   CreateEventSubscriptionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateEventSubscriptionMessage,
   output: CreateEventSubscriptionResult,
@@ -5439,7 +5437,7 @@ export const createGlobalCluster: API.OperationMethod<
   CreateGlobalClusterMessage,
   CreateGlobalClusterResult,
   CreateGlobalClusterError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateGlobalClusterMessage,
   output: CreateGlobalClusterResult,
@@ -5474,7 +5472,7 @@ export const deleteDBCluster: API.OperationMethod<
   DeleteDBClusterMessage,
   DeleteDBClusterResult,
   DeleteDBClusterError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteDBClusterMessage,
   output: DeleteDBClusterResult,
@@ -5502,7 +5500,7 @@ export const deleteDBClusterEndpoint: API.OperationMethod<
   DeleteDBClusterEndpointMessage,
   DeleteDBClusterEndpointOutput,
   DeleteDBClusterEndpointError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteDBClusterEndpointMessage,
   output: DeleteDBClusterEndpointOutput,
@@ -5528,7 +5526,7 @@ export const deleteDBClusterParameterGroup: API.OperationMethod<
   DeleteDBClusterParameterGroupMessage,
   DeleteDBClusterParameterGroupResponse,
   DeleteDBClusterParameterGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteDBClusterParameterGroupMessage,
   output: DeleteDBClusterParameterGroupResponse,
@@ -5553,7 +5551,7 @@ export const deleteDBClusterSnapshot: API.OperationMethod<
   DeleteDBClusterSnapshotMessage,
   DeleteDBClusterSnapshotResult,
   DeleteDBClusterSnapshotError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteDBClusterSnapshotMessage,
   output: DeleteDBClusterSnapshotResult,
@@ -5593,7 +5591,7 @@ export const deleteDBInstance: API.OperationMethod<
   DeleteDBInstanceMessage,
   DeleteDBInstanceResult,
   DeleteDBInstanceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteDBInstanceMessage,
   output: DeleteDBInstanceResult,
@@ -5621,7 +5619,7 @@ export const deleteDBParameterGroup: API.OperationMethod<
   DeleteDBParameterGroupMessage,
   DeleteDBParameterGroupResponse,
   DeleteDBParameterGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteDBParameterGroupMessage,
   output: DeleteDBParameterGroupResponse,
@@ -5645,7 +5643,7 @@ export const deleteDBSubnetGroup: API.OperationMethod<
   DeleteDBSubnetGroupMessage,
   DeleteDBSubnetGroupResponse,
   DeleteDBSubnetGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteDBSubnetGroupMessage,
   output: DeleteDBSubnetGroupResponse,
@@ -5670,7 +5668,7 @@ export const deleteEventSubscription: API.OperationMethod<
   DeleteEventSubscriptionMessage,
   DeleteEventSubscriptionResult,
   DeleteEventSubscriptionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteEventSubscriptionMessage,
   output: DeleteEventSubscriptionResult,
@@ -5692,7 +5690,7 @@ export const deleteGlobalCluster: API.OperationMethod<
   DeleteGlobalClusterMessage,
   DeleteGlobalClusterResult,
   DeleteGlobalClusterError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteGlobalClusterMessage,
   output: DeleteGlobalClusterResult,
@@ -5711,27 +5709,13 @@ export type DescribeDBClusterEndpointsError =
  * This operation can also return information for Amazon RDS clusters
  * and Amazon DocDB clusters.
  */
-export const describeDBClusterEndpoints: API.OperationMethod<
+export const describeDBClusterEndpoints: API.PaginatedOperationMethod<
   DescribeDBClusterEndpointsMessage,
   DBClusterEndpointMessage,
   DescribeDBClusterEndpointsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeDBClusterEndpointsMessage,
-  ) => stream.Stream<
-    DBClusterEndpointMessage,
-    DescribeDBClusterEndpointsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeDBClusterEndpointsMessage,
-  ) => stream.Stream<
-    DBClusterEndpoint,
-    DescribeDBClusterEndpointsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  DBClusterEndpoint
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeDBClusterEndpointsMessage,
   output: DBClusterEndpointMessage,
   errors: [DBClusterNotFoundFault],
@@ -5744,27 +5728,7 @@ export const describeDBClusterEndpoints: API.OperationMethod<
     items: "DBClusterEndpoints",
     pageSize: "MaxRecords",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeDBClusterEndpointsMessage,
-  DBClusterEndpointMessage,
-  DescribeDBClusterEndpointsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeDBClusterEndpointsMessage,
-  ) => stream.Stream<
-    DBClusterEndpointMessage,
-    DescribeDBClusterEndpointsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeDBClusterEndpointsMessage,
-  ) => stream.Stream<
-    DBClusterEndpoint,
-    DescribeDBClusterEndpointsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeDBClusterParameterGroupsError =
   | DBParameterGroupNotFoundFault
@@ -5774,27 +5738,13 @@ export type DescribeDBClusterParameterGroupsError =
  * `DBClusterParameterGroupName` parameter is specified, the list will contain only
  * the description of the specified DB cluster parameter group.
  */
-export const describeDBClusterParameterGroups: API.OperationMethod<
+export const describeDBClusterParameterGroups: API.PaginatedOperationMethod<
   DescribeDBClusterParameterGroupsMessage,
   DBClusterParameterGroupsMessage,
   DescribeDBClusterParameterGroupsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeDBClusterParameterGroupsMessage,
-  ) => stream.Stream<
-    DBClusterParameterGroupsMessage,
-    DescribeDBClusterParameterGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeDBClusterParameterGroupsMessage,
-  ) => stream.Stream<
-    DBClusterParameterGroup,
-    DescribeDBClusterParameterGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  DBClusterParameterGroup
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeDBClusterParameterGroupsMessage,
   output: DBClusterParameterGroupsMessage,
   errors: [DBParameterGroupNotFoundFault],
@@ -5807,27 +5757,7 @@ export const describeDBClusterParameterGroups: API.OperationMethod<
     items: "DBClusterParameterGroups",
     pageSize: "MaxRecords",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeDBClusterParameterGroupsMessage,
-  DBClusterParameterGroupsMessage,
-  DescribeDBClusterParameterGroupsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeDBClusterParameterGroupsMessage,
-  ) => stream.Stream<
-    DBClusterParameterGroupsMessage,
-    DescribeDBClusterParameterGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeDBClusterParameterGroupsMessage,
-  ) => stream.Stream<
-    DBClusterParameterGroup,
-    DescribeDBClusterParameterGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeDBClusterParametersError =
   | DBParameterGroupNotFoundFault
@@ -5835,27 +5765,13 @@ export type DescribeDBClusterParametersError =
 /**
  * Returns the detailed parameter list for a particular DB cluster parameter group.
  */
-export const describeDBClusterParameters: API.OperationMethod<
+export const describeDBClusterParameters: API.PaginatedOperationMethod<
   DescribeDBClusterParametersMessage,
   DBClusterParameterGroupDetails,
   DescribeDBClusterParametersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeDBClusterParametersMessage,
-  ) => stream.Stream<
-    DBClusterParameterGroupDetails,
-    DescribeDBClusterParametersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeDBClusterParametersMessage,
-  ) => stream.Stream<
-    Parameter,
-    DescribeDBClusterParametersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Parameter
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeDBClusterParametersMessage,
   output: DBClusterParameterGroupDetails,
   errors: [DBParameterGroupNotFoundFault],
@@ -5868,27 +5784,7 @@ export const describeDBClusterParameters: API.OperationMethod<
     items: "Parameters",
     pageSize: "MaxRecords",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeDBClusterParametersMessage,
-  DBClusterParameterGroupDetails,
-  DescribeDBClusterParametersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeDBClusterParametersMessage,
-  ) => stream.Stream<
-    DBClusterParameterGroupDetails,
-    DescribeDBClusterParametersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeDBClusterParametersMessage,
-  ) => stream.Stream<
-    Parameter,
-    DescribeDBClusterParametersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeDBClustersError = DBClusterNotFoundFault | CommonErrors;
 /**
@@ -5898,27 +5794,13 @@ export type DescribeDBClustersError = DBClusterNotFoundFault | CommonErrors;
  * This operation can also return information for Amazon RDS clusters
  * and Amazon DocDB clusters.
  */
-export const describeDBClusters: API.OperationMethod<
+export const describeDBClusters: API.PaginatedOperationMethod<
   DescribeDBClustersMessage,
   DBClusterMessage,
   DescribeDBClustersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeDBClustersMessage,
-  ) => stream.Stream<
-    DBClusterMessage,
-    DescribeDBClustersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeDBClustersMessage,
-  ) => stream.Stream<
-    DBCluster,
-    DescribeDBClustersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  DBCluster
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeDBClustersMessage,
   output: DBClusterMessage,
   errors: [DBClusterNotFoundFault],
@@ -5931,27 +5813,7 @@ export const describeDBClusters: API.OperationMethod<
     items: "DBClusters",
     pageSize: "MaxRecords",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeDBClustersMessage,
-  DBClusterMessage,
-  DescribeDBClustersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeDBClustersMessage,
-  ) => stream.Stream<
-    DBClusterMessage,
-    DescribeDBClustersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeDBClustersMessage,
-  ) => stream.Stream<
-    DBCluster,
-    DescribeDBClustersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeDBClusterSnapshotAttributesError =
   | DBClusterSnapshotNotFoundFault
@@ -5974,7 +5836,7 @@ export const describeDBClusterSnapshotAttributes: API.OperationMethod<
   DescribeDBClusterSnapshotAttributesMessage,
   DescribeDBClusterSnapshotAttributesResult,
   DescribeDBClusterSnapshotAttributesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeDBClusterSnapshotAttributesMessage,
   output: DescribeDBClusterSnapshotAttributesResult,
@@ -5991,27 +5853,13 @@ export type DescribeDBClusterSnapshotsError =
  * Returns information about DB cluster snapshots. This API action supports
  * pagination.
  */
-export const describeDBClusterSnapshots: API.OperationMethod<
+export const describeDBClusterSnapshots: API.PaginatedOperationMethod<
   DescribeDBClusterSnapshotsMessage,
   DBClusterSnapshotMessage,
   DescribeDBClusterSnapshotsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeDBClusterSnapshotsMessage,
-  ) => stream.Stream<
-    DBClusterSnapshotMessage,
-    DescribeDBClusterSnapshotsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeDBClusterSnapshotsMessage,
-  ) => stream.Stream<
-    DBClusterSnapshot,
-    DescribeDBClusterSnapshotsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  DBClusterSnapshot
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeDBClusterSnapshotsMessage,
   output: DBClusterSnapshotMessage,
   errors: [DBClusterSnapshotNotFoundFault],
@@ -6024,53 +5872,19 @@ export const describeDBClusterSnapshots: API.OperationMethod<
     items: "DBClusterSnapshots",
     pageSize: "MaxRecords",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeDBClusterSnapshotsMessage,
-  DBClusterSnapshotMessage,
-  DescribeDBClusterSnapshotsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeDBClusterSnapshotsMessage,
-  ) => stream.Stream<
-    DBClusterSnapshotMessage,
-    DescribeDBClusterSnapshotsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeDBClusterSnapshotsMessage,
-  ) => stream.Stream<
-    DBClusterSnapshot,
-    DescribeDBClusterSnapshotsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeDBEngineVersionsError = CommonErrors;
 /**
  * Returns a list of the available DB engines.
  */
-export const describeDBEngineVersions: API.OperationMethod<
+export const describeDBEngineVersions: API.PaginatedOperationMethod<
   DescribeDBEngineVersionsMessage,
   DBEngineVersionMessage,
   DescribeDBEngineVersionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeDBEngineVersionsMessage,
-  ) => stream.Stream<
-    DBEngineVersionMessage,
-    DescribeDBEngineVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeDBEngineVersionsMessage,
-  ) => stream.Stream<
-    DBEngineVersion,
-    DescribeDBEngineVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  DBEngineVersion
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeDBEngineVersionsMessage,
   output: DBEngineVersionMessage,
   errors: [],
@@ -6083,27 +5897,7 @@ export const describeDBEngineVersions: API.OperationMethod<
     items: "DBEngineVersions",
     pageSize: "MaxRecords",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeDBEngineVersionsMessage,
-  DBEngineVersionMessage,
-  DescribeDBEngineVersionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeDBEngineVersionsMessage,
-  ) => stream.Stream<
-    DBEngineVersionMessage,
-    DescribeDBEngineVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeDBEngineVersionsMessage,
-  ) => stream.Stream<
-    DBEngineVersion,
-    DescribeDBEngineVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeDBInstancesError = DBInstanceNotFoundFault | CommonErrors;
 /**
@@ -6112,27 +5906,13 @@ export type DescribeDBInstancesError = DBInstanceNotFoundFault | CommonErrors;
  * This operation can also return information for Amazon RDS instances
  * and Amazon DocDB instances.
  */
-export const describeDBInstances: API.OperationMethod<
+export const describeDBInstances: API.PaginatedOperationMethod<
   DescribeDBInstancesMessage,
   DBInstanceMessage,
   DescribeDBInstancesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeDBInstancesMessage,
-  ) => stream.Stream<
-    DBInstanceMessage,
-    DescribeDBInstancesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeDBInstancesMessage,
-  ) => stream.Stream<
-    DBInstance,
-    DescribeDBInstancesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  DBInstance
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeDBInstancesMessage,
   output: DBInstanceMessage,
   errors: [DBInstanceNotFoundFault],
@@ -6145,27 +5925,7 @@ export const describeDBInstances: API.OperationMethod<
     items: "DBInstances",
     pageSize: "MaxRecords",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeDBInstancesMessage,
-  DBInstanceMessage,
-  DescribeDBInstancesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeDBInstancesMessage,
-  ) => stream.Stream<
-    DBInstanceMessage,
-    DescribeDBInstancesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeDBInstancesMessage,
-  ) => stream.Stream<
-    DBInstance,
-    DescribeDBInstancesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeDBParameterGroupsError =
   | DBParameterGroupNotFoundFault
@@ -6175,27 +5935,13 @@ export type DescribeDBParameterGroupsError =
  * `DBParameterGroupName` is specified, the list will contain only the description of
  * the specified DB parameter group.
  */
-export const describeDBParameterGroups: API.OperationMethod<
+export const describeDBParameterGroups: API.PaginatedOperationMethod<
   DescribeDBParameterGroupsMessage,
   DBParameterGroupsMessage,
   DescribeDBParameterGroupsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeDBParameterGroupsMessage,
-  ) => stream.Stream<
-    DBParameterGroupsMessage,
-    DescribeDBParameterGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeDBParameterGroupsMessage,
-  ) => stream.Stream<
-    DBParameterGroup,
-    DescribeDBParameterGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  DBParameterGroup
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeDBParameterGroupsMessage,
   output: DBParameterGroupsMessage,
   errors: [DBParameterGroupNotFoundFault],
@@ -6208,27 +5954,7 @@ export const describeDBParameterGroups: API.OperationMethod<
     items: "DBParameterGroups",
     pageSize: "MaxRecords",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeDBParameterGroupsMessage,
-  DBParameterGroupsMessage,
-  DescribeDBParameterGroupsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeDBParameterGroupsMessage,
-  ) => stream.Stream<
-    DBParameterGroupsMessage,
-    DescribeDBParameterGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeDBParameterGroupsMessage,
-  ) => stream.Stream<
-    DBParameterGroup,
-    DescribeDBParameterGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeDBParametersError =
   | DBParameterGroupNotFoundFault
@@ -6236,27 +5962,13 @@ export type DescribeDBParametersError =
 /**
  * Returns the detailed parameter list for a particular DB parameter group.
  */
-export const describeDBParameters: API.OperationMethod<
+export const describeDBParameters: API.PaginatedOperationMethod<
   DescribeDBParametersMessage,
   DBParameterGroupDetails,
   DescribeDBParametersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeDBParametersMessage,
-  ) => stream.Stream<
-    DBParameterGroupDetails,
-    DescribeDBParametersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeDBParametersMessage,
-  ) => stream.Stream<
-    Parameter,
-    DescribeDBParametersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Parameter
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeDBParametersMessage,
   output: DBParameterGroupDetails,
   errors: [DBParameterGroupNotFoundFault],
@@ -6269,27 +5981,7 @@ export const describeDBParameters: API.OperationMethod<
     items: "Parameters",
     pageSize: "MaxRecords",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeDBParametersMessage,
-  DBParameterGroupDetails,
-  DescribeDBParametersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeDBParametersMessage,
-  ) => stream.Stream<
-    DBParameterGroupDetails,
-    DescribeDBParametersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeDBParametersMessage,
-  ) => stream.Stream<
-    Parameter,
-    DescribeDBParametersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeDBSubnetGroupsError =
   | DBSubnetGroupNotFoundFault
@@ -6300,27 +5992,13 @@ export type DescribeDBSubnetGroupsError =
  *
  * For an overview of CIDR ranges, go to the Wikipedia Tutorial.
  */
-export const describeDBSubnetGroups: API.OperationMethod<
+export const describeDBSubnetGroups: API.PaginatedOperationMethod<
   DescribeDBSubnetGroupsMessage,
   DBSubnetGroupMessage,
   DescribeDBSubnetGroupsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeDBSubnetGroupsMessage,
-  ) => stream.Stream<
-    DBSubnetGroupMessage,
-    DescribeDBSubnetGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeDBSubnetGroupsMessage,
-  ) => stream.Stream<
-    DBSubnetGroup,
-    DescribeDBSubnetGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  DBSubnetGroup
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeDBSubnetGroupsMessage,
   output: DBSubnetGroupMessage,
   errors: [DBSubnetGroupNotFoundFault],
@@ -6333,27 +6011,7 @@ export const describeDBSubnetGroups: API.OperationMethod<
     items: "DBSubnetGroups",
     pageSize: "MaxRecords",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeDBSubnetGroupsMessage,
-  DBSubnetGroupMessage,
-  DescribeDBSubnetGroupsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeDBSubnetGroupsMessage,
-  ) => stream.Stream<
-    DBSubnetGroupMessage,
-    DescribeDBSubnetGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeDBSubnetGroupsMessage,
-  ) => stream.Stream<
-    DBSubnetGroup,
-    DescribeDBSubnetGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeEngineDefaultClusterParametersError = CommonErrors;
 /**
@@ -6364,7 +6022,7 @@ export const describeEngineDefaultClusterParameters: API.OperationMethod<
   DescribeEngineDefaultClusterParametersMessage,
   DescribeEngineDefaultClusterParametersResult,
   DescribeEngineDefaultClusterParametersError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeEngineDefaultClusterParametersMessage,
   output: DescribeEngineDefaultClusterParametersResult,
@@ -6379,27 +6037,13 @@ export type DescribeEngineDefaultParametersError = CommonErrors;
  * Returns the default engine and system parameter information for the specified database
  * engine.
  */
-export const describeEngineDefaultParameters: API.OperationMethod<
+export const describeEngineDefaultParameters: API.PaginatedOperationMethod<
   DescribeEngineDefaultParametersMessage,
   DescribeEngineDefaultParametersResult,
   DescribeEngineDefaultParametersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeEngineDefaultParametersMessage,
-  ) => stream.Stream<
-    DescribeEngineDefaultParametersResult,
-    DescribeEngineDefaultParametersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeEngineDefaultParametersMessage,
-  ) => stream.Stream<
-    unknown,
-    DescribeEngineDefaultParametersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeEngineDefaultParametersMessage,
   output: DescribeEngineDefaultParametersResult,
   errors: [],
@@ -6412,27 +6056,7 @@ export const describeEngineDefaultParameters: API.OperationMethod<
     items: "EngineDefaults.Parameters",
     pageSize: "MaxRecords",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeEngineDefaultParametersMessage,
-  DescribeEngineDefaultParametersResult,
-  DescribeEngineDefaultParametersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeEngineDefaultParametersMessage,
-  ) => stream.Stream<
-    DescribeEngineDefaultParametersResult,
-    DescribeEngineDefaultParametersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeEngineDefaultParametersMessage,
-  ) => stream.Stream<
-    unknown,
-    DescribeEngineDefaultParametersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeEventCategoriesError = CommonErrors;
 /**
@@ -6443,7 +6067,7 @@ export const describeEventCategories: API.OperationMethod<
   DescribeEventCategoriesMessage,
   EventCategoriesMessage,
   DescribeEventCategoriesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeEventCategoriesMessage,
   output: EventCategoriesMessage,
@@ -6460,27 +6084,13 @@ export type DescribeEventsError = CommonErrors;
  * database snapshot, or DB parameter group can be obtained by providing the name as a parameter.
  * By default, the past hour of events are returned.
  */
-export const describeEvents: API.OperationMethod<
+export const describeEvents: API.PaginatedOperationMethod<
   DescribeEventsMessage,
   EventsMessage,
   DescribeEventsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeEventsMessage,
-  ) => stream.Stream<
-    EventsMessage,
-    DescribeEventsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeEventsMessage,
-  ) => stream.Stream<
-    Event,
-    DescribeEventsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Event
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeEventsMessage,
   output: EventsMessage,
   errors: [],
@@ -6493,27 +6103,7 @@ export const describeEvents: API.OperationMethod<
     items: "Events",
     pageSize: "MaxRecords",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeEventsMessage,
-  EventsMessage,
-  DescribeEventsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeEventsMessage,
-  ) => stream.Stream<
-    EventsMessage,
-    DescribeEventsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeEventsMessage,
-  ) => stream.Stream<
-    Event,
-    DescribeEventsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeEventSubscriptionsError =
   | SubscriptionNotFoundFault
@@ -6525,27 +6115,13 @@ export type DescribeEventSubscriptionsError =
  *
  * If you specify a SubscriptionName, lists the description for that subscription.
  */
-export const describeEventSubscriptions: API.OperationMethod<
+export const describeEventSubscriptions: API.PaginatedOperationMethod<
   DescribeEventSubscriptionsMessage,
   EventSubscriptionsMessage,
   DescribeEventSubscriptionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeEventSubscriptionsMessage,
-  ) => stream.Stream<
-    EventSubscriptionsMessage,
-    DescribeEventSubscriptionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeEventSubscriptionsMessage,
-  ) => stream.Stream<
-    EventSubscription,
-    DescribeEventSubscriptionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  EventSubscription
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeEventSubscriptionsMessage,
   output: EventSubscriptionsMessage,
   errors: [SubscriptionNotFoundFault],
@@ -6558,27 +6134,7 @@ export const describeEventSubscriptions: API.OperationMethod<
     items: "EventSubscriptionsList",
     pageSize: "MaxRecords",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeEventSubscriptionsMessage,
-  EventSubscriptionsMessage,
-  DescribeEventSubscriptionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeEventSubscriptionsMessage,
-  ) => stream.Stream<
-    EventSubscriptionsMessage,
-    DescribeEventSubscriptionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeEventSubscriptionsMessage,
-  ) => stream.Stream<
-    EventSubscription,
-    DescribeEventSubscriptionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeGlobalClustersError =
   | GlobalClusterNotFoundFault
@@ -6587,27 +6143,13 @@ export type DescribeGlobalClustersError =
  * Returns information about Neptune global database clusters. This API
  * supports pagination.
  */
-export const describeGlobalClusters: API.OperationMethod<
+export const describeGlobalClusters: API.PaginatedOperationMethod<
   DescribeGlobalClustersMessage,
   GlobalClustersMessage,
   DescribeGlobalClustersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeGlobalClustersMessage,
-  ) => stream.Stream<
-    GlobalClustersMessage,
-    DescribeGlobalClustersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeGlobalClustersMessage,
-  ) => stream.Stream<
-    GlobalCluster,
-    DescribeGlobalClustersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  GlobalCluster
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeGlobalClustersMessage,
   output: GlobalClustersMessage,
   errors: [GlobalClusterNotFoundFault],
@@ -6620,53 +6162,19 @@ export const describeGlobalClusters: API.OperationMethod<
     items: "GlobalClusters",
     pageSize: "MaxRecords",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeGlobalClustersMessage,
-  GlobalClustersMessage,
-  DescribeGlobalClustersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeGlobalClustersMessage,
-  ) => stream.Stream<
-    GlobalClustersMessage,
-    DescribeGlobalClustersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeGlobalClustersMessage,
-  ) => stream.Stream<
-    GlobalCluster,
-    DescribeGlobalClustersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeOrderableDBInstanceOptionsError = CommonErrors;
 /**
  * Returns a list of orderable DB instance options for the specified engine.
  */
-export const describeOrderableDBInstanceOptions: API.OperationMethod<
+export const describeOrderableDBInstanceOptions: API.PaginatedOperationMethod<
   DescribeOrderableDBInstanceOptionsMessage,
   OrderableDBInstanceOptionsMessage,
   DescribeOrderableDBInstanceOptionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeOrderableDBInstanceOptionsMessage,
-  ) => stream.Stream<
-    OrderableDBInstanceOptionsMessage,
-    DescribeOrderableDBInstanceOptionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeOrderableDBInstanceOptionsMessage,
-  ) => stream.Stream<
-    OrderableDBInstanceOption,
-    DescribeOrderableDBInstanceOptionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  OrderableDBInstanceOption
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeOrderableDBInstanceOptionsMessage,
   output: OrderableDBInstanceOptionsMessage,
   errors: [],
@@ -6679,27 +6187,7 @@ export const describeOrderableDBInstanceOptions: API.OperationMethod<
     items: "OrderableDBInstanceOptions",
     pageSize: "MaxRecords",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeOrderableDBInstanceOptionsMessage,
-  OrderableDBInstanceOptionsMessage,
-  DescribeOrderableDBInstanceOptionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeOrderableDBInstanceOptionsMessage,
-  ) => stream.Stream<
-    OrderableDBInstanceOptionsMessage,
-    DescribeOrderableDBInstanceOptionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeOrderableDBInstanceOptionsMessage,
-  ) => stream.Stream<
-    OrderableDBInstanceOption,
-    DescribeOrderableDBInstanceOptionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribePendingMaintenanceActionsError =
   | ResourceNotFoundFault
@@ -6708,27 +6196,13 @@ export type DescribePendingMaintenanceActionsError =
  * Returns a list of resources (for example, DB instances) that have at least one pending
  * maintenance action.
  */
-export const describePendingMaintenanceActions: API.OperationMethod<
+export const describePendingMaintenanceActions: API.PaginatedOperationMethod<
   DescribePendingMaintenanceActionsMessage,
   PendingMaintenanceActionsMessage,
   DescribePendingMaintenanceActionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribePendingMaintenanceActionsMessage,
-  ) => stream.Stream<
-    PendingMaintenanceActionsMessage,
-    DescribePendingMaintenanceActionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribePendingMaintenanceActionsMessage,
-  ) => stream.Stream<
-    ResourcePendingMaintenanceActions,
-    DescribePendingMaintenanceActionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ResourcePendingMaintenanceActions
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribePendingMaintenanceActionsMessage,
   output: PendingMaintenanceActionsMessage,
   errors: [ResourceNotFoundFault],
@@ -6741,27 +6215,7 @@ export const describePendingMaintenanceActions: API.OperationMethod<
     items: "PendingMaintenanceActions",
     pageSize: "MaxRecords",
   } as const,
-})) as any as API.OperationMethod<
-  DescribePendingMaintenanceActionsMessage,
-  PendingMaintenanceActionsMessage,
-  DescribePendingMaintenanceActionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribePendingMaintenanceActionsMessage,
-  ) => stream.Stream<
-    PendingMaintenanceActionsMessage,
-    DescribePendingMaintenanceActionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribePendingMaintenanceActionsMessage,
-  ) => stream.Stream<
-    ResourcePendingMaintenanceActions,
-    DescribePendingMaintenanceActionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeValidDBInstanceModificationsError =
   | DBInstanceNotFoundFault
@@ -6776,7 +6230,7 @@ export const describeValidDBInstanceModifications: API.OperationMethod<
   DescribeValidDBInstanceModificationsMessage,
   DescribeValidDBInstanceModificationsResult,
   DescribeValidDBInstanceModificationsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeValidDBInstanceModificationsMessage,
   output: DescribeValidDBInstanceModificationsResult,
@@ -6807,7 +6261,7 @@ export const failoverDBCluster: API.OperationMethod<
   FailoverDBClusterMessage,
   FailoverDBClusterResult,
   FailoverDBClusterError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: FailoverDBClusterMessage,
   output: FailoverDBClusterResult,
@@ -6847,7 +6301,7 @@ export const failoverGlobalCluster: API.OperationMethod<
   FailoverGlobalClusterMessage,
   FailoverGlobalClusterResult,
   FailoverGlobalClusterError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: FailoverGlobalClusterMessage,
   output: FailoverGlobalClusterResult,
@@ -6874,7 +6328,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceMessage,
   TagListMessage,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceMessage,
   output: TagListMessage,
@@ -6911,7 +6365,7 @@ export const modifyDBCluster: API.OperationMethod<
   ModifyDBClusterMessage,
   ModifyDBClusterResult,
   ModifyDBClusterError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ModifyDBClusterMessage,
   output: ModifyDBClusterResult,
@@ -6949,7 +6403,7 @@ export const modifyDBClusterEndpoint: API.OperationMethod<
   ModifyDBClusterEndpointMessage,
   ModifyDBClusterEndpointOutput,
   ModifyDBClusterEndpointError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ModifyDBClusterEndpointMessage,
   output: ModifyDBClusterEndpointOutput,
@@ -6993,7 +6447,7 @@ export const modifyDBClusterParameterGroup: API.OperationMethod<
   ModifyDBClusterParameterGroupMessage,
   DBClusterParameterGroupNameMessage,
   ModifyDBClusterParameterGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ModifyDBClusterParameterGroupMessage,
   output: DBClusterParameterGroupNameMessage,
@@ -7030,7 +6484,7 @@ export const modifyDBClusterSnapshotAttribute: API.OperationMethod<
   ModifyDBClusterSnapshotAttributeMessage,
   ModifyDBClusterSnapshotAttributeResult,
   ModifyDBClusterSnapshotAttributeError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ModifyDBClusterSnapshotAttributeMessage,
   output: ModifyDBClusterSnapshotAttributeResult,
@@ -7071,7 +6525,7 @@ export const modifyDBInstance: API.OperationMethod<
   ModifyDBInstanceMessage,
   ModifyDBInstanceResult,
   ModifyDBInstanceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ModifyDBInstanceMessage,
   output: ModifyDBInstanceResult,
@@ -7126,7 +6580,7 @@ export const modifyDBParameterGroup: API.OperationMethod<
   ModifyDBParameterGroupMessage,
   DBParameterGroupNameMessage,
   ModifyDBParameterGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ModifyDBParameterGroupMessage,
   output: DBParameterGroupNameMessage,
@@ -7151,7 +6605,7 @@ export const modifyDBSubnetGroup: API.OperationMethod<
   ModifyDBSubnetGroupMessage,
   ModifyDBSubnetGroupResult,
   ModifyDBSubnetGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ModifyDBSubnetGroupMessage,
   output: ModifyDBSubnetGroupResult,
@@ -7187,7 +6641,7 @@ export const modifyEventSubscription: API.OperationMethod<
   ModifyEventSubscriptionMessage,
   ModifyEventSubscriptionResult,
   ModifyEventSubscriptionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ModifyEventSubscriptionMessage,
   output: ModifyEventSubscriptionResult,
@@ -7220,7 +6674,7 @@ export const modifyGlobalCluster: API.OperationMethod<
   ModifyGlobalClusterMessage,
   ModifyGlobalClusterResult,
   ModifyGlobalClusterError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ModifyGlobalClusterMessage,
   output: ModifyGlobalClusterResult,
@@ -7247,7 +6701,7 @@ export const promoteReadReplicaDBCluster: API.OperationMethod<
   PromoteReadReplicaDBClusterMessage,
   PromoteReadReplicaDBClusterResult,
   PromoteReadReplicaDBClusterError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PromoteReadReplicaDBClusterMessage,
   output: PromoteReadReplicaDBClusterResult,
@@ -7273,7 +6727,7 @@ export const rebootDBInstance: API.OperationMethod<
   RebootDBInstanceMessage,
   RebootDBInstanceResult,
   RebootDBInstanceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RebootDBInstanceMessage,
   output: RebootDBInstanceResult,
@@ -7298,7 +6752,7 @@ export const removeFromGlobalCluster: API.OperationMethod<
   RemoveFromGlobalClusterMessage,
   RemoveFromGlobalClusterResult,
   RemoveFromGlobalClusterError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RemoveFromGlobalClusterMessage,
   output: RemoveFromGlobalClusterResult,
@@ -7324,7 +6778,7 @@ export const removeRoleFromDBCluster: API.OperationMethod<
   RemoveRoleFromDBClusterMessage,
   RemoveRoleFromDBClusterResponse,
   RemoveRoleFromDBClusterError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RemoveRoleFromDBClusterMessage,
   output: RemoveRoleFromDBClusterResponse,
@@ -7349,7 +6803,7 @@ export const removeSourceIdentifierFromSubscription: API.OperationMethod<
   RemoveSourceIdentifierFromSubscriptionMessage,
   RemoveSourceIdentifierFromSubscriptionResult,
   RemoveSourceIdentifierFromSubscriptionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RemoveSourceIdentifierFromSubscriptionMessage,
   output: RemoveSourceIdentifierFromSubscriptionResult,
@@ -7371,7 +6825,7 @@ export const removeTagsFromResource: API.OperationMethod<
   RemoveTagsFromResourceMessage,
   RemoveTagsFromResourceResponse,
   RemoveTagsFromResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RemoveTagsFromResourceMessage,
   output: RemoveTagsFromResourceResponse,
@@ -7404,7 +6858,7 @@ export const resetDBClusterParameterGroup: API.OperationMethod<
   ResetDBClusterParameterGroupMessage,
   DBClusterParameterGroupNameMessage,
   ResetDBClusterParameterGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ResetDBClusterParameterGroupMessage,
   output: DBClusterParameterGroupNameMessage,
@@ -7431,7 +6885,7 @@ export const resetDBParameterGroup: API.OperationMethod<
   ResetDBParameterGroupMessage,
   DBParameterGroupNameMessage,
   ResetDBParameterGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ResetDBParameterGroupMessage,
   output: DBParameterGroupNameMessage,
@@ -7474,7 +6928,7 @@ export const restoreDBClusterFromSnapshot: API.OperationMethod<
   RestoreDBClusterFromSnapshotMessage,
   RestoreDBClusterFromSnapshotResult,
   RestoreDBClusterFromSnapshotError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RestoreDBClusterFromSnapshotMessage,
   output: RestoreDBClusterFromSnapshotResult,
@@ -7540,7 +6994,7 @@ export const restoreDBClusterToPointInTime: API.OperationMethod<
   RestoreDBClusterToPointInTimeMessage,
   RestoreDBClusterToPointInTimeResult,
   RestoreDBClusterToPointInTimeError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RestoreDBClusterToPointInTimeMessage,
   output: RestoreDBClusterToPointInTimeResult,
@@ -7582,7 +7036,7 @@ export const startDBCluster: API.OperationMethod<
   StartDBClusterMessage,
   StartDBClusterResult,
   StartDBClusterError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartDBClusterMessage,
   output: StartDBClusterResult,
@@ -7613,7 +7067,7 @@ export const stopDBCluster: API.OperationMethod<
   StopDBClusterMessage,
   StopDBClusterResult,
   StopDBClusterError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StopDBClusterMessage,
   output: StopDBClusterResult,
@@ -7650,7 +7104,7 @@ export const switchoverGlobalCluster: API.OperationMethod<
   SwitchoverGlobalClusterMessage,
   SwitchoverGlobalClusterResult,
   SwitchoverGlobalClusterError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: SwitchoverGlobalClusterMessage,
   output: SwitchoverGlobalClusterResult,

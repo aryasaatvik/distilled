@@ -1,6 +1,5 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -8,7 +7,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 const svc = T.AwsApiService({
   sdkId: "Application Signals",
   serviceShapeName: "ApplicationSignals",
@@ -55,7 +53,7 @@ const rules = T.EndpointResolver((p, _) => {
 export class AccessDeniedException
   extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
     "AccessDeniedException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "AccessDenied", httpResponseCode: 403 }),
       T.HttpError(403),
@@ -64,31 +62,35 @@ export class AccessDeniedException
 export class ConflictException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
     "ConflictException",
-    { Message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { ResourceType: S.String, ResourceId: S.String, Message: S.String },
+    {
+      ResourceType: S.String,
+      ResourceId: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
+    },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class ServiceQuotaExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
     "ServiceQuotaExceededException",
-    { Message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(402),
   ).pipe(C.withQuotaError) {}
 export class ThrottlingException
   extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
     "ThrottlingException",
-    { Message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(429),
   ).pipe(C.withThrottlingError) {}
 export class ValidationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
     "ValidationException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "ValidationError", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -2713,7 +2715,7 @@ export const batchDeleteInstrumentationConfigurations: API.OperationMethod<
   BatchDeleteInstrumentationConfigurationsRequest,
   BatchDeleteInstrumentationConfigurationsResponse,
   BatchDeleteInstrumentationConfigurationsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchDeleteInstrumentationConfigurationsRequest,
   output: BatchDeleteInstrumentationConfigurationsResponse,
@@ -2740,7 +2742,7 @@ export const batchGetServiceLevelObjectiveBudgetReport: API.OperationMethod<
   BatchGetServiceLevelObjectiveBudgetReportInput,
   BatchGetServiceLevelObjectiveBudgetReportOutput,
   BatchGetServiceLevelObjectiveBudgetReportError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchGetServiceLevelObjectiveBudgetReportInput,
   output: BatchGetServiceLevelObjectiveBudgetReportOutput,
@@ -2762,7 +2764,7 @@ export const batchUpdateExclusionWindows: API.OperationMethod<
   BatchUpdateExclusionWindowsInput,
   BatchUpdateExclusionWindowsOutput,
   BatchUpdateExclusionWindowsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchUpdateExclusionWindowsInput,
   output: BatchUpdateExclusionWindowsOutput,
@@ -2789,7 +2791,7 @@ export const createInstrumentationConfiguration: API.OperationMethod<
   CreateInstrumentationConfigurationRequest,
   CreateInstrumentationConfigurationResponse,
   CreateInstrumentationConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateInstrumentationConfigurationRequest,
   output: CreateInstrumentationConfigurationResponse,
@@ -2860,7 +2862,7 @@ export const createServiceLevelObjective: API.OperationMethod<
   CreateServiceLevelObjectiveInput,
   CreateServiceLevelObjectiveOutput,
   CreateServiceLevelObjectiveError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateServiceLevelObjectiveInput,
   output: CreateServiceLevelObjectiveOutput,
@@ -2888,7 +2890,7 @@ export const deleteGroupingConfiguration: API.OperationMethod<
   DeleteGroupingConfigurationRequest,
   DeleteGroupingConfigurationOutput,
   DeleteGroupingConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteGroupingConfigurationRequest,
   output: DeleteGroupingConfigurationOutput,
@@ -2910,7 +2912,7 @@ export const deleteInstrumentationConfiguration: API.OperationMethod<
   DeleteInstrumentationConfigurationRequest,
   DeleteInstrumentationConfigurationResponse,
   DeleteInstrumentationConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteInstrumentationConfigurationRequest,
   output: DeleteInstrumentationConfigurationResponse,
@@ -2932,7 +2934,7 @@ export const deleteServiceLevelObjective: API.OperationMethod<
   DeleteServiceLevelObjectiveInput,
   DeleteServiceLevelObjectiveOutput,
   DeleteServiceLevelObjectiveError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteServiceLevelObjectiveInput,
   output: DeleteServiceLevelObjectiveOutput,
@@ -2954,7 +2956,7 @@ export const getInstrumentationConfiguration: API.OperationMethod<
   GetInstrumentationConfigurationRequest,
   GetInstrumentationConfigurationResponse,
   GetInstrumentationConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetInstrumentationConfigurationRequest,
   output: GetInstrumentationConfigurationResponse,
@@ -2974,27 +2976,13 @@ export type GetInstrumentationConfigurationStatusError =
  *
  * If no status or time window is provided, the operation defaults to ACTIVE events from the last hour.
  */
-export const getInstrumentationConfigurationStatus: API.OperationMethod<
+export const getInstrumentationConfigurationStatus: API.PaginatedOperationMethod<
   GetInstrumentationConfigurationStatusRequest,
   GetInstrumentationConfigurationStatusResponse,
   GetInstrumentationConfigurationStatusError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetInstrumentationConfigurationStatusRequest,
-  ) => stream.Stream<
-    GetInstrumentationConfigurationStatusResponse,
-    GetInstrumentationConfigurationStatusError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetInstrumentationConfigurationStatusRequest,
-  ) => stream.Stream<
-    InstrumentationStatusEvent,
-    GetInstrumentationConfigurationStatusError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  InstrumentationStatusEvent
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetInstrumentationConfigurationStatusRequest,
   output: GetInstrumentationConfigurationStatusResponse,
   errors: [ResourceNotFoundException, ThrottlingException, ValidationException],
@@ -3007,27 +2995,7 @@ export const getInstrumentationConfigurationStatus: API.OperationMethod<
     items: "Events",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetInstrumentationConfigurationStatusRequest,
-  GetInstrumentationConfigurationStatusResponse,
-  GetInstrumentationConfigurationStatusError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetInstrumentationConfigurationStatusRequest,
-  ) => stream.Stream<
-    GetInstrumentationConfigurationStatusResponse,
-    GetInstrumentationConfigurationStatusError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetInstrumentationConfigurationStatusRequest,
-  ) => stream.Stream<
-    InstrumentationStatusEvent,
-    GetInstrumentationConfigurationStatusError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetServiceError =
   | ThrottlingException
@@ -3040,7 +3008,7 @@ export const getService: API.OperationMethod<
   GetServiceInput,
   GetServiceOutput,
   GetServiceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetServiceInput,
   output: GetServiceOutput,
@@ -3062,7 +3030,7 @@ export const getServiceLevelObjective: API.OperationMethod<
   GetServiceLevelObjectiveInput,
   GetServiceLevelObjectiveOutput,
   GetServiceLevelObjectiveError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetServiceLevelObjectiveInput,
   output: GetServiceLevelObjectiveOutput,
@@ -3083,7 +3051,7 @@ export const listAuditFindings: API.OperationMethod<
   ListAuditFindingsInput,
   ListAuditFindingsOutput,
   ListAuditFindingsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListAuditFindingsInput,
   output: ListAuditFindingsOutput,
@@ -3100,27 +3068,13 @@ export type ListEntityEventsError =
 /**
  * Returns a list of change events for a specific entity, such as deployments, configuration changes, or other state-changing activities. This operation helps track the history of changes that may have affected service performance.
  */
-export const listEntityEvents: API.OperationMethod<
+export const listEntityEvents: API.PaginatedOperationMethod<
   ListEntityEventsInput,
   ListEntityEventsOutput,
   ListEntityEventsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListEntityEventsInput,
-  ) => stream.Stream<
-    ListEntityEventsOutput,
-    ListEntityEventsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListEntityEventsInput,
-  ) => stream.Stream<
-    ChangeEvent,
-    ListEntityEventsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ChangeEvent
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListEntityEventsInput,
   output: ListEntityEventsOutput,
   errors: [ThrottlingException, ValidationException],
@@ -3133,27 +3087,7 @@ export const listEntityEvents: API.OperationMethod<
     items: "ChangeEvents",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListEntityEventsInput,
-  ListEntityEventsOutput,
-  ListEntityEventsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListEntityEventsInput,
-  ) => stream.Stream<
-    ListEntityEventsOutput,
-    ListEntityEventsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListEntityEventsInput,
-  ) => stream.Stream<
-    ChangeEvent,
-    ListEntityEventsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListGroupingAttributeDefinitionsError =
   | AccessDeniedException
@@ -3167,7 +3101,7 @@ export const listGroupingAttributeDefinitions: API.OperationMethod<
   ListGroupingAttributeDefinitionsInput,
   ListGroupingAttributeDefinitionsOutput,
   ListGroupingAttributeDefinitionsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListGroupingAttributeDefinitionsInput,
   output: ListGroupingAttributeDefinitionsOutput,
@@ -3187,27 +3121,13 @@ export type ListInstrumentationConfigurationsError =
  *
  * Include the previous `SyncedAt` value to perform incremental syncs. When no changes are detected, the response sets `Changed` to `false` and omits configuration details.
  */
-export const listInstrumentationConfigurations: API.OperationMethod<
+export const listInstrumentationConfigurations: API.PaginatedOperationMethod<
   ListInstrumentationConfigurationsRequest,
   InstrumentationConfigurationsPage,
   ListInstrumentationConfigurationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListInstrumentationConfigurationsRequest,
-  ) => stream.Stream<
-    InstrumentationConfigurationsPage,
-    ListInstrumentationConfigurationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListInstrumentationConfigurationsRequest,
-  ) => stream.Stream<
-    InstrumentationConfigurationWithoutServiceEnv,
-    ListInstrumentationConfigurationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  InstrumentationConfigurationWithoutServiceEnv
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListInstrumentationConfigurationsRequest,
   output: InstrumentationConfigurationsPage,
   errors: [ResourceNotFoundException, ThrottlingException, ValidationException],
@@ -3220,27 +3140,7 @@ export const listInstrumentationConfigurations: API.OperationMethod<
     items: "LatestConfigurations",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListInstrumentationConfigurationsRequest,
-  InstrumentationConfigurationsPage,
-  ListInstrumentationConfigurationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListInstrumentationConfigurationsRequest,
-  ) => stream.Stream<
-    InstrumentationConfigurationsPage,
-    ListInstrumentationConfigurationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListInstrumentationConfigurationsRequest,
-  ) => stream.Stream<
-    InstrumentationConfigurationWithoutServiceEnv,
-    ListInstrumentationConfigurationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListServiceDependenciesError =
   | ThrottlingException
@@ -3249,27 +3149,13 @@ export type ListServiceDependenciesError =
 /**
  * Returns a list of service dependencies of the service that you specify. A dependency is an infrastructure component that an operation of this service connects with. Dependencies can include Amazon Web Services services, Amazon Web Services resources, and third-party services.
  */
-export const listServiceDependencies: API.OperationMethod<
+export const listServiceDependencies: API.PaginatedOperationMethod<
   ListServiceDependenciesInput,
   ListServiceDependenciesOutput,
   ListServiceDependenciesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListServiceDependenciesInput,
-  ) => stream.Stream<
-    ListServiceDependenciesOutput,
-    ListServiceDependenciesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListServiceDependenciesInput,
-  ) => stream.Stream<
-    ServiceDependency,
-    ListServiceDependenciesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ServiceDependency
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListServiceDependenciesInput,
   output: ListServiceDependenciesOutput,
   errors: [ThrottlingException, ValidationException],
@@ -3282,27 +3168,7 @@ export const listServiceDependencies: API.OperationMethod<
     items: "ServiceDependencies",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListServiceDependenciesInput,
-  ListServiceDependenciesOutput,
-  ListServiceDependenciesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListServiceDependenciesInput,
-  ) => stream.Stream<
-    ListServiceDependenciesOutput,
-    ListServiceDependenciesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListServiceDependenciesInput,
-  ) => stream.Stream<
-    ServiceDependency,
-    ListServiceDependenciesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListServiceDependentsError =
   | ThrottlingException
@@ -3311,27 +3177,13 @@ export type ListServiceDependentsError =
 /**
  * Returns the list of dependents that invoked the specified service during the provided time range. Dependents include other services, CloudWatch Synthetics canaries, and clients that are instrumented with CloudWatch RUM app monitors.
  */
-export const listServiceDependents: API.OperationMethod<
+export const listServiceDependents: API.PaginatedOperationMethod<
   ListServiceDependentsInput,
   ListServiceDependentsOutput,
   ListServiceDependentsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListServiceDependentsInput,
-  ) => stream.Stream<
-    ListServiceDependentsOutput,
-    ListServiceDependentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListServiceDependentsInput,
-  ) => stream.Stream<
-    ServiceDependent,
-    ListServiceDependentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ServiceDependent
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListServiceDependentsInput,
   output: ListServiceDependentsOutput,
   errors: [ThrottlingException, ValidationException],
@@ -3344,27 +3196,7 @@ export const listServiceDependents: API.OperationMethod<
     items: "ServiceDependents",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListServiceDependentsInput,
-  ListServiceDependentsOutput,
-  ListServiceDependentsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListServiceDependentsInput,
-  ) => stream.Stream<
-    ListServiceDependentsOutput,
-    ListServiceDependentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListServiceDependentsInput,
-  ) => stream.Stream<
-    ServiceDependent,
-    ListServiceDependentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListServiceLevelObjectiveExclusionWindowsError =
   | ResourceNotFoundException
@@ -3374,27 +3206,13 @@ export type ListServiceLevelObjectiveExclusionWindowsError =
 /**
  * Retrieves all exclusion windows configured for a specific SLO.
  */
-export const listServiceLevelObjectiveExclusionWindows: API.OperationMethod<
+export const listServiceLevelObjectiveExclusionWindows: API.PaginatedOperationMethod<
   ListServiceLevelObjectiveExclusionWindowsInput,
   ListServiceLevelObjectiveExclusionWindowsOutput,
   ListServiceLevelObjectiveExclusionWindowsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListServiceLevelObjectiveExclusionWindowsInput,
-  ) => stream.Stream<
-    ListServiceLevelObjectiveExclusionWindowsOutput,
-    ListServiceLevelObjectiveExclusionWindowsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListServiceLevelObjectiveExclusionWindowsInput,
-  ) => stream.Stream<
-    ExclusionWindow,
-    ListServiceLevelObjectiveExclusionWindowsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ExclusionWindow
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListServiceLevelObjectiveExclusionWindowsInput,
   output: ListServiceLevelObjectiveExclusionWindowsOutput,
   errors: [ResourceNotFoundException, ThrottlingException, ValidationException],
@@ -3407,27 +3225,7 @@ export const listServiceLevelObjectiveExclusionWindows: API.OperationMethod<
     items: "ExclusionWindows",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListServiceLevelObjectiveExclusionWindowsInput,
-  ListServiceLevelObjectiveExclusionWindowsOutput,
-  ListServiceLevelObjectiveExclusionWindowsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListServiceLevelObjectiveExclusionWindowsInput,
-  ) => stream.Stream<
-    ListServiceLevelObjectiveExclusionWindowsOutput,
-    ListServiceLevelObjectiveExclusionWindowsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListServiceLevelObjectiveExclusionWindowsInput,
-  ) => stream.Stream<
-    ExclusionWindow,
-    ListServiceLevelObjectiveExclusionWindowsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListServiceLevelObjectivesError =
   | ThrottlingException
@@ -3436,27 +3234,13 @@ export type ListServiceLevelObjectivesError =
 /**
  * Returns a list of SLOs created in this account.
  */
-export const listServiceLevelObjectives: API.OperationMethod<
+export const listServiceLevelObjectives: API.PaginatedOperationMethod<
   ListServiceLevelObjectivesInput,
   ListServiceLevelObjectivesOutput,
   ListServiceLevelObjectivesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListServiceLevelObjectivesInput,
-  ) => stream.Stream<
-    ListServiceLevelObjectivesOutput,
-    ListServiceLevelObjectivesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListServiceLevelObjectivesInput,
-  ) => stream.Stream<
-    ServiceLevelObjectiveSummary,
-    ListServiceLevelObjectivesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ServiceLevelObjectiveSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListServiceLevelObjectivesInput,
   output: ListServiceLevelObjectivesOutput,
   errors: [ThrottlingException, ValidationException],
@@ -3469,27 +3253,7 @@ export const listServiceLevelObjectives: API.OperationMethod<
     items: "SloSummaries",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListServiceLevelObjectivesInput,
-  ListServiceLevelObjectivesOutput,
-  ListServiceLevelObjectivesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListServiceLevelObjectivesInput,
-  ) => stream.Stream<
-    ListServiceLevelObjectivesOutput,
-    ListServiceLevelObjectivesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListServiceLevelObjectivesInput,
-  ) => stream.Stream<
-    ServiceLevelObjectiveSummary,
-    ListServiceLevelObjectivesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListServiceOperationsError =
   | ThrottlingException
@@ -3498,27 +3262,13 @@ export type ListServiceOperationsError =
 /**
  * Returns a list of the *operations* of this service that have been discovered by Application Signals. Only the operations that were invoked during the specified time range are returned.
  */
-export const listServiceOperations: API.OperationMethod<
+export const listServiceOperations: API.PaginatedOperationMethod<
   ListServiceOperationsInput,
   ListServiceOperationsOutput,
   ListServiceOperationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListServiceOperationsInput,
-  ) => stream.Stream<
-    ListServiceOperationsOutput,
-    ListServiceOperationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListServiceOperationsInput,
-  ) => stream.Stream<
-    ServiceOperation,
-    ListServiceOperationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ServiceOperation
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListServiceOperationsInput,
   output: ListServiceOperationsOutput,
   errors: [ThrottlingException, ValidationException],
@@ -3531,27 +3281,7 @@ export const listServiceOperations: API.OperationMethod<
     items: "ServiceOperations",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListServiceOperationsInput,
-  ListServiceOperationsOutput,
-  ListServiceOperationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListServiceOperationsInput,
-  ) => stream.Stream<
-    ListServiceOperationsOutput,
-    ListServiceOperationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListServiceOperationsInput,
-  ) => stream.Stream<
-    ServiceOperation,
-    ListServiceOperationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListServicesError =
   | ThrottlingException
@@ -3560,27 +3290,13 @@ export type ListServicesError =
 /**
  * Returns a list of services that have been discovered by Application Signals. A service represents a minimum logical and transactional unit that completes a business function. Services are discovered through Application Signals instrumentation.
  */
-export const listServices: API.OperationMethod<
+export const listServices: API.PaginatedOperationMethod<
   ListServicesInput,
   ListServicesOutput,
   ListServicesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListServicesInput,
-  ) => stream.Stream<
-    ListServicesOutput,
-    ListServicesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListServicesInput,
-  ) => stream.Stream<
-    ServiceSummary,
-    ListServicesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ServiceSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListServicesInput,
   output: ListServicesOutput,
   errors: [ThrottlingException, ValidationException],
@@ -3593,27 +3309,7 @@ export const listServices: API.OperationMethod<
     items: "ServiceSummaries",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListServicesInput,
-  ListServicesOutput,
-  ListServicesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListServicesInput,
-  ) => stream.Stream<
-    ListServicesOutput,
-    ListServicesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListServicesInput,
-  ) => stream.Stream<
-    ServiceSummary,
-    ListServicesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListServiceStatesError =
   | ThrottlingException
@@ -3622,27 +3318,13 @@ export type ListServiceStatesError =
 /**
  * Returns information about the last deployment and other change states of services. This API provides visibility into recent changes that may have affected service performance, helping with troubleshooting and change correlation.
  */
-export const listServiceStates: API.OperationMethod<
+export const listServiceStates: API.PaginatedOperationMethod<
   ListServiceStatesInput,
   ListServiceStatesOutput,
   ListServiceStatesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListServiceStatesInput,
-  ) => stream.Stream<
-    ListServiceStatesOutput,
-    ListServiceStatesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListServiceStatesInput,
-  ) => stream.Stream<
-    ServiceState,
-    ListServiceStatesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ServiceState
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListServiceStatesInput,
   output: ListServiceStatesOutput,
   errors: [ThrottlingException, ValidationException],
@@ -3655,27 +3337,7 @@ export const listServiceStates: API.OperationMethod<
     items: "ServiceStates",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListServiceStatesInput,
-  ListServiceStatesOutput,
-  ListServiceStatesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListServiceStatesInput,
-  ) => stream.Stream<
-    ListServiceStatesOutput,
-    ListServiceStatesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListServiceStatesInput,
-  ) => stream.Stream<
-    ServiceState,
-    ListServiceStatesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsForResourceError =
   | ResourceNotFoundException
@@ -3688,7 +3350,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceRequest,
   ListTagsForResourceResponse,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -3710,7 +3372,7 @@ export const putGroupingConfiguration: API.OperationMethod<
   PutGroupingConfigurationInput,
   PutGroupingConfigurationOutput,
   PutGroupingConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutGroupingConfigurationInput,
   output: PutGroupingConfigurationOutput,
@@ -3733,7 +3395,7 @@ export const reportInstrumentationConfigurationStatus: API.OperationMethod<
   ReportInstrumentationConfigurationStatusRequest,
   ReportInstrumentationConfigurationStatusResponse,
   ReportInstrumentationConfigurationStatusError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ReportInstrumentationConfigurationStatusRequest,
   output: ReportInstrumentationConfigurationStatusResponse,
@@ -3773,7 +3435,7 @@ export const startDiscovery: API.OperationMethod<
   StartDiscoveryInput,
   StartDiscoveryOutput,
   StartDiscoveryError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartDiscoveryInput,
   output: StartDiscoveryOutput,
@@ -3803,7 +3465,7 @@ export const tagResource: API.OperationMethod<
   TagResourceRequest,
   TagResourceResponse,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -3828,7 +3490,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceRequest,
   UntagResourceResponse,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -3852,7 +3514,7 @@ export const updateServiceLevelObjective: API.OperationMethod<
   UpdateServiceLevelObjectiveInput,
   UpdateServiceLevelObjectiveOutput,
   UpdateServiceLevelObjectiveError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateServiceLevelObjectiveInput,
   output: UpdateServiceLevelObjectiveOutput,

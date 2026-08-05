@@ -1,7 +1,6 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as redacted from "effect/Redacted";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -9,7 +8,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 import { SensitiveString } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "billingconductor",
@@ -109,14 +107,14 @@ const rules = T.EndpointResolver((p, _) => {
 export class AccessDeniedException
   extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
     "AccessDeniedException",
-    { Message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(403),
   ).pipe(C.withAuthError) {}
 export class ConflictException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
     "ConflictException",
     {
-      Message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       ResourceId: S.String,
       ResourceType: S.String,
       Reason: S.optional(
@@ -131,7 +129,7 @@ export class InternalServerException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
     "InternalServerException",
     {
-      Message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       RetryAfterSeconds: S.optional(S.Number).pipe(T.HttpHeader("Retry-After")),
     },
     T.HttpError(500),
@@ -139,14 +137,18 @@ export class InternalServerException
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { Message: S.String, ResourceId: S.String, ResourceType: S.String },
+    {
+      message: S.String.pipe(T.ErrorMessage()),
+      ResourceId: S.String,
+      ResourceType: S.String,
+    },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class ServiceLimitExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceLimitExceededException>()(
     "ServiceLimitExceededException",
     {
-      Message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       ResourceId: S.optional(S.String),
       ResourceType: S.optional(S.String),
       LimitCode: S.String,
@@ -158,7 +160,7 @@ export class ThrottlingException
   extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
     "ThrottlingException",
     {
-      Message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       RetryAfterSeconds: S.optional(S.Number).pipe(T.HttpHeader("Retry-After")),
     },
     T.HttpError(429),
@@ -167,7 +169,7 @@ export class ValidationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
     "ValidationException",
     {
-      Message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       Reason: S.optional(
         S.suspend(() => ValidationExceptionReason).annotate({
           identifier: "ValidationExceptionReason",
@@ -2348,7 +2350,7 @@ export const associateAccounts: API.OperationMethod<
   AssociateAccountsInput,
   AssociateAccountsOutput,
   AssociateAccountsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AssociateAccountsInput,
   output: AssociateAccountsOutput,
@@ -2382,7 +2384,7 @@ export const associatePricingRules: API.OperationMethod<
   AssociatePricingRulesInput,
   AssociatePricingRulesOutput,
   AssociatePricingRulesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AssociatePricingRulesInput,
   output: AssociatePricingRulesOutput,
@@ -2416,7 +2418,7 @@ export const batchAssociateResourcesToCustomLineItem: API.OperationMethod<
   BatchAssociateResourcesToCustomLineItemInput,
   BatchAssociateResourcesToCustomLineItemOutput,
   BatchAssociateResourcesToCustomLineItemError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchAssociateResourcesToCustomLineItemInput,
   output: BatchAssociateResourcesToCustomLineItemOutput,
@@ -2449,7 +2451,7 @@ export const batchDisassociateResourcesFromCustomLineItem: API.OperationMethod<
   BatchDisassociateResourcesFromCustomLineItemInput,
   BatchDisassociateResourcesFromCustomLineItemOutput,
   BatchDisassociateResourcesFromCustomLineItemError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchDisassociateResourcesFromCustomLineItemInput,
   output: BatchDisassociateResourcesFromCustomLineItemOutput,
@@ -2481,7 +2483,7 @@ export const createBillingGroup: API.OperationMethod<
   CreateBillingGroupInput,
   CreateBillingGroupOutput,
   CreateBillingGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateBillingGroupInput,
   output: CreateBillingGroupOutput,
@@ -2513,7 +2515,7 @@ export const createCustomLineItem: API.OperationMethod<
   CreateCustomLineItemInput,
   CreateCustomLineItemOutput,
   CreateCustomLineItemError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateCustomLineItemInput,
   output: CreateCustomLineItemOutput,
@@ -2546,7 +2548,7 @@ export const createPricingPlan: API.OperationMethod<
   CreatePricingPlanInput,
   CreatePricingPlanOutput,
   CreatePricingPlanError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreatePricingPlanInput,
   output: CreatePricingPlanOutput,
@@ -2579,7 +2581,7 @@ export const createPricingRule: API.OperationMethod<
   CreatePricingRuleInput,
   CreatePricingRuleOutput,
   CreatePricingRuleError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreatePricingRuleInput,
   output: CreatePricingRuleOutput,
@@ -2609,7 +2611,7 @@ export const deleteBillingGroup: API.OperationMethod<
   DeleteBillingGroupInput,
   DeleteBillingGroupOutput,
   DeleteBillingGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteBillingGroupInput,
   output: DeleteBillingGroupOutput,
@@ -2638,7 +2640,7 @@ export const deleteCustomLineItem: API.OperationMethod<
   DeleteCustomLineItemInput,
   DeleteCustomLineItemOutput,
   DeleteCustomLineItemError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteCustomLineItemInput,
   output: DeleteCustomLineItemOutput,
@@ -2668,7 +2670,7 @@ export const deletePricingPlan: API.OperationMethod<
   DeletePricingPlanInput,
   DeletePricingPlanOutput,
   DeletePricingPlanError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeletePricingPlanInput,
   output: DeletePricingPlanOutput,
@@ -2698,7 +2700,7 @@ export const deletePricingRule: API.OperationMethod<
   DeletePricingRuleInput,
   DeletePricingRuleOutput,
   DeletePricingRuleError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeletePricingRuleInput,
   output: DeletePricingRuleOutput,
@@ -2729,7 +2731,7 @@ export const disassociateAccounts: API.OperationMethod<
   DisassociateAccountsInput,
   DisassociateAccountsOutput,
   DisassociateAccountsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DisassociateAccountsInput,
   output: DisassociateAccountsOutput,
@@ -2761,7 +2763,7 @@ export const disassociatePricingRules: API.OperationMethod<
   DisassociatePricingRulesInput,
   DisassociatePricingRulesOutput,
   DisassociatePricingRulesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DisassociatePricingRulesInput,
   output: DisassociatePricingRulesOutput,
@@ -2788,27 +2790,13 @@ export type GetBillingGroupCostReportError =
 /**
  * Retrieves the margin summary report, which includes the Amazon Web Services cost and charged amount (pro forma cost) by Amazon Web Services service for a specific billing group.
  */
-export const getBillingGroupCostReport: API.OperationMethod<
+export const getBillingGroupCostReport: API.PaginatedOperationMethod<
   GetBillingGroupCostReportInput,
   GetBillingGroupCostReportOutput,
   GetBillingGroupCostReportError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetBillingGroupCostReportInput,
-  ) => stream.Stream<
-    GetBillingGroupCostReportOutput,
-    GetBillingGroupCostReportError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetBillingGroupCostReportInput,
-  ) => stream.Stream<
-    BillingGroupCostReportResultElement,
-    GetBillingGroupCostReportError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  BillingGroupCostReportResultElement
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetBillingGroupCostReportInput,
   output: GetBillingGroupCostReportOutput,
   errors: [
@@ -2827,27 +2815,7 @@ export const getBillingGroupCostReport: API.OperationMethod<
     items: "BillingGroupCostReportResults",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetBillingGroupCostReportInput,
-  GetBillingGroupCostReportOutput,
-  GetBillingGroupCostReportError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetBillingGroupCostReportInput,
-  ) => stream.Stream<
-    GetBillingGroupCostReportOutput,
-    GetBillingGroupCostReportError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetBillingGroupCostReportInput,
-  ) => stream.Stream<
-    BillingGroupCostReportResultElement,
-    GetBillingGroupCostReportError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListAccountAssociationsError =
   | AccessDeniedException
@@ -2859,27 +2827,13 @@ export type ListAccountAssociationsError =
 /**
  * This is a paginated call to list linked accounts that are linked to the payer account for the specified time period. If no information is provided, the current billing period is used. The response will optionally include the billing group that's associated with the linked account.
  */
-export const listAccountAssociations: API.OperationMethod<
+export const listAccountAssociations: API.PaginatedOperationMethod<
   ListAccountAssociationsInput,
   ListAccountAssociationsOutput,
   ListAccountAssociationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAccountAssociationsInput,
-  ) => stream.Stream<
-    ListAccountAssociationsOutput,
-    ListAccountAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAccountAssociationsInput,
-  ) => stream.Stream<
-    AccountAssociationsListElement,
-    ListAccountAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  AccountAssociationsListElement
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListAccountAssociationsInput,
   output: ListAccountAssociationsOutput,
   errors: [
@@ -2897,27 +2851,7 @@ export const listAccountAssociations: API.OperationMethod<
     outputToken: "NextToken",
     items: "LinkedAccounts",
   } as const,
-})) as any as API.OperationMethod<
-  ListAccountAssociationsInput,
-  ListAccountAssociationsOutput,
-  ListAccountAssociationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAccountAssociationsInput,
-  ) => stream.Stream<
-    ListAccountAssociationsOutput,
-    ListAccountAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAccountAssociationsInput,
-  ) => stream.Stream<
-    AccountAssociationsListElement,
-    ListAccountAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListBillingGroupCostReportsError =
   | AccessDeniedException
@@ -2929,27 +2863,13 @@ export type ListBillingGroupCostReportsError =
 /**
  * A paginated call to retrieve a summary report of actual Amazon Web Services charges and the calculated Amazon Web Services charges based on the associated pricing plan of a billing group.
  */
-export const listBillingGroupCostReports: API.OperationMethod<
+export const listBillingGroupCostReports: API.PaginatedOperationMethod<
   ListBillingGroupCostReportsInput,
   ListBillingGroupCostReportsOutput,
   ListBillingGroupCostReportsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListBillingGroupCostReportsInput,
-  ) => stream.Stream<
-    ListBillingGroupCostReportsOutput,
-    ListBillingGroupCostReportsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListBillingGroupCostReportsInput,
-  ) => stream.Stream<
-    BillingGroupCostReportElement,
-    ListBillingGroupCostReportsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  BillingGroupCostReportElement
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListBillingGroupCostReportsInput,
   output: ListBillingGroupCostReportsOutput,
   errors: [
@@ -2968,27 +2888,7 @@ export const listBillingGroupCostReports: API.OperationMethod<
     items: "BillingGroupCostReports",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListBillingGroupCostReportsInput,
-  ListBillingGroupCostReportsOutput,
-  ListBillingGroupCostReportsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListBillingGroupCostReportsInput,
-  ) => stream.Stream<
-    ListBillingGroupCostReportsOutput,
-    ListBillingGroupCostReportsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListBillingGroupCostReportsInput,
-  ) => stream.Stream<
-    BillingGroupCostReportElement,
-    ListBillingGroupCostReportsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListBillingGroupsError =
   | AccessDeniedException
@@ -3000,27 +2900,13 @@ export type ListBillingGroupsError =
 /**
  * A paginated call to retrieve a list of billing groups for the given billing period. If you don't provide a billing group, the current billing period is used.
  */
-export const listBillingGroups: API.OperationMethod<
+export const listBillingGroups: API.PaginatedOperationMethod<
   ListBillingGroupsInput,
   ListBillingGroupsOutput,
   ListBillingGroupsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListBillingGroupsInput,
-  ) => stream.Stream<
-    ListBillingGroupsOutput,
-    ListBillingGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListBillingGroupsInput,
-  ) => stream.Stream<
-    BillingGroupListElement,
-    ListBillingGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  BillingGroupListElement
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListBillingGroupsInput,
   output: ListBillingGroupsOutput,
   errors: [
@@ -3039,27 +2925,7 @@ export const listBillingGroups: API.OperationMethod<
     items: "BillingGroups",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListBillingGroupsInput,
-  ListBillingGroupsOutput,
-  ListBillingGroupsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListBillingGroupsInput,
-  ) => stream.Stream<
-    ListBillingGroupsOutput,
-    ListBillingGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListBillingGroupsInput,
-  ) => stream.Stream<
-    BillingGroupListElement,
-    ListBillingGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListCustomLineItemsError =
   | AccessDeniedException
@@ -3071,27 +2937,13 @@ export type ListCustomLineItemsError =
 /**
  * A paginated call to get a list of all custom line items (FFLIs) for the given billing period. If you don't provide a billing period, the current billing period is used.
  */
-export const listCustomLineItems: API.OperationMethod<
+export const listCustomLineItems: API.PaginatedOperationMethod<
   ListCustomLineItemsInput,
   ListCustomLineItemsOutput,
   ListCustomLineItemsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCustomLineItemsInput,
-  ) => stream.Stream<
-    ListCustomLineItemsOutput,
-    ListCustomLineItemsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCustomLineItemsInput,
-  ) => stream.Stream<
-    CustomLineItemListElement,
-    ListCustomLineItemsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  CustomLineItemListElement
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListCustomLineItemsInput,
   output: ListCustomLineItemsOutput,
   errors: [
@@ -3110,27 +2962,7 @@ export const listCustomLineItems: API.OperationMethod<
     items: "CustomLineItems",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListCustomLineItemsInput,
-  ListCustomLineItemsOutput,
-  ListCustomLineItemsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCustomLineItemsInput,
-  ) => stream.Stream<
-    ListCustomLineItemsOutput,
-    ListCustomLineItemsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCustomLineItemsInput,
-  ) => stream.Stream<
-    CustomLineItemListElement,
-    ListCustomLineItemsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListCustomLineItemVersionsError =
   | AccessDeniedException
@@ -3141,27 +2973,13 @@ export type ListCustomLineItemVersionsError =
 /**
  * A paginated call to get a list of all custom line item versions.
  */
-export const listCustomLineItemVersions: API.OperationMethod<
+export const listCustomLineItemVersions: API.PaginatedOperationMethod<
   ListCustomLineItemVersionsInput,
   ListCustomLineItemVersionsOutput,
   ListCustomLineItemVersionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCustomLineItemVersionsInput,
-  ) => stream.Stream<
-    ListCustomLineItemVersionsOutput,
-    ListCustomLineItemVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCustomLineItemVersionsInput,
-  ) => stream.Stream<
-    CustomLineItemVersionListElement,
-    ListCustomLineItemVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  CustomLineItemVersionListElement
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListCustomLineItemVersionsInput,
   output: ListCustomLineItemVersionsOutput,
   errors: [
@@ -3179,27 +2997,7 @@ export const listCustomLineItemVersions: API.OperationMethod<
     items: "CustomLineItemVersions",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListCustomLineItemVersionsInput,
-  ListCustomLineItemVersionsOutput,
-  ListCustomLineItemVersionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCustomLineItemVersionsInput,
-  ) => stream.Stream<
-    ListCustomLineItemVersionsOutput,
-    ListCustomLineItemVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCustomLineItemVersionsInput,
-  ) => stream.Stream<
-    CustomLineItemVersionListElement,
-    ListCustomLineItemVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListPricingPlansError =
   | AccessDeniedException
@@ -3210,27 +3008,13 @@ export type ListPricingPlansError =
 /**
  * A paginated call to get pricing plans for the given billing period. If you don't provide a billing period, the current billing period is used.
  */
-export const listPricingPlans: API.OperationMethod<
+export const listPricingPlans: API.PaginatedOperationMethod<
   ListPricingPlansInput,
   ListPricingPlansOutput,
   ListPricingPlansError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPricingPlansInput,
-  ) => stream.Stream<
-    ListPricingPlansOutput,
-    ListPricingPlansError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPricingPlansInput,
-  ) => stream.Stream<
-    PricingPlanListElement,
-    ListPricingPlansError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  PricingPlanListElement
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListPricingPlansInput,
   output: ListPricingPlansOutput,
   errors: [
@@ -3248,27 +3032,7 @@ export const listPricingPlans: API.OperationMethod<
     items: "PricingPlans",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListPricingPlansInput,
-  ListPricingPlansOutput,
-  ListPricingPlansError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPricingPlansInput,
-  ) => stream.Stream<
-    ListPricingPlansOutput,
-    ListPricingPlansError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPricingPlansInput,
-  ) => stream.Stream<
-    PricingPlanListElement,
-    ListPricingPlansError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListPricingPlansAssociatedWithPricingRuleError =
   | AccessDeniedException
@@ -3280,27 +3044,13 @@ export type ListPricingPlansAssociatedWithPricingRuleError =
 /**
  * A list of the pricing plans that are associated with a pricing rule.
  */
-export const listPricingPlansAssociatedWithPricingRule: API.OperationMethod<
+export const listPricingPlansAssociatedWithPricingRule: API.PaginatedOperationMethod<
   ListPricingPlansAssociatedWithPricingRuleInput,
   ListPricingPlansAssociatedWithPricingRuleOutput,
   ListPricingPlansAssociatedWithPricingRuleError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPricingPlansAssociatedWithPricingRuleInput,
-  ) => stream.Stream<
-    ListPricingPlansAssociatedWithPricingRuleOutput,
-    ListPricingPlansAssociatedWithPricingRuleError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPricingPlansAssociatedWithPricingRuleInput,
-  ) => stream.Stream<
-    PricingPlanArn,
-    ListPricingPlansAssociatedWithPricingRuleError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  PricingPlanArn
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListPricingPlansAssociatedWithPricingRuleInput,
   output: ListPricingPlansAssociatedWithPricingRuleOutput,
   errors: [
@@ -3319,27 +3069,7 @@ export const listPricingPlansAssociatedWithPricingRule: API.OperationMethod<
     items: "PricingPlanArns",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListPricingPlansAssociatedWithPricingRuleInput,
-  ListPricingPlansAssociatedWithPricingRuleOutput,
-  ListPricingPlansAssociatedWithPricingRuleError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPricingPlansAssociatedWithPricingRuleInput,
-  ) => stream.Stream<
-    ListPricingPlansAssociatedWithPricingRuleOutput,
-    ListPricingPlansAssociatedWithPricingRuleError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPricingPlansAssociatedWithPricingRuleInput,
-  ) => stream.Stream<
-    PricingPlanArn,
-    ListPricingPlansAssociatedWithPricingRuleError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListPricingRulesError =
   | AccessDeniedException
@@ -3350,27 +3080,13 @@ export type ListPricingRulesError =
 /**
  * Describes a pricing rule that can be associated to a pricing plan, or set of pricing plans.
  */
-export const listPricingRules: API.OperationMethod<
+export const listPricingRules: API.PaginatedOperationMethod<
   ListPricingRulesInput,
   ListPricingRulesOutput,
   ListPricingRulesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPricingRulesInput,
-  ) => stream.Stream<
-    ListPricingRulesOutput,
-    ListPricingRulesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPricingRulesInput,
-  ) => stream.Stream<
-    PricingRuleListElement,
-    ListPricingRulesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  PricingRuleListElement
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListPricingRulesInput,
   output: ListPricingRulesOutput,
   errors: [
@@ -3388,27 +3104,7 @@ export const listPricingRules: API.OperationMethod<
     items: "PricingRules",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListPricingRulesInput,
-  ListPricingRulesOutput,
-  ListPricingRulesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPricingRulesInput,
-  ) => stream.Stream<
-    ListPricingRulesOutput,
-    ListPricingRulesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPricingRulesInput,
-  ) => stream.Stream<
-    PricingRuleListElement,
-    ListPricingRulesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListPricingRulesAssociatedToPricingPlanError =
   | AccessDeniedException
@@ -3420,27 +3116,13 @@ export type ListPricingRulesAssociatedToPricingPlanError =
 /**
  * Lists the pricing rules that are associated with a pricing plan.
  */
-export const listPricingRulesAssociatedToPricingPlan: API.OperationMethod<
+export const listPricingRulesAssociatedToPricingPlan: API.PaginatedOperationMethod<
   ListPricingRulesAssociatedToPricingPlanInput,
   ListPricingRulesAssociatedToPricingPlanOutput,
   ListPricingRulesAssociatedToPricingPlanError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPricingRulesAssociatedToPricingPlanInput,
-  ) => stream.Stream<
-    ListPricingRulesAssociatedToPricingPlanOutput,
-    ListPricingRulesAssociatedToPricingPlanError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPricingRulesAssociatedToPricingPlanInput,
-  ) => stream.Stream<
-    PricingRuleArn,
-    ListPricingRulesAssociatedToPricingPlanError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  PricingRuleArn
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListPricingRulesAssociatedToPricingPlanInput,
   output: ListPricingRulesAssociatedToPricingPlanOutput,
   errors: [
@@ -3459,27 +3141,7 @@ export const listPricingRulesAssociatedToPricingPlan: API.OperationMethod<
     items: "PricingRuleArns",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListPricingRulesAssociatedToPricingPlanInput,
-  ListPricingRulesAssociatedToPricingPlanOutput,
-  ListPricingRulesAssociatedToPricingPlanError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPricingRulesAssociatedToPricingPlanInput,
-  ) => stream.Stream<
-    ListPricingRulesAssociatedToPricingPlanOutput,
-    ListPricingRulesAssociatedToPricingPlanError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPricingRulesAssociatedToPricingPlanInput,
-  ) => stream.Stream<
-    PricingRuleArn,
-    ListPricingRulesAssociatedToPricingPlanError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListResourcesAssociatedToCustomLineItemError =
   | AccessDeniedException
@@ -3491,27 +3153,13 @@ export type ListResourcesAssociatedToCustomLineItemError =
 /**
  * List the resources that are associated to a custom line item.
  */
-export const listResourcesAssociatedToCustomLineItem: API.OperationMethod<
+export const listResourcesAssociatedToCustomLineItem: API.PaginatedOperationMethod<
   ListResourcesAssociatedToCustomLineItemInput,
   ListResourcesAssociatedToCustomLineItemOutput,
   ListResourcesAssociatedToCustomLineItemError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListResourcesAssociatedToCustomLineItemInput,
-  ) => stream.Stream<
-    ListResourcesAssociatedToCustomLineItemOutput,
-    ListResourcesAssociatedToCustomLineItemError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListResourcesAssociatedToCustomLineItemInput,
-  ) => stream.Stream<
-    ListResourcesAssociatedToCustomLineItemResponseElement,
-    ListResourcesAssociatedToCustomLineItemError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ListResourcesAssociatedToCustomLineItemResponseElement
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListResourcesAssociatedToCustomLineItemInput,
   output: ListResourcesAssociatedToCustomLineItemOutput,
   errors: [
@@ -3530,27 +3178,7 @@ export const listResourcesAssociatedToCustomLineItem: API.OperationMethod<
     items: "AssociatedResources",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListResourcesAssociatedToCustomLineItemInput,
-  ListResourcesAssociatedToCustomLineItemOutput,
-  ListResourcesAssociatedToCustomLineItemError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListResourcesAssociatedToCustomLineItemInput,
-  ) => stream.Stream<
-    ListResourcesAssociatedToCustomLineItemOutput,
-    ListResourcesAssociatedToCustomLineItemError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListResourcesAssociatedToCustomLineItemInput,
-  ) => stream.Stream<
-    ListResourcesAssociatedToCustomLineItemResponseElement,
-    ListResourcesAssociatedToCustomLineItemError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsForResourceError =
   | AccessDeniedException
@@ -3566,7 +3194,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceRequest,
   ListTagsForResourceResponse,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -3596,7 +3224,7 @@ export const tagResource: API.OperationMethod<
   TagResourceRequest,
   TagResourceResponse,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -3626,7 +3254,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceRequest,
   UntagResourceResponse,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -3657,7 +3285,7 @@ export const updateBillingGroup: API.OperationMethod<
   UpdateBillingGroupInput,
   UpdateBillingGroupOutput,
   UpdateBillingGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateBillingGroupInput,
   output: UpdateBillingGroupOutput,
@@ -3689,7 +3317,7 @@ export const updateCustomLineItem: API.OperationMethod<
   UpdateCustomLineItemInput,
   UpdateCustomLineItemOutput,
   UpdateCustomLineItemError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateCustomLineItemInput,
   output: UpdateCustomLineItemOutput,
@@ -3721,7 +3349,7 @@ export const updatePricingPlan: API.OperationMethod<
   UpdatePricingPlanInput,
   UpdatePricingPlanOutput,
   UpdatePricingPlanError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdatePricingPlanInput,
   output: UpdatePricingPlanOutput,
@@ -3753,7 +3381,7 @@ export const updatePricingRule: API.OperationMethod<
   UpdatePricingRuleInput,
   UpdatePricingRuleOutput,
   UpdatePricingRuleError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdatePricingRuleInput,
   output: UpdatePricingRuleOutput,

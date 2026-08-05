@@ -1,6 +1,5 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -8,7 +7,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 const ns = T.XmlNamespace(
   "https://object.mediastore.amazonaws.com/doc/2017-09-01",
 );
@@ -91,24 +89,24 @@ const rules = T.EndpointResolver((p, _) => {
 export class ContainerNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ContainerNotFoundException>()(
     "ContainerNotFoundException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class InternalServerError
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerError>()(
     "InternalServerError",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class ObjectNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ObjectNotFoundException>()(
     "ObjectNotFoundException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class RequestedRangeNotSatisfiableException
   extends /*@__PURE__*/ S.TaggedErrorClass<RequestedRangeNotSatisfiableException>()(
     "RequestedRangeNotSatisfiableException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(416),
   ) {}
 export type PathNaming = string;
@@ -360,7 +358,7 @@ export const deleteObject: API.OperationMethod<
   DeleteObjectRequest,
   DeleteObjectResponse,
   DeleteObjectError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteObjectRequest,
   output: DeleteObjectResponse,
@@ -386,7 +384,7 @@ export const describeObject: API.OperationMethod<
   DescribeObjectRequest,
   DescribeObjectResponse,
   DescribeObjectError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeObjectRequest,
   output: DescribeObjectResponse,
@@ -413,7 +411,7 @@ export const getObject: API.OperationMethod<
   GetObjectRequest,
   GetObjectResponse,
   GetObjectError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetObjectRequest,
   output: GetObjectResponse,
@@ -436,27 +434,13 @@ export type ListItemsError =
  * Provides a list of metadata entries about folders and objects in the specified
  * folder.
  */
-export const listItems: API.OperationMethod<
+export const listItems: API.PaginatedOperationMethod<
   ListItemsRequest,
   ListItemsResponse,
   ListItemsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListItemsRequest,
-  ) => stream.Stream<
-    ListItemsResponse,
-    ListItemsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListItemsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListItemsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListItemsRequest,
   output: ListItemsResponse,
   errors: [ContainerNotFoundException, InternalServerError],
@@ -468,27 +452,7 @@ export const listItems: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListItemsRequest,
-  ListItemsResponse,
-  ListItemsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListItemsRequest,
-  ) => stream.Stream<
-    ListItemsResponse,
-    ListItemsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListItemsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListItemsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type PutObjectError =
   | ContainerNotFoundException
@@ -501,7 +465,7 @@ export const putObject: API.OperationMethod<
   PutObjectRequest,
   PutObjectResponse,
   PutObjectError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutObjectRequest,
   output: PutObjectResponse,

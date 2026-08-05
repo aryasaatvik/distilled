@@ -1,6 +1,5 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -8,7 +7,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 const svc = T.AwsApiService({ sdkId: "tnb", serviceShapeName: "TNB" });
 const auth = T.AwsAuthSigv4({ name: "tnb" });
 const ver = T.ServiceVersion("2008-10-21");
@@ -85,37 +83,37 @@ const rules = T.EndpointResolver((p, _) => {
 export class AccessDeniedException
   extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
     "AccessDeniedException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(403),
   ).pipe(C.withAuthError) {}
 export class InternalServerException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
     "InternalServerException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(500),
   ).pipe(C.withServerError) {}
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class ServiceQuotaExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
     "ServiceQuotaExceededException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(402),
   ).pipe(C.withQuotaError) {}
 export class ThrottlingException
   extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
     "ThrottlingException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(429),
   ).pipe(C.withThrottlingError) {}
 export class ValidationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
     "ValidationException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export type NsLcmOpOccId = string;
@@ -1968,7 +1966,7 @@ export const cancelSolNetworkOperation: API.OperationMethod<
   CancelSolNetworkOperationInput,
   CancelSolNetworkOperationResponse,
   CancelSolNetworkOperationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CancelSolNetworkOperationInput,
   output: CancelSolNetworkOperationResponse,
@@ -2005,7 +2003,7 @@ export const createSolFunctionPackage: API.OperationMethod<
   CreateSolFunctionPackageInput,
   CreateSolFunctionPackageOutput,
   CreateSolFunctionPackageError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateSolFunctionPackageInput,
   output: CreateSolFunctionPackageOutput,
@@ -2043,7 +2041,7 @@ export const createSolNetworkInstance: API.OperationMethod<
   CreateSolNetworkInstanceInput,
   CreateSolNetworkInstanceOutput,
   CreateSolNetworkInstanceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateSolNetworkInstanceInput,
   output: CreateSolNetworkInstanceOutput,
@@ -2085,7 +2083,7 @@ export const createSolNetworkPackage: API.OperationMethod<
   CreateSolNetworkPackageInput,
   CreateSolNetworkPackageOutput,
   CreateSolNetworkPackageError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateSolNetworkPackageInput,
   output: CreateSolNetworkPackageOutput,
@@ -2120,7 +2118,7 @@ export const deleteSolFunctionPackage: API.OperationMethod<
   DeleteSolFunctionPackageInput,
   DeleteSolFunctionPackageResponse,
   DeleteSolFunctionPackageError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteSolFunctionPackageInput,
   output: DeleteSolFunctionPackageResponse,
@@ -2155,7 +2153,7 @@ export const deleteSolNetworkInstance: API.OperationMethod<
   DeleteSolNetworkInstanceInput,
   DeleteSolNetworkInstanceResponse,
   DeleteSolNetworkInstanceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteSolNetworkInstanceInput,
   output: DeleteSolNetworkInstanceResponse,
@@ -2190,7 +2188,7 @@ export const deleteSolNetworkPackage: API.OperationMethod<
   DeleteSolNetworkPackageInput,
   DeleteSolNetworkPackageResponse,
   DeleteSolNetworkPackageError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteSolNetworkPackageInput,
   output: DeleteSolNetworkPackageResponse,
@@ -2223,7 +2221,7 @@ export const getSolFunctionInstance: API.OperationMethod<
   GetSolFunctionInstanceInput,
   GetSolFunctionInstanceOutput,
   GetSolFunctionInstanceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetSolFunctionInstanceInput,
   output: GetSolFunctionInstanceOutput,
@@ -2256,7 +2254,7 @@ export const getSolFunctionPackage: API.OperationMethod<
   GetSolFunctionPackageInput,
   GetSolFunctionPackageOutput,
   GetSolFunctionPackageError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetSolFunctionPackageInput,
   output: GetSolFunctionPackageOutput,
@@ -2288,7 +2286,7 @@ export const getSolFunctionPackageContent: API.OperationMethod<
   GetSolFunctionPackageContentInput,
   GetSolFunctionPackageContentOutput,
   GetSolFunctionPackageContentError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetSolFunctionPackageContentInput,
   output: GetSolFunctionPackageContentOutput,
@@ -2322,7 +2320,7 @@ export const getSolFunctionPackageDescriptor: API.OperationMethod<
   GetSolFunctionPackageDescriptorInput,
   GetSolFunctionPackageDescriptorOutput,
   GetSolFunctionPackageDescriptorError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetSolFunctionPackageDescriptorInput,
   output: GetSolFunctionPackageDescriptorOutput,
@@ -2354,7 +2352,7 @@ export const getSolNetworkInstance: API.OperationMethod<
   GetSolNetworkInstanceInput,
   GetSolNetworkInstanceOutput,
   GetSolNetworkInstanceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetSolNetworkInstanceInput,
   output: GetSolNetworkInstanceOutput,
@@ -2387,7 +2385,7 @@ export const getSolNetworkOperation: API.OperationMethod<
   GetSolNetworkOperationInput,
   GetSolNetworkOperationOutput,
   GetSolNetworkOperationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetSolNetworkOperationInput,
   output: GetSolNetworkOperationOutput,
@@ -2419,7 +2417,7 @@ export const getSolNetworkPackage: API.OperationMethod<
   GetSolNetworkPackageInput,
   GetSolNetworkPackageOutput,
   GetSolNetworkPackageError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetSolNetworkPackageInput,
   output: GetSolNetworkPackageOutput,
@@ -2451,7 +2449,7 @@ export const getSolNetworkPackageContent: API.OperationMethod<
   GetSolNetworkPackageContentInput,
   GetSolNetworkPackageContentOutput,
   GetSolNetworkPackageContentError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetSolNetworkPackageContentInput,
   output: GetSolNetworkPackageContentOutput,
@@ -2483,7 +2481,7 @@ export const getSolNetworkPackageDescriptor: API.OperationMethod<
   GetSolNetworkPackageDescriptorInput,
   GetSolNetworkPackageDescriptorOutput,
   GetSolNetworkPackageDescriptorError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetSolNetworkPackageDescriptorInput,
   output: GetSolNetworkPackageDescriptorOutput,
@@ -2519,7 +2517,7 @@ export const instantiateSolNetworkInstance: API.OperationMethod<
   InstantiateSolNetworkInstanceInput,
   InstantiateSolNetworkInstanceOutput,
   InstantiateSolNetworkInstanceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: InstantiateSolNetworkInstanceInput,
   output: InstantiateSolNetworkInstanceOutput,
@@ -2547,27 +2545,13 @@ export type ListSolFunctionInstancesError =
  *
  * A network function instance is a function in a function package .
  */
-export const listSolFunctionInstances: API.OperationMethod<
+export const listSolFunctionInstances: API.PaginatedOperationMethod<
   ListSolFunctionInstancesInput,
   ListSolFunctionInstancesOutput,
   ListSolFunctionInstancesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSolFunctionInstancesInput,
-  ) => stream.Stream<
-    ListSolFunctionInstancesOutput,
-    ListSolFunctionInstancesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSolFunctionInstancesInput,
-  ) => stream.Stream<
-    ListSolFunctionInstanceInfo,
-    ListSolFunctionInstancesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ListSolFunctionInstanceInfo
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListSolFunctionInstancesInput,
   output: ListSolFunctionInstancesOutput,
   errors: [
@@ -2585,27 +2569,7 @@ export const listSolFunctionInstances: API.OperationMethod<
     items: "functionInstances",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListSolFunctionInstancesInput,
-  ListSolFunctionInstancesOutput,
-  ListSolFunctionInstancesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSolFunctionInstancesInput,
-  ) => stream.Stream<
-    ListSolFunctionInstancesOutput,
-    ListSolFunctionInstancesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSolFunctionInstancesInput,
-  ) => stream.Stream<
-    ListSolFunctionInstanceInfo,
-    ListSolFunctionInstancesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListSolFunctionPackagesError =
   | AccessDeniedException
@@ -2618,27 +2582,13 @@ export type ListSolFunctionPackagesError =
  *
  * A function package is a .zip file in CSAR (Cloud Service Archive) format that contains a network function (an ETSI standard telecommunication application) and function package descriptor that uses the TOSCA standard to describe how the network functions should run on your network.
  */
-export const listSolFunctionPackages: API.OperationMethod<
+export const listSolFunctionPackages: API.PaginatedOperationMethod<
   ListSolFunctionPackagesInput,
   ListSolFunctionPackagesOutput,
   ListSolFunctionPackagesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSolFunctionPackagesInput,
-  ) => stream.Stream<
-    ListSolFunctionPackagesOutput,
-    ListSolFunctionPackagesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSolFunctionPackagesInput,
-  ) => stream.Stream<
-    ListSolFunctionPackageInfo,
-    ListSolFunctionPackagesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ListSolFunctionPackageInfo
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListSolFunctionPackagesInput,
   output: ListSolFunctionPackagesOutput,
   errors: [
@@ -2656,27 +2606,7 @@ export const listSolFunctionPackages: API.OperationMethod<
     items: "functionPackages",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListSolFunctionPackagesInput,
-  ListSolFunctionPackagesOutput,
-  ListSolFunctionPackagesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSolFunctionPackagesInput,
-  ) => stream.Stream<
-    ListSolFunctionPackagesOutput,
-    ListSolFunctionPackagesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSolFunctionPackagesInput,
-  ) => stream.Stream<
-    ListSolFunctionPackageInfo,
-    ListSolFunctionPackagesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListSolNetworkInstancesError =
   | AccessDeniedException
@@ -2689,27 +2619,13 @@ export type ListSolNetworkInstancesError =
  *
  * A network instance is a single network created in Amazon Web Services TNB that can be deployed and on which life-cycle operations (like terminate, update, and delete) can be performed.
  */
-export const listSolNetworkInstances: API.OperationMethod<
+export const listSolNetworkInstances: API.PaginatedOperationMethod<
   ListSolNetworkInstancesInput,
   ListSolNetworkInstancesOutput,
   ListSolNetworkInstancesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSolNetworkInstancesInput,
-  ) => stream.Stream<
-    ListSolNetworkInstancesOutput,
-    ListSolNetworkInstancesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSolNetworkInstancesInput,
-  ) => stream.Stream<
-    ListSolNetworkInstanceInfo,
-    ListSolNetworkInstancesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ListSolNetworkInstanceInfo
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListSolNetworkInstancesInput,
   output: ListSolNetworkInstancesOutput,
   errors: [
@@ -2727,27 +2643,7 @@ export const listSolNetworkInstances: API.OperationMethod<
     items: "networkInstances",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListSolNetworkInstancesInput,
-  ListSolNetworkInstancesOutput,
-  ListSolNetworkInstancesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSolNetworkInstancesInput,
-  ) => stream.Stream<
-    ListSolNetworkInstancesOutput,
-    ListSolNetworkInstancesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSolNetworkInstancesInput,
-  ) => stream.Stream<
-    ListSolNetworkInstanceInfo,
-    ListSolNetworkInstancesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListSolNetworkOperationsError =
   | AccessDeniedException
@@ -2761,27 +2657,13 @@ export type ListSolNetworkOperationsError =
  *
  * A network operation is any operation that is done to your network, such as network instance instantiation or termination.
  */
-export const listSolNetworkOperations: API.OperationMethod<
+export const listSolNetworkOperations: API.PaginatedOperationMethod<
   ListSolNetworkOperationsInput,
   ListSolNetworkOperationsOutput,
   ListSolNetworkOperationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSolNetworkOperationsInput,
-  ) => stream.Stream<
-    ListSolNetworkOperationsOutput,
-    ListSolNetworkOperationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSolNetworkOperationsInput,
-  ) => stream.Stream<
-    ListSolNetworkOperationsInfo,
-    ListSolNetworkOperationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ListSolNetworkOperationsInfo
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListSolNetworkOperationsInput,
   output: ListSolNetworkOperationsOutput,
   errors: [
@@ -2799,27 +2681,7 @@ export const listSolNetworkOperations: API.OperationMethod<
     items: "networkOperations",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListSolNetworkOperationsInput,
-  ListSolNetworkOperationsOutput,
-  ListSolNetworkOperationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSolNetworkOperationsInput,
-  ) => stream.Stream<
-    ListSolNetworkOperationsOutput,
-    ListSolNetworkOperationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSolNetworkOperationsInput,
-  ) => stream.Stream<
-    ListSolNetworkOperationsInfo,
-    ListSolNetworkOperationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListSolNetworkPackagesError =
   | AccessDeniedException
@@ -2832,27 +2694,13 @@ export type ListSolNetworkPackagesError =
  *
  * A network package is a .zip file in CSAR (Cloud Service Archive) format defines the function packages you want to deploy and the Amazon Web Services infrastructure you want to deploy them on.
  */
-export const listSolNetworkPackages: API.OperationMethod<
+export const listSolNetworkPackages: API.PaginatedOperationMethod<
   ListSolNetworkPackagesInput,
   ListSolNetworkPackagesOutput,
   ListSolNetworkPackagesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSolNetworkPackagesInput,
-  ) => stream.Stream<
-    ListSolNetworkPackagesOutput,
-    ListSolNetworkPackagesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSolNetworkPackagesInput,
-  ) => stream.Stream<
-    ListSolNetworkPackageInfo,
-    ListSolNetworkPackagesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ListSolNetworkPackageInfo
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListSolNetworkPackagesInput,
   output: ListSolNetworkPackagesOutput,
   errors: [
@@ -2870,27 +2718,7 @@ export const listSolNetworkPackages: API.OperationMethod<
     items: "networkPackages",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListSolNetworkPackagesInput,
-  ListSolNetworkPackagesOutput,
-  ListSolNetworkPackagesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSolNetworkPackagesInput,
-  ) => stream.Stream<
-    ListSolNetworkPackagesOutput,
-    ListSolNetworkPackagesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSolNetworkPackagesInput,
-  ) => stream.Stream<
-    ListSolNetworkPackageInfo,
-    ListSolNetworkPackagesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsForResourceError =
   | AccessDeniedException
@@ -2906,7 +2734,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceInput,
   ListTagsForResourceOutput,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceInput,
   output: ListTagsForResourceOutput,
@@ -2938,7 +2766,7 @@ export const putSolFunctionPackageContent: API.OperationMethod<
   PutSolFunctionPackageContentInput,
   PutSolFunctionPackageContentOutput,
   PutSolFunctionPackageContentError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutSolFunctionPackageContentInput,
   output: PutSolFunctionPackageContentOutput,
@@ -2970,7 +2798,7 @@ export const putSolNetworkPackageContent: API.OperationMethod<
   PutSolNetworkPackageContentInput,
   PutSolNetworkPackageContentOutput,
   PutSolNetworkPackageContentError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutSolNetworkPackageContentInput,
   output: PutSolNetworkPackageContentOutput,
@@ -3002,7 +2830,7 @@ export const tagResource: API.OperationMethod<
   TagResourceInput,
   TagResourceOutput,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceInput,
   output: TagResourceOutput,
@@ -3037,7 +2865,7 @@ export const terminateSolNetworkInstance: API.OperationMethod<
   TerminateSolNetworkInstanceInput,
   TerminateSolNetworkInstanceOutput,
   TerminateSolNetworkInstanceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TerminateSolNetworkInstanceInput,
   output: TerminateSolNetworkInstanceOutput,
@@ -3070,7 +2898,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceInput,
   UntagResourceOutput,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceInput,
   output: UntagResourceOutput,
@@ -3102,7 +2930,7 @@ export const updateSolFunctionPackage: API.OperationMethod<
   UpdateSolFunctionPackageInput,
   UpdateSolFunctionPackageOutput,
   UpdateSolFunctionPackageError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateSolFunctionPackageInput,
   output: UpdateSolFunctionPackageOutput,
@@ -3137,7 +2965,7 @@ export const updateSolNetworkInstance: API.OperationMethod<
   UpdateSolNetworkInstanceInput,
   UpdateSolNetworkInstanceOutput,
   UpdateSolNetworkInstanceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateSolNetworkInstanceInput,
   output: UpdateSolNetworkInstanceOutput,
@@ -3172,7 +3000,7 @@ export const updateSolNetworkPackage: API.OperationMethod<
   UpdateSolNetworkPackageInput,
   UpdateSolNetworkPackageOutput,
   UpdateSolNetworkPackageError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateSolNetworkPackageInput,
   output: UpdateSolNetworkPackageOutput,
@@ -3205,7 +3033,7 @@ export const validateSolFunctionPackageContent: API.OperationMethod<
   ValidateSolFunctionPackageContentInput,
   ValidateSolFunctionPackageContentOutput,
   ValidateSolFunctionPackageContentError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ValidateSolFunctionPackageContentInput,
   output: ValidateSolFunctionPackageContentOutput,
@@ -3238,7 +3066,7 @@ export const validateSolNetworkPackageContent: API.OperationMethod<
   ValidateSolNetworkPackageContentInput,
   ValidateSolNetworkPackageContentOutput,
   ValidateSolNetworkPackageContentError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ValidateSolNetworkPackageContentInput,
   output: ValidateSolNetworkPackageContentOutput,

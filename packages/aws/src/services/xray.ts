@@ -1,6 +1,5 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -8,7 +7,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 const svc = T.AwsApiService({ sdkId: "XRay", serviceShapeName: "AWSXRay" });
 const auth = T.AwsAuthSigv4({ name: "xray" });
 const ver = T.ServiceVersion("2016-04-12");
@@ -85,7 +83,7 @@ const rules = T.EndpointResolver((p, _) => {
 export class GroupAlreadyExists
   extends /*@__PURE__*/ S.TaggedErrorClass<GroupAlreadyExists>()(
     "GroupAlreadyExists",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.SyntheticError({
       from: "InvalidRequestException",
       message: { matches: " already exists$" },
@@ -94,7 +92,7 @@ export class GroupAlreadyExists
 export class GroupNotFound
   extends /*@__PURE__*/ S.TaggedErrorClass<GroupNotFound>()(
     "GroupNotFound",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.SyntheticError({
       from: "InvalidRequestException",
       message: "Group not found",
@@ -103,53 +101,56 @@ export class GroupNotFound
 export class InvalidPolicyRevisionIdException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidPolicyRevisionIdException>()(
     "InvalidPolicyRevisionIdException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class InvalidRequestException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidRequestException>()(
     "InvalidRequestException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class LockoutPreventionException
   extends /*@__PURE__*/ S.TaggedErrorClass<LockoutPreventionException>()(
     "LockoutPreventionException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class MalformedPolicyDocumentException
   extends /*@__PURE__*/ S.TaggedErrorClass<MalformedPolicyDocumentException>()(
     "MalformedPolicyDocumentException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class PolicyCountLimitExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<PolicyCountLimitExceededException>()(
     "PolicyCountLimitExceededException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class PolicySizeLimitExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<PolicySizeLimitExceededException>()(
     "PolicySizeLimitExceededException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { Message: S.optional(S.String), ResourceName: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      ResourceName: S.optional(S.String),
+    },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class RuleLimitExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<RuleLimitExceededException>()(
     "RuleLimitExceededException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class SamplingRuleAlreadyExists
   extends /*@__PURE__*/ S.TaggedErrorClass<SamplingRuleAlreadyExists>()(
     "SamplingRuleAlreadyExists",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.SyntheticError({
       from: "InvalidRequestException",
       message: "Sampling rule already exists",
@@ -158,7 +159,7 @@ export class SamplingRuleAlreadyExists
 export class SamplingRuleNotFound
   extends /*@__PURE__*/ S.TaggedErrorClass<SamplingRuleNotFound>()(
     "SamplingRuleNotFound",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.SyntheticError({
       from: "InvalidRequestException",
       message: "Sampling rule does not exist",
@@ -167,13 +168,16 @@ export class SamplingRuleNotFound
 export class ThrottledException
   extends /*@__PURE__*/ S.TaggedErrorClass<ThrottledException>()(
     "ThrottledException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(429),
   ).pipe(C.withThrottlingError) {}
 export class TooManyTagsException
   extends /*@__PURE__*/ S.TaggedErrorClass<TooManyTagsException>()(
     "TooManyTagsException",
-    { Message: S.optional(S.String), ResourceName: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      ResourceName: S.optional(S.String),
+    },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export type TraceId = string;
@@ -2642,27 +2646,13 @@ export type BatchGetTracesError =
  * documents that originates from a single request. Use `GetTraceSummaries` to get a
  * list of trace IDs.
  */
-export const batchGetTraces: API.OperationMethod<
+export const batchGetTraces: API.PaginatedOperationMethod<
   BatchGetTracesRequest,
   BatchGetTracesResult,
   BatchGetTracesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: BatchGetTracesRequest,
-  ) => stream.Stream<
-    BatchGetTracesResult,
-    BatchGetTracesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: BatchGetTracesRequest,
-  ) => stream.Stream<
-    Trace,
-    BatchGetTracesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Trace
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: BatchGetTracesRequest,
   output: BatchGetTracesResult,
   errors: [InvalidRequestException, ThrottledException],
@@ -2674,27 +2664,7 @@ export const batchGetTraces: API.OperationMethod<
     outputToken: "NextToken",
     items: "Traces",
   } as const,
-})) as any as API.OperationMethod<
-  BatchGetTracesRequest,
-  BatchGetTracesResult,
-  BatchGetTracesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: BatchGetTracesRequest,
-  ) => stream.Stream<
-    BatchGetTracesResult,
-    BatchGetTracesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: BatchGetTracesRequest,
-  ) => stream.Stream<
-    Trace,
-    BatchGetTracesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type CancelTraceRetrievalError =
   | InvalidRequestException
@@ -2708,7 +2678,7 @@ export const cancelTraceRetrieval: API.OperationMethod<
   CancelTraceRetrievalRequest,
   CancelTraceRetrievalResult,
   CancelTraceRetrievalError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CancelTraceRetrievalRequest,
   output: CancelTraceRetrievalResult,
@@ -2734,7 +2704,7 @@ export const createGroup: API.OperationMethod<
   CreateGroupRequest,
   CreateGroupResult,
   CreateGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateGroupRequest,
   output: CreateGroupResult,
@@ -2763,7 +2733,7 @@ export const createSamplingRule: API.OperationMethod<
   CreateSamplingRuleRequest,
   CreateSamplingRuleResult,
   CreateSamplingRuleError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateSamplingRuleRequest,
   output: CreateSamplingRuleResult,
@@ -2790,7 +2760,7 @@ export const deleteGroup: API.OperationMethod<
   DeleteGroupRequest,
   DeleteGroupResult,
   DeleteGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteGroupRequest,
   output: DeleteGroupResult,
@@ -2812,7 +2782,7 @@ export const deleteResourcePolicy: API.OperationMethod<
   DeleteResourcePolicyRequest,
   DeleteResourcePolicyResult,
   DeleteResourcePolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteResourcePolicyRequest,
   output: DeleteResourcePolicyResult,
@@ -2838,7 +2808,7 @@ export const deleteSamplingRule: API.OperationMethod<
   DeleteSamplingRuleRequest,
   DeleteSamplingRuleResult,
   DeleteSamplingRuleError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteSamplingRuleRequest,
   output: DeleteSamplingRuleResult,
@@ -2859,7 +2829,7 @@ export const getEncryptionConfig: API.OperationMethod<
   GetEncryptionConfigRequest,
   GetEncryptionConfigResult,
   GetEncryptionConfigError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetEncryptionConfigRequest,
   output: GetEncryptionConfigResult,
@@ -2881,7 +2851,7 @@ export const getGroup: API.OperationMethod<
   GetGroupRequest,
   GetGroupResult,
   GetGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetGroupRequest,
   output: GetGroupResult,
@@ -2898,27 +2868,13 @@ export type GetGroupsError =
 /**
  * Retrieves all active group details.
  */
-export const getGroups: API.OperationMethod<
+export const getGroups: API.PaginatedOperationMethod<
   GetGroupsRequest,
   GetGroupsResult,
   GetGroupsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetGroupsRequest,
-  ) => stream.Stream<
-    GetGroupsResult,
-    GetGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetGroupsRequest,
-  ) => stream.Stream<
-    GroupSummary,
-    GetGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  GroupSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetGroupsRequest,
   output: GetGroupsResult,
   errors: [InvalidRequestException, ThrottledException],
@@ -2930,27 +2886,7 @@ export const getGroups: API.OperationMethod<
     outputToken: "NextToken",
     items: "Groups",
   } as const,
-})) as any as API.OperationMethod<
-  GetGroupsRequest,
-  GetGroupsResult,
-  GetGroupsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetGroupsRequest,
-  ) => stream.Stream<
-    GetGroupsResult,
-    GetGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetGroupsRequest,
-  ) => stream.Stream<
-    GroupSummary,
-    GetGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetIndexingRulesError =
   | InvalidRequestException
@@ -2965,7 +2901,7 @@ export const getIndexingRules: API.OperationMethod<
   GetIndexingRulesRequest,
   GetIndexingRulesResult,
   GetIndexingRulesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetIndexingRulesRequest,
   output: GetIndexingRulesResult,
@@ -2988,7 +2924,7 @@ export const getInsight: API.OperationMethod<
   GetInsightRequest,
   GetInsightResult,
   GetInsightError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetInsightRequest,
   output: GetInsightResult,
@@ -3007,27 +2943,13 @@ export type GetInsightEventsError =
  * event. You can review an insight's events in the Impact Timeline on the Inspect page in the X-Ray
  * console.
  */
-export const getInsightEvents: API.OperationMethod<
+export const getInsightEvents: API.PaginatedOperationMethod<
   GetInsightEventsRequest,
   GetInsightEventsResult,
   GetInsightEventsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetInsightEventsRequest,
-  ) => stream.Stream<
-    GetInsightEventsResult,
-    GetInsightEventsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetInsightEventsRequest,
-  ) => stream.Stream<
-    unknown,
-    GetInsightEventsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetInsightEventsRequest,
   output: GetInsightEventsResult,
   errors: [InvalidRequestException, ThrottledException],
@@ -3039,27 +2961,7 @@ export const getInsightEvents: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetInsightEventsRequest,
-  GetInsightEventsResult,
-  GetInsightEventsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetInsightEventsRequest,
-  ) => stream.Stream<
-    GetInsightEventsResult,
-    GetInsightEventsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetInsightEventsRequest,
-  ) => stream.Stream<
-    unknown,
-    GetInsightEventsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetInsightImpactGraphError =
   | InvalidRequestException
@@ -3073,7 +2975,7 @@ export const getInsightImpactGraph: API.OperationMethod<
   GetInsightImpactGraphRequest,
   GetInsightImpactGraphResult,
   GetInsightImpactGraphError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetInsightImpactGraphRequest,
   output: GetInsightImpactGraphResult,
@@ -3090,27 +2992,13 @@ export type GetInsightSummariesError =
 /**
  * Retrieves the summaries of all insights in the specified group matching the provided filter values.
  */
-export const getInsightSummaries: API.OperationMethod<
+export const getInsightSummaries: API.PaginatedOperationMethod<
   GetInsightSummariesRequest,
   GetInsightSummariesResult,
   GetInsightSummariesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetInsightSummariesRequest,
-  ) => stream.Stream<
-    GetInsightSummariesResult,
-    GetInsightSummariesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetInsightSummariesRequest,
-  ) => stream.Stream<
-    unknown,
-    GetInsightSummariesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetInsightSummariesRequest,
   output: GetInsightSummariesResult,
   errors: [InvalidRequestException, ThrottledException],
@@ -3122,27 +3010,7 @@ export const getInsightSummaries: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetInsightSummariesRequest,
-  GetInsightSummariesResult,
-  GetInsightSummariesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetInsightSummariesRequest,
-  ) => stream.Stream<
-    GetInsightSummariesResult,
-    GetInsightSummariesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetInsightSummariesRequest,
-  ) => stream.Stream<
-    unknown,
-    GetInsightSummariesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetRetrievedTracesGraphError =
   | InvalidRequestException
@@ -3164,7 +3032,7 @@ export const getRetrievedTracesGraph: API.OperationMethod<
   GetRetrievedTracesGraphRequest,
   GetRetrievedTracesGraphResult,
   GetRetrievedTracesGraphError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetRetrievedTracesGraphRequest,
   output: GetRetrievedTracesGraphResult,
@@ -3185,27 +3053,13 @@ export type GetSamplingRulesError =
 /**
  * Retrieves all sampling rules.
  */
-export const getSamplingRules: API.OperationMethod<
+export const getSamplingRules: API.PaginatedOperationMethod<
   GetSamplingRulesRequest,
   GetSamplingRulesResult,
   GetSamplingRulesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetSamplingRulesRequest,
-  ) => stream.Stream<
-    GetSamplingRulesResult,
-    GetSamplingRulesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetSamplingRulesRequest,
-  ) => stream.Stream<
-    SamplingRuleRecord,
-    GetSamplingRulesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  SamplingRuleRecord
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetSamplingRulesRequest,
   output: GetSamplingRulesResult,
   errors: [InvalidRequestException, ThrottledException],
@@ -3217,27 +3071,7 @@ export const getSamplingRules: API.OperationMethod<
     outputToken: "NextToken",
     items: "SamplingRuleRecords",
   } as const,
-})) as any as API.OperationMethod<
-  GetSamplingRulesRequest,
-  GetSamplingRulesResult,
-  GetSamplingRulesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetSamplingRulesRequest,
-  ) => stream.Stream<
-    GetSamplingRulesResult,
-    GetSamplingRulesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetSamplingRulesRequest,
-  ) => stream.Stream<
-    SamplingRuleRecord,
-    GetSamplingRulesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetSamplingStatisticSummariesError =
   | InvalidRequestException
@@ -3246,27 +3080,13 @@ export type GetSamplingStatisticSummariesError =
 /**
  * Retrieves information about recent sampling results for all sampling rules.
  */
-export const getSamplingStatisticSummaries: API.OperationMethod<
+export const getSamplingStatisticSummaries: API.PaginatedOperationMethod<
   GetSamplingStatisticSummariesRequest,
   GetSamplingStatisticSummariesResult,
   GetSamplingStatisticSummariesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetSamplingStatisticSummariesRequest,
-  ) => stream.Stream<
-    GetSamplingStatisticSummariesResult,
-    GetSamplingStatisticSummariesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetSamplingStatisticSummariesRequest,
-  ) => stream.Stream<
-    SamplingStatisticSummary,
-    GetSamplingStatisticSummariesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  SamplingStatisticSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetSamplingStatisticSummariesRequest,
   output: GetSamplingStatisticSummariesResult,
   errors: [InvalidRequestException, ThrottledException],
@@ -3278,27 +3098,7 @@ export const getSamplingStatisticSummaries: API.OperationMethod<
     outputToken: "NextToken",
     items: "SamplingStatisticSummaries",
   } as const,
-})) as any as API.OperationMethod<
-  GetSamplingStatisticSummariesRequest,
-  GetSamplingStatisticSummariesResult,
-  GetSamplingStatisticSummariesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetSamplingStatisticSummariesRequest,
-  ) => stream.Stream<
-    GetSamplingStatisticSummariesResult,
-    GetSamplingStatisticSummariesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetSamplingStatisticSummariesRequest,
-  ) => stream.Stream<
-    SamplingStatisticSummary,
-    GetSamplingStatisticSummariesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetSamplingTargetsError =
   | InvalidRequestException
@@ -3311,7 +3111,7 @@ export const getSamplingTargets: API.OperationMethod<
   GetSamplingTargetsRequest,
   GetSamplingTargetsResult,
   GetSamplingTargetsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetSamplingTargetsRequest,
   output: GetSamplingTargetsResult,
@@ -3332,27 +3132,13 @@ export type GetServiceGraphError =
  * Downstream services can be other applications, Amazon Web Services resources, HTTP web APIs, or SQL
  * databases.
  */
-export const getServiceGraph: API.OperationMethod<
+export const getServiceGraph: API.PaginatedOperationMethod<
   GetServiceGraphRequest,
   GetServiceGraphResult,
   GetServiceGraphError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetServiceGraphRequest,
-  ) => stream.Stream<
-    GetServiceGraphResult,
-    GetServiceGraphError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetServiceGraphRequest,
-  ) => stream.Stream<
-    Service,
-    GetServiceGraphError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Service
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetServiceGraphRequest,
   output: GetServiceGraphResult,
   errors: [InvalidRequestException, ThrottledException],
@@ -3364,27 +3150,7 @@ export const getServiceGraph: API.OperationMethod<
     outputToken: "NextToken",
     items: "Services",
   } as const,
-})) as any as API.OperationMethod<
-  GetServiceGraphRequest,
-  GetServiceGraphResult,
-  GetServiceGraphError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetServiceGraphRequest,
-  ) => stream.Stream<
-    GetServiceGraphResult,
-    GetServiceGraphError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetServiceGraphRequest,
-  ) => stream.Stream<
-    Service,
-    GetServiceGraphError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetTimeSeriesServiceStatisticsError =
   | InvalidRequestException
@@ -3394,27 +3160,13 @@ export type GetTimeSeriesServiceStatisticsError =
  * Get an aggregation of service statistics defined by a specific time
  * range.
  */
-export const getTimeSeriesServiceStatistics: API.OperationMethod<
+export const getTimeSeriesServiceStatistics: API.PaginatedOperationMethod<
   GetTimeSeriesServiceStatisticsRequest,
   GetTimeSeriesServiceStatisticsResult,
   GetTimeSeriesServiceStatisticsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetTimeSeriesServiceStatisticsRequest,
-  ) => stream.Stream<
-    GetTimeSeriesServiceStatisticsResult,
-    GetTimeSeriesServiceStatisticsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetTimeSeriesServiceStatisticsRequest,
-  ) => stream.Stream<
-    TimeSeriesServiceStatistics,
-    GetTimeSeriesServiceStatisticsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  TimeSeriesServiceStatistics
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetTimeSeriesServiceStatisticsRequest,
   output: GetTimeSeriesServiceStatisticsResult,
   errors: [InvalidRequestException, ThrottledException],
@@ -3426,27 +3178,7 @@ export const getTimeSeriesServiceStatistics: API.OperationMethod<
     outputToken: "NextToken",
     items: "TimeSeriesServiceStatistics",
   } as const,
-})) as any as API.OperationMethod<
-  GetTimeSeriesServiceStatisticsRequest,
-  GetTimeSeriesServiceStatisticsResult,
-  GetTimeSeriesServiceStatisticsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetTimeSeriesServiceStatisticsRequest,
-  ) => stream.Stream<
-    GetTimeSeriesServiceStatisticsResult,
-    GetTimeSeriesServiceStatisticsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetTimeSeriesServiceStatisticsRequest,
-  ) => stream.Stream<
-    TimeSeriesServiceStatistics,
-    GetTimeSeriesServiceStatisticsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetTraceGraphError =
   | InvalidRequestException
@@ -3455,27 +3187,13 @@ export type GetTraceGraphError =
 /**
  * Retrieves a service graph for one or more specific trace IDs.
  */
-export const getTraceGraph: API.OperationMethod<
+export const getTraceGraph: API.PaginatedOperationMethod<
   GetTraceGraphRequest,
   GetTraceGraphResult,
   GetTraceGraphError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetTraceGraphRequest,
-  ) => stream.Stream<
-    GetTraceGraphResult,
-    GetTraceGraphError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetTraceGraphRequest,
-  ) => stream.Stream<
-    Service,
-    GetTraceGraphError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Service
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetTraceGraphRequest,
   output: GetTraceGraphResult,
   errors: [InvalidRequestException, ThrottledException],
@@ -3487,27 +3205,7 @@ export const getTraceGraph: API.OperationMethod<
     outputToken: "NextToken",
     items: "Services",
   } as const,
-})) as any as API.OperationMethod<
-  GetTraceGraphRequest,
-  GetTraceGraphResult,
-  GetTraceGraphError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetTraceGraphRequest,
-  ) => stream.Stream<
-    GetTraceGraphResult,
-    GetTraceGraphError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetTraceGraphRequest,
-  ) => stream.Stream<
-    Service,
-    GetTraceGraphError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetTraceSegmentDestinationError =
   | InvalidRequestException
@@ -3520,7 +3218,7 @@ export const getTraceSegmentDestination: API.OperationMethod<
   GetTraceSegmentDestinationRequest,
   GetTraceSegmentDestinationResult,
   GetTraceSegmentDestinationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetTraceSegmentDestinationRequest,
   output: GetTraceSegmentDestinationResult,
@@ -3554,27 +3252,13 @@ export type GetTraceSummariesError =
  * see Use filter
  * expressions in the *Amazon Web Services X-Ray Developer Guide*.
  */
-export const getTraceSummaries: API.OperationMethod<
+export const getTraceSummaries: API.PaginatedOperationMethod<
   GetTraceSummariesRequest,
   GetTraceSummariesResult,
   GetTraceSummariesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetTraceSummariesRequest,
-  ) => stream.Stream<
-    GetTraceSummariesResult,
-    GetTraceSummariesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetTraceSummariesRequest,
-  ) => stream.Stream<
-    TraceSummary,
-    GetTraceSummariesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  TraceSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetTraceSummariesRequest,
   output: GetTraceSummariesResult,
   errors: [InvalidRequestException, ThrottledException],
@@ -3586,27 +3270,7 @@ export const getTraceSummaries: API.OperationMethod<
     outputToken: "NextToken",
     items: "TraceSummaries",
   } as const,
-})) as any as API.OperationMethod<
-  GetTraceSummariesRequest,
-  GetTraceSummariesResult,
-  GetTraceSummariesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetTraceSummariesRequest,
-  ) => stream.Stream<
-    GetTraceSummariesResult,
-    GetTraceSummariesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetTraceSummariesRequest,
-  ) => stream.Stream<
-    TraceSummary,
-    GetTraceSummariesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListResourcePoliciesError =
   | InvalidRequestException
@@ -3615,27 +3279,13 @@ export type ListResourcePoliciesError =
 /**
  * Returns the list of resource policies in the target Amazon Web Services account.
  */
-export const listResourcePolicies: API.OperationMethod<
+export const listResourcePolicies: API.PaginatedOperationMethod<
   ListResourcePoliciesRequest,
   ListResourcePoliciesResult,
   ListResourcePoliciesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListResourcePoliciesRequest,
-  ) => stream.Stream<
-    ListResourcePoliciesResult,
-    ListResourcePoliciesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListResourcePoliciesRequest,
-  ) => stream.Stream<
-    ResourcePolicy,
-    ListResourcePoliciesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ResourcePolicy
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListResourcePoliciesRequest,
   output: ListResourcePoliciesResult,
   errors: [InvalidRequestException, ThrottledException],
@@ -3647,27 +3297,7 @@ export const listResourcePolicies: API.OperationMethod<
     outputToken: "NextToken",
     items: "ResourcePolicies",
   } as const,
-})) as any as API.OperationMethod<
-  ListResourcePoliciesRequest,
-  ListResourcePoliciesResult,
-  ListResourcePoliciesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListResourcePoliciesRequest,
-  ) => stream.Stream<
-    ListResourcePoliciesResult,
-    ListResourcePoliciesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListResourcePoliciesRequest,
-  ) => stream.Stream<
-    ResourcePolicy,
-    ListResourcePoliciesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListRetrievedTracesError =
   | InvalidRequestException
@@ -3689,7 +3319,7 @@ export const listRetrievedTraces: API.OperationMethod<
   ListRetrievedTracesRequest,
   ListRetrievedTracesResult,
   ListRetrievedTracesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListRetrievedTracesRequest,
   output: ListRetrievedTracesResult,
@@ -3711,27 +3341,13 @@ export type ListTagsForResourceError =
 /**
  * Returns a list of tags that are applied to the specified Amazon Web Services X-Ray group or sampling rule.
  */
-export const listTagsForResource: API.OperationMethod<
+export const listTagsForResource: API.PaginatedOperationMethod<
   ListTagsForResourceRequest,
   ListTagsForResourceResponse,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTagsForResourceRequest,
-  ) => stream.Stream<
-    ListTagsForResourceResponse,
-    ListTagsForResourceError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTagsForResourceRequest,
-  ) => stream.Stream<
-    Tag,
-    ListTagsForResourceError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Tag
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
   errors: [
@@ -3747,27 +3363,7 @@ export const listTagsForResource: API.OperationMethod<
     outputToken: "NextToken",
     items: "Tags",
   } as const,
-})) as any as API.OperationMethod<
-  ListTagsForResourceRequest,
-  ListTagsForResourceResponse,
-  ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTagsForResourceRequest,
-  ) => stream.Stream<
-    ListTagsForResourceResponse,
-    ListTagsForResourceError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTagsForResourceRequest,
-  ) => stream.Stream<
-    Tag,
-    ListTagsForResourceError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type PutEncryptionConfigError =
   | InvalidRequestException
@@ -3780,7 +3376,7 @@ export const putEncryptionConfig: API.OperationMethod<
   PutEncryptionConfigRequest,
   PutEncryptionConfigResult,
   PutEncryptionConfigError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutEncryptionConfigRequest,
   output: PutEncryptionConfigResult,
@@ -3808,7 +3404,7 @@ export const putResourcePolicy: API.OperationMethod<
   PutResourcePolicyRequest,
   PutResourcePolicyResult,
   PutResourcePolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutResourcePolicyRequest,
   output: PutResourcePolicyResult,
@@ -3836,7 +3432,7 @@ export const putTelemetryRecords: API.OperationMethod<
   PutTelemetryRecordsRequest,
   PutTelemetryRecordsResult,
   PutTelemetryRecordsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutTelemetryRecordsRequest,
   output: PutTelemetryRecordsResult,
@@ -3908,7 +3504,7 @@ export const putTraceSegments: API.OperationMethod<
   PutTraceSegmentsRequest,
   PutTraceSegmentsResult,
   PutTraceSegmentsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutTraceSegmentsRequest,
   output: PutTraceSegmentsResult,
@@ -3936,7 +3532,7 @@ export const startTraceRetrieval: API.OperationMethod<
   StartTraceRetrievalRequest,
   StartTraceRetrievalResult,
   StartTraceRetrievalError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartTraceRetrievalRequest,
   output: StartTraceRetrievalResult,
@@ -3963,7 +3559,7 @@ export const tagResource: API.OperationMethod<
   TagResourceRequest,
   TagResourceResponse,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -3991,7 +3587,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceRequest,
   UntagResourceResponse,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -4017,7 +3613,7 @@ export const updateGroup: API.OperationMethod<
   UpdateGroupRequest,
   UpdateGroupResult,
   UpdateGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateGroupRequest,
   output: UpdateGroupResult,
@@ -4041,7 +3637,7 @@ export const updateIndexingRule: API.OperationMethod<
   UpdateIndexingRuleRequest,
   UpdateIndexingRuleResult,
   UpdateIndexingRuleError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateIndexingRuleRequest,
   output: UpdateIndexingRuleResult,
@@ -4067,7 +3663,7 @@ export const updateSamplingRule: API.OperationMethod<
   UpdateSamplingRuleRequest,
   UpdateSamplingRuleResult,
   UpdateSamplingRuleError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateSamplingRuleRequest,
   output: UpdateSamplingRuleResult,
@@ -4088,7 +3684,7 @@ export const updateTraceSegmentDestination: API.OperationMethod<
   UpdateTraceSegmentDestinationRequest,
   UpdateTraceSegmentDestinationResult,
   UpdateTraceSegmentDestinationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateTraceSegmentDestinationRequest,
   output: UpdateTraceSegmentDestinationResult,

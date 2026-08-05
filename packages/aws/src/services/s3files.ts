@@ -1,6 +1,5 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -8,7 +7,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 const ns = T.XmlNamespace("s3files");
 const svc = T.AwsApiService({ sdkId: "S3Files", serviceShapeName: "S3Files" });
 const auth = T.AwsAuthSigv4({ name: "s3files" });
@@ -55,7 +53,7 @@ export class ConflictException
     "ConflictException",
     {
       errorCode: S.String,
-      message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       resourceId: S.optional(S.String),
       resourceType: S.optional(S.String),
     },
@@ -64,25 +62,37 @@ export class ConflictException
 export class InternalServerException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
     "InternalServerException",
-    { errorCode: S.String, message: S.optional(S.String) },
+    {
+      errorCode: S.String,
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(500),
   ).pipe(C.withServerError) {}
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { errorCode: S.String, message: S.optional(S.String) },
+    {
+      errorCode: S.String,
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class ServiceQuotaExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
     "ServiceQuotaExceededException",
-    { errorCode: S.String, message: S.optional(S.String) },
+    {
+      errorCode: S.String,
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(402),
   ).pipe(C.withQuotaError) {}
 export class ValidationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
     "ValidationException",
-    { errorCode: S.String, message: S.optional(S.String) },
+    {
+      errorCode: S.String,
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export type ClientToken = string;
@@ -1122,7 +1132,7 @@ export const createAccessPoint: API.OperationMethod<
   CreateAccessPointRequest,
   CreateAccessPointResponse,
   CreateAccessPointError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateAccessPointRequest,
   output: CreateAccessPointResponse,
@@ -1152,7 +1162,7 @@ export const createFileSystem: API.OperationMethod<
   CreateFileSystemRequest,
   CreateFileSystemResponse,
   CreateFileSystemError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateFileSystemRequest,
   output: CreateFileSystemResponse,
@@ -1182,7 +1192,7 @@ export const createMountTarget: API.OperationMethod<
   CreateMountTargetRequest,
   CreateMountTargetResponse,
   CreateMountTargetError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateMountTargetRequest,
   output: CreateMountTargetResponse,
@@ -1211,7 +1221,7 @@ export const deleteAccessPoint: API.OperationMethod<
   DeleteAccessPointRequest,
   DeleteAccessPointResponse,
   DeleteAccessPointError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteAccessPointRequest,
   output: DeleteAccessPointResponse,
@@ -1239,7 +1249,7 @@ export const deleteFileSystem: API.OperationMethod<
   DeleteFileSystemRequest,
   DeleteFileSystemResponse,
   DeleteFileSystemError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteFileSystemRequest,
   output: DeleteFileSystemResponse,
@@ -1266,7 +1276,7 @@ export const deleteFileSystemPolicy: API.OperationMethod<
   DeleteFileSystemPolicyRequest,
   DeleteFileSystemPolicyResponse,
   DeleteFileSystemPolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteFileSystemPolicyRequest,
   output: DeleteFileSystemPolicyResponse,
@@ -1293,7 +1303,7 @@ export const deleteMountTarget: API.OperationMethod<
   DeleteMountTargetRequest,
   DeleteMountTargetResponse,
   DeleteMountTargetError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteMountTargetRequest,
   output: DeleteMountTargetResponse,
@@ -1320,7 +1330,7 @@ export const getAccessPoint: API.OperationMethod<
   GetAccessPointRequest,
   GetAccessPointResponse,
   GetAccessPointError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetAccessPointRequest,
   output: GetAccessPointResponse,
@@ -1346,7 +1356,7 @@ export const getFileSystem: API.OperationMethod<
   GetFileSystemRequest,
   GetFileSystemResponse,
   GetFileSystemError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetFileSystemRequest,
   output: GetFileSystemResponse,
@@ -1372,7 +1382,7 @@ export const getFileSystemPolicy: API.OperationMethod<
   GetFileSystemPolicyRequest,
   GetFileSystemPolicyResponse,
   GetFileSystemPolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetFileSystemPolicyRequest,
   output: GetFileSystemPolicyResponse,
@@ -1398,7 +1408,7 @@ export const getMountTarget: API.OperationMethod<
   GetMountTargetRequest,
   GetMountTargetResponse,
   GetMountTargetError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetMountTargetRequest,
   output: GetMountTargetResponse,
@@ -1424,7 +1434,7 @@ export const getSynchronizationConfiguration: API.OperationMethod<
   GetSynchronizationConfigurationRequest,
   GetSynchronizationConfigurationResponse,
   GetSynchronizationConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetSynchronizationConfigurationRequest,
   output: GetSynchronizationConfigurationResponse,
@@ -1446,27 +1456,13 @@ export type ListAccessPointsError =
 /**
  * Returns resource information for all S3 File System Access Points associated with the specified S3 File System.
  */
-export const listAccessPoints: API.OperationMethod<
+export const listAccessPoints: API.PaginatedOperationMethod<
   ListAccessPointsRequest,
   ListAccessPointsResponse,
   ListAccessPointsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAccessPointsRequest,
-  ) => stream.Stream<
-    ListAccessPointsResponse,
-    ListAccessPointsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAccessPointsRequest,
-  ) => stream.Stream<
-    ListAccessPointsDescription,
-    ListAccessPointsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ListAccessPointsDescription
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListAccessPointsRequest,
   output: ListAccessPointsResponse,
   errors: [
@@ -1483,27 +1479,7 @@ export const listAccessPoints: API.OperationMethod<
     items: "accessPoints",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListAccessPointsRequest,
-  ListAccessPointsResponse,
-  ListAccessPointsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAccessPointsRequest,
-  ) => stream.Stream<
-    ListAccessPointsResponse,
-    ListAccessPointsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAccessPointsRequest,
-  ) => stream.Stream<
-    ListAccessPointsDescription,
-    ListAccessPointsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListFileSystemsError =
   | InternalServerException
@@ -1512,27 +1488,13 @@ export type ListFileSystemsError =
 /**
  * Returns a list of all S3 File Systems owned by the account with optional filtering by bucket.
  */
-export const listFileSystems: API.OperationMethod<
+export const listFileSystems: API.PaginatedOperationMethod<
   ListFileSystemsRequest,
   ListFileSystemsResponse,
   ListFileSystemsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListFileSystemsRequest,
-  ) => stream.Stream<
-    ListFileSystemsResponse,
-    ListFileSystemsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListFileSystemsRequest,
-  ) => stream.Stream<
-    ListFileSystemsDescription,
-    ListFileSystemsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ListFileSystemsDescription
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListFileSystemsRequest,
   output: ListFileSystemsResponse,
   errors: [InternalServerException, ValidationException],
@@ -1545,27 +1507,7 @@ export const listFileSystems: API.OperationMethod<
     items: "fileSystems",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListFileSystemsRequest,
-  ListFileSystemsResponse,
-  ListFileSystemsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListFileSystemsRequest,
-  ) => stream.Stream<
-    ListFileSystemsResponse,
-    ListFileSystemsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListFileSystemsRequest,
-  ) => stream.Stream<
-    ListFileSystemsDescription,
-    ListFileSystemsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListMountTargetsError =
   | InternalServerException
@@ -1575,27 +1517,13 @@ export type ListMountTargetsError =
 /**
  * Returns resource information for all mount targets with optional filtering by file system, access point, and VPC.
  */
-export const listMountTargets: API.OperationMethod<
+export const listMountTargets: API.PaginatedOperationMethod<
   ListMountTargetsRequest,
   ListMountTargetsResponse,
   ListMountTargetsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListMountTargetsRequest,
-  ) => stream.Stream<
-    ListMountTargetsResponse,
-    ListMountTargetsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListMountTargetsRequest,
-  ) => stream.Stream<
-    ListMountTargetsDescription,
-    ListMountTargetsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ListMountTargetsDescription
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListMountTargetsRequest,
   output: ListMountTargetsResponse,
   errors: [
@@ -1612,27 +1540,7 @@ export const listMountTargets: API.OperationMethod<
     items: "mountTargets",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListMountTargetsRequest,
-  ListMountTargetsResponse,
-  ListMountTargetsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListMountTargetsRequest,
-  ) => stream.Stream<
-    ListMountTargetsResponse,
-    ListMountTargetsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListMountTargetsRequest,
-  ) => stream.Stream<
-    ListMountTargetsDescription,
-    ListMountTargetsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsForResourceError =
   | InternalServerException
@@ -1642,27 +1550,13 @@ export type ListTagsForResourceError =
 /**
  * Lists all tags for S3 Files resources.
  */
-export const listTagsForResource: API.OperationMethod<
+export const listTagsForResource: API.PaginatedOperationMethod<
   ListTagsForResourceRequest,
   ListTagsForResourceResponse,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTagsForResourceRequest,
-  ) => stream.Stream<
-    ListTagsForResourceResponse,
-    ListTagsForResourceError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTagsForResourceRequest,
-  ) => stream.Stream<
-    Tag,
-    ListTagsForResourceError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Tag
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
   errors: [
@@ -1679,27 +1573,7 @@ export const listTagsForResource: API.OperationMethod<
     items: "tags",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListTagsForResourceRequest,
-  ListTagsForResourceResponse,
-  ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTagsForResourceRequest,
-  ) => stream.Stream<
-    ListTagsForResourceResponse,
-    ListTagsForResourceError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTagsForResourceRequest,
-  ) => stream.Stream<
-    Tag,
-    ListTagsForResourceError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type PutFileSystemPolicyError =
   | InternalServerException
@@ -1713,7 +1587,7 @@ export const putFileSystemPolicy: API.OperationMethod<
   PutFileSystemPolicyRequest,
   PutFileSystemPolicyResponse,
   PutFileSystemPolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutFileSystemPolicyRequest,
   output: PutFileSystemPolicyResponse,
@@ -1740,7 +1614,7 @@ export const putSynchronizationConfiguration: API.OperationMethod<
   PutSynchronizationConfigurationRequest,
   PutSynchronizationConfigurationResponse,
   PutSynchronizationConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutSynchronizationConfigurationRequest,
   output: PutSynchronizationConfigurationResponse,
@@ -1767,7 +1641,7 @@ export const tagResource: API.OperationMethod<
   TagResourceRequest,
   TagResourceResponse,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -1793,7 +1667,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceRequest,
   UntagResourceResponse,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -1819,7 +1693,7 @@ export const updateMountTarget: API.OperationMethod<
   UpdateMountTargetRequest,
   UpdateMountTargetResponse,
   UpdateMountTargetError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateMountTargetRequest,
   output: UpdateMountTargetResponse,

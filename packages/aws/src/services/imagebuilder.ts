@@ -1,6 +1,5 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -8,7 +7,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 const svc = T.AwsApiService({
   sdkId: "imagebuilder",
   serviceShapeName: "imagebuilder",
@@ -91,121 +89,121 @@ const rules = T.EndpointResolver((p, _) => {
 export class AccessDeniedException
   extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
     "AccessDeniedException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(403),
   ).pipe(C.withAuthError) {}
 export class CallRateLimitExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<CallRateLimitExceededException>()(
     "CallRateLimitExceededException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(429),
   ).pipe(C.withThrottlingError) {}
 export class ClientException
   extends /*@__PURE__*/ S.TaggedErrorClass<ClientException>()(
     "ClientException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class DryRunOperationException
   extends /*@__PURE__*/ S.TaggedErrorClass<DryRunOperationException>()(
     "DryRunOperationException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(412),
   ) {}
 export class ForbiddenException
   extends /*@__PURE__*/ S.TaggedErrorClass<ForbiddenException>()(
     "ForbiddenException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(403),
   ).pipe(C.withAuthError) {}
 export class IdempotentParameterMismatchException
   extends /*@__PURE__*/ S.TaggedErrorClass<IdempotentParameterMismatchException>()(
     "IdempotentParameterMismatchException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class InvalidPaginationTokenException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidPaginationTokenException>()(
     "InvalidPaginationTokenException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class InvalidParameterCombinationException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidParameterCombinationException>()(
     "InvalidParameterCombinationException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class InvalidParameterException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidParameterException>()(
     "InvalidParameterException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class InvalidParameterValueException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidParameterValueException>()(
     "InvalidParameterValueException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class InvalidRequestException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidRequestException>()(
     "InvalidRequestException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class InvalidVersionNumberException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidVersionNumberException>()(
     "InvalidVersionNumberException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class ResourceAlreadyExistsException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceAlreadyExistsException>()(
     "ResourceAlreadyExistsException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError, C.withAlreadyExistsError) {}
 export class ResourceDependencyException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceDependencyException>()(
     "ResourceDependencyException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class ResourceInUseException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceInUseException>()(
     "ResourceInUseException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class ServiceException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceException>()(
     "ServiceException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(500),
   ).pipe(C.withServerError) {}
 export class ServiceQuotaExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
     "ServiceQuotaExceededException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(402),
   ).pipe(C.withQuotaError) {}
 export class ServiceUnavailableException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceUnavailableException>()(
     "ServiceUnavailableException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(503),
   ).pipe(C.withServerError) {}
 export class TooManyRequestsException
   extends /*@__PURE__*/ S.TaggedErrorClass<TooManyRequestsException>()(
     "TooManyRequestsException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(429),
   ).pipe(C.withThrottlingError) {}
 export type ImageBuildVersionArn = string;
@@ -5582,7 +5580,7 @@ export const cancelImageCreation: API.OperationMethod<
   CancelImageCreationRequest,
   CancelImageCreationResponse,
   CancelImageCreationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CancelImageCreationRequest,
   output: CancelImageCreationResponse,
@@ -5619,7 +5617,7 @@ export const cancelLifecycleExecution: API.OperationMethod<
   CancelLifecycleExecutionRequest,
   CancelLifecycleExecutionResponse,
   CancelLifecycleExecutionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CancelLifecycleExecutionRequest,
   output: CancelLifecycleExecutionResponse,
@@ -5666,7 +5664,7 @@ export const createComponent: API.OperationMethod<
   CreateComponentRequest,
   CreateComponentResponse,
   CreateComponentError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateComponentRequest,
   output: CreateComponentResponse,
@@ -5710,7 +5708,7 @@ export const createContainerRecipe: API.OperationMethod<
   CreateContainerRecipeRequest,
   CreateContainerRecipeResponse,
   CreateContainerRecipeError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateContainerRecipeRequest,
   output: CreateContainerRecipeResponse,
@@ -5753,7 +5751,7 @@ export const createDistributionConfiguration: API.OperationMethod<
   CreateDistributionConfigurationRequest,
   CreateDistributionConfigurationResponse,
   CreateDistributionConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateDistributionConfigurationRequest,
   output: CreateDistributionConfigurationResponse,
@@ -5796,7 +5794,7 @@ export const createImage: API.OperationMethod<
   CreateImageRequest,
   CreateImageResponse,
   CreateImageError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateImageRequest,
   output: CreateImageResponse,
@@ -5836,7 +5834,7 @@ export const createImagePipeline: API.OperationMethod<
   CreateImagePipelineRequest,
   CreateImagePipelineResponse,
   CreateImagePipelineError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateImagePipelineRequest,
   output: CreateImagePipelineResponse,
@@ -5878,7 +5876,7 @@ export const createImageRecipe: API.OperationMethod<
   CreateImageRecipeRequest,
   CreateImageRecipeResponse,
   CreateImageRecipeError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateImageRecipeRequest,
   output: CreateImageRecipeResponse,
@@ -5921,7 +5919,7 @@ export const createInfrastructureConfiguration: API.OperationMethod<
   CreateInfrastructureConfigurationRequest,
   CreateInfrastructureConfigurationResponse,
   CreateInfrastructureConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateInfrastructureConfigurationRequest,
   output: CreateInfrastructureConfigurationResponse,
@@ -5962,7 +5960,7 @@ export const createLifecyclePolicy: API.OperationMethod<
   CreateLifecyclePolicyRequest,
   CreateLifecyclePolicyResponse,
   CreateLifecyclePolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateLifecyclePolicyRequest,
   output: CreateLifecyclePolicyResponse,
@@ -6004,7 +6002,7 @@ export const createWorkflow: API.OperationMethod<
   CreateWorkflowRequest,
   CreateWorkflowResponse,
   CreateWorkflowError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateWorkflowRequest,
   output: CreateWorkflowResponse,
@@ -6044,7 +6042,7 @@ export const deleteComponent: API.OperationMethod<
   DeleteComponentRequest,
   DeleteComponentResponse,
   DeleteComponentError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteComponentRequest,
   output: DeleteComponentResponse,
@@ -6079,7 +6077,7 @@ export const deleteContainerRecipe: API.OperationMethod<
   DeleteContainerRecipeRequest,
   DeleteContainerRecipeResponse,
   DeleteContainerRecipeError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteContainerRecipeRequest,
   output: DeleteContainerRecipeResponse,
@@ -6114,7 +6112,7 @@ export const deleteDistributionConfiguration: API.OperationMethod<
   DeleteDistributionConfigurationRequest,
   DeleteDistributionConfigurationResponse,
   DeleteDistributionConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteDistributionConfigurationRequest,
   output: DeleteDistributionConfigurationResponse,
@@ -6166,7 +6164,7 @@ export const deleteImage: API.OperationMethod<
   DeleteImageRequest,
   DeleteImageResponse,
   DeleteImageError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteImageRequest,
   output: DeleteImageResponse,
@@ -6202,7 +6200,7 @@ export const deleteImagePipeline: API.OperationMethod<
   DeleteImagePipelineRequest,
   DeleteImagePipelineResponse,
   DeleteImagePipelineError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteImagePipelineRequest,
   output: DeleteImagePipelineResponse,
@@ -6238,7 +6236,7 @@ export const deleteImageRecipe: API.OperationMethod<
   DeleteImageRecipeRequest,
   DeleteImageRecipeResponse,
   DeleteImageRecipeError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteImageRecipeRequest,
   output: DeleteImageRecipeResponse,
@@ -6274,7 +6272,7 @@ export const deleteInfrastructureConfiguration: API.OperationMethod<
   DeleteInfrastructureConfigurationRequest,
   DeleteInfrastructureConfigurationResponse,
   DeleteInfrastructureConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteInfrastructureConfigurationRequest,
   output: DeleteInfrastructureConfigurationResponse,
@@ -6309,7 +6307,7 @@ export const deleteLifecyclePolicy: API.OperationMethod<
   DeleteLifecyclePolicyRequest,
   DeleteLifecyclePolicyResponse,
   DeleteLifecyclePolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteLifecyclePolicyRequest,
   output: DeleteLifecyclePolicyResponse,
@@ -6343,7 +6341,7 @@ export const deleteWorkflow: API.OperationMethod<
   DeleteWorkflowRequest,
   DeleteWorkflowResponse,
   DeleteWorkflowError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteWorkflowRequest,
   output: DeleteWorkflowResponse,
@@ -6384,7 +6382,7 @@ export const distributeImage: API.OperationMethod<
   DistributeImageRequest,
   DistributeImageResponse,
   DistributeImageError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DistributeImageRequest,
   output: DistributeImageResponse,
@@ -6423,7 +6421,7 @@ export const getComponent: API.OperationMethod<
   GetComponentRequest,
   GetComponentResponse,
   GetComponentError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetComponentRequest,
   output: GetComponentResponse,
@@ -6456,7 +6454,7 @@ export const getComponentPolicy: API.OperationMethod<
   GetComponentPolicyRequest,
   GetComponentPolicyResponse,
   GetComponentPolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetComponentPolicyRequest,
   output: GetComponentPolicyResponse,
@@ -6488,7 +6486,7 @@ export const getContainerRecipe: API.OperationMethod<
   GetContainerRecipeRequest,
   GetContainerRecipeResponse,
   GetContainerRecipeError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetContainerRecipeRequest,
   output: GetContainerRecipeResponse,
@@ -6520,7 +6518,7 @@ export const getContainerRecipePolicy: API.OperationMethod<
   GetContainerRecipePolicyRequest,
   GetContainerRecipePolicyResponse,
   GetContainerRecipePolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetContainerRecipePolicyRequest,
   output: GetContainerRecipePolicyResponse,
@@ -6553,7 +6551,7 @@ export const getDistributionConfiguration: API.OperationMethod<
   GetDistributionConfigurationRequest,
   GetDistributionConfigurationResponse,
   GetDistributionConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetDistributionConfigurationRequest,
   output: GetDistributionConfigurationResponse,
@@ -6587,7 +6585,7 @@ export const getImage: API.OperationMethod<
   GetImageRequest,
   GetImageResponse,
   GetImageError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetImageRequest,
   output: GetImageResponse,
@@ -6621,7 +6619,7 @@ export const getImagePipeline: API.OperationMethod<
   GetImagePipelineRequest,
   GetImagePipelineResponse,
   GetImagePipelineError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetImagePipelineRequest,
   output: GetImagePipelineResponse,
@@ -6654,7 +6652,7 @@ export const getImagePolicy: API.OperationMethod<
   GetImagePolicyRequest,
   GetImagePolicyResponse,
   GetImagePolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetImagePolicyRequest,
   output: GetImagePolicyResponse,
@@ -6687,7 +6685,7 @@ export const getImageRecipe: API.OperationMethod<
   GetImageRecipeRequest,
   GetImageRecipeResponse,
   GetImageRecipeError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetImageRecipeRequest,
   output: GetImageRecipeResponse,
@@ -6720,7 +6718,7 @@ export const getImageRecipePolicy: API.OperationMethod<
   GetImageRecipePolicyRequest,
   GetImageRecipePolicyResponse,
   GetImageRecipePolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetImageRecipePolicyRequest,
   output: GetImageRecipePolicyResponse,
@@ -6753,7 +6751,7 @@ export const getInfrastructureConfiguration: API.OperationMethod<
   GetInfrastructureConfigurationRequest,
   GetInfrastructureConfigurationResponse,
   GetInfrastructureConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetInfrastructureConfigurationRequest,
   output: GetInfrastructureConfigurationResponse,
@@ -6786,7 +6784,7 @@ export const getLifecycleExecution: API.OperationMethod<
   GetLifecycleExecutionRequest,
   GetLifecycleExecutionResponse,
   GetLifecycleExecutionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetLifecycleExecutionRequest,
   output: GetLifecycleExecutionResponse,
@@ -6818,7 +6816,7 @@ export const getLifecyclePolicy: API.OperationMethod<
   GetLifecyclePolicyRequest,
   GetLifecyclePolicyResponse,
   GetLifecyclePolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetLifecyclePolicyRequest,
   output: GetLifecyclePolicyResponse,
@@ -6852,7 +6850,7 @@ export const getMarketplaceResource: API.OperationMethod<
   GetMarketplaceResourceRequest,
   GetMarketplaceResourceResponse,
   GetMarketplaceResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetMarketplaceResourceRequest,
   output: GetMarketplaceResourceResponse,
@@ -6884,7 +6882,7 @@ export const getWorkflow: API.OperationMethod<
   GetWorkflowRequest,
   GetWorkflowResponse,
   GetWorkflowError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetWorkflowRequest,
   output: GetWorkflowResponse,
@@ -6917,7 +6915,7 @@ export const getWorkflowExecution: API.OperationMethod<
   GetWorkflowExecutionRequest,
   GetWorkflowExecutionResponse,
   GetWorkflowExecutionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetWorkflowExecutionRequest,
   output: GetWorkflowExecutionResponse,
@@ -6950,7 +6948,7 @@ export const getWorkflowStepExecution: API.OperationMethod<
   GetWorkflowStepExecutionRequest,
   GetWorkflowStepExecutionResponse,
   GetWorkflowStepExecutionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetWorkflowStepExecutionRequest,
   output: GetWorkflowStepExecutionResponse,
@@ -6986,7 +6984,7 @@ export const importComponent: API.OperationMethod<
   ImportComponentRequest,
   ImportComponentResponse,
   ImportComponentError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ImportComponentRequest,
   output: ImportComponentResponse,
@@ -7024,7 +7022,7 @@ export const importDiskImage: API.OperationMethod<
   ImportDiskImageRequest,
   ImportDiskImageResponse,
   ImportDiskImageError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ImportDiskImageRequest,
   output: ImportDiskImageResponse,
@@ -7059,7 +7057,7 @@ export const importVmImage: API.OperationMethod<
   ImportVmImageRequest,
   ImportVmImageResponse,
   ImportVmImageError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ImportVmImageRequest,
   output: ImportVmImageResponse,
@@ -7083,27 +7081,13 @@ export type ListComponentBuildVersionsError =
  * Returns the list of component build versions for the specified component
  * version Amazon Resource Name (ARN).
  */
-export const listComponentBuildVersions: API.OperationMethod<
+export const listComponentBuildVersions: API.PaginatedOperationMethod<
   ListComponentBuildVersionsRequest,
   ListComponentBuildVersionsResponse,
   ListComponentBuildVersionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListComponentBuildVersionsRequest,
-  ) => stream.Stream<
-    ListComponentBuildVersionsResponse,
-    ListComponentBuildVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListComponentBuildVersionsRequest,
-  ) => stream.Stream<
-    ComponentSummary,
-    ListComponentBuildVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ComponentSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListComponentBuildVersionsRequest,
   output: ListComponentBuildVersionsResponse,
   errors: [
@@ -7125,27 +7109,7 @@ export const listComponentBuildVersions: API.OperationMethod<
     items: "componentSummaryList",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListComponentBuildVersionsRequest,
-  ListComponentBuildVersionsResponse,
-  ListComponentBuildVersionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListComponentBuildVersionsRequest,
-  ) => stream.Stream<
-    ListComponentBuildVersionsResponse,
-    ListComponentBuildVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListComponentBuildVersionsRequest,
-  ) => stream.Stream<
-    ComponentSummary,
-    ListComponentBuildVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListComponentsError =
   | CallRateLimitExceededException
@@ -7169,27 +7133,13 @@ export type ListComponentsError =
  * recipe. When you use a wildcard in any node, all nodes to the right of the first wildcard must also be
  * wildcards.
  */
-export const listComponents: API.OperationMethod<
+export const listComponents: API.PaginatedOperationMethod<
   ListComponentsRequest,
   ListComponentsResponse,
   ListComponentsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListComponentsRequest,
-  ) => stream.Stream<
-    ListComponentsResponse,
-    ListComponentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListComponentsRequest,
-  ) => stream.Stream<
-    ComponentVersion,
-    ListComponentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ComponentVersion
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListComponentsRequest,
   output: ListComponentsResponse,
   errors: [
@@ -7210,27 +7160,7 @@ export const listComponents: API.OperationMethod<
     items: "componentVersionList",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListComponentsRequest,
-  ListComponentsResponse,
-  ListComponentsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListComponentsRequest,
-  ) => stream.Stream<
-    ListComponentsResponse,
-    ListComponentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListComponentsRequest,
-  ) => stream.Stream<
-    ComponentVersion,
-    ListComponentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListContainerRecipesError =
   | CallRateLimitExceededException
@@ -7244,27 +7174,13 @@ export type ListContainerRecipesError =
 /**
  * Returns a list of container recipes.
  */
-export const listContainerRecipes: API.OperationMethod<
+export const listContainerRecipes: API.PaginatedOperationMethod<
   ListContainerRecipesRequest,
   ListContainerRecipesResponse,
   ListContainerRecipesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListContainerRecipesRequest,
-  ) => stream.Stream<
-    ListContainerRecipesResponse,
-    ListContainerRecipesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListContainerRecipesRequest,
-  ) => stream.Stream<
-    ContainerRecipeSummary,
-    ListContainerRecipesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ContainerRecipeSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListContainerRecipesRequest,
   output: ListContainerRecipesResponse,
   errors: [
@@ -7285,27 +7201,7 @@ export const listContainerRecipes: API.OperationMethod<
     items: "containerRecipeSummaryList",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListContainerRecipesRequest,
-  ListContainerRecipesResponse,
-  ListContainerRecipesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListContainerRecipesRequest,
-  ) => stream.Stream<
-    ListContainerRecipesResponse,
-    ListContainerRecipesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListContainerRecipesRequest,
-  ) => stream.Stream<
-    ContainerRecipeSummary,
-    ListContainerRecipesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListDistributionConfigurationsError =
   | CallRateLimitExceededException
@@ -7319,27 +7215,13 @@ export type ListDistributionConfigurationsError =
 /**
  * Returns a list of distribution configurations.
  */
-export const listDistributionConfigurations: API.OperationMethod<
+export const listDistributionConfigurations: API.PaginatedOperationMethod<
   ListDistributionConfigurationsRequest,
   ListDistributionConfigurationsResponse,
   ListDistributionConfigurationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDistributionConfigurationsRequest,
-  ) => stream.Stream<
-    ListDistributionConfigurationsResponse,
-    ListDistributionConfigurationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDistributionConfigurationsRequest,
-  ) => stream.Stream<
-    DistributionConfigurationSummary,
-    ListDistributionConfigurationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  DistributionConfigurationSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListDistributionConfigurationsRequest,
   output: ListDistributionConfigurationsResponse,
   errors: [
@@ -7360,27 +7242,7 @@ export const listDistributionConfigurations: API.OperationMethod<
     items: "distributionConfigurationSummaryList",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListDistributionConfigurationsRequest,
-  ListDistributionConfigurationsResponse,
-  ListDistributionConfigurationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDistributionConfigurationsRequest,
-  ) => stream.Stream<
-    ListDistributionConfigurationsResponse,
-    ListDistributionConfigurationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDistributionConfigurationsRequest,
-  ) => stream.Stream<
-    DistributionConfigurationSummary,
-    ListDistributionConfigurationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListImageBuildVersionsError =
   | CallRateLimitExceededException
@@ -7394,27 +7256,13 @@ export type ListImageBuildVersionsError =
 /**
  * Returns a list of image build versions.
  */
-export const listImageBuildVersions: API.OperationMethod<
+export const listImageBuildVersions: API.PaginatedOperationMethod<
   ListImageBuildVersionsRequest,
   ListImageBuildVersionsResponse,
   ListImageBuildVersionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListImageBuildVersionsRequest,
-  ) => stream.Stream<
-    ListImageBuildVersionsResponse,
-    ListImageBuildVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListImageBuildVersionsRequest,
-  ) => stream.Stream<
-    ImageSummary,
-    ListImageBuildVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ImageSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListImageBuildVersionsRequest,
   output: ListImageBuildVersionsResponse,
   errors: [
@@ -7435,27 +7283,7 @@ export const listImageBuildVersions: API.OperationMethod<
     items: "imageSummaryList",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListImageBuildVersionsRequest,
-  ListImageBuildVersionsResponse,
-  ListImageBuildVersionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListImageBuildVersionsRequest,
-  ) => stream.Stream<
-    ListImageBuildVersionsResponse,
-    ListImageBuildVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListImageBuildVersionsRequest,
-  ) => stream.Stream<
-    ImageSummary,
-    ListImageBuildVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListImagePackagesError =
   | CallRateLimitExceededException
@@ -7471,27 +7299,13 @@ export type ListImagePackagesError =
  * List the Packages that are associated with an Image Build Version, as determined by
  * Amazon Web Services Systems Manager Inventory at build time.
  */
-export const listImagePackages: API.OperationMethod<
+export const listImagePackages: API.PaginatedOperationMethod<
   ListImagePackagesRequest,
   ListImagePackagesResponse,
   ListImagePackagesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListImagePackagesRequest,
-  ) => stream.Stream<
-    ListImagePackagesResponse,
-    ListImagePackagesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListImagePackagesRequest,
-  ) => stream.Stream<
-    ImagePackage,
-    ListImagePackagesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ImagePackage
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListImagePackagesRequest,
   output: ListImagePackagesResponse,
   errors: [
@@ -7513,27 +7327,7 @@ export const listImagePackages: API.OperationMethod<
     items: "imagePackageList",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListImagePackagesRequest,
-  ListImagePackagesResponse,
-  ListImagePackagesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListImagePackagesRequest,
-  ) => stream.Stream<
-    ListImagePackagesResponse,
-    ListImagePackagesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListImagePackagesRequest,
-  ) => stream.Stream<
-    ImagePackage,
-    ListImagePackagesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListImagePipelineImagesError =
   | CallRateLimitExceededException
@@ -7548,27 +7342,13 @@ export type ListImagePipelineImagesError =
 /**
  * Returns a list of images created by the specified pipeline.
  */
-export const listImagePipelineImages: API.OperationMethod<
+export const listImagePipelineImages: API.PaginatedOperationMethod<
   ListImagePipelineImagesRequest,
   ListImagePipelineImagesResponse,
   ListImagePipelineImagesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListImagePipelineImagesRequest,
-  ) => stream.Stream<
-    ListImagePipelineImagesResponse,
-    ListImagePipelineImagesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListImagePipelineImagesRequest,
-  ) => stream.Stream<
-    ImageSummary,
-    ListImagePipelineImagesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ImageSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListImagePipelineImagesRequest,
   output: ListImagePipelineImagesResponse,
   errors: [
@@ -7590,27 +7370,7 @@ export const listImagePipelineImages: API.OperationMethod<
     items: "imageSummaryList",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListImagePipelineImagesRequest,
-  ListImagePipelineImagesResponse,
-  ListImagePipelineImagesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListImagePipelineImagesRequest,
-  ) => stream.Stream<
-    ListImagePipelineImagesResponse,
-    ListImagePipelineImagesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListImagePipelineImagesRequest,
-  ) => stream.Stream<
-    ImageSummary,
-    ListImagePipelineImagesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListImagePipelinesError =
   | CallRateLimitExceededException
@@ -7624,27 +7384,13 @@ export type ListImagePipelinesError =
 /**
  * Returns a list of image pipelines.
  */
-export const listImagePipelines: API.OperationMethod<
+export const listImagePipelines: API.PaginatedOperationMethod<
   ListImagePipelinesRequest,
   ListImagePipelinesResponse,
   ListImagePipelinesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListImagePipelinesRequest,
-  ) => stream.Stream<
-    ListImagePipelinesResponse,
-    ListImagePipelinesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListImagePipelinesRequest,
-  ) => stream.Stream<
-    ImagePipeline,
-    ListImagePipelinesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ImagePipeline
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListImagePipelinesRequest,
   output: ListImagePipelinesResponse,
   errors: [
@@ -7665,27 +7411,7 @@ export const listImagePipelines: API.OperationMethod<
     items: "imagePipelineList",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListImagePipelinesRequest,
-  ListImagePipelinesResponse,
-  ListImagePipelinesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListImagePipelinesRequest,
-  ) => stream.Stream<
-    ListImagePipelinesResponse,
-    ListImagePipelinesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListImagePipelinesRequest,
-  ) => stream.Stream<
-    ImagePipeline,
-    ListImagePipelinesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListImageRecipesError =
   | CallRateLimitExceededException
@@ -7699,27 +7425,13 @@ export type ListImageRecipesError =
 /**
  * Returns a list of image recipes.
  */
-export const listImageRecipes: API.OperationMethod<
+export const listImageRecipes: API.PaginatedOperationMethod<
   ListImageRecipesRequest,
   ListImageRecipesResponse,
   ListImageRecipesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListImageRecipesRequest,
-  ) => stream.Stream<
-    ListImageRecipesResponse,
-    ListImageRecipesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListImageRecipesRequest,
-  ) => stream.Stream<
-    ImageRecipeSummary,
-    ListImageRecipesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ImageRecipeSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListImageRecipesRequest,
   output: ListImageRecipesResponse,
   errors: [
@@ -7740,27 +7452,7 @@ export const listImageRecipes: API.OperationMethod<
     items: "imageRecipeSummaryList",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListImageRecipesRequest,
-  ListImageRecipesResponse,
-  ListImageRecipesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListImageRecipesRequest,
-  ) => stream.Stream<
-    ListImageRecipesResponse,
-    ListImageRecipesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListImageRecipesRequest,
-  ) => stream.Stream<
-    ImageRecipeSummary,
-    ListImageRecipesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListImagesError =
   | CallRateLimitExceededException
@@ -7775,27 +7467,13 @@ export type ListImagesError =
  * Returns the list of images that you have access to. Newly created images can take up
  * to two minutes to appear in the ListImages API Results.
  */
-export const listImages: API.OperationMethod<
+export const listImages: API.PaginatedOperationMethod<
   ListImagesRequest,
   ListImagesResponse,
   ListImagesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListImagesRequest,
-  ) => stream.Stream<
-    ListImagesResponse,
-    ListImagesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListImagesRequest,
-  ) => stream.Stream<
-    ImageVersion,
-    ListImagesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ImageVersion
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListImagesRequest,
   output: ListImagesResponse,
   errors: [
@@ -7816,27 +7494,7 @@ export const listImages: API.OperationMethod<
     items: "imageVersionList",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListImagesRequest,
-  ListImagesResponse,
-  ListImagesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListImagesRequest,
-  ) => stream.Stream<
-    ListImagesResponse,
-    ListImagesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListImagesRequest,
-  ) => stream.Stream<
-    ImageVersion,
-    ListImagesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListImageScanFindingAggregationsError =
   | CallRateLimitExceededException
@@ -7864,27 +7522,13 @@ export type ListImageScanFindingAggregationsError =
  *
  * - `vulnerabilityId`
  */
-export const listImageScanFindingAggregations: API.OperationMethod<
+export const listImageScanFindingAggregations: API.PaginatedOperationMethod<
   ListImageScanFindingAggregationsRequest,
   ListImageScanFindingAggregationsResponse,
   ListImageScanFindingAggregationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListImageScanFindingAggregationsRequest,
-  ) => stream.Stream<
-    ListImageScanFindingAggregationsResponse,
-    ListImageScanFindingAggregationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListImageScanFindingAggregationsRequest,
-  ) => stream.Stream<
-    ImageScanFindingAggregation,
-    ListImageScanFindingAggregationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ImageScanFindingAggregation
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListImageScanFindingAggregationsRequest,
   output: ListImageScanFindingAggregationsResponse,
   errors: [
@@ -7904,27 +7548,7 @@ export const listImageScanFindingAggregations: API.OperationMethod<
     outputToken: "nextToken",
     items: "responses",
   } as const,
-})) as any as API.OperationMethod<
-  ListImageScanFindingAggregationsRequest,
-  ListImageScanFindingAggregationsResponse,
-  ListImageScanFindingAggregationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListImageScanFindingAggregationsRequest,
-  ) => stream.Stream<
-    ListImageScanFindingAggregationsResponse,
-    ListImageScanFindingAggregationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListImageScanFindingAggregationsRequest,
-  ) => stream.Stream<
-    ImageScanFindingAggregation,
-    ListImageScanFindingAggregationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListImageScanFindingsError =
   | CallRateLimitExceededException
@@ -7938,27 +7562,13 @@ export type ListImageScanFindingsError =
 /**
  * Returns a list of image scan findings for your account.
  */
-export const listImageScanFindings: API.OperationMethod<
+export const listImageScanFindings: API.PaginatedOperationMethod<
   ListImageScanFindingsRequest,
   ListImageScanFindingsResponse,
   ListImageScanFindingsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListImageScanFindingsRequest,
-  ) => stream.Stream<
-    ListImageScanFindingsResponse,
-    ListImageScanFindingsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListImageScanFindingsRequest,
-  ) => stream.Stream<
-    ImageScanFinding,
-    ListImageScanFindingsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ImageScanFinding
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListImageScanFindingsRequest,
   output: ListImageScanFindingsResponse,
   errors: [
@@ -7979,27 +7589,7 @@ export const listImageScanFindings: API.OperationMethod<
     items: "findings",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListImageScanFindingsRequest,
-  ListImageScanFindingsResponse,
-  ListImageScanFindingsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListImageScanFindingsRequest,
-  ) => stream.Stream<
-    ListImageScanFindingsResponse,
-    ListImageScanFindingsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListImageScanFindingsRequest,
-  ) => stream.Stream<
-    ImageScanFinding,
-    ListImageScanFindingsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListInfrastructureConfigurationsError =
   | CallRateLimitExceededException
@@ -8013,27 +7603,13 @@ export type ListInfrastructureConfigurationsError =
 /**
  * Returns a list of infrastructure configurations.
  */
-export const listInfrastructureConfigurations: API.OperationMethod<
+export const listInfrastructureConfigurations: API.PaginatedOperationMethod<
   ListInfrastructureConfigurationsRequest,
   ListInfrastructureConfigurationsResponse,
   ListInfrastructureConfigurationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListInfrastructureConfigurationsRequest,
-  ) => stream.Stream<
-    ListInfrastructureConfigurationsResponse,
-    ListInfrastructureConfigurationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListInfrastructureConfigurationsRequest,
-  ) => stream.Stream<
-    InfrastructureConfigurationSummary,
-    ListInfrastructureConfigurationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  InfrastructureConfigurationSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListInfrastructureConfigurationsRequest,
   output: ListInfrastructureConfigurationsResponse,
   errors: [
@@ -8054,27 +7630,7 @@ export const listInfrastructureConfigurations: API.OperationMethod<
     items: "infrastructureConfigurationSummaryList",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListInfrastructureConfigurationsRequest,
-  ListInfrastructureConfigurationsResponse,
-  ListInfrastructureConfigurationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListInfrastructureConfigurationsRequest,
-  ) => stream.Stream<
-    ListInfrastructureConfigurationsResponse,
-    ListInfrastructureConfigurationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListInfrastructureConfigurationsRequest,
-  ) => stream.Stream<
-    InfrastructureConfigurationSummary,
-    ListInfrastructureConfigurationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListLifecycleExecutionResourcesError =
   | CallRateLimitExceededException
@@ -8088,27 +7644,13 @@ export type ListLifecycleExecutionResourcesError =
 /**
  * List resources that the runtime instance of the image lifecycle identified for lifecycle actions.
  */
-export const listLifecycleExecutionResources: API.OperationMethod<
+export const listLifecycleExecutionResources: API.PaginatedOperationMethod<
   ListLifecycleExecutionResourcesRequest,
   ListLifecycleExecutionResourcesResponse,
   ListLifecycleExecutionResourcesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListLifecycleExecutionResourcesRequest,
-  ) => stream.Stream<
-    ListLifecycleExecutionResourcesResponse,
-    ListLifecycleExecutionResourcesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListLifecycleExecutionResourcesRequest,
-  ) => stream.Stream<
-    LifecycleExecutionResource,
-    ListLifecycleExecutionResourcesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  LifecycleExecutionResource
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListLifecycleExecutionResourcesRequest,
   output: ListLifecycleExecutionResourcesResponse,
   errors: [
@@ -8129,27 +7671,7 @@ export const listLifecycleExecutionResources: API.OperationMethod<
     items: "resources",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListLifecycleExecutionResourcesRequest,
-  ListLifecycleExecutionResourcesResponse,
-  ListLifecycleExecutionResourcesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListLifecycleExecutionResourcesRequest,
-  ) => stream.Stream<
-    ListLifecycleExecutionResourcesResponse,
-    ListLifecycleExecutionResourcesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListLifecycleExecutionResourcesRequest,
-  ) => stream.Stream<
-    LifecycleExecutionResource,
-    ListLifecycleExecutionResourcesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListLifecycleExecutionsError =
   | CallRateLimitExceededException
@@ -8163,27 +7685,13 @@ export type ListLifecycleExecutionsError =
 /**
  * Get the lifecycle runtime history for the specified resource.
  */
-export const listLifecycleExecutions: API.OperationMethod<
+export const listLifecycleExecutions: API.PaginatedOperationMethod<
   ListLifecycleExecutionsRequest,
   ListLifecycleExecutionsResponse,
   ListLifecycleExecutionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListLifecycleExecutionsRequest,
-  ) => stream.Stream<
-    ListLifecycleExecutionsResponse,
-    ListLifecycleExecutionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListLifecycleExecutionsRequest,
-  ) => stream.Stream<
-    LifecycleExecution,
-    ListLifecycleExecutionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  LifecycleExecution
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListLifecycleExecutionsRequest,
   output: ListLifecycleExecutionsResponse,
   errors: [
@@ -8204,27 +7712,7 @@ export const listLifecycleExecutions: API.OperationMethod<
     items: "lifecycleExecutions",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListLifecycleExecutionsRequest,
-  ListLifecycleExecutionsResponse,
-  ListLifecycleExecutionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListLifecycleExecutionsRequest,
-  ) => stream.Stream<
-    ListLifecycleExecutionsResponse,
-    ListLifecycleExecutionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListLifecycleExecutionsRequest,
-  ) => stream.Stream<
-    LifecycleExecution,
-    ListLifecycleExecutionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListLifecyclePoliciesError =
   | CallRateLimitExceededException
@@ -8238,27 +7726,13 @@ export type ListLifecyclePoliciesError =
 /**
  * Get a list of lifecycle policies in your Amazon Web Services account.
  */
-export const listLifecyclePolicies: API.OperationMethod<
+export const listLifecyclePolicies: API.PaginatedOperationMethod<
   ListLifecyclePoliciesRequest,
   ListLifecyclePoliciesResponse,
   ListLifecyclePoliciesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListLifecyclePoliciesRequest,
-  ) => stream.Stream<
-    ListLifecyclePoliciesResponse,
-    ListLifecyclePoliciesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListLifecyclePoliciesRequest,
-  ) => stream.Stream<
-    LifecyclePolicySummary,
-    ListLifecyclePoliciesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  LifecyclePolicySummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListLifecyclePoliciesRequest,
   output: ListLifecyclePoliciesResponse,
   errors: [
@@ -8279,27 +7753,7 @@ export const listLifecyclePolicies: API.OperationMethod<
     items: "lifecyclePolicySummaryList",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListLifecyclePoliciesRequest,
-  ListLifecyclePoliciesResponse,
-  ListLifecyclePoliciesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListLifecyclePoliciesRequest,
-  ) => stream.Stream<
-    ListLifecyclePoliciesResponse,
-    ListLifecyclePoliciesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListLifecyclePoliciesRequest,
-  ) => stream.Stream<
-    LifecyclePolicySummary,
-    ListLifecyclePoliciesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsForResourceError =
   | InvalidParameterException
@@ -8313,7 +7767,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceRequest,
   ListTagsForResourceResponse,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -8340,27 +7794,13 @@ export type ListWaitingWorkflowStepsError =
  * Get a list of workflow steps that are waiting for action for workflows
  * in your Amazon Web Services account.
  */
-export const listWaitingWorkflowSteps: API.OperationMethod<
+export const listWaitingWorkflowSteps: API.PaginatedOperationMethod<
   ListWaitingWorkflowStepsRequest,
   ListWaitingWorkflowStepsResponse,
   ListWaitingWorkflowStepsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListWaitingWorkflowStepsRequest,
-  ) => stream.Stream<
-    ListWaitingWorkflowStepsResponse,
-    ListWaitingWorkflowStepsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListWaitingWorkflowStepsRequest,
-  ) => stream.Stream<
-    WorkflowStepExecution,
-    ListWaitingWorkflowStepsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  WorkflowStepExecution
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListWaitingWorkflowStepsRequest,
   output: ListWaitingWorkflowStepsResponse,
   errors: [
@@ -8381,27 +7821,7 @@ export const listWaitingWorkflowSteps: API.OperationMethod<
     items: "steps",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListWaitingWorkflowStepsRequest,
-  ListWaitingWorkflowStepsResponse,
-  ListWaitingWorkflowStepsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListWaitingWorkflowStepsRequest,
-  ) => stream.Stream<
-    ListWaitingWorkflowStepsResponse,
-    ListWaitingWorkflowStepsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListWaitingWorkflowStepsRequest,
-  ) => stream.Stream<
-    WorkflowStepExecution,
-    ListWaitingWorkflowStepsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListWorkflowBuildVersionsError =
   | CallRateLimitExceededException
@@ -8415,27 +7835,13 @@ export type ListWorkflowBuildVersionsError =
 /**
  * Returns a list of build versions for a specific workflow resource.
  */
-export const listWorkflowBuildVersions: API.OperationMethod<
+export const listWorkflowBuildVersions: API.PaginatedOperationMethod<
   ListWorkflowBuildVersionsRequest,
   ListWorkflowBuildVersionsResponse,
   ListWorkflowBuildVersionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListWorkflowBuildVersionsRequest,
-  ) => stream.Stream<
-    ListWorkflowBuildVersionsResponse,
-    ListWorkflowBuildVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListWorkflowBuildVersionsRequest,
-  ) => stream.Stream<
-    WorkflowSummary,
-    ListWorkflowBuildVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  WorkflowSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListWorkflowBuildVersionsRequest,
   output: ListWorkflowBuildVersionsResponse,
   errors: [
@@ -8456,27 +7862,7 @@ export const listWorkflowBuildVersions: API.OperationMethod<
     items: "workflowSummaryList",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListWorkflowBuildVersionsRequest,
-  ListWorkflowBuildVersionsResponse,
-  ListWorkflowBuildVersionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListWorkflowBuildVersionsRequest,
-  ) => stream.Stream<
-    ListWorkflowBuildVersionsResponse,
-    ListWorkflowBuildVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListWorkflowBuildVersionsRequest,
-  ) => stream.Stream<
-    WorkflowSummary,
-    ListWorkflowBuildVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListWorkflowExecutionsError =
   | CallRateLimitExceededException
@@ -8491,27 +7877,13 @@ export type ListWorkflowExecutionsError =
  * Returns a list of workflow runtime instance metadata objects for a specific image build
  * version.
  */
-export const listWorkflowExecutions: API.OperationMethod<
+export const listWorkflowExecutions: API.PaginatedOperationMethod<
   ListWorkflowExecutionsRequest,
   ListWorkflowExecutionsResponse,
   ListWorkflowExecutionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListWorkflowExecutionsRequest,
-  ) => stream.Stream<
-    ListWorkflowExecutionsResponse,
-    ListWorkflowExecutionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListWorkflowExecutionsRequest,
-  ) => stream.Stream<
-    WorkflowExecutionMetadata,
-    ListWorkflowExecutionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  WorkflowExecutionMetadata
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListWorkflowExecutionsRequest,
   output: ListWorkflowExecutionsResponse,
   errors: [
@@ -8532,27 +7904,7 @@ export const listWorkflowExecutions: API.OperationMethod<
     items: "workflowExecutions",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListWorkflowExecutionsRequest,
-  ListWorkflowExecutionsResponse,
-  ListWorkflowExecutionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListWorkflowExecutionsRequest,
-  ) => stream.Stream<
-    ListWorkflowExecutionsResponse,
-    ListWorkflowExecutionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListWorkflowExecutionsRequest,
-  ) => stream.Stream<
-    WorkflowExecutionMetadata,
-    ListWorkflowExecutionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListWorkflowsError =
   | CallRateLimitExceededException
@@ -8566,27 +7918,13 @@ export type ListWorkflowsError =
 /**
  * Lists workflow build versions based on filtering parameters.
  */
-export const listWorkflows: API.OperationMethod<
+export const listWorkflows: API.PaginatedOperationMethod<
   ListWorkflowsRequest,
   ListWorkflowsResponse,
   ListWorkflowsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListWorkflowsRequest,
-  ) => stream.Stream<
-    ListWorkflowsResponse,
-    ListWorkflowsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListWorkflowsRequest,
-  ) => stream.Stream<
-    WorkflowVersion,
-    ListWorkflowsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  WorkflowVersion
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListWorkflowsRequest,
   output: ListWorkflowsResponse,
   errors: [
@@ -8607,27 +7945,7 @@ export const listWorkflows: API.OperationMethod<
     items: "workflowVersionList",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListWorkflowsRequest,
-  ListWorkflowsResponse,
-  ListWorkflowsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListWorkflowsRequest,
-  ) => stream.Stream<
-    ListWorkflowsResponse,
-    ListWorkflowsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListWorkflowsRequest,
-  ) => stream.Stream<
-    WorkflowVersion,
-    ListWorkflowsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListWorkflowStepExecutionsError =
   | CallRateLimitExceededException
@@ -8642,27 +7960,13 @@ export type ListWorkflowStepExecutionsError =
  * Returns runtime data for each step in a runtime instance of the workflow
  * that you specify in the request.
  */
-export const listWorkflowStepExecutions: API.OperationMethod<
+export const listWorkflowStepExecutions: API.PaginatedOperationMethod<
   ListWorkflowStepExecutionsRequest,
   ListWorkflowStepExecutionsResponse,
   ListWorkflowStepExecutionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListWorkflowStepExecutionsRequest,
-  ) => stream.Stream<
-    ListWorkflowStepExecutionsResponse,
-    ListWorkflowStepExecutionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListWorkflowStepExecutionsRequest,
-  ) => stream.Stream<
-    WorkflowStepMetadata,
-    ListWorkflowStepExecutionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  WorkflowStepMetadata
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListWorkflowStepExecutionsRequest,
   output: ListWorkflowStepExecutionsResponse,
   errors: [
@@ -8683,27 +7987,7 @@ export const listWorkflowStepExecutions: API.OperationMethod<
     items: "steps",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListWorkflowStepExecutionsRequest,
-  ListWorkflowStepExecutionsResponse,
-  ListWorkflowStepExecutionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListWorkflowStepExecutionsRequest,
-  ) => stream.Stream<
-    ListWorkflowStepExecutionsResponse,
-    ListWorkflowStepExecutionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListWorkflowStepExecutionsRequest,
-  ) => stream.Stream<
-    WorkflowStepMetadata,
-    ListWorkflowStepExecutionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type PutComponentPolicyError =
   | CallRateLimitExceededException
@@ -8724,7 +8008,7 @@ export const putComponentPolicy: API.OperationMethod<
   PutComponentPolicyRequest,
   PutComponentPolicyResponse,
   PutComponentPolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutComponentPolicyRequest,
   output: PutComponentPolicyResponse,
@@ -8767,7 +8051,7 @@ export const putContainerRecipePolicy: API.OperationMethod<
   PutContainerRecipePolicyRequest,
   PutContainerRecipePolicyResponse,
   PutContainerRecipePolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutContainerRecipePolicyRequest,
   output: PutContainerRecipePolicyResponse,
@@ -8805,7 +8089,7 @@ export const putImagePolicy: API.OperationMethod<
   PutImagePolicyRequest,
   PutImagePolicyResponse,
   PutImagePolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutImagePolicyRequest,
   output: PutImagePolicyResponse,
@@ -8843,7 +8127,7 @@ export const putImageRecipePolicy: API.OperationMethod<
   PutImageRecipePolicyRequest,
   PutImageRecipePolicyResponse,
   PutImageRecipePolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutImageRecipePolicyRequest,
   output: PutImageRecipePolicyResponse,
@@ -8879,7 +8163,7 @@ export const retryImage: API.OperationMethod<
   RetryImageRequest,
   RetryImageResponse,
   RetryImageError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RetryImageRequest,
   output: RetryImageResponse,
@@ -8918,7 +8202,7 @@ export const sendWorkflowStepAction: API.OperationMethod<
   SendWorkflowStepActionRequest,
   SendWorkflowStepActionResponse,
   SendWorkflowStepActionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: SendWorkflowStepActionRequest,
   output: SendWorkflowStepActionResponse,
@@ -8957,7 +8241,7 @@ export const startImagePipelineExecution: API.OperationMethod<
   StartImagePipelineExecutionRequest,
   StartImagePipelineExecutionResponse,
   StartImagePipelineExecutionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartImagePipelineExecutionRequest,
   output: StartImagePipelineExecutionResponse,
@@ -8996,7 +8280,7 @@ export const startResourceStateUpdate: API.OperationMethod<
   StartResourceStateUpdateRequest,
   StartResourceStateUpdateResponse,
   StartResourceStateUpdateError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartResourceStateUpdateRequest,
   output: StartResourceStateUpdateResponse,
@@ -9028,7 +8312,7 @@ export const tagResource: API.OperationMethod<
   TagResourceRequest,
   TagResourceResponse,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -9054,7 +8338,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceRequest,
   UntagResourceResponse,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -9088,7 +8372,7 @@ export const updateDistributionConfiguration: API.OperationMethod<
   UpdateDistributionConfigurationRequest,
   UpdateDistributionConfigurationResponse,
   UpdateDistributionConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateDistributionConfigurationRequest,
   output: UpdateDistributionConfigurationResponse,
@@ -9133,7 +8417,7 @@ export const updateImagePipeline: API.OperationMethod<
   UpdateImagePipelineRequest,
   UpdateImagePipelineResponse,
   UpdateImagePipelineError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateImagePipelineRequest,
   output: UpdateImagePipelineResponse,
@@ -9173,7 +8457,7 @@ export const updateInfrastructureConfiguration: API.OperationMethod<
   UpdateInfrastructureConfigurationRequest,
   UpdateInfrastructureConfigurationResponse,
   UpdateInfrastructureConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateInfrastructureConfigurationRequest,
   output: UpdateInfrastructureConfigurationResponse,
@@ -9212,7 +8496,7 @@ export const updateLifecyclePolicy: API.OperationMethod<
   UpdateLifecyclePolicyRequest,
   UpdateLifecyclePolicyResponse,
   UpdateLifecyclePolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateLifecyclePolicyRequest,
   output: UpdateLifecyclePolicyResponse,

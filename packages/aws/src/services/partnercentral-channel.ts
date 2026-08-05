@@ -1,6 +1,5 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -8,7 +7,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 const svc = T.AwsApiService({
   sdkId: "PartnerCentral Channel",
   serviceShapeName: "PartnerCentralChannel",
@@ -103,26 +101,30 @@ const rules = T.EndpointResolver((p, _) => {
 export class AccessDeniedException
   extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
     "AccessDeniedException",
-    { message: S.String, reason: S.optional(S.String) },
+    { message: S.String.pipe(T.ErrorMessage()), reason: S.optional(S.String) },
     T.HttpError(403),
   ).pipe(C.withAuthError) {}
 export class ConflictException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
     "ConflictException",
-    { message: S.String, resourceId: S.String, resourceType: S.String },
+    {
+      message: S.String.pipe(T.ErrorMessage()),
+      resourceId: S.String,
+      resourceType: S.String,
+    },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class InternalServerException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
     "InternalServerException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.all(T.HttpError(500), T.Retryable()),
   ).pipe(C.withServerError, C.withRetryableError) {}
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
     {
-      message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       resourceId: S.optional(S.String),
       resourceType: S.optional(S.String),
     },
@@ -132,7 +134,7 @@ export class ServiceQuotaExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
     "ServiceQuotaExceededException",
     {
-      message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       resourceId: S.String,
       resourceType: S.String,
       quotaCode: S.String,
@@ -143,7 +145,7 @@ export class ThrottlingException
   extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
     "ThrottlingException",
     {
-      message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       serviceCode: S.optional(S.String),
       quotaCode: S.optional(S.String),
     },
@@ -153,7 +155,7 @@ export class ValidationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
     "ValidationException",
     {
-      message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       reason: S.suspend(() => ValidationExceptionReason).annotate({
         identifier: "ValidationExceptionReason",
       }),
@@ -1508,7 +1510,7 @@ export const acceptChannelHandshake: API.OperationMethod<
   AcceptChannelHandshakeRequest,
   AcceptChannelHandshakeResponse,
   AcceptChannelHandshakeError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AcceptChannelHandshakeRequest,
   output: AcceptChannelHandshakeResponse,
@@ -1538,7 +1540,7 @@ export const cancelChannelHandshake: API.OperationMethod<
   CancelChannelHandshakeRequest,
   CancelChannelHandshakeResponse,
   CancelChannelHandshakeError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CancelChannelHandshakeRequest,
   output: CancelChannelHandshakeResponse,
@@ -1570,7 +1572,7 @@ export const createChannelHandshake: API.OperationMethod<
   CreateChannelHandshakeRequest,
   CreateChannelHandshakeResponse,
   CreateChannelHandshakeError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateChannelHandshakeRequest,
   output: CreateChannelHandshakeResponse,
@@ -1604,7 +1606,7 @@ export const createProgramManagementAccount: API.OperationMethod<
   CreateProgramManagementAccountRequest,
   CreateProgramManagementAccountResponse,
   CreateProgramManagementAccountError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateProgramManagementAccountRequest,
   output: CreateProgramManagementAccountResponse,
@@ -1638,7 +1640,7 @@ export const createRelationship: API.OperationMethod<
   CreateRelationshipRequest,
   CreateRelationshipResponse,
   CreateRelationshipError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateRelationshipRequest,
   output: CreateRelationshipResponse,
@@ -1671,7 +1673,7 @@ export const deleteProgramManagementAccount: API.OperationMethod<
   DeleteProgramManagementAccountRequest,
   DeleteProgramManagementAccountResponse,
   DeleteProgramManagementAccountError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteProgramManagementAccountRequest,
   output: DeleteProgramManagementAccountResponse,
@@ -1703,7 +1705,7 @@ export const deleteRelationship: API.OperationMethod<
   DeleteRelationshipRequest,
   DeleteRelationshipResponse,
   DeleteRelationshipError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteRelationshipRequest,
   output: DeleteRelationshipResponse,
@@ -1734,7 +1736,7 @@ export const getRelationship: API.OperationMethod<
   GetRelationshipRequest,
   GetRelationshipResponse,
   GetRelationshipError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetRelationshipRequest,
   output: GetRelationshipResponse,
@@ -1760,27 +1762,13 @@ export type ListChannelHandshakesError =
 /**
  * Lists channel handshakes based on specified criteria.
  */
-export const listChannelHandshakes: API.OperationMethod<
+export const listChannelHandshakes: API.PaginatedOperationMethod<
   ListChannelHandshakesRequest,
   ListChannelHandshakesResponse,
   ListChannelHandshakesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListChannelHandshakesRequest,
-  ) => stream.Stream<
-    ListChannelHandshakesResponse,
-    ListChannelHandshakesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListChannelHandshakesRequest,
-  ) => stream.Stream<
-    ChannelHandshakeSummary,
-    ListChannelHandshakesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ChannelHandshakeSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListChannelHandshakesRequest,
   output: ListChannelHandshakesResponse,
   errors: [
@@ -1799,27 +1787,7 @@ export const listChannelHandshakes: API.OperationMethod<
     items: "items",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListChannelHandshakesRequest,
-  ListChannelHandshakesResponse,
-  ListChannelHandshakesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListChannelHandshakesRequest,
-  ) => stream.Stream<
-    ListChannelHandshakesResponse,
-    ListChannelHandshakesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListChannelHandshakesRequest,
-  ) => stream.Stream<
-    ChannelHandshakeSummary,
-    ListChannelHandshakesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListProgramManagementAccountsError =
   | AccessDeniedException
@@ -1831,27 +1799,13 @@ export type ListProgramManagementAccountsError =
 /**
  * Lists program management accounts based on specified criteria.
  */
-export const listProgramManagementAccounts: API.OperationMethod<
+export const listProgramManagementAccounts: API.PaginatedOperationMethod<
   ListProgramManagementAccountsRequest,
   ListProgramManagementAccountsResponse,
   ListProgramManagementAccountsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListProgramManagementAccountsRequest,
-  ) => stream.Stream<
-    ListProgramManagementAccountsResponse,
-    ListProgramManagementAccountsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListProgramManagementAccountsRequest,
-  ) => stream.Stream<
-    ProgramManagementAccountSummary,
-    ListProgramManagementAccountsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ProgramManagementAccountSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListProgramManagementAccountsRequest,
   output: ListProgramManagementAccountsResponse,
   errors: [
@@ -1870,27 +1824,7 @@ export const listProgramManagementAccounts: API.OperationMethod<
     items: "items",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListProgramManagementAccountsRequest,
-  ListProgramManagementAccountsResponse,
-  ListProgramManagementAccountsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListProgramManagementAccountsRequest,
-  ) => stream.Stream<
-    ListProgramManagementAccountsResponse,
-    ListProgramManagementAccountsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListProgramManagementAccountsRequest,
-  ) => stream.Stream<
-    ProgramManagementAccountSummary,
-    ListProgramManagementAccountsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListRelationshipsError =
   | AccessDeniedException
@@ -1902,27 +1836,13 @@ export type ListRelationshipsError =
 /**
  * Lists partner relationships based on specified criteria.
  */
-export const listRelationships: API.OperationMethod<
+export const listRelationships: API.PaginatedOperationMethod<
   ListRelationshipsRequest,
   ListRelationshipsResponse,
   ListRelationshipsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListRelationshipsRequest,
-  ) => stream.Stream<
-    ListRelationshipsResponse,
-    ListRelationshipsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListRelationshipsRequest,
-  ) => stream.Stream<
-    RelationshipSummary,
-    ListRelationshipsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  RelationshipSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListRelationshipsRequest,
   output: ListRelationshipsResponse,
   errors: [
@@ -1941,27 +1861,7 @@ export const listRelationships: API.OperationMethod<
     items: "items",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListRelationshipsRequest,
-  ListRelationshipsResponse,
-  ListRelationshipsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListRelationshipsRequest,
-  ) => stream.Stream<
-    ListRelationshipsResponse,
-    ListRelationshipsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListRelationshipsRequest,
-  ) => stream.Stream<
-    RelationshipSummary,
-    ListRelationshipsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsForResourceError =
   | AccessDeniedException
@@ -1977,7 +1877,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceRequest,
   ListTagsForResourceResponse,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -2007,7 +1907,7 @@ export const rejectChannelHandshake: API.OperationMethod<
   RejectChannelHandshakeRequest,
   RejectChannelHandshakeResponse,
   RejectChannelHandshakeError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RejectChannelHandshakeRequest,
   output: RejectChannelHandshakeResponse,
@@ -2038,7 +1938,7 @@ export const tagResource: API.OperationMethod<
   TagResourceRequest,
   TagResourceResponse,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -2070,7 +1970,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceRequest,
   UntagResourceResponse,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -2102,7 +2002,7 @@ export const updateProgramManagementAccount: API.OperationMethod<
   UpdateProgramManagementAccountRequest,
   UpdateProgramManagementAccountResponse,
   UpdateProgramManagementAccountError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateProgramManagementAccountRequest,
   output: UpdateProgramManagementAccountResponse,
@@ -2134,7 +2034,7 @@ export const updateRelationship: API.OperationMethod<
   UpdateRelationshipRequest,
   UpdateRelationshipResponse,
   UpdateRelationshipError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateRelationshipRequest,
   output: UpdateRelationshipResponse,

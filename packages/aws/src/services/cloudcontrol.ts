@@ -1,7 +1,6 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as redacted from "effect/Redacted";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -9,7 +8,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 import { SensitiveString } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "CloudControl",
@@ -90,7 +88,7 @@ const rules = T.EndpointResolver((p, _) => {
 export class AlreadyExistsException
   extends /*@__PURE__*/ S.TaggedErrorClass<AlreadyExistsException>()(
     "AlreadyExistsException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "AlreadyExistsException",
@@ -102,7 +100,7 @@ export class AlreadyExistsException
 export class ClientTokenConflictException
   extends /*@__PURE__*/ S.TaggedErrorClass<ClientTokenConflictException>()(
     "ClientTokenConflictException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "ClientTokenConflictException",
@@ -114,7 +112,7 @@ export class ClientTokenConflictException
 export class ConcurrentModificationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConcurrentModificationException>()(
     "ConcurrentModificationException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "ConcurrentModificationException",
@@ -126,7 +124,7 @@ export class ConcurrentModificationException
 export class ConcurrentOperationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConcurrentOperationException>()(
     "ConcurrentOperationException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "ConcurrentOperationException",
@@ -138,7 +136,7 @@ export class ConcurrentOperationException
 export class GeneralServiceException
   extends /*@__PURE__*/ S.TaggedErrorClass<GeneralServiceException>()(
     "GeneralServiceException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "GeneralServiceException",
@@ -150,7 +148,7 @@ export class GeneralServiceException
 export class HandlerFailureException
   extends /*@__PURE__*/ S.TaggedErrorClass<HandlerFailureException>()(
     "HandlerFailureException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "HandlerFailureException",
@@ -162,7 +160,7 @@ export class HandlerFailureException
 export class HandlerInternalFailureException
   extends /*@__PURE__*/ S.TaggedErrorClass<HandlerInternalFailureException>()(
     "HandlerInternalFailureException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "HandlerInternalFailureException",
@@ -174,7 +172,7 @@ export class HandlerInternalFailureException
 export class InvalidCredentialsException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidCredentialsException>()(
     "InvalidCredentialsException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "InvalidCredentialsException",
@@ -186,7 +184,7 @@ export class InvalidCredentialsException
 export class InvalidRequestException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidRequestException>()(
     "InvalidRequestException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "InvalidRequestException",
@@ -198,7 +196,7 @@ export class InvalidRequestException
 export class NetworkFailureException
   extends /*@__PURE__*/ S.TaggedErrorClass<NetworkFailureException>()(
     "NetworkFailureException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "NetworkFailureException",
@@ -210,7 +208,7 @@ export class NetworkFailureException
 export class NotStabilizedException
   extends /*@__PURE__*/ S.TaggedErrorClass<NotStabilizedException>()(
     "NotStabilizedException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "NotStabilizedException",
@@ -222,7 +220,7 @@ export class NotStabilizedException
 export class NotUpdatableException
   extends /*@__PURE__*/ S.TaggedErrorClass<NotUpdatableException>()(
     "NotUpdatableException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "NotUpdatableException", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -231,7 +229,7 @@ export class NotUpdatableException
 export class PrivateTypeException
   extends /*@__PURE__*/ S.TaggedErrorClass<PrivateTypeException>()(
     "PrivateTypeException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "PrivateTypeException", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -240,7 +238,7 @@ export class PrivateTypeException
 export class RequestTokenNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<RequestTokenNotFoundException>()(
     "RequestTokenNotFoundException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "RequestTokenNotFoundException",
@@ -252,7 +250,7 @@ export class RequestTokenNotFoundException
 export class ResourceConflictException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceConflictException>()(
     "ResourceConflictException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "ResourceConflictException",
@@ -264,7 +262,7 @@ export class ResourceConflictException
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "ResourceNotFoundException",
@@ -276,7 +274,7 @@ export class ResourceNotFoundException
 export class ServiceInternalErrorException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceInternalErrorException>()(
     "ServiceInternalErrorException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "ServiceInternalErrorException",
@@ -288,7 +286,7 @@ export class ServiceInternalErrorException
 export class ServiceLimitExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceLimitExceededException>()(
     "ServiceLimitExceededException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "ServiceLimitExceededException",
@@ -300,7 +298,7 @@ export class ServiceLimitExceededException
 export class ThrottlingException
   extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
     "ThrottlingException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "ThrottlingException", httpResponseCode: 429 }),
       T.HttpError(429),
@@ -309,7 +307,7 @@ export class ThrottlingException
 export class TypeNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<TypeNotFoundException>()(
     "TypeNotFoundException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "TypeNotFoundException", httpResponseCode: 404 }),
       T.HttpError(404),
@@ -318,7 +316,7 @@ export class TypeNotFoundException
 export class UnsupportedActionException
   extends /*@__PURE__*/ S.TaggedErrorClass<UnsupportedActionException>()(
     "UnsupportedActionException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "UnsupportedActionException",
@@ -669,7 +667,7 @@ export const cancelResourceRequest: API.OperationMethod<
   CancelResourceRequestInput,
   CancelResourceRequestOutput,
   CancelResourceRequestError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CancelResourceRequestInput,
   output: CancelResourceRequestOutput,
@@ -712,7 +710,7 @@ export const createResource: API.OperationMethod<
   CreateResourceInput,
   CreateResourceOutput,
   CreateResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateResourceInput,
   output: CreateResourceOutput,
@@ -775,7 +773,7 @@ export const deleteResource: API.OperationMethod<
   DeleteResourceInput,
   DeleteResourceOutput,
   DeleteResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteResourceInput,
   output: DeleteResourceOutput,
@@ -835,7 +833,7 @@ export const getResource: API.OperationMethod<
   GetResourceInput,
   GetResourceOutput,
   GetResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetResourceInput,
   output: GetResourceOutput,
@@ -875,7 +873,7 @@ export const getResourceRequestStatus: API.OperationMethod<
   GetResourceRequestStatusInput,
   GetResourceRequestStatusOutput,
   GetResourceRequestStatusError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetResourceRequestStatusInput,
   output: GetResourceRequestStatusOutput,
@@ -893,27 +891,13 @@ export type ListResourceRequestsError = CommonErrors;
  *
  * Resource operation requests expire after 7 days.
  */
-export const listResourceRequests: API.OperationMethod<
+export const listResourceRequests: API.PaginatedOperationMethod<
   ListResourceRequestsInput,
   ListResourceRequestsOutput,
   ListResourceRequestsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListResourceRequestsInput,
-  ) => stream.Stream<
-    ListResourceRequestsOutput,
-    ListResourceRequestsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListResourceRequestsInput,
-  ) => stream.Stream<
-    ProgressEvent,
-    ListResourceRequestsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ProgressEvent
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListResourceRequestsInput,
   output: ListResourceRequestsOutput,
   errors: [],
@@ -926,27 +910,7 @@ export const listResourceRequests: API.OperationMethod<
     items: "ResourceRequestStatusSummaries",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListResourceRequestsInput,
-  ListResourceRequestsOutput,
-  ListResourceRequestsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListResourceRequestsInput,
-  ) => stream.Stream<
-    ListResourceRequestsOutput,
-    ListResourceRequestsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListResourceRequestsInput,
-  ) => stream.Stream<
-    ProgressEvent,
-    ListResourceRequestsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListResourcesError =
   | AlreadyExistsException
@@ -973,27 +937,13 @@ export type ListResourcesError =
  * You can use this action to return information about existing resources in your account and
  * Amazon Web Services Region, whether those resources were provisioned using Cloud Control API.
  */
-export const listResources: API.OperationMethod<
+export const listResources: API.PaginatedOperationMethod<
   ListResourcesInput,
   ListResourcesOutput,
   ListResourcesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListResourcesInput,
-  ) => stream.Stream<
-    ListResourcesOutput,
-    ListResourcesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListResourcesInput,
-  ) => stream.Stream<
-    ResourceDescription,
-    ListResourcesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ResourceDescription
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListResourcesInput,
   output: ListResourcesOutput,
   errors: [
@@ -1024,27 +974,7 @@ export const listResources: API.OperationMethod<
     items: "ResourceDescriptions",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListResourcesInput,
-  ListResourcesOutput,
-  ListResourcesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListResourcesInput,
-  ) => stream.Stream<
-    ListResourcesOutput,
-    ListResourcesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListResourcesInput,
-  ) => stream.Stream<
-    ResourceDescription,
-    ListResourcesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type UpdateResourceError =
   | AlreadyExistsException
@@ -1089,7 +1019,7 @@ export const updateResource: API.OperationMethod<
   UpdateResourceInput,
   UpdateResourceOutput,
   UpdateResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateResourceInput,
   output: UpdateResourceOutput,

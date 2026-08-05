@@ -1,6 +1,5 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -8,7 +7,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 const svc = T.AwsApiService({
   sdkId: "Resource Groups",
   serviceShapeName: "Ardi",
@@ -91,19 +89,19 @@ const rules = T.EndpointResolver((p, _) => {
 export class BadRequestException
   extends /*@__PURE__*/ S.TaggedErrorClass<BadRequestException>()(
     "BadRequestException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class ForbiddenException
   extends /*@__PURE__*/ S.TaggedErrorClass<ForbiddenException>()(
     "ForbiddenException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(403),
   ).pipe(C.withAuthError) {}
 export class GroupAlreadyExists
   extends /*@__PURE__*/ S.TaggedErrorClass<GroupAlreadyExists>()(
     "GroupAlreadyExists",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.SyntheticError({
       from: "BadRequestException",
       message: { includes: "group already exists" },
@@ -112,31 +110,31 @@ export class GroupAlreadyExists
 export class InternalServerErrorException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerErrorException>()(
     "InternalServerErrorException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(500),
   ).pipe(C.withServerError) {}
 export class MethodNotAllowedException
   extends /*@__PURE__*/ S.TaggedErrorClass<MethodNotAllowedException>()(
     "MethodNotAllowedException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(405),
   ).pipe(C.withBadRequestError) {}
 export class NotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<NotFoundException>()(
     "NotFoundException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class TooManyRequestsException
   extends /*@__PURE__*/ S.TaggedErrorClass<TooManyRequestsException>()(
     "TooManyRequestsException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(429),
   ).pipe(C.withThrottlingError) {}
 export class UnauthorizedException
   extends /*@__PURE__*/ S.TaggedErrorClass<UnauthorizedException>()(
     "UnauthorizedException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(401),
   ).pipe(C.withAuthError) {}
 export type TagSyncTaskArn = string;
@@ -1319,7 +1317,7 @@ export const cancelTagSyncTask: API.OperationMethod<
   CancelTagSyncTaskInput,
   CancelTagSyncTaskResponse,
   CancelTagSyncTaskError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CancelTagSyncTaskInput,
   output: CancelTagSyncTaskResponse,
@@ -1361,7 +1359,7 @@ export const createGroup: API.OperationMethod<
   CreateGroupInput,
   CreateGroupOutput,
   CreateGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateGroupInput,
   output: CreateGroupOutput,
@@ -1400,7 +1398,7 @@ export const deleteGroup: API.OperationMethod<
   DeleteGroupInput,
   DeleteGroupOutput,
   DeleteGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteGroupInput,
   output: DeleteGroupOutput,
@@ -1431,7 +1429,7 @@ export const getAccountSettings: API.OperationMethod<
   GetAccountSettingsRequest,
   GetAccountSettingsOutput,
   GetAccountSettingsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetAccountSettingsRequest,
   output: GetAccountSettingsOutput,
@@ -1468,7 +1466,7 @@ export const getGroup: API.OperationMethod<
   GetGroupInput,
   GetGroupOutput,
   GetGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetGroupInput,
   output: GetGroupOutput,
@@ -1507,7 +1505,7 @@ export const getGroupConfiguration: API.OperationMethod<
   GetGroupConfigurationInput,
   GetGroupConfigurationOutput,
   GetGroupConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetGroupConfigurationInput,
   output: GetGroupConfigurationOutput,
@@ -1547,7 +1545,7 @@ export const getGroupQuery: API.OperationMethod<
   GetGroupQueryInput,
   GetGroupQueryOutput,
   GetGroupQueryError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetGroupQueryInput,
   output: GetGroupQueryOutput,
@@ -1586,7 +1584,7 @@ export const getTags: API.OperationMethod<
   GetTagsInput,
   GetTagsOutput,
   GetTagsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetTagsInput,
   output: GetTagsOutput,
@@ -1625,7 +1623,7 @@ export const getTagSyncTask: API.OperationMethod<
   GetTagSyncTaskInput,
   GetTagSyncTaskOutput,
   GetTagSyncTaskError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetTagSyncTaskInput,
   output: GetTagSyncTaskOutput,
@@ -1675,7 +1673,7 @@ export const groupResources: API.OperationMethod<
   GroupResourcesInput,
   GroupResourcesOutput,
   GroupResourcesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GroupResourcesInput,
   output: GroupResourcesOutput,
@@ -1704,27 +1702,13 @@ export type ListGroupingStatusesError =
  * Returns the status of the last grouping or ungrouping action for
  * each resource in the specified application group.
  */
-export const listGroupingStatuses: API.OperationMethod<
+export const listGroupingStatuses: API.PaginatedOperationMethod<
   ListGroupingStatusesInput,
   ListGroupingStatusesOutput,
   ListGroupingStatusesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListGroupingStatusesInput,
-  ) => stream.Stream<
-    ListGroupingStatusesOutput,
-    ListGroupingStatusesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListGroupingStatusesInput,
-  ) => stream.Stream<
-    GroupingStatusesItem,
-    ListGroupingStatusesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  GroupingStatusesItem
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListGroupingStatusesInput,
   output: ListGroupingStatusesOutput,
   errors: [
@@ -1744,27 +1728,7 @@ export const listGroupingStatuses: API.OperationMethod<
     items: "GroupingStatuses",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListGroupingStatusesInput,
-  ListGroupingStatusesOutput,
-  ListGroupingStatusesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListGroupingStatusesInput,
-  ) => stream.Stream<
-    ListGroupingStatusesOutput,
-    ListGroupingStatusesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListGroupingStatusesInput,
-  ) => stream.Stream<
-    GroupingStatusesItem,
-    ListGroupingStatusesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListGroupResourcesError =
   | BadRequestException
@@ -1791,27 +1755,13 @@ export type ListGroupResourcesError =
  *
  * - `tag:GetResources`
  */
-export const listGroupResources: API.OperationMethod<
+export const listGroupResources: API.PaginatedOperationMethod<
   ListGroupResourcesInput,
   ListGroupResourcesOutput,
   ListGroupResourcesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListGroupResourcesInput,
-  ) => stream.Stream<
-    ListGroupResourcesOutput,
-    ListGroupResourcesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListGroupResourcesInput,
-  ) => stream.Stream<
-    ResourceIdentifier,
-    ListGroupResourcesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ResourceIdentifier
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListGroupResourcesInput,
   output: ListGroupResourcesOutput,
   errors: [
@@ -1832,27 +1782,7 @@ export const listGroupResources: API.OperationMethod<
     items: "ResourceIdentifiers",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListGroupResourcesInput,
-  ListGroupResourcesOutput,
-  ListGroupResourcesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListGroupResourcesInput,
-  ) => stream.Stream<
-    ListGroupResourcesOutput,
-    ListGroupResourcesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListGroupResourcesInput,
-  ) => stream.Stream<
-    ResourceIdentifier,
-    ListGroupResourcesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListGroupsError =
   | BadRequestException
@@ -1870,27 +1800,13 @@ export type ListGroupsError =
  *
  * - `resource-groups:ListGroups`
  */
-export const listGroups: API.OperationMethod<
+export const listGroups: API.PaginatedOperationMethod<
   ListGroupsInput,
   ListGroupsOutput,
   ListGroupsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListGroupsInput,
-  ) => stream.Stream<
-    ListGroupsOutput,
-    ListGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListGroupsInput,
-  ) => stream.Stream<
-    GroupIdentifier,
-    ListGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  GroupIdentifier
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListGroupsInput,
   output: ListGroupsOutput,
   errors: [
@@ -1909,27 +1825,7 @@ export const listGroups: API.OperationMethod<
     items: "GroupIdentifiers",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListGroupsInput,
-  ListGroupsOutput,
-  ListGroupsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListGroupsInput,
-  ) => stream.Stream<
-    ListGroupsOutput,
-    ListGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListGroupsInput,
-  ) => stream.Stream<
-    GroupIdentifier,
-    ListGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagSyncTasksError =
   | BadRequestException
@@ -1949,27 +1845,13 @@ export type ListTagSyncTasksError =
  * - `resource-groups:ListTagSyncTasks` with the group passed in the filters as the resource
  * or * if using no filters
  */
-export const listTagSyncTasks: API.OperationMethod<
+export const listTagSyncTasks: API.PaginatedOperationMethod<
   ListTagSyncTasksInput,
   ListTagSyncTasksOutput,
   ListTagSyncTasksError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTagSyncTasksInput,
-  ) => stream.Stream<
-    ListTagSyncTasksOutput,
-    ListTagSyncTasksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTagSyncTasksInput,
-  ) => stream.Stream<
-    TagSyncTaskItem,
-    ListTagSyncTasksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  TagSyncTaskItem
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListTagSyncTasksInput,
   output: ListTagSyncTasksOutput,
   errors: [
@@ -1989,27 +1871,7 @@ export const listTagSyncTasks: API.OperationMethod<
     items: "TagSyncTasks",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListTagSyncTasksInput,
-  ListTagSyncTasksOutput,
-  ListTagSyncTasksError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTagSyncTasksInput,
-  ) => stream.Stream<
-    ListTagSyncTasksOutput,
-    ListTagSyncTasksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTagSyncTasksInput,
-  ) => stream.Stream<
-    TagSyncTaskItem,
-    ListTagSyncTasksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type PutGroupConfigurationError =
   | BadRequestException
@@ -2034,7 +1896,7 @@ export const putGroupConfiguration: API.OperationMethod<
   PutGroupConfigurationInput,
   PutGroupConfigurationOutput,
   PutGroupConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutGroupConfigurationInput,
   output: PutGroupConfigurationOutput,
@@ -2076,27 +1938,13 @@ export type SearchResourcesError =
  *
  * - `tag:GetResources`
  */
-export const searchResources: API.OperationMethod<
+export const searchResources: API.PaginatedOperationMethod<
   SearchResourcesInput,
   SearchResourcesOutput,
   SearchResourcesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: SearchResourcesInput,
-  ) => stream.Stream<
-    SearchResourcesOutput,
-    SearchResourcesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: SearchResourcesInput,
-  ) => stream.Stream<
-    ResourceIdentifier,
-    SearchResourcesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ResourceIdentifier
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: SearchResourcesInput,
   output: SearchResourcesOutput,
   errors: [
@@ -2116,27 +1964,7 @@ export const searchResources: API.OperationMethod<
     items: "ResourceIdentifiers",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  SearchResourcesInput,
-  SearchResourcesOutput,
-  SearchResourcesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: SearchResourcesInput,
-  ) => stream.Stream<
-    SearchResourcesOutput,
-    SearchResourcesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: SearchResourcesInput,
-  ) => stream.Stream<
-    ResourceIdentifier,
-    SearchResourcesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type StartTagSyncTaskError =
   | BadRequestException
@@ -2170,7 +1998,7 @@ export const startTagSyncTask: API.OperationMethod<
   StartTagSyncTaskInput,
   StartTagSyncTaskOutput,
   StartTagSyncTaskError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartTagSyncTaskInput,
   output: StartTagSyncTaskOutput,
@@ -2215,7 +2043,7 @@ export const tag: API.OperationMethod<
   TagInput,
   TagOutput,
   TagError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagInput,
   output: TagOutput,
@@ -2256,7 +2084,7 @@ export const ungroupResources: API.OperationMethod<
   UngroupResourcesInput,
   UngroupResourcesOutput,
   UngroupResourcesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UngroupResourcesInput,
   output: UngroupResourcesOutput,
@@ -2294,7 +2122,7 @@ export const untag: API.OperationMethod<
   UntagInput,
   UntagOutput,
   UntagError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagInput,
   output: UntagOutput,
@@ -2330,7 +2158,7 @@ export const updateAccountSettings: API.OperationMethod<
   UpdateAccountSettingsInput,
   UpdateAccountSettingsOutput,
   UpdateAccountSettingsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateAccountSettingsInput,
   output: UpdateAccountSettingsOutput,
@@ -2368,7 +2196,7 @@ export const updateGroup: API.OperationMethod<
   UpdateGroupInput,
   UpdateGroupOutput,
   UpdateGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateGroupInput,
   output: UpdateGroupOutput,
@@ -2407,7 +2235,7 @@ export const updateGroupQuery: API.OperationMethod<
   UpdateGroupQueryInput,
   UpdateGroupQueryOutput,
   UpdateGroupQueryError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateGroupQueryInput,
   output: UpdateGroupQueryOutput,

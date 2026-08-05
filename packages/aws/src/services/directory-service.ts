@@ -1,7 +1,6 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as redacted from "effect/Redacted";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -9,7 +8,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 import { SensitiveString } from "../sensitive.ts";
 const ns = T.XmlNamespace(
   "http://directoryservice.amazonaws.com/doc/2015-04-16/",
@@ -93,202 +91,322 @@ const rules = T.EndpointResolver((p, _) => {
 export class AccessDeniedException
   extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
     "AccessDeniedException",
-    { Message: S.optional(S.String), RequestId: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      RequestId: S.optional(S.String),
+    },
   ).pipe(C.withAuthError) {}
 export class ADAssessmentLimitExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<ADAssessmentLimitExceededException>()(
     "ADAssessmentLimitExceededException",
-    { Message: S.optional(S.String), RequestId: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      RequestId: S.optional(S.String),
+    },
   ) {}
 export class AuthenticationFailedException
   extends /*@__PURE__*/ S.TaggedErrorClass<AuthenticationFailedException>()(
     "AuthenticationFailedException",
-    { Message: S.optional(S.String), RequestId: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      RequestId: S.optional(S.String),
+    },
   ) {}
 export class CertificateAlreadyExistsException
   extends /*@__PURE__*/ S.TaggedErrorClass<CertificateAlreadyExistsException>()(
     "CertificateAlreadyExistsException",
-    { Message: S.optional(S.String), RequestId: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      RequestId: S.optional(S.String),
+    },
   ).pipe(C.withAlreadyExistsError) {}
 export class CertificateDoesNotExistException
   extends /*@__PURE__*/ S.TaggedErrorClass<CertificateDoesNotExistException>()(
     "CertificateDoesNotExistException",
-    { Message: S.optional(S.String), RequestId: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      RequestId: S.optional(S.String),
+    },
   ) {}
 export class CertificateInUseException
   extends /*@__PURE__*/ S.TaggedErrorClass<CertificateInUseException>()(
     "CertificateInUseException",
-    { Message: S.optional(S.String), RequestId: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      RequestId: S.optional(S.String),
+    },
   ) {}
 export class CertificateLimitExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<CertificateLimitExceededException>()(
     "CertificateLimitExceededException",
-    { Message: S.optional(S.String), RequestId: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      RequestId: S.optional(S.String),
+    },
   ) {}
 export class ClientException
   extends /*@__PURE__*/ S.TaggedErrorClass<ClientException>()(
     "ClientException",
-    { Message: S.optional(S.String), RequestId: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      RequestId: S.optional(S.String),
+    },
   ) {}
 export class DirectoryAlreadyInRegionException
   extends /*@__PURE__*/ S.TaggedErrorClass<DirectoryAlreadyInRegionException>()(
     "DirectoryAlreadyInRegionException",
-    { Message: S.optional(S.String), RequestId: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      RequestId: S.optional(S.String),
+    },
   ) {}
 export class DirectoryAlreadySharedException
   extends /*@__PURE__*/ S.TaggedErrorClass<DirectoryAlreadySharedException>()(
     "DirectoryAlreadySharedException",
-    { Message: S.optional(S.String), RequestId: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      RequestId: S.optional(S.String),
+    },
   ) {}
 export class DirectoryDoesNotExistException
   extends /*@__PURE__*/ S.TaggedErrorClass<DirectoryDoesNotExistException>()(
     "DirectoryDoesNotExistException",
-    { Message: S.optional(S.String), RequestId: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      RequestId: S.optional(S.String),
+    },
   ) {}
 export class DirectoryInDesiredStateException
   extends /*@__PURE__*/ S.TaggedErrorClass<DirectoryInDesiredStateException>()(
     "DirectoryInDesiredStateException",
-    { Message: S.optional(S.String), RequestId: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      RequestId: S.optional(S.String),
+    },
   ) {}
 export class DirectoryLimitExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<DirectoryLimitExceededException>()(
     "DirectoryLimitExceededException",
-    { Message: S.optional(S.String), RequestId: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      RequestId: S.optional(S.String),
+    },
   ) {}
 export class DirectoryNotSharedException
   extends /*@__PURE__*/ S.TaggedErrorClass<DirectoryNotSharedException>()(
     "DirectoryNotSharedException",
-    { Message: S.optional(S.String), RequestId: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      RequestId: S.optional(S.String),
+    },
   ) {}
 export class DirectoryUnavailableException
   extends /*@__PURE__*/ S.TaggedErrorClass<DirectoryUnavailableException>()(
     "DirectoryUnavailableException",
-    { Message: S.optional(S.String), RequestId: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      RequestId: S.optional(S.String),
+    },
   ) {}
 export class DisableAlreadyInProgressException
   extends /*@__PURE__*/ S.TaggedErrorClass<DisableAlreadyInProgressException>()(
     "DisableAlreadyInProgressException",
-    { Message: S.optional(S.String), RequestId: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      RequestId: S.optional(S.String),
+    },
   ) {}
 export class DomainControllerLimitExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<DomainControllerLimitExceededException>()(
     "DomainControllerLimitExceededException",
-    { Message: S.optional(S.String), RequestId: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      RequestId: S.optional(S.String),
+    },
   ) {}
 export class EnableAlreadyInProgressException
   extends /*@__PURE__*/ S.TaggedErrorClass<EnableAlreadyInProgressException>()(
     "EnableAlreadyInProgressException",
-    { Message: S.optional(S.String), RequestId: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      RequestId: S.optional(S.String),
+    },
   ) {}
 export class EntityAlreadyExistsException
   extends /*@__PURE__*/ S.TaggedErrorClass<EntityAlreadyExistsException>()(
     "EntityAlreadyExistsException",
-    { Message: S.optional(S.String), RequestId: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      RequestId: S.optional(S.String),
+    },
   ).pipe(C.withAlreadyExistsError) {}
 export class EntityDoesNotExistException
   extends /*@__PURE__*/ S.TaggedErrorClass<EntityDoesNotExistException>()(
     "EntityDoesNotExistException",
-    { Message: S.optional(S.String), RequestId: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      RequestId: S.optional(S.String),
+    },
   ) {}
 export class IncompatibleSettingsException
   extends /*@__PURE__*/ S.TaggedErrorClass<IncompatibleSettingsException>()(
     "IncompatibleSettingsException",
-    { Message: S.optional(S.String), RequestId: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      RequestId: S.optional(S.String),
+    },
   ) {}
 export class InsufficientPermissionsException
   extends /*@__PURE__*/ S.TaggedErrorClass<InsufficientPermissionsException>()(
     "InsufficientPermissionsException",
-    { Message: S.optional(S.String), RequestId: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      RequestId: S.optional(S.String),
+    },
   ) {}
 export class InvalidCertificateException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidCertificateException>()(
     "InvalidCertificateException",
-    { Message: S.optional(S.String), RequestId: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      RequestId: S.optional(S.String),
+    },
   ) {}
 export class InvalidClientAuthStatusException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidClientAuthStatusException>()(
     "InvalidClientAuthStatusException",
-    { Message: S.optional(S.String), RequestId: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      RequestId: S.optional(S.String),
+    },
   ) {}
 export class InvalidLDAPSStatusException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidLDAPSStatusException>()(
     "InvalidLDAPSStatusException",
-    { Message: S.optional(S.String), RequestId: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      RequestId: S.optional(S.String),
+    },
   ) {}
 export class InvalidNextTokenException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidNextTokenException>()(
     "InvalidNextTokenException",
-    { Message: S.optional(S.String), RequestId: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      RequestId: S.optional(S.String),
+    },
   ) {}
 export class InvalidParameterException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidParameterException>()(
     "InvalidParameterException",
-    { Message: S.optional(S.String), RequestId: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      RequestId: S.optional(S.String),
+    },
   ) {}
 export class InvalidPasswordException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidPasswordException>()(
     "InvalidPasswordException",
-    { Message: S.optional(S.String), RequestId: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      RequestId: S.optional(S.String),
+    },
   ) {}
 export class InvalidTargetException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidTargetException>()(
     "InvalidTargetException",
-    { Message: S.optional(S.String), RequestId: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      RequestId: S.optional(S.String),
+    },
   ) {}
 export class IpRouteLimitExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<IpRouteLimitExceededException>()(
     "IpRouteLimitExceededException",
-    { Message: S.optional(S.String), RequestId: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      RequestId: S.optional(S.String),
+    },
   ) {}
 export class NoAvailableCertificateException
   extends /*@__PURE__*/ S.TaggedErrorClass<NoAvailableCertificateException>()(
     "NoAvailableCertificateException",
-    { Message: S.optional(S.String), RequestId: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      RequestId: S.optional(S.String),
+    },
   ) {}
 export class OrganizationsException
   extends /*@__PURE__*/ S.TaggedErrorClass<OrganizationsException>()(
     "OrganizationsException",
-    { Message: S.optional(S.String), RequestId: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      RequestId: S.optional(S.String),
+    },
   ) {}
 export class RegionLimitExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<RegionLimitExceededException>()(
     "RegionLimitExceededException",
-    { Message: S.optional(S.String), RequestId: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      RequestId: S.optional(S.String),
+    },
   ) {}
 export class ServiceException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceException>()(
     "ServiceException",
-    { Message: S.optional(S.String), RequestId: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      RequestId: S.optional(S.String),
+    },
   ) {}
 export class ShareLimitExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<ShareLimitExceededException>()(
     "ShareLimitExceededException",
-    { Message: S.optional(S.String), RequestId: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      RequestId: S.optional(S.String),
+    },
   ) {}
 export class SnapshotLimitExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<SnapshotLimitExceededException>()(
     "SnapshotLimitExceededException",
-    { Message: S.optional(S.String), RequestId: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      RequestId: S.optional(S.String),
+    },
   ) {}
 export class TagLimitExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<TagLimitExceededException>()(
     "TagLimitExceededException",
-    { Message: S.optional(S.String), RequestId: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      RequestId: S.optional(S.String),
+    },
   ) {}
 export class UnsupportedOperationException
   extends /*@__PURE__*/ S.TaggedErrorClass<UnsupportedOperationException>()(
     "UnsupportedOperationException",
-    { Message: S.optional(S.String), RequestId: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      RequestId: S.optional(S.String),
+    },
   ) {}
 export class UnsupportedSettingsException
   extends /*@__PURE__*/ S.TaggedErrorClass<UnsupportedSettingsException>()(
     "UnsupportedSettingsException",
-    { Message: S.optional(S.String), RequestId: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      RequestId: S.optional(S.String),
+    },
   ) {}
 export class UserDoesNotExistException
   extends /*@__PURE__*/ S.TaggedErrorClass<UserDoesNotExistException>()(
     "UserDoesNotExistException",
-    { Message: S.optional(S.String), RequestId: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      RequestId: S.optional(S.String),
+    },
   ) {}
 export type DirectoryId = string;
 export interface AcceptSharedDirectoryRequest {
@@ -4111,7 +4229,7 @@ export const acceptSharedDirectory: API.OperationMethod<
   AcceptSharedDirectoryRequest,
   AcceptSharedDirectoryResult,
   AcceptSharedDirectoryError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AcceptSharedDirectoryRequest,
   output: AcceptSharedDirectoryResult,
@@ -4151,7 +4269,7 @@ export const addIpRoutes: API.OperationMethod<
   AddIpRoutesRequest,
   AddIpRoutesResult,
   AddIpRoutesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AddIpRoutesRequest,
   output: AddIpRoutesResult,
@@ -4188,7 +4306,7 @@ export const addRegion: API.OperationMethod<
   AddRegionRequest,
   AddRegionResult,
   AddRegionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AddRegionRequest,
   output: AddRegionResult,
@@ -4225,7 +4343,7 @@ export const addTagsToResource: API.OperationMethod<
   AddTagsToResourceRequest,
   AddTagsToResourceResult,
   AddTagsToResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AddTagsToResourceRequest,
   output: AddTagsToResourceResult,
@@ -4257,7 +4375,7 @@ export const cancelSchemaExtension: API.OperationMethod<
   CancelSchemaExtensionRequest,
   CancelSchemaExtensionResult,
   CancelSchemaExtensionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CancelSchemaExtensionRequest,
   output: CancelSchemaExtensionResult,
@@ -4284,7 +4402,7 @@ export const connectDirectory: API.OperationMethod<
   ConnectDirectoryRequest,
   ConnectDirectoryResult,
   ConnectDirectoryError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ConnectDirectoryRequest,
   output: ConnectDirectoryResult,
@@ -4317,7 +4435,7 @@ export const createAlias: API.OperationMethod<
   CreateAliasRequest,
   CreateAliasResult,
   CreateAliasError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateAliasRequest,
   output: CreateAliasResult,
@@ -4350,7 +4468,7 @@ export const createComputer: API.OperationMethod<
   CreateComputerRequest,
   CreateComputerResult,
   CreateComputerError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateComputerRequest,
   output: CreateComputerResult,
@@ -4387,7 +4505,7 @@ export const createConditionalForwarder: API.OperationMethod<
   CreateConditionalForwarderRequest,
   CreateConditionalForwarderResult,
   CreateConditionalForwarderError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateConditionalForwarderRequest,
   output: CreateConditionalForwarderResult,
@@ -4422,7 +4540,7 @@ export const createDirectory: API.OperationMethod<
   CreateDirectoryRequest,
   CreateDirectoryResult,
   CreateDirectoryError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateDirectoryRequest,
   output: CreateDirectoryResult,
@@ -4460,7 +4578,7 @@ export const createHybridAD: API.OperationMethod<
   CreateHybridADRequest,
   CreateHybridADResult,
   CreateHybridADError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateHybridADRequest,
   output: CreateHybridADResult,
@@ -4494,7 +4612,7 @@ export const createLogSubscription: API.OperationMethod<
   CreateLogSubscriptionRequest,
   CreateLogSubscriptionResult,
   CreateLogSubscriptionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateLogSubscriptionRequest,
   output: CreateLogSubscriptionResult,
@@ -4529,7 +4647,7 @@ export const createMicrosoftAD: API.OperationMethod<
   CreateMicrosoftADRequest,
   CreateMicrosoftADResult,
   CreateMicrosoftADError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateMicrosoftADRequest,
   output: CreateMicrosoftADResult,
@@ -4561,7 +4679,7 @@ export const createSnapshot: API.OperationMethod<
   CreateSnapshotRequest,
   CreateSnapshotResult,
   CreateSnapshotError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateSnapshotRequest,
   output: CreateSnapshotResult,
@@ -4599,7 +4717,7 @@ export const createTrust: API.OperationMethod<
   CreateTrustRequest,
   CreateTrustResult,
   CreateTrustError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateTrustRequest,
   output: CreateTrustResult,
@@ -4635,7 +4753,7 @@ export const deleteADAssessment: API.OperationMethod<
   DeleteADAssessmentRequest,
   DeleteADAssessmentResult,
   DeleteADAssessmentError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteADAssessmentRequest,
   output: DeleteADAssessmentResult,
@@ -4667,7 +4785,7 @@ export const deleteConditionalForwarder: API.OperationMethod<
   DeleteConditionalForwarderRequest,
   DeleteConditionalForwarderResult,
   DeleteConditionalForwarderError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteConditionalForwarderRequest,
   output: DeleteConditionalForwarderResult,
@@ -4700,7 +4818,7 @@ export const deleteDirectory: API.OperationMethod<
   DeleteDirectoryRequest,
   DeleteDirectoryResult,
   DeleteDirectoryError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteDirectoryRequest,
   output: DeleteDirectoryResult,
@@ -4723,7 +4841,7 @@ export const deleteLogSubscription: API.OperationMethod<
   DeleteLogSubscriptionRequest,
   DeleteLogSubscriptionResult,
   DeleteLogSubscriptionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteLogSubscriptionRequest,
   output: DeleteLogSubscriptionResult,
@@ -4751,7 +4869,7 @@ export const deleteSnapshot: API.OperationMethod<
   DeleteSnapshotRequest,
   DeleteSnapshotResult,
   DeleteSnapshotError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteSnapshotRequest,
   output: DeleteSnapshotResult,
@@ -4781,7 +4899,7 @@ export const deleteTrust: API.OperationMethod<
   DeleteTrustRequest,
   DeleteTrustResult,
   DeleteTrustError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteTrustRequest,
   output: DeleteTrustResult,
@@ -4815,7 +4933,7 @@ export const deregisterCertificate: API.OperationMethod<
   DeregisterCertificateRequest,
   DeregisterCertificateResult,
   DeregisterCertificateError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeregisterCertificateRequest,
   output: DeregisterCertificateResult,
@@ -4847,7 +4965,7 @@ export const deregisterEventTopic: API.OperationMethod<
   DeregisterEventTopicRequest,
   DeregisterEventTopicResult,
   DeregisterEventTopicError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeregisterEventTopicRequest,
   output: DeregisterEventTopicResult,
@@ -4878,7 +4996,7 @@ export const describeADAssessment: API.OperationMethod<
   DescribeADAssessmentRequest,
   DescribeADAssessmentResult,
   DescribeADAssessmentError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeADAssessmentRequest,
   output: DescribeADAssessmentResult,
@@ -4909,7 +5027,7 @@ export const describeCAEnrollmentPolicy: API.OperationMethod<
   DescribeCAEnrollmentPolicyRequest,
   DescribeCAEnrollmentPolicyResult,
   DescribeCAEnrollmentPolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeCAEnrollmentPolicyRequest,
   output: DescribeCAEnrollmentPolicyResult,
@@ -4940,7 +5058,7 @@ export const describeCertificate: API.OperationMethod<
   DescribeCertificateRequest,
   DescribeCertificateResult,
   DescribeCertificateError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeCertificateRequest,
   output: DescribeCertificateResult,
@@ -4971,27 +5089,13 @@ export type DescribeClientAuthenticationSettingsError =
  * types that are supported for the specified directory is retrieved. Currently, only
  * `SmartCard` is supported.
  */
-export const describeClientAuthenticationSettings: API.OperationMethod<
+export const describeClientAuthenticationSettings: API.PaginatedOperationMethod<
   DescribeClientAuthenticationSettingsRequest,
   DescribeClientAuthenticationSettingsResult,
   DescribeClientAuthenticationSettingsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeClientAuthenticationSettingsRequest,
-  ) => stream.Stream<
-    DescribeClientAuthenticationSettingsResult,
-    DescribeClientAuthenticationSettingsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeClientAuthenticationSettingsRequest,
-  ) => stream.Stream<
-    ClientAuthenticationSettingInfo,
-    DescribeClientAuthenticationSettingsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ClientAuthenticationSettingInfo
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeClientAuthenticationSettingsRequest,
   output: DescribeClientAuthenticationSettingsResult,
   errors: [
@@ -5011,27 +5115,7 @@ export const describeClientAuthenticationSettings: API.OperationMethod<
     items: "ClientAuthenticationSettingsInfo",
     pageSize: "Limit",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeClientAuthenticationSettingsRequest,
-  DescribeClientAuthenticationSettingsResult,
-  DescribeClientAuthenticationSettingsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeClientAuthenticationSettingsRequest,
-  ) => stream.Stream<
-    DescribeClientAuthenticationSettingsResult,
-    DescribeClientAuthenticationSettingsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeClientAuthenticationSettingsRequest,
-  ) => stream.Stream<
-    ClientAuthenticationSettingInfo,
-    DescribeClientAuthenticationSettingsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeConditionalForwardersError =
   | ClientException
@@ -5051,7 +5135,7 @@ export const describeConditionalForwarders: API.OperationMethod<
   DescribeConditionalForwardersRequest,
   DescribeConditionalForwardersResult,
   DescribeConditionalForwardersError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeConditionalForwardersRequest,
   output: DescribeConditionalForwardersResult,
@@ -5091,27 +5175,13 @@ export type DescribeDirectoriesError =
  * You can also specify a maximum number of return results with the `Limit`
  * parameter.
  */
-export const describeDirectories: API.OperationMethod<
+export const describeDirectories: API.PaginatedOperationMethod<
   DescribeDirectoriesRequest,
   DescribeDirectoriesResult,
   DescribeDirectoriesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeDirectoriesRequest,
-  ) => stream.Stream<
-    DescribeDirectoriesResult,
-    DescribeDirectoriesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeDirectoriesRequest,
-  ) => stream.Stream<
-    DirectoryDescription,
-    DescribeDirectoriesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  DirectoryDescription
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeDirectoriesRequest,
   output: DescribeDirectoriesResult,
   errors: [
@@ -5130,27 +5200,7 @@ export const describeDirectories: API.OperationMethod<
     items: "DirectoryDescriptions",
     pageSize: "Limit",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeDirectoriesRequest,
-  DescribeDirectoriesResult,
-  DescribeDirectoriesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeDirectoriesRequest,
-  ) => stream.Stream<
-    DescribeDirectoriesResult,
-    DescribeDirectoriesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeDirectoriesRequest,
-  ) => stream.Stream<
-    DirectoryDescription,
-    DescribeDirectoriesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeDirectoryDataAccessError =
   | AccessDeniedException
@@ -5167,7 +5217,7 @@ export const describeDirectoryDataAccess: API.OperationMethod<
   DescribeDirectoryDataAccessRequest,
   DescribeDirectoryDataAccessResult,
   DescribeDirectoryDataAccessError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeDirectoryDataAccessRequest,
   output: DescribeDirectoryDataAccessResult,
@@ -5194,27 +5244,13 @@ export type DescribeDomainControllersError =
 /**
  * Provides information about any domain controllers in your directory.
  */
-export const describeDomainControllers: API.OperationMethod<
+export const describeDomainControllers: API.PaginatedOperationMethod<
   DescribeDomainControllersRequest,
   DescribeDomainControllersResult,
   DescribeDomainControllersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeDomainControllersRequest,
-  ) => stream.Stream<
-    DescribeDomainControllersResult,
-    DescribeDomainControllersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeDomainControllersRequest,
-  ) => stream.Stream<
-    unknown,
-    DescribeDomainControllersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeDomainControllersRequest,
   output: DescribeDomainControllersResult,
   errors: [
@@ -5233,27 +5269,7 @@ export const describeDomainControllers: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "Limit",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeDomainControllersRequest,
-  DescribeDomainControllersResult,
-  DescribeDomainControllersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeDomainControllersRequest,
-  ) => stream.Stream<
-    DescribeDomainControllersResult,
-    DescribeDomainControllersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeDomainControllersRequest,
-  ) => stream.Stream<
-    unknown,
-    DescribeDomainControllersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeEventTopicsError =
   | ClientException
@@ -5272,7 +5288,7 @@ export const describeEventTopics: API.OperationMethod<
   DescribeEventTopicsRequest,
   DescribeEventTopicsResult,
   DescribeEventTopicsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeEventTopicsRequest,
   output: DescribeEventTopicsResult,
@@ -5304,7 +5320,7 @@ export const describeHybridADUpdate: API.OperationMethod<
   DescribeHybridADUpdateRequest,
   DescribeHybridADUpdateResult,
   DescribeHybridADUpdateError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeHybridADUpdateRequest,
   output: DescribeHybridADUpdateResult,
@@ -5332,27 +5348,13 @@ export type DescribeLDAPSSettingsError =
 /**
  * Describes the status of LDAP security for the specified directory.
  */
-export const describeLDAPSSettings: API.OperationMethod<
+export const describeLDAPSSettings: API.PaginatedOperationMethod<
   DescribeLDAPSSettingsRequest,
   DescribeLDAPSSettingsResult,
   DescribeLDAPSSettingsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeLDAPSSettingsRequest,
-  ) => stream.Stream<
-    DescribeLDAPSSettingsResult,
-    DescribeLDAPSSettingsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeLDAPSSettingsRequest,
-  ) => stream.Stream<
-    LDAPSSettingInfo,
-    DescribeLDAPSSettingsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  LDAPSSettingInfo
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeLDAPSSettingsRequest,
   output: DescribeLDAPSSettingsResult,
   errors: [
@@ -5372,27 +5374,7 @@ export const describeLDAPSSettings: API.OperationMethod<
     items: "LDAPSSettingsInfo",
     pageSize: "Limit",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeLDAPSSettingsRequest,
-  DescribeLDAPSSettingsResult,
-  DescribeLDAPSSettingsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeLDAPSSettingsRequest,
-  ) => stream.Stream<
-    DescribeLDAPSSettingsResult,
-    DescribeLDAPSSettingsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeLDAPSSettingsRequest,
-  ) => stream.Stream<
-    LDAPSSettingInfo,
-    DescribeLDAPSSettingsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeRegionsError =
   | AccessDeniedException
@@ -5407,27 +5389,13 @@ export type DescribeRegionsError =
  * Provides information about the Regions that are configured for multi-Region
  * replication.
  */
-export const describeRegions: API.OperationMethod<
+export const describeRegions: API.PaginatedOperationMethod<
   DescribeRegionsRequest,
   DescribeRegionsResult,
   DescribeRegionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeRegionsRequest,
-  ) => stream.Stream<
-    DescribeRegionsResult,
-    DescribeRegionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeRegionsRequest,
-  ) => stream.Stream<
-    RegionDescription,
-    DescribeRegionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  RegionDescription
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeRegionsRequest,
   output: DescribeRegionsResult,
   errors: [
@@ -5447,27 +5415,7 @@ export const describeRegions: API.OperationMethod<
     outputToken: "NextToken",
     items: "RegionsDescription",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeRegionsRequest,
-  DescribeRegionsResult,
-  DescribeRegionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeRegionsRequest,
-  ) => stream.Stream<
-    DescribeRegionsResult,
-    DescribeRegionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeRegionsRequest,
-  ) => stream.Stream<
-    RegionDescription,
-    DescribeRegionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeSettingsError =
   | ClientException
@@ -5484,7 +5432,7 @@ export const describeSettings: API.OperationMethod<
   DescribeSettingsRequest,
   DescribeSettingsResult,
   DescribeSettingsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeSettingsRequest,
   output: DescribeSettingsResult,
@@ -5512,27 +5460,13 @@ export type DescribeSharedDirectoriesError =
 /**
  * Returns the shared directories in your account.
  */
-export const describeSharedDirectories: API.OperationMethod<
+export const describeSharedDirectories: API.PaginatedOperationMethod<
   DescribeSharedDirectoriesRequest,
   DescribeSharedDirectoriesResult,
   DescribeSharedDirectoriesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeSharedDirectoriesRequest,
-  ) => stream.Stream<
-    DescribeSharedDirectoriesResult,
-    DescribeSharedDirectoriesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeSharedDirectoriesRequest,
-  ) => stream.Stream<
-    SharedDirectory,
-    DescribeSharedDirectoriesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  SharedDirectory
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeSharedDirectoriesRequest,
   output: DescribeSharedDirectoriesResult,
   errors: [
@@ -5552,27 +5486,7 @@ export const describeSharedDirectories: API.OperationMethod<
     items: "SharedDirectories",
     pageSize: "Limit",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeSharedDirectoriesRequest,
-  DescribeSharedDirectoriesResult,
-  DescribeSharedDirectoriesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeSharedDirectoriesRequest,
-  ) => stream.Stream<
-    DescribeSharedDirectoriesResult,
-    DescribeSharedDirectoriesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeSharedDirectoriesRequest,
-  ) => stream.Stream<
-    SharedDirectory,
-    DescribeSharedDirectoriesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeSnapshotsError =
   | ClientException
@@ -5592,27 +5506,13 @@ export type DescribeSnapshotsError =
  * You can also specify a maximum number of return results with the *Limit*
  * parameter.
  */
-export const describeSnapshots: API.OperationMethod<
+export const describeSnapshots: API.PaginatedOperationMethod<
   DescribeSnapshotsRequest,
   DescribeSnapshotsResult,
   DescribeSnapshotsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeSnapshotsRequest,
-  ) => stream.Stream<
-    DescribeSnapshotsResult,
-    DescribeSnapshotsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeSnapshotsRequest,
-  ) => stream.Stream<
-    Snapshot,
-    DescribeSnapshotsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Snapshot
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeSnapshotsRequest,
   output: DescribeSnapshotsResult,
   errors: [
@@ -5631,27 +5531,7 @@ export const describeSnapshots: API.OperationMethod<
     items: "Snapshots",
     pageSize: "Limit",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeSnapshotsRequest,
-  DescribeSnapshotsResult,
-  DescribeSnapshotsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeSnapshotsRequest,
-  ) => stream.Stream<
-    DescribeSnapshotsResult,
-    DescribeSnapshotsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeSnapshotsRequest,
-  ) => stream.Stream<
-    Snapshot,
-    DescribeSnapshotsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeTrustsError =
   | ClientException
@@ -5667,27 +5547,13 @@ export type DescribeTrustsError =
  * If no input parameters are provided, such as DirectoryId or TrustIds, this request
  * describes all the trust relationships belonging to the account.
  */
-export const describeTrusts: API.OperationMethod<
+export const describeTrusts: API.PaginatedOperationMethod<
   DescribeTrustsRequest,
   DescribeTrustsResult,
   DescribeTrustsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeTrustsRequest,
-  ) => stream.Stream<
-    DescribeTrustsResult,
-    DescribeTrustsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeTrustsRequest,
-  ) => stream.Stream<
-    Trust,
-    DescribeTrustsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Trust
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeTrustsRequest,
   output: DescribeTrustsResult,
   errors: [
@@ -5707,27 +5573,7 @@ export const describeTrusts: API.OperationMethod<
     items: "Trusts",
     pageSize: "Limit",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeTrustsRequest,
-  DescribeTrustsResult,
-  DescribeTrustsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeTrustsRequest,
-  ) => stream.Stream<
-    DescribeTrustsResult,
-    DescribeTrustsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeTrustsRequest,
-  ) => stream.Stream<
-    Trust,
-    DescribeTrustsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeUpdateDirectoryError =
   | AccessDeniedException
@@ -5740,27 +5586,13 @@ export type DescribeUpdateDirectoryError =
 /**
  * Describes the updates of a directory for a particular update type.
  */
-export const describeUpdateDirectory: API.OperationMethod<
+export const describeUpdateDirectory: API.PaginatedOperationMethod<
   DescribeUpdateDirectoryRequest,
   DescribeUpdateDirectoryResult,
   DescribeUpdateDirectoryError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeUpdateDirectoryRequest,
-  ) => stream.Stream<
-    DescribeUpdateDirectoryResult,
-    DescribeUpdateDirectoryError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeUpdateDirectoryRequest,
-  ) => stream.Stream<
-    UpdateInfoEntry,
-    DescribeUpdateDirectoryError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  UpdateInfoEntry
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeUpdateDirectoryRequest,
   output: DescribeUpdateDirectoryResult,
   errors: [
@@ -5779,27 +5611,7 @@ export const describeUpdateDirectory: API.OperationMethod<
     outputToken: "NextToken",
     items: "UpdateActivities",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeUpdateDirectoryRequest,
-  DescribeUpdateDirectoryResult,
-  DescribeUpdateDirectoryError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeUpdateDirectoryRequest,
-  ) => stream.Stream<
-    DescribeUpdateDirectoryResult,
-    DescribeUpdateDirectoryError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeUpdateDirectoryRequest,
-  ) => stream.Stream<
-    UpdateInfoEntry,
-    DescribeUpdateDirectoryError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DisableCAEnrollmentPolicyError =
   | AccessDeniedException
@@ -5823,7 +5635,7 @@ export const disableCAEnrollmentPolicy: API.OperationMethod<
   DisableCAEnrollmentPolicyRequest,
   DisableCAEnrollmentPolicyResult,
   DisableCAEnrollmentPolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DisableCAEnrollmentPolicyRequest,
   output: DisableCAEnrollmentPolicyResult,
@@ -5857,7 +5669,7 @@ export const disableClientAuthentication: API.OperationMethod<
   DisableClientAuthenticationRequest,
   DisableClientAuthenticationResult,
   DisableClientAuthenticationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DisableClientAuthenticationRequest,
   output: DisableClientAuthenticationResult,
@@ -5891,7 +5703,7 @@ export const disableDirectoryDataAccess: API.OperationMethod<
   DisableDirectoryDataAccessRequest,
   DisableDirectoryDataAccessResult,
   DisableDirectoryDataAccessError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DisableDirectoryDataAccessRequest,
   output: DisableDirectoryDataAccessResult,
@@ -5925,7 +5737,7 @@ export const disableLDAPS: API.OperationMethod<
   DisableLDAPSRequest,
   DisableLDAPSResult,
   DisableLDAPSError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DisableLDAPSRequest,
   output: DisableLDAPSResult,
@@ -5956,7 +5768,7 @@ export const disableRadius: API.OperationMethod<
   DisableRadiusRequest,
   DisableRadiusResult,
   DisableRadiusError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DisableRadiusRequest,
   output: DisableRadiusResult,
@@ -5980,7 +5792,7 @@ export const disableSso: API.OperationMethod<
   DisableSsoRequest,
   DisableSsoResult,
   DisableSsoError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DisableSsoRequest,
   output: DisableSsoResult,
@@ -6020,7 +5832,7 @@ export const enableCAEnrollmentPolicy: API.OperationMethod<
   EnableCAEnrollmentPolicyRequest,
   EnableCAEnrollmentPolicyResult,
   EnableCAEnrollmentPolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: EnableCAEnrollmentPolicyRequest,
   output: EnableCAEnrollmentPolicyResult,
@@ -6056,7 +5868,7 @@ export const enableClientAuthentication: API.OperationMethod<
   EnableClientAuthenticationRequest,
   EnableClientAuthenticationResult,
   EnableClientAuthenticationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: EnableClientAuthenticationRequest,
   output: EnableClientAuthenticationResult,
@@ -6091,7 +5903,7 @@ export const enableDirectoryDataAccess: API.OperationMethod<
   EnableDirectoryDataAccessRequest,
   EnableDirectoryDataAccessResult,
   EnableDirectoryDataAccessError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: EnableDirectoryDataAccessRequest,
   output: EnableDirectoryDataAccessResult,
@@ -6126,7 +5938,7 @@ export const enableLDAPS: API.OperationMethod<
   EnableLDAPSRequest,
   EnableLDAPSResult,
   EnableLDAPSError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: EnableLDAPSRequest,
   output: EnableLDAPSResult,
@@ -6160,7 +5972,7 @@ export const enableRadius: API.OperationMethod<
   EnableRadiusRequest,
   EnableRadiusResult,
   EnableRadiusError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: EnableRadiusRequest,
   output: EnableRadiusResult,
@@ -6192,7 +6004,7 @@ export const enableSso: API.OperationMethod<
   EnableSsoRequest,
   EnableSsoResult,
   EnableSsoError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: EnableSsoRequest,
   output: EnableSsoResult,
@@ -6220,7 +6032,7 @@ export const getDirectoryLimits: API.OperationMethod<
   GetDirectoryLimitsRequest,
   GetDirectoryLimitsResult,
   GetDirectoryLimitsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetDirectoryLimitsRequest,
   output: GetDirectoryLimitsResult,
@@ -6242,7 +6054,7 @@ export const getSnapshotLimits: API.OperationMethod<
   GetSnapshotLimitsRequest,
   GetSnapshotLimitsResult,
   GetSnapshotLimitsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetSnapshotLimitsRequest,
   output: GetSnapshotLimitsResult,
@@ -6264,27 +6076,13 @@ export type ListADAssessmentsError =
  * assessments in your account. Use this operation to monitor assessment status and manage
  * multiple assessments.
  */
-export const listADAssessments: API.OperationMethod<
+export const listADAssessments: API.PaginatedOperationMethod<
   ListADAssessmentsRequest,
   ListADAssessmentsResult,
   ListADAssessmentsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListADAssessmentsRequest,
-  ) => stream.Stream<
-    ListADAssessmentsResult,
-    ListADAssessmentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListADAssessmentsRequest,
-  ) => stream.Stream<
-    AssessmentSummary,
-    ListADAssessmentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  AssessmentSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListADAssessmentsRequest,
   output: ListADAssessmentsResult,
   errors: [
@@ -6303,27 +6101,7 @@ export const listADAssessments: API.OperationMethod<
     items: "Assessments",
     pageSize: "Limit",
   } as const,
-})) as any as API.OperationMethod<
-  ListADAssessmentsRequest,
-  ListADAssessmentsResult,
-  ListADAssessmentsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListADAssessmentsRequest,
-  ) => stream.Stream<
-    ListADAssessmentsResult,
-    ListADAssessmentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListADAssessmentsRequest,
-  ) => stream.Stream<
-    AssessmentSummary,
-    ListADAssessmentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListCertificatesError =
   | ClientException
@@ -6337,27 +6115,13 @@ export type ListCertificatesError =
  * For the specified directory, lists all the certificates registered for a secure LDAP or
  * client certificate authentication.
  */
-export const listCertificates: API.OperationMethod<
+export const listCertificates: API.PaginatedOperationMethod<
   ListCertificatesRequest,
   ListCertificatesResult,
   ListCertificatesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCertificatesRequest,
-  ) => stream.Stream<
-    ListCertificatesResult,
-    ListCertificatesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCertificatesRequest,
-  ) => stream.Stream<
-    CertificateInfo,
-    ListCertificatesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  CertificateInfo
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListCertificatesRequest,
   output: ListCertificatesResult,
   errors: [
@@ -6377,27 +6141,7 @@ export const listCertificates: API.OperationMethod<
     items: "CertificatesInfo",
     pageSize: "Limit",
   } as const,
-})) as any as API.OperationMethod<
-  ListCertificatesRequest,
-  ListCertificatesResult,
-  ListCertificatesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCertificatesRequest,
-  ) => stream.Stream<
-    ListCertificatesResult,
-    ListCertificatesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCertificatesRequest,
-  ) => stream.Stream<
-    CertificateInfo,
-    ListCertificatesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListIpRoutesError =
   | ClientException
@@ -6409,27 +6153,13 @@ export type ListIpRoutesError =
 /**
  * Lists the address blocks that you have added to a directory.
  */
-export const listIpRoutes: API.OperationMethod<
+export const listIpRoutes: API.PaginatedOperationMethod<
   ListIpRoutesRequest,
   ListIpRoutesResult,
   ListIpRoutesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListIpRoutesRequest,
-  ) => stream.Stream<
-    ListIpRoutesResult,
-    ListIpRoutesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListIpRoutesRequest,
-  ) => stream.Stream<
-    IpRouteInfo,
-    ListIpRoutesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  IpRouteInfo
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListIpRoutesRequest,
   output: ListIpRoutesResult,
   errors: [
@@ -6448,27 +6178,7 @@ export const listIpRoutes: API.OperationMethod<
     items: "IpRoutesInfo",
     pageSize: "Limit",
   } as const,
-})) as any as API.OperationMethod<
-  ListIpRoutesRequest,
-  ListIpRoutesResult,
-  ListIpRoutesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListIpRoutesRequest,
-  ) => stream.Stream<
-    ListIpRoutesResult,
-    ListIpRoutesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListIpRoutesRequest,
-  ) => stream.Stream<
-    IpRouteInfo,
-    ListIpRoutesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListLogSubscriptionsError =
   | ClientException
@@ -6479,27 +6189,13 @@ export type ListLogSubscriptionsError =
 /**
  * Lists the active log subscriptions for the Amazon Web Services account.
  */
-export const listLogSubscriptions: API.OperationMethod<
+export const listLogSubscriptions: API.PaginatedOperationMethod<
   ListLogSubscriptionsRequest,
   ListLogSubscriptionsResult,
   ListLogSubscriptionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListLogSubscriptionsRequest,
-  ) => stream.Stream<
-    ListLogSubscriptionsResult,
-    ListLogSubscriptionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListLogSubscriptionsRequest,
-  ) => stream.Stream<
-    LogSubscription,
-    ListLogSubscriptionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  LogSubscription
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListLogSubscriptionsRequest,
   output: ListLogSubscriptionsResult,
   errors: [
@@ -6517,27 +6213,7 @@ export const listLogSubscriptions: API.OperationMethod<
     items: "LogSubscriptions",
     pageSize: "Limit",
   } as const,
-})) as any as API.OperationMethod<
-  ListLogSubscriptionsRequest,
-  ListLogSubscriptionsResult,
-  ListLogSubscriptionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListLogSubscriptionsRequest,
-  ) => stream.Stream<
-    ListLogSubscriptionsResult,
-    ListLogSubscriptionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListLogSubscriptionsRequest,
-  ) => stream.Stream<
-    LogSubscription,
-    ListLogSubscriptionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListSchemaExtensionsError =
   | ClientException
@@ -6548,27 +6224,13 @@ export type ListSchemaExtensionsError =
 /**
  * Lists all schema extensions applied to a Microsoft AD Directory.
  */
-export const listSchemaExtensions: API.OperationMethod<
+export const listSchemaExtensions: API.PaginatedOperationMethod<
   ListSchemaExtensionsRequest,
   ListSchemaExtensionsResult,
   ListSchemaExtensionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSchemaExtensionsRequest,
-  ) => stream.Stream<
-    ListSchemaExtensionsResult,
-    ListSchemaExtensionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSchemaExtensionsRequest,
-  ) => stream.Stream<
-    SchemaExtensionInfo,
-    ListSchemaExtensionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  SchemaExtensionInfo
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListSchemaExtensionsRequest,
   output: ListSchemaExtensionsResult,
   errors: [
@@ -6586,27 +6248,7 @@ export const listSchemaExtensions: API.OperationMethod<
     items: "SchemaExtensionsInfo",
     pageSize: "Limit",
   } as const,
-})) as any as API.OperationMethod<
-  ListSchemaExtensionsRequest,
-  ListSchemaExtensionsResult,
-  ListSchemaExtensionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSchemaExtensionsRequest,
-  ) => stream.Stream<
-    ListSchemaExtensionsResult,
-    ListSchemaExtensionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSchemaExtensionsRequest,
-  ) => stream.Stream<
-    SchemaExtensionInfo,
-    ListSchemaExtensionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsForResourceError =
   | ClientException
@@ -6618,27 +6260,13 @@ export type ListTagsForResourceError =
 /**
  * Lists all tags on a directory.
  */
-export const listTagsForResource: API.OperationMethod<
+export const listTagsForResource: API.PaginatedOperationMethod<
   ListTagsForResourceRequest,
   ListTagsForResourceResult,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTagsForResourceRequest,
-  ) => stream.Stream<
-    ListTagsForResourceResult,
-    ListTagsForResourceError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTagsForResourceRequest,
-  ) => stream.Stream<
-    Tag,
-    ListTagsForResourceError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Tag
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResult,
   errors: [
@@ -6657,27 +6285,7 @@ export const listTagsForResource: API.OperationMethod<
     items: "Tags",
     pageSize: "Limit",
   } as const,
-})) as any as API.OperationMethod<
-  ListTagsForResourceRequest,
-  ListTagsForResourceResult,
-  ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTagsForResourceRequest,
-  ) => stream.Stream<
-    ListTagsForResourceResult,
-    ListTagsForResourceError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTagsForResourceRequest,
-  ) => stream.Stream<
-    Tag,
-    ListTagsForResourceError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type RegisterCertificateError =
   | CertificateAlreadyExistsException
@@ -6697,7 +6305,7 @@ export const registerCertificate: API.OperationMethod<
   RegisterCertificateRequest,
   RegisterCertificateResult,
   RegisterCertificateError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RegisterCertificateRequest,
   output: RegisterCertificateResult,
@@ -6734,7 +6342,7 @@ export const registerEventTopic: API.OperationMethod<
   RegisterEventTopicRequest,
   RegisterEventTopicResult,
   RegisterEventTopicError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RegisterEventTopicRequest,
   output: RegisterEventTopicResult,
@@ -6763,7 +6371,7 @@ export const rejectSharedDirectory: API.OperationMethod<
   RejectSharedDirectoryRequest,
   RejectSharedDirectoryResult,
   RejectSharedDirectoryError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RejectSharedDirectoryRequest,
   output: RejectSharedDirectoryResult,
@@ -6793,7 +6401,7 @@ export const removeIpRoutes: API.OperationMethod<
   RemoveIpRoutesRequest,
   RemoveIpRoutesResult,
   RemoveIpRoutesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RemoveIpRoutesRequest,
   output: RemoveIpRoutesResult,
@@ -6826,7 +6434,7 @@ export const removeRegion: API.OperationMethod<
   RemoveRegionRequest,
   RemoveRegionResult,
   RemoveRegionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RemoveRegionRequest,
   output: RemoveRegionResult,
@@ -6856,7 +6464,7 @@ export const removeTagsFromResource: API.OperationMethod<
   RemoveTagsFromResourceRequest,
   RemoveTagsFromResourceResult,
   RemoveTagsFromResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RemoveTagsFromResourceRequest,
   output: RemoveTagsFromResourceResult,
@@ -6902,7 +6510,7 @@ export const resetUserPassword: API.OperationMethod<
   ResetUserPasswordRequest,
   ResetUserPasswordResult,
   ResetUserPasswordError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ResetUserPasswordRequest,
   output: ResetUserPasswordResult,
@@ -6940,7 +6548,7 @@ export const restoreFromSnapshot: API.OperationMethod<
   RestoreFromSnapshotRequest,
   RestoreFromSnapshotResult,
   RestoreFromSnapshotError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RestoreFromSnapshotRequest,
   output: RestoreFromSnapshotResult,
@@ -6989,7 +6597,7 @@ export const shareDirectory: API.OperationMethod<
   ShareDirectoryRequest,
   ShareDirectoryResult,
   ShareDirectoryError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ShareDirectoryRequest,
   output: ShareDirectoryResult,
@@ -7045,7 +6653,7 @@ export const startADAssessment: API.OperationMethod<
   StartADAssessmentRequest,
   StartADAssessmentResult,
   StartADAssessmentError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartADAssessmentRequest,
   output: StartADAssessmentResult,
@@ -7077,7 +6685,7 @@ export const startSchemaExtension: API.OperationMethod<
   StartSchemaExtensionRequest,
   StartSchemaExtensionResult,
   StartSchemaExtensionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartSchemaExtensionRequest,
   output: StartSchemaExtensionResult,
@@ -7108,7 +6716,7 @@ export const unshareDirectory: API.OperationMethod<
   UnshareDirectoryRequest,
   UnshareDirectoryResult,
   UnshareDirectoryError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UnshareDirectoryRequest,
   output: UnshareDirectoryResult,
@@ -7140,7 +6748,7 @@ export const updateConditionalForwarder: API.OperationMethod<
   UpdateConditionalForwarderRequest,
   UpdateConditionalForwarderResult,
   UpdateConditionalForwarderError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateConditionalForwarderRequest,
   output: UpdateConditionalForwarderResult,
@@ -7175,7 +6783,7 @@ export const updateDirectorySetup: API.OperationMethod<
   UpdateDirectorySetupRequest,
   UpdateDirectorySetupResult,
   UpdateDirectorySetupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateDirectorySetupRequest,
   output: UpdateDirectorySetupResult,
@@ -7223,7 +6831,7 @@ export const updateHybridAD: API.OperationMethod<
   UpdateHybridADRequest,
   UpdateHybridADResult,
   UpdateHybridADError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateHybridADRequest,
   output: UpdateHybridADResult,
@@ -7260,7 +6868,7 @@ export const updateNumberOfDomainControllers: API.OperationMethod<
   UpdateNumberOfDomainControllersRequest,
   UpdateNumberOfDomainControllersResult,
   UpdateNumberOfDomainControllersError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateNumberOfDomainControllersRequest,
   output: UpdateNumberOfDomainControllersResult,
@@ -7292,7 +6900,7 @@ export const updateRadius: API.OperationMethod<
   UpdateRadiusRequest,
   UpdateRadiusResult,
   UpdateRadiusError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateRadiusRequest,
   output: UpdateRadiusResult,
@@ -7324,7 +6932,7 @@ export const updateSettings: API.OperationMethod<
   UpdateSettingsRequest,
   UpdateSettingsResult,
   UpdateSettingsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateSettingsRequest,
   output: UpdateSettingsResult,
@@ -7357,7 +6965,7 @@ export const updateTrust: API.OperationMethod<
   UpdateTrustRequest,
   UpdateTrustResult,
   UpdateTrustError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateTrustRequest,
   output: UpdateTrustResult,
@@ -7390,7 +6998,7 @@ export const verifyTrust: API.OperationMethod<
   VerifyTrustRequest,
   VerifyTrustResult,
   VerifyTrustError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: VerifyTrustRequest,
   output: VerifyTrustResult,

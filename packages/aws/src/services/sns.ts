@@ -1,7 +1,6 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as redacted from "effect/Redacted";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -9,7 +8,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 import { SensitiveString } from "../sensitive.ts";
 const ns = T.XmlNamespace("http://sns.amazonaws.com/doc/2010-03-31/");
 const svc = T.AwsApiService({
@@ -97,7 +95,7 @@ const rules = T.EndpointResolver((p, _) => {
 export class AuthorizationErrorException
   extends /*@__PURE__*/ S.TaggedErrorClass<AuthorizationErrorException>()(
     "AuthorizationErrorException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "AuthorizationError", httpResponseCode: 403 }),
       T.HttpError(403),
@@ -106,7 +104,7 @@ export class AuthorizationErrorException
 export class BatchEntryIdsNotDistinctException
   extends /*@__PURE__*/ S.TaggedErrorClass<BatchEntryIdsNotDistinctException>()(
     "BatchEntryIdsNotDistinctException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "BatchEntryIdsNotDistinct",
@@ -118,7 +116,7 @@ export class BatchEntryIdsNotDistinctException
 export class BatchRequestTooLongException
   extends /*@__PURE__*/ S.TaggedErrorClass<BatchRequestTooLongException>()(
     "BatchRequestTooLongException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "BatchRequestTooLong", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -127,7 +125,7 @@ export class BatchRequestTooLongException
 export class ConcurrentAccessException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConcurrentAccessException>()(
     "ConcurrentAccessException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "ConcurrentAccess", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -136,7 +134,7 @@ export class ConcurrentAccessException
 export class EmptyBatchRequestException
   extends /*@__PURE__*/ S.TaggedErrorClass<EmptyBatchRequestException>()(
     "EmptyBatchRequestException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "EmptyBatchRequest", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -145,7 +143,7 @@ export class EmptyBatchRequestException
 export class EndpointDisabledException
   extends /*@__PURE__*/ S.TaggedErrorClass<EndpointDisabledException>()(
     "EndpointDisabledException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "EndpointDisabled", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -154,7 +152,7 @@ export class EndpointDisabledException
 export class FilterPolicyLimitExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<FilterPolicyLimitExceededException>()(
     "FilterPolicyLimitExceededException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "FilterPolicyLimitExceeded",
@@ -166,7 +164,7 @@ export class FilterPolicyLimitExceededException
 export class InternalErrorException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalErrorException>()(
     "InternalErrorException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "InternalError", httpResponseCode: 500 }),
       T.HttpError(500),
@@ -175,7 +173,7 @@ export class InternalErrorException
 export class InvalidBatchEntryIdException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidBatchEntryIdException>()(
     "InvalidBatchEntryIdException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "InvalidBatchEntryId", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -184,12 +182,12 @@ export class InvalidBatchEntryIdException
 export class InvalidClientTokenId
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidClientTokenId>()(
     "InvalidClientTokenId",
-    {},
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ).pipe(C.withAuthError) {}
 export class InvalidParameterException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidParameterException>()(
     "InvalidParameterException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "InvalidParameter", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -198,7 +196,7 @@ export class InvalidParameterException
 export class InvalidParameterValueException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidParameterValueException>()(
     "InvalidParameterValueException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "ParameterValueInvalid", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -207,7 +205,7 @@ export class InvalidParameterValueException
 export class InvalidSecurityException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidSecurityException>()(
     "InvalidSecurityException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "InvalidSecurity", httpResponseCode: 403 }),
       T.HttpError(403),
@@ -216,7 +214,7 @@ export class InvalidSecurityException
 export class InvalidStateException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidStateException>()(
     "InvalidStateException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "InvalidState", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -225,7 +223,7 @@ export class InvalidStateException
 export class KMSAccessDeniedException
   extends /*@__PURE__*/ S.TaggedErrorClass<KMSAccessDeniedException>()(
     "KMSAccessDeniedException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "KMSAccessDenied", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -234,7 +232,7 @@ export class KMSAccessDeniedException
 export class KMSDisabledException
   extends /*@__PURE__*/ S.TaggedErrorClass<KMSDisabledException>()(
     "KMSDisabledException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "KMSDisabled", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -243,7 +241,7 @@ export class KMSDisabledException
 export class KMSInvalidStateException
   extends /*@__PURE__*/ S.TaggedErrorClass<KMSInvalidStateException>()(
     "KMSInvalidStateException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "KMSInvalidState", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -252,7 +250,7 @@ export class KMSInvalidStateException
 export class KMSNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<KMSNotFoundException>()(
     "KMSNotFoundException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "KMSNotFound", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -261,7 +259,7 @@ export class KMSNotFoundException
 export class KMSOptInRequired
   extends /*@__PURE__*/ S.TaggedErrorClass<KMSOptInRequired>()(
     "KMSOptInRequired",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "KMSOptInRequired", httpResponseCode: 403 }),
       T.HttpError(403),
@@ -270,7 +268,7 @@ export class KMSOptInRequired
 export class KMSThrottlingException
   extends /*@__PURE__*/ S.TaggedErrorClass<KMSThrottlingException>()(
     "KMSThrottlingException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "KMSThrottling", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -279,7 +277,7 @@ export class KMSThrottlingException
 export class NotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<NotFoundException>()(
     "NotFoundException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "NotFound", httpResponseCode: 404 }),
       T.HttpError(404),
@@ -288,7 +286,7 @@ export class NotFoundException
 export class OptedOutException
   extends /*@__PURE__*/ S.TaggedErrorClass<OptedOutException>()(
     "OptedOutException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "OptedOut", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -297,7 +295,7 @@ export class OptedOutException
 export class PlatformApplicationDisabledException
   extends /*@__PURE__*/ S.TaggedErrorClass<PlatformApplicationDisabledException>()(
     "PlatformApplicationDisabledException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "PlatformApplicationDisabled",
@@ -309,7 +307,7 @@ export class PlatformApplicationDisabledException
 export class ReplayLimitExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<ReplayLimitExceededException>()(
     "ReplayLimitExceededException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "ReplayLimitExceeded", httpResponseCode: 403 }),
       T.HttpError(403),
@@ -318,12 +316,12 @@ export class ReplayLimitExceededException
 export class RequestLimitExceeded
   extends /*@__PURE__*/ S.TaggedErrorClass<RequestLimitExceeded>()(
     "RequestLimitExceeded",
-    {},
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ).pipe(C.withThrottlingError) {}
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "ResourceNotFound", httpResponseCode: 404 }),
       T.HttpError(404),
@@ -332,7 +330,7 @@ export class ResourceNotFoundException
 export class StaleTagException
   extends /*@__PURE__*/ S.TaggedErrorClass<StaleTagException>()(
     "StaleTagException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "StaleTag", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -341,7 +339,7 @@ export class StaleTagException
 export class SubscriptionLimitExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<SubscriptionLimitExceededException>()(
     "SubscriptionLimitExceededException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "SubscriptionLimitExceeded",
@@ -353,7 +351,7 @@ export class SubscriptionLimitExceededException
 export class TagLimitExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<TagLimitExceededException>()(
     "TagLimitExceededException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "TagLimitExceeded", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -362,7 +360,7 @@ export class TagLimitExceededException
 export class TagPolicyException
   extends /*@__PURE__*/ S.TaggedErrorClass<TagPolicyException>()(
     "TagPolicyException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "TagPolicy", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -371,7 +369,7 @@ export class TagPolicyException
 export class ThrottledException
   extends /*@__PURE__*/ S.TaggedErrorClass<ThrottledException>()(
     "ThrottledException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "Throttled", httpResponseCode: 429 }),
       T.HttpError(429),
@@ -380,7 +378,7 @@ export class ThrottledException
 export class TooManyEntriesInBatchRequestException
   extends /*@__PURE__*/ S.TaggedErrorClass<TooManyEntriesInBatchRequestException>()(
     "TooManyEntriesInBatchRequestException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({
         code: "TooManyEntriesInBatchRequest",
@@ -392,7 +390,7 @@ export class TooManyEntriesInBatchRequestException
 export class TopicLimitExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<TopicLimitExceededException>()(
     "TopicLimitExceededException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "TopicLimitExceeded", httpResponseCode: 403 }),
       T.HttpError(403),
@@ -401,7 +399,7 @@ export class TopicLimitExceededException
 export class UserErrorException
   extends /*@__PURE__*/ S.TaggedErrorClass<UserErrorException>()(
     "UserErrorException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "UserError", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -410,7 +408,7 @@ export class UserErrorException
 export class ValidationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
     "ValidationException",
-    { Message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.all(
       T.AwsQueryError({ code: "ValidationException", httpResponseCode: 400 }),
       T.HttpError(400),
@@ -419,7 +417,7 @@ export class ValidationException
 export class VerificationException
   extends /*@__PURE__*/ S.TaggedErrorClass<VerificationException>()(
     "VerificationException",
-    { Message: S.String, Status: S.String },
+    { message: S.String.pipe(T.ErrorMessage()), Status: S.String },
   ) {}
 export type TopicARN = string;
 export type Label = string;
@@ -1921,7 +1919,7 @@ export const addPermission: API.OperationMethod<
   AddPermissionInput,
   AddPermissionResponse,
   AddPermissionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AddPermissionInput,
   output: AddPermissionResponse,
@@ -1956,7 +1954,7 @@ export const checkIfPhoneNumberIsOptedOut: API.OperationMethod<
   CheckIfPhoneNumberIsOptedOutInput,
   CheckIfPhoneNumberIsOptedOutResponse,
   CheckIfPhoneNumberIsOptedOutError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CheckIfPhoneNumberIsOptedOutInput,
   output: CheckIfPhoneNumberIsOptedOutResponse,
@@ -1991,7 +1989,7 @@ export const confirmSubscription: API.OperationMethod<
   ConfirmSubscriptionInput,
   ConfirmSubscriptionResponse,
   ConfirmSubscriptionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ConfirmSubscriptionInput,
   output: ConfirmSubscriptionResponse,
@@ -2058,7 +2056,7 @@ export const createPlatformApplication: API.OperationMethod<
   CreatePlatformApplicationInput,
   CreatePlatformApplicationResponse,
   CreatePlatformApplicationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreatePlatformApplicationInput,
   output: CreatePlatformApplicationResponse,
@@ -2101,7 +2099,7 @@ export const createPlatformEndpoint: API.OperationMethod<
   CreatePlatformEndpointInput,
   CreateEndpointResponse,
   CreatePlatformEndpointError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreatePlatformEndpointInput,
   output: CreateEndpointResponse,
@@ -2143,7 +2141,7 @@ export const createSMSSandboxPhoneNumber: API.OperationMethod<
   CreateSMSSandboxPhoneNumberInput,
   CreateSMSSandboxPhoneNumberResult,
   CreateSMSSandboxPhoneNumberError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateSMSSandboxPhoneNumberInput,
   output: CreateSMSSandboxPhoneNumberResult,
@@ -2182,7 +2180,7 @@ export const createTopic: API.OperationMethod<
   CreateTopicInput,
   CreateTopicResponse,
   CreateTopicError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateTopicInput,
   output: CreateTopicResponse,
@@ -2221,7 +2219,7 @@ export const deleteEndpoint: API.OperationMethod<
   DeleteEndpointInput,
   DeleteEndpointResponse,
   DeleteEndpointError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteEndpointInput,
   output: DeleteEndpointResponse,
@@ -2254,7 +2252,7 @@ export const deletePlatformApplication: API.OperationMethod<
   DeletePlatformApplicationInput,
   DeletePlatformApplicationResponse,
   DeletePlatformApplicationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeletePlatformApplicationInput,
   output: DeletePlatformApplicationResponse,
@@ -2295,7 +2293,7 @@ export const deleteSMSSandboxPhoneNumber: API.OperationMethod<
   DeleteSMSSandboxPhoneNumberInput,
   DeleteSMSSandboxPhoneNumberResult,
   DeleteSMSSandboxPhoneNumberError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteSMSSandboxPhoneNumberInput,
   output: DeleteSMSSandboxPhoneNumberResult,
@@ -2334,7 +2332,7 @@ export const deleteTopic: API.OperationMethod<
   DeleteTopicInput,
   DeleteTopicResponse,
   DeleteTopicError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteTopicInput,
   output: DeleteTopicResponse,
@@ -2372,7 +2370,7 @@ export const getDataProtectionPolicy: API.OperationMethod<
   GetDataProtectionPolicyInput,
   GetDataProtectionPolicyResponse,
   GetDataProtectionPolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetDataProtectionPolicyInput,
   output: GetDataProtectionPolicyResponse,
@@ -2407,7 +2405,7 @@ export const getEndpointAttributes: API.OperationMethod<
   GetEndpointAttributesInput,
   GetEndpointAttributesResponse,
   GetEndpointAttributesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetEndpointAttributesInput,
   output: GetEndpointAttributesResponse,
@@ -2441,7 +2439,7 @@ export const getPlatformApplicationAttributes: API.OperationMethod<
   GetPlatformApplicationAttributesInput,
   GetPlatformApplicationAttributesResponse,
   GetPlatformApplicationAttributesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetPlatformApplicationAttributesInput,
   output: GetPlatformApplicationAttributesResponse,
@@ -2473,7 +2471,7 @@ export const getSMSAttributes: API.OperationMethod<
   GetSMSAttributesInput,
   GetSMSAttributesResponse,
   GetSMSAttributesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetSMSAttributesInput,
   output: GetSMSAttributesResponse,
@@ -2510,7 +2508,7 @@ export const getSMSSandboxAccountStatus: API.OperationMethod<
   GetSMSSandboxAccountStatusInput,
   GetSMSSandboxAccountStatusResult,
   GetSMSSandboxAccountStatusError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetSMSSandboxAccountStatusInput,
   output: GetSMSSandboxAccountStatusResult,
@@ -2537,7 +2535,7 @@ export const getSubscriptionAttributes: API.OperationMethod<
   GetSubscriptionAttributesInput,
   GetSubscriptionAttributesResponse,
   GetSubscriptionAttributesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetSubscriptionAttributesInput,
   output: GetSubscriptionAttributesResponse,
@@ -2569,7 +2567,7 @@ export const getTopicAttributes: API.OperationMethod<
   GetTopicAttributesInput,
   GetTopicAttributesResponse,
   GetTopicAttributesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetTopicAttributesInput,
   output: GetTopicAttributesResponse,
@@ -2608,27 +2606,13 @@ export type ListEndpointsByPlatformApplicationError =
  *
  * This action is throttled at 30 transactions per second (TPS).
  */
-export const listEndpointsByPlatformApplication: API.OperationMethod<
+export const listEndpointsByPlatformApplication: API.PaginatedOperationMethod<
   ListEndpointsByPlatformApplicationInput,
   ListEndpointsByPlatformApplicationResponse,
   ListEndpointsByPlatformApplicationError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListEndpointsByPlatformApplicationInput,
-  ) => stream.Stream<
-    ListEndpointsByPlatformApplicationResponse,
-    ListEndpointsByPlatformApplicationError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListEndpointsByPlatformApplicationInput,
-  ) => stream.Stream<
-    Endpoint,
-    ListEndpointsByPlatformApplicationError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Endpoint
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListEndpointsByPlatformApplicationInput,
   output: ListEndpointsByPlatformApplicationResponse,
   errors: [
@@ -2647,27 +2631,7 @@ export const listEndpointsByPlatformApplication: API.OperationMethod<
     outputToken: "NextToken",
     items: "Endpoints",
   } as const,
-})) as any as API.OperationMethod<
-  ListEndpointsByPlatformApplicationInput,
-  ListEndpointsByPlatformApplicationResponse,
-  ListEndpointsByPlatformApplicationError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListEndpointsByPlatformApplicationInput,
-  ) => stream.Stream<
-    ListEndpointsByPlatformApplicationResponse,
-    ListEndpointsByPlatformApplicationError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListEndpointsByPlatformApplicationInput,
-  ) => stream.Stream<
-    Endpoint,
-    ListEndpointsByPlatformApplicationError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListOriginationNumbersError =
   | AuthorizationErrorException
@@ -2681,27 +2645,13 @@ export type ListOriginationNumbersError =
  * For more information about origination numbers, see Origination numbers in the Amazon SNS Developer
  * Guide.
  */
-export const listOriginationNumbers: API.OperationMethod<
+export const listOriginationNumbers: API.PaginatedOperationMethod<
   ListOriginationNumbersRequest,
   ListOriginationNumbersResult,
   ListOriginationNumbersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListOriginationNumbersRequest,
-  ) => stream.Stream<
-    ListOriginationNumbersResult,
-    ListOriginationNumbersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListOriginationNumbersRequest,
-  ) => stream.Stream<
-    PhoneNumberInformation,
-    ListOriginationNumbersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  PhoneNumberInformation
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListOriginationNumbersRequest,
   output: ListOriginationNumbersResult,
   errors: [
@@ -2720,27 +2670,7 @@ export const listOriginationNumbers: API.OperationMethod<
     items: "PhoneNumbers",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListOriginationNumbersRequest,
-  ListOriginationNumbersResult,
-  ListOriginationNumbersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListOriginationNumbersRequest,
-  ) => stream.Stream<
-    ListOriginationNumbersResult,
-    ListOriginationNumbersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListOriginationNumbersRequest,
-  ) => stream.Stream<
-    PhoneNumberInformation,
-    ListOriginationNumbersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListPhoneNumbersOptedOutError =
   | AuthorizationErrorException
@@ -2759,27 +2689,13 @@ export type ListPhoneNumbersOptedOutError =
  * `NextToken` string received from the previous call. When there are no
  * more records to return, `NextToken` will be null.
  */
-export const listPhoneNumbersOptedOut: API.OperationMethod<
+export const listPhoneNumbersOptedOut: API.PaginatedOperationMethod<
   ListPhoneNumbersOptedOutInput,
   ListPhoneNumbersOptedOutResponse,
   ListPhoneNumbersOptedOutError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPhoneNumbersOptedOutInput,
-  ) => stream.Stream<
-    ListPhoneNumbersOptedOutResponse,
-    ListPhoneNumbersOptedOutError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPhoneNumbersOptedOutInput,
-  ) => stream.Stream<
-    PhoneNumber,
-    ListPhoneNumbersOptedOutError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  PhoneNumber
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListPhoneNumbersOptedOutInput,
   output: ListPhoneNumbersOptedOutResponse,
   errors: [
@@ -2796,27 +2712,7 @@ export const listPhoneNumbersOptedOut: API.OperationMethod<
     outputToken: "nextToken",
     items: "phoneNumbers",
   } as const,
-})) as any as API.OperationMethod<
-  ListPhoneNumbersOptedOutInput,
-  ListPhoneNumbersOptedOutResponse,
-  ListPhoneNumbersOptedOutError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPhoneNumbersOptedOutInput,
-  ) => stream.Stream<
-    ListPhoneNumbersOptedOutResponse,
-    ListPhoneNumbersOptedOutError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPhoneNumbersOptedOutInput,
-  ) => stream.Stream<
-    PhoneNumber,
-    ListPhoneNumbersOptedOutError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListPlatformApplicationsError =
   | AuthorizationErrorException
@@ -2836,27 +2732,13 @@ export type ListPlatformApplicationsError =
  *
  * This action is throttled at 15 transactions per second (TPS).
  */
-export const listPlatformApplications: API.OperationMethod<
+export const listPlatformApplications: API.PaginatedOperationMethod<
   ListPlatformApplicationsInput,
   ListPlatformApplicationsResponse,
   ListPlatformApplicationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPlatformApplicationsInput,
-  ) => stream.Stream<
-    ListPlatformApplicationsResponse,
-    ListPlatformApplicationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPlatformApplicationsInput,
-  ) => stream.Stream<
-    PlatformApplication,
-    ListPlatformApplicationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  PlatformApplication
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListPlatformApplicationsInput,
   output: ListPlatformApplicationsResponse,
   errors: [
@@ -2872,27 +2754,7 @@ export const listPlatformApplications: API.OperationMethod<
     outputToken: "NextToken",
     items: "PlatformApplications",
   } as const,
-})) as any as API.OperationMethod<
-  ListPlatformApplicationsInput,
-  ListPlatformApplicationsResponse,
-  ListPlatformApplicationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPlatformApplicationsInput,
-  ) => stream.Stream<
-    ListPlatformApplicationsResponse,
-    ListPlatformApplicationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPlatformApplicationsInput,
-  ) => stream.Stream<
-    PlatformApplication,
-    ListPlatformApplicationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListSMSSandboxPhoneNumbersError =
   | AuthorizationErrorException
@@ -2914,27 +2776,13 @@ export type ListSMSSandboxPhoneNumbersError =
  * see SMS sandbox in
  * the *Amazon SNS Developer Guide*.
  */
-export const listSMSSandboxPhoneNumbers: API.OperationMethod<
+export const listSMSSandboxPhoneNumbers: API.PaginatedOperationMethod<
   ListSMSSandboxPhoneNumbersInput,
   ListSMSSandboxPhoneNumbersResult,
   ListSMSSandboxPhoneNumbersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSMSSandboxPhoneNumbersInput,
-  ) => stream.Stream<
-    ListSMSSandboxPhoneNumbersResult,
-    ListSMSSandboxPhoneNumbersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSMSSandboxPhoneNumbersInput,
-  ) => stream.Stream<
-    SMSSandboxPhoneNumber,
-    ListSMSSandboxPhoneNumbersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  SMSSandboxPhoneNumber
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListSMSSandboxPhoneNumbersInput,
   output: ListSMSSandboxPhoneNumbersResult,
   errors: [
@@ -2953,27 +2801,7 @@ export const listSMSSandboxPhoneNumbers: API.OperationMethod<
     items: "PhoneNumbers",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListSMSSandboxPhoneNumbersInput,
-  ListSMSSandboxPhoneNumbersResult,
-  ListSMSSandboxPhoneNumbersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSMSSandboxPhoneNumbersInput,
-  ) => stream.Stream<
-    ListSMSSandboxPhoneNumbersResult,
-    ListSMSSandboxPhoneNumbersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSMSSandboxPhoneNumbersInput,
-  ) => stream.Stream<
-    SMSSandboxPhoneNumber,
-    ListSMSSandboxPhoneNumbersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListSubscriptionsError =
   | AuthorizationErrorException
@@ -2988,27 +2816,13 @@ export type ListSubscriptionsError =
  *
  * This action is throttled at 30 transactions per second (TPS).
  */
-export const listSubscriptions: API.OperationMethod<
+export const listSubscriptions: API.PaginatedOperationMethod<
   ListSubscriptionsInput,
   ListSubscriptionsResponse,
   ListSubscriptionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSubscriptionsInput,
-  ) => stream.Stream<
-    ListSubscriptionsResponse,
-    ListSubscriptionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSubscriptionsInput,
-  ) => stream.Stream<
-    Subscription,
-    ListSubscriptionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Subscription
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListSubscriptionsInput,
   output: ListSubscriptionsResponse,
   errors: [
@@ -3024,27 +2838,7 @@ export const listSubscriptions: API.OperationMethod<
     outputToken: "NextToken",
     items: "Subscriptions",
   } as const,
-})) as any as API.OperationMethod<
-  ListSubscriptionsInput,
-  ListSubscriptionsResponse,
-  ListSubscriptionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSubscriptionsInput,
-  ) => stream.Stream<
-    ListSubscriptionsResponse,
-    ListSubscriptionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSubscriptionsInput,
-  ) => stream.Stream<
-    Subscription,
-    ListSubscriptionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListSubscriptionsByTopicError =
   | AuthorizationErrorException
@@ -3062,27 +2856,13 @@ export type ListSubscriptionsByTopicError =
  *
  * This action is throttled at 30 transactions per second (TPS).
  */
-export const listSubscriptionsByTopic: API.OperationMethod<
+export const listSubscriptionsByTopic: API.PaginatedOperationMethod<
   ListSubscriptionsByTopicInput,
   ListSubscriptionsByTopicResponse,
   ListSubscriptionsByTopicError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSubscriptionsByTopicInput,
-  ) => stream.Stream<
-    ListSubscriptionsByTopicResponse,
-    ListSubscriptionsByTopicError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSubscriptionsByTopicInput,
-  ) => stream.Stream<
-    Subscription,
-    ListSubscriptionsByTopicError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Subscription
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListSubscriptionsByTopicInput,
   output: ListSubscriptionsByTopicResponse,
   errors: [
@@ -3101,27 +2881,7 @@ export const listSubscriptionsByTopic: API.OperationMethod<
     outputToken: "NextToken",
     items: "Subscriptions",
   } as const,
-})) as any as API.OperationMethod<
-  ListSubscriptionsByTopicInput,
-  ListSubscriptionsByTopicResponse,
-  ListSubscriptionsByTopicError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSubscriptionsByTopicInput,
-  ) => stream.Stream<
-    ListSubscriptionsByTopicResponse,
-    ListSubscriptionsByTopicError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSubscriptionsByTopicInput,
-  ) => stream.Stream<
-    Subscription,
-    ListSubscriptionsByTopicError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsForResourceError =
   | AuthorizationErrorException
@@ -3140,7 +2900,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceRequest,
   ListTagsForResourceResponse,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -3171,27 +2931,13 @@ export type ListTopicsError =
  *
  * This action is throttled at 30 transactions per second (TPS).
  */
-export const listTopics: API.OperationMethod<
+export const listTopics: API.PaginatedOperationMethod<
   ListTopicsInput,
   ListTopicsResponse,
   ListTopicsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTopicsInput,
-  ) => stream.Stream<
-    ListTopicsResponse,
-    ListTopicsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTopicsInput,
-  ) => stream.Stream<
-    Topic,
-    ListTopicsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Topic
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListTopicsInput,
   output: ListTopicsResponse,
   errors: [
@@ -3207,27 +2953,7 @@ export const listTopics: API.OperationMethod<
     outputToken: "NextToken",
     items: "Topics",
   } as const,
-})) as any as API.OperationMethod<
-  ListTopicsInput,
-  ListTopicsResponse,
-  ListTopicsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTopicsInput,
-  ) => stream.Stream<
-    ListTopicsResponse,
-    ListTopicsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTopicsInput,
-  ) => stream.Stream<
-    Topic,
-    ListTopicsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type OptInPhoneNumberError =
   | AuthorizationErrorException
@@ -3245,7 +2971,7 @@ export const optInPhoneNumber: API.OperationMethod<
   OptInPhoneNumberInput,
   OptInPhoneNumberResponse,
   OptInPhoneNumberError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: OptInPhoneNumberInput,
   output: OptInPhoneNumberResponse,
@@ -3306,7 +3032,7 @@ export const publish: API.OperationMethod<
   PublishInput,
   PublishResponse,
   PublishError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PublishInput,
   output: PublishResponse,
@@ -3400,7 +3126,7 @@ export const publishBatch: API.OperationMethod<
   PublishBatchInput,
   PublishBatchResponse,
   PublishBatchError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PublishBatchInput,
   output: PublishBatchResponse,
@@ -3448,7 +3174,7 @@ export const putDataProtectionPolicy: API.OperationMethod<
   PutDataProtectionPolicyInput,
   PutDataProtectionPolicyResponse,
   PutDataProtectionPolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutDataProtectionPolicyInput,
   output: PutDataProtectionPolicyResponse,
@@ -3485,7 +3211,7 @@ export const removePermission: API.OperationMethod<
   RemovePermissionInput,
   RemovePermissionResponse,
   RemovePermissionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RemovePermissionInput,
   output: RemovePermissionResponse,
@@ -3519,7 +3245,7 @@ export const setEndpointAttributes: API.OperationMethod<
   SetEndpointAttributesInput,
   SetEndpointAttributesResponse,
   SetEndpointAttributesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: SetEndpointAttributesInput,
   output: SetEndpointAttributesResponse,
@@ -3555,7 +3281,7 @@ export const setPlatformApplicationAttributes: API.OperationMethod<
   SetPlatformApplicationAttributesInput,
   SetPlatformApplicationAttributesResponse,
   SetPlatformApplicationAttributesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: SetPlatformApplicationAttributesInput,
   output: SetPlatformApplicationAttributesResponse,
@@ -3595,7 +3321,7 @@ export const setSMSAttributes: API.OperationMethod<
   SetSMSAttributesInput,
   SetSMSAttributesResponse,
   SetSMSAttributesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: SetSMSAttributesInput,
   output: SetSMSAttributesResponse,
@@ -3626,7 +3352,7 @@ export const setSubscriptionAttributes: API.OperationMethod<
   SetSubscriptionAttributesInput,
   SetSubscriptionAttributesResponse,
   SetSubscriptionAttributesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: SetSubscriptionAttributesInput,
   output: SetSubscriptionAttributesResponse,
@@ -3663,7 +3389,7 @@ export const setTopicAttributes: API.OperationMethod<
   SetTopicAttributesInput,
   SetTopicAttributesResponse,
   SetTopicAttributesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: SetTopicAttributesInput,
   output: SetTopicAttributesResponse,
@@ -3707,7 +3433,7 @@ export const subscribe: API.OperationMethod<
   SubscribeInput,
   SubscribeResponse,
   SubscribeError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: SubscribeInput,
   output: SubscribeResponse,
@@ -3762,7 +3488,7 @@ export const tagResource: API.OperationMethod<
   TagResourceRequest,
   TagResourceResponse,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -3803,7 +3529,7 @@ export const unsubscribe: API.OperationMethod<
   UnsubscribeInput,
   UnsubscribeResponse,
   UnsubscribeError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UnsubscribeInput,
   output: UnsubscribeResponse,
@@ -3838,7 +3564,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceRequest,
   UntagResourceResponse,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -3883,7 +3609,7 @@ export const verifySMSSandboxPhoneNumber: API.OperationMethod<
   VerifySMSSandboxPhoneNumberInput,
   VerifySMSSandboxPhoneNumberResult,
   VerifySMSSandboxPhoneNumberError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: VerifySMSSandboxPhoneNumberInput,
   output: VerifySMSSandboxPhoneNumberResult,

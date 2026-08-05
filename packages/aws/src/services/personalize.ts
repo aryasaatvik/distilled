@@ -1,7 +1,6 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as redacted from "effect/Redacted";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -9,7 +8,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 import { SensitiveString } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "Personalize",
@@ -90,49 +88,49 @@ const rules = T.EndpointResolver((p, _) => {
 export class InvalidInputException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidInputException>()(
     "InvalidInputException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class InvalidNextTokenException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidNextTokenException>()(
     "InvalidNextTokenException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class LimitExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<LimitExceededException>()(
     "LimitExceededException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class ResourceAlreadyExistsException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceAlreadyExistsException>()(
     "ResourceAlreadyExistsException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(403),
   ).pipe(C.withAuthError, C.withAlreadyExistsError) {}
 export class ResourceInUseException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceInUseException>()(
     "ResourceInUseException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class TooManyTagKeysException
   extends /*@__PURE__*/ S.TaggedErrorClass<TooManyTagKeysException>()(
     "TooManyTagKeysException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class TooManyTagsException
   extends /*@__PURE__*/ S.TaggedErrorClass<TooManyTagsException>()(
     "TooManyTagsException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export type Name = string;
@@ -3474,7 +3472,7 @@ export const createBatchInferenceJob: API.OperationMethod<
   CreateBatchInferenceJobRequest,
   CreateBatchInferenceJobResponse,
   CreateBatchInferenceJobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateBatchInferenceJobRequest,
   output: CreateBatchInferenceJobResponse,
@@ -3508,7 +3506,7 @@ export const createBatchSegmentJob: API.OperationMethod<
   CreateBatchSegmentJobRequest,
   CreateBatchSegmentJobResponse,
   CreateBatchSegmentJobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateBatchSegmentJobRequest,
   output: CreateBatchSegmentJobResponse,
@@ -3594,7 +3592,7 @@ export const createCampaign: API.OperationMethod<
   CreateCampaignRequest,
   CreateCampaignResponse,
   CreateCampaignError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateCampaignRequest,
   output: CreateCampaignResponse,
@@ -3660,7 +3658,7 @@ export const createDataDeletionJob: API.OperationMethod<
   CreateDataDeletionJobRequest,
   CreateDataDeletionJobResponse,
   CreateDataDeletionJobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateDataDeletionJobRequest,
   output: CreateDataDeletionJobResponse,
@@ -3729,7 +3727,7 @@ export const createDataset: API.OperationMethod<
   CreateDatasetRequest,
   CreateDatasetResponse,
   CreateDatasetError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateDatasetRequest,
   output: CreateDatasetResponse,
@@ -3777,7 +3775,7 @@ export const createDatasetExportJob: API.OperationMethod<
   CreateDatasetExportJobRequest,
   CreateDatasetExportJobResponse,
   CreateDatasetExportJobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateDatasetExportJobRequest,
   output: CreateDatasetExportJobResponse,
@@ -3861,7 +3859,7 @@ export const createDatasetGroup: API.OperationMethod<
   CreateDatasetGroupRequest,
   CreateDatasetGroupResponse,
   CreateDatasetGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateDatasetGroupRequest,
   output: CreateDatasetGroupResponse,
@@ -3928,7 +3926,7 @@ export const createDatasetImportJob: API.OperationMethod<
   CreateDatasetImportJobRequest,
   CreateDatasetImportJobResponse,
   CreateDatasetImportJobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateDatasetImportJobRequest,
   output: CreateDatasetImportJobResponse,
@@ -3989,7 +3987,7 @@ export const createEventTracker: API.OperationMethod<
   CreateEventTrackerRequest,
   CreateEventTrackerResponse,
   CreateEventTrackerError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateEventTrackerRequest,
   output: CreateEventTrackerResponse,
@@ -4020,7 +4018,7 @@ export const createFilter: API.OperationMethod<
   CreateFilterRequest,
   CreateFilterResponse,
   CreateFilterError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateFilterRequest,
   output: CreateFilterResponse,
@@ -4052,7 +4050,7 @@ export const createMetricAttribution: API.OperationMethod<
   CreateMetricAttributionRequest,
   CreateMetricAttributionResponse,
   CreateMetricAttributionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateMetricAttributionRequest,
   output: CreateMetricAttributionResponse,
@@ -4136,7 +4134,7 @@ export const createRecommender: API.OperationMethod<
   CreateRecommenderRequest,
   CreateRecommenderResponse,
   CreateRecommenderError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateRecommenderRequest,
   output: CreateRecommenderResponse,
@@ -4179,7 +4177,7 @@ export const createSchema: API.OperationMethod<
   CreateSchemaRequest,
   CreateSchemaResponse,
   CreateSchemaError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateSchemaRequest,
   output: CreateSchemaResponse,
@@ -4264,7 +4262,7 @@ export const createSolution: API.OperationMethod<
   CreateSolutionRequest,
   CreateSolutionResponse,
   CreateSolutionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateSolutionRequest,
   output: CreateSolutionResponse,
@@ -4335,7 +4333,7 @@ export const createSolutionVersion: API.OperationMethod<
   CreateSolutionVersionRequest,
   CreateSolutionVersionResponse,
   CreateSolutionVersionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateSolutionVersionRequest,
   output: CreateSolutionVersionResponse,
@@ -4369,7 +4367,7 @@ export const deleteCampaign: API.OperationMethod<
   DeleteCampaignRequest,
   DeleteCampaignResponse,
   DeleteCampaignError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteCampaignRequest,
   output: DeleteCampaignResponse,
@@ -4398,7 +4396,7 @@ export const deleteDataset: API.OperationMethod<
   DeleteDatasetRequest,
   DeleteDatasetResponse,
   DeleteDatasetError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteDatasetRequest,
   output: DeleteDatasetResponse,
@@ -4431,7 +4429,7 @@ export const deleteDatasetGroup: API.OperationMethod<
   DeleteDatasetGroupRequest,
   DeleteDatasetGroupResponse,
   DeleteDatasetGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteDatasetGroupRequest,
   output: DeleteDatasetGroupResponse,
@@ -4459,7 +4457,7 @@ export const deleteEventTracker: API.OperationMethod<
   DeleteEventTrackerRequest,
   DeleteEventTrackerResponse,
   DeleteEventTrackerError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteEventTrackerRequest,
   output: DeleteEventTrackerResponse,
@@ -4485,7 +4483,7 @@ export const deleteFilter: API.OperationMethod<
   DeleteFilterRequest,
   DeleteFilterResponse,
   DeleteFilterError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteFilterRequest,
   output: DeleteFilterResponse,
@@ -4511,7 +4509,7 @@ export const deleteMetricAttribution: API.OperationMethod<
   DeleteMetricAttributionRequest,
   DeleteMetricAttributionResponse,
   DeleteMetricAttributionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteMetricAttributionRequest,
   output: DeleteMetricAttributionResponse,
@@ -4538,7 +4536,7 @@ export const deleteRecommender: API.OperationMethod<
   DeleteRecommenderRequest,
   DeleteRecommenderResponse,
   DeleteRecommenderError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteRecommenderRequest,
   output: DeleteRecommenderResponse,
@@ -4566,7 +4564,7 @@ export const deleteSchema: API.OperationMethod<
   DeleteSchemaRequest,
   DeleteSchemaResponse,
   DeleteSchemaError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteSchemaRequest,
   output: DeleteSchemaResponse,
@@ -4598,7 +4596,7 @@ export const deleteSolution: API.OperationMethod<
   DeleteSolutionRequest,
   DeleteSolutionResponse,
   DeleteSolutionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteSolutionRequest,
   output: DeleteSolutionResponse,
@@ -4623,7 +4621,7 @@ export const describeAlgorithm: API.OperationMethod<
   DescribeAlgorithmRequest,
   DescribeAlgorithmResponse,
   DescribeAlgorithmError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeAlgorithmRequest,
   output: DescribeAlgorithmResponse,
@@ -4646,7 +4644,7 @@ export const describeBatchInferenceJob: API.OperationMethod<
   DescribeBatchInferenceJobRequest,
   DescribeBatchInferenceJobResponse,
   DescribeBatchInferenceJobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeBatchInferenceJobRequest,
   output: DescribeBatchInferenceJobResponse,
@@ -4669,7 +4667,7 @@ export const describeBatchSegmentJob: API.OperationMethod<
   DescribeBatchSegmentJobRequest,
   DescribeBatchSegmentJobResponse,
   DescribeBatchSegmentJobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeBatchSegmentJobRequest,
   output: DescribeBatchSegmentJobResponse,
@@ -4701,7 +4699,7 @@ export const describeCampaign: API.OperationMethod<
   DescribeCampaignRequest,
   DescribeCampaignResponse,
   DescribeCampaignError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeCampaignRequest,
   output: DescribeCampaignResponse,
@@ -4722,7 +4720,7 @@ export const describeDataDeletionJob: API.OperationMethod<
   DescribeDataDeletionJobRequest,
   DescribeDataDeletionJobResponse,
   DescribeDataDeletionJobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeDataDeletionJobRequest,
   output: DescribeDataDeletionJobResponse,
@@ -4744,7 +4742,7 @@ export const describeDataset: API.OperationMethod<
   DescribeDatasetRequest,
   DescribeDatasetResponse,
   DescribeDatasetError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeDatasetRequest,
   output: DescribeDatasetResponse,
@@ -4765,7 +4763,7 @@ export const describeDatasetExportJob: API.OperationMethod<
   DescribeDatasetExportJobRequest,
   DescribeDatasetExportJobResponse,
   DescribeDatasetExportJobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeDatasetExportJobRequest,
   output: DescribeDatasetExportJobResponse,
@@ -4787,7 +4785,7 @@ export const describeDatasetGroup: API.OperationMethod<
   DescribeDatasetGroupRequest,
   DescribeDatasetGroupResponse,
   DescribeDatasetGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeDatasetGroupRequest,
   output: DescribeDatasetGroupResponse,
@@ -4808,7 +4806,7 @@ export const describeDatasetImportJob: API.OperationMethod<
   DescribeDatasetImportJobRequest,
   DescribeDatasetImportJobResponse,
   DescribeDatasetImportJobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeDatasetImportJobRequest,
   output: DescribeDatasetImportJobResponse,
@@ -4831,7 +4829,7 @@ export const describeEventTracker: API.OperationMethod<
   DescribeEventTrackerRequest,
   DescribeEventTrackerResponse,
   DescribeEventTrackerError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeEventTrackerRequest,
   output: DescribeEventTrackerResponse,
@@ -4852,7 +4850,7 @@ export const describeFeatureTransformation: API.OperationMethod<
   DescribeFeatureTransformationRequest,
   DescribeFeatureTransformationResponse,
   DescribeFeatureTransformationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeFeatureTransformationRequest,
   output: DescribeFeatureTransformationResponse,
@@ -4873,7 +4871,7 @@ export const describeFilter: API.OperationMethod<
   DescribeFilterRequest,
   DescribeFilterResponse,
   DescribeFilterError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeFilterRequest,
   output: DescribeFilterResponse,
@@ -4894,7 +4892,7 @@ export const describeMetricAttribution: API.OperationMethod<
   DescribeMetricAttributionRequest,
   DescribeMetricAttributionResponse,
   DescribeMetricAttributionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeMetricAttributionRequest,
   output: DescribeMetricAttributionResponse,
@@ -4930,7 +4928,7 @@ export const describeRecipe: API.OperationMethod<
   DescribeRecipeRequest,
   DescribeRecipeResponse,
   DescribeRecipeError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeRecipeRequest,
   output: DescribeRecipeResponse,
@@ -4967,7 +4965,7 @@ export const describeRecommender: API.OperationMethod<
   DescribeRecommenderRequest,
   DescribeRecommenderResponse,
   DescribeRecommenderError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeRecommenderRequest,
   output: DescribeRecommenderResponse,
@@ -4989,7 +4987,7 @@ export const describeSchema: API.OperationMethod<
   DescribeSchemaRequest,
   DescribeSchemaResponse,
   DescribeSchemaError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeSchemaRequest,
   output: DescribeSchemaResponse,
@@ -5011,7 +5009,7 @@ export const describeSolution: API.OperationMethod<
   DescribeSolutionRequest,
   DescribeSolutionResponse,
   DescribeSolutionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeSolutionRequest,
   output: DescribeSolutionResponse,
@@ -5032,7 +5030,7 @@ export const describeSolutionVersion: API.OperationMethod<
   DescribeSolutionVersionRequest,
   DescribeSolutionVersionResponse,
   DescribeSolutionVersionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeSolutionVersionRequest,
   output: DescribeSolutionVersionResponse,
@@ -5054,7 +5052,7 @@ export const getSolutionMetrics: API.OperationMethod<
   GetSolutionMetricsRequest,
   GetSolutionMetricsResponse,
   GetSolutionMetricsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetSolutionMetricsRequest,
   output: GetSolutionMetricsResponse,
@@ -5076,27 +5074,13 @@ export type ListBatchInferenceJobsError =
  * Gets a list of the batch inference jobs that have been performed off of a solution
  * version.
  */
-export const listBatchInferenceJobs: API.OperationMethod<
+export const listBatchInferenceJobs: API.PaginatedOperationMethod<
   ListBatchInferenceJobsRequest,
   ListBatchInferenceJobsResponse,
   ListBatchInferenceJobsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListBatchInferenceJobsRequest,
-  ) => stream.Stream<
-    ListBatchInferenceJobsResponse,
-    ListBatchInferenceJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListBatchInferenceJobsRequest,
-  ) => stream.Stream<
-    BatchInferenceJobSummary,
-    ListBatchInferenceJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  BatchInferenceJobSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListBatchInferenceJobsRequest,
   output: ListBatchInferenceJobsResponse,
   errors: [InvalidInputException, InvalidNextTokenException],
@@ -5109,27 +5093,7 @@ export const listBatchInferenceJobs: API.OperationMethod<
     items: "batchInferenceJobs",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListBatchInferenceJobsRequest,
-  ListBatchInferenceJobsResponse,
-  ListBatchInferenceJobsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListBatchInferenceJobsRequest,
-  ) => stream.Stream<
-    ListBatchInferenceJobsResponse,
-    ListBatchInferenceJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListBatchInferenceJobsRequest,
-  ) => stream.Stream<
-    BatchInferenceJobSummary,
-    ListBatchInferenceJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListBatchSegmentJobsError =
   | InvalidInputException
@@ -5139,27 +5103,13 @@ export type ListBatchSegmentJobsError =
  * Gets a list of the batch segment jobs that have been performed off of a solution
  * version that you specify.
  */
-export const listBatchSegmentJobs: API.OperationMethod<
+export const listBatchSegmentJobs: API.PaginatedOperationMethod<
   ListBatchSegmentJobsRequest,
   ListBatchSegmentJobsResponse,
   ListBatchSegmentJobsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListBatchSegmentJobsRequest,
-  ) => stream.Stream<
-    ListBatchSegmentJobsResponse,
-    ListBatchSegmentJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListBatchSegmentJobsRequest,
-  ) => stream.Stream<
-    BatchSegmentJobSummary,
-    ListBatchSegmentJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  BatchSegmentJobSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListBatchSegmentJobsRequest,
   output: ListBatchSegmentJobsResponse,
   errors: [InvalidInputException, InvalidNextTokenException],
@@ -5172,27 +5122,7 @@ export const listBatchSegmentJobs: API.OperationMethod<
     items: "batchSegmentJobs",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListBatchSegmentJobsRequest,
-  ListBatchSegmentJobsResponse,
-  ListBatchSegmentJobsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListBatchSegmentJobsRequest,
-  ) => stream.Stream<
-    ListBatchSegmentJobsResponse,
-    ListBatchSegmentJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListBatchSegmentJobsRequest,
-  ) => stream.Stream<
-    BatchSegmentJobSummary,
-    ListBatchSegmentJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListCampaignsError =
   | InvalidInputException
@@ -5204,27 +5134,13 @@ export type ListCampaignsError =
  * The response provides the properties for each campaign, including the Amazon Resource Name (ARN).
  * For more information on campaigns, see CreateCampaign.
  */
-export const listCampaigns: API.OperationMethod<
+export const listCampaigns: API.PaginatedOperationMethod<
   ListCampaignsRequest,
   ListCampaignsResponse,
   ListCampaignsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCampaignsRequest,
-  ) => stream.Stream<
-    ListCampaignsResponse,
-    ListCampaignsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCampaignsRequest,
-  ) => stream.Stream<
-    CampaignSummary,
-    ListCampaignsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  CampaignSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListCampaignsRequest,
   output: ListCampaignsResponse,
   errors: [InvalidInputException, InvalidNextTokenException],
@@ -5237,27 +5153,7 @@ export const listCampaigns: API.OperationMethod<
     items: "campaigns",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListCampaignsRequest,
-  ListCampaignsResponse,
-  ListCampaignsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCampaignsRequest,
-  ) => stream.Stream<
-    ListCampaignsResponse,
-    ListCampaignsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCampaignsRequest,
-  ) => stream.Stream<
-    CampaignSummary,
-    ListCampaignsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListDataDeletionJobsError =
   | InvalidInputException
@@ -5276,7 +5172,7 @@ export const listDataDeletionJobs: API.OperationMethod<
   ListDataDeletionJobsRequest,
   ListDataDeletionJobsResponse,
   ListDataDeletionJobsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListDataDeletionJobsRequest,
   output: ListDataDeletionJobsResponse,
@@ -5298,27 +5194,13 @@ export type ListDatasetExportJobsError =
  * information on dataset export jobs, see CreateDatasetExportJob. For more information on datasets, see
  * CreateDataset.
  */
-export const listDatasetExportJobs: API.OperationMethod<
+export const listDatasetExportJobs: API.PaginatedOperationMethod<
   ListDatasetExportJobsRequest,
   ListDatasetExportJobsResponse,
   ListDatasetExportJobsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDatasetExportJobsRequest,
-  ) => stream.Stream<
-    ListDatasetExportJobsResponse,
-    ListDatasetExportJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDatasetExportJobsRequest,
-  ) => stream.Stream<
-    DatasetExportJobSummary,
-    ListDatasetExportJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  DatasetExportJobSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListDatasetExportJobsRequest,
   output: ListDatasetExportJobsResponse,
   errors: [InvalidInputException, InvalidNextTokenException],
@@ -5331,27 +5213,7 @@ export const listDatasetExportJobs: API.OperationMethod<
     items: "datasetExportJobs",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListDatasetExportJobsRequest,
-  ListDatasetExportJobsResponse,
-  ListDatasetExportJobsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDatasetExportJobsRequest,
-  ) => stream.Stream<
-    ListDatasetExportJobsResponse,
-    ListDatasetExportJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDatasetExportJobsRequest,
-  ) => stream.Stream<
-    DatasetExportJobSummary,
-    ListDatasetExportJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListDatasetGroupsError = InvalidNextTokenException | CommonErrors;
 /**
@@ -5359,27 +5221,13 @@ export type ListDatasetGroupsError = InvalidNextTokenException | CommonErrors;
  * for each dataset group, including the Amazon Resource Name (ARN). For more
  * information on dataset groups, see CreateDatasetGroup.
  */
-export const listDatasetGroups: API.OperationMethod<
+export const listDatasetGroups: API.PaginatedOperationMethod<
   ListDatasetGroupsRequest,
   ListDatasetGroupsResponse,
   ListDatasetGroupsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDatasetGroupsRequest,
-  ) => stream.Stream<
-    ListDatasetGroupsResponse,
-    ListDatasetGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDatasetGroupsRequest,
-  ) => stream.Stream<
-    DatasetGroupSummary,
-    ListDatasetGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  DatasetGroupSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListDatasetGroupsRequest,
   output: ListDatasetGroupsResponse,
   errors: [InvalidNextTokenException],
@@ -5392,27 +5240,7 @@ export const listDatasetGroups: API.OperationMethod<
     items: "datasetGroups",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListDatasetGroupsRequest,
-  ListDatasetGroupsResponse,
-  ListDatasetGroupsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDatasetGroupsRequest,
-  ) => stream.Stream<
-    ListDatasetGroupsResponse,
-    ListDatasetGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDatasetGroupsRequest,
-  ) => stream.Stream<
-    DatasetGroupSummary,
-    ListDatasetGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListDatasetImportJobsError =
   | InvalidInputException
@@ -5426,27 +5254,13 @@ export type ListDatasetImportJobsError =
  * information on dataset import jobs, see CreateDatasetImportJob. For more information on datasets, see
  * CreateDataset.
  */
-export const listDatasetImportJobs: API.OperationMethod<
+export const listDatasetImportJobs: API.PaginatedOperationMethod<
   ListDatasetImportJobsRequest,
   ListDatasetImportJobsResponse,
   ListDatasetImportJobsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDatasetImportJobsRequest,
-  ) => stream.Stream<
-    ListDatasetImportJobsResponse,
-    ListDatasetImportJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDatasetImportJobsRequest,
-  ) => stream.Stream<
-    DatasetImportJobSummary,
-    ListDatasetImportJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  DatasetImportJobSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListDatasetImportJobsRequest,
   output: ListDatasetImportJobsResponse,
   errors: [InvalidInputException, InvalidNextTokenException],
@@ -5459,27 +5273,7 @@ export const listDatasetImportJobs: API.OperationMethod<
     items: "datasetImportJobs",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListDatasetImportJobsRequest,
-  ListDatasetImportJobsResponse,
-  ListDatasetImportJobsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDatasetImportJobsRequest,
-  ) => stream.Stream<
-    ListDatasetImportJobsResponse,
-    ListDatasetImportJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDatasetImportJobsRequest,
-  ) => stream.Stream<
-    DatasetImportJobSummary,
-    ListDatasetImportJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListDatasetsError =
   | InvalidInputException
@@ -5490,27 +5284,13 @@ export type ListDatasetsError =
  * response provides the properties for each dataset, including the Amazon
  * Resource Name (ARN). For more information on datasets, see CreateDataset.
  */
-export const listDatasets: API.OperationMethod<
+export const listDatasets: API.PaginatedOperationMethod<
   ListDatasetsRequest,
   ListDatasetsResponse,
   ListDatasetsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDatasetsRequest,
-  ) => stream.Stream<
-    ListDatasetsResponse,
-    ListDatasetsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDatasetsRequest,
-  ) => stream.Stream<
-    DatasetSummary,
-    ListDatasetsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  DatasetSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListDatasetsRequest,
   output: ListDatasetsResponse,
   errors: [InvalidInputException, InvalidNextTokenException],
@@ -5523,27 +5303,7 @@ export const listDatasets: API.OperationMethod<
     items: "datasets",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListDatasetsRequest,
-  ListDatasetsResponse,
-  ListDatasetsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDatasetsRequest,
-  ) => stream.Stream<
-    ListDatasetsResponse,
-    ListDatasetsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDatasetsRequest,
-  ) => stream.Stream<
-    DatasetSummary,
-    ListDatasetsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListEventTrackersError =
   | InvalidInputException
@@ -5555,27 +5315,13 @@ export type ListEventTrackersError =
  * Name (ARN) and tracking ID. For more
  * information on event trackers, see CreateEventTracker.
  */
-export const listEventTrackers: API.OperationMethod<
+export const listEventTrackers: API.PaginatedOperationMethod<
   ListEventTrackersRequest,
   ListEventTrackersResponse,
   ListEventTrackersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListEventTrackersRequest,
-  ) => stream.Stream<
-    ListEventTrackersResponse,
-    ListEventTrackersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListEventTrackersRequest,
-  ) => stream.Stream<
-    EventTrackerSummary,
-    ListEventTrackersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  EventTrackerSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListEventTrackersRequest,
   output: ListEventTrackersResponse,
   errors: [InvalidInputException, InvalidNextTokenException],
@@ -5588,27 +5334,7 @@ export const listEventTrackers: API.OperationMethod<
     items: "eventTrackers",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListEventTrackersRequest,
-  ListEventTrackersResponse,
-  ListEventTrackersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListEventTrackersRequest,
-  ) => stream.Stream<
-    ListEventTrackersResponse,
-    ListEventTrackersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListEventTrackersRequest,
-  ) => stream.Stream<
-    EventTrackerSummary,
-    ListEventTrackersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListFiltersError =
   | InvalidInputException
@@ -5617,27 +5343,13 @@ export type ListFiltersError =
 /**
  * Lists all filters that belong to a given dataset group.
  */
-export const listFilters: API.OperationMethod<
+export const listFilters: API.PaginatedOperationMethod<
   ListFiltersRequest,
   ListFiltersResponse,
   ListFiltersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListFiltersRequest,
-  ) => stream.Stream<
-    ListFiltersResponse,
-    ListFiltersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListFiltersRequest,
-  ) => stream.Stream<
-    FilterSummary,
-    ListFiltersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  FilterSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListFiltersRequest,
   output: ListFiltersResponse,
   errors: [InvalidInputException, InvalidNextTokenException],
@@ -5650,27 +5362,7 @@ export const listFilters: API.OperationMethod<
     items: "Filters",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListFiltersRequest,
-  ListFiltersResponse,
-  ListFiltersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListFiltersRequest,
-  ) => stream.Stream<
-    ListFiltersResponse,
-    ListFiltersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListFiltersRequest,
-  ) => stream.Stream<
-    FilterSummary,
-    ListFiltersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListMetricAttributionMetricsError =
   | InvalidInputException
@@ -5679,27 +5371,13 @@ export type ListMetricAttributionMetricsError =
 /**
  * Lists the metrics for the metric attribution.
  */
-export const listMetricAttributionMetrics: API.OperationMethod<
+export const listMetricAttributionMetrics: API.PaginatedOperationMethod<
   ListMetricAttributionMetricsRequest,
   ListMetricAttributionMetricsResponse,
   ListMetricAttributionMetricsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListMetricAttributionMetricsRequest,
-  ) => stream.Stream<
-    ListMetricAttributionMetricsResponse,
-    ListMetricAttributionMetricsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListMetricAttributionMetricsRequest,
-  ) => stream.Stream<
-    MetricAttribute,
-    ListMetricAttributionMetricsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  MetricAttribute
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListMetricAttributionMetricsRequest,
   output: ListMetricAttributionMetricsResponse,
   errors: [InvalidInputException, InvalidNextTokenException],
@@ -5712,27 +5390,7 @@ export const listMetricAttributionMetrics: API.OperationMethod<
     items: "metrics",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListMetricAttributionMetricsRequest,
-  ListMetricAttributionMetricsResponse,
-  ListMetricAttributionMetricsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListMetricAttributionMetricsRequest,
-  ) => stream.Stream<
-    ListMetricAttributionMetricsResponse,
-    ListMetricAttributionMetricsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListMetricAttributionMetricsRequest,
-  ) => stream.Stream<
-    MetricAttribute,
-    ListMetricAttributionMetricsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListMetricAttributionsError =
   | InvalidInputException
@@ -5741,27 +5399,13 @@ export type ListMetricAttributionsError =
 /**
  * Lists metric attributions.
  */
-export const listMetricAttributions: API.OperationMethod<
+export const listMetricAttributions: API.PaginatedOperationMethod<
   ListMetricAttributionsRequest,
   ListMetricAttributionsResponse,
   ListMetricAttributionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListMetricAttributionsRequest,
-  ) => stream.Stream<
-    ListMetricAttributionsResponse,
-    ListMetricAttributionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListMetricAttributionsRequest,
-  ) => stream.Stream<
-    MetricAttributionSummary,
-    ListMetricAttributionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  MetricAttributionSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListMetricAttributionsRequest,
   output: ListMetricAttributionsResponse,
   errors: [InvalidInputException, InvalidNextTokenException],
@@ -5774,27 +5418,7 @@ export const listMetricAttributions: API.OperationMethod<
     items: "metricAttributions",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListMetricAttributionsRequest,
-  ListMetricAttributionsResponse,
-  ListMetricAttributionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListMetricAttributionsRequest,
-  ) => stream.Stream<
-    ListMetricAttributionsResponse,
-    ListMetricAttributionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListMetricAttributionsRequest,
-  ) => stream.Stream<
-    MetricAttributionSummary,
-    ListMetricAttributionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListRecipesError =
   | InvalidInputException
@@ -5804,27 +5428,13 @@ export type ListRecipesError =
  * Returns a list of available recipes. The response provides the properties
  * for each recipe, including the recipe's Amazon Resource Name (ARN).
  */
-export const listRecipes: API.OperationMethod<
+export const listRecipes: API.PaginatedOperationMethod<
   ListRecipesRequest,
   ListRecipesResponse,
   ListRecipesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListRecipesRequest,
-  ) => stream.Stream<
-    ListRecipesResponse,
-    ListRecipesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListRecipesRequest,
-  ) => stream.Stream<
-    RecipeSummary,
-    ListRecipesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  RecipeSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListRecipesRequest,
   output: ListRecipesResponse,
   errors: [InvalidInputException, InvalidNextTokenException],
@@ -5837,27 +5447,7 @@ export const listRecipes: API.OperationMethod<
     items: "recipes",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListRecipesRequest,
-  ListRecipesResponse,
-  ListRecipesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListRecipesRequest,
-  ) => stream.Stream<
-    ListRecipesResponse,
-    ListRecipesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListRecipesRequest,
-  ) => stream.Stream<
-    RecipeSummary,
-    ListRecipesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListRecommendersError =
   | InvalidInputException
@@ -5869,27 +5459,13 @@ export type ListRecommendersError =
  * The response provides the properties for each recommender, including the Amazon Resource Name (ARN).
  * For more information on recommenders, see CreateRecommender.
  */
-export const listRecommenders: API.OperationMethod<
+export const listRecommenders: API.PaginatedOperationMethod<
   ListRecommendersRequest,
   ListRecommendersResponse,
   ListRecommendersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListRecommendersRequest,
-  ) => stream.Stream<
-    ListRecommendersResponse,
-    ListRecommendersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListRecommendersRequest,
-  ) => stream.Stream<
-    RecommenderSummary,
-    ListRecommendersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  RecommenderSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListRecommendersRequest,
   output: ListRecommendersResponse,
   errors: [InvalidInputException, InvalidNextTokenException],
@@ -5902,27 +5478,7 @@ export const listRecommenders: API.OperationMethod<
     items: "recommenders",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListRecommendersRequest,
-  ListRecommendersResponse,
-  ListRecommendersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListRecommendersRequest,
-  ) => stream.Stream<
-    ListRecommendersResponse,
-    ListRecommendersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListRecommendersRequest,
-  ) => stream.Stream<
-    RecommenderSummary,
-    ListRecommendersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListSchemasError = InvalidNextTokenException | CommonErrors;
 /**
@@ -5930,27 +5486,13 @@ export type ListSchemasError = InvalidNextTokenException | CommonErrors;
  * properties for each schema, including the Amazon Resource Name (ARN).
  * For more information on schemas, see CreateSchema.
  */
-export const listSchemas: API.OperationMethod<
+export const listSchemas: API.PaginatedOperationMethod<
   ListSchemasRequest,
   ListSchemasResponse,
   ListSchemasError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSchemasRequest,
-  ) => stream.Stream<
-    ListSchemasResponse,
-    ListSchemasError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSchemasRequest,
-  ) => stream.Stream<
-    DatasetSchemaSummary,
-    ListSchemasError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  DatasetSchemaSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListSchemasRequest,
   output: ListSchemasResponse,
   errors: [InvalidNextTokenException],
@@ -5963,27 +5505,7 @@ export const listSchemas: API.OperationMethod<
     items: "schemas",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListSchemasRequest,
-  ListSchemasResponse,
-  ListSchemasError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSchemasRequest,
-  ) => stream.Stream<
-    ListSchemasResponse,
-    ListSchemasError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSchemasRequest,
-  ) => stream.Stream<
-    DatasetSchemaSummary,
-    ListSchemasError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListSolutionsError =
   | InvalidInputException
@@ -5995,27 +5517,13 @@ export type ListSolutionsError =
  * The response provides the properties for each solution, including the Amazon Resource Name (ARN).
  * For more information on solutions, see CreateSolution.
  */
-export const listSolutions: API.OperationMethod<
+export const listSolutions: API.PaginatedOperationMethod<
   ListSolutionsRequest,
   ListSolutionsResponse,
   ListSolutionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSolutionsRequest,
-  ) => stream.Stream<
-    ListSolutionsResponse,
-    ListSolutionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSolutionsRequest,
-  ) => stream.Stream<
-    SolutionSummary,
-    ListSolutionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  SolutionSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListSolutionsRequest,
   output: ListSolutionsResponse,
   errors: [InvalidInputException, InvalidNextTokenException],
@@ -6028,27 +5536,7 @@ export const listSolutions: API.OperationMethod<
     items: "solutions",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListSolutionsRequest,
-  ListSolutionsResponse,
-  ListSolutionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSolutionsRequest,
-  ) => stream.Stream<
-    ListSolutionsResponse,
-    ListSolutionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSolutionsRequest,
-  ) => stream.Stream<
-    SolutionSummary,
-    ListSolutionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListSolutionVersionsError =
   | InvalidInputException
@@ -6060,27 +5548,13 @@ export type ListSolutionVersionsError =
  * specified, all the solution versions associated with the account are listed. The response
  * provides the properties for each solution version, including the Amazon Resource Name (ARN).
  */
-export const listSolutionVersions: API.OperationMethod<
+export const listSolutionVersions: API.PaginatedOperationMethod<
   ListSolutionVersionsRequest,
   ListSolutionVersionsResponse,
   ListSolutionVersionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSolutionVersionsRequest,
-  ) => stream.Stream<
-    ListSolutionVersionsResponse,
-    ListSolutionVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSolutionVersionsRequest,
-  ) => stream.Stream<
-    SolutionVersionSummary,
-    ListSolutionVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  SolutionVersionSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListSolutionVersionsRequest,
   output: ListSolutionVersionsResponse,
   errors: [
@@ -6097,27 +5571,7 @@ export const listSolutionVersions: API.OperationMethod<
     items: "solutionVersions",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListSolutionVersionsRequest,
-  ListSolutionVersionsResponse,
-  ListSolutionVersionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSolutionVersionsRequest,
-  ) => stream.Stream<
-    ListSolutionVersionsResponse,
-    ListSolutionVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSolutionVersionsRequest,
-  ) => stream.Stream<
-    SolutionVersionSummary,
-    ListSolutionVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsForResourceError =
   | InvalidInputException
@@ -6131,7 +5585,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceRequest,
   ListTagsForResourceResponse,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -6158,7 +5612,7 @@ export const startRecommender: API.OperationMethod<
   StartRecommenderRequest,
   StartRecommenderResponse,
   StartRecommenderError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartRecommenderRequest,
   output: StartRecommenderResponse,
@@ -6184,7 +5638,7 @@ export const stopRecommender: API.OperationMethod<
   StopRecommenderRequest,
   StopRecommenderResponse,
   StopRecommenderError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StopRecommenderRequest,
   output: StopRecommenderResponse,
@@ -6221,7 +5675,7 @@ export const stopSolutionVersionCreation: API.OperationMethod<
   StopSolutionVersionCreationRequest,
   StopSolutionVersionCreationResponse,
   StopSolutionVersionCreationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StopSolutionVersionCreationRequest,
   output: StopSolutionVersionCreationResponse,
@@ -6249,7 +5703,7 @@ export const tagResource: API.OperationMethod<
   TagResourceRequest,
   TagResourceResponse,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -6278,7 +5732,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceRequest,
   UntagResourceResponse,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -6322,7 +5776,7 @@ export const updateCampaign: API.OperationMethod<
   UpdateCampaignRequest,
   UpdateCampaignResponse,
   UpdateCampaignError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateCampaignRequest,
   output: UpdateCampaignResponse,
@@ -6348,7 +5802,7 @@ export const updateDataset: API.OperationMethod<
   UpdateDatasetRequest,
   UpdateDatasetResponse,
   UpdateDatasetError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateDatasetRequest,
   output: UpdateDatasetResponse,
@@ -6375,7 +5829,7 @@ export const updateMetricAttribution: API.OperationMethod<
   UpdateMetricAttributionRequest,
   UpdateMetricAttributionResponse,
   UpdateMetricAttributionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateMetricAttributionRequest,
   output: UpdateMetricAttributionResponse,
@@ -6408,7 +5862,7 @@ export const updateRecommender: API.OperationMethod<
   UpdateRecommenderRequest,
   UpdateRecommenderResponse,
   UpdateRecommenderError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateRecommenderRequest,
   output: UpdateRecommenderResponse,
@@ -6447,7 +5901,7 @@ export const updateSolution: API.OperationMethod<
   UpdateSolutionRequest,
   UpdateSolutionResponse,
   UpdateSolutionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateSolutionRequest,
   output: UpdateSolutionResponse,

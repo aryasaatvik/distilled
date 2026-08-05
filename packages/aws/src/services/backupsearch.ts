@@ -1,7 +1,6 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as redacted from "effect/Redacted";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -9,7 +8,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 import { SensitiveString } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "BackupSearch",
@@ -57,20 +55,28 @@ const rules = T.EndpointResolver((p, _) => {
 export class ConflictException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
     "ConflictException",
-    { message: S.String, resourceId: S.String, resourceType: S.String },
+    {
+      message: S.String.pipe(T.ErrorMessage()),
+      resourceId: S.String,
+      resourceType: S.String,
+    },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { message: S.String, resourceId: S.String, resourceType: S.String },
+    {
+      message: S.String.pipe(T.ErrorMessage()),
+      resourceId: S.String,
+      resourceType: S.String,
+    },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class ServiceQuotaExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
     "ServiceQuotaExceededException",
     {
-      message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       resourceId: S.String,
       resourceType: S.String,
       serviceCode: S.String,
@@ -864,7 +870,7 @@ export const getSearchJob: API.OperationMethod<
   GetSearchJobInput,
   GetSearchJobOutput,
   GetSearchJobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetSearchJobInput,
   output: GetSearchJobOutput,
@@ -888,7 +894,7 @@ export const getSearchResultExportJob: API.OperationMethod<
   GetSearchResultExportJobInput,
   GetSearchResultExportJobOutput,
   GetSearchResultExportJobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetSearchResultExportJobInput,
   output: GetSearchResultExportJobOutput,
@@ -908,27 +914,13 @@ export type ListSearchJobBackupsError =
  *
  * Only recovery points with a backup index that has a status of `ACTIVE` will be included in search results. If the index has any other status, its status will be displayed along with a status message.
  */
-export const listSearchJobBackups: API.OperationMethod<
+export const listSearchJobBackups: API.PaginatedOperationMethod<
   ListSearchJobBackupsInput,
   ListSearchJobBackupsOutput,
   ListSearchJobBackupsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSearchJobBackupsInput,
-  ) => stream.Stream<
-    ListSearchJobBackupsOutput,
-    ListSearchJobBackupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSearchJobBackupsInput,
-  ) => stream.Stream<
-    SearchJobBackupsResult,
-    ListSearchJobBackupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  SearchJobBackupsResult
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListSearchJobBackupsInput,
   output: ListSearchJobBackupsOutput,
   errors: [ResourceNotFoundException],
@@ -941,27 +933,7 @@ export const listSearchJobBackups: API.OperationMethod<
     items: "Results",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListSearchJobBackupsInput,
-  ListSearchJobBackupsOutput,
-  ListSearchJobBackupsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSearchJobBackupsInput,
-  ) => stream.Stream<
-    ListSearchJobBackupsOutput,
-    ListSearchJobBackupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSearchJobBackupsInput,
-  ) => stream.Stream<
-    SearchJobBackupsResult,
-    ListSearchJobBackupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListSearchJobResultsError =
   | ResourceNotFoundException
@@ -969,27 +941,13 @@ export type ListSearchJobResultsError =
 /**
  * This operation returns a list of a specified search job.
  */
-export const listSearchJobResults: API.OperationMethod<
+export const listSearchJobResults: API.PaginatedOperationMethod<
   ListSearchJobResultsInput,
   ListSearchJobResultsOutput,
   ListSearchJobResultsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSearchJobResultsInput,
-  ) => stream.Stream<
-    ListSearchJobResultsOutput,
-    ListSearchJobResultsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSearchJobResultsInput,
-  ) => stream.Stream<
-    ResultItem,
-    ListSearchJobResultsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ResultItem
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListSearchJobResultsInput,
   output: ListSearchJobResultsOutput,
   errors: [ResourceNotFoundException],
@@ -1002,53 +960,19 @@ export const listSearchJobResults: API.OperationMethod<
     items: "Results",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListSearchJobResultsInput,
-  ListSearchJobResultsOutput,
-  ListSearchJobResultsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSearchJobResultsInput,
-  ) => stream.Stream<
-    ListSearchJobResultsOutput,
-    ListSearchJobResultsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSearchJobResultsInput,
-  ) => stream.Stream<
-    ResultItem,
-    ListSearchJobResultsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListSearchJobsError = CommonErrors;
 /**
  * This operation returns a list of search jobs belonging to an account.
  */
-export const listSearchJobs: API.OperationMethod<
+export const listSearchJobs: API.PaginatedOperationMethod<
   ListSearchJobsInput,
   ListSearchJobsOutput,
   ListSearchJobsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSearchJobsInput,
-  ) => stream.Stream<
-    ListSearchJobsOutput,
-    ListSearchJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSearchJobsInput,
-  ) => stream.Stream<
-    SearchJobSummary,
-    ListSearchJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  SearchJobSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListSearchJobsInput,
   output: ListSearchJobsOutput,
   errors: [],
@@ -1061,27 +985,7 @@ export const listSearchJobs: API.OperationMethod<
     items: "SearchJobs",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListSearchJobsInput,
-  ListSearchJobsOutput,
-  ListSearchJobsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSearchJobsInput,
-  ) => stream.Stream<
-    ListSearchJobsOutput,
-    ListSearchJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSearchJobsInput,
-  ) => stream.Stream<
-    SearchJobSummary,
-    ListSearchJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListSearchResultExportJobsError =
   | ResourceNotFoundException
@@ -1090,27 +994,13 @@ export type ListSearchResultExportJobsError =
 /**
  * This operation exports search results of a search job to a specified destination S3 bucket.
  */
-export const listSearchResultExportJobs: API.OperationMethod<
+export const listSearchResultExportJobs: API.PaginatedOperationMethod<
   ListSearchResultExportJobsInput,
   ListSearchResultExportJobsOutput,
   ListSearchResultExportJobsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSearchResultExportJobsInput,
-  ) => stream.Stream<
-    ListSearchResultExportJobsOutput,
-    ListSearchResultExportJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSearchResultExportJobsInput,
-  ) => stream.Stream<
-    ExportJobSummary,
-    ListSearchResultExportJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ExportJobSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListSearchResultExportJobsInput,
   output: ListSearchResultExportJobsOutput,
   errors: [ResourceNotFoundException, ServiceQuotaExceededException],
@@ -1123,27 +1013,7 @@ export const listSearchResultExportJobs: API.OperationMethod<
     items: "ExportJobs",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListSearchResultExportJobsInput,
-  ListSearchResultExportJobsOutput,
-  ListSearchResultExportJobsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSearchResultExportJobsInput,
-  ) => stream.Stream<
-    ListSearchResultExportJobsOutput,
-    ListSearchResultExportJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSearchResultExportJobsInput,
-  ) => stream.Stream<
-    ExportJobSummary,
-    ListSearchResultExportJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsForResourceError = ResourceNotFoundException | CommonErrors;
 /**
@@ -1153,7 +1023,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceRequest,
   ListTagsForResourceResponse,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -1177,7 +1047,7 @@ export const startSearchJob: API.OperationMethod<
   StartSearchJobInput,
   StartSearchJobOutput,
   StartSearchJobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartSearchJobInput,
   output: StartSearchJobOutput,
@@ -1203,7 +1073,7 @@ export const startSearchResultExportJob: API.OperationMethod<
   StartSearchResultExportJobInput,
   StartSearchResultExportJobOutput,
   StartSearchResultExportJobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartSearchResultExportJobInput,
   output: StartSearchResultExportJobOutput,
@@ -1230,7 +1100,7 @@ export const stopSearchJob: API.OperationMethod<
   StopSearchJobInput,
   StopSearchJobOutput,
   StopSearchJobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StopSearchJobInput,
   output: StopSearchJobOutput,
@@ -1248,7 +1118,7 @@ export const tagResource: API.OperationMethod<
   TagResourceRequest,
   TagResourceResponse,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -1266,7 +1136,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceRequest,
   UntagResourceResponse,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,

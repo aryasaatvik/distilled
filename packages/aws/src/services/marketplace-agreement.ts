@@ -1,7 +1,6 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as redacted from "effect/Redacted";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -9,7 +8,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 import { SensitiveString } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "Marketplace Agreement",
@@ -92,7 +90,7 @@ export class AccessDeniedException
     "AccessDeniedException",
     {
       requestId: S.optional(S.String),
-      message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       reason: S.optional(
         S.suspend(() => AccessDeniedExceptionReason).annotate({
           identifier: "AccessDeniedExceptionReason",
@@ -106,7 +104,7 @@ export class ConflictException
     "ConflictException",
     {
       requestId: S.optional(S.String),
-      message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       resourceId: S.optional(S.String),
       resourceType: S.optional(
         S.suspend(() => ResourceType).annotate({ identifier: "ResourceType" }),
@@ -117,7 +115,10 @@ export class ConflictException
 export class InternalServerException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
     "InternalServerException",
-    { requestId: S.optional(S.String), message: S.optional(S.String) },
+    {
+      requestId: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(500),
   ).pipe(C.withServerError) {}
 export class ResourceNotFoundException
@@ -125,7 +126,7 @@ export class ResourceNotFoundException
     "ResourceNotFoundException",
     {
       requestId: S.optional(S.String),
-      message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       resourceId: S.optional(S.String),
       resourceType: S.optional(
         S.suspend(() => ResourceType).annotate({ identifier: "ResourceType" }),
@@ -138,7 +139,7 @@ export class ServiceQuotaExceededException
     "ServiceQuotaExceededException",
     {
       requestId: S.optional(S.String),
-      message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       quotaCode: S.optional(S.String),
       serviceCode: S.optional(S.String),
       resourceType: S.optional(S.String),
@@ -149,7 +150,10 @@ export class ServiceQuotaExceededException
 export class ThrottlingException
   extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
     "ThrottlingException",
-    { requestId: S.optional(S.String), message: S.optional(S.String) },
+    {
+      requestId: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(429),
   ).pipe(C.withThrottlingError) {}
 export class ValidationException
@@ -157,7 +161,7 @@ export class ValidationException
     "ValidationException",
     {
       requestId: S.optional(S.String),
-      message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       reason: S.optional(
         S.suspend(() => ValidationExceptionReason).annotate({
           identifier: "ValidationExceptionReason",
@@ -2383,7 +2387,7 @@ export const acceptAgreementCancellationRequest: API.OperationMethod<
   AcceptAgreementCancellationRequestInput,
   AcceptAgreementCancellationRequestOutput,
   AcceptAgreementCancellationRequestError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AcceptAgreementCancellationRequestInput,
   output: AcceptAgreementCancellationRequestOutput,
@@ -2417,7 +2421,7 @@ export const acceptAgreementPaymentRequest: API.OperationMethod<
   AcceptAgreementPaymentRequestInput,
   AcceptAgreementPaymentRequestOutput,
   AcceptAgreementPaymentRequestError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AcceptAgreementPaymentRequestInput,
   output: AcceptAgreementPaymentRequestOutput,
@@ -2449,7 +2453,7 @@ export const acceptAgreementRequest: API.OperationMethod<
   AcceptAgreementRequestInput,
   AcceptAgreementRequestOutput,
   AcceptAgreementRequestError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AcceptAgreementRequestInput,
   output: AcceptAgreementRequestOutput,
@@ -2482,7 +2486,7 @@ export const batchCreateBillingAdjustmentRequest: API.OperationMethod<
   BatchCreateBillingAdjustmentRequestInput,
   BatchCreateBillingAdjustmentRequestOutput,
   BatchCreateBillingAdjustmentRequestError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchCreateBillingAdjustmentRequestInput,
   output: BatchCreateBillingAdjustmentRequestOutput,
@@ -2513,7 +2517,7 @@ export const cancelAgreement: API.OperationMethod<
   CancelAgreementInput,
   CancelAgreementOutput,
   CancelAgreementError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CancelAgreementInput,
   output: CancelAgreementOutput,
@@ -2547,7 +2551,7 @@ export const cancelAgreementCancellationRequest: API.OperationMethod<
   CancelAgreementCancellationRequestInput,
   CancelAgreementCancellationRequestOutput,
   CancelAgreementCancellationRequestError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CancelAgreementCancellationRequestInput,
   output: CancelAgreementCancellationRequestOutput,
@@ -2581,7 +2585,7 @@ export const cancelAgreementPaymentRequest: API.OperationMethod<
   CancelAgreementPaymentRequestInput,
   CancelAgreementPaymentRequestOutput,
   CancelAgreementPaymentRequestError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CancelAgreementPaymentRequestInput,
   output: CancelAgreementPaymentRequestOutput,
@@ -2614,7 +2618,7 @@ export const createAgreementRequest: API.OperationMethod<
   CreateAgreementRequestInput,
   CreateAgreementRequestOutput,
   CreateAgreementRequestError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateAgreementRequestInput,
   output: CreateAgreementRequestOutput,
@@ -2646,7 +2650,7 @@ export const describeAgreement: API.OperationMethod<
   DescribeAgreementInput,
   DescribeAgreementOutput,
   DescribeAgreementError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeAgreementInput,
   output: DescribeAgreementOutput,
@@ -2676,7 +2680,7 @@ export const getAgreementCancellationRequest: API.OperationMethod<
   GetAgreementCancellationRequestInput,
   GetAgreementCancellationRequestOutput,
   GetAgreementCancellationRequestError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetAgreementCancellationRequestInput,
   output: GetAgreementCancellationRequestOutput,
@@ -2702,27 +2706,13 @@ export type GetAgreementEntitlementsError =
 /**
  * Obtains details about the entitlements of an agreement.
  */
-export const getAgreementEntitlements: API.OperationMethod<
+export const getAgreementEntitlements: API.PaginatedOperationMethod<
   GetAgreementEntitlementsInput,
   GetAgreementEntitlementsOutput,
   GetAgreementEntitlementsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetAgreementEntitlementsInput,
-  ) => stream.Stream<
-    GetAgreementEntitlementsOutput,
-    GetAgreementEntitlementsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetAgreementEntitlementsInput,
-  ) => stream.Stream<
-    AgreementEntitlement,
-    GetAgreementEntitlementsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  AgreementEntitlement
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetAgreementEntitlementsInput,
   output: GetAgreementEntitlementsOutput,
   errors: [
@@ -2741,27 +2731,7 @@ export const getAgreementEntitlements: API.OperationMethod<
     items: "agreementEntitlements",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetAgreementEntitlementsInput,
-  GetAgreementEntitlementsOutput,
-  GetAgreementEntitlementsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetAgreementEntitlementsInput,
-  ) => stream.Stream<
-    GetAgreementEntitlementsOutput,
-    GetAgreementEntitlementsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetAgreementEntitlementsInput,
-  ) => stream.Stream<
-    AgreementEntitlement,
-    GetAgreementEntitlementsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetAgreementPaymentRequestError =
   | AccessDeniedException
@@ -2779,7 +2749,7 @@ export const getAgreementPaymentRequest: API.OperationMethod<
   GetAgreementPaymentRequestInput,
   GetAgreementPaymentRequestOutput,
   GetAgreementPaymentRequestError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetAgreementPaymentRequestInput,
   output: GetAgreementPaymentRequestOutput,
@@ -2815,27 +2785,13 @@ export type GetAgreementTermsError =
  *
  * - `Configuration` – The buyer/acceptor's selection at the time of agreement creation, such as the number of units purchased for a dimension or setting the `EnableAutoRenew` flag.
  */
-export const getAgreementTerms: API.OperationMethod<
+export const getAgreementTerms: API.PaginatedOperationMethod<
   GetAgreementTermsInput,
   GetAgreementTermsOutput,
   GetAgreementTermsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetAgreementTermsInput,
-  ) => stream.Stream<
-    GetAgreementTermsOutput,
-    GetAgreementTermsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetAgreementTermsInput,
-  ) => stream.Stream<
-    AcceptedTerm,
-    GetAgreementTermsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  AcceptedTerm
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetAgreementTermsInput,
   output: GetAgreementTermsOutput,
   errors: [
@@ -2854,27 +2810,7 @@ export const getAgreementTerms: API.OperationMethod<
     items: "acceptedTerms",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetAgreementTermsInput,
-  GetAgreementTermsOutput,
-  GetAgreementTermsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetAgreementTermsInput,
-  ) => stream.Stream<
-    GetAgreementTermsOutput,
-    GetAgreementTermsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetAgreementTermsInput,
-  ) => stream.Stream<
-    AcceptedTerm,
-    GetAgreementTermsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetBillingAdjustmentRequestError =
   | AccessDeniedException
@@ -2890,7 +2826,7 @@ export const getBillingAdjustmentRequest: API.OperationMethod<
   GetBillingAdjustmentRequestInput,
   GetBillingAdjustmentRequestOutput,
   GetBillingAdjustmentRequestError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetBillingAdjustmentRequestInput,
   output: GetBillingAdjustmentRequestOutput,
@@ -2917,27 +2853,13 @@ export type ListAgreementCancellationRequestsError =
  *
  * `PartyType` is a required parameter. A `ValidationException` is returned if `PartyType` is not provided.
  */
-export const listAgreementCancellationRequests: API.OperationMethod<
+export const listAgreementCancellationRequests: API.PaginatedOperationMethod<
   ListAgreementCancellationRequestsInput,
   ListAgreementCancellationRequestsOutput,
   ListAgreementCancellationRequestsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAgreementCancellationRequestsInput,
-  ) => stream.Stream<
-    ListAgreementCancellationRequestsOutput,
-    ListAgreementCancellationRequestsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAgreementCancellationRequestsInput,
-  ) => stream.Stream<
-    AgreementCancellationRequestSummary,
-    ListAgreementCancellationRequestsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  AgreementCancellationRequestSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListAgreementCancellationRequestsInput,
   output: ListAgreementCancellationRequestsOutput,
   errors: [
@@ -2955,27 +2877,7 @@ export const listAgreementCancellationRequests: API.OperationMethod<
     items: "items",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListAgreementCancellationRequestsInput,
-  ListAgreementCancellationRequestsOutput,
-  ListAgreementCancellationRequestsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAgreementCancellationRequestsInput,
-  ) => stream.Stream<
-    ListAgreementCancellationRequestsOutput,
-    ListAgreementCancellationRequestsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAgreementCancellationRequestsInput,
-  ) => stream.Stream<
-    AgreementCancellationRequestSummary,
-    ListAgreementCancellationRequestsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListAgreementChargesError =
   | AccessDeniedException
@@ -2986,27 +2888,13 @@ export type ListAgreementChargesError =
 /**
  * Allows acceptors to view charges and purchase orders that are associated with an agreement. The response includes details about all charges regardless of whether a purchase order is linked to each charge.
  */
-export const listAgreementCharges: API.OperationMethod<
+export const listAgreementCharges: API.PaginatedOperationMethod<
   ListAgreementChargesInput,
   ListAgreementChargesOutput,
   ListAgreementChargesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAgreementChargesInput,
-  ) => stream.Stream<
-    ListAgreementChargesOutput,
-    ListAgreementChargesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAgreementChargesInput,
-  ) => stream.Stream<
-    Charge,
-    ListAgreementChargesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Charge
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListAgreementChargesInput,
   output: ListAgreementChargesOutput,
   errors: [
@@ -3024,27 +2912,7 @@ export const listAgreementCharges: API.OperationMethod<
     items: "items",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListAgreementChargesInput,
-  ListAgreementChargesOutput,
-  ListAgreementChargesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAgreementChargesInput,
-  ) => stream.Stream<
-    ListAgreementChargesOutput,
-    ListAgreementChargesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAgreementChargesInput,
-  ) => stream.Stream<
-    Charge,
-    ListAgreementChargesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListAgreementInvoiceLineItemsError =
   | AccessDeniedException
@@ -3058,27 +2926,13 @@ export type ListAgreementInvoiceLineItemsError =
  *
  * The `groupBy` parameter is required and supports only `INVOICE_ID` as a value. The `agreementId` parameter is required.
  */
-export const listAgreementInvoiceLineItems: API.OperationMethod<
+export const listAgreementInvoiceLineItems: API.PaginatedOperationMethod<
   ListAgreementInvoiceLineItemsInput,
   ListAgreementInvoiceLineItemsOutput,
   ListAgreementInvoiceLineItemsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAgreementInvoiceLineItemsInput,
-  ) => stream.Stream<
-    ListAgreementInvoiceLineItemsOutput,
-    ListAgreementInvoiceLineItemsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAgreementInvoiceLineItemsInput,
-  ) => stream.Stream<
-    AgreementInvoiceLineItemGroupSummary,
-    ListAgreementInvoiceLineItemsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  AgreementInvoiceLineItemGroupSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListAgreementInvoiceLineItemsInput,
   output: ListAgreementInvoiceLineItemsOutput,
   errors: [
@@ -3097,27 +2951,7 @@ export const listAgreementInvoiceLineItems: API.OperationMethod<
     items: "agreementInvoiceLineItemGroupSummaries",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListAgreementInvoiceLineItemsInput,
-  ListAgreementInvoiceLineItemsOutput,
-  ListAgreementInvoiceLineItemsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAgreementInvoiceLineItemsInput,
-  ) => stream.Stream<
-    ListAgreementInvoiceLineItemsOutput,
-    ListAgreementInvoiceLineItemsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAgreementInvoiceLineItemsInput,
-  ) => stream.Stream<
-    AgreementInvoiceLineItemGroupSummary,
-    ListAgreementInvoiceLineItemsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListAgreementPaymentRequestsError =
   | AccessDeniedException
@@ -3130,27 +2964,13 @@ export type ListAgreementPaymentRequestsError =
  *
  * `PartyType` is a required parameter. A `ValidationException` is returned if `PartyType` is not provided. Pagination is supported through `maxResults` (1-50, default 50) and `nextToken` parameters.
  */
-export const listAgreementPaymentRequests: API.OperationMethod<
+export const listAgreementPaymentRequests: API.PaginatedOperationMethod<
   ListAgreementPaymentRequestsInput,
   ListAgreementPaymentRequestsOutput,
   ListAgreementPaymentRequestsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAgreementPaymentRequestsInput,
-  ) => stream.Stream<
-    ListAgreementPaymentRequestsOutput,
-    ListAgreementPaymentRequestsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAgreementPaymentRequestsInput,
-  ) => stream.Stream<
-    PaymentRequestSummary,
-    ListAgreementPaymentRequestsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  PaymentRequestSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListAgreementPaymentRequestsInput,
   output: ListAgreementPaymentRequestsOutput,
   errors: [
@@ -3168,27 +2988,7 @@ export const listAgreementPaymentRequests: API.OperationMethod<
     items: "items",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListAgreementPaymentRequestsInput,
-  ListAgreementPaymentRequestsOutput,
-  ListAgreementPaymentRequestsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAgreementPaymentRequestsInput,
-  ) => stream.Stream<
-    ListAgreementPaymentRequestsOutput,
-    ListAgreementPaymentRequestsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAgreementPaymentRequestsInput,
-  ) => stream.Stream<
-    PaymentRequestSummary,
-    ListAgreementPaymentRequestsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListBillingAdjustmentRequestsError =
   | AccessDeniedException
@@ -3199,27 +2999,13 @@ export type ListBillingAdjustmentRequestsError =
 /**
  * Lists billing adjustment requests for a specific agreement. Sellers (proposers) can use this operation to view all billing adjustment requests associated with an agreement.
  */
-export const listBillingAdjustmentRequests: API.OperationMethod<
+export const listBillingAdjustmentRequests: API.PaginatedOperationMethod<
   ListBillingAdjustmentRequestsInput,
   ListBillingAdjustmentRequestsOutput,
   ListBillingAdjustmentRequestsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListBillingAdjustmentRequestsInput,
-  ) => stream.Stream<
-    ListBillingAdjustmentRequestsOutput,
-    ListBillingAdjustmentRequestsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListBillingAdjustmentRequestsInput,
-  ) => stream.Stream<
-    BillingAdjustmentSummary,
-    ListBillingAdjustmentRequestsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  BillingAdjustmentSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListBillingAdjustmentRequestsInput,
   output: ListBillingAdjustmentRequestsOutput,
   errors: [
@@ -3237,27 +3023,7 @@ export const listBillingAdjustmentRequests: API.OperationMethod<
     items: "items",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListBillingAdjustmentRequestsInput,
-  ListBillingAdjustmentRequestsOutput,
-  ListBillingAdjustmentRequestsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListBillingAdjustmentRequestsInput,
-  ) => stream.Stream<
-    ListBillingAdjustmentRequestsOutput,
-    ListBillingAdjustmentRequestsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListBillingAdjustmentRequestsInput,
-  ) => stream.Stream<
-    BillingAdjustmentSummary,
-    ListBillingAdjustmentRequestsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type RejectAgreementCancellationRequestError =
   | AccessDeniedException
@@ -3276,7 +3042,7 @@ export const rejectAgreementCancellationRequest: API.OperationMethod<
   RejectAgreementCancellationRequestInput,
   RejectAgreementCancellationRequestOutput,
   RejectAgreementCancellationRequestError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RejectAgreementCancellationRequestInput,
   output: RejectAgreementCancellationRequestOutput,
@@ -3310,7 +3076,7 @@ export const rejectAgreementPaymentRequest: API.OperationMethod<
   RejectAgreementPaymentRequestInput,
   RejectAgreementPaymentRequestOutput,
   RejectAgreementPaymentRequestError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RejectAgreementPaymentRequestInput,
   output: RejectAgreementPaymentRequestOutput,
@@ -3450,27 +3216,13 @@ export type SearchAgreementsError =
  *
  * - `AgreementType` + `OfferSetId` + `Status` + `EndTime`
  */
-export const searchAgreements: API.OperationMethod<
+export const searchAgreements: API.PaginatedOperationMethod<
   SearchAgreementsInput,
   SearchAgreementsOutput,
   SearchAgreementsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: SearchAgreementsInput,
-  ) => stream.Stream<
-    SearchAgreementsOutput,
-    SearchAgreementsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: SearchAgreementsInput,
-  ) => stream.Stream<
-    AgreementViewSummary,
-    SearchAgreementsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  AgreementViewSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: SearchAgreementsInput,
   output: SearchAgreementsOutput,
   errors: [
@@ -3488,27 +3240,7 @@ export const searchAgreements: API.OperationMethod<
     items: "agreementViewSummaries",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  SearchAgreementsInput,
-  SearchAgreementsOutput,
-  SearchAgreementsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: SearchAgreementsInput,
-  ) => stream.Stream<
-    SearchAgreementsOutput,
-    SearchAgreementsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: SearchAgreementsInput,
-  ) => stream.Stream<
-    AgreementViewSummary,
-    SearchAgreementsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type SendAgreementCancellationRequestError =
   | AccessDeniedException
@@ -3525,7 +3257,7 @@ export const sendAgreementCancellationRequest: API.OperationMethod<
   SendAgreementCancellationRequestInput,
   SendAgreementCancellationRequestOutput,
   SendAgreementCancellationRequestError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: SendAgreementCancellationRequestInput,
   output: SendAgreementCancellationRequestOutput,
@@ -3559,7 +3291,7 @@ export const sendAgreementPaymentRequest: API.OperationMethod<
   SendAgreementPaymentRequestInput,
   SendAgreementPaymentRequestOutput,
   SendAgreementPaymentRequestError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: SendAgreementPaymentRequestInput,
   output: SendAgreementPaymentRequestOutput,
@@ -3591,7 +3323,7 @@ export const updatePurchaseOrders: API.OperationMethod<
   UpdatePurchaseOrdersInput,
   UpdatePurchaseOrdersOutput,
   UpdatePurchaseOrdersError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdatePurchaseOrdersInput,
   output: UpdatePurchaseOrdersOutput,

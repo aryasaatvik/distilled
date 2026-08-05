@@ -1,7 +1,6 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as redacted from "effect/Redacted";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -9,7 +8,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 import { SensitiveString } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "evs",
@@ -90,32 +88,36 @@ const rules = T.EndpointResolver((p, _) => {
 export class InternalServerException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
     "InternalServerException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.all(T.HttpError(500), T.Retryable()),
   ).pipe(C.withServerError, C.withRetryableError) {}
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { message: S.String, resourceId: S.String, resourceType: S.String },
+    {
+      message: S.String.pipe(T.ErrorMessage()),
+      resourceId: S.String,
+      resourceType: S.String,
+    },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class ServiceQuotaExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
     "ServiceQuotaExceededException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(402),
   ).pipe(C.withQuotaError) {}
 export class TagPolicyException
   extends /*@__PURE__*/ S.TaggedErrorClass<TagPolicyException>()(
     "TagPolicyException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class ThrottlingException
   extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
     "ThrottlingException",
     {
-      message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       retryAfterSeconds: S.optional(S.Number).pipe(T.HttpHeader("Retry-After")),
     },
     T.all(T.HttpError(429), T.Retryable()),
@@ -123,14 +125,14 @@ export class ThrottlingException
 export class TooManyTagsException
   extends /*@__PURE__*/ S.TaggedErrorClass<TooManyTagsException>()(
     "TooManyTagsException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class ValidationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
     "ValidationException",
     {
-      message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       reason: S.suspend(() => ValidationExceptionReason).annotate({
         identifier: "ValidationExceptionReason",
       }),
@@ -1301,7 +1303,7 @@ export const associateEipToVlan: API.OperationMethod<
   AssociateEipToVlanRequest,
   AssociateEipToVlanResponse,
   AssociateEipToVlanError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AssociateEipToVlanRequest,
   output: AssociateEipToVlanResponse,
@@ -1323,7 +1325,7 @@ export const createEntitlement: API.OperationMethod<
   CreateEntitlementRequest,
   CreateEntitlementResponse,
   CreateEntitlementError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateEntitlementRequest,
   output: CreateEntitlementResponse,
@@ -1349,7 +1351,7 @@ export const createEnvironment: API.OperationMethod<
   CreateEnvironmentRequest,
   CreateEnvironmentResponse,
   CreateEnvironmentError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateEnvironmentRequest,
   output: CreateEnvironmentResponse,
@@ -1375,7 +1377,7 @@ export const createEnvironmentConnector: API.OperationMethod<
   CreateEnvironmentConnectorRequest,
   CreateEnvironmentConnectorResponse,
   CreateEnvironmentConnectorError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateEnvironmentConnectorRequest,
   output: CreateEnvironmentConnectorResponse,
@@ -1406,7 +1408,7 @@ export const createEnvironmentHost: API.OperationMethod<
   CreateEnvironmentHostRequest,
   CreateEnvironmentHostResponse,
   CreateEnvironmentHostError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateEnvironmentHostRequest,
   output: CreateEnvironmentHostResponse,
@@ -1428,7 +1430,7 @@ export const deleteEntitlement: API.OperationMethod<
   DeleteEntitlementRequest,
   DeleteEntitlementResponse,
   DeleteEntitlementError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteEntitlementRequest,
   output: DeleteEntitlementResponse,
@@ -1453,7 +1455,7 @@ export const deleteEnvironment: API.OperationMethod<
   DeleteEnvironmentRequest,
   DeleteEnvironmentResponse,
   DeleteEnvironmentError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteEnvironmentRequest,
   output: DeleteEnvironmentResponse,
@@ -1477,7 +1479,7 @@ export const deleteEnvironmentConnector: API.OperationMethod<
   DeleteEnvironmentConnectorRequest,
   DeleteEnvironmentConnectorResponse,
   DeleteEnvironmentConnectorError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteEnvironmentConnectorRequest,
   output: DeleteEnvironmentConnectorResponse,
@@ -1500,7 +1502,7 @@ export const deleteEnvironmentHost: API.OperationMethod<
   DeleteEnvironmentHostRequest,
   DeleteEnvironmentHostResponse,
   DeleteEnvironmentHostError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteEnvironmentHostRequest,
   output: DeleteEnvironmentHostResponse,
@@ -1522,7 +1524,7 @@ export const disassociateEipFromVlan: API.OperationMethod<
   DisassociateEipFromVlanRequest,
   DisassociateEipFromVlanResponse,
   DisassociateEipFromVlanError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DisassociateEipFromVlanRequest,
   output: DisassociateEipFromVlanResponse,
@@ -1546,7 +1548,7 @@ export const getDepotUrl: API.OperationMethod<
   GetDepotUrlRequest,
   GetDepotUrlResponse,
   GetDepotUrlError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetDepotUrlRequest,
   output: GetDepotUrlResponse,
@@ -1567,7 +1569,7 @@ export const getEnvironment: API.OperationMethod<
   GetEnvironmentRequest,
   GetEnvironmentResponse,
   GetEnvironmentError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetEnvironmentRequest,
   output: GetEnvironmentResponse,
@@ -1588,7 +1590,7 @@ export const getVersions: API.OperationMethod<
   GetVersionsRequest,
   GetVersionsResponse,
   GetVersionsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetVersionsRequest,
   output: GetVersionsResponse,
@@ -1605,27 +1607,13 @@ export type ListEnvironmentConnectorsError =
 /**
  * Lists the connectors within an environment. Returns the status of each connector and its applicable checks, among other connector details.
  */
-export const listEnvironmentConnectors: API.OperationMethod<
+export const listEnvironmentConnectors: API.PaginatedOperationMethod<
   ListEnvironmentConnectorsRequest,
   ListEnvironmentConnectorsResponse,
   ListEnvironmentConnectorsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListEnvironmentConnectorsRequest,
-  ) => stream.Stream<
-    ListEnvironmentConnectorsResponse,
-    ListEnvironmentConnectorsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListEnvironmentConnectorsRequest,
-  ) => stream.Stream<
-    Connector,
-    ListEnvironmentConnectorsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Connector
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListEnvironmentConnectorsRequest,
   output: ListEnvironmentConnectorsResponse,
   errors: [ResourceNotFoundException, ValidationException],
@@ -1638,27 +1626,7 @@ export const listEnvironmentConnectors: API.OperationMethod<
     items: "connectors",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListEnvironmentConnectorsRequest,
-  ListEnvironmentConnectorsResponse,
-  ListEnvironmentConnectorsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListEnvironmentConnectorsRequest,
-  ) => stream.Stream<
-    ListEnvironmentConnectorsResponse,
-    ListEnvironmentConnectorsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListEnvironmentConnectorsRequest,
-  ) => stream.Stream<
-    Connector,
-    ListEnvironmentConnectorsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListEnvironmentHostsError =
   | ResourceNotFoundException
@@ -1667,27 +1635,13 @@ export type ListEnvironmentHostsError =
 /**
  * List the hosts within an environment.
  */
-export const listEnvironmentHosts: API.OperationMethod<
+export const listEnvironmentHosts: API.PaginatedOperationMethod<
   ListEnvironmentHostsRequest,
   ListEnvironmentHostsResponse,
   ListEnvironmentHostsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListEnvironmentHostsRequest,
-  ) => stream.Stream<
-    ListEnvironmentHostsResponse,
-    ListEnvironmentHostsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListEnvironmentHostsRequest,
-  ) => stream.Stream<
-    Host,
-    ListEnvironmentHostsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Host
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListEnvironmentHostsRequest,
   output: ListEnvironmentHostsResponse,
   errors: [ResourceNotFoundException, ValidationException],
@@ -1700,53 +1654,19 @@ export const listEnvironmentHosts: API.OperationMethod<
     items: "environmentHosts",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListEnvironmentHostsRequest,
-  ListEnvironmentHostsResponse,
-  ListEnvironmentHostsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListEnvironmentHostsRequest,
-  ) => stream.Stream<
-    ListEnvironmentHostsResponse,
-    ListEnvironmentHostsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListEnvironmentHostsRequest,
-  ) => stream.Stream<
-    Host,
-    ListEnvironmentHostsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListEnvironmentsError = ValidationException | CommonErrors;
 /**
  * Lists the Amazon EVS environments in your Amazon Web Services account in the specified Amazon Web Services Region.
  */
-export const listEnvironments: API.OperationMethod<
+export const listEnvironments: API.PaginatedOperationMethod<
   ListEnvironmentsRequest,
   ListEnvironmentsResponse,
   ListEnvironmentsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListEnvironmentsRequest,
-  ) => stream.Stream<
-    ListEnvironmentsResponse,
-    ListEnvironmentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListEnvironmentsRequest,
-  ) => stream.Stream<
-    EnvironmentSummary,
-    ListEnvironmentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  EnvironmentSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListEnvironmentsRequest,
   output: ListEnvironmentsResponse,
   errors: [ValidationException],
@@ -1759,27 +1679,7 @@ export const listEnvironments: API.OperationMethod<
     items: "environmentSummaries",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListEnvironmentsRequest,
-  ListEnvironmentsResponse,
-  ListEnvironmentsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListEnvironmentsRequest,
-  ) => stream.Stream<
-    ListEnvironmentsResponse,
-    ListEnvironmentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListEnvironmentsRequest,
-  ) => stream.Stream<
-    EnvironmentSummary,
-    ListEnvironmentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListEnvironmentVlansError =
   | ResourceNotFoundException
@@ -1788,27 +1688,13 @@ export type ListEnvironmentVlansError =
 /**
  * Lists environment VLANs that are associated with the specified environment.
  */
-export const listEnvironmentVlans: API.OperationMethod<
+export const listEnvironmentVlans: API.PaginatedOperationMethod<
   ListEnvironmentVlansRequest,
   ListEnvironmentVlansResponse,
   ListEnvironmentVlansError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListEnvironmentVlansRequest,
-  ) => stream.Stream<
-    ListEnvironmentVlansResponse,
-    ListEnvironmentVlansError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListEnvironmentVlansRequest,
-  ) => stream.Stream<
-    Vlan,
-    ListEnvironmentVlansError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Vlan
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListEnvironmentVlansRequest,
   output: ListEnvironmentVlansResponse,
   errors: [ResourceNotFoundException, ValidationException],
@@ -1821,27 +1707,7 @@ export const listEnvironmentVlans: API.OperationMethod<
     items: "environmentVlans",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListEnvironmentVlansRequest,
-  ListEnvironmentVlansResponse,
-  ListEnvironmentVlansError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListEnvironmentVlansRequest,
-  ) => stream.Stream<
-    ListEnvironmentVlansResponse,
-    ListEnvironmentVlansError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListEnvironmentVlansRequest,
-  ) => stream.Stream<
-    Vlan,
-    ListEnvironmentVlansError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsForResourceError = ResourceNotFoundException | CommonErrors;
 /**
@@ -1851,7 +1717,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceRequest,
   ListTagsForResourceResponse,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -1868,27 +1734,13 @@ export type ListVmEntitlementsError =
 /**
  * Lists the Windows Server License entitlements for virtual machines in an Amazon EVS environment. Returns existing entitlements for virtual machines associated with the specified environment and connector.
  */
-export const listVmEntitlements: API.OperationMethod<
+export const listVmEntitlements: API.PaginatedOperationMethod<
   ListVmEntitlementsRequest,
   ListVmEntitlementsResponse,
   ListVmEntitlementsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListVmEntitlementsRequest,
-  ) => stream.Stream<
-    ListVmEntitlementsResponse,
-    ListVmEntitlementsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListVmEntitlementsRequest,
-  ) => stream.Stream<
-    VmEntitlement,
-    ListVmEntitlementsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  VmEntitlement
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListVmEntitlementsRequest,
   output: ListVmEntitlementsResponse,
   errors: [ResourceNotFoundException, ValidationException],
@@ -1901,27 +1753,7 @@ export const listVmEntitlements: API.OperationMethod<
     items: "entitlements",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListVmEntitlementsRequest,
-  ListVmEntitlementsResponse,
-  ListVmEntitlementsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListVmEntitlementsRequest,
-  ) => stream.Stream<
-    ListVmEntitlementsResponse,
-    ListVmEntitlementsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListVmEntitlementsRequest,
-  ) => stream.Stream<
-    VmEntitlement,
-    ListVmEntitlementsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type TagResourceError =
   | ResourceNotFoundException
@@ -1936,7 +1768,7 @@ export const tagResource: API.OperationMethod<
   TagResourceRequest,
   TagResourceResponse,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -1962,7 +1794,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceRequest,
   UntagResourceResponse,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -1986,7 +1818,7 @@ export const updateEnvironmentConnector: API.OperationMethod<
   UpdateEnvironmentConnectorRequest,
   UpdateEnvironmentConnectorResponse,
   UpdateEnvironmentConnectorError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateEnvironmentConnectorRequest,
   output: UpdateEnvironmentConnectorResponse,

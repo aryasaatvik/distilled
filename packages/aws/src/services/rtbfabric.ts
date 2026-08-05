@@ -1,7 +1,6 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as redacted from "effect/Redacted";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -9,7 +8,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 import { SensitiveString } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "RTBFabric",
@@ -90,43 +88,43 @@ const rules = T.EndpointResolver((p, _) => {
 export class AccessDeniedException
   extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
     "AccessDeniedException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(403),
   ).pipe(C.withAuthError) {}
 export class ConflictException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
     "ConflictException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class InternalServerException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
     "InternalServerException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.all(T.HttpError(500), T.Retryable()),
   ).pipe(C.withServerError, C.withRetryableError) {}
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class ServiceQuotaExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
     "ServiceQuotaExceededException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(402),
   ).pipe(C.withQuotaError) {}
 export class ThrottlingException
   extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
     "ThrottlingException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.all(T.HttpError(429), T.Retryable()),
   ).pipe(C.withThrottlingError, C.withRetryableError) {}
 export class ValidationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
     "ValidationException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export type GatewayId = string;
@@ -2167,7 +2165,7 @@ export const acceptLink: API.OperationMethod<
   AcceptLinkRequest,
   AcceptLinkResponse,
   AcceptLinkError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AcceptLinkRequest,
   output: AcceptLinkResponse,
@@ -2200,7 +2198,7 @@ export const associateCertificate: API.OperationMethod<
   AssociateCertificateRequest,
   AssociateCertificateResponse,
   AssociateCertificateError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AssociateCertificateRequest,
   output: AssociateCertificateResponse,
@@ -2234,7 +2232,7 @@ export const createInboundExternalLink: API.OperationMethod<
   CreateInboundExternalLinkRequest,
   CreateInboundExternalLinkResponse,
   CreateInboundExternalLinkError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateInboundExternalLinkRequest,
   output: CreateInboundExternalLinkResponse,
@@ -2270,7 +2268,7 @@ export const createLink: API.OperationMethod<
   CreateLinkRequest,
   CreateLinkResponse,
   CreateLinkError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateLinkRequest,
   output: CreateLinkResponse,
@@ -2306,7 +2304,7 @@ export const createLinkRoutingRule: API.OperationMethod<
   CreateLinkRoutingRuleRequest,
   CreateLinkRoutingRuleResponse,
   CreateLinkRoutingRuleError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateLinkRoutingRuleRequest,
   output: CreateLinkRoutingRuleResponse,
@@ -2340,7 +2338,7 @@ export const createOutboundExternalLink: API.OperationMethod<
   CreateOutboundExternalLinkRequest,
   CreateOutboundExternalLinkResponse,
   CreateOutboundExternalLinkError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateOutboundExternalLinkRequest,
   output: CreateOutboundExternalLinkResponse,
@@ -2373,7 +2371,7 @@ export const createRequesterGateway: API.OperationMethod<
   CreateRequesterGatewayRequest,
   CreateRequesterGatewayResponse,
   CreateRequesterGatewayError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateRequesterGatewayRequest,
   output: CreateRequesterGatewayResponse,
@@ -2407,7 +2405,7 @@ export const createResponderGateway: API.OperationMethod<
   CreateResponderGatewayRequest,
   CreateResponderGatewayResponse,
   CreateResponderGatewayError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateResponderGatewayRequest,
   output: CreateResponderGatewayResponse,
@@ -2439,7 +2437,7 @@ export const deleteInboundExternalLink: API.OperationMethod<
   DeleteInboundExternalLinkRequest,
   DeleteInboundExternalLinkResponse,
   DeleteInboundExternalLinkError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteInboundExternalLinkRequest,
   output: DeleteInboundExternalLinkResponse,
@@ -2473,7 +2471,7 @@ export const deleteLink: API.OperationMethod<
   DeleteLinkRequest,
   DeleteLinkResponse,
   DeleteLinkError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteLinkRequest,
   output: DeleteLinkResponse,
@@ -2505,7 +2503,7 @@ export const deleteLinkRoutingRule: API.OperationMethod<
   DeleteLinkRoutingRuleRequest,
   DeleteLinkRoutingRuleResponse,
   DeleteLinkRoutingRuleError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteLinkRoutingRuleRequest,
   output: DeleteLinkRoutingRuleResponse,
@@ -2537,7 +2535,7 @@ export const deleteOutboundExternalLink: API.OperationMethod<
   DeleteOutboundExternalLinkRequest,
   DeleteOutboundExternalLinkResponse,
   DeleteOutboundExternalLinkError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteOutboundExternalLinkRequest,
   output: DeleteOutboundExternalLinkResponse,
@@ -2569,7 +2567,7 @@ export const deleteRequesterGateway: API.OperationMethod<
   DeleteRequesterGatewayRequest,
   DeleteRequesterGatewayResponse,
   DeleteRequesterGatewayError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteRequesterGatewayRequest,
   output: DeleteRequesterGatewayResponse,
@@ -2601,7 +2599,7 @@ export const deleteResponderGateway: API.OperationMethod<
   DeleteResponderGatewayRequest,
   DeleteResponderGatewayResponse,
   DeleteResponderGatewayError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteResponderGatewayRequest,
   output: DeleteResponderGatewayResponse,
@@ -2634,7 +2632,7 @@ export const disassociateCertificate: API.OperationMethod<
   DisassociateCertificateRequest,
   DisassociateCertificateResponse,
   DisassociateCertificateError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DisassociateCertificateRequest,
   output: DisassociateCertificateResponse,
@@ -2666,7 +2664,7 @@ export const getCertificateAssociation: API.OperationMethod<
   GetCertificateAssociationRequest,
   GetCertificateAssociationResponse,
   GetCertificateAssociationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetCertificateAssociationRequest,
   output: GetCertificateAssociationResponse,
@@ -2696,7 +2694,7 @@ export const getInboundExternalLink: API.OperationMethod<
   GetInboundExternalLinkRequest,
   GetInboundExternalLinkResponse,
   GetInboundExternalLinkError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetInboundExternalLinkRequest,
   output: GetInboundExternalLinkResponse,
@@ -2729,7 +2727,7 @@ export const getLink: API.OperationMethod<
   GetLinkRequest,
   GetLinkResponse,
   GetLinkError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetLinkRequest,
   output: GetLinkResponse,
@@ -2760,7 +2758,7 @@ export const getLinkRoutingRule: API.OperationMethod<
   GetLinkRoutingRuleRequest,
   GetLinkRoutingRuleResponse,
   GetLinkRoutingRuleError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetLinkRoutingRuleRequest,
   output: GetLinkRoutingRuleResponse,
@@ -2790,7 +2788,7 @@ export const getOutboundExternalLink: API.OperationMethod<
   GetOutboundExternalLinkRequest,
   GetOutboundExternalLinkResponse,
   GetOutboundExternalLinkError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetOutboundExternalLinkRequest,
   output: GetOutboundExternalLinkResponse,
@@ -2820,7 +2818,7 @@ export const getRequesterGateway: API.OperationMethod<
   GetRequesterGatewayRequest,
   GetRequesterGatewayResponse,
   GetRequesterGatewayError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetRequesterGatewayRequest,
   output: GetRequesterGatewayResponse,
@@ -2850,7 +2848,7 @@ export const getResponderGateway: API.OperationMethod<
   GetResponderGatewayRequest,
   GetResponderGatewayResponse,
   GetResponderGatewayError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetResponderGatewayRequest,
   output: GetResponderGatewayResponse,
@@ -2876,27 +2874,13 @@ export type ListCertificateAssociationsError =
 /**
  * Lists the certificate associations for a responder gateway.
  */
-export const listCertificateAssociations: API.OperationMethod<
+export const listCertificateAssociations: API.PaginatedOperationMethod<
   ListCertificateAssociationsRequest,
   ListCertificateAssociationsResponse,
   ListCertificateAssociationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCertificateAssociationsRequest,
-  ) => stream.Stream<
-    ListCertificateAssociationsResponse,
-    ListCertificateAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCertificateAssociationsRequest,
-  ) => stream.Stream<
-    CertificateAssociationSummary,
-    ListCertificateAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  CertificateAssociationSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListCertificateAssociationsRequest,
   output: ListCertificateAssociationsResponse,
   errors: [
@@ -2915,27 +2899,7 @@ export const listCertificateAssociations: API.OperationMethod<
     items: "certificateAssociations",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListCertificateAssociationsRequest,
-  ListCertificateAssociationsResponse,
-  ListCertificateAssociationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCertificateAssociationsRequest,
-  ) => stream.Stream<
-    ListCertificateAssociationsResponse,
-    ListCertificateAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCertificateAssociationsRequest,
-  ) => stream.Stream<
-    CertificateAssociationSummary,
-    ListCertificateAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListLinkRoutingRulesError =
   | AccessDeniedException
@@ -2947,27 +2911,13 @@ export type ListLinkRoutingRulesError =
 /**
  * Lists the routing rules for a link.
  */
-export const listLinkRoutingRules: API.OperationMethod<
+export const listLinkRoutingRules: API.PaginatedOperationMethod<
   ListLinkRoutingRulesRequest,
   ListLinkRoutingRulesResponse,
   ListLinkRoutingRulesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListLinkRoutingRulesRequest,
-  ) => stream.Stream<
-    ListLinkRoutingRulesResponse,
-    ListLinkRoutingRulesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListLinkRoutingRulesRequest,
-  ) => stream.Stream<
-    LinkRoutingRuleSummary,
-    ListLinkRoutingRulesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  LinkRoutingRuleSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListLinkRoutingRulesRequest,
   output: ListLinkRoutingRulesResponse,
   errors: [
@@ -2986,27 +2936,7 @@ export const listLinkRoutingRules: API.OperationMethod<
     items: "rules",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListLinkRoutingRulesRequest,
-  ListLinkRoutingRulesResponse,
-  ListLinkRoutingRulesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListLinkRoutingRulesRequest,
-  ) => stream.Stream<
-    ListLinkRoutingRulesResponse,
-    ListLinkRoutingRulesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListLinkRoutingRulesRequest,
-  ) => stream.Stream<
-    LinkRoutingRuleSummary,
-    ListLinkRoutingRulesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListLinksError =
   | AccessDeniedException
@@ -3020,27 +2950,13 @@ export type ListLinksError =
  *
  * Returns a list of all links for the specified gateways, including their status and configuration details.
  */
-export const listLinks: API.OperationMethod<
+export const listLinks: API.PaginatedOperationMethod<
   ListLinksRequest,
   ListLinksResponse,
   ListLinksError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListLinksRequest,
-  ) => stream.Stream<
-    ListLinksResponse,
-    ListLinksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListLinksRequest,
-  ) => stream.Stream<
-    ListLinksResponseStructure,
-    ListLinksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ListLinksResponseStructure
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListLinksRequest,
   output: ListLinksResponse,
   errors: [
@@ -3059,27 +2975,7 @@ export const listLinks: API.OperationMethod<
     items: "links",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListLinksRequest,
-  ListLinksResponse,
-  ListLinksError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListLinksRequest,
-  ) => stream.Stream<
-    ListLinksResponse,
-    ListLinksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListLinksRequest,
-  ) => stream.Stream<
-    ListLinksResponseStructure,
-    ListLinksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListRequesterGatewaysError =
   | InternalServerException
@@ -3088,27 +2984,13 @@ export type ListRequesterGatewaysError =
 /**
  * Lists requester gateways.
  */
-export const listRequesterGateways: API.OperationMethod<
+export const listRequesterGateways: API.PaginatedOperationMethod<
   ListRequesterGatewaysRequest,
   ListRequesterGatewaysResponse,
   ListRequesterGatewaysError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListRequesterGatewaysRequest,
-  ) => stream.Stream<
-    ListRequesterGatewaysResponse,
-    ListRequesterGatewaysError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListRequesterGatewaysRequest,
-  ) => stream.Stream<
-    GatewayId,
-    ListRequesterGatewaysError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  GatewayId
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListRequesterGatewaysRequest,
   output: ListRequesterGatewaysResponse,
   errors: [InternalServerException, ValidationException],
@@ -3121,27 +3003,7 @@ export const listRequesterGateways: API.OperationMethod<
     items: "gatewayIds",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListRequesterGatewaysRequest,
-  ListRequesterGatewaysResponse,
-  ListRequesterGatewaysError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListRequesterGatewaysRequest,
-  ) => stream.Stream<
-    ListRequesterGatewaysResponse,
-    ListRequesterGatewaysError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListRequesterGatewaysRequest,
-  ) => stream.Stream<
-    GatewayId,
-    ListRequesterGatewaysError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListResponderGatewaysError =
   | InternalServerException
@@ -3150,27 +3012,13 @@ export type ListResponderGatewaysError =
 /**
  * Lists reponder gateways.
  */
-export const listResponderGateways: API.OperationMethod<
+export const listResponderGateways: API.PaginatedOperationMethod<
   ListResponderGatewaysRequest,
   ListResponderGatewaysResponse,
   ListResponderGatewaysError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListResponderGatewaysRequest,
-  ) => stream.Stream<
-    ListResponderGatewaysResponse,
-    ListResponderGatewaysError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListResponderGatewaysRequest,
-  ) => stream.Stream<
-    GatewayId,
-    ListResponderGatewaysError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  GatewayId
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListResponderGatewaysRequest,
   output: ListResponderGatewaysResponse,
   errors: [InternalServerException, ValidationException],
@@ -3183,27 +3031,7 @@ export const listResponderGateways: API.OperationMethod<
     items: "gatewayIds",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListResponderGatewaysRequest,
-  ListResponderGatewaysResponse,
-  ListResponderGatewaysError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListResponderGatewaysRequest,
-  ) => stream.Stream<
-    ListResponderGatewaysResponse,
-    ListResponderGatewaysError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListResponderGatewaysRequest,
-  ) => stream.Stream<
-    GatewayId,
-    ListResponderGatewaysError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsForResourceError =
   | AccessDeniedException
@@ -3219,7 +3047,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceRequest,
   ListTagsForResourceResponse,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -3252,7 +3080,7 @@ export const rejectLink: API.OperationMethod<
   RejectLinkRequest,
   RejectLinkResponse,
   RejectLinkError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RejectLinkRequest,
   output: RejectLinkResponse,
@@ -3283,7 +3111,7 @@ export const tagResource: API.OperationMethod<
   TagResourceRequest,
   TagResourceResponse,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -3313,7 +3141,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceRequest,
   UntagResourceResponse,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -3346,7 +3174,7 @@ export const updateLink: API.OperationMethod<
   UpdateLinkRequest,
   UpdateLinkResponse,
   UpdateLinkError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateLinkRequest,
   output: UpdateLinkResponse,
@@ -3379,7 +3207,7 @@ export const updateLinkModuleFlow: API.OperationMethod<
   UpdateLinkModuleFlowRequest,
   UpdateLinkModuleFlowResponse,
   UpdateLinkModuleFlowError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateLinkModuleFlowRequest,
   output: UpdateLinkModuleFlowResponse,
@@ -3412,7 +3240,7 @@ export const updateLinkRoutingRule: API.OperationMethod<
   UpdateLinkRoutingRuleRequest,
   UpdateLinkRoutingRuleResponse,
   UpdateLinkRoutingRuleError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateLinkRoutingRuleRequest,
   output: UpdateLinkRoutingRuleResponse,
@@ -3444,7 +3272,7 @@ export const updateRequesterGateway: API.OperationMethod<
   UpdateRequesterGatewayRequest,
   UpdateRequesterGatewayResponse,
   UpdateRequesterGatewayError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateRequesterGatewayRequest,
   output: UpdateRequesterGatewayResponse,
@@ -3476,7 +3304,7 @@ export const updateResponderGateway: API.OperationMethod<
   UpdateResponderGatewayRequest,
   UpdateResponderGatewayResponse,
   UpdateResponderGatewayError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateResponderGatewayRequest,
   output: UpdateResponderGatewayResponse,

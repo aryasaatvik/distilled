@@ -1,7 +1,6 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as redacted from "effect/Redacted";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -9,7 +8,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 import { SensitiveString } from "../sensitive.ts";
 const ns = T.XmlNamespace("http://storagegateway.amazonaws.com/doc/2013-06-30");
 const svc = T.AwsApiService({
@@ -92,7 +90,7 @@ export class InternalServerError
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerError>()(
     "InternalServerError",
     {
-      message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       error: S.optional(
         S.suspend(() => StorageGatewayError).annotate({
           identifier: "StorageGatewayError",
@@ -105,7 +103,7 @@ export class InvalidGatewayRequestException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidGatewayRequestException>()(
     "InvalidGatewayRequestException",
     {
-      message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       error: S.optional(
         S.suspend(() => StorageGatewayError).annotate({
           identifier: "StorageGatewayError",
@@ -118,7 +116,7 @@ export class ServiceUnavailableError
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceUnavailableError>()(
     "ServiceUnavailableError",
     {
-      message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       error: S.optional(
         S.suspend(() => StorageGatewayError).annotate({
           identifier: "StorageGatewayError",
@@ -4527,7 +4525,7 @@ export const activateGateway: API.OperationMethod<
   ActivateGatewayInput,
   ActivateGatewayOutput,
   ActivateGatewayError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ActivateGatewayInput,
   output: ActivateGatewayOutput,
@@ -4552,7 +4550,7 @@ export const addCache: API.OperationMethod<
   AddCacheInput,
   AddCacheOutput,
   AddCacheError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AddCacheInput,
   output: AddCacheOutput,
@@ -4589,7 +4587,7 @@ export const addTagsToResource: API.OperationMethod<
   AddTagsToResourceInput,
   AddTagsToResourceOutput,
   AddTagsToResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AddTagsToResourceInput,
   output: AddTagsToResourceOutput,
@@ -4616,7 +4614,7 @@ export const addUploadBuffer: API.OperationMethod<
   AddUploadBufferInput,
   AddUploadBufferOutput,
   AddUploadBufferError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AddUploadBufferInput,
   output: AddUploadBufferOutput,
@@ -4647,7 +4645,7 @@ export const addWorkingStorage: API.OperationMethod<
   AddWorkingStorageInput,
   AddWorkingStorageOutput,
   AddWorkingStorageError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AddWorkingStorageInput,
   output: AddWorkingStorageOutput,
@@ -4671,7 +4669,7 @@ export const assignTapePool: API.OperationMethod<
   AssignTapePoolInput,
   AssignTapePoolOutput,
   AssignTapePoolError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AssignTapePoolInput,
   output: AssignTapePoolOutput,
@@ -4695,7 +4693,7 @@ export const associateFileSystem: API.OperationMethod<
   AssociateFileSystemInput,
   AssociateFileSystemOutput,
   AssociateFileSystemError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AssociateFileSystemInput,
   output: AssociateFileSystemOutput,
@@ -4719,7 +4717,7 @@ export const attachVolume: API.OperationMethod<
   AttachVolumeInput,
   AttachVolumeOutput,
   AttachVolumeError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AttachVolumeInput,
   output: AttachVolumeOutput,
@@ -4741,7 +4739,7 @@ export const cancelArchival: API.OperationMethod<
   CancelArchivalInput,
   CancelArchivalOutput,
   CancelArchivalError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CancelArchivalInput,
   output: CancelArchivalOutput,
@@ -4766,7 +4764,7 @@ export const cancelCacheReport: API.OperationMethod<
   CancelCacheReportInput,
   CancelCacheReportOutput,
   CancelCacheReportError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CancelCacheReportInput,
   output: CancelCacheReportOutput,
@@ -4789,7 +4787,7 @@ export const cancelRetrieval: API.OperationMethod<
   CancelRetrievalInput,
   CancelRetrievalOutput,
   CancelRetrievalError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CancelRetrievalInput,
   output: CancelRetrievalOutput,
@@ -4825,7 +4823,7 @@ export const createCachediSCSIVolume: API.OperationMethod<
   CreateCachediSCSIVolumeInput,
   CreateCachediSCSIVolumeOutput,
   CreateCachediSCSIVolumeError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateCachediSCSIVolumeInput,
   output: CreateCachediSCSIVolumeOutput,
@@ -4860,7 +4858,7 @@ export const createNFSFileShare: API.OperationMethod<
   CreateNFSFileShareInput,
   CreateNFSFileShareOutput,
   CreateNFSFileShareError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateNFSFileShareInput,
   output: CreateNFSFileShareOutput,
@@ -4895,7 +4893,7 @@ export const createSMBFileShare: API.OperationMethod<
   CreateSMBFileShareInput,
   CreateSMBFileShareOutput,
   CreateSMBFileShareError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateSMBFileShareInput,
   output: CreateSMBFileShareOutput,
@@ -4940,7 +4938,7 @@ export const createSnapshot: API.OperationMethod<
   CreateSnapshotInput,
   CreateSnapshotOutput,
   CreateSnapshotError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateSnapshotInput,
   output: CreateSnapshotOutput,
@@ -4984,7 +4982,7 @@ export const createSnapshotFromVolumeRecoveryPoint: API.OperationMethod<
   CreateSnapshotFromVolumeRecoveryPointInput,
   CreateSnapshotFromVolumeRecoveryPointOutput,
   CreateSnapshotFromVolumeRecoveryPointError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateSnapshotFromVolumeRecoveryPointInput,
   output: CreateSnapshotFromVolumeRecoveryPointOutput,
@@ -5020,7 +5018,7 @@ export const createStorediSCSIVolume: API.OperationMethod<
   CreateStorediSCSIVolumeInput,
   CreateStorediSCSIVolumeOutput,
   CreateStorediSCSIVolumeError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateStorediSCSIVolumeInput,
   output: CreateStorediSCSIVolumeOutput,
@@ -5042,7 +5040,7 @@ export const createTapePool: API.OperationMethod<
   CreateTapePoolInput,
   CreateTapePoolOutput,
   CreateTapePoolError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateTapePoolInput,
   output: CreateTapePoolOutput,
@@ -5067,7 +5065,7 @@ export const createTapes: API.OperationMethod<
   CreateTapesInput,
   CreateTapesOutput,
   CreateTapesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateTapesInput,
   output: CreateTapesOutput,
@@ -5094,7 +5092,7 @@ export const createTapeWithBarcode: API.OperationMethod<
   CreateTapeWithBarcodeInput,
   CreateTapeWithBarcodeOutput,
   CreateTapeWithBarcodeError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateTapeWithBarcodeInput,
   output: CreateTapeWithBarcodeOutput,
@@ -5117,7 +5115,7 @@ export const deleteAutomaticTapeCreationPolicy: API.OperationMethod<
   DeleteAutomaticTapeCreationPolicyInput,
   DeleteAutomaticTapeCreationPolicyOutput,
   DeleteAutomaticTapeCreationPolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteAutomaticTapeCreationPolicyInput,
   output: DeleteAutomaticTapeCreationPolicyOutput,
@@ -5142,7 +5140,7 @@ export const deleteBandwidthRateLimit: API.OperationMethod<
   DeleteBandwidthRateLimitInput,
   DeleteBandwidthRateLimitOutput,
   DeleteBandwidthRateLimitError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteBandwidthRateLimitInput,
   output: DeleteBandwidthRateLimitOutput,
@@ -5167,7 +5165,7 @@ export const deleteCacheReport: API.OperationMethod<
   DeleteCacheReportInput,
   DeleteCacheReportOutput,
   DeleteCacheReportError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteCacheReportInput,
   output: DeleteCacheReportOutput,
@@ -5190,7 +5188,7 @@ export const deleteChapCredentials: API.OperationMethod<
   DeleteChapCredentialsInput,
   DeleteChapCredentialsOutput,
   DeleteChapCredentialsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteChapCredentialsInput,
   output: DeleteChapCredentialsOutput,
@@ -5212,7 +5210,7 @@ export const deleteFileShare: API.OperationMethod<
   DeleteFileShareInput,
   DeleteFileShareOutput,
   DeleteFileShareError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteFileShareInput,
   output: DeleteFileShareOutput,
@@ -5248,7 +5246,7 @@ export const deleteGateway: API.OperationMethod<
   DeleteGatewayInput,
   DeleteGatewayOutput,
   DeleteGatewayError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteGatewayInput,
   output: DeleteGatewayOutput,
@@ -5280,7 +5278,7 @@ export const deleteSnapshotSchedule: API.OperationMethod<
   DeleteSnapshotScheduleInput,
   DeleteSnapshotScheduleOutput,
   DeleteSnapshotScheduleError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteSnapshotScheduleInput,
   output: DeleteSnapshotScheduleOutput,
@@ -5302,7 +5300,7 @@ export const deleteTape: API.OperationMethod<
   DeleteTapeInput,
   DeleteTapeOutput,
   DeleteTapeError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteTapeInput,
   output: DeleteTapeOutput,
@@ -5324,7 +5322,7 @@ export const deleteTapeArchive: API.OperationMethod<
   DeleteTapeArchiveInput,
   DeleteTapeArchiveOutput,
   DeleteTapeArchiveError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteTapeArchiveInput,
   output: DeleteTapeArchiveOutput,
@@ -5347,7 +5345,7 @@ export const deleteTapePool: API.OperationMethod<
   DeleteTapePoolInput,
   DeleteTapePoolOutput,
   DeleteTapePoolError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteTapePoolInput,
   output: DeleteTapePoolOutput,
@@ -5380,7 +5378,7 @@ export const deleteVolume: API.OperationMethod<
   DeleteVolumeInput,
   DeleteVolumeOutput,
   DeleteVolumeError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteVolumeInput,
   output: DeleteVolumeOutput,
@@ -5403,7 +5401,7 @@ export const describeAvailabilityMonitorTest: API.OperationMethod<
   DescribeAvailabilityMonitorTestInput,
   DescribeAvailabilityMonitorTestOutput,
   DescribeAvailabilityMonitorTestError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeAvailabilityMonitorTestInput,
   output: DescribeAvailabilityMonitorTestOutput,
@@ -5432,7 +5430,7 @@ export const describeBandwidthRateLimit: API.OperationMethod<
   DescribeBandwidthRateLimitInput,
   DescribeBandwidthRateLimitOutput,
   DescribeBandwidthRateLimitError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeBandwidthRateLimitInput,
   output: DescribeBandwidthRateLimitOutput,
@@ -5469,7 +5467,7 @@ export const describeBandwidthRateLimitSchedule: API.OperationMethod<
   DescribeBandwidthRateLimitScheduleInput,
   DescribeBandwidthRateLimitScheduleOutput,
   DescribeBandwidthRateLimitScheduleError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeBandwidthRateLimitScheduleInput,
   output: DescribeBandwidthRateLimitScheduleOutput,
@@ -5494,7 +5492,7 @@ export const describeCache: API.OperationMethod<
   DescribeCacheInput,
   DescribeCacheOutput,
   DescribeCacheError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeCacheInput,
   output: DescribeCacheOutput,
@@ -5520,7 +5518,7 @@ export const describeCachediSCSIVolumes: API.OperationMethod<
   DescribeCachediSCSIVolumesInput,
   DescribeCachediSCSIVolumesOutput,
   DescribeCachediSCSIVolumesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeCachediSCSIVolumesInput,
   output: DescribeCachediSCSIVolumesOutput,
@@ -5542,7 +5540,7 @@ export const describeCacheReport: API.OperationMethod<
   DescribeCacheReportInput,
   DescribeCacheReportOutput,
   DescribeCacheReportError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeCacheReportInput,
   output: DescribeCacheReportOutput,
@@ -5565,7 +5563,7 @@ export const describeChapCredentials: API.OperationMethod<
   DescribeChapCredentialsInput,
   DescribeChapCredentialsOutput,
   DescribeChapCredentialsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeChapCredentialsInput,
   output: DescribeChapCredentialsOutput,
@@ -5587,7 +5585,7 @@ export const describeFileSystemAssociations: API.OperationMethod<
   DescribeFileSystemAssociationsInput,
   DescribeFileSystemAssociationsOutput,
   DescribeFileSystemAssociationsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeFileSystemAssociationsInput,
   output: DescribeFileSystemAssociationsOutput,
@@ -5610,7 +5608,7 @@ export const describeGatewayInformation: API.OperationMethod<
   DescribeGatewayInformationInput,
   DescribeGatewayInformationOutput,
   DescribeGatewayInformationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeGatewayInformationInput,
   output: DescribeGatewayInformationOutput,
@@ -5633,7 +5631,7 @@ export const describeMaintenanceStartTime: API.OperationMethod<
   DescribeMaintenanceStartTimeInput,
   DescribeMaintenanceStartTimeOutput,
   DescribeMaintenanceStartTimeError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeMaintenanceStartTimeInput,
   output: DescribeMaintenanceStartTimeOutput,
@@ -5655,7 +5653,7 @@ export const describeNFSFileShares: API.OperationMethod<
   DescribeNFSFileSharesInput,
   DescribeNFSFileSharesOutput,
   DescribeNFSFileSharesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeNFSFileSharesInput,
   output: DescribeNFSFileSharesOutput,
@@ -5677,7 +5675,7 @@ export const describeSMBFileShares: API.OperationMethod<
   DescribeSMBFileSharesInput,
   DescribeSMBFileSharesOutput,
   DescribeSMBFileSharesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeSMBFileSharesInput,
   output: DescribeSMBFileSharesOutput,
@@ -5699,7 +5697,7 @@ export const describeSMBSettings: API.OperationMethod<
   DescribeSMBSettingsInput,
   DescribeSMBSettingsOutput,
   DescribeSMBSettingsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeSMBSettingsInput,
   output: DescribeSMBSettingsOutput,
@@ -5723,7 +5721,7 @@ export const describeSnapshotSchedule: API.OperationMethod<
   DescribeSnapshotScheduleInput,
   DescribeSnapshotScheduleOutput,
   DescribeSnapshotScheduleError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeSnapshotScheduleInput,
   output: DescribeSnapshotScheduleOutput,
@@ -5746,7 +5744,7 @@ export const describeStorediSCSIVolumes: API.OperationMethod<
   DescribeStorediSCSIVolumesInput,
   DescribeStorediSCSIVolumesOutput,
   DescribeStorediSCSIVolumesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeStorediSCSIVolumesInput,
   output: DescribeStorediSCSIVolumesOutput,
@@ -5767,27 +5765,13 @@ export type DescribeTapeArchivesError =
  * If a specific `TapeARN` is not specified, Storage Gateway returns a
  * description of all virtual tapes found in the VTS associated with your account.
  */
-export const describeTapeArchives: API.OperationMethod<
+export const describeTapeArchives: API.PaginatedOperationMethod<
   DescribeTapeArchivesInput,
   DescribeTapeArchivesOutput,
   DescribeTapeArchivesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeTapeArchivesInput,
-  ) => stream.Stream<
-    DescribeTapeArchivesOutput,
-    DescribeTapeArchivesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeTapeArchivesInput,
-  ) => stream.Stream<
-    TapeArchive,
-    DescribeTapeArchivesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  TapeArchive
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeTapeArchivesInput,
   output: DescribeTapeArchivesOutput,
   errors: [InternalServerError, InvalidGatewayRequestException],
@@ -5800,27 +5784,7 @@ export const describeTapeArchives: API.OperationMethod<
     items: "TapeArchives",
     pageSize: "Limit",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeTapeArchivesInput,
-  DescribeTapeArchivesOutput,
-  DescribeTapeArchivesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeTapeArchivesInput,
-  ) => stream.Stream<
-    DescribeTapeArchivesOutput,
-    DescribeTapeArchivesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeTapeArchivesInput,
-  ) => stream.Stream<
-    TapeArchive,
-    DescribeTapeArchivesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeTapeRecoveryPointsError =
   | InternalServerError
@@ -5835,27 +5799,13 @@ export type DescribeTapeRecoveryPointsError =
  * points can be recovered to a new gateway. This operation is only supported in the tape
  * gateway type.
  */
-export const describeTapeRecoveryPoints: API.OperationMethod<
+export const describeTapeRecoveryPoints: API.PaginatedOperationMethod<
   DescribeTapeRecoveryPointsInput,
   DescribeTapeRecoveryPointsOutput,
   DescribeTapeRecoveryPointsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeTapeRecoveryPointsInput,
-  ) => stream.Stream<
-    DescribeTapeRecoveryPointsOutput,
-    DescribeTapeRecoveryPointsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeTapeRecoveryPointsInput,
-  ) => stream.Stream<
-    TapeRecoveryPointInfo,
-    DescribeTapeRecoveryPointsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  TapeRecoveryPointInfo
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeTapeRecoveryPointsInput,
   output: DescribeTapeRecoveryPointsOutput,
   errors: [InternalServerError, InvalidGatewayRequestException],
@@ -5868,27 +5818,7 @@ export const describeTapeRecoveryPoints: API.OperationMethod<
     items: "TapeRecoveryPointInfos",
     pageSize: "Limit",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeTapeRecoveryPointsInput,
-  DescribeTapeRecoveryPointsOutput,
-  DescribeTapeRecoveryPointsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeTapeRecoveryPointsInput,
-  ) => stream.Stream<
-    DescribeTapeRecoveryPointsOutput,
-    DescribeTapeRecoveryPointsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeTapeRecoveryPointsInput,
-  ) => stream.Stream<
-    TapeRecoveryPointInfo,
-    DescribeTapeRecoveryPointsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeTapesError =
   | InternalServerError
@@ -5907,27 +5837,13 @@ export type DescribeTapesError =
  * `Marker` value in your subsequent request to retrieve the next set of
  * tapes.
  */
-export const describeTapes: API.OperationMethod<
+export const describeTapes: API.PaginatedOperationMethod<
   DescribeTapesInput,
   DescribeTapesOutput,
   DescribeTapesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeTapesInput,
-  ) => stream.Stream<
-    DescribeTapesOutput,
-    DescribeTapesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeTapesInput,
-  ) => stream.Stream<
-    Tape,
-    DescribeTapesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Tape
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeTapesInput,
   output: DescribeTapesOutput,
   errors: [InternalServerError, InvalidGatewayRequestException],
@@ -5940,27 +5856,7 @@ export const describeTapes: API.OperationMethod<
     items: "Tapes",
     pageSize: "Limit",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeTapesInput,
-  DescribeTapesOutput,
-  DescribeTapesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeTapesInput,
-  ) => stream.Stream<
-    DescribeTapesOutput,
-    DescribeTapesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeTapesInput,
-  ) => stream.Stream<
-    Tape,
-    DescribeTapesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeUploadBufferError =
   | InternalServerError
@@ -5977,7 +5873,7 @@ export const describeUploadBuffer: API.OperationMethod<
   DescribeUploadBufferInput,
   DescribeUploadBufferOutput,
   DescribeUploadBufferError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeUploadBufferInput,
   output: DescribeUploadBufferOutput,
@@ -5997,27 +5893,13 @@ export type DescribeVTLDevicesError =
  *
  * This operation is only supported in the tape gateway type.
  */
-export const describeVTLDevices: API.OperationMethod<
+export const describeVTLDevices: API.PaginatedOperationMethod<
   DescribeVTLDevicesInput,
   DescribeVTLDevicesOutput,
   DescribeVTLDevicesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeVTLDevicesInput,
-  ) => stream.Stream<
-    DescribeVTLDevicesOutput,
-    DescribeVTLDevicesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeVTLDevicesInput,
-  ) => stream.Stream<
-    VTLDevice,
-    DescribeVTLDevicesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  VTLDevice
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeVTLDevicesInput,
   output: DescribeVTLDevicesOutput,
   errors: [InternalServerError, InvalidGatewayRequestException],
@@ -6030,27 +5912,7 @@ export const describeVTLDevices: API.OperationMethod<
     items: "VTLDevices",
     pageSize: "Limit",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeVTLDevicesInput,
-  DescribeVTLDevicesOutput,
-  DescribeVTLDevicesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeVTLDevicesInput,
-  ) => stream.Stream<
-    DescribeVTLDevicesOutput,
-    DescribeVTLDevicesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeVTLDevicesInput,
-  ) => stream.Stream<
-    VTLDevice,
-    DescribeVTLDevicesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeWorkingStorageError =
   | InternalServerError
@@ -6071,7 +5933,7 @@ export const describeWorkingStorage: API.OperationMethod<
   DescribeWorkingStorageInput,
   DescribeWorkingStorageOutput,
   DescribeWorkingStorageError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeWorkingStorageInput,
   output: DescribeWorkingStorageOutput,
@@ -6096,7 +5958,7 @@ export const detachVolume: API.OperationMethod<
   DetachVolumeInput,
   DetachVolumeOutput,
   DetachVolumeError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DetachVolumeInput,
   output: DetachVolumeOutput,
@@ -6123,7 +5985,7 @@ export const disableGateway: API.OperationMethod<
   DisableGatewayInput,
   DisableGatewayOutput,
   DisableGatewayError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DisableGatewayInput,
   output: DisableGatewayOutput,
@@ -6146,7 +6008,7 @@ export const disassociateFileSystem: API.OperationMethod<
   DisassociateFileSystemInput,
   DisassociateFileSystemOutput,
   DisassociateFileSystemError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DisassociateFileSystemInput,
   output: DisassociateFileSystemOutput,
@@ -6178,7 +6040,7 @@ export const evictFilesFailingUpload: API.OperationMethod<
   EvictFilesFailingUploadInput,
   EvictFilesFailingUploadOutput,
   EvictFilesFailingUploadError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: EvictFilesFailingUploadInput,
   output: EvictFilesFailingUploadOutput,
@@ -6209,7 +6071,7 @@ export const joinDomain: API.OperationMethod<
   JoinDomainInput,
   JoinDomainOutput,
   JoinDomainError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: JoinDomainInput,
   output: JoinDomainOutput,
@@ -6233,7 +6095,7 @@ export const listAutomaticTapeCreationPolicies: API.OperationMethod<
   ListAutomaticTapeCreationPoliciesInput,
   ListAutomaticTapeCreationPoliciesOutput,
   ListAutomaticTapeCreationPoliciesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListAutomaticTapeCreationPoliciesInput,
   output: ListAutomaticTapeCreationPoliciesOutput,
@@ -6253,27 +6115,13 @@ export type ListCacheReportsError =
  * `DescribeCacheReport` action, such as report name, status, completion
  * progress, start time, end time, filters, and tags.
  */
-export const listCacheReports: API.OperationMethod<
+export const listCacheReports: API.PaginatedOperationMethod<
   ListCacheReportsInput,
   ListCacheReportsOutput,
   ListCacheReportsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCacheReportsInput,
-  ) => stream.Stream<
-    ListCacheReportsOutput,
-    ListCacheReportsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCacheReportsInput,
-  ) => stream.Stream<
-    CacheReportInfo,
-    ListCacheReportsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  CacheReportInfo
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListCacheReportsInput,
   output: ListCacheReportsOutput,
   errors: [InternalServerError, InvalidGatewayRequestException],
@@ -6285,27 +6133,7 @@ export const listCacheReports: API.OperationMethod<
     outputToken: "Marker",
     items: "CacheReportList",
   } as const,
-})) as any as API.OperationMethod<
-  ListCacheReportsInput,
-  ListCacheReportsOutput,
-  ListCacheReportsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCacheReportsInput,
-  ) => stream.Stream<
-    ListCacheReportsOutput,
-    ListCacheReportsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCacheReportsInput,
-  ) => stream.Stream<
-    CacheReportInfo,
-    ListCacheReportsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListFileSharesError =
   | InternalServerError
@@ -6316,27 +6144,13 @@ export type ListFileSharesError =
  * shares that belong to the calling Amazon Web Services account. This operation is only
  * supported for S3 File Gateways.
  */
-export const listFileShares: API.OperationMethod<
+export const listFileShares: API.PaginatedOperationMethod<
   ListFileSharesInput,
   ListFileSharesOutput,
   ListFileSharesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListFileSharesInput,
-  ) => stream.Stream<
-    ListFileSharesOutput,
-    ListFileSharesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListFileSharesInput,
-  ) => stream.Stream<
-    FileShareInfo,
-    ListFileSharesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  FileShareInfo
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListFileSharesInput,
   output: ListFileSharesOutput,
   errors: [InternalServerError, InvalidGatewayRequestException],
@@ -6349,27 +6163,7 @@ export const listFileShares: API.OperationMethod<
     items: "FileShareInfoList",
     pageSize: "Limit",
   } as const,
-})) as any as API.OperationMethod<
-  ListFileSharesInput,
-  ListFileSharesOutput,
-  ListFileSharesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListFileSharesInput,
-  ) => stream.Stream<
-    ListFileSharesOutput,
-    ListFileSharesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListFileSharesInput,
-  ) => stream.Stream<
-    FileShareInfo,
-    ListFileSharesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListFileSystemAssociationsError =
   | InternalServerError
@@ -6380,27 +6174,13 @@ export type ListFileSystemAssociationsError =
  * summary of a file system association. This operation is only supported for FSx File
  * Gateways.
  */
-export const listFileSystemAssociations: API.OperationMethod<
+export const listFileSystemAssociations: API.PaginatedOperationMethod<
   ListFileSystemAssociationsInput,
   ListFileSystemAssociationsOutput,
   ListFileSystemAssociationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListFileSystemAssociationsInput,
-  ) => stream.Stream<
-    ListFileSystemAssociationsOutput,
-    ListFileSystemAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListFileSystemAssociationsInput,
-  ) => stream.Stream<
-    FileSystemAssociationSummary,
-    ListFileSystemAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  FileSystemAssociationSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListFileSystemAssociationsInput,
   output: ListFileSystemAssociationsOutput,
   errors: [InternalServerError, InvalidGatewayRequestException],
@@ -6413,27 +6193,7 @@ export const listFileSystemAssociations: API.OperationMethod<
     items: "FileSystemAssociationSummaryList",
     pageSize: "Limit",
   } as const,
-})) as any as API.OperationMethod<
-  ListFileSystemAssociationsInput,
-  ListFileSystemAssociationsOutput,
-  ListFileSystemAssociationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListFileSystemAssociationsInput,
-  ) => stream.Stream<
-    ListFileSystemAssociationsOutput,
-    ListFileSystemAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListFileSystemAssociationsInput,
-  ) => stream.Stream<
-    FileSystemAssociationSummary,
-    ListFileSystemAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListGatewaysError =
   | InternalServerError
@@ -6452,27 +6212,13 @@ export type ListGatewaysError =
  * only a truncated list of your gateways), the response contains a marker that you can
  * specify in your next request to fetch the next page of gateways.
  */
-export const listGateways: API.OperationMethod<
+export const listGateways: API.PaginatedOperationMethod<
   ListGatewaysInput,
   ListGatewaysOutput,
   ListGatewaysError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListGatewaysInput,
-  ) => stream.Stream<
-    ListGatewaysOutput,
-    ListGatewaysError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListGatewaysInput,
-  ) => stream.Stream<
-    GatewayInfo,
-    ListGatewaysError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  GatewayInfo
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListGatewaysInput,
   output: ListGatewaysOutput,
   errors: [InternalServerError, InvalidGatewayRequestException],
@@ -6485,27 +6231,7 @@ export const listGateways: API.OperationMethod<
     items: "Gateways",
     pageSize: "Limit",
   } as const,
-})) as any as API.OperationMethod<
-  ListGatewaysInput,
-  ListGatewaysOutput,
-  ListGatewaysError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListGatewaysInput,
-  ) => stream.Stream<
-    ListGatewaysOutput,
-    ListGatewaysError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListGatewaysInput,
-  ) => stream.Stream<
-    GatewayInfo,
-    ListGatewaysError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListLocalDisksError =
   | InternalServerError
@@ -6526,7 +6252,7 @@ export const listLocalDisks: API.OperationMethod<
   ListLocalDisksInput,
   ListLocalDisksOutput,
   ListLocalDisksError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListLocalDisksInput,
   output: ListLocalDisksOutput,
@@ -6544,27 +6270,13 @@ export type ListTagsForResourceError =
  * Lists the tags that have been added to the specified resource. This operation is
  * supported in storage gateways of all types.
  */
-export const listTagsForResource: API.OperationMethod<
+export const listTagsForResource: API.PaginatedOperationMethod<
   ListTagsForResourceInput,
   ListTagsForResourceOutput,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTagsForResourceInput,
-  ) => stream.Stream<
-    ListTagsForResourceOutput,
-    ListTagsForResourceError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTagsForResourceInput,
-  ) => stream.Stream<
-    Tag,
-    ListTagsForResourceError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Tag
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListTagsForResourceInput,
   output: ListTagsForResourceOutput,
   errors: [InternalServerError, InvalidGatewayRequestException],
@@ -6577,27 +6289,7 @@ export const listTagsForResource: API.OperationMethod<
     items: "Tags",
     pageSize: "Limit",
   } as const,
-})) as any as API.OperationMethod<
-  ListTagsForResourceInput,
-  ListTagsForResourceOutput,
-  ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTagsForResourceInput,
-  ) => stream.Stream<
-    ListTagsForResourceOutput,
-    ListTagsForResourceError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTagsForResourceInput,
-  ) => stream.Stream<
-    Tag,
-    ListTagsForResourceError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTapePoolsError =
   | InternalServerError
@@ -6614,27 +6306,13 @@ export type ListTapePoolsError =
  * `Marker` element that you can use in your subsequent request to retrieve the
  * next set of tape pools.
  */
-export const listTapePools: API.OperationMethod<
+export const listTapePools: API.PaginatedOperationMethod<
   ListTapePoolsInput,
   ListTapePoolsOutput,
   ListTapePoolsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTapePoolsInput,
-  ) => stream.Stream<
-    ListTapePoolsOutput,
-    ListTapePoolsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTapePoolsInput,
-  ) => stream.Stream<
-    PoolInfo,
-    ListTapePoolsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  PoolInfo
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListTapePoolsInput,
   output: ListTapePoolsOutput,
   errors: [InternalServerError, InvalidGatewayRequestException],
@@ -6647,27 +6325,7 @@ export const listTapePools: API.OperationMethod<
     items: "PoolInfos",
     pageSize: "Limit",
   } as const,
-})) as any as API.OperationMethod<
-  ListTapePoolsInput,
-  ListTapePoolsOutput,
-  ListTapePoolsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTapePoolsInput,
-  ) => stream.Stream<
-    ListTapePoolsOutput,
-    ListTapePoolsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTapePoolsInput,
-  ) => stream.Stream<
-    PoolInfo,
-    ListTapePoolsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTapesError =
   | InternalServerError
@@ -6686,27 +6344,13 @@ export type ListTapesError =
  * subsequent request to retrieve the next set of tapes. This operation is only supported in
  * the tape gateway type.
  */
-export const listTapes: API.OperationMethod<
+export const listTapes: API.PaginatedOperationMethod<
   ListTapesInput,
   ListTapesOutput,
   ListTapesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTapesInput,
-  ) => stream.Stream<
-    ListTapesOutput,
-    ListTapesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTapesInput,
-  ) => stream.Stream<
-    TapeInfo,
-    ListTapesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  TapeInfo
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListTapesInput,
   output: ListTapesOutput,
   errors: [InternalServerError, InvalidGatewayRequestException],
@@ -6719,27 +6363,7 @@ export const listTapes: API.OperationMethod<
     items: "TapeInfos",
     pageSize: "Limit",
   } as const,
-})) as any as API.OperationMethod<
-  ListTapesInput,
-  ListTapesOutput,
-  ListTapesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTapesInput,
-  ) => stream.Stream<
-    ListTapesOutput,
-    ListTapesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTapesInput,
-  ) => stream.Stream<
-    TapeInfo,
-    ListTapesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListVolumeInitiatorsError =
   | InternalServerError
@@ -6754,7 +6378,7 @@ export const listVolumeInitiators: API.OperationMethod<
   ListVolumeInitiatorsInput,
   ListVolumeInitiatorsOutput,
   ListVolumeInitiatorsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListVolumeInitiatorsInput,
   output: ListVolumeInitiatorsOutput,
@@ -6781,7 +6405,7 @@ export const listVolumeRecoveryPoints: API.OperationMethod<
   ListVolumeRecoveryPointsInput,
   ListVolumeRecoveryPointsOutput,
   ListVolumeRecoveryPointsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListVolumeRecoveryPointsInput,
   output: ListVolumeRecoveryPointsOutput,
@@ -6807,27 +6431,13 @@ export type ListVolumesError =
  * subsequent request to retrieve the next set of volumes. This operation is only supported in
  * the cached volume and stored volume gateway types.
  */
-export const listVolumes: API.OperationMethod<
+export const listVolumes: API.PaginatedOperationMethod<
   ListVolumesInput,
   ListVolumesOutput,
   ListVolumesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListVolumesInput,
-  ) => stream.Stream<
-    ListVolumesOutput,
-    ListVolumesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListVolumesInput,
-  ) => stream.Stream<
-    VolumeInfo,
-    ListVolumesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  VolumeInfo
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListVolumesInput,
   output: ListVolumesOutput,
   errors: [InternalServerError, InvalidGatewayRequestException],
@@ -6840,27 +6450,7 @@ export const listVolumes: API.OperationMethod<
     items: "VolumeInfos",
     pageSize: "Limit",
   } as const,
-})) as any as API.OperationMethod<
-  ListVolumesInput,
-  ListVolumesOutput,
-  ListVolumesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListVolumesInput,
-  ) => stream.Stream<
-    ListVolumesOutput,
-    ListVolumesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListVolumesInput,
-  ) => stream.Stream<
-    VolumeInfo,
-    ListVolumesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type NotifyWhenUploadedError =
   | InternalServerError
@@ -6885,7 +6475,7 @@ export const notifyWhenUploaded: API.OperationMethod<
   NotifyWhenUploadedInput,
   NotifyWhenUploadedOutput,
   NotifyWhenUploadedError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: NotifyWhenUploadedInput,
   output: NotifyWhenUploadedOutput,
@@ -6943,7 +6533,7 @@ export const refreshCache: API.OperationMethod<
   RefreshCacheInput,
   RefreshCacheOutput,
   RefreshCacheError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RefreshCacheInput,
   output: RefreshCacheOutput,
@@ -6965,7 +6555,7 @@ export const removeTagsFromResource: API.OperationMethod<
   RemoveTagsFromResourceInput,
   RemoveTagsFromResourceOutput,
   RemoveTagsFromResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RemoveTagsFromResourceInput,
   output: RemoveTagsFromResourceOutput,
@@ -6996,7 +6586,7 @@ export const resetCache: API.OperationMethod<
   ResetCacheInput,
   ResetCacheOutput,
   ResetCacheError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ResetCacheInput,
   output: ResetCacheOutput,
@@ -7024,7 +6614,7 @@ export const retrieveTapeArchive: API.OperationMethod<
   RetrieveTapeArchiveInput,
   RetrieveTapeArchiveOutput,
   RetrieveTapeArchiveError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RetrieveTapeArchiveInput,
   output: RetrieveTapeArchiveOutput,
@@ -7054,7 +6644,7 @@ export const retrieveTapeRecoveryPoint: API.OperationMethod<
   RetrieveTapeRecoveryPointInput,
   RetrieveTapeRecoveryPointOutput,
   RetrieveTapeRecoveryPointError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RetrieveTapeRecoveryPointInput,
   output: RetrieveTapeRecoveryPointOutput,
@@ -7078,7 +6668,7 @@ export const setLocalConsolePassword: API.OperationMethod<
   SetLocalConsolePasswordInput,
   SetLocalConsolePasswordOutput,
   SetLocalConsolePasswordError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: SetLocalConsolePasswordInput,
   output: SetLocalConsolePasswordOutput,
@@ -7101,7 +6691,7 @@ export const setSMBGuestPassword: API.OperationMethod<
   SetSMBGuestPasswordInput,
   SetSMBGuestPasswordOutput,
   SetSMBGuestPasswordError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: SetSMBGuestPasswordInput,
   output: SetSMBGuestPasswordOutput,
@@ -7144,7 +6734,7 @@ export const shutdownGateway: API.OperationMethod<
   ShutdownGatewayInput,
   ShutdownGatewayOutput,
   ShutdownGatewayError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ShutdownGatewayInput,
   output: ShutdownGatewayOutput,
@@ -7171,7 +6761,7 @@ export const startAvailabilityMonitorTest: API.OperationMethod<
   StartAvailabilityMonitorTestInput,
   StartAvailabilityMonitorTestOutput,
   StartAvailabilityMonitorTestError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartAvailabilityMonitorTestInput,
   output: StartAvailabilityMonitorTestOutput,
@@ -7219,7 +6809,7 @@ export const startCacheReport: API.OperationMethod<
   StartCacheReportInput,
   StartCacheReportOutput,
   StartCacheReportError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartCacheReportInput,
   output: StartCacheReportOutput,
@@ -7250,7 +6840,7 @@ export const startGateway: API.OperationMethod<
   StartGatewayInput,
   StartGatewayOutput,
   StartGatewayError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartGatewayInput,
   output: StartGatewayOutput,
@@ -7277,7 +6867,7 @@ export const updateAutomaticTapeCreationPolicy: API.OperationMethod<
   UpdateAutomaticTapeCreationPolicyInput,
   UpdateAutomaticTapeCreationPolicyOutput,
   UpdateAutomaticTapeCreationPolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateAutomaticTapeCreationPolicyInput,
   output: UpdateAutomaticTapeCreationPolicyOutput,
@@ -7309,7 +6899,7 @@ export const updateBandwidthRateLimit: API.OperationMethod<
   UpdateBandwidthRateLimitInput,
   UpdateBandwidthRateLimitOutput,
   UpdateBandwidthRateLimitError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateBandwidthRateLimitInput,
   output: UpdateBandwidthRateLimitOutput,
@@ -7335,7 +6925,7 @@ export const updateBandwidthRateLimitSchedule: API.OperationMethod<
   UpdateBandwidthRateLimitScheduleInput,
   UpdateBandwidthRateLimitScheduleOutput,
   UpdateBandwidthRateLimitScheduleError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateBandwidthRateLimitScheduleInput,
   output: UpdateBandwidthRateLimitScheduleOutput,
@@ -7362,7 +6952,7 @@ export const updateChapCredentials: API.OperationMethod<
   UpdateChapCredentialsInput,
   UpdateChapCredentialsOutput,
   UpdateChapCredentialsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateChapCredentialsInput,
   output: UpdateChapCredentialsOutput,
@@ -7384,7 +6974,7 @@ export const updateFileSystemAssociation: API.OperationMethod<
   UpdateFileSystemAssociationInput,
   UpdateFileSystemAssociationOutput,
   UpdateFileSystemAssociationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateFileSystemAssociationInput,
   output: UpdateFileSystemAssociationOutput,
@@ -7411,7 +7001,7 @@ export const updateGatewayInformation: API.OperationMethod<
   UpdateGatewayInformationInput,
   UpdateGatewayInformationOutput,
   UpdateGatewayInformationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateGatewayInformationInput,
   output: UpdateGatewayInformationOutput,
@@ -7443,7 +7033,7 @@ export const updateGatewaySoftwareNow: API.OperationMethod<
   UpdateGatewaySoftwareNowInput,
   UpdateGatewaySoftwareNowOutput,
   UpdateGatewaySoftwareNowError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateGatewaySoftwareNowInput,
   output: UpdateGatewaySoftwareNowOutput,
@@ -7479,7 +7069,7 @@ export const updateMaintenanceStartTime: API.OperationMethod<
   UpdateMaintenanceStartTimeInput,
   UpdateMaintenanceStartTimeOutput,
   UpdateMaintenanceStartTimeError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateMaintenanceStartTimeInput,
   output: UpdateMaintenanceStartTimeOutput,
@@ -7516,7 +7106,7 @@ export const updateNFSFileShare: API.OperationMethod<
   UpdateNFSFileShareInput,
   UpdateNFSFileShareOutput,
   UpdateNFSFileShareError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateNFSFileShareInput,
   output: UpdateNFSFileShareOutput,
@@ -7552,7 +7142,7 @@ export const updateSMBFileShare: API.OperationMethod<
   UpdateSMBFileShareInput,
   UpdateSMBFileShareOutput,
   UpdateSMBFileShareError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateSMBFileShareInput,
   output: UpdateSMBFileShareOutput,
@@ -7574,7 +7164,7 @@ export const updateSMBFileShareVisibility: API.OperationMethod<
   UpdateSMBFileShareVisibilityInput,
   UpdateSMBFileShareVisibilityOutput,
   UpdateSMBFileShareVisibilityError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateSMBFileShareVisibilityInput,
   output: UpdateSMBFileShareVisibilityOutput,
@@ -7596,7 +7186,7 @@ export const updateSMBLocalGroups: API.OperationMethod<
   UpdateSMBLocalGroupsInput,
   UpdateSMBLocalGroupsOutput,
   UpdateSMBLocalGroupsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateSMBLocalGroupsInput,
   output: UpdateSMBLocalGroupsOutput,
@@ -7624,7 +7214,7 @@ export const updateSMBSecurityStrategy: API.OperationMethod<
   UpdateSMBSecurityStrategyInput,
   UpdateSMBSecurityStrategyOutput,
   UpdateSMBSecurityStrategyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateSMBSecurityStrategyInput,
   output: UpdateSMBSecurityStrategyOutput,
@@ -7654,7 +7244,7 @@ export const updateSnapshotSchedule: API.OperationMethod<
   UpdateSnapshotScheduleInput,
   UpdateSnapshotScheduleOutput,
   UpdateSnapshotScheduleError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateSnapshotScheduleInput,
   output: UpdateSnapshotScheduleOutput,
@@ -7678,7 +7268,7 @@ export const updateVTLDeviceType: API.OperationMethod<
   UpdateVTLDeviceTypeInput,
   UpdateVTLDeviceTypeOutput,
   UpdateVTLDeviceTypeError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateVTLDeviceTypeInput,
   output: UpdateVTLDeviceTypeOutput,

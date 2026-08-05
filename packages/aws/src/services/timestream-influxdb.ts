@@ -1,7 +1,6 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as redacted from "effect/Redacted";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -9,7 +8,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 import { SensitiveString } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "Timestream InfluxDB",
@@ -90,38 +88,46 @@ const rules = T.EndpointResolver((p, _) => {
 export class AccessDeniedException
   extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
     "AccessDeniedException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(403),
   ).pipe(C.withAuthError) {}
 export class ConflictException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
     "ConflictException",
-    { message: S.String, resourceId: S.String, resourceType: S.String },
+    {
+      message: S.String.pipe(T.ErrorMessage()),
+      resourceId: S.String,
+      resourceType: S.String,
+    },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class InternalServerException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
     "InternalServerException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.all(T.HttpError(500), T.Retryable()),
   ).pipe(C.withServerError, C.withRetryableError) {}
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { message: S.String, resourceId: S.String, resourceType: S.String },
+    {
+      message: S.String.pipe(T.ErrorMessage()),
+      resourceId: S.String,
+      resourceType: S.String,
+    },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class ServiceQuotaExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
     "ServiceQuotaExceededException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(402),
   ).pipe(C.withQuotaError) {}
 export class ThrottlingException
   extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
     "ThrottlingException",
     {
-      message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       retryAfterSeconds: S.optional(S.Number).pipe(T.HttpHeader("Retry-After")),
     },
     T.all(T.HttpError(429), T.Retryable()),
@@ -130,7 +136,7 @@ export class ValidationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
     "ValidationException",
     {
-      message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       reason: S.suspend(() => ValidationExceptionReason).annotate({
         identifier: "ValidationExceptionReason",
       }),
@@ -1620,7 +1626,7 @@ export const createDbCluster: API.OperationMethod<
   CreateDbClusterInput,
   CreateDbClusterOutput,
   CreateDbClusterError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateDbClusterInput,
   output: CreateDbClusterOutput,
@@ -1654,7 +1660,7 @@ export const createDbInstance: API.OperationMethod<
   CreateDbInstanceInput,
   CreateDbInstanceOutput,
   CreateDbInstanceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateDbInstanceInput,
   output: CreateDbInstanceOutput,
@@ -1688,7 +1694,7 @@ export const createDbParameterGroup: API.OperationMethod<
   CreateDbParameterGroupInput,
   CreateDbParameterGroupOutput,
   CreateDbParameterGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateDbParameterGroupInput,
   output: CreateDbParameterGroupOutput,
@@ -1721,7 +1727,7 @@ export const deleteDbCluster: API.OperationMethod<
   DeleteDbClusterInput,
   DeleteDbClusterOutput,
   DeleteDbClusterError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteDbClusterInput,
   output: DeleteDbClusterOutput,
@@ -1753,7 +1759,7 @@ export const deleteDbInstance: API.OperationMethod<
   DeleteDbInstanceInput,
   DeleteDbInstanceOutput,
   DeleteDbInstanceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteDbInstanceInput,
   output: DeleteDbInstanceOutput,
@@ -1784,7 +1790,7 @@ export const getDbCluster: API.OperationMethod<
   GetDbClusterInput,
   GetDbClusterOutput,
   GetDbClusterError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetDbClusterInput,
   output: GetDbClusterOutput,
@@ -1814,7 +1820,7 @@ export const getDbInstance: API.OperationMethod<
   GetDbInstanceInput,
   GetDbInstanceOutput,
   GetDbInstanceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetDbInstanceInput,
   output: GetDbInstanceOutput,
@@ -1844,7 +1850,7 @@ export const getDbParameterGroup: API.OperationMethod<
   GetDbParameterGroupInput,
   GetDbParameterGroupOutput,
   GetDbParameterGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetDbParameterGroupInput,
   output: GetDbParameterGroupOutput,
@@ -1870,27 +1876,13 @@ export type ListDbClustersError =
 /**
  * Returns a list of Timestream for InfluxDB DB clusters.
  */
-export const listDbClusters: API.OperationMethod<
+export const listDbClusters: API.PaginatedOperationMethod<
   ListDbClustersInput,
   ListDbClustersOutput,
   ListDbClustersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDbClustersInput,
-  ) => stream.Stream<
-    ListDbClustersOutput,
-    ListDbClustersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDbClustersInput,
-  ) => stream.Stream<
-    DbClusterSummary,
-    ListDbClustersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  DbClusterSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListDbClustersInput,
   output: ListDbClustersOutput,
   errors: [
@@ -1909,27 +1901,7 @@ export const listDbClusters: API.OperationMethod<
     items: "items",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListDbClustersInput,
-  ListDbClustersOutput,
-  ListDbClustersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDbClustersInput,
-  ) => stream.Stream<
-    ListDbClustersOutput,
-    ListDbClustersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDbClustersInput,
-  ) => stream.Stream<
-    DbClusterSummary,
-    ListDbClustersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListDbInstancesError =
   | AccessDeniedException
@@ -1941,27 +1913,13 @@ export type ListDbInstancesError =
 /**
  * Returns a list of Timestream for InfluxDB DB instances.
  */
-export const listDbInstances: API.OperationMethod<
+export const listDbInstances: API.PaginatedOperationMethod<
   ListDbInstancesInput,
   ListDbInstancesOutput,
   ListDbInstancesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDbInstancesInput,
-  ) => stream.Stream<
-    ListDbInstancesOutput,
-    ListDbInstancesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDbInstancesInput,
-  ) => stream.Stream<
-    DbInstanceSummary,
-    ListDbInstancesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  DbInstanceSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListDbInstancesInput,
   output: ListDbInstancesOutput,
   errors: [
@@ -1980,27 +1938,7 @@ export const listDbInstances: API.OperationMethod<
     items: "items",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListDbInstancesInput,
-  ListDbInstancesOutput,
-  ListDbInstancesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDbInstancesInput,
-  ) => stream.Stream<
-    ListDbInstancesOutput,
-    ListDbInstancesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDbInstancesInput,
-  ) => stream.Stream<
-    DbInstanceSummary,
-    ListDbInstancesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListDbInstancesForClusterError =
   | AccessDeniedException
@@ -2012,27 +1950,13 @@ export type ListDbInstancesForClusterError =
 /**
  * Returns a list of Timestream for InfluxDB clusters.
  */
-export const listDbInstancesForCluster: API.OperationMethod<
+export const listDbInstancesForCluster: API.PaginatedOperationMethod<
   ListDbInstancesForClusterInput,
   ListDbInstancesForClusterOutput,
   ListDbInstancesForClusterError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDbInstancesForClusterInput,
-  ) => stream.Stream<
-    ListDbInstancesForClusterOutput,
-    ListDbInstancesForClusterError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDbInstancesForClusterInput,
-  ) => stream.Stream<
-    DbInstanceForClusterSummary,
-    ListDbInstancesForClusterError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  DbInstanceForClusterSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListDbInstancesForClusterInput,
   output: ListDbInstancesForClusterOutput,
   errors: [
@@ -2051,27 +1975,7 @@ export const listDbInstancesForCluster: API.OperationMethod<
     items: "items",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListDbInstancesForClusterInput,
-  ListDbInstancesForClusterOutput,
-  ListDbInstancesForClusterError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDbInstancesForClusterInput,
-  ) => stream.Stream<
-    ListDbInstancesForClusterOutput,
-    ListDbInstancesForClusterError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDbInstancesForClusterInput,
-  ) => stream.Stream<
-    DbInstanceForClusterSummary,
-    ListDbInstancesForClusterError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListDbParameterGroupsError =
   | AccessDeniedException
@@ -2083,27 +1987,13 @@ export type ListDbParameterGroupsError =
 /**
  * Returns a list of Timestream for InfluxDB DB parameter groups.
  */
-export const listDbParameterGroups: API.OperationMethod<
+export const listDbParameterGroups: API.PaginatedOperationMethod<
   ListDbParameterGroupsInput,
   ListDbParameterGroupsOutput,
   ListDbParameterGroupsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDbParameterGroupsInput,
-  ) => stream.Stream<
-    ListDbParameterGroupsOutput,
-    ListDbParameterGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDbParameterGroupsInput,
-  ) => stream.Stream<
-    DbParameterGroupSummary,
-    ListDbParameterGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  DbParameterGroupSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListDbParameterGroupsInput,
   output: ListDbParameterGroupsOutput,
   errors: [
@@ -2122,27 +2012,7 @@ export const listDbParameterGroups: API.OperationMethod<
     items: "items",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListDbParameterGroupsInput,
-  ListDbParameterGroupsOutput,
-  ListDbParameterGroupsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDbParameterGroupsInput,
-  ) => stream.Stream<
-    ListDbParameterGroupsOutput,
-    ListDbParameterGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDbParameterGroupsInput,
-  ) => stream.Stream<
-    DbParameterGroupSummary,
-    ListDbParameterGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsForResourceError = ResourceNotFoundException | CommonErrors;
 /**
@@ -2152,7 +2022,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceRequest,
   ListTagsForResourceResponse,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -2177,7 +2047,7 @@ export const rebootDbCluster: API.OperationMethod<
   RebootDbClusterInput,
   RebootDbClusterOutput,
   RebootDbClusterError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RebootDbClusterInput,
   output: RebootDbClusterOutput,
@@ -2209,7 +2079,7 @@ export const rebootDbInstance: API.OperationMethod<
   RebootDbInstanceInput,
   RebootDbInstanceOutput,
   RebootDbInstanceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RebootDbInstanceInput,
   output: RebootDbInstanceOutput,
@@ -2237,7 +2107,7 @@ export const tagResource: API.OperationMethod<
   TagResourceRequest,
   TagResourceResponse,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -2255,7 +2125,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceRequest,
   UntagResourceResponse,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -2280,7 +2150,7 @@ export const updateDbCluster: API.OperationMethod<
   UpdateDbClusterInput,
   UpdateDbClusterOutput,
   UpdateDbClusterError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateDbClusterInput,
   output: UpdateDbClusterOutput,
@@ -2312,7 +2182,7 @@ export const updateDbInstance: API.OperationMethod<
   UpdateDbInstanceInput,
   UpdateDbInstanceOutput,
   UpdateDbInstanceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateDbInstanceInput,
   output: UpdateDbInstanceOutput,

@@ -1,7 +1,6 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as redacted from "effect/Redacted";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -9,7 +8,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 import { SensitiveString } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "Backup Gateway",
@@ -90,19 +88,28 @@ const rules = T.EndpointResolver((p, _) => {
 export class AccessDeniedException
   extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
     "AccessDeniedException",
-    { ErrorCode: S.String, Message: S.optional(S.String) },
+    {
+      ErrorCode: S.String,
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(403),
   ).pipe(C.withAuthError) {}
 export class ConflictException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
     "ConflictException",
-    { ErrorCode: S.String, Message: S.optional(S.String) },
+    {
+      ErrorCode: S.String,
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { ErrorCode: S.optional(S.String), Message: S.optional(S.String) },
+    {
+      ErrorCode: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export type GatewayArn = string;
@@ -915,7 +922,7 @@ export const associateGatewayToServer: API.OperationMethod<
   AssociateGatewayToServerInput,
   AssociateGatewayToServerOutput,
   AssociateGatewayToServerError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AssociateGatewayToServerInput,
   output: AssociateGatewayToServerOutput,
@@ -934,7 +941,7 @@ export const createGateway: API.OperationMethod<
   CreateGatewayInput,
   CreateGatewayOutput,
   CreateGatewayError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateGatewayInput,
   output: CreateGatewayOutput,
@@ -952,7 +959,7 @@ export const deleteGateway: API.OperationMethod<
   DeleteGatewayInput,
   DeleteGatewayOutput,
   DeleteGatewayError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteGatewayInput,
   output: DeleteGatewayOutput,
@@ -974,7 +981,7 @@ export const deleteHypervisor: API.OperationMethod<
   DeleteHypervisorInput,
   DeleteHypervisorOutput,
   DeleteHypervisorError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteHypervisorInput,
   output: DeleteHypervisorOutput,
@@ -996,7 +1003,7 @@ export const disassociateGatewayFromServer: API.OperationMethod<
   DisassociateGatewayFromServerInput,
   DisassociateGatewayFromServerOutput,
   DisassociateGatewayFromServerError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DisassociateGatewayFromServerInput,
   output: DisassociateGatewayFromServerOutput,
@@ -1019,7 +1026,7 @@ export const getBandwidthRateLimitSchedule: API.OperationMethod<
   GetBandwidthRateLimitScheduleInput,
   GetBandwidthRateLimitScheduleOutput,
   GetBandwidthRateLimitScheduleError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetBandwidthRateLimitScheduleInput,
   output: GetBandwidthRateLimitScheduleOutput,
@@ -1038,7 +1045,7 @@ export const getGateway: API.OperationMethod<
   GetGatewayInput,
   GetGatewayOutput,
   GetGatewayError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetGatewayInput,
   output: GetGatewayOutput,
@@ -1058,7 +1065,7 @@ export const getHypervisor: API.OperationMethod<
   GetHypervisorInput,
   GetHypervisorOutput,
   GetHypervisorError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetHypervisorInput,
   output: GetHypervisorOutput,
@@ -1080,7 +1087,7 @@ export const getHypervisorPropertyMappings: API.OperationMethod<
   GetHypervisorPropertyMappingsInput,
   GetHypervisorPropertyMappingsOutput,
   GetHypervisorPropertyMappingsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetHypervisorPropertyMappingsInput,
   output: GetHypervisorPropertyMappingsOutput,
@@ -1098,7 +1105,7 @@ export const getVirtualMachine: API.OperationMethod<
   GetVirtualMachineInput,
   GetVirtualMachineOutput,
   GetVirtualMachineError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetVirtualMachineInput,
   output: GetVirtualMachineOutput,
@@ -1119,7 +1126,7 @@ export const importHypervisorConfiguration: API.OperationMethod<
   ImportHypervisorConfigurationInput,
   ImportHypervisorConfigurationOutput,
   ImportHypervisorConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ImportHypervisorConfigurationInput,
   output: ImportHypervisorConfigurationOutput,
@@ -1133,27 +1140,13 @@ export type ListGatewaysError = CommonErrors;
 /**
  * Lists backup gateways owned by an Amazon Web Services account in an Amazon Web Services Region. The returned list is ordered by gateway Amazon Resource Name (ARN).
  */
-export const listGateways: API.OperationMethod<
+export const listGateways: API.PaginatedOperationMethod<
   ListGatewaysInput,
   ListGatewaysOutput,
   ListGatewaysError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListGatewaysInput,
-  ) => stream.Stream<
-    ListGatewaysOutput,
-    ListGatewaysError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListGatewaysInput,
-  ) => stream.Stream<
-    Gateway,
-    ListGatewaysError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Gateway
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListGatewaysInput,
   output: ListGatewaysOutput,
   errors: [],
@@ -1166,53 +1159,19 @@ export const listGateways: API.OperationMethod<
     items: "Gateways",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListGatewaysInput,
-  ListGatewaysOutput,
-  ListGatewaysError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListGatewaysInput,
-  ) => stream.Stream<
-    ListGatewaysOutput,
-    ListGatewaysError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListGatewaysInput,
-  ) => stream.Stream<
-    Gateway,
-    ListGatewaysError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListHypervisorsError = CommonErrors;
 /**
  * Lists your hypervisors.
  */
-export const listHypervisors: API.OperationMethod<
+export const listHypervisors: API.PaginatedOperationMethod<
   ListHypervisorsInput,
   ListHypervisorsOutput,
   ListHypervisorsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListHypervisorsInput,
-  ) => stream.Stream<
-    ListHypervisorsOutput,
-    ListHypervisorsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListHypervisorsInput,
-  ) => stream.Stream<
-    Hypervisor,
-    ListHypervisorsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Hypervisor
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListHypervisorsInput,
   output: ListHypervisorsOutput,
   errors: [],
@@ -1225,27 +1184,7 @@ export const listHypervisors: API.OperationMethod<
     items: "Hypervisors",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListHypervisorsInput,
-  ListHypervisorsOutput,
-  ListHypervisorsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListHypervisorsInput,
-  ) => stream.Stream<
-    ListHypervisorsOutput,
-    ListHypervisorsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListHypervisorsInput,
-  ) => stream.Stream<
-    Hypervisor,
-    ListHypervisorsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsForResourceError = ResourceNotFoundException | CommonErrors;
 /**
@@ -1256,7 +1195,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceInput,
   ListTagsForResourceOutput,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceInput,
   output: ListTagsForResourceOutput,
@@ -1270,27 +1209,13 @@ export type ListVirtualMachinesError = CommonErrors;
 /**
  * Lists your virtual machines.
  */
-export const listVirtualMachines: API.OperationMethod<
+export const listVirtualMachines: API.PaginatedOperationMethod<
   ListVirtualMachinesInput,
   ListVirtualMachinesOutput,
   ListVirtualMachinesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListVirtualMachinesInput,
-  ) => stream.Stream<
-    ListVirtualMachinesOutput,
-    ListVirtualMachinesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListVirtualMachinesInput,
-  ) => stream.Stream<
-    VirtualMachine,
-    ListVirtualMachinesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  VirtualMachine
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListVirtualMachinesInput,
   output: ListVirtualMachinesOutput,
   errors: [],
@@ -1303,27 +1228,7 @@ export const listVirtualMachines: API.OperationMethod<
     items: "VirtualMachines",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListVirtualMachinesInput,
-  ListVirtualMachinesOutput,
-  ListVirtualMachinesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListVirtualMachinesInput,
-  ) => stream.Stream<
-    ListVirtualMachinesOutput,
-    ListVirtualMachinesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListVirtualMachinesInput,
-  ) => stream.Stream<
-    VirtualMachine,
-    ListVirtualMachinesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type PutBandwidthRateLimitScheduleError =
   | ResourceNotFoundException
@@ -1338,7 +1243,7 @@ export const putBandwidthRateLimitSchedule: API.OperationMethod<
   PutBandwidthRateLimitScheduleInput,
   PutBandwidthRateLimitScheduleOutput,
   PutBandwidthRateLimitScheduleError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutBandwidthRateLimitScheduleInput,
   output: PutBandwidthRateLimitScheduleOutput,
@@ -1362,7 +1267,7 @@ export const putHypervisorPropertyMappings: API.OperationMethod<
   PutHypervisorPropertyMappingsInput,
   PutHypervisorPropertyMappingsOutput,
   PutHypervisorPropertyMappingsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutHypervisorPropertyMappingsInput,
   output: PutHypervisorPropertyMappingsOutput,
@@ -1383,7 +1288,7 @@ export const putMaintenanceStartTime: API.OperationMethod<
   PutMaintenanceStartTimeInput,
   PutMaintenanceStartTimeOutput,
   PutMaintenanceStartTimeError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutMaintenanceStartTimeInput,
   output: PutMaintenanceStartTimeOutput,
@@ -1404,7 +1309,7 @@ export const startVirtualMachinesMetadataSync: API.OperationMethod<
   StartVirtualMachinesMetadataSyncInput,
   StartVirtualMachinesMetadataSyncOutput,
   StartVirtualMachinesMetadataSyncError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartVirtualMachinesMetadataSyncInput,
   output: StartVirtualMachinesMetadataSyncOutput,
@@ -1422,7 +1327,7 @@ export const tagResource: API.OperationMethod<
   TagResourceInput,
   TagResourceOutput,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceInput,
   output: TagResourceOutput,
@@ -1444,7 +1349,7 @@ export const testHypervisorConfiguration: API.OperationMethod<
   TestHypervisorConfigurationInput,
   TestHypervisorConfigurationOutput,
   TestHypervisorConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TestHypervisorConfigurationInput,
   output: TestHypervisorConfigurationOutput,
@@ -1462,7 +1367,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceInput,
   UntagResourceOutput,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceInput,
   output: UntagResourceOutput,
@@ -1484,7 +1389,7 @@ export const updateGatewayInformation: API.OperationMethod<
   UpdateGatewayInformationInput,
   UpdateGatewayInformationOutput,
   UpdateGatewayInformationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateGatewayInformationInput,
   output: UpdateGatewayInformationOutput,
@@ -1509,7 +1414,7 @@ export const updateGatewaySoftwareNow: API.OperationMethod<
   UpdateGatewaySoftwareNowInput,
   UpdateGatewaySoftwareNowOutput,
   UpdateGatewaySoftwareNowError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateGatewaySoftwareNowInput,
   output: UpdateGatewaySoftwareNowOutput,
@@ -1533,7 +1438,7 @@ export const updateHypervisor: API.OperationMethod<
   UpdateHypervisorInput,
   UpdateHypervisorOutput,
   UpdateHypervisorError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateHypervisorInput,
   output: UpdateHypervisorOutput,

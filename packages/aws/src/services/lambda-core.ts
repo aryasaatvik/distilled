@@ -1,6 +1,5 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -8,7 +7,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 const svc = T.AwsApiService({
   sdkId: "Lambda Core",
   serviceShapeName: "LambdaCoreApiService",
@@ -88,31 +86,46 @@ const rules = T.EndpointResolver((p, _) => {
 export class InvalidParameterValueException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidParameterValueException>()(
     "InvalidParameterValueException",
-    { Type: S.optional(S.String), message: S.optional(S.String) },
+    {
+      Type: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class NetworkConnectorLimitExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<NetworkConnectorLimitExceededException>()(
     "NetworkConnectorLimitExceededException",
-    { Type: S.optional(S.String), message: S.optional(S.String) },
+    {
+      Type: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class ResourceConflictException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceConflictException>()(
     "ResourceConflictException",
-    { Type: S.optional(S.String), message: S.optional(S.String) },
+    {
+      Type: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { Type: S.optional(S.String), Message: S.optional(S.String) },
+    {
+      Type: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class ServiceException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceException>()(
     "ServiceException",
-    { Type: S.optional(S.String), Message: S.optional(S.String) },
+    {
+      Type: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(500),
   ).pipe(C.withServerError) {}
 export class TooManyRequestsException
@@ -121,7 +134,7 @@ export class TooManyRequestsException
     {
       retryAfterSeconds: S.optional(S.String).pipe(T.HttpHeader("Retry-After")),
       Type: S.optional(S.String),
-      message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       Reason: S.optional(
         S.suspend(() => ThrottleReason).annotate({
           identifier: "ThrottleReason",
@@ -520,7 +533,7 @@ export const createNetworkConnector: API.OperationMethod<
   CreateNetworkConnectorRequest,
   CreateNetworkConnectorResponse,
   CreateNetworkConnectorError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateNetworkConnectorRequest,
   output: CreateNetworkConnectorResponse,
@@ -552,7 +565,7 @@ export const deleteNetworkConnector: API.OperationMethod<
   DeleteNetworkConnectorRequest,
   DeleteNetworkConnectorResponse,
   DeleteNetworkConnectorError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteNetworkConnectorRequest,
   output: DeleteNetworkConnectorResponse,
@@ -583,7 +596,7 @@ export const getNetworkConnector: API.OperationMethod<
   GetNetworkConnectorRequest,
   GetNetworkConnectorResponse,
   GetNetworkConnectorError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetNetworkConnectorRequest,
   output: GetNetworkConnectorResponse,
@@ -608,27 +621,13 @@ export type ListNetworkConnectorsError =
  *
  * Each item in the response includes the connector ARN, name, ID, type, current state, and last modified timestamp. To retrieve full configuration details for a specific connector, use `GetNetworkConnector`.
  */
-export const listNetworkConnectors: API.OperationMethod<
+export const listNetworkConnectors: API.PaginatedOperationMethod<
   ListNetworkConnectorsRequest,
   ListNetworkConnectorsResponse,
   ListNetworkConnectorsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListNetworkConnectorsRequest,
-  ) => stream.Stream<
-    ListNetworkConnectorsResponse,
-    ListNetworkConnectorsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListNetworkConnectorsRequest,
-  ) => stream.Stream<
-    NetworkConnectorSummary,
-    ListNetworkConnectorsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  NetworkConnectorSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListNetworkConnectorsRequest,
   output: ListNetworkConnectorsResponse,
   errors: [
@@ -645,27 +644,7 @@ export const listNetworkConnectors: API.OperationMethod<
     items: "NetworkConnectors",
     pageSize: "MaxItems",
   } as const,
-})) as any as API.OperationMethod<
-  ListNetworkConnectorsRequest,
-  ListNetworkConnectorsResponse,
-  ListNetworkConnectorsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListNetworkConnectorsRequest,
-  ) => stream.Stream<
-    ListNetworkConnectorsResponse,
-    ListNetworkConnectorsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListNetworkConnectorsRequest,
-  ) => stream.Stream<
-    NetworkConnectorSummary,
-    ListNetworkConnectorsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type UpdateNetworkConnectorError =
   | InvalidParameterValueException
@@ -683,7 +662,7 @@ export const updateNetworkConnector: API.OperationMethod<
   UpdateNetworkConnectorRequest,
   UpdateNetworkConnectorResponse,
   UpdateNetworkConnectorError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateNetworkConnectorRequest,
   output: UpdateNetworkConnectorResponse,

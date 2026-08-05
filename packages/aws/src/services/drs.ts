@@ -1,7 +1,6 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as redacted from "effect/Redacted";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -9,7 +8,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 import { SensitiveString } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "drs",
@@ -90,14 +88,17 @@ const rules = T.EndpointResolver((p, _) => {
 export class AccessDeniedException
   extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
     "AccessDeniedException",
-    { message: S.optional(S.String), code: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      code: S.optional(S.String),
+    },
     T.HttpError(403),
   ).pipe(C.withAuthError) {}
 export class ConflictException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
     "ConflictException",
     {
-      message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       code: S.optional(S.String),
       resourceId: S.optional(S.String),
       resourceType: S.optional(S.String),
@@ -108,7 +109,7 @@ export class InternalServerException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
     "InternalServerException",
     {
-      message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       retryAfterSeconds: S.optional(S.Number).pipe(T.HttpHeader("Retry-After")),
     },
     T.HttpError(500),
@@ -117,7 +118,7 @@ export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
     {
-      message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       code: S.optional(S.String),
       resourceId: S.optional(S.String),
       resourceType: S.optional(S.String),
@@ -128,7 +129,7 @@ export class ServiceQuotaExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
     "ServiceQuotaExceededException",
     {
-      message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       code: S.optional(S.String),
       resourceId: S.optional(S.String),
       resourceType: S.optional(S.String),
@@ -141,7 +142,7 @@ export class ThrottlingException
   extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
     "ThrottlingException",
     {
-      message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       serviceCode: S.optional(S.String),
       quotaCode: S.optional(S.String),
       retryAfterSeconds: S.optional(S.String).pipe(T.HttpHeader("Retry-After")),
@@ -151,14 +152,17 @@ export class ThrottlingException
 export class UninitializedAccountException
   extends /*@__PURE__*/ S.TaggedErrorClass<UninitializedAccountException>()(
     "UninitializedAccountException",
-    { message: S.optional(S.String), code: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      code: S.optional(S.String),
+    },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class ValidationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
     "ValidationException",
     {
-      message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       code: S.optional(S.String),
       reason: S.optional(S.String),
       fieldList: S.optional(
@@ -3047,7 +3051,7 @@ export const associateSourceNetworkStack: API.OperationMethod<
   AssociateSourceNetworkStackRequest,
   AssociateSourceNetworkStackResponse,
   AssociateSourceNetworkStackError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AssociateSourceNetworkStackRequest,
   output: AssociateSourceNetworkStackResponse,
@@ -3081,7 +3085,7 @@ export const createExtendedSourceServer: API.OperationMethod<
   CreateExtendedSourceServerRequest,
   CreateExtendedSourceServerResponse,
   CreateExtendedSourceServerError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateExtendedSourceServerRequest,
   output: CreateExtendedSourceServerResponse,
@@ -3114,7 +3118,7 @@ export const createLaunchConfigurationTemplate: API.OperationMethod<
   CreateLaunchConfigurationTemplateRequest,
   CreateLaunchConfigurationTemplateResponse,
   CreateLaunchConfigurationTemplateError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateLaunchConfigurationTemplateRequest,
   output: CreateLaunchConfigurationTemplateResponse,
@@ -3146,7 +3150,7 @@ export const createReplicationConfigurationTemplate: API.OperationMethod<
   CreateReplicationConfigurationTemplateRequest,
   ReplicationConfigurationTemplate,
   CreateReplicationConfigurationTemplateError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateReplicationConfigurationTemplateRequest,
   output: ReplicationConfigurationTemplate,
@@ -3179,7 +3183,7 @@ export const createSourceNetwork: API.OperationMethod<
   CreateSourceNetworkRequest,
   CreateSourceNetworkResponse,
   CreateSourceNetworkError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateSourceNetworkRequest,
   output: CreateSourceNetworkResponse,
@@ -3211,7 +3215,7 @@ export const deleteJob: API.OperationMethod<
   DeleteJobRequest,
   DeleteJobResponse,
   DeleteJobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteJobRequest,
   output: DeleteJobResponse,
@@ -3241,7 +3245,7 @@ export const deleteLaunchAction: API.OperationMethod<
   DeleteLaunchActionRequest,
   DeleteLaunchActionResponse,
   DeleteLaunchActionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteLaunchActionRequest,
   output: DeleteLaunchActionResponse,
@@ -3271,7 +3275,7 @@ export const deleteLaunchConfigurationTemplate: API.OperationMethod<
   DeleteLaunchConfigurationTemplateRequest,
   DeleteLaunchConfigurationTemplateResponse,
   DeleteLaunchConfigurationTemplateError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteLaunchConfigurationTemplateRequest,
   output: DeleteLaunchConfigurationTemplateResponse,
@@ -3301,7 +3305,7 @@ export const deleteRecoveryInstance: API.OperationMethod<
   DeleteRecoveryInstanceRequest,
   DeleteRecoveryInstanceResponse,
   DeleteRecoveryInstanceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteRecoveryInstanceRequest,
   output: DeleteRecoveryInstanceResponse,
@@ -3331,7 +3335,7 @@ export const deleteReplicationConfigurationTemplate: API.OperationMethod<
   DeleteReplicationConfigurationTemplateRequest,
   DeleteReplicationConfigurationTemplateResponse,
   DeleteReplicationConfigurationTemplateError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteReplicationConfigurationTemplateRequest,
   output: DeleteReplicationConfigurationTemplateResponse,
@@ -3361,7 +3365,7 @@ export const deleteSourceNetwork: API.OperationMethod<
   DeleteSourceNetworkRequest,
   DeleteSourceNetworkResponse,
   DeleteSourceNetworkError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteSourceNetworkRequest,
   output: DeleteSourceNetworkResponse,
@@ -3391,7 +3395,7 @@ export const deleteSourceServer: API.OperationMethod<
   DeleteSourceServerRequest,
   DeleteSourceServerResponse,
   DeleteSourceServerError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteSourceServerRequest,
   output: DeleteSourceServerResponse,
@@ -3416,27 +3420,13 @@ export type DescribeJobLogItemsError =
 /**
  * Retrieves a detailed Job log with pagination.
  */
-export const describeJobLogItems: API.OperationMethod<
+export const describeJobLogItems: API.PaginatedOperationMethod<
   DescribeJobLogItemsRequest,
   DescribeJobLogItemsResponse,
   DescribeJobLogItemsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeJobLogItemsRequest,
-  ) => stream.Stream<
-    DescribeJobLogItemsResponse,
-    DescribeJobLogItemsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeJobLogItemsRequest,
-  ) => stream.Stream<
-    JobLog,
-    DescribeJobLogItemsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  JobLog
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeJobLogItemsRequest,
   output: DescribeJobLogItemsResponse,
   errors: [
@@ -3454,27 +3444,7 @@ export const describeJobLogItems: API.OperationMethod<
     items: "items",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeJobLogItemsRequest,
-  DescribeJobLogItemsResponse,
-  DescribeJobLogItemsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeJobLogItemsRequest,
-  ) => stream.Stream<
-    DescribeJobLogItemsResponse,
-    DescribeJobLogItemsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeJobLogItemsRequest,
-  ) => stream.Stream<
-    JobLog,
-    DescribeJobLogItemsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeJobsError =
   | InternalServerException
@@ -3485,27 +3455,13 @@ export type DescribeJobsError =
 /**
  * Returns a list of Jobs. Use the JobsID and fromDate and toDate filters to limit which jobs are returned. The response is sorted by creationDataTime - latest date first. Jobs are created by the StartRecovery, TerminateRecoveryInstances and StartFailbackLaunch APIs. Jobs are also created by DiagnosticLaunch and TerminateDiagnosticInstances, which are APIs available only to *Support* and only used in response to relevant support tickets.
  */
-export const describeJobs: API.OperationMethod<
+export const describeJobs: API.PaginatedOperationMethod<
   DescribeJobsRequest,
   DescribeJobsResponse,
   DescribeJobsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeJobsRequest,
-  ) => stream.Stream<
-    DescribeJobsResponse,
-    DescribeJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeJobsRequest,
-  ) => stream.Stream<
-    Job,
-    DescribeJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Job
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeJobsRequest,
   output: DescribeJobsResponse,
   errors: [
@@ -3523,27 +3479,7 @@ export const describeJobs: API.OperationMethod<
     items: "items",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeJobsRequest,
-  DescribeJobsResponse,
-  DescribeJobsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeJobsRequest,
-  ) => stream.Stream<
-    DescribeJobsResponse,
-    DescribeJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeJobsRequest,
-  ) => stream.Stream<
-    Job,
-    DescribeJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeLaunchConfigurationTemplatesError =
   | InternalServerException
@@ -3555,27 +3491,13 @@ export type DescribeLaunchConfigurationTemplatesError =
 /**
  * Lists all Launch Configuration Templates, filtered by Launch Configuration Template IDs
  */
-export const describeLaunchConfigurationTemplates: API.OperationMethod<
+export const describeLaunchConfigurationTemplates: API.PaginatedOperationMethod<
   DescribeLaunchConfigurationTemplatesRequest,
   DescribeLaunchConfigurationTemplatesResponse,
   DescribeLaunchConfigurationTemplatesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeLaunchConfigurationTemplatesRequest,
-  ) => stream.Stream<
-    DescribeLaunchConfigurationTemplatesResponse,
-    DescribeLaunchConfigurationTemplatesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeLaunchConfigurationTemplatesRequest,
-  ) => stream.Stream<
-    LaunchConfigurationTemplate,
-    DescribeLaunchConfigurationTemplatesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  LaunchConfigurationTemplate
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeLaunchConfigurationTemplatesRequest,
   output: DescribeLaunchConfigurationTemplatesResponse,
   errors: [
@@ -3594,27 +3516,7 @@ export const describeLaunchConfigurationTemplates: API.OperationMethod<
     items: "items",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeLaunchConfigurationTemplatesRequest,
-  DescribeLaunchConfigurationTemplatesResponse,
-  DescribeLaunchConfigurationTemplatesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeLaunchConfigurationTemplatesRequest,
-  ) => stream.Stream<
-    DescribeLaunchConfigurationTemplatesResponse,
-    DescribeLaunchConfigurationTemplatesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeLaunchConfigurationTemplatesRequest,
-  ) => stream.Stream<
-    LaunchConfigurationTemplate,
-    DescribeLaunchConfigurationTemplatesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeRecoveryInstancesError =
   | AccessDeniedException
@@ -3625,27 +3527,13 @@ export type DescribeRecoveryInstancesError =
 /**
  * Lists all Recovery Instances or multiple Recovery Instances by ID.
  */
-export const describeRecoveryInstances: API.OperationMethod<
+export const describeRecoveryInstances: API.PaginatedOperationMethod<
   DescribeRecoveryInstancesRequest,
   DescribeRecoveryInstancesResponse,
   DescribeRecoveryInstancesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeRecoveryInstancesRequest,
-  ) => stream.Stream<
-    DescribeRecoveryInstancesResponse,
-    DescribeRecoveryInstancesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeRecoveryInstancesRequest,
-  ) => stream.Stream<
-    RecoveryInstance,
-    DescribeRecoveryInstancesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  RecoveryInstance
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeRecoveryInstancesRequest,
   output: DescribeRecoveryInstancesResponse,
   errors: [
@@ -3663,27 +3551,7 @@ export const describeRecoveryInstances: API.OperationMethod<
     items: "items",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeRecoveryInstancesRequest,
-  DescribeRecoveryInstancesResponse,
-  DescribeRecoveryInstancesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeRecoveryInstancesRequest,
-  ) => stream.Stream<
-    DescribeRecoveryInstancesResponse,
-    DescribeRecoveryInstancesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeRecoveryInstancesRequest,
-  ) => stream.Stream<
-    RecoveryInstance,
-    DescribeRecoveryInstancesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeRecoverySnapshotsError =
   | AccessDeniedException
@@ -3695,27 +3563,13 @@ export type DescribeRecoverySnapshotsError =
 /**
  * Lists all Recovery Snapshots for a single Source Server.
  */
-export const describeRecoverySnapshots: API.OperationMethod<
+export const describeRecoverySnapshots: API.PaginatedOperationMethod<
   DescribeRecoverySnapshotsRequest,
   DescribeRecoverySnapshotsResponse,
   DescribeRecoverySnapshotsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeRecoverySnapshotsRequest,
-  ) => stream.Stream<
-    DescribeRecoverySnapshotsResponse,
-    DescribeRecoverySnapshotsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeRecoverySnapshotsRequest,
-  ) => stream.Stream<
-    RecoverySnapshot,
-    DescribeRecoverySnapshotsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  RecoverySnapshot
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeRecoverySnapshotsRequest,
   output: DescribeRecoverySnapshotsResponse,
   errors: [
@@ -3734,27 +3588,7 @@ export const describeRecoverySnapshots: API.OperationMethod<
     items: "items",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeRecoverySnapshotsRequest,
-  DescribeRecoverySnapshotsResponse,
-  DescribeRecoverySnapshotsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeRecoverySnapshotsRequest,
-  ) => stream.Stream<
-    DescribeRecoverySnapshotsResponse,
-    DescribeRecoverySnapshotsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeRecoverySnapshotsRequest,
-  ) => stream.Stream<
-    RecoverySnapshot,
-    DescribeRecoverySnapshotsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeReplicationConfigurationTemplatesError =
   | InternalServerException
@@ -3766,27 +3600,13 @@ export type DescribeReplicationConfigurationTemplatesError =
 /**
  * Lists all ReplicationConfigurationTemplates, filtered by Source Server IDs.
  */
-export const describeReplicationConfigurationTemplates: API.OperationMethod<
+export const describeReplicationConfigurationTemplates: API.PaginatedOperationMethod<
   DescribeReplicationConfigurationTemplatesRequest,
   DescribeReplicationConfigurationTemplatesResponse,
   DescribeReplicationConfigurationTemplatesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeReplicationConfigurationTemplatesRequest,
-  ) => stream.Stream<
-    DescribeReplicationConfigurationTemplatesResponse,
-    DescribeReplicationConfigurationTemplatesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeReplicationConfigurationTemplatesRequest,
-  ) => stream.Stream<
-    ReplicationConfigurationTemplate,
-    DescribeReplicationConfigurationTemplatesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ReplicationConfigurationTemplate
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeReplicationConfigurationTemplatesRequest,
   output: DescribeReplicationConfigurationTemplatesResponse,
   errors: [
@@ -3805,27 +3625,7 @@ export const describeReplicationConfigurationTemplates: API.OperationMethod<
     items: "items",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeReplicationConfigurationTemplatesRequest,
-  DescribeReplicationConfigurationTemplatesResponse,
-  DescribeReplicationConfigurationTemplatesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeReplicationConfigurationTemplatesRequest,
-  ) => stream.Stream<
-    DescribeReplicationConfigurationTemplatesResponse,
-    DescribeReplicationConfigurationTemplatesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeReplicationConfigurationTemplatesRequest,
-  ) => stream.Stream<
-    ReplicationConfigurationTemplate,
-    DescribeReplicationConfigurationTemplatesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeSourceNetworksError =
   | InternalServerException
@@ -3836,27 +3636,13 @@ export type DescribeSourceNetworksError =
 /**
  * Lists all Source Networks or multiple Source Networks filtered by ID.
  */
-export const describeSourceNetworks: API.OperationMethod<
+export const describeSourceNetworks: API.PaginatedOperationMethod<
   DescribeSourceNetworksRequest,
   DescribeSourceNetworksResponse,
   DescribeSourceNetworksError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeSourceNetworksRequest,
-  ) => stream.Stream<
-    DescribeSourceNetworksResponse,
-    DescribeSourceNetworksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeSourceNetworksRequest,
-  ) => stream.Stream<
-    SourceNetwork,
-    DescribeSourceNetworksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  SourceNetwork
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeSourceNetworksRequest,
   output: DescribeSourceNetworksResponse,
   errors: [
@@ -3874,27 +3660,7 @@ export const describeSourceNetworks: API.OperationMethod<
     items: "items",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeSourceNetworksRequest,
-  DescribeSourceNetworksResponse,
-  DescribeSourceNetworksError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeSourceNetworksRequest,
-  ) => stream.Stream<
-    DescribeSourceNetworksResponse,
-    DescribeSourceNetworksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeSourceNetworksRequest,
-  ) => stream.Stream<
-    SourceNetwork,
-    DescribeSourceNetworksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeSourceServersError =
   | InternalServerException
@@ -3905,27 +3671,13 @@ export type DescribeSourceServersError =
 /**
  * Lists all Source Servers or multiple Source Servers filtered by ID.
  */
-export const describeSourceServers: API.OperationMethod<
+export const describeSourceServers: API.PaginatedOperationMethod<
   DescribeSourceServersRequest,
   DescribeSourceServersResponse,
   DescribeSourceServersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeSourceServersRequest,
-  ) => stream.Stream<
-    DescribeSourceServersResponse,
-    DescribeSourceServersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeSourceServersRequest,
-  ) => stream.Stream<
-    SourceServer,
-    DescribeSourceServersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  SourceServer
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeSourceServersRequest,
   output: DescribeSourceServersResponse,
   errors: [
@@ -3943,27 +3695,7 @@ export const describeSourceServers: API.OperationMethod<
     items: "items",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeSourceServersRequest,
-  DescribeSourceServersResponse,
-  DescribeSourceServersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeSourceServersRequest,
-  ) => stream.Stream<
-    DescribeSourceServersResponse,
-    DescribeSourceServersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeSourceServersRequest,
-  ) => stream.Stream<
-    SourceServer,
-    DescribeSourceServersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DisconnectRecoveryInstanceError =
   | AccessDeniedException
@@ -3980,7 +3712,7 @@ export const disconnectRecoveryInstance: API.OperationMethod<
   DisconnectRecoveryInstanceRequest,
   DisconnectRecoveryInstanceResponse,
   DisconnectRecoveryInstanceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DisconnectRecoveryInstanceRequest,
   output: DisconnectRecoveryInstanceResponse,
@@ -4011,7 +3743,7 @@ export const disconnectSourceServer: API.OperationMethod<
   DisconnectSourceServerRequest,
   SourceServer,
   DisconnectSourceServerError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DisconnectSourceServerRequest,
   output: SourceServer,
@@ -4042,7 +3774,7 @@ export const exportSourceNetworkCfnTemplate: API.OperationMethod<
   ExportSourceNetworkCfnTemplateRequest,
   ExportSourceNetworkCfnTemplateResponse,
   ExportSourceNetworkCfnTemplateError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ExportSourceNetworkCfnTemplateRequest,
   output: ExportSourceNetworkCfnTemplateResponse,
@@ -4072,7 +3804,7 @@ export const getFailbackReplicationConfiguration: API.OperationMethod<
   GetFailbackReplicationConfigurationRequest,
   GetFailbackReplicationConfigurationResponse,
   GetFailbackReplicationConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetFailbackReplicationConfigurationRequest,
   output: GetFailbackReplicationConfigurationResponse,
@@ -4100,7 +3832,7 @@ export const getLaunchConfiguration: API.OperationMethod<
   GetLaunchConfigurationRequest,
   LaunchConfiguration,
   GetLaunchConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetLaunchConfigurationRequest,
   output: LaunchConfiguration,
@@ -4129,7 +3861,7 @@ export const getReplicationConfiguration: API.OperationMethod<
   GetReplicationConfigurationRequest,
   ReplicationConfiguration,
   GetReplicationConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetReplicationConfigurationRequest,
   output: ReplicationConfiguration,
@@ -4158,7 +3890,7 @@ export const initializeService: API.OperationMethod<
   InitializeServiceRequest,
   InitializeServiceResponse,
   InitializeServiceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: InitializeServiceRequest,
   output: InitializeServiceResponse,
@@ -4183,27 +3915,13 @@ export type ListExtensibleSourceServersError =
 /**
  * Returns a list of source servers on a staging account that are extensible, which means that: a. The source server is not already extended into this Account. b. The source server on the Account we’re reading from is not an extension of another source server.
  */
-export const listExtensibleSourceServers: API.OperationMethod<
+export const listExtensibleSourceServers: API.PaginatedOperationMethod<
   ListExtensibleSourceServersRequest,
   ListExtensibleSourceServersResponse,
   ListExtensibleSourceServersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListExtensibleSourceServersRequest,
-  ) => stream.Stream<
-    ListExtensibleSourceServersResponse,
-    ListExtensibleSourceServersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListExtensibleSourceServersRequest,
-  ) => stream.Stream<
-    StagingSourceServer,
-    ListExtensibleSourceServersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  StagingSourceServer
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListExtensibleSourceServersRequest,
   output: ListExtensibleSourceServersResponse,
   errors: [
@@ -4222,27 +3940,7 @@ export const listExtensibleSourceServers: API.OperationMethod<
     items: "items",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListExtensibleSourceServersRequest,
-  ListExtensibleSourceServersResponse,
-  ListExtensibleSourceServersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListExtensibleSourceServersRequest,
-  ) => stream.Stream<
-    ListExtensibleSourceServersResponse,
-    ListExtensibleSourceServersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListExtensibleSourceServersRequest,
-  ) => stream.Stream<
-    StagingSourceServer,
-    ListExtensibleSourceServersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListLaunchActionsError =
   | InternalServerException
@@ -4254,27 +3952,13 @@ export type ListLaunchActionsError =
 /**
  * Lists resource launch actions.
  */
-export const listLaunchActions: API.OperationMethod<
+export const listLaunchActions: API.PaginatedOperationMethod<
   ListLaunchActionsRequest,
   ListLaunchActionsResponse,
   ListLaunchActionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListLaunchActionsRequest,
-  ) => stream.Stream<
-    ListLaunchActionsResponse,
-    ListLaunchActionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListLaunchActionsRequest,
-  ) => stream.Stream<
-    LaunchAction,
-    ListLaunchActionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  LaunchAction
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListLaunchActionsRequest,
   output: ListLaunchActionsResponse,
   errors: [
@@ -4293,27 +3977,7 @@ export const listLaunchActions: API.OperationMethod<
     items: "items",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListLaunchActionsRequest,
-  ListLaunchActionsResponse,
-  ListLaunchActionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListLaunchActionsRequest,
-  ) => stream.Stream<
-    ListLaunchActionsResponse,
-    ListLaunchActionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListLaunchActionsRequest,
-  ) => stream.Stream<
-    LaunchAction,
-    ListLaunchActionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListStagingAccountsError =
   | AccessDeniedException
@@ -4325,27 +3989,13 @@ export type ListStagingAccountsError =
 /**
  * Returns an array of staging accounts for existing extended source servers.
  */
-export const listStagingAccounts: API.OperationMethod<
+export const listStagingAccounts: API.PaginatedOperationMethod<
   ListStagingAccountsRequest,
   ListStagingAccountsResponse,
   ListStagingAccountsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListStagingAccountsRequest,
-  ) => stream.Stream<
-    ListStagingAccountsResponse,
-    ListStagingAccountsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListStagingAccountsRequest,
-  ) => stream.Stream<
-    Account,
-    ListStagingAccountsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Account
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListStagingAccountsRequest,
   output: ListStagingAccountsResponse,
   errors: [
@@ -4364,27 +4014,7 @@ export const listStagingAccounts: API.OperationMethod<
     items: "accounts",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListStagingAccountsRequest,
-  ListStagingAccountsResponse,
-  ListStagingAccountsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListStagingAccountsRequest,
-  ) => stream.Stream<
-    ListStagingAccountsResponse,
-    ListStagingAccountsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListStagingAccountsRequest,
-  ) => stream.Stream<
-    Account,
-    ListStagingAccountsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsForResourceError =
   | AccessDeniedException
@@ -4400,7 +4030,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceRequest,
   ListTagsForResourceResponse,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -4431,7 +4061,7 @@ export const putLaunchAction: API.OperationMethod<
   PutLaunchActionRequest,
   PutLaunchActionResponse,
   PutLaunchActionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutLaunchActionRequest,
   output: PutLaunchActionResponse,
@@ -4462,7 +4092,7 @@ export const retryDataReplication: API.OperationMethod<
   RetryDataReplicationRequest,
   SourceServer,
   RetryDataReplicationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RetryDataReplicationRequest,
   output: SourceServer,
@@ -4494,7 +4124,7 @@ export const reverseReplication: API.OperationMethod<
   ReverseReplicationRequest,
   ReverseReplicationResponse,
   ReverseReplicationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ReverseReplicationRequest,
   output: ReverseReplicationResponse,
@@ -4527,7 +4157,7 @@ export const startFailbackLaunch: API.OperationMethod<
   StartFailbackLaunchRequest,
   StartFailbackLaunchResponse,
   StartFailbackLaunchError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartFailbackLaunchRequest,
   output: StartFailbackLaunchResponse,
@@ -4558,7 +4188,7 @@ export const startRecovery: API.OperationMethod<
   StartRecoveryRequest,
   StartRecoveryResponse,
   StartRecoveryError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartRecoveryRequest,
   output: StartRecoveryResponse,
@@ -4588,7 +4218,7 @@ export const startReplication: API.OperationMethod<
   StartReplicationRequest,
   StartReplicationResponse,
   StartReplicationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartReplicationRequest,
   output: StartReplicationResponse,
@@ -4619,7 +4249,7 @@ export const startSourceNetworkRecovery: API.OperationMethod<
   StartSourceNetworkRecoveryRequest,
   StartSourceNetworkRecoveryResponse,
   StartSourceNetworkRecoveryError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartSourceNetworkRecoveryRequest,
   output: StartSourceNetworkRecoveryResponse,
@@ -4650,7 +4280,7 @@ export const startSourceNetworkReplication: API.OperationMethod<
   StartSourceNetworkReplicationRequest,
   StartSourceNetworkReplicationResponse,
   StartSourceNetworkReplicationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartSourceNetworkReplicationRequest,
   output: StartSourceNetworkReplicationResponse,
@@ -4679,7 +4309,7 @@ export const stopFailback: API.OperationMethod<
   StopFailbackRequest,
   StopFailbackResponse,
   StopFailbackError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StopFailbackRequest,
   output: StopFailbackResponse,
@@ -4708,7 +4338,7 @@ export const stopReplication: API.OperationMethod<
   StopReplicationRequest,
   StopReplicationResponse,
   StopReplicationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StopReplicationRequest,
   output: StopReplicationResponse,
@@ -4739,7 +4369,7 @@ export const stopSourceNetworkReplication: API.OperationMethod<
   StopSourceNetworkReplicationRequest,
   StopSourceNetworkReplicationResponse,
   StopSourceNetworkReplicationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StopSourceNetworkReplicationRequest,
   output: StopSourceNetworkReplicationResponse,
@@ -4770,7 +4400,7 @@ export const tagResource: API.OperationMethod<
   TagResourceRequest,
   TagResourceResponse,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -4800,7 +4430,7 @@ export const terminateRecoveryInstances: API.OperationMethod<
   TerminateRecoveryInstancesRequest,
   TerminateRecoveryInstancesResponse,
   TerminateRecoveryInstancesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TerminateRecoveryInstancesRequest,
   output: TerminateRecoveryInstancesResponse,
@@ -4830,7 +4460,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceRequest,
   UntagResourceResponse,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -4860,7 +4490,7 @@ export const updateFailbackReplicationConfiguration: API.OperationMethod<
   UpdateFailbackReplicationConfigurationRequest,
   UpdateFailbackReplicationConfigurationResponse,
   UpdateFailbackReplicationConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateFailbackReplicationConfigurationRequest,
   output: UpdateFailbackReplicationConfigurationResponse,
@@ -4891,7 +4521,7 @@ export const updateLaunchConfiguration: API.OperationMethod<
   UpdateLaunchConfigurationRequest,
   LaunchConfiguration,
   UpdateLaunchConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateLaunchConfigurationRequest,
   output: LaunchConfiguration,
@@ -4923,7 +4553,7 @@ export const updateLaunchConfigurationTemplate: API.OperationMethod<
   UpdateLaunchConfigurationTemplateRequest,
   UpdateLaunchConfigurationTemplateResponse,
   UpdateLaunchConfigurationTemplateError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateLaunchConfigurationTemplateRequest,
   output: UpdateLaunchConfigurationTemplateResponse,
@@ -4956,7 +4586,7 @@ export const updateReplicationConfiguration: API.OperationMethod<
   UpdateReplicationConfigurationRequest,
   ReplicationConfiguration,
   UpdateReplicationConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateReplicationConfigurationRequest,
   output: ReplicationConfiguration,
@@ -4989,7 +4619,7 @@ export const updateReplicationConfigurationTemplate: API.OperationMethod<
   UpdateReplicationConfigurationTemplateRequest,
   ReplicationConfigurationTemplate,
   UpdateReplicationConfigurationTemplateError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateReplicationConfigurationTemplateRequest,
   output: ReplicationConfigurationTemplate,

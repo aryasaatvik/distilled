@@ -1,7 +1,6 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as redacted from "effect/Redacted";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -9,7 +8,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 import { SensitiveString } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "CleanRooms",
@@ -90,14 +88,17 @@ const rules = T.EndpointResolver((p, _) => {
 export class AccessDeniedException
   extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
     "AccessDeniedException",
-    { message: S.optional(S.String), reason: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      reason: S.optional(S.String),
+    },
     T.HttpError(403),
   ).pipe(C.withAuthError) {}
 export class ConflictException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
     "ConflictException",
     {
-      message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       resourceId: S.optional(S.String),
       resourceType: S.optional(S.String),
       reason: S.optional(S.String),
@@ -107,32 +108,40 @@ export class ConflictException
 export class InternalServerException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
     "InternalServerException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(500),
   ).pipe(C.withServerError) {}
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { message: S.String, resourceId: S.String, resourceType: S.String },
+    {
+      message: S.String.pipe(T.ErrorMessage()),
+      resourceId: S.String,
+      resourceType: S.String,
+    },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class ServiceQuotaExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
     "ServiceQuotaExceededException",
-    { message: S.String, quotaName: S.String, quotaValue: S.Number },
+    {
+      message: S.String.pipe(T.ErrorMessage()),
+      quotaName: S.String,
+      quotaValue: S.Number,
+    },
     T.HttpError(402),
   ).pipe(C.withQuotaError) {}
 export class ThrottlingException
   extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
     "ThrottlingException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(429),
   ).pipe(C.withThrottlingError) {}
 export class ValidationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
     "ValidationException",
     {
-      message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       reason: S.optional(S.String),
       fieldList: S.optional(
         S.suspend(() => ValidationExceptionFieldList).annotate({
@@ -7058,7 +7067,7 @@ export const batchGetCollaborationAnalysisTemplate: API.OperationMethod<
   BatchGetCollaborationAnalysisTemplateInput,
   BatchGetCollaborationAnalysisTemplateOutput,
   BatchGetCollaborationAnalysisTemplateError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchGetCollaborationAnalysisTemplateInput,
   output: BatchGetCollaborationAnalysisTemplateOutput,
@@ -7088,7 +7097,7 @@ export const batchGetSchema: API.OperationMethod<
   BatchGetSchemaInput,
   BatchGetSchemaOutput,
   BatchGetSchemaError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchGetSchemaInput,
   output: BatchGetSchemaOutput,
@@ -7118,7 +7127,7 @@ export const batchGetSchemaAnalysisRule: API.OperationMethod<
   BatchGetSchemaAnalysisRuleInput,
   BatchGetSchemaAnalysisRuleOutput,
   BatchGetSchemaAnalysisRuleError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchGetSchemaAnalysisRuleInput,
   output: BatchGetSchemaAnalysisRuleOutput,
@@ -7150,7 +7159,7 @@ export const createAnalysisTemplate: API.OperationMethod<
   CreateAnalysisTemplateInput,
   CreateAnalysisTemplateOutput,
   CreateAnalysisTemplateError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateAnalysisTemplateInput,
   output: CreateAnalysisTemplateOutput,
@@ -7182,7 +7191,7 @@ export const createCollaboration: API.OperationMethod<
   CreateCollaborationInput,
   CreateCollaborationOutput,
   CreateCollaborationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateCollaborationInput,
   output: CreateCollaborationOutput,
@@ -7214,7 +7223,7 @@ export const createCollaborationChangeRequest: API.OperationMethod<
   CreateCollaborationChangeRequestInput,
   CreateCollaborationChangeRequestOutput,
   CreateCollaborationChangeRequestError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateCollaborationChangeRequestInput,
   output: CreateCollaborationChangeRequestOutput,
@@ -7248,7 +7257,7 @@ export const createConfiguredAudienceModelAssociation: API.OperationMethod<
   CreateConfiguredAudienceModelAssociationInput,
   CreateConfiguredAudienceModelAssociationOutput,
   CreateConfiguredAudienceModelAssociationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateConfiguredAudienceModelAssociationInput,
   output: CreateConfiguredAudienceModelAssociationOutput,
@@ -7282,7 +7291,7 @@ export const createConfiguredTable: API.OperationMethod<
   CreateConfiguredTableInput,
   CreateConfiguredTableOutput,
   CreateConfiguredTableError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateConfiguredTableInput,
   output: CreateConfiguredTableOutput,
@@ -7316,7 +7325,7 @@ export const createConfiguredTableAnalysisRule: API.OperationMethod<
   CreateConfiguredTableAnalysisRuleInput,
   CreateConfiguredTableAnalysisRuleOutput,
   CreateConfiguredTableAnalysisRuleError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateConfiguredTableAnalysisRuleInput,
   output: CreateConfiguredTableAnalysisRuleOutput,
@@ -7350,7 +7359,7 @@ export const createConfiguredTableAssociation: API.OperationMethod<
   CreateConfiguredTableAssociationInput,
   CreateConfiguredTableAssociationOutput,
   CreateConfiguredTableAssociationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateConfiguredTableAssociationInput,
   output: CreateConfiguredTableAssociationOutput,
@@ -7383,7 +7392,7 @@ export const createConfiguredTableAssociationAnalysisRule: API.OperationMethod<
   CreateConfiguredTableAssociationAnalysisRuleInput,
   CreateConfiguredTableAssociationAnalysisRuleOutput,
   CreateConfiguredTableAssociationAnalysisRuleError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateConfiguredTableAssociationAnalysisRuleInput,
   output: CreateConfiguredTableAssociationAnalysisRuleOutput,
@@ -7416,7 +7425,7 @@ export const createIdMappingTable: API.OperationMethod<
   CreateIdMappingTableInput,
   CreateIdMappingTableOutput,
   CreateIdMappingTableError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateIdMappingTableInput,
   output: CreateIdMappingTableOutput,
@@ -7450,7 +7459,7 @@ export const createIdNamespaceAssociation: API.OperationMethod<
   CreateIdNamespaceAssociationInput,
   CreateIdNamespaceAssociationOutput,
   CreateIdNamespaceAssociationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateIdNamespaceAssociationInput,
   output: CreateIdNamespaceAssociationOutput,
@@ -7484,7 +7493,7 @@ export const createMembership: API.OperationMethod<
   CreateMembershipInput,
   CreateMembershipOutput,
   CreateMembershipError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateMembershipInput,
   output: CreateMembershipOutput,
@@ -7518,7 +7527,7 @@ export const createPrivacyBudgetTemplate: API.OperationMethod<
   CreatePrivacyBudgetTemplateInput,
   CreatePrivacyBudgetTemplateOutput,
   CreatePrivacyBudgetTemplateError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreatePrivacyBudgetTemplateInput,
   output: CreatePrivacyBudgetTemplateOutput,
@@ -7550,7 +7559,7 @@ export const deleteAnalysisTemplate: API.OperationMethod<
   DeleteAnalysisTemplateInput,
   DeleteAnalysisTemplateOutput,
   DeleteAnalysisTemplateError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteAnalysisTemplateInput,
   output: DeleteAnalysisTemplateOutput,
@@ -7579,7 +7588,7 @@ export const deleteCollaboration: API.OperationMethod<
   DeleteCollaborationInput,
   DeleteCollaborationOutput,
   DeleteCollaborationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteCollaborationInput,
   output: DeleteCollaborationOutput,
@@ -7608,7 +7617,7 @@ export const deleteConfiguredAudienceModelAssociation: API.OperationMethod<
   DeleteConfiguredAudienceModelAssociationInput,
   DeleteConfiguredAudienceModelAssociationOutput,
   DeleteConfiguredAudienceModelAssociationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteConfiguredAudienceModelAssociationInput,
   output: DeleteConfiguredAudienceModelAssociationOutput,
@@ -7639,7 +7648,7 @@ export const deleteConfiguredTable: API.OperationMethod<
   DeleteConfiguredTableInput,
   DeleteConfiguredTableOutput,
   DeleteConfiguredTableError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteConfiguredTableInput,
   output: DeleteConfiguredTableOutput,
@@ -7671,7 +7680,7 @@ export const deleteConfiguredTableAnalysisRule: API.OperationMethod<
   DeleteConfiguredTableAnalysisRuleInput,
   DeleteConfiguredTableAnalysisRuleOutput,
   DeleteConfiguredTableAnalysisRuleError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteConfiguredTableAnalysisRuleInput,
   output: DeleteConfiguredTableAnalysisRuleOutput,
@@ -7703,7 +7712,7 @@ export const deleteConfiguredTableAssociation: API.OperationMethod<
   DeleteConfiguredTableAssociationInput,
   DeleteConfiguredTableAssociationOutput,
   DeleteConfiguredTableAssociationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteConfiguredTableAssociationInput,
   output: DeleteConfiguredTableAssociationOutput,
@@ -7735,7 +7744,7 @@ export const deleteConfiguredTableAssociationAnalysisRule: API.OperationMethod<
   DeleteConfiguredTableAssociationAnalysisRuleInput,
   DeleteConfiguredTableAssociationAnalysisRuleOutput,
   DeleteConfiguredTableAssociationAnalysisRuleError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteConfiguredTableAssociationAnalysisRuleInput,
   output: DeleteConfiguredTableAssociationAnalysisRuleOutput,
@@ -7766,7 +7775,7 @@ export const deleteIdMappingTable: API.OperationMethod<
   DeleteIdMappingTableInput,
   DeleteIdMappingTableOutput,
   DeleteIdMappingTableError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteIdMappingTableInput,
   output: DeleteIdMappingTableOutput,
@@ -7796,7 +7805,7 @@ export const deleteIdNamespaceAssociation: API.OperationMethod<
   DeleteIdNamespaceAssociationInput,
   DeleteIdNamespaceAssociationOutput,
   DeleteIdNamespaceAssociationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteIdNamespaceAssociationInput,
   output: DeleteIdNamespaceAssociationOutput,
@@ -7827,7 +7836,7 @@ export const deleteMember: API.OperationMethod<
   DeleteMemberInput,
   DeleteMemberOutput,
   DeleteMemberError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteMemberInput,
   output: DeleteMemberOutput,
@@ -7859,7 +7868,7 @@ export const deleteMembership: API.OperationMethod<
   DeleteMembershipInput,
   DeleteMembershipOutput,
   DeleteMembershipError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteMembershipInput,
   output: DeleteMembershipOutput,
@@ -7890,7 +7899,7 @@ export const deletePrivacyBudgetTemplate: API.OperationMethod<
   DeletePrivacyBudgetTemplateInput,
   DeletePrivacyBudgetTemplateOutput,
   DeletePrivacyBudgetTemplateError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeletePrivacyBudgetTemplateInput,
   output: DeletePrivacyBudgetTemplateOutput,
@@ -7920,7 +7929,7 @@ export const getAnalysisTemplate: API.OperationMethod<
   GetAnalysisTemplateInput,
   GetAnalysisTemplateOutput,
   GetAnalysisTemplateError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetAnalysisTemplateInput,
   output: GetAnalysisTemplateOutput,
@@ -7949,7 +7958,7 @@ export const getCollaboration: API.OperationMethod<
   GetCollaborationInput,
   GetCollaborationOutput,
   GetCollaborationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetCollaborationInput,
   output: GetCollaborationOutput,
@@ -7978,7 +7987,7 @@ export const getCollaborationAnalysisTemplate: API.OperationMethod<
   GetCollaborationAnalysisTemplateInput,
   GetCollaborationAnalysisTemplateOutput,
   GetCollaborationAnalysisTemplateError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetCollaborationAnalysisTemplateInput,
   output: GetCollaborationAnalysisTemplateOutput,
@@ -8008,7 +8017,7 @@ export const getCollaborationChangeRequest: API.OperationMethod<
   GetCollaborationChangeRequestInput,
   GetCollaborationChangeRequestOutput,
   GetCollaborationChangeRequestError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetCollaborationChangeRequestInput,
   output: GetCollaborationChangeRequestOutput,
@@ -8038,7 +8047,7 @@ export const getCollaborationConfiguredAudienceModelAssociation: API.OperationMe
   GetCollaborationConfiguredAudienceModelAssociationInput,
   GetCollaborationConfiguredAudienceModelAssociationOutput,
   GetCollaborationConfiguredAudienceModelAssociationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetCollaborationConfiguredAudienceModelAssociationInput,
   output: GetCollaborationConfiguredAudienceModelAssociationOutput,
@@ -8068,7 +8077,7 @@ export const getCollaborationIdNamespaceAssociation: API.OperationMethod<
   GetCollaborationIdNamespaceAssociationInput,
   GetCollaborationIdNamespaceAssociationOutput,
   GetCollaborationIdNamespaceAssociationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetCollaborationIdNamespaceAssociationInput,
   output: GetCollaborationIdNamespaceAssociationOutput,
@@ -8098,7 +8107,7 @@ export const getCollaborationPrivacyBudgetTemplate: API.OperationMethod<
   GetCollaborationPrivacyBudgetTemplateInput,
   GetCollaborationPrivacyBudgetTemplateOutput,
   GetCollaborationPrivacyBudgetTemplateError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetCollaborationPrivacyBudgetTemplateInput,
   output: GetCollaborationPrivacyBudgetTemplateOutput,
@@ -8128,7 +8137,7 @@ export const getConfiguredAudienceModelAssociation: API.OperationMethod<
   GetConfiguredAudienceModelAssociationInput,
   GetConfiguredAudienceModelAssociationOutput,
   GetConfiguredAudienceModelAssociationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetConfiguredAudienceModelAssociationInput,
   output: GetConfiguredAudienceModelAssociationOutput,
@@ -8158,7 +8167,7 @@ export const getConfiguredTable: API.OperationMethod<
   GetConfiguredTableInput,
   GetConfiguredTableOutput,
   GetConfiguredTableError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetConfiguredTableInput,
   output: GetConfiguredTableOutput,
@@ -8188,7 +8197,7 @@ export const getConfiguredTableAnalysisRule: API.OperationMethod<
   GetConfiguredTableAnalysisRuleInput,
   GetConfiguredTableAnalysisRuleOutput,
   GetConfiguredTableAnalysisRuleError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetConfiguredTableAnalysisRuleInput,
   output: GetConfiguredTableAnalysisRuleOutput,
@@ -8218,7 +8227,7 @@ export const getConfiguredTableAssociation: API.OperationMethod<
   GetConfiguredTableAssociationInput,
   GetConfiguredTableAssociationOutput,
   GetConfiguredTableAssociationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetConfiguredTableAssociationInput,
   output: GetConfiguredTableAssociationOutput,
@@ -8248,7 +8257,7 @@ export const getConfiguredTableAssociationAnalysisRule: API.OperationMethod<
   GetConfiguredTableAssociationAnalysisRuleInput,
   GetConfiguredTableAssociationAnalysisRuleOutput,
   GetConfiguredTableAssociationAnalysisRuleError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetConfiguredTableAssociationAnalysisRuleInput,
   output: GetConfiguredTableAssociationAnalysisRuleOutput,
@@ -8278,7 +8287,7 @@ export const getIdMappingTable: API.OperationMethod<
   GetIdMappingTableInput,
   GetIdMappingTableOutput,
   GetIdMappingTableError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetIdMappingTableInput,
   output: GetIdMappingTableOutput,
@@ -8308,7 +8317,7 @@ export const getIdNamespaceAssociation: API.OperationMethod<
   GetIdNamespaceAssociationInput,
   GetIdNamespaceAssociationOutput,
   GetIdNamespaceAssociationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetIdNamespaceAssociationInput,
   output: GetIdNamespaceAssociationOutput,
@@ -8338,7 +8347,7 @@ export const getMembership: API.OperationMethod<
   GetMembershipInput,
   GetMembershipOutput,
   GetMembershipError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetMembershipInput,
   output: GetMembershipOutput,
@@ -8368,7 +8377,7 @@ export const getPrivacyBudgetTemplate: API.OperationMethod<
   GetPrivacyBudgetTemplateInput,
   GetPrivacyBudgetTemplateOutput,
   GetPrivacyBudgetTemplateError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetPrivacyBudgetTemplateInput,
   output: GetPrivacyBudgetTemplateOutput,
@@ -8398,7 +8407,7 @@ export const getProtectedJob: API.OperationMethod<
   GetProtectedJobInput,
   GetProtectedJobOutput,
   GetProtectedJobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetProtectedJobInput,
   output: GetProtectedJobOutput,
@@ -8428,7 +8437,7 @@ export const getProtectedQuery: API.OperationMethod<
   GetProtectedQueryInput,
   GetProtectedQueryOutput,
   GetProtectedQueryError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetProtectedQueryInput,
   output: GetProtectedQueryOutput,
@@ -8458,7 +8467,7 @@ export const getSchema: API.OperationMethod<
   GetSchemaInput,
   GetSchemaOutput,
   GetSchemaError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetSchemaInput,
   output: GetSchemaOutput,
@@ -8488,7 +8497,7 @@ export const getSchemaAnalysisRule: API.OperationMethod<
   GetSchemaAnalysisRuleInput,
   GetSchemaAnalysisRuleOutput,
   GetSchemaAnalysisRuleError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetSchemaAnalysisRuleInput,
   output: GetSchemaAnalysisRuleOutput,
@@ -8514,27 +8523,13 @@ export type ListAnalysisTemplatesError =
 /**
  * Lists analysis templates that the caller owns.
  */
-export const listAnalysisTemplates: API.OperationMethod<
+export const listAnalysisTemplates: API.PaginatedOperationMethod<
   ListAnalysisTemplatesInput,
   ListAnalysisTemplatesOutput,
   ListAnalysisTemplatesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAnalysisTemplatesInput,
-  ) => stream.Stream<
-    ListAnalysisTemplatesOutput,
-    ListAnalysisTemplatesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAnalysisTemplatesInput,
-  ) => stream.Stream<
-    AnalysisTemplateSummary,
-    ListAnalysisTemplatesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  AnalysisTemplateSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListAnalysisTemplatesInput,
   output: ListAnalysisTemplatesOutput,
   errors: [
@@ -8553,27 +8548,7 @@ export const listAnalysisTemplates: API.OperationMethod<
     items: "analysisTemplateSummaries",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListAnalysisTemplatesInput,
-  ListAnalysisTemplatesOutput,
-  ListAnalysisTemplatesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAnalysisTemplatesInput,
-  ) => stream.Stream<
-    ListAnalysisTemplatesOutput,
-    ListAnalysisTemplatesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAnalysisTemplatesInput,
-  ) => stream.Stream<
-    AnalysisTemplateSummary,
-    ListAnalysisTemplatesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListCollaborationAnalysisTemplatesError =
   | AccessDeniedException
@@ -8585,27 +8560,13 @@ export type ListCollaborationAnalysisTemplatesError =
 /**
  * Lists analysis templates within a collaboration.
  */
-export const listCollaborationAnalysisTemplates: API.OperationMethod<
+export const listCollaborationAnalysisTemplates: API.PaginatedOperationMethod<
   ListCollaborationAnalysisTemplatesInput,
   ListCollaborationAnalysisTemplatesOutput,
   ListCollaborationAnalysisTemplatesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCollaborationAnalysisTemplatesInput,
-  ) => stream.Stream<
-    ListCollaborationAnalysisTemplatesOutput,
-    ListCollaborationAnalysisTemplatesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCollaborationAnalysisTemplatesInput,
-  ) => stream.Stream<
-    CollaborationAnalysisTemplateSummary,
-    ListCollaborationAnalysisTemplatesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  CollaborationAnalysisTemplateSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListCollaborationAnalysisTemplatesInput,
   output: ListCollaborationAnalysisTemplatesOutput,
   errors: [
@@ -8624,27 +8585,7 @@ export const listCollaborationAnalysisTemplates: API.OperationMethod<
     items: "collaborationAnalysisTemplateSummaries",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListCollaborationAnalysisTemplatesInput,
-  ListCollaborationAnalysisTemplatesOutput,
-  ListCollaborationAnalysisTemplatesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCollaborationAnalysisTemplatesInput,
-  ) => stream.Stream<
-    ListCollaborationAnalysisTemplatesOutput,
-    ListCollaborationAnalysisTemplatesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCollaborationAnalysisTemplatesInput,
-  ) => stream.Stream<
-    CollaborationAnalysisTemplateSummary,
-    ListCollaborationAnalysisTemplatesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListCollaborationChangeRequestsError =
   | AccessDeniedException
@@ -8656,27 +8597,13 @@ export type ListCollaborationChangeRequestsError =
 /**
  * Lists all change requests for a collaboration with pagination support. Returns change requests sorted by creation time.
  */
-export const listCollaborationChangeRequests: API.OperationMethod<
+export const listCollaborationChangeRequests: API.PaginatedOperationMethod<
   ListCollaborationChangeRequestsInput,
   ListCollaborationChangeRequestsOutput,
   ListCollaborationChangeRequestsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCollaborationChangeRequestsInput,
-  ) => stream.Stream<
-    ListCollaborationChangeRequestsOutput,
-    ListCollaborationChangeRequestsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCollaborationChangeRequestsInput,
-  ) => stream.Stream<
-    CollaborationChangeRequestSummary,
-    ListCollaborationChangeRequestsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  CollaborationChangeRequestSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListCollaborationChangeRequestsInput,
   output: ListCollaborationChangeRequestsOutput,
   errors: [
@@ -8695,27 +8622,7 @@ export const listCollaborationChangeRequests: API.OperationMethod<
     items: "collaborationChangeRequestSummaries",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListCollaborationChangeRequestsInput,
-  ListCollaborationChangeRequestsOutput,
-  ListCollaborationChangeRequestsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCollaborationChangeRequestsInput,
-  ) => stream.Stream<
-    ListCollaborationChangeRequestsOutput,
-    ListCollaborationChangeRequestsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCollaborationChangeRequestsInput,
-  ) => stream.Stream<
-    CollaborationChangeRequestSummary,
-    ListCollaborationChangeRequestsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListCollaborationConfiguredAudienceModelAssociationsError =
   | AccessDeniedException
@@ -8727,27 +8634,13 @@ export type ListCollaborationConfiguredAudienceModelAssociationsError =
 /**
  * Lists configured audience model associations within a collaboration.
  */
-export const listCollaborationConfiguredAudienceModelAssociations: API.OperationMethod<
+export const listCollaborationConfiguredAudienceModelAssociations: API.PaginatedOperationMethod<
   ListCollaborationConfiguredAudienceModelAssociationsInput,
   ListCollaborationConfiguredAudienceModelAssociationsOutput,
   ListCollaborationConfiguredAudienceModelAssociationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCollaborationConfiguredAudienceModelAssociationsInput,
-  ) => stream.Stream<
-    ListCollaborationConfiguredAudienceModelAssociationsOutput,
-    ListCollaborationConfiguredAudienceModelAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCollaborationConfiguredAudienceModelAssociationsInput,
-  ) => stream.Stream<
-    CollaborationConfiguredAudienceModelAssociationSummary,
-    ListCollaborationConfiguredAudienceModelAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  CollaborationConfiguredAudienceModelAssociationSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListCollaborationConfiguredAudienceModelAssociationsInput,
   output: ListCollaborationConfiguredAudienceModelAssociationsOutput,
   errors: [
@@ -8766,27 +8659,7 @@ export const listCollaborationConfiguredAudienceModelAssociations: API.Operation
     items: "collaborationConfiguredAudienceModelAssociationSummaries",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListCollaborationConfiguredAudienceModelAssociationsInput,
-  ListCollaborationConfiguredAudienceModelAssociationsOutput,
-  ListCollaborationConfiguredAudienceModelAssociationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCollaborationConfiguredAudienceModelAssociationsInput,
-  ) => stream.Stream<
-    ListCollaborationConfiguredAudienceModelAssociationsOutput,
-    ListCollaborationConfiguredAudienceModelAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCollaborationConfiguredAudienceModelAssociationsInput,
-  ) => stream.Stream<
-    CollaborationConfiguredAudienceModelAssociationSummary,
-    ListCollaborationConfiguredAudienceModelAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListCollaborationIdNamespaceAssociationsError =
   | AccessDeniedException
@@ -8798,27 +8671,13 @@ export type ListCollaborationIdNamespaceAssociationsError =
 /**
  * Returns a list of the ID namespace associations in a collaboration.
  */
-export const listCollaborationIdNamespaceAssociations: API.OperationMethod<
+export const listCollaborationIdNamespaceAssociations: API.PaginatedOperationMethod<
   ListCollaborationIdNamespaceAssociationsInput,
   ListCollaborationIdNamespaceAssociationsOutput,
   ListCollaborationIdNamespaceAssociationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCollaborationIdNamespaceAssociationsInput,
-  ) => stream.Stream<
-    ListCollaborationIdNamespaceAssociationsOutput,
-    ListCollaborationIdNamespaceAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCollaborationIdNamespaceAssociationsInput,
-  ) => stream.Stream<
-    CollaborationIdNamespaceAssociationSummary,
-    ListCollaborationIdNamespaceAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  CollaborationIdNamespaceAssociationSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListCollaborationIdNamespaceAssociationsInput,
   output: ListCollaborationIdNamespaceAssociationsOutput,
   errors: [
@@ -8837,27 +8696,7 @@ export const listCollaborationIdNamespaceAssociations: API.OperationMethod<
     items: "collaborationIdNamespaceAssociationSummaries",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListCollaborationIdNamespaceAssociationsInput,
-  ListCollaborationIdNamespaceAssociationsOutput,
-  ListCollaborationIdNamespaceAssociationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCollaborationIdNamespaceAssociationsInput,
-  ) => stream.Stream<
-    ListCollaborationIdNamespaceAssociationsOutput,
-    ListCollaborationIdNamespaceAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCollaborationIdNamespaceAssociationsInput,
-  ) => stream.Stream<
-    CollaborationIdNamespaceAssociationSummary,
-    ListCollaborationIdNamespaceAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListCollaborationPrivacyBudgetsError =
   | AccessDeniedException
@@ -8869,27 +8708,13 @@ export type ListCollaborationPrivacyBudgetsError =
 /**
  * Returns an array that summarizes each privacy budget in a specified collaboration. The summary includes the collaboration ARN, creation time, creating account, and privacy budget details.
  */
-export const listCollaborationPrivacyBudgets: API.OperationMethod<
+export const listCollaborationPrivacyBudgets: API.PaginatedOperationMethod<
   ListCollaborationPrivacyBudgetsInput,
   ListCollaborationPrivacyBudgetsOutput,
   ListCollaborationPrivacyBudgetsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCollaborationPrivacyBudgetsInput,
-  ) => stream.Stream<
-    ListCollaborationPrivacyBudgetsOutput,
-    ListCollaborationPrivacyBudgetsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCollaborationPrivacyBudgetsInput,
-  ) => stream.Stream<
-    CollaborationPrivacyBudgetSummary,
-    ListCollaborationPrivacyBudgetsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  CollaborationPrivacyBudgetSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListCollaborationPrivacyBudgetsInput,
   output: ListCollaborationPrivacyBudgetsOutput,
   errors: [
@@ -8908,27 +8733,7 @@ export const listCollaborationPrivacyBudgets: API.OperationMethod<
     items: "collaborationPrivacyBudgetSummaries",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListCollaborationPrivacyBudgetsInput,
-  ListCollaborationPrivacyBudgetsOutput,
-  ListCollaborationPrivacyBudgetsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCollaborationPrivacyBudgetsInput,
-  ) => stream.Stream<
-    ListCollaborationPrivacyBudgetsOutput,
-    ListCollaborationPrivacyBudgetsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCollaborationPrivacyBudgetsInput,
-  ) => stream.Stream<
-    CollaborationPrivacyBudgetSummary,
-    ListCollaborationPrivacyBudgetsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListCollaborationPrivacyBudgetTemplatesError =
   | AccessDeniedException
@@ -8940,27 +8745,13 @@ export type ListCollaborationPrivacyBudgetTemplatesError =
 /**
  * Returns an array that summarizes each privacy budget template in a specified collaboration.
  */
-export const listCollaborationPrivacyBudgetTemplates: API.OperationMethod<
+export const listCollaborationPrivacyBudgetTemplates: API.PaginatedOperationMethod<
   ListCollaborationPrivacyBudgetTemplatesInput,
   ListCollaborationPrivacyBudgetTemplatesOutput,
   ListCollaborationPrivacyBudgetTemplatesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCollaborationPrivacyBudgetTemplatesInput,
-  ) => stream.Stream<
-    ListCollaborationPrivacyBudgetTemplatesOutput,
-    ListCollaborationPrivacyBudgetTemplatesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCollaborationPrivacyBudgetTemplatesInput,
-  ) => stream.Stream<
-    CollaborationPrivacyBudgetTemplateSummary,
-    ListCollaborationPrivacyBudgetTemplatesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  CollaborationPrivacyBudgetTemplateSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListCollaborationPrivacyBudgetTemplatesInput,
   output: ListCollaborationPrivacyBudgetTemplatesOutput,
   errors: [
@@ -8979,27 +8770,7 @@ export const listCollaborationPrivacyBudgetTemplates: API.OperationMethod<
     items: "collaborationPrivacyBudgetTemplateSummaries",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListCollaborationPrivacyBudgetTemplatesInput,
-  ListCollaborationPrivacyBudgetTemplatesOutput,
-  ListCollaborationPrivacyBudgetTemplatesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCollaborationPrivacyBudgetTemplatesInput,
-  ) => stream.Stream<
-    ListCollaborationPrivacyBudgetTemplatesOutput,
-    ListCollaborationPrivacyBudgetTemplatesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCollaborationPrivacyBudgetTemplatesInput,
-  ) => stream.Stream<
-    CollaborationPrivacyBudgetTemplateSummary,
-    ListCollaborationPrivacyBudgetTemplatesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListCollaborationsError =
   | AccessDeniedException
@@ -9010,27 +8781,13 @@ export type ListCollaborationsError =
 /**
  * Lists collaborations the caller owns, is active in, or has been invited to.
  */
-export const listCollaborations: API.OperationMethod<
+export const listCollaborations: API.PaginatedOperationMethod<
   ListCollaborationsInput,
   ListCollaborationsOutput,
   ListCollaborationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCollaborationsInput,
-  ) => stream.Stream<
-    ListCollaborationsOutput,
-    ListCollaborationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCollaborationsInput,
-  ) => stream.Stream<
-    CollaborationSummary,
-    ListCollaborationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  CollaborationSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListCollaborationsInput,
   output: ListCollaborationsOutput,
   errors: [
@@ -9048,27 +8805,7 @@ export const listCollaborations: API.OperationMethod<
     items: "collaborationList",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListCollaborationsInput,
-  ListCollaborationsOutput,
-  ListCollaborationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCollaborationsInput,
-  ) => stream.Stream<
-    ListCollaborationsOutput,
-    ListCollaborationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCollaborationsInput,
-  ) => stream.Stream<
-    CollaborationSummary,
-    ListCollaborationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListConfiguredAudienceModelAssociationsError =
   | AccessDeniedException
@@ -9080,27 +8817,13 @@ export type ListConfiguredAudienceModelAssociationsError =
 /**
  * Lists information about requested configured audience model associations.
  */
-export const listConfiguredAudienceModelAssociations: API.OperationMethod<
+export const listConfiguredAudienceModelAssociations: API.PaginatedOperationMethod<
   ListConfiguredAudienceModelAssociationsInput,
   ListConfiguredAudienceModelAssociationsOutput,
   ListConfiguredAudienceModelAssociationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListConfiguredAudienceModelAssociationsInput,
-  ) => stream.Stream<
-    ListConfiguredAudienceModelAssociationsOutput,
-    ListConfiguredAudienceModelAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListConfiguredAudienceModelAssociationsInput,
-  ) => stream.Stream<
-    ConfiguredAudienceModelAssociationSummary,
-    ListConfiguredAudienceModelAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ConfiguredAudienceModelAssociationSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListConfiguredAudienceModelAssociationsInput,
   output: ListConfiguredAudienceModelAssociationsOutput,
   errors: [
@@ -9119,27 +8842,7 @@ export const listConfiguredAudienceModelAssociations: API.OperationMethod<
     items: "configuredAudienceModelAssociationSummaries",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListConfiguredAudienceModelAssociationsInput,
-  ListConfiguredAudienceModelAssociationsOutput,
-  ListConfiguredAudienceModelAssociationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListConfiguredAudienceModelAssociationsInput,
-  ) => stream.Stream<
-    ListConfiguredAudienceModelAssociationsOutput,
-    ListConfiguredAudienceModelAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListConfiguredAudienceModelAssociationsInput,
-  ) => stream.Stream<
-    ConfiguredAudienceModelAssociationSummary,
-    ListConfiguredAudienceModelAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListConfiguredTableAssociationsError =
   | AccessDeniedException
@@ -9151,27 +8854,13 @@ export type ListConfiguredTableAssociationsError =
 /**
  * Lists configured table associations for a membership.
  */
-export const listConfiguredTableAssociations: API.OperationMethod<
+export const listConfiguredTableAssociations: API.PaginatedOperationMethod<
   ListConfiguredTableAssociationsInput,
   ListConfiguredTableAssociationsOutput,
   ListConfiguredTableAssociationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListConfiguredTableAssociationsInput,
-  ) => stream.Stream<
-    ListConfiguredTableAssociationsOutput,
-    ListConfiguredTableAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListConfiguredTableAssociationsInput,
-  ) => stream.Stream<
-    ConfiguredTableAssociationSummary,
-    ListConfiguredTableAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ConfiguredTableAssociationSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListConfiguredTableAssociationsInput,
   output: ListConfiguredTableAssociationsOutput,
   errors: [
@@ -9190,27 +8879,7 @@ export const listConfiguredTableAssociations: API.OperationMethod<
     items: "configuredTableAssociationSummaries",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListConfiguredTableAssociationsInput,
-  ListConfiguredTableAssociationsOutput,
-  ListConfiguredTableAssociationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListConfiguredTableAssociationsInput,
-  ) => stream.Stream<
-    ListConfiguredTableAssociationsOutput,
-    ListConfiguredTableAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListConfiguredTableAssociationsInput,
-  ) => stream.Stream<
-    ConfiguredTableAssociationSummary,
-    ListConfiguredTableAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListConfiguredTablesError =
   | AccessDeniedException
@@ -9221,27 +8890,13 @@ export type ListConfiguredTablesError =
 /**
  * Lists configured tables.
  */
-export const listConfiguredTables: API.OperationMethod<
+export const listConfiguredTables: API.PaginatedOperationMethod<
   ListConfiguredTablesInput,
   ListConfiguredTablesOutput,
   ListConfiguredTablesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListConfiguredTablesInput,
-  ) => stream.Stream<
-    ListConfiguredTablesOutput,
-    ListConfiguredTablesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListConfiguredTablesInput,
-  ) => stream.Stream<
-    ConfiguredTableSummary,
-    ListConfiguredTablesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ConfiguredTableSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListConfiguredTablesInput,
   output: ListConfiguredTablesOutput,
   errors: [
@@ -9259,27 +8914,7 @@ export const listConfiguredTables: API.OperationMethod<
     items: "configuredTableSummaries",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListConfiguredTablesInput,
-  ListConfiguredTablesOutput,
-  ListConfiguredTablesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListConfiguredTablesInput,
-  ) => stream.Stream<
-    ListConfiguredTablesOutput,
-    ListConfiguredTablesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListConfiguredTablesInput,
-  ) => stream.Stream<
-    ConfiguredTableSummary,
-    ListConfiguredTablesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListIdMappingTablesError =
   | AccessDeniedException
@@ -9291,27 +8926,13 @@ export type ListIdMappingTablesError =
 /**
  * Returns a list of ID mapping tables.
  */
-export const listIdMappingTables: API.OperationMethod<
+export const listIdMappingTables: API.PaginatedOperationMethod<
   ListIdMappingTablesInput,
   ListIdMappingTablesOutput,
   ListIdMappingTablesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListIdMappingTablesInput,
-  ) => stream.Stream<
-    ListIdMappingTablesOutput,
-    ListIdMappingTablesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListIdMappingTablesInput,
-  ) => stream.Stream<
-    IdMappingTableSummary,
-    ListIdMappingTablesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  IdMappingTableSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListIdMappingTablesInput,
   output: ListIdMappingTablesOutput,
   errors: [
@@ -9330,27 +8951,7 @@ export const listIdMappingTables: API.OperationMethod<
     items: "idMappingTableSummaries",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListIdMappingTablesInput,
-  ListIdMappingTablesOutput,
-  ListIdMappingTablesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListIdMappingTablesInput,
-  ) => stream.Stream<
-    ListIdMappingTablesOutput,
-    ListIdMappingTablesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListIdMappingTablesInput,
-  ) => stream.Stream<
-    IdMappingTableSummary,
-    ListIdMappingTablesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListIdNamespaceAssociationsError =
   | AccessDeniedException
@@ -9362,27 +8963,13 @@ export type ListIdNamespaceAssociationsError =
 /**
  * Returns a list of ID namespace associations.
  */
-export const listIdNamespaceAssociations: API.OperationMethod<
+export const listIdNamespaceAssociations: API.PaginatedOperationMethod<
   ListIdNamespaceAssociationsInput,
   ListIdNamespaceAssociationsOutput,
   ListIdNamespaceAssociationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListIdNamespaceAssociationsInput,
-  ) => stream.Stream<
-    ListIdNamespaceAssociationsOutput,
-    ListIdNamespaceAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListIdNamespaceAssociationsInput,
-  ) => stream.Stream<
-    IdNamespaceAssociationSummary,
-    ListIdNamespaceAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  IdNamespaceAssociationSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListIdNamespaceAssociationsInput,
   output: ListIdNamespaceAssociationsOutput,
   errors: [
@@ -9401,27 +8988,7 @@ export const listIdNamespaceAssociations: API.OperationMethod<
     items: "idNamespaceAssociationSummaries",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListIdNamespaceAssociationsInput,
-  ListIdNamespaceAssociationsOutput,
-  ListIdNamespaceAssociationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListIdNamespaceAssociationsInput,
-  ) => stream.Stream<
-    ListIdNamespaceAssociationsOutput,
-    ListIdNamespaceAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListIdNamespaceAssociationsInput,
-  ) => stream.Stream<
-    IdNamespaceAssociationSummary,
-    ListIdNamespaceAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListMembersError =
   | AccessDeniedException
@@ -9433,27 +9000,13 @@ export type ListMembersError =
 /**
  * Lists all members within a collaboration.
  */
-export const listMembers: API.OperationMethod<
+export const listMembers: API.PaginatedOperationMethod<
   ListMembersInput,
   ListMembersOutput,
   ListMembersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListMembersInput,
-  ) => stream.Stream<
-    ListMembersOutput,
-    ListMembersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListMembersInput,
-  ) => stream.Stream<
-    MemberSummary,
-    ListMembersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  MemberSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListMembersInput,
   output: ListMembersOutput,
   errors: [
@@ -9472,27 +9025,7 @@ export const listMembers: API.OperationMethod<
     items: "memberSummaries",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListMembersInput,
-  ListMembersOutput,
-  ListMembersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListMembersInput,
-  ) => stream.Stream<
-    ListMembersOutput,
-    ListMembersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListMembersInput,
-  ) => stream.Stream<
-    MemberSummary,
-    ListMembersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListMembershipsError =
   | AccessDeniedException
@@ -9503,27 +9036,13 @@ export type ListMembershipsError =
 /**
  * Lists all memberships resources within the caller's account.
  */
-export const listMemberships: API.OperationMethod<
+export const listMemberships: API.PaginatedOperationMethod<
   ListMembershipsInput,
   ListMembershipsOutput,
   ListMembershipsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListMembershipsInput,
-  ) => stream.Stream<
-    ListMembershipsOutput,
-    ListMembershipsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListMembershipsInput,
-  ) => stream.Stream<
-    MembershipSummary,
-    ListMembershipsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  MembershipSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListMembershipsInput,
   output: ListMembershipsOutput,
   errors: [
@@ -9541,27 +9060,7 @@ export const listMemberships: API.OperationMethod<
     items: "membershipSummaries",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListMembershipsInput,
-  ListMembershipsOutput,
-  ListMembershipsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListMembershipsInput,
-  ) => stream.Stream<
-    ListMembershipsOutput,
-    ListMembershipsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListMembershipsInput,
-  ) => stream.Stream<
-    MembershipSummary,
-    ListMembershipsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListPrivacyBudgetsError =
   | AccessDeniedException
@@ -9573,27 +9072,13 @@ export type ListPrivacyBudgetsError =
 /**
  * Returns detailed information about the privacy budgets in a specified membership.
  */
-export const listPrivacyBudgets: API.OperationMethod<
+export const listPrivacyBudgets: API.PaginatedOperationMethod<
   ListPrivacyBudgetsInput,
   ListPrivacyBudgetsOutput,
   ListPrivacyBudgetsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPrivacyBudgetsInput,
-  ) => stream.Stream<
-    ListPrivacyBudgetsOutput,
-    ListPrivacyBudgetsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPrivacyBudgetsInput,
-  ) => stream.Stream<
-    PrivacyBudgetSummary,
-    ListPrivacyBudgetsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  PrivacyBudgetSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListPrivacyBudgetsInput,
   output: ListPrivacyBudgetsOutput,
   errors: [
@@ -9612,27 +9097,7 @@ export const listPrivacyBudgets: API.OperationMethod<
     items: "privacyBudgetSummaries",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListPrivacyBudgetsInput,
-  ListPrivacyBudgetsOutput,
-  ListPrivacyBudgetsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPrivacyBudgetsInput,
-  ) => stream.Stream<
-    ListPrivacyBudgetsOutput,
-    ListPrivacyBudgetsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPrivacyBudgetsInput,
-  ) => stream.Stream<
-    PrivacyBudgetSummary,
-    ListPrivacyBudgetsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListPrivacyBudgetTemplatesError =
   | AccessDeniedException
@@ -9644,27 +9109,13 @@ export type ListPrivacyBudgetTemplatesError =
 /**
  * Returns detailed information about the privacy budget templates in a specified membership.
  */
-export const listPrivacyBudgetTemplates: API.OperationMethod<
+export const listPrivacyBudgetTemplates: API.PaginatedOperationMethod<
   ListPrivacyBudgetTemplatesInput,
   ListPrivacyBudgetTemplatesOutput,
   ListPrivacyBudgetTemplatesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPrivacyBudgetTemplatesInput,
-  ) => stream.Stream<
-    ListPrivacyBudgetTemplatesOutput,
-    ListPrivacyBudgetTemplatesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPrivacyBudgetTemplatesInput,
-  ) => stream.Stream<
-    PrivacyBudgetTemplateSummary,
-    ListPrivacyBudgetTemplatesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  PrivacyBudgetTemplateSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListPrivacyBudgetTemplatesInput,
   output: ListPrivacyBudgetTemplatesOutput,
   errors: [
@@ -9683,27 +9134,7 @@ export const listPrivacyBudgetTemplates: API.OperationMethod<
     items: "privacyBudgetTemplateSummaries",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListPrivacyBudgetTemplatesInput,
-  ListPrivacyBudgetTemplatesOutput,
-  ListPrivacyBudgetTemplatesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPrivacyBudgetTemplatesInput,
-  ) => stream.Stream<
-    ListPrivacyBudgetTemplatesOutput,
-    ListPrivacyBudgetTemplatesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPrivacyBudgetTemplatesInput,
-  ) => stream.Stream<
-    PrivacyBudgetTemplateSummary,
-    ListPrivacyBudgetTemplatesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListProtectedJobsError =
   | AccessDeniedException
@@ -9715,27 +9146,13 @@ export type ListProtectedJobsError =
 /**
  * Lists protected jobs, sorted by most recent job.
  */
-export const listProtectedJobs: API.OperationMethod<
+export const listProtectedJobs: API.PaginatedOperationMethod<
   ListProtectedJobsInput,
   ListProtectedJobsOutput,
   ListProtectedJobsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListProtectedJobsInput,
-  ) => stream.Stream<
-    ListProtectedJobsOutput,
-    ListProtectedJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListProtectedJobsInput,
-  ) => stream.Stream<
-    ProtectedJobSummary,
-    ListProtectedJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ProtectedJobSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListProtectedJobsInput,
   output: ListProtectedJobsOutput,
   errors: [
@@ -9754,27 +9171,7 @@ export const listProtectedJobs: API.OperationMethod<
     items: "protectedJobs",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListProtectedJobsInput,
-  ListProtectedJobsOutput,
-  ListProtectedJobsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListProtectedJobsInput,
-  ) => stream.Stream<
-    ListProtectedJobsOutput,
-    ListProtectedJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListProtectedJobsInput,
-  ) => stream.Stream<
-    ProtectedJobSummary,
-    ListProtectedJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListProtectedQueriesError =
   | AccessDeniedException
@@ -9786,27 +9183,13 @@ export type ListProtectedQueriesError =
 /**
  * Lists protected queries, sorted by the most recent query.
  */
-export const listProtectedQueries: API.OperationMethod<
+export const listProtectedQueries: API.PaginatedOperationMethod<
   ListProtectedQueriesInput,
   ListProtectedQueriesOutput,
   ListProtectedQueriesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListProtectedQueriesInput,
-  ) => stream.Stream<
-    ListProtectedQueriesOutput,
-    ListProtectedQueriesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListProtectedQueriesInput,
-  ) => stream.Stream<
-    ProtectedQuerySummary,
-    ListProtectedQueriesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ProtectedQuerySummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListProtectedQueriesInput,
   output: ListProtectedQueriesOutput,
   errors: [
@@ -9825,27 +9208,7 @@ export const listProtectedQueries: API.OperationMethod<
     items: "protectedQueries",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListProtectedQueriesInput,
-  ListProtectedQueriesOutput,
-  ListProtectedQueriesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListProtectedQueriesInput,
-  ) => stream.Stream<
-    ListProtectedQueriesOutput,
-    ListProtectedQueriesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListProtectedQueriesInput,
-  ) => stream.Stream<
-    ProtectedQuerySummary,
-    ListProtectedQueriesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListSchemasError =
   | AccessDeniedException
@@ -9857,27 +9220,13 @@ export type ListSchemasError =
 /**
  * Lists the schemas for relations within a collaboration.
  */
-export const listSchemas: API.OperationMethod<
+export const listSchemas: API.PaginatedOperationMethod<
   ListSchemasInput,
   ListSchemasOutput,
   ListSchemasError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSchemasInput,
-  ) => stream.Stream<
-    ListSchemasOutput,
-    ListSchemasError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSchemasInput,
-  ) => stream.Stream<
-    SchemaSummary,
-    ListSchemasError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  SchemaSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListSchemasInput,
   output: ListSchemasOutput,
   errors: [
@@ -9896,27 +9245,7 @@ export const listSchemas: API.OperationMethod<
     items: "schemaSummaries",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListSchemasInput,
-  ListSchemasOutput,
-  ListSchemasError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSchemasInput,
-  ) => stream.Stream<
-    ListSchemasOutput,
-    ListSchemasError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSchemasInput,
-  ) => stream.Stream<
-    SchemaSummary,
-    ListSchemasError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsForResourceError =
   | ResourceNotFoundException
@@ -9929,7 +9258,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceInput,
   ListTagsForResourceOutput,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceInput,
   output: ListTagsForResourceOutput,
@@ -9955,7 +9284,7 @@ export const populateIdMappingTable: API.OperationMethod<
   PopulateIdMappingTableInput,
   PopulateIdMappingTableOutput,
   PopulateIdMappingTableError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PopulateIdMappingTableInput,
   output: PopulateIdMappingTableOutput,
@@ -9987,7 +9316,7 @@ export const previewPrivacyImpact: API.OperationMethod<
   PreviewPrivacyImpactInput,
   PreviewPrivacyImpactOutput,
   PreviewPrivacyImpactError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PreviewPrivacyImpactInput,
   output: PreviewPrivacyImpactOutput,
@@ -10018,7 +9347,7 @@ export const startProtectedJob: API.OperationMethod<
   StartProtectedJobInput,
   StartProtectedJobOutput,
   StartProtectedJobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartProtectedJobInput,
   output: StartProtectedJobOutput,
@@ -10050,7 +9379,7 @@ export const startProtectedQuery: API.OperationMethod<
   StartProtectedQueryInput,
   StartProtectedQueryOutput,
   StartProtectedQueryError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartProtectedQueryInput,
   output: StartProtectedQueryOutput,
@@ -10078,7 +9407,7 @@ export const tagResource: API.OperationMethod<
   TagResourceInput,
   TagResourceOutput,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceInput,
   output: TagResourceOutput,
@@ -10099,7 +9428,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceInput,
   UntagResourceOutput,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceInput,
   output: UntagResourceOutput,
@@ -10123,7 +9452,7 @@ export const updateAnalysisTemplate: API.OperationMethod<
   UpdateAnalysisTemplateInput,
   UpdateAnalysisTemplateOutput,
   UpdateAnalysisTemplateError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateAnalysisTemplateInput,
   output: UpdateAnalysisTemplateOutput,
@@ -10152,7 +9481,7 @@ export const updateCollaboration: API.OperationMethod<
   UpdateCollaborationInput,
   UpdateCollaborationOutput,
   UpdateCollaborationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateCollaborationInput,
   output: UpdateCollaborationOutput,
@@ -10184,7 +9513,7 @@ export const updateCollaborationChangeRequest: API.OperationMethod<
   UpdateCollaborationChangeRequestInput,
   UpdateCollaborationChangeRequestOutput,
   UpdateCollaborationChangeRequestError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateCollaborationChangeRequestInput,
   output: UpdateCollaborationChangeRequestOutput,
@@ -10215,7 +9544,7 @@ export const updateConfiguredAudienceModelAssociation: API.OperationMethod<
   UpdateConfiguredAudienceModelAssociationInput,
   UpdateConfiguredAudienceModelAssociationOutput,
   UpdateConfiguredAudienceModelAssociationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateConfiguredAudienceModelAssociationInput,
   output: UpdateConfiguredAudienceModelAssociationOutput,
@@ -10247,7 +9576,7 @@ export const updateConfiguredTable: API.OperationMethod<
   UpdateConfiguredTableInput,
   UpdateConfiguredTableOutput,
   UpdateConfiguredTableError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateConfiguredTableInput,
   output: UpdateConfiguredTableOutput,
@@ -10280,7 +9609,7 @@ export const updateConfiguredTableAnalysisRule: API.OperationMethod<
   UpdateConfiguredTableAnalysisRuleInput,
   UpdateConfiguredTableAnalysisRuleOutput,
   UpdateConfiguredTableAnalysisRuleError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateConfiguredTableAnalysisRuleInput,
   output: UpdateConfiguredTableAnalysisRuleOutput,
@@ -10312,7 +9641,7 @@ export const updateConfiguredTableAssociation: API.OperationMethod<
   UpdateConfiguredTableAssociationInput,
   UpdateConfiguredTableAssociationOutput,
   UpdateConfiguredTableAssociationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateConfiguredTableAssociationInput,
   output: UpdateConfiguredTableAssociationOutput,
@@ -10344,7 +9673,7 @@ export const updateConfiguredTableAssociationAnalysisRule: API.OperationMethod<
   UpdateConfiguredTableAssociationAnalysisRuleInput,
   UpdateConfiguredTableAssociationAnalysisRuleOutput,
   UpdateConfiguredTableAssociationAnalysisRuleError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateConfiguredTableAssociationAnalysisRuleInput,
   output: UpdateConfiguredTableAssociationAnalysisRuleOutput,
@@ -10375,7 +9704,7 @@ export const updateIdMappingTable: API.OperationMethod<
   UpdateIdMappingTableInput,
   UpdateIdMappingTableOutput,
   UpdateIdMappingTableError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateIdMappingTableInput,
   output: UpdateIdMappingTableOutput,
@@ -10405,7 +9734,7 @@ export const updateIdNamespaceAssociation: API.OperationMethod<
   UpdateIdNamespaceAssociationInput,
   UpdateIdNamespaceAssociationOutput,
   UpdateIdNamespaceAssociationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateIdNamespaceAssociationInput,
   output: UpdateIdNamespaceAssociationOutput,
@@ -10436,7 +9765,7 @@ export const updateMembership: API.OperationMethod<
   UpdateMembershipInput,
   UpdateMembershipOutput,
   UpdateMembershipError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateMembershipInput,
   output: UpdateMembershipOutput,
@@ -10468,7 +9797,7 @@ export const updatePrivacyBudgetTemplate: API.OperationMethod<
   UpdatePrivacyBudgetTemplateInput,
   UpdatePrivacyBudgetTemplateOutput,
   UpdatePrivacyBudgetTemplateError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdatePrivacyBudgetTemplateInput,
   output: UpdatePrivacyBudgetTemplateOutput,
@@ -10500,7 +9829,7 @@ export const updateProtectedJob: API.OperationMethod<
   UpdateProtectedJobInput,
   UpdateProtectedJobOutput,
   UpdateProtectedJobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateProtectedJobInput,
   output: UpdateProtectedJobOutput,
@@ -10532,7 +9861,7 @@ export const updateProtectedQuery: API.OperationMethod<
   UpdateProtectedQueryInput,
   UpdateProtectedQueryOutput,
   UpdateProtectedQueryError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateProtectedQueryInput,
   output: UpdateProtectedQueryOutput,

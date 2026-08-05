@@ -1,6 +1,5 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -8,7 +7,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 const svc = T.AwsApiService({
   sdkId: "Cost Explorer",
   serviceShapeName: "AWSInsightsIndexService",
@@ -207,13 +205,13 @@ const rules = T.EndpointResolver((p, _) => {
 export class AnalysisNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<AnalysisNotFoundException>()(
     "AnalysisNotFoundException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class AnomalyMonitorAlreadyExists
   extends /*@__PURE__*/ S.TaggedErrorClass<AnomalyMonitorAlreadyExists>()(
     "AnomalyMonitorAlreadyExists",
-    {},
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.SyntheticError({
       from: "ValidationException",
       message: { includes: "same monitor name as an existing monitor" },
@@ -222,7 +220,7 @@ export class AnomalyMonitorAlreadyExists
 export class AnomalySubscriptionAlreadyExists
   extends /*@__PURE__*/ S.TaggedErrorClass<AnomalySubscriptionAlreadyExists>()(
     "AnomalySubscriptionAlreadyExists",
-    {},
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.SyntheticError({
       from: "ValidationException",
       message: {
@@ -233,55 +231,58 @@ export class AnomalySubscriptionAlreadyExists
 export class BackfillLimitExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<BackfillLimitExceededException>()(
     "BackfillLimitExceededException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class BillExpirationException
   extends /*@__PURE__*/ S.TaggedErrorClass<BillExpirationException>()(
     "BillExpirationException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class BillingViewHealthStatusException
   extends /*@__PURE__*/ S.TaggedErrorClass<BillingViewHealthStatusException>()(
     "BillingViewHealthStatusException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class DataUnavailableException
   extends /*@__PURE__*/ S.TaggedErrorClass<DataUnavailableException>()(
     "DataUnavailableException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class GenerationExistsException
   extends /*@__PURE__*/ S.TaggedErrorClass<GenerationExistsException>()(
     "GenerationExistsException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class InvalidNextTokenException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidNextTokenException>()(
     "InvalidNextTokenException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class LimitExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<LimitExceededException>()(
     "LimitExceededException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class RequestChangedException
   extends /*@__PURE__*/ S.TaggedErrorClass<RequestChangedException>()(
     "RequestChangedException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { Message: S.optional(S.String), ResourceName: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      ResourceName: S.optional(S.String),
+    },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class RightsizingRecommendationNotEnabled
   extends /*@__PURE__*/ S.TaggedErrorClass<RightsizingRecommendationNotEnabled>()(
     "RightsizingRecommendationNotEnabled",
-    {},
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.SyntheticError({
       from: "AccessDeniedException",
       message: { includes: "opt-in only feature" },
@@ -290,31 +291,34 @@ export class RightsizingRecommendationNotEnabled
 export class ServiceQuotaExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
     "ServiceQuotaExceededException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(402),
   ).pipe(C.withQuotaError) {}
 export class TooManyTagsException
   extends /*@__PURE__*/ S.TaggedErrorClass<TooManyTagsException>()(
     "TooManyTagsException",
-    { Message: S.optional(S.String), ResourceName: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      ResourceName: S.optional(S.String),
+    },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class UnknownMonitorException
   extends /*@__PURE__*/ S.TaggedErrorClass<UnknownMonitorException>()(
     "UnknownMonitorException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class UnknownSubscriptionException
   extends /*@__PURE__*/ S.TaggedErrorClass<UnknownSubscriptionException>()(
     "UnknownSubscriptionException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class UnresolvableUsageUnitException
   extends /*@__PURE__*/ S.TaggedErrorClass<UnresolvableUsageUnitException>()(
     "UnresolvableUsageUnitException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export type YearMonthDay = string;
 export type MonitorType = "DIMENSIONAL" | "CUSTOM" | (string & {});
@@ -4067,7 +4071,7 @@ export const createAnomalyMonitor: API.OperationMethod<
   CreateAnomalyMonitorRequest,
   CreateAnomalyMonitorResponse,
   CreateAnomalyMonitorError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateAnomalyMonitorRequest,
   output: CreateAnomalyMonitorResponse,
@@ -4091,7 +4095,7 @@ export const createAnomalySubscription: API.OperationMethod<
   CreateAnomalySubscriptionRequest,
   CreateAnomalySubscriptionResponse,
   CreateAnomalySubscriptionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateAnomalySubscriptionRequest,
   output: CreateAnomalySubscriptionResponse,
@@ -4116,7 +4120,7 @@ export const createCostCategoryDefinition: API.OperationMethod<
   CreateCostCategoryDefinitionRequest,
   CreateCostCategoryDefinitionResponse,
   CreateCostCategoryDefinitionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateCostCategoryDefinitionRequest,
   output: CreateCostCategoryDefinitionResponse,
@@ -4137,7 +4141,7 @@ export const deleteAnomalyMonitor: API.OperationMethod<
   DeleteAnomalyMonitorRequest,
   DeleteAnomalyMonitorResponse,
   DeleteAnomalyMonitorError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteAnomalyMonitorRequest,
   output: DeleteAnomalyMonitorResponse,
@@ -4158,7 +4162,7 @@ export const deleteAnomalySubscription: API.OperationMethod<
   DeleteAnomalySubscriptionRequest,
   DeleteAnomalySubscriptionResponse,
   DeleteAnomalySubscriptionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteAnomalySubscriptionRequest,
   output: DeleteAnomalySubscriptionResponse,
@@ -4180,7 +4184,7 @@ export const deleteCostCategoryDefinition: API.OperationMethod<
   DeleteCostCategoryDefinitionRequest,
   DeleteCostCategoryDefinitionResponse,
   DeleteCostCategoryDefinitionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteCostCategoryDefinitionRequest,
   output: DeleteCostCategoryDefinitionResponse,
@@ -4207,7 +4211,7 @@ export const describeCostCategoryDefinition: API.OperationMethod<
   DescribeCostCategoryDefinitionRequest,
   DescribeCostCategoryDefinitionResponse,
   DescribeCostCategoryDefinitionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeCostCategoryDefinitionRequest,
   output: DescribeCostCategoryDefinitionResponse,
@@ -4226,27 +4230,13 @@ export type GetAnomaliesError =
  * specified by the `DateInterval` object. Anomalies are available for up to 90
  * days.
  */
-export const getAnomalies: API.OperationMethod<
+export const getAnomalies: API.PaginatedOperationMethod<
   GetAnomaliesRequest,
   GetAnomaliesResponse,
   GetAnomaliesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetAnomaliesRequest,
-  ) => stream.Stream<
-    GetAnomaliesResponse,
-    GetAnomaliesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetAnomaliesRequest,
-  ) => stream.Stream<
-    Anomaly,
-    GetAnomaliesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Anomaly
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetAnomaliesRequest,
   output: GetAnomaliesResponse,
   errors: [InvalidNextTokenException, LimitExceededException],
@@ -4259,27 +4249,7 @@ export const getAnomalies: API.OperationMethod<
     items: "Anomalies",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetAnomaliesRequest,
-  GetAnomaliesResponse,
-  GetAnomaliesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetAnomaliesRequest,
-  ) => stream.Stream<
-    GetAnomaliesResponse,
-    GetAnomaliesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetAnomaliesRequest,
-  ) => stream.Stream<
-    Anomaly,
-    GetAnomaliesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetAnomalyMonitorsError =
   | InvalidNextTokenException
@@ -4290,27 +4260,13 @@ export type GetAnomalyMonitorsError =
  * Retrieves the cost anomaly monitor definitions for your account. You can filter using a
  * list of cost anomaly monitor Amazon Resource Names (ARNs).
  */
-export const getAnomalyMonitors: API.OperationMethod<
+export const getAnomalyMonitors: API.PaginatedOperationMethod<
   GetAnomalyMonitorsRequest,
   GetAnomalyMonitorsResponse,
   GetAnomalyMonitorsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetAnomalyMonitorsRequest,
-  ) => stream.Stream<
-    GetAnomalyMonitorsResponse,
-    GetAnomalyMonitorsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetAnomalyMonitorsRequest,
-  ) => stream.Stream<
-    AnomalyMonitor,
-    GetAnomalyMonitorsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  AnomalyMonitor
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetAnomalyMonitorsRequest,
   output: GetAnomalyMonitorsResponse,
   errors: [
@@ -4327,27 +4283,7 @@ export const getAnomalyMonitors: API.OperationMethod<
     items: "AnomalyMonitors",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetAnomalyMonitorsRequest,
-  GetAnomalyMonitorsResponse,
-  GetAnomalyMonitorsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetAnomalyMonitorsRequest,
-  ) => stream.Stream<
-    GetAnomalyMonitorsResponse,
-    GetAnomalyMonitorsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetAnomalyMonitorsRequest,
-  ) => stream.Stream<
-    AnomalyMonitor,
-    GetAnomalyMonitorsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetAnomalySubscriptionsError =
   | InvalidNextTokenException
@@ -4358,27 +4294,13 @@ export type GetAnomalySubscriptionsError =
  * Retrieves the cost anomaly subscription objects for your account. You can filter using a
  * list of cost anomaly monitor Amazon Resource Names (ARNs).
  */
-export const getAnomalySubscriptions: API.OperationMethod<
+export const getAnomalySubscriptions: API.PaginatedOperationMethod<
   GetAnomalySubscriptionsRequest,
   GetAnomalySubscriptionsResponse,
   GetAnomalySubscriptionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetAnomalySubscriptionsRequest,
-  ) => stream.Stream<
-    GetAnomalySubscriptionsResponse,
-    GetAnomalySubscriptionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetAnomalySubscriptionsRequest,
-  ) => stream.Stream<
-    AnomalySubscription,
-    GetAnomalySubscriptionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  AnomalySubscription
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetAnomalySubscriptionsRequest,
   output: GetAnomalySubscriptionsResponse,
   errors: [
@@ -4395,27 +4317,7 @@ export const getAnomalySubscriptions: API.OperationMethod<
     items: "AnomalySubscriptions",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetAnomalySubscriptionsRequest,
-  GetAnomalySubscriptionsResponse,
-  GetAnomalySubscriptionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetAnomalySubscriptionsRequest,
-  ) => stream.Stream<
-    GetAnomalySubscriptionsResponse,
-    GetAnomalySubscriptionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetAnomalySubscriptionsRequest,
-  ) => stream.Stream<
-    AnomalySubscription,
-    GetAnomalySubscriptionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetApproximateUsageRecordsError =
   | DataUnavailableException
@@ -4429,7 +4331,7 @@ export const getApproximateUsageRecords: API.OperationMethod<
   GetApproximateUsageRecordsRequest,
   GetApproximateUsageRecordsResponse,
   GetApproximateUsageRecordsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetApproximateUsageRecordsRequest,
   output: GetApproximateUsageRecordsResponse,
@@ -4452,7 +4354,7 @@ export const getCommitmentPurchaseAnalysis: API.OperationMethod<
   GetCommitmentPurchaseAnalysisRequest,
   GetCommitmentPurchaseAnalysisResponse,
   GetCommitmentPurchaseAnalysisError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetCommitmentPurchaseAnalysisRequest,
   output: GetCommitmentPurchaseAnalysisResponse,
@@ -4489,7 +4391,7 @@ export const getCostAndUsage: API.OperationMethod<
   GetCostAndUsageRequest,
   GetCostAndUsageResponse,
   GetCostAndUsageError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetCostAndUsageRequest,
   output: GetCostAndUsageResponse,
@@ -4519,27 +4421,13 @@ export type GetCostAndUsageComparisonsError =
  * 13 months. If you have enabled multi-year data at monthly granularity, you can go back up to
  * 38 months.
  */
-export const getCostAndUsageComparisons: API.OperationMethod<
+export const getCostAndUsageComparisons: API.PaginatedOperationMethod<
   GetCostAndUsageComparisonsRequest,
   GetCostAndUsageComparisonsResponse,
   GetCostAndUsageComparisonsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetCostAndUsageComparisonsRequest,
-  ) => stream.Stream<
-    GetCostAndUsageComparisonsResponse,
-    GetCostAndUsageComparisonsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetCostAndUsageComparisonsRequest,
-  ) => stream.Stream<
-    CostAndUsageComparison,
-    GetCostAndUsageComparisonsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  CostAndUsageComparison
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetCostAndUsageComparisonsRequest,
   output: GetCostAndUsageComparisonsResponse,
   errors: [
@@ -4558,27 +4446,7 @@ export const getCostAndUsageComparisons: API.OperationMethod<
     items: "CostAndUsageComparisons",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetCostAndUsageComparisonsRequest,
-  GetCostAndUsageComparisonsResponse,
-  GetCostAndUsageComparisonsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetCostAndUsageComparisonsRequest,
-  ) => stream.Stream<
-    GetCostAndUsageComparisonsResponse,
-    GetCostAndUsageComparisonsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetCostAndUsageComparisonsRequest,
-  ) => stream.Stream<
-    CostAndUsageComparison,
-    GetCostAndUsageComparisonsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetCostAndUsageWithResourcesError =
   | BillExpirationException
@@ -4609,7 +4477,7 @@ export const getCostAndUsageWithResources: API.OperationMethod<
   GetCostAndUsageWithResourcesRequest,
   GetCostAndUsageWithResourcesResponse,
   GetCostAndUsageWithResourcesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetCostAndUsageWithResourcesRequest,
   output: GetCostAndUsageWithResourcesResponse,
@@ -4646,7 +4514,7 @@ export const getCostCategories: API.OperationMethod<
   GetCostCategoriesRequest,
   GetCostCategoriesResponse,
   GetCostCategoriesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetCostCategoriesRequest,
   output: GetCostCategoriesResponse,
@@ -4676,27 +4544,13 @@ export type GetCostComparisonDriversError =
  * months, such as usage changes, discount changes, and commitment-based savings. If you have
  * enabled multi-year data at monthly granularity, you can go back up to 38 months.
  */
-export const getCostComparisonDrivers: API.OperationMethod<
+export const getCostComparisonDrivers: API.PaginatedOperationMethod<
   GetCostComparisonDriversRequest,
   GetCostComparisonDriversResponse,
   GetCostComparisonDriversError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetCostComparisonDriversRequest,
-  ) => stream.Stream<
-    GetCostComparisonDriversResponse,
-    GetCostComparisonDriversError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetCostComparisonDriversRequest,
-  ) => stream.Stream<
-    CostComparisonDriver,
-    GetCostComparisonDriversError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  CostComparisonDriver
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetCostComparisonDriversRequest,
   output: GetCostComparisonDriversResponse,
   errors: [
@@ -4715,27 +4569,7 @@ export const getCostComparisonDrivers: API.OperationMethod<
     items: "CostComparisonDrivers",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetCostComparisonDriversRequest,
-  GetCostComparisonDriversResponse,
-  GetCostComparisonDriversError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetCostComparisonDriversRequest,
-  ) => stream.Stream<
-    GetCostComparisonDriversResponse,
-    GetCostComparisonDriversError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetCostComparisonDriversRequest,
-  ) => stream.Stream<
-    CostComparisonDriver,
-    GetCostComparisonDriversError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetCostForecastError =
   | BillingViewHealthStatusException
@@ -4751,7 +4585,7 @@ export const getCostForecast: API.OperationMethod<
   GetCostForecastRequest,
   GetCostForecastResponse,
   GetCostForecastError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetCostForecastRequest,
   output: GetCostForecastResponse,
@@ -4783,7 +4617,7 @@ export const getDimensionValues: API.OperationMethod<
   GetDimensionValuesRequest,
   GetDimensionValuesResponse,
   GetDimensionValuesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetDimensionValuesRequest,
   output: GetDimensionValuesResponse,
@@ -4845,7 +4679,7 @@ export const getReservationCoverage: API.OperationMethod<
   GetReservationCoverageRequest,
   GetReservationCoverageResponse,
   GetReservationCoverageError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetReservationCoverageRequest,
   output: GetReservationCoverageResponse,
@@ -4884,27 +4718,13 @@ export type GetReservationPurchaseRecommendationError =
  * example, your RI recommendation is for `c4.large` because that is the smallest size
  * instance in the c4 instance family.
  */
-export const getReservationPurchaseRecommendation: API.OperationMethod<
+export const getReservationPurchaseRecommendation: API.PaginatedOperationMethod<
   GetReservationPurchaseRecommendationRequest,
   GetReservationPurchaseRecommendationResponse,
   GetReservationPurchaseRecommendationError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetReservationPurchaseRecommendationRequest,
-  ) => stream.Stream<
-    GetReservationPurchaseRecommendationResponse,
-    GetReservationPurchaseRecommendationError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetReservationPurchaseRecommendationRequest,
-  ) => stream.Stream<
-    ReservationPurchaseRecommendation,
-    GetReservationPurchaseRecommendationError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ReservationPurchaseRecommendation
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetReservationPurchaseRecommendationRequest,
   output: GetReservationPurchaseRecommendationResponse,
   errors: [
@@ -4921,27 +4741,7 @@ export const getReservationPurchaseRecommendation: API.OperationMethod<
     items: "Recommendations",
     pageSize: "PageSize",
   } as const,
-})) as any as API.OperationMethod<
-  GetReservationPurchaseRecommendationRequest,
-  GetReservationPurchaseRecommendationResponse,
-  GetReservationPurchaseRecommendationError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetReservationPurchaseRecommendationRequest,
-  ) => stream.Stream<
-    GetReservationPurchaseRecommendationResponse,
-    GetReservationPurchaseRecommendationError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetReservationPurchaseRecommendationRequest,
-  ) => stream.Stream<
-    ReservationPurchaseRecommendation,
-    GetReservationPurchaseRecommendationError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetReservationUtilizationError =
   | DataUnavailableException
@@ -4958,7 +4758,7 @@ export const getReservationUtilization: API.OperationMethod<
   GetReservationUtilizationRequest,
   GetReservationUtilizationResponse,
   GetReservationUtilizationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetReservationUtilizationRequest,
   output: GetReservationUtilizationResponse,
@@ -4985,27 +4785,13 @@ export type GetRightsizingRecommendationError =
  * providing savings detail and metrics. For more information about calculation and function, see
  * Optimizing Your Cost with Rightsizing Recommendations in the *Billing and Cost Management User Guide*.
  */
-export const getRightsizingRecommendation: API.OperationMethod<
+export const getRightsizingRecommendation: API.PaginatedOperationMethod<
   GetRightsizingRecommendationRequest,
   GetRightsizingRecommendationResponse,
   GetRightsizingRecommendationError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetRightsizingRecommendationRequest,
-  ) => stream.Stream<
-    GetRightsizingRecommendationResponse,
-    GetRightsizingRecommendationError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetRightsizingRecommendationRequest,
-  ) => stream.Stream<
-    RightsizingRecommendation,
-    GetRightsizingRecommendationError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  RightsizingRecommendation
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetRightsizingRecommendationRequest,
   output: GetRightsizingRecommendationResponse,
   errors: [
@@ -5022,27 +4808,7 @@ export const getRightsizingRecommendation: API.OperationMethod<
     items: "RightsizingRecommendations",
     pageSize: "PageSize",
   } as const,
-})) as any as API.OperationMethod<
-  GetRightsizingRecommendationRequest,
-  GetRightsizingRecommendationResponse,
-  GetRightsizingRecommendationError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetRightsizingRecommendationRequest,
-  ) => stream.Stream<
-    GetRightsizingRecommendationResponse,
-    GetRightsizingRecommendationError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetRightsizingRecommendationRequest,
-  ) => stream.Stream<
-    RightsizingRecommendation,
-    GetRightsizingRecommendationError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetSavingsPlanPurchaseRecommendationDetailsError =
   | DataUnavailableException
@@ -5056,7 +4822,7 @@ export const getSavingsPlanPurchaseRecommendationDetails: API.OperationMethod<
   GetSavingsPlanPurchaseRecommendationDetailsRequest,
   GetSavingsPlanPurchaseRecommendationDetailsResponse,
   GetSavingsPlanPurchaseRecommendationDetailsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetSavingsPlanPurchaseRecommendationDetailsRequest,
   output: GetSavingsPlanPurchaseRecommendationDetailsResponse,
@@ -5089,27 +4855,13 @@ export type GetSavingsPlansCoverageError =
  * To determine valid values for a dimension, use the `GetDimensionValues`
  * operation.
  */
-export const getSavingsPlansCoverage: API.OperationMethod<
+export const getSavingsPlansCoverage: API.PaginatedOperationMethod<
   GetSavingsPlansCoverageRequest,
   GetSavingsPlansCoverageResponse,
   GetSavingsPlansCoverageError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetSavingsPlansCoverageRequest,
-  ) => stream.Stream<
-    GetSavingsPlansCoverageResponse,
-    GetSavingsPlansCoverageError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetSavingsPlansCoverageRequest,
-  ) => stream.Stream<
-    unknown,
-    GetSavingsPlansCoverageError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetSavingsPlansCoverageRequest,
   output: GetSavingsPlansCoverageResponse,
   errors: [
@@ -5125,27 +4877,7 @@ export const getSavingsPlansCoverage: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetSavingsPlansCoverageRequest,
-  GetSavingsPlansCoverageResponse,
-  GetSavingsPlansCoverageError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetSavingsPlansCoverageRequest,
-  ) => stream.Stream<
-    GetSavingsPlansCoverageResponse,
-    GetSavingsPlansCoverageError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetSavingsPlansCoverageRequest,
-  ) => stream.Stream<
-    unknown,
-    GetSavingsPlansCoverageError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetSavingsPlansPurchaseRecommendationError =
   | InvalidNextTokenException
@@ -5161,7 +4893,7 @@ export const getSavingsPlansPurchaseRecommendation: API.OperationMethod<
   GetSavingsPlansPurchaseRecommendationRequest,
   GetSavingsPlansPurchaseRecommendationResponse,
   GetSavingsPlansPurchaseRecommendationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetSavingsPlansPurchaseRecommendationRequest,
   output: GetSavingsPlansPurchaseRecommendationResponse,
@@ -5188,7 +4920,7 @@ export const getSavingsPlansUtilization: API.OperationMethod<
   GetSavingsPlansUtilizationRequest,
   GetSavingsPlansUtilizationResponse,
   GetSavingsPlansUtilizationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetSavingsPlansUtilizationRequest,
   output: GetSavingsPlansUtilizationResponse,
@@ -5215,27 +4947,13 @@ export type GetSavingsPlansUtilizationDetailsError =
  * `GetSavingsPlanUtilizationDetails` internally groups data by
  * `SavingsPlansArn`.
  */
-export const getSavingsPlansUtilizationDetails: API.OperationMethod<
+export const getSavingsPlansUtilizationDetails: API.PaginatedOperationMethod<
   GetSavingsPlansUtilizationDetailsRequest,
   GetSavingsPlansUtilizationDetailsResponse,
   GetSavingsPlansUtilizationDetailsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetSavingsPlansUtilizationDetailsRequest,
-  ) => stream.Stream<
-    GetSavingsPlansUtilizationDetailsResponse,
-    GetSavingsPlansUtilizationDetailsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetSavingsPlansUtilizationDetailsRequest,
-  ) => stream.Stream<
-    unknown,
-    GetSavingsPlansUtilizationDetailsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetSavingsPlansUtilizationDetailsRequest,
   output: GetSavingsPlansUtilizationDetailsResponse,
   errors: [
@@ -5251,27 +4969,7 @@ export const getSavingsPlansUtilizationDetails: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetSavingsPlansUtilizationDetailsRequest,
-  GetSavingsPlansUtilizationDetailsResponse,
-  GetSavingsPlansUtilizationDetailsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetSavingsPlansUtilizationDetailsRequest,
-  ) => stream.Stream<
-    GetSavingsPlansUtilizationDetailsResponse,
-    GetSavingsPlansUtilizationDetailsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetSavingsPlansUtilizationDetailsRequest,
-  ) => stream.Stream<
-    unknown,
-    GetSavingsPlansUtilizationDetailsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetTagsError =
   | BillExpirationException
@@ -5290,7 +4988,7 @@ export const getTags: API.OperationMethod<
   GetTagsRequest,
   GetTagsResponse,
   GetTagsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetTagsRequest,
   output: GetTagsResponse,
@@ -5323,7 +5021,7 @@ export const getUsageForecast: API.OperationMethod<
   GetUsageForecastRequest,
   GetUsageForecastResponse,
   GetUsageForecastError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetUsageForecastRequest,
   output: GetUsageForecastResponse,
@@ -5347,27 +5045,13 @@ export type ListCommitmentPurchaseAnalysesError =
 /**
  * Lists the commitment purchase analyses for your account.
  */
-export const listCommitmentPurchaseAnalyses: API.OperationMethod<
+export const listCommitmentPurchaseAnalyses: API.PaginatedOperationMethod<
   ListCommitmentPurchaseAnalysesRequest,
   ListCommitmentPurchaseAnalysesResponse,
   ListCommitmentPurchaseAnalysesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCommitmentPurchaseAnalysesRequest,
-  ) => stream.Stream<
-    ListCommitmentPurchaseAnalysesResponse,
-    ListCommitmentPurchaseAnalysesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCommitmentPurchaseAnalysesRequest,
-  ) => stream.Stream<
-    AnalysisSummary,
-    ListCommitmentPurchaseAnalysesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  AnalysisSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListCommitmentPurchaseAnalysesRequest,
   output: ListCommitmentPurchaseAnalysesResponse,
   errors: [
@@ -5384,27 +5068,7 @@ export const listCommitmentPurchaseAnalyses: API.OperationMethod<
     items: "AnalysisSummaryList",
     pageSize: "PageSize",
   } as const,
-})) as any as API.OperationMethod<
-  ListCommitmentPurchaseAnalysesRequest,
-  ListCommitmentPurchaseAnalysesResponse,
-  ListCommitmentPurchaseAnalysesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCommitmentPurchaseAnalysesRequest,
-  ) => stream.Stream<
-    ListCommitmentPurchaseAnalysesResponse,
-    ListCommitmentPurchaseAnalysesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCommitmentPurchaseAnalysesRequest,
-  ) => stream.Stream<
-    AnalysisSummary,
-    ListCommitmentPurchaseAnalysesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListCostAllocationTagBackfillHistoryError =
   | InvalidNextTokenException
@@ -5413,27 +5077,13 @@ export type ListCostAllocationTagBackfillHistoryError =
 /**
  * Retrieves a list of your historical cost allocation tag backfill requests.
  */
-export const listCostAllocationTagBackfillHistory: API.OperationMethod<
+export const listCostAllocationTagBackfillHistory: API.PaginatedOperationMethod<
   ListCostAllocationTagBackfillHistoryRequest,
   ListCostAllocationTagBackfillHistoryResponse,
   ListCostAllocationTagBackfillHistoryError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCostAllocationTagBackfillHistoryRequest,
-  ) => stream.Stream<
-    ListCostAllocationTagBackfillHistoryResponse,
-    ListCostAllocationTagBackfillHistoryError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCostAllocationTagBackfillHistoryRequest,
-  ) => stream.Stream<
-    CostAllocationTagBackfillRequest,
-    ListCostAllocationTagBackfillHistoryError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  CostAllocationTagBackfillRequest
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListCostAllocationTagBackfillHistoryRequest,
   output: ListCostAllocationTagBackfillHistoryResponse,
   errors: [InvalidNextTokenException, LimitExceededException],
@@ -5446,27 +5096,7 @@ export const listCostAllocationTagBackfillHistory: API.OperationMethod<
     items: "BackfillRequests",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListCostAllocationTagBackfillHistoryRequest,
-  ListCostAllocationTagBackfillHistoryResponse,
-  ListCostAllocationTagBackfillHistoryError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCostAllocationTagBackfillHistoryRequest,
-  ) => stream.Stream<
-    ListCostAllocationTagBackfillHistoryResponse,
-    ListCostAllocationTagBackfillHistoryError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCostAllocationTagBackfillHistoryRequest,
-  ) => stream.Stream<
-    CostAllocationTagBackfillRequest,
-    ListCostAllocationTagBackfillHistoryError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListCostAllocationTagsError =
   | InvalidNextTokenException
@@ -5476,27 +5106,13 @@ export type ListCostAllocationTagsError =
  * Get a list of cost allocation tags. All inputs in the API are optional and serve as
  * filters. By default, all cost allocation tags are returned.
  */
-export const listCostAllocationTags: API.OperationMethod<
+export const listCostAllocationTags: API.PaginatedOperationMethod<
   ListCostAllocationTagsRequest,
   ListCostAllocationTagsResponse,
   ListCostAllocationTagsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCostAllocationTagsRequest,
-  ) => stream.Stream<
-    ListCostAllocationTagsResponse,
-    ListCostAllocationTagsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCostAllocationTagsRequest,
-  ) => stream.Stream<
-    CostAllocationTag,
-    ListCostAllocationTagsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  CostAllocationTag
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListCostAllocationTagsRequest,
   output: ListCostAllocationTagsResponse,
   errors: [InvalidNextTokenException, LimitExceededException],
@@ -5509,27 +5125,7 @@ export const listCostAllocationTags: API.OperationMethod<
     items: "CostAllocationTags",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListCostAllocationTagsRequest,
-  ListCostAllocationTagsResponse,
-  ListCostAllocationTagsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCostAllocationTagsRequest,
-  ) => stream.Stream<
-    ListCostAllocationTagsResponse,
-    ListCostAllocationTagsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCostAllocationTagsRequest,
-  ) => stream.Stream<
-    CostAllocationTag,
-    ListCostAllocationTagsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListCostCategoryDefinitionsError =
   | LimitExceededException
@@ -5543,27 +5139,13 @@ export type ListCostCategoryDefinitionsError =
  * is omitted in the response. `ListCostCategoryDefinitions` supports pagination. The
  * request can have a `MaxResults` range up to 100.
  */
-export const listCostCategoryDefinitions: API.OperationMethod<
+export const listCostCategoryDefinitions: API.PaginatedOperationMethod<
   ListCostCategoryDefinitionsRequest,
   ListCostCategoryDefinitionsResponse,
   ListCostCategoryDefinitionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCostCategoryDefinitionsRequest,
-  ) => stream.Stream<
-    ListCostCategoryDefinitionsResponse,
-    ListCostCategoryDefinitionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCostCategoryDefinitionsRequest,
-  ) => stream.Stream<
-    CostCategoryReference,
-    ListCostCategoryDefinitionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  CostCategoryReference
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListCostCategoryDefinitionsRequest,
   output: ListCostCategoryDefinitionsResponse,
   errors: [LimitExceededException],
@@ -5576,27 +5158,7 @@ export const listCostCategoryDefinitions: API.OperationMethod<
     items: "CostCategoryReferences",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListCostCategoryDefinitionsRequest,
-  ListCostCategoryDefinitionsResponse,
-  ListCostCategoryDefinitionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCostCategoryDefinitionsRequest,
-  ) => stream.Stream<
-    ListCostCategoryDefinitionsResponse,
-    ListCostCategoryDefinitionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCostCategoryDefinitionsRequest,
-  ) => stream.Stream<
-    CostCategoryReference,
-    ListCostCategoryDefinitionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListCostCategoryResourceAssociationsError =
   | LimitExceededException
@@ -5605,27 +5167,13 @@ export type ListCostCategoryResourceAssociationsError =
 /**
  * Returns resource associations of all cost categories defined in the account. You have the option to use `CostCategoryArn` to get the association for a specific cost category. `ListCostCategoryResourceAssociations` supports pagination. The request can have a `MaxResults` range up to 100.
  */
-export const listCostCategoryResourceAssociations: API.OperationMethod<
+export const listCostCategoryResourceAssociations: API.PaginatedOperationMethod<
   ListCostCategoryResourceAssociationsRequest,
   ListCostCategoryResourceAssociationsResponse,
   ListCostCategoryResourceAssociationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCostCategoryResourceAssociationsRequest,
-  ) => stream.Stream<
-    ListCostCategoryResourceAssociationsResponse,
-    ListCostCategoryResourceAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCostCategoryResourceAssociationsRequest,
-  ) => stream.Stream<
-    CostCategoryResourceAssociation,
-    ListCostCategoryResourceAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  CostCategoryResourceAssociation
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListCostCategoryResourceAssociationsRequest,
   output: ListCostCategoryResourceAssociationsResponse,
   errors: [LimitExceededException, ResourceNotFoundException],
@@ -5638,27 +5186,7 @@ export const listCostCategoryResourceAssociations: API.OperationMethod<
     items: "CostCategoryResourceAssociations",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListCostCategoryResourceAssociationsRequest,
-  ListCostCategoryResourceAssociationsResponse,
-  ListCostCategoryResourceAssociationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCostCategoryResourceAssociationsRequest,
-  ) => stream.Stream<
-    ListCostCategoryResourceAssociationsResponse,
-    ListCostCategoryResourceAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCostCategoryResourceAssociationsRequest,
-  ) => stream.Stream<
-    CostCategoryResourceAssociation,
-    ListCostCategoryResourceAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListSavingsPlansPurchaseRecommendationGenerationError =
   | DataUnavailableException
@@ -5669,27 +5197,13 @@ export type ListSavingsPlansPurchaseRecommendationGenerationError =
  * Retrieves a list of your historical recommendation generations within the past 30
  * days.
  */
-export const listSavingsPlansPurchaseRecommendationGeneration: API.OperationMethod<
+export const listSavingsPlansPurchaseRecommendationGeneration: API.PaginatedOperationMethod<
   ListSavingsPlansPurchaseRecommendationGenerationRequest,
   ListSavingsPlansPurchaseRecommendationGenerationResponse,
   ListSavingsPlansPurchaseRecommendationGenerationError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSavingsPlansPurchaseRecommendationGenerationRequest,
-  ) => stream.Stream<
-    ListSavingsPlansPurchaseRecommendationGenerationResponse,
-    ListSavingsPlansPurchaseRecommendationGenerationError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSavingsPlansPurchaseRecommendationGenerationRequest,
-  ) => stream.Stream<
-    GenerationSummary,
-    ListSavingsPlansPurchaseRecommendationGenerationError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  GenerationSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListSavingsPlansPurchaseRecommendationGenerationRequest,
   output: ListSavingsPlansPurchaseRecommendationGenerationResponse,
   errors: [
@@ -5706,27 +5220,7 @@ export const listSavingsPlansPurchaseRecommendationGeneration: API.OperationMeth
     items: "GenerationSummaryList",
     pageSize: "PageSize",
   } as const,
-})) as any as API.OperationMethod<
-  ListSavingsPlansPurchaseRecommendationGenerationRequest,
-  ListSavingsPlansPurchaseRecommendationGenerationResponse,
-  ListSavingsPlansPurchaseRecommendationGenerationError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSavingsPlansPurchaseRecommendationGenerationRequest,
-  ) => stream.Stream<
-    ListSavingsPlansPurchaseRecommendationGenerationResponse,
-    ListSavingsPlansPurchaseRecommendationGenerationError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSavingsPlansPurchaseRecommendationGenerationRequest,
-  ) => stream.Stream<
-    GenerationSummary,
-    ListSavingsPlansPurchaseRecommendationGenerationError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsForResourceError =
   | LimitExceededException
@@ -5740,7 +5234,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceRequest,
   ListTagsForResourceResponse,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -5758,7 +5252,7 @@ export const provideAnomalyFeedback: API.OperationMethod<
   ProvideAnomalyFeedbackRequest,
   ProvideAnomalyFeedbackResponse,
   ProvideAnomalyFeedbackError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ProvideAnomalyFeedbackRequest,
   output: ProvideAnomalyFeedbackResponse,
@@ -5783,7 +5277,7 @@ export const startCommitmentPurchaseAnalysis: API.OperationMethod<
   StartCommitmentPurchaseAnalysisRequest,
   StartCommitmentPurchaseAnalysisResponse,
   StartCommitmentPurchaseAnalysisError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartCommitmentPurchaseAnalysisRequest,
   output: StartCommitmentPurchaseAnalysisResponse,
@@ -5811,7 +5305,7 @@ export const startCostAllocationTagBackfill: API.OperationMethod<
   StartCostAllocationTagBackfillRequest,
   StartCostAllocationTagBackfillResponse,
   StartCostAllocationTagBackfillError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartCostAllocationTagBackfillRequest,
   output: StartCostAllocationTagBackfillResponse,
@@ -5840,7 +5334,7 @@ export const startSavingsPlansPurchaseRecommendationGeneration: API.OperationMet
   StartSavingsPlansPurchaseRecommendationGenerationRequest,
   StartSavingsPlansPurchaseRecommendationGenerationResponse,
   StartSavingsPlansPurchaseRecommendationGenerationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartSavingsPlansPurchaseRecommendationGenerationRequest,
   output: StartSavingsPlansPurchaseRecommendationGenerationResponse,
@@ -5875,7 +5369,7 @@ export const tagResource: API.OperationMethod<
   TagResourceRequest,
   TagResourceResponse,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -5901,7 +5395,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceRequest,
   UntagResourceResponse,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -5923,7 +5417,7 @@ export const updateAnomalyMonitor: API.OperationMethod<
   UpdateAnomalyMonitorRequest,
   UpdateAnomalyMonitorResponse,
   UpdateAnomalyMonitorError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateAnomalyMonitorRequest,
   output: UpdateAnomalyMonitorResponse,
@@ -5949,7 +5443,7 @@ export const updateAnomalySubscription: API.OperationMethod<
   UpdateAnomalySubscriptionRequest,
   UpdateAnomalySubscriptionResponse,
   UpdateAnomalySubscriptionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateAnomalySubscriptionRequest,
   output: UpdateAnomalySubscriptionResponse,
@@ -5976,7 +5470,7 @@ export const updateCostAllocationTagsStatus: API.OperationMethod<
   UpdateCostAllocationTagsStatusRequest,
   UpdateCostAllocationTagsStatusResponse,
   UpdateCostAllocationTagsStatusError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateCostAllocationTagsStatusRequest,
   output: UpdateCostAllocationTagsStatusResponse,
@@ -6000,7 +5494,7 @@ export const updateCostCategoryDefinition: API.OperationMethod<
   UpdateCostCategoryDefinitionRequest,
   UpdateCostCategoryDefinitionResponse,
   UpdateCostCategoryDefinitionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateCostCategoryDefinitionRequest,
   output: UpdateCostCategoryDefinitionResponse,

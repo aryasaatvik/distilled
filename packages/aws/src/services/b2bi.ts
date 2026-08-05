@@ -1,7 +1,6 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as redacted from "effect/Redacted";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -9,7 +8,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 import { SensitiveString } from "../sensitive.ts";
 const svc = T.AwsApiService({ sdkId: "b2bi", serviceShapeName: "B2BI" });
 const auth = T.AwsAuthSigv4({ name: "b2bi" });
@@ -87,20 +85,20 @@ const rules = T.EndpointResolver((p, _) => {
 export class AccessDeniedException
   extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
     "AccessDeniedException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(403),
   ).pipe(C.withAuthError) {}
 export class ConflictException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
     "ConflictException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class InternalServerException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
     "InternalServerException",
     {
-      message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       retryAfterSeconds: S.optional(S.Number).pipe(T.HttpHeader("Retry-After")),
     },
     T.all(T.HttpError(500), T.Retryable()),
@@ -108,14 +106,14 @@ export class InternalServerException
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class ServiceQuotaExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
     "ServiceQuotaExceededException",
     {
-      message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       resourceId: S.String,
       resourceType: S.String,
       serviceCode: S.String,
@@ -127,7 +125,7 @@ export class ThrottlingException
   extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
     "ThrottlingException",
     {
-      message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       retryAfterSeconds: S.optional(S.Number).pipe(T.HttpHeader("Retry-After")),
     },
     T.all(T.HttpError(429), T.Retryable()),
@@ -135,7 +133,7 @@ export class ThrottlingException
 export class ValidationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
     "ValidationException",
-    { Message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export type CapabilityName = string;
@@ -2353,7 +2351,7 @@ export const createCapability: API.OperationMethod<
   CreateCapabilityRequest,
   CreateCapabilityResponse,
   CreateCapabilityError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateCapabilityRequest,
   output: CreateCapabilityResponse,
@@ -2387,7 +2385,7 @@ export const createPartnership: API.OperationMethod<
   CreatePartnershipRequest,
   CreatePartnershipResponse,
   CreatePartnershipError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreatePartnershipRequest,
   output: CreatePartnershipResponse,
@@ -2421,7 +2419,7 @@ export const createProfile: API.OperationMethod<
   CreateProfileRequest,
   CreateProfileResponse,
   CreateProfileError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateProfileRequest,
   output: CreateProfileResponse,
@@ -2458,7 +2456,7 @@ export const createStarterMappingTemplate: API.OperationMethod<
   CreateStarterMappingTemplateRequest,
   CreateStarterMappingTemplateResponse,
   CreateStarterMappingTemplateError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateStarterMappingTemplateRequest,
   output: CreateStarterMappingTemplateResponse,
@@ -2501,7 +2499,7 @@ export const createTransformer: API.OperationMethod<
   CreateTransformerRequest,
   CreateTransformerResponse,
   CreateTransformerError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateTransformerRequest,
   output: CreateTransformerResponse,
@@ -2534,7 +2532,7 @@ export const deleteCapability: API.OperationMethod<
   DeleteCapabilityRequest,
   DeleteCapabilityResponse,
   DeleteCapabilityError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteCapabilityRequest,
   output: DeleteCapabilityResponse,
@@ -2566,7 +2564,7 @@ export const deletePartnership: API.OperationMethod<
   DeletePartnershipRequest,
   DeletePartnershipResponse,
   DeletePartnershipError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeletePartnershipRequest,
   output: DeletePartnershipResponse,
@@ -2598,7 +2596,7 @@ export const deleteProfile: API.OperationMethod<
   DeleteProfileRequest,
   DeleteProfileResponse,
   DeleteProfileError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteProfileRequest,
   output: DeleteProfileResponse,
@@ -2630,7 +2628,7 @@ export const deleteTransformer: API.OperationMethod<
   DeleteTransformerRequest,
   DeleteTransformerResponse,
   DeleteTransformerError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteTransformerRequest,
   output: DeleteTransformerResponse,
@@ -2670,7 +2668,7 @@ export const generateMapping: API.OperationMethod<
   GenerateMappingRequest,
   GenerateMappingResponse,
   GenerateMappingError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GenerateMappingRequest,
   output: GenerateMappingResponse,
@@ -2699,7 +2697,7 @@ export const getCapability: API.OperationMethod<
   GetCapabilityRequest,
   GetCapabilityResponse,
   GetCapabilityError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetCapabilityRequest,
   output: GetCapabilityResponse,
@@ -2729,7 +2727,7 @@ export const getPartnership: API.OperationMethod<
   GetPartnershipRequest,
   GetPartnershipResponse,
   GetPartnershipError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetPartnershipRequest,
   output: GetPartnershipResponse,
@@ -2759,7 +2757,7 @@ export const getProfile: API.OperationMethod<
   GetProfileRequest,
   GetProfileResponse,
   GetProfileError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetProfileRequest,
   output: GetProfileResponse,
@@ -2789,7 +2787,7 @@ export const getTransformer: API.OperationMethod<
   GetTransformerRequest,
   GetTransformerResponse,
   GetTransformerError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetTransformerRequest,
   output: GetTransformerResponse,
@@ -2821,7 +2819,7 @@ export const getTransformerJob: API.OperationMethod<
   GetTransformerJobRequest,
   GetTransformerJobResponse,
   GetTransformerJobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetTransformerJobRequest,
   output: GetTransformerJobResponse,
@@ -2846,27 +2844,13 @@ export type ListCapabilitiesError =
 /**
  * Lists the capabilities associated with your Amazon Web Services account for your current or specified region. A trading capability contains the information required to transform incoming EDI documents into JSON or XML outputs.
  */
-export const listCapabilities: API.OperationMethod<
+export const listCapabilities: API.PaginatedOperationMethod<
   ListCapabilitiesRequest,
   ListCapabilitiesResponse,
   ListCapabilitiesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCapabilitiesRequest,
-  ) => stream.Stream<
-    ListCapabilitiesResponse,
-    ListCapabilitiesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCapabilitiesRequest,
-  ) => stream.Stream<
-    CapabilitySummary,
-    ListCapabilitiesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  CapabilitySummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListCapabilitiesRequest,
   output: ListCapabilitiesResponse,
   errors: [
@@ -2884,27 +2868,7 @@ export const listCapabilities: API.OperationMethod<
     items: "capabilities",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListCapabilitiesRequest,
-  ListCapabilitiesResponse,
-  ListCapabilitiesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCapabilitiesRequest,
-  ) => stream.Stream<
-    ListCapabilitiesResponse,
-    ListCapabilitiesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCapabilitiesRequest,
-  ) => stream.Stream<
-    CapabilitySummary,
-    ListCapabilitiesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListPartnershipsError =
   | AccessDeniedException
@@ -2916,27 +2880,13 @@ export type ListPartnershipsError =
 /**
  * Lists the partnerships associated with your Amazon Web Services account for your current or specified region. A partnership represents the connection between you and your trading partner. It ties together a profile and one or more trading capabilities.
  */
-export const listPartnerships: API.OperationMethod<
+export const listPartnerships: API.PaginatedOperationMethod<
   ListPartnershipsRequest,
   ListPartnershipsResponse,
   ListPartnershipsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPartnershipsRequest,
-  ) => stream.Stream<
-    ListPartnershipsResponse,
-    ListPartnershipsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPartnershipsRequest,
-  ) => stream.Stream<
-    PartnershipSummary,
-    ListPartnershipsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  PartnershipSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListPartnershipsRequest,
   output: ListPartnershipsResponse,
   errors: [
@@ -2955,27 +2905,7 @@ export const listPartnerships: API.OperationMethod<
     items: "partnerships",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListPartnershipsRequest,
-  ListPartnershipsResponse,
-  ListPartnershipsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPartnershipsRequest,
-  ) => stream.Stream<
-    ListPartnershipsResponse,
-    ListPartnershipsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPartnershipsRequest,
-  ) => stream.Stream<
-    PartnershipSummary,
-    ListPartnershipsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListProfilesError =
   | AccessDeniedException
@@ -2986,27 +2916,13 @@ export type ListProfilesError =
 /**
  * Lists the profiles associated with your Amazon Web Services account for your current or specified region. A profile is the mechanism used to create the concept of a private network.
  */
-export const listProfiles: API.OperationMethod<
+export const listProfiles: API.PaginatedOperationMethod<
   ListProfilesRequest,
   ListProfilesResponse,
   ListProfilesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListProfilesRequest,
-  ) => stream.Stream<
-    ListProfilesResponse,
-    ListProfilesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListProfilesRequest,
-  ) => stream.Stream<
-    ProfileSummary,
-    ListProfilesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ProfileSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListProfilesRequest,
   output: ListProfilesResponse,
   errors: [
@@ -3024,27 +2940,7 @@ export const listProfiles: API.OperationMethod<
     items: "profiles",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListProfilesRequest,
-  ListProfilesResponse,
-  ListProfilesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListProfilesRequest,
-  ) => stream.Stream<
-    ListProfilesResponse,
-    ListProfilesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListProfilesRequest,
-  ) => stream.Stream<
-    ProfileSummary,
-    ListProfilesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsForResourceError =
   | InternalServerException
@@ -3058,7 +2954,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceRequest,
   ListTagsForResourceResponse,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -3081,27 +2977,13 @@ export type ListTransformersError =
 /**
  * Lists the available transformers. A transformer can take an EDI file as input and transform it into a JSON-or XML-formatted document. Alternatively, a transformer can take a JSON-or XML-formatted document as input and transform it into an EDI file.
  */
-export const listTransformers: API.OperationMethod<
+export const listTransformers: API.PaginatedOperationMethod<
   ListTransformersRequest,
   ListTransformersResponse,
   ListTransformersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTransformersRequest,
-  ) => stream.Stream<
-    ListTransformersResponse,
-    ListTransformersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTransformersRequest,
-  ) => stream.Stream<
-    TransformerSummary,
-    ListTransformersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  TransformerSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListTransformersRequest,
   output: ListTransformersResponse,
   errors: [
@@ -3119,27 +3001,7 @@ export const listTransformers: API.OperationMethod<
     items: "transformers",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListTransformersRequest,
-  ListTransformersResponse,
-  ListTransformersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTransformersRequest,
-  ) => stream.Stream<
-    ListTransformersResponse,
-    ListTransformersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTransformersRequest,
-  ) => stream.Stream<
-    TransformerSummary,
-    ListTransformersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type StartTransformerJobError =
   | AccessDeniedException
@@ -3160,7 +3022,7 @@ export const startTransformerJob: API.OperationMethod<
   StartTransformerJobRequest,
   StartTransformerJobResponse,
   StartTransformerJobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartTransformerJobRequest,
   output: StartTransformerJobResponse,
@@ -3192,7 +3054,7 @@ export const tagResource: API.OperationMethod<
   TagResourceRequest,
   TagResourceResponse,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -3221,7 +3083,7 @@ export const testConversion: API.OperationMethod<
   TestConversionRequest,
   TestConversionResponse,
   TestConversionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TestConversionRequest,
   output: TestConversionResponse,
@@ -3251,7 +3113,7 @@ export const testMapping: API.OperationMethod<
   TestMappingRequest,
   TestMappingResponse,
   TestMappingError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TestMappingRequest,
   output: TestMappingResponse,
@@ -3281,7 +3143,7 @@ export const testParsing: API.OperationMethod<
   TestParsingRequest,
   TestParsingResponse,
   TestParsingError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TestParsingRequest,
   output: TestParsingResponse,
@@ -3309,7 +3171,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceRequest,
   UntagResourceResponse,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -3339,7 +3201,7 @@ export const updateCapability: API.OperationMethod<
   UpdateCapabilityRequest,
   UpdateCapabilityResponse,
   UpdateCapabilityError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateCapabilityRequest,
   output: UpdateCapabilityResponse,
@@ -3373,7 +3235,7 @@ export const updatePartnership: API.OperationMethod<
   UpdatePartnershipRequest,
   UpdatePartnershipResponse,
   UpdatePartnershipError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdatePartnershipRequest,
   output: UpdatePartnershipResponse,
@@ -3407,7 +3269,7 @@ export const updateProfile: API.OperationMethod<
   UpdateProfileRequest,
   UpdateProfileResponse,
   UpdateProfileError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateProfileRequest,
   output: UpdateProfileResponse,
@@ -3441,7 +3303,7 @@ export const updateTransformer: API.OperationMethod<
   UpdateTransformerRequest,
   UpdateTransformerResponse,
   UpdateTransformerError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateTransformerRequest,
   output: UpdateTransformerResponse,

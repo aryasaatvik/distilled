@@ -9,7 +9,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "Lambda",
@@ -90,73 +89,109 @@ const rules = T.EndpointResolver((p, _) => {
 export class AliasLimitExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<AliasLimitExceededException>()(
     "AliasLimitExceededException",
-    { Type: S.optional(S.String), message: S.optional(S.String) },
+    {
+      Type: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class CallbackTimeoutException
   extends /*@__PURE__*/ S.TaggedErrorClass<CallbackTimeoutException>()(
     "CallbackTimeoutException",
-    { Type: S.optional(S.String), Message: S.optional(S.String) },
+    {
+      Type: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class CapacityProviderLimitExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<CapacityProviderLimitExceededException>()(
     "CapacityProviderLimitExceededException",
-    { Type: S.optional(S.String), message: S.optional(S.String) },
+    {
+      Type: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class CodeArtifactUserDeletedException
   extends /*@__PURE__*/ S.TaggedErrorClass<CodeArtifactUserDeletedException>()(
     "CodeArtifactUserDeletedException",
-    { Type: S.optional(S.String), message: S.optional(S.String) },
+    {
+      Type: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class CodeArtifactUserFailedException
   extends /*@__PURE__*/ S.TaggedErrorClass<CodeArtifactUserFailedException>()(
     "CodeArtifactUserFailedException",
-    { Type: S.optional(S.String), message: S.optional(S.String) },
+    {
+      Type: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class CodeArtifactUserPendingException
   extends /*@__PURE__*/ S.TaggedErrorClass<CodeArtifactUserPendingException>()(
     "CodeArtifactUserPendingException",
-    { Type: S.optional(S.String), message: S.optional(S.String) },
+    {
+      Type: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class CodeSigningConfigNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<CodeSigningConfigNotFoundException>()(
     "CodeSigningConfigNotFoundException",
-    { Type: S.optional(S.String), Message: S.optional(S.String) },
+    {
+      Type: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class CodeStorageExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<CodeStorageExceededException>()(
     "CodeStorageExceededException",
-    { Type: S.optional(S.String), message: S.optional(S.String) },
+    {
+      Type: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class CodeVerificationFailedException
   extends /*@__PURE__*/ S.TaggedErrorClass<CodeVerificationFailedException>()(
     "CodeVerificationFailedException",
-    { Type: S.optional(S.String), Message: S.optional(S.String) },
+    {
+      Type: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class DurableExecutionAlreadyStartedException
   extends /*@__PURE__*/ S.TaggedErrorClass<DurableExecutionAlreadyStartedException>()(
     "DurableExecutionAlreadyStartedException",
-    { Type: S.optional(S.String), Message: S.optional(S.String) },
+    {
+      Type: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class EC2AccessDeniedException
   extends /*@__PURE__*/ S.TaggedErrorClass<EC2AccessDeniedException>()(
     "EC2AccessDeniedException",
-    { Type: S.optional(S.String), Message: S.optional(S.String) },
+    {
+      Type: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(502),
   ).pipe(C.withServerError, C.withAuthError) {}
 export class EC2ThrottledException
   extends /*@__PURE__*/ S.TaggedErrorClass<EC2ThrottledException>()(
     "EC2ThrottledException",
-    { Type: S.optional(S.String), Message: S.optional(S.String) },
+    {
+      Type: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(502),
   ).pipe(C.withServerError) {}
 export class EC2UnexpectedException
@@ -164,7 +199,7 @@ export class EC2UnexpectedException
     "EC2UnexpectedException",
     {
       Type: S.optional(S.String),
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       EC2ErrorCode: S.optional(S.String),
     },
     T.HttpError(502),
@@ -172,254 +207,379 @@ export class EC2UnexpectedException
 export class EFSIOException
   extends /*@__PURE__*/ S.TaggedErrorClass<EFSIOException>()(
     "EFSIOException",
-    { Type: S.optional(S.String), Message: S.optional(S.String) },
+    {
+      Type: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(410),
   ).pipe(C.withBadRequestError) {}
 export class EFSMountConnectivityException
   extends /*@__PURE__*/ S.TaggedErrorClass<EFSMountConnectivityException>()(
     "EFSMountConnectivityException",
-    { Type: S.optional(S.String), Message: S.optional(S.String) },
+    {
+      Type: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(408),
   ).pipe(C.withTimeoutError) {}
 export class EFSMountFailureException
   extends /*@__PURE__*/ S.TaggedErrorClass<EFSMountFailureException>()(
     "EFSMountFailureException",
-    { Type: S.optional(S.String), Message: S.optional(S.String) },
+    {
+      Type: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(403),
   ).pipe(C.withAuthError) {}
 export class EFSMountTimeoutException
   extends /*@__PURE__*/ S.TaggedErrorClass<EFSMountTimeoutException>()(
     "EFSMountTimeoutException",
-    { Type: S.optional(S.String), Message: S.optional(S.String) },
+    {
+      Type: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(408),
   ).pipe(C.withTimeoutError) {}
 export class ENILimitReachedException
   extends /*@__PURE__*/ S.TaggedErrorClass<ENILimitReachedException>()(
     "ENILimitReachedException",
-    { Type: S.optional(S.String), Message: S.optional(S.String) },
+    {
+      Type: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(502),
   ).pipe(C.withServerError) {}
 export class ENINotReadyException
   extends /*@__PURE__*/ S.TaggedErrorClass<ENINotReadyException>()(
     "ENINotReadyException",
-    { Type: S.optional(S.String), Message: S.optional(S.String) },
+    {
+      Type: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(502),
   ).pipe(C.withServerError) {}
 export class FunctionVersionsPerCapacityProviderLimitExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<FunctionVersionsPerCapacityProviderLimitExceededException>()(
     "FunctionVersionsPerCapacityProviderLimitExceededException",
-    { Type: S.optional(S.String), message: S.optional(S.String) },
+    {
+      Type: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class InvalidCodeSignatureException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidCodeSignatureException>()(
     "InvalidCodeSignatureException",
-    { Type: S.optional(S.String), Message: S.optional(S.String) },
+    {
+      Type: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class InvalidParameterValueException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidParameterValueException>()(
     "InvalidParameterValueException",
-    { Type: S.optional(S.String), message: S.optional(S.String) },
+    {
+      Type: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class InvalidRequestContentException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidRequestContentException>()(
     "InvalidRequestContentException",
-    { Type: S.optional(S.String), message: S.optional(S.String) },
+    {
+      Type: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class InvalidRuntimeException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidRuntimeException>()(
     "InvalidRuntimeException",
-    { Type: S.optional(S.String), Message: S.optional(S.String) },
+    {
+      Type: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(502),
   ).pipe(C.withServerError) {}
 export class InvalidSecurityGroupIDException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidSecurityGroupIDException>()(
     "InvalidSecurityGroupIDException",
-    { Type: S.optional(S.String), Message: S.optional(S.String) },
+    {
+      Type: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(502),
   ).pipe(C.withServerError) {}
 export class InvalidSubnetIDException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidSubnetIDException>()(
     "InvalidSubnetIDException",
-    { Type: S.optional(S.String), Message: S.optional(S.String) },
+    {
+      Type: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(502),
   ).pipe(C.withServerError) {}
 export class InvalidZipFileException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidZipFileException>()(
     "InvalidZipFileException",
-    { Type: S.optional(S.String), Message: S.optional(S.String) },
+    {
+      Type: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(502),
   ).pipe(C.withServerError) {}
 export class KMSAccessDeniedException
   extends /*@__PURE__*/ S.TaggedErrorClass<KMSAccessDeniedException>()(
     "KMSAccessDeniedException",
-    { Type: S.optional(S.String), Message: S.optional(S.String) },
+    {
+      Type: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(502),
   ).pipe(C.withServerError, C.withAuthError) {}
 export class KMSDisabledException
   extends /*@__PURE__*/ S.TaggedErrorClass<KMSDisabledException>()(
     "KMSDisabledException",
-    { Type: S.optional(S.String), Message: S.optional(S.String) },
+    {
+      Type: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(502),
   ).pipe(C.withServerError) {}
 export class KMSInvalidStateException
   extends /*@__PURE__*/ S.TaggedErrorClass<KMSInvalidStateException>()(
     "KMSInvalidStateException",
-    { Type: S.optional(S.String), Message: S.optional(S.String) },
+    {
+      Type: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(502),
   ).pipe(C.withServerError) {}
 export class KMSNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<KMSNotFoundException>()(
     "KMSNotFoundException",
-    { Type: S.optional(S.String), Message: S.optional(S.String) },
+    {
+      Type: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(502),
   ).pipe(C.withServerError) {}
 export class ModeNotSupportedException
   extends /*@__PURE__*/ S.TaggedErrorClass<ModeNotSupportedException>()(
     "ModeNotSupportedException",
-    { Type: S.optional(S.String), message: S.optional(S.String) },
+    {
+      Type: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class NoPublishedVersionException
   extends /*@__PURE__*/ S.TaggedErrorClass<NoPublishedVersionException>()(
     "NoPublishedVersionException",
-    { Type: S.optional(S.String), Message: S.optional(S.String) },
+    {
+      Type: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class ParseError
-  extends /*@__PURE__*/ S.TaggedErrorClass<ParseError>()("ParseError", {}) {}
+  extends /*@__PURE__*/ S.TaggedErrorClass<ParseError>()("ParseError", {
+    message: S.optional(S.String).pipe(T.ErrorMessage()),
+  }) {}
 export class PolicyLengthExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<PolicyLengthExceededException>()(
     "PolicyLengthExceededException",
-    { Type: S.optional(S.String), message: S.optional(S.String) },
+    {
+      Type: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class PreconditionFailedException
   extends /*@__PURE__*/ S.TaggedErrorClass<PreconditionFailedException>()(
     "PreconditionFailedException",
-    { Type: S.optional(S.String), message: S.optional(S.String) },
+    {
+      Type: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(412),
   ) {}
 export class ProvisionedConcurrencyConfigNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ProvisionedConcurrencyConfigNotFoundException>()(
     "ProvisionedConcurrencyConfigNotFoundException",
-    { Type: S.optional(S.String), message: S.optional(S.String) },
+    {
+      Type: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class PublicPolicyException
   extends /*@__PURE__*/ S.TaggedErrorClass<PublicPolicyException>()(
     "PublicPolicyException",
-    { Type: S.optional(S.String), Message: S.optional(S.String) },
+    {
+      Type: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class RecursiveInvocationException
   extends /*@__PURE__*/ S.TaggedErrorClass<RecursiveInvocationException>()(
     "RecursiveInvocationException",
-    { Type: S.optional(S.String), Message: S.optional(S.String) },
+    {
+      Type: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class RequestLimitExceeded
   extends /*@__PURE__*/ S.TaggedErrorClass<RequestLimitExceeded>()(
     "RequestLimitExceeded",
-    {},
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ).pipe(C.withThrottlingError) {}
 export class RequestTooLargeException
   extends /*@__PURE__*/ S.TaggedErrorClass<RequestTooLargeException>()(
     "RequestTooLargeException",
-    { Type: S.optional(S.String), message: S.optional(S.String) },
+    {
+      Type: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(413),
   ).pipe(C.withBadRequestError) {}
 export class ResourceConflictException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceConflictException>()(
     "ResourceConflictException",
-    { Type: S.optional(S.String), message: S.optional(S.String) },
+    {
+      Type: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class ResourceInUseException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceInUseException>()(
     "ResourceInUseException",
-    { Type: S.optional(S.String), Message: S.optional(S.String) },
+    {
+      Type: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { Type: S.optional(S.String), Message: S.optional(S.String) },
+    {
+      Type: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class ResourceNotReadyException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotReadyException>()(
     "ResourceNotReadyException",
-    { Type: S.optional(S.String), message: S.optional(S.String) },
+    {
+      Type: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(502),
   ).pipe(C.withServerError) {}
 export class S3FilesMountConnectivityException
   extends /*@__PURE__*/ S.TaggedErrorClass<S3FilesMountConnectivityException>()(
     "S3FilesMountConnectivityException",
-    { Type: S.optional(S.String), Message: S.optional(S.String) },
+    {
+      Type: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(408),
   ).pipe(C.withTimeoutError) {}
 export class S3FilesMountFailureException
   extends /*@__PURE__*/ S.TaggedErrorClass<S3FilesMountFailureException>()(
     "S3FilesMountFailureException",
-    { Type: S.optional(S.String), Message: S.optional(S.String) },
+    {
+      Type: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(403),
   ).pipe(C.withAuthError) {}
 export class S3FilesMountTimeoutException
   extends /*@__PURE__*/ S.TaggedErrorClass<S3FilesMountTimeoutException>()(
     "S3FilesMountTimeoutException",
-    { Type: S.optional(S.String), Message: S.optional(S.String) },
+    {
+      Type: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(408),
   ).pipe(C.withTimeoutError) {}
 export class SerializedRequestEntityTooLargeException
   extends /*@__PURE__*/ S.TaggedErrorClass<SerializedRequestEntityTooLargeException>()(
     "SerializedRequestEntityTooLargeException",
-    { Type: S.optional(S.String), message: S.optional(S.String) },
+    {
+      Type: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(413),
   ).pipe(C.withBadRequestError) {}
 export class ServiceException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceException>()(
     "ServiceException",
-    { Type: S.optional(S.String), Message: S.optional(S.String) },
+    {
+      Type: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(500),
   ).pipe(C.withServerError) {}
 export class ServiceQuotaExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
     "ServiceQuotaExceededException",
-    { Type: S.optional(S.String), Message: S.optional(S.String) },
+    {
+      Type: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(402),
   ).pipe(C.withQuotaError) {}
 export class SnapStartException
   extends /*@__PURE__*/ S.TaggedErrorClass<SnapStartException>()(
     "SnapStartException",
-    { Type: S.optional(S.String), Message: S.optional(S.String) },
+    {
+      Type: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class SnapStartNotReadyException
   extends /*@__PURE__*/ S.TaggedErrorClass<SnapStartNotReadyException>()(
     "SnapStartNotReadyException",
-    { Type: S.optional(S.String), Message: S.optional(S.String) },
+    {
+      Type: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class SnapStartRegenerationFailureException
   extends /*@__PURE__*/ S.TaggedErrorClass<SnapStartRegenerationFailureException>()(
     "SnapStartRegenerationFailureException",
-    { Type: S.optional(S.String), Message: S.optional(S.String) },
+    {
+      Type: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class SnapStartTimeoutException
   extends /*@__PURE__*/ S.TaggedErrorClass<SnapStartTimeoutException>()(
     "SnapStartTimeoutException",
-    { Type: S.optional(S.String), Message: S.optional(S.String) },
+    {
+      Type: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(408),
   ).pipe(C.withTimeoutError) {}
 export class SubnetIPAddressLimitReachedException
   extends /*@__PURE__*/ S.TaggedErrorClass<SubnetIPAddressLimitReachedException>()(
     "SubnetIPAddressLimitReachedException",
-    { Type: S.optional(S.String), Message: S.optional(S.String) },
+    {
+      Type: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(502),
   ).pipe(C.withServerError) {}
 export class TooManyRequestsException
@@ -428,7 +588,7 @@ export class TooManyRequestsException
     {
       retryAfterSeconds: S.optional(S.String).pipe(T.HttpHeader("Retry-After")),
       Type: S.optional(S.String),
-      message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       Reason: S.optional(
         S.suspend(() => ThrottleReason).annotate({
           identifier: "ThrottleReason",
@@ -440,7 +600,10 @@ export class TooManyRequestsException
 export class UnsupportedMediaTypeException
   extends /*@__PURE__*/ S.TaggedErrorClass<UnsupportedMediaTypeException>()(
     "UnsupportedMediaTypeException",
-    { Type: S.optional(S.String), message: S.optional(S.String) },
+    {
+      Type: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(415),
   ).pipe(C.withBadRequestError) {}
 export type LayerName = string;
@@ -5933,7 +6096,7 @@ export const addLayerVersionPermission: API.OperationMethod<
   AddLayerVersionPermissionRequest,
   AddLayerVersionPermissionResponse,
   AddLayerVersionPermissionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AddLayerVersionPermissionRequest,
   output: AddLayerVersionPermissionResponse,
@@ -5976,7 +6139,7 @@ export const addPermission: API.OperationMethod<
   AddPermissionRequest,
   AddPermissionResponse,
   AddPermissionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AddPermissionRequest,
   output: AddPermissionResponse,
@@ -6011,7 +6174,7 @@ export const checkpointDurableExecution: API.OperationMethod<
   CheckpointDurableExecutionRequest,
   CheckpointDurableExecutionResponse,
   CheckpointDurableExecutionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CheckpointDurableExecutionRequest,
   output: CheckpointDurableExecutionResponse,
@@ -6044,7 +6207,7 @@ export const createAlias: API.OperationMethod<
   CreateAliasRequest,
   AliasConfiguration,
   CreateAliasError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateAliasRequest,
   output: AliasConfiguration,
@@ -6077,7 +6240,7 @@ export const createCapacityProvider: API.OperationMethod<
   CreateCapacityProviderRequest,
   CreateCapacityProviderResponse,
   CreateCapacityProviderError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateCapacityProviderRequest,
   output: CreateCapacityProviderResponse,
@@ -6104,7 +6267,7 @@ export const createCodeSigningConfig: API.OperationMethod<
   CreateCodeSigningConfigRequest,
   CreateCodeSigningConfigResponse,
   CreateCodeSigningConfigError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateCodeSigningConfigRequest,
   output: CreateCodeSigningConfigResponse,
@@ -6176,7 +6339,7 @@ export const createEventSourceMapping: API.OperationMethod<
   CreateEventSourceMappingRequest,
   EventSourceMappingConfiguration,
   CreateEventSourceMappingError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateEventSourceMappingRequest,
   output: EventSourceMappingConfiguration,
@@ -6229,7 +6392,7 @@ export const createFunction: API.OperationMethod<
   CreateFunctionRequest,
   FunctionConfiguration,
   CreateFunctionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateFunctionRequest,
   output: FunctionConfiguration,
@@ -6266,7 +6429,7 @@ export const createFunctionUrlConfig: API.OperationMethod<
   CreateFunctionUrlConfigRequest,
   CreateFunctionUrlConfigResponse,
   CreateFunctionUrlConfigError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateFunctionUrlConfigRequest,
   output: CreateFunctionUrlConfigResponse,
@@ -6299,7 +6462,7 @@ export const deleteAlias: API.OperationMethod<
   DeleteAliasRequest,
   DeleteAliasResponse,
   DeleteAliasError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteAliasRequest,
   output: DeleteAliasResponse,
@@ -6330,7 +6493,7 @@ export const deleteCapacityProvider: API.OperationMethod<
   DeleteCapacityProviderRequest,
   DeleteCapacityProviderResponse,
   DeleteCapacityProviderError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteCapacityProviderRequest,
   output: DeleteCapacityProviderResponse,
@@ -6361,7 +6524,7 @@ export const deleteCodeSigningConfig: API.OperationMethod<
   DeleteCodeSigningConfigRequest,
   DeleteCodeSigningConfigResponse,
   DeleteCodeSigningConfigError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteCodeSigningConfigRequest,
   output: DeleteCodeSigningConfigResponse,
@@ -6395,7 +6558,7 @@ export const deleteEventSourceMapping: API.OperationMethod<
   DeleteEventSourceMappingRequest,
   EventSourceMappingConfiguration,
   DeleteEventSourceMappingError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteEventSourceMappingRequest,
   output: EventSourceMappingConfiguration,
@@ -6430,7 +6593,7 @@ export const deleteFunction: API.OperationMethod<
   DeleteFunctionRequest,
   DeleteFunctionResponse,
   DeleteFunctionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteFunctionRequest,
   output: DeleteFunctionResponse,
@@ -6461,7 +6624,7 @@ export const deleteFunctionCodeSigningConfig: API.OperationMethod<
   DeleteFunctionCodeSigningConfigRequest,
   DeleteFunctionCodeSigningConfigResponse,
   DeleteFunctionCodeSigningConfigError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteFunctionCodeSigningConfigRequest,
   output: DeleteFunctionCodeSigningConfigResponse,
@@ -6494,7 +6657,7 @@ export const deleteFunctionConcurrency: API.OperationMethod<
   DeleteFunctionConcurrencyRequest,
   DeleteFunctionConcurrencyResponse,
   DeleteFunctionConcurrencyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteFunctionConcurrencyRequest,
   output: DeleteFunctionConcurrencyResponse,
@@ -6530,7 +6693,7 @@ export const deleteFunctionEventInvokeConfig: API.OperationMethod<
   DeleteFunctionEventInvokeConfigRequest,
   DeleteFunctionEventInvokeConfigResponse,
   DeleteFunctionEventInvokeConfigError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteFunctionEventInvokeConfigRequest,
   output: DeleteFunctionEventInvokeConfigResponse,
@@ -6564,7 +6727,7 @@ export const deleteFunctionUrlConfig: API.OperationMethod<
   DeleteFunctionUrlConfigRequest,
   DeleteFunctionUrlConfigResponse,
   DeleteFunctionUrlConfigError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteFunctionUrlConfigRequest,
   output: DeleteFunctionUrlConfigResponse,
@@ -6597,7 +6760,7 @@ export const deleteLayerVersion: API.OperationMethod<
   DeleteLayerVersionRequest,
   DeleteLayerVersionResponse,
   DeleteLayerVersionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteLayerVersionRequest,
   output: DeleteLayerVersionResponse,
@@ -6630,7 +6793,7 @@ export const deleteProvisionedConcurrencyConfig: API.OperationMethod<
   DeleteProvisionedConcurrencyConfigRequest,
   DeleteProvisionedConcurrencyConfigResponse,
   DeleteProvisionedConcurrencyConfigError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteProvisionedConcurrencyConfigRequest,
   output: DeleteProvisionedConcurrencyConfigResponse,
@@ -6659,7 +6822,7 @@ export const getAccountSettings: API.OperationMethod<
   GetAccountSettingsRequest,
   GetAccountSettingsResponse,
   GetAccountSettingsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetAccountSettingsRequest,
   output: GetAccountSettingsResponse,
@@ -6682,7 +6845,7 @@ export const getAlias: API.OperationMethod<
   GetAliasRequest,
   AliasConfiguration,
   GetAliasError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetAliasRequest,
   output: AliasConfiguration,
@@ -6710,7 +6873,7 @@ export const getCapacityProvider: API.OperationMethod<
   GetCapacityProviderRequest,
   GetCapacityProviderResponse,
   GetCapacityProviderError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetCapacityProviderRequest,
   output: GetCapacityProviderResponse,
@@ -6739,7 +6902,7 @@ export const getCodeSigningConfig: API.OperationMethod<
   GetCodeSigningConfigRequest,
   GetCodeSigningConfigResponse,
   GetCodeSigningConfigError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetCodeSigningConfigRequest,
   output: GetCodeSigningConfigResponse,
@@ -6768,7 +6931,7 @@ export const getDurableExecution: API.OperationMethod<
   GetDurableExecutionRequest,
   GetDurableExecutionResponse,
   GetDurableExecutionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetDurableExecutionRequest,
   output: GetDurableExecutionResponse,
@@ -6794,27 +6957,13 @@ export type GetDurableExecutionHistoryError =
  *
  * The history is available while the execution is running and for a retention period after it completes (1-90 days, default 30 days). You can control whether to include execution data such as step results and callback payloads.
  */
-export const getDurableExecutionHistory: API.OperationMethod<
+export const getDurableExecutionHistory: API.PaginatedOperationMethod<
   GetDurableExecutionHistoryRequest,
   GetDurableExecutionHistoryResponse,
   GetDurableExecutionHistoryError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetDurableExecutionHistoryRequest,
-  ) => stream.Stream<
-    GetDurableExecutionHistoryResponse,
-    GetDurableExecutionHistoryError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetDurableExecutionHistoryRequest,
-  ) => stream.Stream<
-    Event,
-    GetDurableExecutionHistoryError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Event
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetDurableExecutionHistoryRequest,
   output: GetDurableExecutionHistoryResponse,
   errors: [
@@ -6832,27 +6981,7 @@ export const getDurableExecutionHistory: API.OperationMethod<
     items: "Events",
     pageSize: "MaxItems",
   } as const,
-})) as any as API.OperationMethod<
-  GetDurableExecutionHistoryRequest,
-  GetDurableExecutionHistoryResponse,
-  GetDurableExecutionHistoryError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetDurableExecutionHistoryRequest,
-  ) => stream.Stream<
-    GetDurableExecutionHistoryResponse,
-    GetDurableExecutionHistoryError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetDurableExecutionHistoryRequest,
-  ) => stream.Stream<
-    Event,
-    GetDurableExecutionHistoryError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetDurableExecutionStateError =
   | InvalidParameterValueException
@@ -6864,27 +6993,13 @@ export type GetDurableExecutionStateError =
  *
  * The response contains operations ordered by start sequence number in ascending order. Completed operations with children don't include child operation details since they don't need to be replayed.
  */
-export const getDurableExecutionState: API.OperationMethod<
+export const getDurableExecutionState: API.PaginatedOperationMethod<
   GetDurableExecutionStateRequest,
   GetDurableExecutionStateResponse,
   GetDurableExecutionStateError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetDurableExecutionStateRequest,
-  ) => stream.Stream<
-    GetDurableExecutionStateResponse,
-    GetDurableExecutionStateError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetDurableExecutionStateRequest,
-  ) => stream.Stream<
-    Operation,
-    GetDurableExecutionStateError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Operation
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetDurableExecutionStateRequest,
   output: GetDurableExecutionStateResponse,
   errors: [
@@ -6901,27 +7016,7 @@ export const getDurableExecutionState: API.OperationMethod<
     items: "Operations",
     pageSize: "MaxItems",
   } as const,
-})) as any as API.OperationMethod<
-  GetDurableExecutionStateRequest,
-  GetDurableExecutionStateResponse,
-  GetDurableExecutionStateError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetDurableExecutionStateRequest,
-  ) => stream.Stream<
-    GetDurableExecutionStateResponse,
-    GetDurableExecutionStateError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetDurableExecutionStateRequest,
-  ) => stream.Stream<
-    Operation,
-    GetDurableExecutionStateError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetEventSourceMappingError =
   | InvalidParameterValueException
@@ -6936,7 +7031,7 @@ export const getEventSourceMapping: API.OperationMethod<
   GetEventSourceMappingRequest,
   EventSourceMappingConfiguration,
   GetEventSourceMappingError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetEventSourceMappingRequest,
   output: EventSourceMappingConfiguration,
@@ -6964,7 +7059,7 @@ export const getFunction: API.OperationMethod<
   GetFunctionRequest,
   GetFunctionResponse,
   GetFunctionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetFunctionRequest,
   output: GetFunctionResponse,
@@ -6993,7 +7088,7 @@ export const getFunctionCodeSigningConfig: API.OperationMethod<
   GetFunctionCodeSigningConfigRequest,
   GetFunctionCodeSigningConfigResponse,
   GetFunctionCodeSigningConfigError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetFunctionCodeSigningConfigRequest,
   output: GetFunctionCodeSigningConfigResponse,
@@ -7024,7 +7119,7 @@ export const getFunctionConcurrency: API.OperationMethod<
   GetFunctionConcurrencyRequest,
   GetFunctionConcurrencyResponse,
   GetFunctionConcurrencyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetFunctionConcurrencyRequest,
   output: GetFunctionConcurrencyResponse,
@@ -7056,7 +7151,7 @@ export const getFunctionConfiguration: API.OperationMethod<
   GetFunctionConfigurationRequest,
   FunctionConfiguration,
   GetFunctionConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetFunctionConfigurationRequest,
   output: FunctionConfiguration,
@@ -7088,7 +7183,7 @@ export const getFunctionEventInvokeConfig: API.OperationMethod<
   GetFunctionEventInvokeConfigRequest,
   FunctionEventInvokeConfig,
   GetFunctionEventInvokeConfigError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetFunctionEventInvokeConfigRequest,
   output: FunctionEventInvokeConfig,
@@ -7120,7 +7215,7 @@ export const getFunctionRecursionConfig: API.OperationMethod<
   GetFunctionRecursionConfigRequest,
   GetFunctionRecursionConfigResponse,
   GetFunctionRecursionConfigError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetFunctionRecursionConfigRequest,
   output: GetFunctionRecursionConfigResponse,
@@ -7150,7 +7245,7 @@ export const getFunctionScalingConfig: API.OperationMethod<
   GetFunctionScalingConfigRequest,
   GetFunctionScalingConfigResponse,
   GetFunctionScalingConfigError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetFunctionScalingConfigRequest,
   output: GetFunctionScalingConfigResponse,
@@ -7178,7 +7273,7 @@ export const getFunctionUrlConfig: API.OperationMethod<
   GetFunctionUrlConfigRequest,
   GetFunctionUrlConfigResponse,
   GetFunctionUrlConfigError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetFunctionUrlConfigRequest,
   output: GetFunctionUrlConfigResponse,
@@ -7208,7 +7303,7 @@ export const getLayerVersion: API.OperationMethod<
   GetLayerVersionRequest,
   GetLayerVersionResponse,
   GetLayerVersionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetLayerVersionRequest,
   output: GetLayerVersionResponse,
@@ -7238,7 +7333,7 @@ export const getLayerVersionByArn: API.OperationMethod<
   GetLayerVersionByArnRequest,
   GetLayerVersionResponse,
   GetLayerVersionByArnError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetLayerVersionByArnRequest,
   output: GetLayerVersionResponse,
@@ -7268,7 +7363,7 @@ export const getLayerVersionPolicy: API.OperationMethod<
   GetLayerVersionPolicyRequest,
   GetLayerVersionPolicyResponse,
   GetLayerVersionPolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetLayerVersionPolicyRequest,
   output: GetLayerVersionPolicyResponse,
@@ -7298,7 +7393,7 @@ export const getPolicy: API.OperationMethod<
   GetPolicyRequest,
   GetPolicyResponse,
   GetPolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetPolicyRequest,
   output: GetPolicyResponse,
@@ -7329,7 +7424,7 @@ export const getProvisionedConcurrencyConfig: API.OperationMethod<
   GetProvisionedConcurrencyConfigRequest,
   GetProvisionedConcurrencyConfigResponse,
   GetProvisionedConcurrencyConfigError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetProvisionedConcurrencyConfigRequest,
   output: GetProvisionedConcurrencyConfigResponse,
@@ -7360,7 +7455,7 @@ export const getRuntimeManagementConfig: API.OperationMethod<
   GetRuntimeManagementConfigRequest,
   GetRuntimeManagementConfigResponse,
   GetRuntimeManagementConfigError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetRuntimeManagementConfigRequest,
   output: GetRuntimeManagementConfigResponse,
@@ -7443,7 +7538,7 @@ export const invoke: API.OperationMethod<
   InvocationRequest,
   InvocationResponse,
   InvokeError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: InvocationRequest,
   output: InvocationResponse,
@@ -7543,7 +7638,7 @@ export const invokeAsync: API.OperationMethod<
   InvokeAsyncRequest,
   InvokeAsyncResponse,
   InvokeAsyncError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: InvokeAsyncRequest,
   output: InvokeAsyncResponse,
@@ -7631,7 +7726,7 @@ export const invokeWithResponseStream: API.OperationMethod<
   InvokeWithResponseStreamRequest,
   InvokeWithResponseStreamResponse,
   InvokeWithResponseStreamError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: InvokeWithResponseStreamRequest,
   output: InvokeWithResponseStreamResponse,
@@ -7688,27 +7783,13 @@ export type ListAliasesError =
 /**
  * Returns a list of aliases for a Lambda function.
  */
-export const listAliases: API.OperationMethod<
+export const listAliases: API.PaginatedOperationMethod<
   ListAliasesRequest,
   ListAliasesResponse,
   ListAliasesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAliasesRequest,
-  ) => stream.Stream<
-    ListAliasesResponse,
-    ListAliasesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAliasesRequest,
-  ) => stream.Stream<
-    AliasConfiguration,
-    ListAliasesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  AliasConfiguration
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListAliasesRequest,
   output: ListAliasesResponse,
   errors: [
@@ -7726,27 +7807,7 @@ export const listAliases: API.OperationMethod<
     items: "Aliases",
     pageSize: "MaxItems",
   } as const,
-})) as any as API.OperationMethod<
-  ListAliasesRequest,
-  ListAliasesResponse,
-  ListAliasesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAliasesRequest,
-  ) => stream.Stream<
-    ListAliasesResponse,
-    ListAliasesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAliasesRequest,
-  ) => stream.Stream<
-    AliasConfiguration,
-    ListAliasesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListCapacityProvidersError =
   | InvalidParameterValueException
@@ -7756,27 +7817,13 @@ export type ListCapacityProvidersError =
 /**
  * Returns a list of capacity providers in your account.
  */
-export const listCapacityProviders: API.OperationMethod<
+export const listCapacityProviders: API.PaginatedOperationMethod<
   ListCapacityProvidersRequest,
   ListCapacityProvidersResponse,
   ListCapacityProvidersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCapacityProvidersRequest,
-  ) => stream.Stream<
-    ListCapacityProvidersResponse,
-    ListCapacityProvidersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCapacityProvidersRequest,
-  ) => stream.Stream<
-    CapacityProvider,
-    ListCapacityProvidersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  CapacityProvider
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListCapacityProvidersRequest,
   output: ListCapacityProvidersResponse,
   errors: [
@@ -7793,27 +7840,7 @@ export const listCapacityProviders: API.OperationMethod<
     items: "CapacityProviders",
     pageSize: "MaxItems",
   } as const,
-})) as any as API.OperationMethod<
-  ListCapacityProvidersRequest,
-  ListCapacityProvidersResponse,
-  ListCapacityProvidersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCapacityProvidersRequest,
-  ) => stream.Stream<
-    ListCapacityProvidersResponse,
-    ListCapacityProvidersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCapacityProvidersRequest,
-  ) => stream.Stream<
-    CapacityProvider,
-    ListCapacityProvidersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListCodeSigningConfigsError =
   | InvalidParameterValueException
@@ -7822,27 +7849,13 @@ export type ListCodeSigningConfigsError =
 /**
  * Returns a list of code signing configurations. A request returns up to 10,000 configurations per call. You can use the `MaxItems` parameter to return fewer configurations per call.
  */
-export const listCodeSigningConfigs: API.OperationMethod<
+export const listCodeSigningConfigs: API.PaginatedOperationMethod<
   ListCodeSigningConfigsRequest,
   ListCodeSigningConfigsResponse,
   ListCodeSigningConfigsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCodeSigningConfigsRequest,
-  ) => stream.Stream<
-    ListCodeSigningConfigsResponse,
-    ListCodeSigningConfigsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCodeSigningConfigsRequest,
-  ) => stream.Stream<
-    CodeSigningConfig,
-    ListCodeSigningConfigsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  CodeSigningConfig
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListCodeSigningConfigsRequest,
   output: ListCodeSigningConfigsResponse,
   errors: [InvalidParameterValueException, ServiceException],
@@ -7855,27 +7868,7 @@ export const listCodeSigningConfigs: API.OperationMethod<
     items: "CodeSigningConfigs",
     pageSize: "MaxItems",
   } as const,
-})) as any as API.OperationMethod<
-  ListCodeSigningConfigsRequest,
-  ListCodeSigningConfigsResponse,
-  ListCodeSigningConfigsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCodeSigningConfigsRequest,
-  ) => stream.Stream<
-    ListCodeSigningConfigsResponse,
-    ListCodeSigningConfigsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCodeSigningConfigsRequest,
-  ) => stream.Stream<
-    CodeSigningConfig,
-    ListCodeSigningConfigsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListDurableExecutionsByFunctionError =
   | InvalidParameterValueException
@@ -7886,27 +7879,13 @@ export type ListDurableExecutionsByFunctionError =
 /**
  * Returns a list of durable executions for a specified Lambda function. You can filter the results by execution name, status, and start time range. This API supports pagination for large result sets.
  */
-export const listDurableExecutionsByFunction: API.OperationMethod<
+export const listDurableExecutionsByFunction: API.PaginatedOperationMethod<
   ListDurableExecutionsByFunctionRequest,
   ListDurableExecutionsByFunctionResponse,
   ListDurableExecutionsByFunctionError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDurableExecutionsByFunctionRequest,
-  ) => stream.Stream<
-    ListDurableExecutionsByFunctionResponse,
-    ListDurableExecutionsByFunctionError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDurableExecutionsByFunctionRequest,
-  ) => stream.Stream<
-    Execution,
-    ListDurableExecutionsByFunctionError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Execution
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListDurableExecutionsByFunctionRequest,
   output: ListDurableExecutionsByFunctionResponse,
   errors: [
@@ -7924,27 +7903,7 @@ export const listDurableExecutionsByFunction: API.OperationMethod<
     items: "DurableExecutions",
     pageSize: "MaxItems",
   } as const,
-})) as any as API.OperationMethod<
-  ListDurableExecutionsByFunctionRequest,
-  ListDurableExecutionsByFunctionResponse,
-  ListDurableExecutionsByFunctionError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDurableExecutionsByFunctionRequest,
-  ) => stream.Stream<
-    ListDurableExecutionsByFunctionResponse,
-    ListDurableExecutionsByFunctionError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDurableExecutionsByFunctionRequest,
-  ) => stream.Stream<
-    Execution,
-    ListDurableExecutionsByFunctionError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListEventSourceMappingsError =
   | InvalidParameterValueException
@@ -7955,27 +7914,13 @@ export type ListEventSourceMappingsError =
 /**
  * Lists event source mappings. Specify an `EventSourceArn` to show only event source mappings for a single event source.
  */
-export const listEventSourceMappings: API.OperationMethod<
+export const listEventSourceMappings: API.PaginatedOperationMethod<
   ListEventSourceMappingsRequest,
   ListEventSourceMappingsResponse,
   ListEventSourceMappingsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListEventSourceMappingsRequest,
-  ) => stream.Stream<
-    ListEventSourceMappingsResponse,
-    ListEventSourceMappingsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListEventSourceMappingsRequest,
-  ) => stream.Stream<
-    EventSourceMappingConfiguration,
-    ListEventSourceMappingsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  EventSourceMappingConfiguration
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListEventSourceMappingsRequest,
   output: ListEventSourceMappingsResponse,
   errors: [
@@ -7993,27 +7938,7 @@ export const listEventSourceMappings: API.OperationMethod<
     items: "EventSourceMappings",
     pageSize: "MaxItems",
   } as const,
-})) as any as API.OperationMethod<
-  ListEventSourceMappingsRequest,
-  ListEventSourceMappingsResponse,
-  ListEventSourceMappingsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListEventSourceMappingsRequest,
-  ) => stream.Stream<
-    ListEventSourceMappingsResponse,
-    ListEventSourceMappingsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListEventSourceMappingsRequest,
-  ) => stream.Stream<
-    EventSourceMappingConfiguration,
-    ListEventSourceMappingsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListFunctionEventInvokeConfigsError =
   | InvalidParameterValueException
@@ -8028,27 +7953,13 @@ export type ListFunctionEventInvokeConfigsError =
  *
  * To configure options for asynchronous invocation, use PutFunctionEventInvokeConfig.
  */
-export const listFunctionEventInvokeConfigs: API.OperationMethod<
+export const listFunctionEventInvokeConfigs: API.PaginatedOperationMethod<
   ListFunctionEventInvokeConfigsRequest,
   ListFunctionEventInvokeConfigsResponse,
   ListFunctionEventInvokeConfigsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListFunctionEventInvokeConfigsRequest,
-  ) => stream.Stream<
-    ListFunctionEventInvokeConfigsResponse,
-    ListFunctionEventInvokeConfigsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListFunctionEventInvokeConfigsRequest,
-  ) => stream.Stream<
-    FunctionEventInvokeConfig,
-    ListFunctionEventInvokeConfigsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  FunctionEventInvokeConfig
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListFunctionEventInvokeConfigsRequest,
   output: ListFunctionEventInvokeConfigsResponse,
   errors: [
@@ -8068,27 +7979,7 @@ export const listFunctionEventInvokeConfigs: API.OperationMethod<
     items: "FunctionEventInvokeConfigs",
     pageSize: "MaxItems",
   } as const,
-})) as any as API.OperationMethod<
-  ListFunctionEventInvokeConfigsRequest,
-  ListFunctionEventInvokeConfigsResponse,
-  ListFunctionEventInvokeConfigsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListFunctionEventInvokeConfigsRequest,
-  ) => stream.Stream<
-    ListFunctionEventInvokeConfigsResponse,
-    ListFunctionEventInvokeConfigsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListFunctionEventInvokeConfigsRequest,
-  ) => stream.Stream<
-    FunctionEventInvokeConfig,
-    ListFunctionEventInvokeConfigsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListFunctionsError =
   | InvalidParameterValueException
@@ -8102,27 +7993,13 @@ export type ListFunctionsError =
  *
  * The `ListFunctions` operation returns a subset of the FunctionConfiguration fields. To get the additional fields (State, StateReasonCode, StateReason, LastUpdateStatus, LastUpdateStatusReason, LastUpdateStatusReasonCode, RuntimeVersionConfig) for a function or version, use GetFunction.
  */
-export const listFunctions: API.OperationMethod<
+export const listFunctions: API.PaginatedOperationMethod<
   ListFunctionsRequest,
   ListFunctionsResponse,
   ListFunctionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListFunctionsRequest,
-  ) => stream.Stream<
-    ListFunctionsResponse,
-    ListFunctionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListFunctionsRequest,
-  ) => stream.Stream<
-    FunctionConfiguration,
-    ListFunctionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  FunctionConfiguration
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListFunctionsRequest,
   output: ListFunctionsResponse,
   errors: [
@@ -8139,27 +8016,7 @@ export const listFunctions: API.OperationMethod<
     items: "Functions",
     pageSize: "MaxItems",
   } as const,
-})) as any as API.OperationMethod<
-  ListFunctionsRequest,
-  ListFunctionsResponse,
-  ListFunctionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListFunctionsRequest,
-  ) => stream.Stream<
-    ListFunctionsResponse,
-    ListFunctionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListFunctionsRequest,
-  ) => stream.Stream<
-    FunctionConfiguration,
-    ListFunctionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListFunctionsByCodeSigningConfigError =
   | InvalidParameterValueException
@@ -8169,27 +8026,13 @@ export type ListFunctionsByCodeSigningConfigError =
 /**
  * List the functions that use the specified code signing configuration. You can use this method prior to deleting a code signing configuration, to verify that no functions are using it.
  */
-export const listFunctionsByCodeSigningConfig: API.OperationMethod<
+export const listFunctionsByCodeSigningConfig: API.PaginatedOperationMethod<
   ListFunctionsByCodeSigningConfigRequest,
   ListFunctionsByCodeSigningConfigResponse,
   ListFunctionsByCodeSigningConfigError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListFunctionsByCodeSigningConfigRequest,
-  ) => stream.Stream<
-    ListFunctionsByCodeSigningConfigResponse,
-    ListFunctionsByCodeSigningConfigError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListFunctionsByCodeSigningConfigRequest,
-  ) => stream.Stream<
-    FunctionArn,
-    ListFunctionsByCodeSigningConfigError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  FunctionArn
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListFunctionsByCodeSigningConfigRequest,
   output: ListFunctionsByCodeSigningConfigResponse,
   errors: [
@@ -8206,27 +8049,7 @@ export const listFunctionsByCodeSigningConfig: API.OperationMethod<
     items: "FunctionArns",
     pageSize: "MaxItems",
   } as const,
-})) as any as API.OperationMethod<
-  ListFunctionsByCodeSigningConfigRequest,
-  ListFunctionsByCodeSigningConfigResponse,
-  ListFunctionsByCodeSigningConfigError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListFunctionsByCodeSigningConfigRequest,
-  ) => stream.Stream<
-    ListFunctionsByCodeSigningConfigResponse,
-    ListFunctionsByCodeSigningConfigError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListFunctionsByCodeSigningConfigRequest,
-  ) => stream.Stream<
-    FunctionArn,
-    ListFunctionsByCodeSigningConfigError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListFunctionUrlConfigsError =
   | InvalidParameterValueException
@@ -8237,27 +8060,13 @@ export type ListFunctionUrlConfigsError =
 /**
  * Returns a list of Lambda function URLs for the specified function.
  */
-export const listFunctionUrlConfigs: API.OperationMethod<
+export const listFunctionUrlConfigs: API.PaginatedOperationMethod<
   ListFunctionUrlConfigsRequest,
   ListFunctionUrlConfigsResponse,
   ListFunctionUrlConfigsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListFunctionUrlConfigsRequest,
-  ) => stream.Stream<
-    ListFunctionUrlConfigsResponse,
-    ListFunctionUrlConfigsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListFunctionUrlConfigsRequest,
-  ) => stream.Stream<
-    FunctionUrlConfig,
-    ListFunctionUrlConfigsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  FunctionUrlConfig
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListFunctionUrlConfigsRequest,
   output: ListFunctionUrlConfigsResponse,
   errors: [
@@ -8275,27 +8084,7 @@ export const listFunctionUrlConfigs: API.OperationMethod<
     items: "FunctionUrlConfigs",
     pageSize: "MaxItems",
   } as const,
-})) as any as API.OperationMethod<
-  ListFunctionUrlConfigsRequest,
-  ListFunctionUrlConfigsResponse,
-  ListFunctionUrlConfigsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListFunctionUrlConfigsRequest,
-  ) => stream.Stream<
-    ListFunctionUrlConfigsResponse,
-    ListFunctionUrlConfigsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListFunctionUrlConfigsRequest,
-  ) => stream.Stream<
-    FunctionUrlConfig,
-    ListFunctionUrlConfigsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListFunctionVersionsByCapacityProviderError =
   | InvalidParameterValueException
@@ -8306,27 +8095,13 @@ export type ListFunctionVersionsByCapacityProviderError =
 /**
  * Returns a list of function versions that are configured to use a specific capacity provider.
  */
-export const listFunctionVersionsByCapacityProvider: API.OperationMethod<
+export const listFunctionVersionsByCapacityProvider: API.PaginatedOperationMethod<
   ListFunctionVersionsByCapacityProviderRequest,
   ListFunctionVersionsByCapacityProviderResponse,
   ListFunctionVersionsByCapacityProviderError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListFunctionVersionsByCapacityProviderRequest,
-  ) => stream.Stream<
-    ListFunctionVersionsByCapacityProviderResponse,
-    ListFunctionVersionsByCapacityProviderError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListFunctionVersionsByCapacityProviderRequest,
-  ) => stream.Stream<
-    FunctionVersionsByCapacityProviderListItem,
-    ListFunctionVersionsByCapacityProviderError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  FunctionVersionsByCapacityProviderListItem
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListFunctionVersionsByCapacityProviderRequest,
   output: ListFunctionVersionsByCapacityProviderResponse,
   errors: [
@@ -8344,27 +8119,7 @@ export const listFunctionVersionsByCapacityProvider: API.OperationMethod<
     items: "FunctionVersions",
     pageSize: "MaxItems",
   } as const,
-})) as any as API.OperationMethod<
-  ListFunctionVersionsByCapacityProviderRequest,
-  ListFunctionVersionsByCapacityProviderResponse,
-  ListFunctionVersionsByCapacityProviderError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListFunctionVersionsByCapacityProviderRequest,
-  ) => stream.Stream<
-    ListFunctionVersionsByCapacityProviderResponse,
-    ListFunctionVersionsByCapacityProviderError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListFunctionVersionsByCapacityProviderRequest,
-  ) => stream.Stream<
-    FunctionVersionsByCapacityProviderListItem,
-    ListFunctionVersionsByCapacityProviderError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListLayersError =
   | InvalidParameterValueException
@@ -8374,27 +8129,13 @@ export type ListLayersError =
 /**
  * Lists Lambda layers and shows information about the latest version of each. Specify a runtime identifier to list only layers that indicate that they're compatible with that runtime. Specify a compatible architecture to include only layers that are compatible with that instruction set architecture.
  */
-export const listLayers: API.OperationMethod<
+export const listLayers: API.PaginatedOperationMethod<
   ListLayersRequest,
   ListLayersResponse,
   ListLayersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListLayersRequest,
-  ) => stream.Stream<
-    ListLayersResponse,
-    ListLayersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListLayersRequest,
-  ) => stream.Stream<
-    LayersListItem,
-    ListLayersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  LayersListItem
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListLayersRequest,
   output: ListLayersResponse,
   errors: [
@@ -8411,27 +8152,7 @@ export const listLayers: API.OperationMethod<
     items: "Layers",
     pageSize: "MaxItems",
   } as const,
-})) as any as API.OperationMethod<
-  ListLayersRequest,
-  ListLayersResponse,
-  ListLayersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListLayersRequest,
-  ) => stream.Stream<
-    ListLayersResponse,
-    ListLayersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListLayersRequest,
-  ) => stream.Stream<
-    LayersListItem,
-    ListLayersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListLayerVersionsError =
   | InvalidParameterValueException
@@ -8444,27 +8165,13 @@ export type ListLayerVersionsError =
 /**
  * Lists the versions of an Lambda layer. Versions that have been deleted aren't listed. Specify a runtime identifier to list only versions that indicate that they're compatible with that runtime. Specify a compatible architecture to include only layer versions that are compatible with that architecture.
  */
-export const listLayerVersions: API.OperationMethod<
+export const listLayerVersions: API.PaginatedOperationMethod<
   ListLayerVersionsRequest,
   ListLayerVersionsResponse,
   ListLayerVersionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListLayerVersionsRequest,
-  ) => stream.Stream<
-    ListLayerVersionsResponse,
-    ListLayerVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListLayerVersionsRequest,
-  ) => stream.Stream<
-    LayerVersionsListItem,
-    ListLayerVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  LayerVersionsListItem
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListLayerVersionsRequest,
   output: ListLayerVersionsResponse,
   errors: [
@@ -8484,27 +8191,7 @@ export const listLayerVersions: API.OperationMethod<
     items: "LayerVersions",
     pageSize: "MaxItems",
   } as const,
-})) as any as API.OperationMethod<
-  ListLayerVersionsRequest,
-  ListLayerVersionsResponse,
-  ListLayerVersionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListLayerVersionsRequest,
-  ) => stream.Stream<
-    ListLayerVersionsResponse,
-    ListLayerVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListLayerVersionsRequest,
-  ) => stream.Stream<
-    LayerVersionsListItem,
-    ListLayerVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListProvisionedConcurrencyConfigsError =
   | InvalidParameterValueException
@@ -8517,27 +8204,13 @@ export type ListProvisionedConcurrencyConfigsError =
 /**
  * Retrieves a list of provisioned concurrency configurations for a function.
  */
-export const listProvisionedConcurrencyConfigs: API.OperationMethod<
+export const listProvisionedConcurrencyConfigs: API.PaginatedOperationMethod<
   ListProvisionedConcurrencyConfigsRequest,
   ListProvisionedConcurrencyConfigsResponse,
   ListProvisionedConcurrencyConfigsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListProvisionedConcurrencyConfigsRequest,
-  ) => stream.Stream<
-    ListProvisionedConcurrencyConfigsResponse,
-    ListProvisionedConcurrencyConfigsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListProvisionedConcurrencyConfigsRequest,
-  ) => stream.Stream<
-    ProvisionedConcurrencyConfigListItem,
-    ListProvisionedConcurrencyConfigsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ProvisionedConcurrencyConfigListItem
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListProvisionedConcurrencyConfigsRequest,
   output: ListProvisionedConcurrencyConfigsResponse,
   errors: [
@@ -8557,27 +8230,7 @@ export const listProvisionedConcurrencyConfigs: API.OperationMethod<
     items: "ProvisionedConcurrencyConfigs",
     pageSize: "MaxItems",
   } as const,
-})) as any as API.OperationMethod<
-  ListProvisionedConcurrencyConfigsRequest,
-  ListProvisionedConcurrencyConfigsResponse,
-  ListProvisionedConcurrencyConfigsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListProvisionedConcurrencyConfigsRequest,
-  ) => stream.Stream<
-    ListProvisionedConcurrencyConfigsResponse,
-    ListProvisionedConcurrencyConfigsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListProvisionedConcurrencyConfigsRequest,
-  ) => stream.Stream<
-    ProvisionedConcurrencyConfigListItem,
-    ListProvisionedConcurrencyConfigsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsError =
   | InvalidParameterValueException
@@ -8594,7 +8247,7 @@ export const listTags: API.OperationMethod<
   ListTagsRequest,
   ListTagsResponse,
   ListTagsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsRequest,
   output: ListTagsResponse,
@@ -8620,27 +8273,13 @@ export type ListVersionsByFunctionError =
 /**
  * Returns a list of versions, with the version-specific configuration of each. Lambda returns up to 50 versions per call.
  */
-export const listVersionsByFunction: API.OperationMethod<
+export const listVersionsByFunction: API.PaginatedOperationMethod<
   ListVersionsByFunctionRequest,
   ListVersionsByFunctionResponse,
   ListVersionsByFunctionError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListVersionsByFunctionRequest,
-  ) => stream.Stream<
-    ListVersionsByFunctionResponse,
-    ListVersionsByFunctionError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListVersionsByFunctionRequest,
-  ) => stream.Stream<
-    FunctionConfiguration,
-    ListVersionsByFunctionError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  FunctionConfiguration
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListVersionsByFunctionRequest,
   output: ListVersionsByFunctionResponse,
   errors: [
@@ -8658,27 +8297,7 @@ export const listVersionsByFunction: API.OperationMethod<
     items: "Versions",
     pageSize: "MaxItems",
   } as const,
-})) as any as API.OperationMethod<
-  ListVersionsByFunctionRequest,
-  ListVersionsByFunctionResponse,
-  ListVersionsByFunctionError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListVersionsByFunctionRequest,
-  ) => stream.Stream<
-    ListVersionsByFunctionResponse,
-    ListVersionsByFunctionError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListVersionsByFunctionRequest,
-  ) => stream.Stream<
-    FunctionConfiguration,
-    ListVersionsByFunctionError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type PublishLayerVersionError =
   | CodeStorageExceededException
@@ -8698,7 +8317,7 @@ export const publishLayerVersion: API.OperationMethod<
   PublishLayerVersionRequest,
   PublishLayerVersionResponse,
   PublishLayerVersionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PublishLayerVersionRequest,
   output: PublishLayerVersionResponse,
@@ -8739,7 +8358,7 @@ export const publishVersion: API.OperationMethod<
   PublishVersionRequest,
   FunctionConfiguration,
   PublishVersionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PublishVersionRequest,
   output: FunctionConfiguration,
@@ -8777,7 +8396,7 @@ export const putFunctionCodeSigningConfig: API.OperationMethod<
   PutFunctionCodeSigningConfigRequest,
   PutFunctionCodeSigningConfigResponse,
   PutFunctionCodeSigningConfigError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutFunctionCodeSigningConfigRequest,
   output: PutFunctionCodeSigningConfigResponse,
@@ -8816,7 +8435,7 @@ export const putFunctionConcurrency: API.OperationMethod<
   PutFunctionConcurrencyRequest,
   Concurrency,
   PutFunctionConcurrencyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutFunctionConcurrencyRequest,
   output: Concurrency,
@@ -8856,7 +8475,7 @@ export const putFunctionEventInvokeConfig: API.OperationMethod<
   PutFunctionEventInvokeConfigRequest,
   FunctionEventInvokeConfig,
   PutFunctionEventInvokeConfigError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutFunctionEventInvokeConfigRequest,
   output: FunctionEventInvokeConfig,
@@ -8894,7 +8513,7 @@ export const putFunctionRecursionConfig: API.OperationMethod<
   PutFunctionRecursionConfigRequest,
   PutFunctionRecursionConfigResponse,
   PutFunctionRecursionConfigError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutFunctionRecursionConfigRequest,
   output: PutFunctionRecursionConfigResponse,
@@ -8926,7 +8545,7 @@ export const putFunctionScalingConfig: API.OperationMethod<
   PutFunctionScalingConfigRequest,
   PutFunctionScalingConfigResponse,
   PutFunctionScalingConfigError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutFunctionScalingConfigRequest,
   output: PutFunctionScalingConfigResponse,
@@ -8958,7 +8577,7 @@ export const putProvisionedConcurrencyConfig: API.OperationMethod<
   PutProvisionedConcurrencyConfigRequest,
   PutProvisionedConcurrencyConfigResponse,
   PutProvisionedConcurrencyConfigError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutProvisionedConcurrencyConfigRequest,
   output: PutProvisionedConcurrencyConfigResponse,
@@ -8990,7 +8609,7 @@ export const putRuntimeManagementConfig: API.OperationMethod<
   PutRuntimeManagementConfigRequest,
   PutRuntimeManagementConfigResponse,
   PutRuntimeManagementConfigError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutRuntimeManagementConfigRequest,
   output: PutRuntimeManagementConfigResponse,
@@ -9022,7 +8641,7 @@ export const removeLayerVersionPermission: API.OperationMethod<
   RemoveLayerVersionPermissionRequest,
   RemoveLayerVersionPermissionResponse,
   RemoveLayerVersionPermissionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RemoveLayerVersionPermissionRequest,
   output: RemoveLayerVersionPermissionResponse,
@@ -9055,7 +8674,7 @@ export const removePermission: API.OperationMethod<
   RemovePermissionRequest,
   RemovePermissionResponse,
   RemovePermissionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RemovePermissionRequest,
   output: RemovePermissionResponse,
@@ -9086,7 +8705,7 @@ export const sendDurableExecutionCallbackFailure: API.OperationMethod<
   SendDurableExecutionCallbackFailureRequest,
   SendDurableExecutionCallbackFailureResponse,
   SendDurableExecutionCallbackFailureError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: SendDurableExecutionCallbackFailureRequest,
   output: SendDurableExecutionCallbackFailureResponse,
@@ -9116,7 +8735,7 @@ export const sendDurableExecutionCallbackHeartbeat: API.OperationMethod<
   SendDurableExecutionCallbackHeartbeatRequest,
   SendDurableExecutionCallbackHeartbeatResponse,
   SendDurableExecutionCallbackHeartbeatError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: SendDurableExecutionCallbackHeartbeatRequest,
   output: SendDurableExecutionCallbackHeartbeatResponse,
@@ -9146,7 +8765,7 @@ export const sendDurableExecutionCallbackSuccess: API.OperationMethod<
   SendDurableExecutionCallbackSuccessRequest,
   SendDurableExecutionCallbackSuccessResponse,
   SendDurableExecutionCallbackSuccessError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: SendDurableExecutionCallbackSuccessRequest,
   output: SendDurableExecutionCallbackSuccessResponse,
@@ -9175,7 +8794,7 @@ export const stopDurableExecution: API.OperationMethod<
   StopDurableExecutionRequest,
   StopDurableExecutionResponse,
   StopDurableExecutionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StopDurableExecutionRequest,
   output: StopDurableExecutionResponse,
@@ -9206,7 +8825,7 @@ export const tagResource: API.OperationMethod<
   TagResourceRequest,
   TagResourceResponse,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -9240,7 +8859,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceRequest,
   UntagResourceResponse,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -9275,7 +8894,7 @@ export const updateAlias: API.OperationMethod<
   UpdateAliasRequest,
   AliasConfiguration,
   UpdateAliasError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateAliasRequest,
   output: AliasConfiguration,
@@ -9308,7 +8927,7 @@ export const updateCapacityProvider: API.OperationMethod<
   UpdateCapacityProviderRequest,
   UpdateCapacityProviderResponse,
   UpdateCapacityProviderError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateCapacityProviderRequest,
   output: UpdateCapacityProviderResponse,
@@ -9336,7 +8955,7 @@ export const updateCodeSigningConfig: API.OperationMethod<
   UpdateCodeSigningConfigRequest,
   UpdateCodeSigningConfigResponse,
   UpdateCodeSigningConfigError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateCodeSigningConfigRequest,
   output: UpdateCodeSigningConfigResponse,
@@ -9413,7 +9032,7 @@ export const updateEventSourceMapping: API.OperationMethod<
   UpdateEventSourceMappingRequest,
   EventSourceMappingConfiguration,
   UpdateEventSourceMappingError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateEventSourceMappingRequest,
   output: EventSourceMappingConfiguration,
@@ -9463,7 +9082,7 @@ export const updateFunctionCode: API.OperationMethod<
   UpdateFunctionCodeRequest,
   FunctionConfiguration,
   UpdateFunctionCodeError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateFunctionCodeRequest,
   output: FunctionConfiguration,
@@ -9512,7 +9131,7 @@ export const updateFunctionConfiguration: API.OperationMethod<
   UpdateFunctionConfigurationRequest,
   FunctionConfiguration,
   UpdateFunctionConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateFunctionConfigurationRequest,
   output: FunctionConfiguration,
@@ -9550,7 +9169,7 @@ export const updateFunctionEventInvokeConfig: API.OperationMethod<
   UpdateFunctionEventInvokeConfigRequest,
   FunctionEventInvokeConfig,
   UpdateFunctionEventInvokeConfigError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateFunctionEventInvokeConfigRequest,
   output: FunctionEventInvokeConfig,
@@ -9582,7 +9201,7 @@ export const updateFunctionUrlConfig: API.OperationMethod<
   UpdateFunctionUrlConfigRequest,
   UpdateFunctionUrlConfigResponse,
   UpdateFunctionUrlConfigError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateFunctionUrlConfigRequest,
   output: UpdateFunctionUrlConfigResponse,

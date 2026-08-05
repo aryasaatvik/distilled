@@ -1,6 +1,5 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -8,7 +7,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 const svc = T.AwsApiService({
   sdkId: "SSO Admin",
   serviceShapeName: "SWBExternalService",
@@ -92,7 +90,7 @@ export class AccessDeniedException
   extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
     "AccessDeniedException",
     {
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       Reason: S.optional(
         S.suspend(() => AccessDeniedExceptionReason).annotate({
           identifier: "AccessDeniedExceptionReason",
@@ -104,20 +102,20 @@ export class AccessDeniedException
 export class ConflictException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
     "ConflictException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class InternalServerException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
     "InternalServerException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(500),
   ).pipe(C.withServerError) {}
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
     {
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       Reason: S.optional(
         S.suspend(() => ResourceNotFoundExceptionReason).annotate({
           identifier: "ResourceNotFoundExceptionReason",
@@ -129,14 +127,14 @@ export class ResourceNotFoundException
 export class ServiceQuotaExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
     "ServiceQuotaExceededException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(402),
   ).pipe(C.withQuotaError) {}
 export class ThrottlingException
   extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
     "ThrottlingException",
     {
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       Reason: S.optional(
         S.suspend(() => ThrottlingExceptionReason).annotate({
           identifier: "ThrottlingExceptionReason",
@@ -149,7 +147,7 @@ export class ValidationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
     "ValidationException",
     {
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       Reason: S.optional(
         S.suspend(() => ValidationExceptionReason).annotate({
           identifier: "ValidationExceptionReason",
@@ -3012,7 +3010,7 @@ export const addRegion: API.OperationMethod<
   AddRegionRequest,
   AddRegionResponse,
   AddRegionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AddRegionRequest,
   output: AddRegionResponse,
@@ -3045,7 +3043,7 @@ export const attachCustomerManagedPolicyReferenceToPermissionSet: API.OperationM
   AttachCustomerManagedPolicyReferenceToPermissionSetRequest,
   AttachCustomerManagedPolicyReferenceToPermissionSetResponse,
   AttachCustomerManagedPolicyReferenceToPermissionSetError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AttachCustomerManagedPolicyReferenceToPermissionSetRequest,
   output: AttachCustomerManagedPolicyReferenceToPermissionSetResponse,
@@ -3081,7 +3079,7 @@ export const attachManagedPolicyToPermissionSet: API.OperationMethod<
   AttachManagedPolicyToPermissionSetRequest,
   AttachManagedPolicyToPermissionSetResponse,
   AttachManagedPolicyToPermissionSetError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AttachManagedPolicyToPermissionSetRequest,
   output: AttachManagedPolicyToPermissionSetResponse,
@@ -3121,7 +3119,7 @@ export const createAccountAssignment: API.OperationMethod<
   CreateAccountAssignmentRequest,
   CreateAccountAssignmentResponse,
   CreateAccountAssignmentError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateAccountAssignmentRequest,
   output: CreateAccountAssignmentResponse,
@@ -3157,7 +3155,7 @@ export const createApplication: API.OperationMethod<
   CreateApplicationRequest,
   CreateApplicationResponse,
   CreateApplicationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateApplicationRequest,
   output: CreateApplicationResponse,
@@ -3191,7 +3189,7 @@ export const createApplicationAssignment: API.OperationMethod<
   CreateApplicationAssignmentRequest,
   CreateApplicationAssignmentResponse,
   CreateApplicationAssignmentError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateApplicationAssignmentRequest,
   output: CreateApplicationAssignmentResponse,
@@ -3230,7 +3228,7 @@ export const createInstance: API.OperationMethod<
   CreateInstanceRequest,
   CreateInstanceResponse,
   CreateInstanceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateInstanceRequest,
   output: CreateInstanceResponse,
@@ -3264,7 +3262,7 @@ export const createInstanceAccessControlAttributeConfiguration: API.OperationMet
   CreateInstanceAccessControlAttributeConfigurationRequest,
   CreateInstanceAccessControlAttributeConfigurationResponse,
   CreateInstanceAccessControlAttributeConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateInstanceAccessControlAttributeConfigurationRequest,
   output: CreateInstanceAccessControlAttributeConfigurationResponse,
@@ -3299,7 +3297,7 @@ export const createPermissionSet: API.OperationMethod<
   CreatePermissionSetRequest,
   CreatePermissionSetResponse,
   CreatePermissionSetError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreatePermissionSetRequest,
   output: CreatePermissionSetResponse,
@@ -3334,7 +3332,7 @@ export const createTrustedTokenIssuer: API.OperationMethod<
   CreateTrustedTokenIssuerRequest,
   CreateTrustedTokenIssuerResponse,
   CreateTrustedTokenIssuerError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateTrustedTokenIssuerRequest,
   output: CreateTrustedTokenIssuerResponse,
@@ -3368,7 +3366,7 @@ export const deleteAccountAssignment: API.OperationMethod<
   DeleteAccountAssignmentRequest,
   DeleteAccountAssignmentResponse,
   DeleteAccountAssignmentError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteAccountAssignmentRequest,
   output: DeleteAccountAssignmentResponse,
@@ -3400,7 +3398,7 @@ export const deleteApplication: API.OperationMethod<
   DeleteApplicationRequest,
   DeleteApplicationResponse,
   DeleteApplicationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteApplicationRequest,
   output: DeleteApplicationResponse,
@@ -3432,7 +3430,7 @@ export const deleteApplicationAccessScope: API.OperationMethod<
   DeleteApplicationAccessScopeRequest,
   DeleteApplicationAccessScopeResponse,
   DeleteApplicationAccessScopeError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteApplicationAccessScopeRequest,
   output: DeleteApplicationAccessScopeResponse,
@@ -3464,7 +3462,7 @@ export const deleteApplicationAssignment: API.OperationMethod<
   DeleteApplicationAssignmentRequest,
   DeleteApplicationAssignmentResponse,
   DeleteApplicationAssignmentError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteApplicationAssignmentRequest,
   output: DeleteApplicationAssignmentResponse,
@@ -3496,7 +3494,7 @@ export const deleteApplicationAuthenticationMethod: API.OperationMethod<
   DeleteApplicationAuthenticationMethodRequest,
   DeleteApplicationAuthenticationMethodResponse,
   DeleteApplicationAuthenticationMethodError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteApplicationAuthenticationMethodRequest,
   output: DeleteApplicationAuthenticationMethodResponse,
@@ -3528,7 +3526,7 @@ export const deleteApplicationGrant: API.OperationMethod<
   DeleteApplicationGrantRequest,
   DeleteApplicationGrantResponse,
   DeleteApplicationGrantError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteApplicationGrantRequest,
   output: DeleteApplicationGrantResponse,
@@ -3560,7 +3558,7 @@ export const deleteInlinePolicyFromPermissionSet: API.OperationMethod<
   DeleteInlinePolicyFromPermissionSetRequest,
   DeleteInlinePolicyFromPermissionSetResponse,
   DeleteInlinePolicyFromPermissionSetError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteInlinePolicyFromPermissionSetRequest,
   output: DeleteInlinePolicyFromPermissionSetResponse,
@@ -3591,7 +3589,7 @@ export const deleteInstance: API.OperationMethod<
   DeleteInstanceRequest,
   DeleteInstanceResponse,
   DeleteInstanceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteInstanceRequest,
   output: DeleteInstanceResponse,
@@ -3622,7 +3620,7 @@ export const deleteInstanceAccessControlAttributeConfiguration: API.OperationMet
   DeleteInstanceAccessControlAttributeConfigurationRequest,
   DeleteInstanceAccessControlAttributeConfigurationResponse,
   DeleteInstanceAccessControlAttributeConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteInstanceAccessControlAttributeConfigurationRequest,
   output: DeleteInstanceAccessControlAttributeConfigurationResponse,
@@ -3654,7 +3652,7 @@ export const deletePermissionsBoundaryFromPermissionSet: API.OperationMethod<
   DeletePermissionsBoundaryFromPermissionSetRequest,
   DeletePermissionsBoundaryFromPermissionSetResponse,
   DeletePermissionsBoundaryFromPermissionSetError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeletePermissionsBoundaryFromPermissionSetRequest,
   output: DeletePermissionsBoundaryFromPermissionSetResponse,
@@ -3686,7 +3684,7 @@ export const deletePermissionSet: API.OperationMethod<
   DeletePermissionSetRequest,
   DeletePermissionSetResponse,
   DeletePermissionSetError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeletePermissionSetRequest,
   output: DeletePermissionSetResponse,
@@ -3720,7 +3718,7 @@ export const deleteTrustedTokenIssuer: API.OperationMethod<
   DeleteTrustedTokenIssuerRequest,
   DeleteTrustedTokenIssuerResponse,
   DeleteTrustedTokenIssuerError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteTrustedTokenIssuerRequest,
   output: DeleteTrustedTokenIssuerResponse,
@@ -3751,7 +3749,7 @@ export const describeAccountAssignmentCreationStatus: API.OperationMethod<
   DescribeAccountAssignmentCreationStatusRequest,
   DescribeAccountAssignmentCreationStatusResponse,
   DescribeAccountAssignmentCreationStatusError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeAccountAssignmentCreationStatusRequest,
   output: DescribeAccountAssignmentCreationStatusResponse,
@@ -3781,7 +3779,7 @@ export const describeAccountAssignmentDeletionStatus: API.OperationMethod<
   DescribeAccountAssignmentDeletionStatusRequest,
   DescribeAccountAssignmentDeletionStatusResponse,
   DescribeAccountAssignmentDeletionStatusError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeAccountAssignmentDeletionStatusRequest,
   output: DescribeAccountAssignmentDeletionStatusResponse,
@@ -3811,7 +3809,7 @@ export const describeApplication: API.OperationMethod<
   DescribeApplicationRequest,
   DescribeApplicationResponse,
   DescribeApplicationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeApplicationRequest,
   output: DescribeApplicationResponse,
@@ -3841,7 +3839,7 @@ export const describeApplicationAssignment: API.OperationMethod<
   DescribeApplicationAssignmentRequest,
   DescribeApplicationAssignmentResponse,
   DescribeApplicationAssignmentError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeApplicationAssignmentRequest,
   output: DescribeApplicationAssignmentResponse,
@@ -3871,7 +3869,7 @@ export const describeApplicationProvider: API.OperationMethod<
   DescribeApplicationProviderRequest,
   DescribeApplicationProviderResponse,
   DescribeApplicationProviderError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeApplicationProviderRequest,
   output: DescribeApplicationProviderResponse,
@@ -3906,7 +3904,7 @@ export const describeInstance: API.OperationMethod<
   DescribeInstanceRequest,
   DescribeInstanceResponse,
   DescribeInstanceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeInstanceRequest,
   output: DescribeInstanceResponse,
@@ -3935,7 +3933,7 @@ export const describeInstanceAccessControlAttributeConfiguration: API.OperationM
   DescribeInstanceAccessControlAttributeConfigurationRequest,
   DescribeInstanceAccessControlAttributeConfigurationResponse,
   DescribeInstanceAccessControlAttributeConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeInstanceAccessControlAttributeConfigurationRequest,
   output: DescribeInstanceAccessControlAttributeConfigurationResponse,
@@ -3965,7 +3963,7 @@ export const describePermissionSet: API.OperationMethod<
   DescribePermissionSetRequest,
   DescribePermissionSetResponse,
   DescribePermissionSetError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribePermissionSetRequest,
   output: DescribePermissionSetResponse,
@@ -3995,7 +3993,7 @@ export const describePermissionSetProvisioningStatus: API.OperationMethod<
   DescribePermissionSetProvisioningStatusRequest,
   DescribePermissionSetProvisioningStatusResponse,
   DescribePermissionSetProvisioningStatusError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribePermissionSetProvisioningStatusRequest,
   output: DescribePermissionSetProvisioningStatusResponse,
@@ -4033,7 +4031,7 @@ export const describeRegion: API.OperationMethod<
   DescribeRegionRequest,
   DescribeRegionResponse,
   DescribeRegionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeRegionRequest,
   output: DescribeRegionResponse,
@@ -4063,7 +4061,7 @@ export const describeTrustedTokenIssuer: API.OperationMethod<
   DescribeTrustedTokenIssuerRequest,
   DescribeTrustedTokenIssuerResponse,
   DescribeTrustedTokenIssuerError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeTrustedTokenIssuerRequest,
   output: DescribeTrustedTokenIssuerResponse,
@@ -4094,7 +4092,7 @@ export const detachCustomerManagedPolicyReferenceFromPermissionSet: API.Operatio
   DetachCustomerManagedPolicyReferenceFromPermissionSetRequest,
   DetachCustomerManagedPolicyReferenceFromPermissionSetResponse,
   DetachCustomerManagedPolicyReferenceFromPermissionSetError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DetachCustomerManagedPolicyReferenceFromPermissionSetRequest,
   output: DetachCustomerManagedPolicyReferenceFromPermissionSetResponse,
@@ -4126,7 +4124,7 @@ export const detachManagedPolicyFromPermissionSet: API.OperationMethod<
   DetachManagedPolicyFromPermissionSetRequest,
   DetachManagedPolicyFromPermissionSetResponse,
   DetachManagedPolicyFromPermissionSetError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DetachManagedPolicyFromPermissionSetRequest,
   output: DetachManagedPolicyFromPermissionSetResponse,
@@ -4157,7 +4155,7 @@ export const getApplicationAccessScope: API.OperationMethod<
   GetApplicationAccessScopeRequest,
   GetApplicationAccessScopeResponse,
   GetApplicationAccessScopeError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetApplicationAccessScopeRequest,
   output: GetApplicationAccessScopeResponse,
@@ -4187,7 +4185,7 @@ export const getApplicationAssignmentConfiguration: API.OperationMethod<
   GetApplicationAssignmentConfigurationRequest,
   GetApplicationAssignmentConfigurationResponse,
   GetApplicationAssignmentConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetApplicationAssignmentConfigurationRequest,
   output: GetApplicationAssignmentConfigurationResponse,
@@ -4217,7 +4215,7 @@ export const getApplicationAuthenticationMethod: API.OperationMethod<
   GetApplicationAuthenticationMethodRequest,
   GetApplicationAuthenticationMethodResponse,
   GetApplicationAuthenticationMethodError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetApplicationAuthenticationMethodRequest,
   output: GetApplicationAuthenticationMethodResponse,
@@ -4247,7 +4245,7 @@ export const getApplicationGrant: API.OperationMethod<
   GetApplicationGrantRequest,
   GetApplicationGrantResponse,
   GetApplicationGrantError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetApplicationGrantRequest,
   output: GetApplicationGrantResponse,
@@ -4279,7 +4277,7 @@ export const getApplicationSessionConfiguration: API.OperationMethod<
   GetApplicationSessionConfigurationRequest,
   GetApplicationSessionConfigurationResponse,
   GetApplicationSessionConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetApplicationSessionConfigurationRequest,
   output: GetApplicationSessionConfigurationResponse,
@@ -4309,7 +4307,7 @@ export const getInlinePolicyForPermissionSet: API.OperationMethod<
   GetInlinePolicyForPermissionSetRequest,
   GetInlinePolicyForPermissionSetResponse,
   GetInlinePolicyForPermissionSetError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetInlinePolicyForPermissionSetRequest,
   output: GetInlinePolicyForPermissionSetResponse,
@@ -4339,7 +4337,7 @@ export const getPermissionsBoundaryForPermissionSet: API.OperationMethod<
   GetPermissionsBoundaryForPermissionSetRequest,
   GetPermissionsBoundaryForPermissionSetResponse,
   GetPermissionsBoundaryForPermissionSetError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetPermissionsBoundaryForPermissionSetRequest,
   output: GetPermissionsBoundaryForPermissionSetResponse,
@@ -4365,27 +4363,13 @@ export type ListAccountAssignmentCreationStatusError =
 /**
  * Lists the status of the Amazon Web Services account assignment creation requests for a specified IAM Identity Center instance.
  */
-export const listAccountAssignmentCreationStatus: API.OperationMethod<
+export const listAccountAssignmentCreationStatus: API.PaginatedOperationMethod<
   ListAccountAssignmentCreationStatusRequest,
   ListAccountAssignmentCreationStatusResponse,
   ListAccountAssignmentCreationStatusError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAccountAssignmentCreationStatusRequest,
-  ) => stream.Stream<
-    ListAccountAssignmentCreationStatusResponse,
-    ListAccountAssignmentCreationStatusError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAccountAssignmentCreationStatusRequest,
-  ) => stream.Stream<
-    AccountAssignmentOperationStatusMetadata,
-    ListAccountAssignmentCreationStatusError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  AccountAssignmentOperationStatusMetadata
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListAccountAssignmentCreationStatusRequest,
   output: ListAccountAssignmentCreationStatusResponse,
   errors: [
@@ -4404,27 +4388,7 @@ export const listAccountAssignmentCreationStatus: API.OperationMethod<
     items: "AccountAssignmentsCreationStatus",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListAccountAssignmentCreationStatusRequest,
-  ListAccountAssignmentCreationStatusResponse,
-  ListAccountAssignmentCreationStatusError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAccountAssignmentCreationStatusRequest,
-  ) => stream.Stream<
-    ListAccountAssignmentCreationStatusResponse,
-    ListAccountAssignmentCreationStatusError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAccountAssignmentCreationStatusRequest,
-  ) => stream.Stream<
-    AccountAssignmentOperationStatusMetadata,
-    ListAccountAssignmentCreationStatusError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListAccountAssignmentDeletionStatusError =
   | AccessDeniedException
@@ -4436,27 +4400,13 @@ export type ListAccountAssignmentDeletionStatusError =
 /**
  * Lists the status of the Amazon Web Services account assignment deletion requests for a specified IAM Identity Center instance.
  */
-export const listAccountAssignmentDeletionStatus: API.OperationMethod<
+export const listAccountAssignmentDeletionStatus: API.PaginatedOperationMethod<
   ListAccountAssignmentDeletionStatusRequest,
   ListAccountAssignmentDeletionStatusResponse,
   ListAccountAssignmentDeletionStatusError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAccountAssignmentDeletionStatusRequest,
-  ) => stream.Stream<
-    ListAccountAssignmentDeletionStatusResponse,
-    ListAccountAssignmentDeletionStatusError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAccountAssignmentDeletionStatusRequest,
-  ) => stream.Stream<
-    AccountAssignmentOperationStatusMetadata,
-    ListAccountAssignmentDeletionStatusError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  AccountAssignmentOperationStatusMetadata
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListAccountAssignmentDeletionStatusRequest,
   output: ListAccountAssignmentDeletionStatusResponse,
   errors: [
@@ -4475,27 +4425,7 @@ export const listAccountAssignmentDeletionStatus: API.OperationMethod<
     items: "AccountAssignmentsDeletionStatus",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListAccountAssignmentDeletionStatusRequest,
-  ListAccountAssignmentDeletionStatusResponse,
-  ListAccountAssignmentDeletionStatusError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAccountAssignmentDeletionStatusRequest,
-  ) => stream.Stream<
-    ListAccountAssignmentDeletionStatusResponse,
-    ListAccountAssignmentDeletionStatusError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAccountAssignmentDeletionStatusRequest,
-  ) => stream.Stream<
-    AccountAssignmentOperationStatusMetadata,
-    ListAccountAssignmentDeletionStatusError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListAccountAssignmentsError =
   | AccessDeniedException
@@ -4507,27 +4437,13 @@ export type ListAccountAssignmentsError =
 /**
  * Lists the assignee of the specified Amazon Web Services account with the specified permission set.
  */
-export const listAccountAssignments: API.OperationMethod<
+export const listAccountAssignments: API.PaginatedOperationMethod<
   ListAccountAssignmentsRequest,
   ListAccountAssignmentsResponse,
   ListAccountAssignmentsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAccountAssignmentsRequest,
-  ) => stream.Stream<
-    ListAccountAssignmentsResponse,
-    ListAccountAssignmentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAccountAssignmentsRequest,
-  ) => stream.Stream<
-    AccountAssignment,
-    ListAccountAssignmentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  AccountAssignment
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListAccountAssignmentsRequest,
   output: ListAccountAssignmentsResponse,
   errors: [
@@ -4546,27 +4462,7 @@ export const listAccountAssignments: API.OperationMethod<
     items: "AccountAssignments",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListAccountAssignmentsRequest,
-  ListAccountAssignmentsResponse,
-  ListAccountAssignmentsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAccountAssignmentsRequest,
-  ) => stream.Stream<
-    ListAccountAssignmentsResponse,
-    ListAccountAssignmentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAccountAssignmentsRequest,
-  ) => stream.Stream<
-    AccountAssignment,
-    ListAccountAssignmentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListAccountAssignmentsForPrincipalError =
   | AccessDeniedException
@@ -4578,27 +4474,13 @@ export type ListAccountAssignmentsForPrincipalError =
 /**
  * Retrieves a list of the IAM Identity Center associated Amazon Web Services accounts that the principal has access to. This action must be called from the management account containing your organization instance of IAM Identity Center. This action is not valid for account instances of IAM Identity Center.
  */
-export const listAccountAssignmentsForPrincipal: API.OperationMethod<
+export const listAccountAssignmentsForPrincipal: API.PaginatedOperationMethod<
   ListAccountAssignmentsForPrincipalRequest,
   ListAccountAssignmentsForPrincipalResponse,
   ListAccountAssignmentsForPrincipalError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAccountAssignmentsForPrincipalRequest,
-  ) => stream.Stream<
-    ListAccountAssignmentsForPrincipalResponse,
-    ListAccountAssignmentsForPrincipalError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAccountAssignmentsForPrincipalRequest,
-  ) => stream.Stream<
-    AccountAssignmentForPrincipal,
-    ListAccountAssignmentsForPrincipalError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  AccountAssignmentForPrincipal
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListAccountAssignmentsForPrincipalRequest,
   output: ListAccountAssignmentsForPrincipalResponse,
   errors: [
@@ -4617,27 +4499,7 @@ export const listAccountAssignmentsForPrincipal: API.OperationMethod<
     items: "AccountAssignments",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListAccountAssignmentsForPrincipalRequest,
-  ListAccountAssignmentsForPrincipalResponse,
-  ListAccountAssignmentsForPrincipalError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAccountAssignmentsForPrincipalRequest,
-  ) => stream.Stream<
-    ListAccountAssignmentsForPrincipalResponse,
-    ListAccountAssignmentsForPrincipalError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAccountAssignmentsForPrincipalRequest,
-  ) => stream.Stream<
-    AccountAssignmentForPrincipal,
-    ListAccountAssignmentsForPrincipalError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListAccountsForProvisionedPermissionSetError =
   | AccessDeniedException
@@ -4649,27 +4511,13 @@ export type ListAccountsForProvisionedPermissionSetError =
 /**
  * Lists all the Amazon Web Services accounts where the specified permission set is provisioned.
  */
-export const listAccountsForProvisionedPermissionSet: API.OperationMethod<
+export const listAccountsForProvisionedPermissionSet: API.PaginatedOperationMethod<
   ListAccountsForProvisionedPermissionSetRequest,
   ListAccountsForProvisionedPermissionSetResponse,
   ListAccountsForProvisionedPermissionSetError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAccountsForProvisionedPermissionSetRequest,
-  ) => stream.Stream<
-    ListAccountsForProvisionedPermissionSetResponse,
-    ListAccountsForProvisionedPermissionSetError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAccountsForProvisionedPermissionSetRequest,
-  ) => stream.Stream<
-    AccountId,
-    ListAccountsForProvisionedPermissionSetError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  AccountId
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListAccountsForProvisionedPermissionSetRequest,
   output: ListAccountsForProvisionedPermissionSetResponse,
   errors: [
@@ -4688,27 +4536,7 @@ export const listAccountsForProvisionedPermissionSet: API.OperationMethod<
     items: "AccountIds",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListAccountsForProvisionedPermissionSetRequest,
-  ListAccountsForProvisionedPermissionSetResponse,
-  ListAccountsForProvisionedPermissionSetError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAccountsForProvisionedPermissionSetRequest,
-  ) => stream.Stream<
-    ListAccountsForProvisionedPermissionSetResponse,
-    ListAccountsForProvisionedPermissionSetError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAccountsForProvisionedPermissionSetRequest,
-  ) => stream.Stream<
-    AccountId,
-    ListAccountsForProvisionedPermissionSetError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListApplicationAccessScopesError =
   | AccessDeniedException
@@ -4720,27 +4548,13 @@ export type ListApplicationAccessScopesError =
 /**
  * Lists the access scopes and authorized targets associated with an application.
  */
-export const listApplicationAccessScopes: API.OperationMethod<
+export const listApplicationAccessScopes: API.PaginatedOperationMethod<
   ListApplicationAccessScopesRequest,
   ListApplicationAccessScopesResponse,
   ListApplicationAccessScopesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListApplicationAccessScopesRequest,
-  ) => stream.Stream<
-    ListApplicationAccessScopesResponse,
-    ListApplicationAccessScopesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListApplicationAccessScopesRequest,
-  ) => stream.Stream<
-    ScopeDetails,
-    ListApplicationAccessScopesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ScopeDetails
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListApplicationAccessScopesRequest,
   output: ListApplicationAccessScopesResponse,
   errors: [
@@ -4759,27 +4573,7 @@ export const listApplicationAccessScopes: API.OperationMethod<
     items: "Scopes",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListApplicationAccessScopesRequest,
-  ListApplicationAccessScopesResponse,
-  ListApplicationAccessScopesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListApplicationAccessScopesRequest,
-  ) => stream.Stream<
-    ListApplicationAccessScopesResponse,
-    ListApplicationAccessScopesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListApplicationAccessScopesRequest,
-  ) => stream.Stream<
-    ScopeDetails,
-    ListApplicationAccessScopesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListApplicationAssignmentsError =
   | AccessDeniedException
@@ -4791,27 +4585,13 @@ export type ListApplicationAssignmentsError =
 /**
  * Lists Amazon Web Services account users that are assigned to an application.
  */
-export const listApplicationAssignments: API.OperationMethod<
+export const listApplicationAssignments: API.PaginatedOperationMethod<
   ListApplicationAssignmentsRequest,
   ListApplicationAssignmentsResponse,
   ListApplicationAssignmentsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListApplicationAssignmentsRequest,
-  ) => stream.Stream<
-    ListApplicationAssignmentsResponse,
-    ListApplicationAssignmentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListApplicationAssignmentsRequest,
-  ) => stream.Stream<
-    ApplicationAssignment,
-    ListApplicationAssignmentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ApplicationAssignment
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListApplicationAssignmentsRequest,
   output: ListApplicationAssignmentsResponse,
   errors: [
@@ -4830,27 +4610,7 @@ export const listApplicationAssignments: API.OperationMethod<
     items: "ApplicationAssignments",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListApplicationAssignmentsRequest,
-  ListApplicationAssignmentsResponse,
-  ListApplicationAssignmentsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListApplicationAssignmentsRequest,
-  ) => stream.Stream<
-    ListApplicationAssignmentsResponse,
-    ListApplicationAssignmentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListApplicationAssignmentsRequest,
-  ) => stream.Stream<
-    ApplicationAssignment,
-    ListApplicationAssignmentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListApplicationAssignmentsForPrincipalError =
   | AccessDeniedException
@@ -4862,27 +4622,13 @@ export type ListApplicationAssignmentsForPrincipalError =
 /**
  * Lists the applications to which a specified principal is assigned. You must provide a filter when calling this action from a member account against your organization instance of IAM Identity Center. A filter is not required when called from the management account against an organization instance of IAM Identity Center, or from a member account against an account instance of IAM Identity Center in the same account.
  */
-export const listApplicationAssignmentsForPrincipal: API.OperationMethod<
+export const listApplicationAssignmentsForPrincipal: API.PaginatedOperationMethod<
   ListApplicationAssignmentsForPrincipalRequest,
   ListApplicationAssignmentsForPrincipalResponse,
   ListApplicationAssignmentsForPrincipalError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListApplicationAssignmentsForPrincipalRequest,
-  ) => stream.Stream<
-    ListApplicationAssignmentsForPrincipalResponse,
-    ListApplicationAssignmentsForPrincipalError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListApplicationAssignmentsForPrincipalRequest,
-  ) => stream.Stream<
-    ApplicationAssignmentForPrincipal,
-    ListApplicationAssignmentsForPrincipalError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ApplicationAssignmentForPrincipal
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListApplicationAssignmentsForPrincipalRequest,
   output: ListApplicationAssignmentsForPrincipalResponse,
   errors: [
@@ -4901,27 +4647,7 @@ export const listApplicationAssignmentsForPrincipal: API.OperationMethod<
     items: "ApplicationAssignments",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListApplicationAssignmentsForPrincipalRequest,
-  ListApplicationAssignmentsForPrincipalResponse,
-  ListApplicationAssignmentsForPrincipalError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListApplicationAssignmentsForPrincipalRequest,
-  ) => stream.Stream<
-    ListApplicationAssignmentsForPrincipalResponse,
-    ListApplicationAssignmentsForPrincipalError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListApplicationAssignmentsForPrincipalRequest,
-  ) => stream.Stream<
-    ApplicationAssignmentForPrincipal,
-    ListApplicationAssignmentsForPrincipalError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListApplicationAuthenticationMethodsError =
   | AccessDeniedException
@@ -4933,27 +4659,13 @@ export type ListApplicationAuthenticationMethodsError =
 /**
  * Lists all of the authentication methods supported by the specified application.
  */
-export const listApplicationAuthenticationMethods: API.OperationMethod<
+export const listApplicationAuthenticationMethods: API.PaginatedOperationMethod<
   ListApplicationAuthenticationMethodsRequest,
   ListApplicationAuthenticationMethodsResponse,
   ListApplicationAuthenticationMethodsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListApplicationAuthenticationMethodsRequest,
-  ) => stream.Stream<
-    ListApplicationAuthenticationMethodsResponse,
-    ListApplicationAuthenticationMethodsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListApplicationAuthenticationMethodsRequest,
-  ) => stream.Stream<
-    AuthenticationMethodItem,
-    ListApplicationAuthenticationMethodsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  AuthenticationMethodItem
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListApplicationAuthenticationMethodsRequest,
   output: ListApplicationAuthenticationMethodsResponse,
   errors: [
@@ -4971,27 +4683,7 @@ export const listApplicationAuthenticationMethods: API.OperationMethod<
     outputToken: "NextToken",
     items: "AuthenticationMethods",
   } as const,
-})) as any as API.OperationMethod<
-  ListApplicationAuthenticationMethodsRequest,
-  ListApplicationAuthenticationMethodsResponse,
-  ListApplicationAuthenticationMethodsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListApplicationAuthenticationMethodsRequest,
-  ) => stream.Stream<
-    ListApplicationAuthenticationMethodsResponse,
-    ListApplicationAuthenticationMethodsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListApplicationAuthenticationMethodsRequest,
-  ) => stream.Stream<
-    AuthenticationMethodItem,
-    ListApplicationAuthenticationMethodsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListApplicationGrantsError =
   | AccessDeniedException
@@ -5003,27 +4695,13 @@ export type ListApplicationGrantsError =
 /**
  * List the grants associated with an application.
  */
-export const listApplicationGrants: API.OperationMethod<
+export const listApplicationGrants: API.PaginatedOperationMethod<
   ListApplicationGrantsRequest,
   ListApplicationGrantsResponse,
   ListApplicationGrantsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListApplicationGrantsRequest,
-  ) => stream.Stream<
-    ListApplicationGrantsResponse,
-    ListApplicationGrantsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListApplicationGrantsRequest,
-  ) => stream.Stream<
-    GrantItem,
-    ListApplicationGrantsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  GrantItem
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListApplicationGrantsRequest,
   output: ListApplicationGrantsResponse,
   errors: [
@@ -5041,27 +4719,7 @@ export const listApplicationGrants: API.OperationMethod<
     outputToken: "NextToken",
     items: "Grants",
   } as const,
-})) as any as API.OperationMethod<
-  ListApplicationGrantsRequest,
-  ListApplicationGrantsResponse,
-  ListApplicationGrantsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListApplicationGrantsRequest,
-  ) => stream.Stream<
-    ListApplicationGrantsResponse,
-    ListApplicationGrantsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListApplicationGrantsRequest,
-  ) => stream.Stream<
-    GrantItem,
-    ListApplicationGrantsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListApplicationProvidersError =
   | AccessDeniedException
@@ -5072,27 +4730,13 @@ export type ListApplicationProvidersError =
 /**
  * Lists the application providers configured in the IAM Identity Center identity store.
  */
-export const listApplicationProviders: API.OperationMethod<
+export const listApplicationProviders: API.PaginatedOperationMethod<
   ListApplicationProvidersRequest,
   ListApplicationProvidersResponse,
   ListApplicationProvidersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListApplicationProvidersRequest,
-  ) => stream.Stream<
-    ListApplicationProvidersResponse,
-    ListApplicationProvidersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListApplicationProvidersRequest,
-  ) => stream.Stream<
-    ApplicationProvider,
-    ListApplicationProvidersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ApplicationProvider
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListApplicationProvidersRequest,
   output: ListApplicationProvidersResponse,
   errors: [
@@ -5110,27 +4754,7 @@ export const listApplicationProviders: API.OperationMethod<
     items: "ApplicationProviders",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListApplicationProvidersRequest,
-  ListApplicationProvidersResponse,
-  ListApplicationProvidersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListApplicationProvidersRequest,
-  ) => stream.Stream<
-    ListApplicationProvidersResponse,
-    ListApplicationProvidersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListApplicationProvidersRequest,
-  ) => stream.Stream<
-    ApplicationProvider,
-    ListApplicationProvidersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListApplicationsError =
   | AccessDeniedException
@@ -5141,27 +4765,13 @@ export type ListApplicationsError =
 /**
  * Lists all applications associated with the instance of IAM Identity Center. When listing applications for an organization instance in the management account, member accounts must use the `applicationAccount` parameter to filter the list to only applications created from that account. When listing applications for an account instance in the same member account, a filter is not required.
  */
-export const listApplications: API.OperationMethod<
+export const listApplications: API.PaginatedOperationMethod<
   ListApplicationsRequest,
   ListApplicationsResponse,
   ListApplicationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListApplicationsRequest,
-  ) => stream.Stream<
-    ListApplicationsResponse,
-    ListApplicationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListApplicationsRequest,
-  ) => stream.Stream<
-    Application,
-    ListApplicationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Application
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListApplicationsRequest,
   output: ListApplicationsResponse,
   errors: [
@@ -5179,27 +4789,7 @@ export const listApplications: API.OperationMethod<
     items: "Applications",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListApplicationsRequest,
-  ListApplicationsResponse,
-  ListApplicationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListApplicationsRequest,
-  ) => stream.Stream<
-    ListApplicationsResponse,
-    ListApplicationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListApplicationsRequest,
-  ) => stream.Stream<
-    Application,
-    ListApplicationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListCustomerManagedPolicyReferencesInPermissionSetError =
   | AccessDeniedException
@@ -5211,27 +4801,13 @@ export type ListCustomerManagedPolicyReferencesInPermissionSetError =
 /**
  * Lists all customer managed policies attached to a specified PermissionSet.
  */
-export const listCustomerManagedPolicyReferencesInPermissionSet: API.OperationMethod<
+export const listCustomerManagedPolicyReferencesInPermissionSet: API.PaginatedOperationMethod<
   ListCustomerManagedPolicyReferencesInPermissionSetRequest,
   ListCustomerManagedPolicyReferencesInPermissionSetResponse,
   ListCustomerManagedPolicyReferencesInPermissionSetError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCustomerManagedPolicyReferencesInPermissionSetRequest,
-  ) => stream.Stream<
-    ListCustomerManagedPolicyReferencesInPermissionSetResponse,
-    ListCustomerManagedPolicyReferencesInPermissionSetError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCustomerManagedPolicyReferencesInPermissionSetRequest,
-  ) => stream.Stream<
-    CustomerManagedPolicyReference,
-    ListCustomerManagedPolicyReferencesInPermissionSetError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  CustomerManagedPolicyReference
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListCustomerManagedPolicyReferencesInPermissionSetRequest,
   output: ListCustomerManagedPolicyReferencesInPermissionSetResponse,
   errors: [
@@ -5250,27 +4826,7 @@ export const listCustomerManagedPolicyReferencesInPermissionSet: API.OperationMe
     items: "CustomerManagedPolicyReferences",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListCustomerManagedPolicyReferencesInPermissionSetRequest,
-  ListCustomerManagedPolicyReferencesInPermissionSetResponse,
-  ListCustomerManagedPolicyReferencesInPermissionSetError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCustomerManagedPolicyReferencesInPermissionSetRequest,
-  ) => stream.Stream<
-    ListCustomerManagedPolicyReferencesInPermissionSetResponse,
-    ListCustomerManagedPolicyReferencesInPermissionSetError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCustomerManagedPolicyReferencesInPermissionSetRequest,
-  ) => stream.Stream<
-    CustomerManagedPolicyReference,
-    ListCustomerManagedPolicyReferencesInPermissionSetError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListInstancesError =
   | AccessDeniedException
@@ -5281,27 +4837,13 @@ export type ListInstancesError =
 /**
  * Lists the details of the organization and account instances of IAM Identity Center that were created in or visible to the account calling this API.
  */
-export const listInstances: API.OperationMethod<
+export const listInstances: API.PaginatedOperationMethod<
   ListInstancesRequest,
   ListInstancesResponse,
   ListInstancesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListInstancesRequest,
-  ) => stream.Stream<
-    ListInstancesResponse,
-    ListInstancesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListInstancesRequest,
-  ) => stream.Stream<
-    InstanceMetadata,
-    ListInstancesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  InstanceMetadata
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListInstancesRequest,
   output: ListInstancesResponse,
   errors: [
@@ -5319,27 +4861,7 @@ export const listInstances: API.OperationMethod<
     items: "Instances",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListInstancesRequest,
-  ListInstancesResponse,
-  ListInstancesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListInstancesRequest,
-  ) => stream.Stream<
-    ListInstancesResponse,
-    ListInstancesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListInstancesRequest,
-  ) => stream.Stream<
-    InstanceMetadata,
-    ListInstancesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListManagedPoliciesInPermissionSetError =
   | AccessDeniedException
@@ -5351,27 +4873,13 @@ export type ListManagedPoliciesInPermissionSetError =
 /**
  * Lists the Amazon Web Services managed policy that is attached to a specified permission set.
  */
-export const listManagedPoliciesInPermissionSet: API.OperationMethod<
+export const listManagedPoliciesInPermissionSet: API.PaginatedOperationMethod<
   ListManagedPoliciesInPermissionSetRequest,
   ListManagedPoliciesInPermissionSetResponse,
   ListManagedPoliciesInPermissionSetError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListManagedPoliciesInPermissionSetRequest,
-  ) => stream.Stream<
-    ListManagedPoliciesInPermissionSetResponse,
-    ListManagedPoliciesInPermissionSetError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListManagedPoliciesInPermissionSetRequest,
-  ) => stream.Stream<
-    AttachedManagedPolicy,
-    ListManagedPoliciesInPermissionSetError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  AttachedManagedPolicy
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListManagedPoliciesInPermissionSetRequest,
   output: ListManagedPoliciesInPermissionSetResponse,
   errors: [
@@ -5390,27 +4898,7 @@ export const listManagedPoliciesInPermissionSet: API.OperationMethod<
     items: "AttachedManagedPolicies",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListManagedPoliciesInPermissionSetRequest,
-  ListManagedPoliciesInPermissionSetResponse,
-  ListManagedPoliciesInPermissionSetError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListManagedPoliciesInPermissionSetRequest,
-  ) => stream.Stream<
-    ListManagedPoliciesInPermissionSetResponse,
-    ListManagedPoliciesInPermissionSetError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListManagedPoliciesInPermissionSetRequest,
-  ) => stream.Stream<
-    AttachedManagedPolicy,
-    ListManagedPoliciesInPermissionSetError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListPermissionSetProvisioningStatusError =
   | AccessDeniedException
@@ -5422,27 +4910,13 @@ export type ListPermissionSetProvisioningStatusError =
 /**
  * Lists the status of the permission set provisioning requests for a specified IAM Identity Center instance.
  */
-export const listPermissionSetProvisioningStatus: API.OperationMethod<
+export const listPermissionSetProvisioningStatus: API.PaginatedOperationMethod<
   ListPermissionSetProvisioningStatusRequest,
   ListPermissionSetProvisioningStatusResponse,
   ListPermissionSetProvisioningStatusError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPermissionSetProvisioningStatusRequest,
-  ) => stream.Stream<
-    ListPermissionSetProvisioningStatusResponse,
-    ListPermissionSetProvisioningStatusError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPermissionSetProvisioningStatusRequest,
-  ) => stream.Stream<
-    PermissionSetProvisioningStatusMetadata,
-    ListPermissionSetProvisioningStatusError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  PermissionSetProvisioningStatusMetadata
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListPermissionSetProvisioningStatusRequest,
   output: ListPermissionSetProvisioningStatusResponse,
   errors: [
@@ -5461,27 +4935,7 @@ export const listPermissionSetProvisioningStatus: API.OperationMethod<
     items: "PermissionSetsProvisioningStatus",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListPermissionSetProvisioningStatusRequest,
-  ListPermissionSetProvisioningStatusResponse,
-  ListPermissionSetProvisioningStatusError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPermissionSetProvisioningStatusRequest,
-  ) => stream.Stream<
-    ListPermissionSetProvisioningStatusResponse,
-    ListPermissionSetProvisioningStatusError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPermissionSetProvisioningStatusRequest,
-  ) => stream.Stream<
-    PermissionSetProvisioningStatusMetadata,
-    ListPermissionSetProvisioningStatusError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListPermissionSetsError =
   | AccessDeniedException
@@ -5493,27 +4947,13 @@ export type ListPermissionSetsError =
 /**
  * Lists the PermissionSets in an IAM Identity Center instance.
  */
-export const listPermissionSets: API.OperationMethod<
+export const listPermissionSets: API.PaginatedOperationMethod<
   ListPermissionSetsRequest,
   ListPermissionSetsResponse,
   ListPermissionSetsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPermissionSetsRequest,
-  ) => stream.Stream<
-    ListPermissionSetsResponse,
-    ListPermissionSetsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPermissionSetsRequest,
-  ) => stream.Stream<
-    PermissionSetArn,
-    ListPermissionSetsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  PermissionSetArn
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListPermissionSetsRequest,
   output: ListPermissionSetsResponse,
   errors: [
@@ -5532,27 +4972,7 @@ export const listPermissionSets: API.OperationMethod<
     items: "PermissionSets",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListPermissionSetsRequest,
-  ListPermissionSetsResponse,
-  ListPermissionSetsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPermissionSetsRequest,
-  ) => stream.Stream<
-    ListPermissionSetsResponse,
-    ListPermissionSetsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPermissionSetsRequest,
-  ) => stream.Stream<
-    PermissionSetArn,
-    ListPermissionSetsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListPermissionSetsProvisionedToAccountError =
   | AccessDeniedException
@@ -5564,27 +4984,13 @@ export type ListPermissionSetsProvisionedToAccountError =
 /**
  * Lists all the permission sets that are provisioned to a specified Amazon Web Services account.
  */
-export const listPermissionSetsProvisionedToAccount: API.OperationMethod<
+export const listPermissionSetsProvisionedToAccount: API.PaginatedOperationMethod<
   ListPermissionSetsProvisionedToAccountRequest,
   ListPermissionSetsProvisionedToAccountResponse,
   ListPermissionSetsProvisionedToAccountError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPermissionSetsProvisionedToAccountRequest,
-  ) => stream.Stream<
-    ListPermissionSetsProvisionedToAccountResponse,
-    ListPermissionSetsProvisionedToAccountError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPermissionSetsProvisionedToAccountRequest,
-  ) => stream.Stream<
-    PermissionSetArn,
-    ListPermissionSetsProvisionedToAccountError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  PermissionSetArn
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListPermissionSetsProvisionedToAccountRequest,
   output: ListPermissionSetsProvisionedToAccountResponse,
   errors: [
@@ -5603,27 +5009,7 @@ export const listPermissionSetsProvisionedToAccount: API.OperationMethod<
     items: "PermissionSets",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListPermissionSetsProvisionedToAccountRequest,
-  ListPermissionSetsProvisionedToAccountResponse,
-  ListPermissionSetsProvisionedToAccountError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPermissionSetsProvisionedToAccountRequest,
-  ) => stream.Stream<
-    ListPermissionSetsProvisionedToAccountResponse,
-    ListPermissionSetsProvisionedToAccountError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPermissionSetsProvisionedToAccountRequest,
-  ) => stream.Stream<
-    PermissionSetArn,
-    ListPermissionSetsProvisionedToAccountError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListRegionsError =
   | AccessDeniedException
@@ -5642,27 +5028,13 @@ export type ListRegionsError =
  *
  * - DescribeRegion
  */
-export const listRegions: API.OperationMethod<
+export const listRegions: API.PaginatedOperationMethod<
   ListRegionsRequest,
   ListRegionsResponse,
   ListRegionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListRegionsRequest,
-  ) => stream.Stream<
-    ListRegionsResponse,
-    ListRegionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListRegionsRequest,
-  ) => stream.Stream<
-    RegionMetadata,
-    ListRegionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  RegionMetadata
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListRegionsRequest,
   output: ListRegionsResponse,
   errors: [
@@ -5680,27 +5052,7 @@ export const listRegions: API.OperationMethod<
     items: "Regions",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListRegionsRequest,
-  ListRegionsResponse,
-  ListRegionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListRegionsRequest,
-  ) => stream.Stream<
-    ListRegionsResponse,
-    ListRegionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListRegionsRequest,
-  ) => stream.Stream<
-    RegionMetadata,
-    ListRegionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsForResourceError =
   | AccessDeniedException
@@ -5712,27 +5064,13 @@ export type ListTagsForResourceError =
 /**
  * Lists the tags that are attached to a specified resource.
  */
-export const listTagsForResource: API.OperationMethod<
+export const listTagsForResource: API.PaginatedOperationMethod<
   ListTagsForResourceRequest,
   ListTagsForResourceResponse,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTagsForResourceRequest,
-  ) => stream.Stream<
-    ListTagsForResourceResponse,
-    ListTagsForResourceError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTagsForResourceRequest,
-  ) => stream.Stream<
-    Tag,
-    ListTagsForResourceError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Tag
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
   errors: [
@@ -5750,27 +5088,7 @@ export const listTagsForResource: API.OperationMethod<
     outputToken: "NextToken",
     items: "Tags",
   } as const,
-})) as any as API.OperationMethod<
-  ListTagsForResourceRequest,
-  ListTagsForResourceResponse,
-  ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTagsForResourceRequest,
-  ) => stream.Stream<
-    ListTagsForResourceResponse,
-    ListTagsForResourceError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTagsForResourceRequest,
-  ) => stream.Stream<
-    Tag,
-    ListTagsForResourceError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTrustedTokenIssuersError =
   | AccessDeniedException
@@ -5781,27 +5099,13 @@ export type ListTrustedTokenIssuersError =
 /**
  * Lists all the trusted token issuers configured in an instance of IAM Identity Center.
  */
-export const listTrustedTokenIssuers: API.OperationMethod<
+export const listTrustedTokenIssuers: API.PaginatedOperationMethod<
   ListTrustedTokenIssuersRequest,
   ListTrustedTokenIssuersResponse,
   ListTrustedTokenIssuersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTrustedTokenIssuersRequest,
-  ) => stream.Stream<
-    ListTrustedTokenIssuersResponse,
-    ListTrustedTokenIssuersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTrustedTokenIssuersRequest,
-  ) => stream.Stream<
-    TrustedTokenIssuerMetadata,
-    ListTrustedTokenIssuersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  TrustedTokenIssuerMetadata
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListTrustedTokenIssuersRequest,
   output: ListTrustedTokenIssuersResponse,
   errors: [
@@ -5819,27 +5123,7 @@ export const listTrustedTokenIssuers: API.OperationMethod<
     items: "TrustedTokenIssuers",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListTrustedTokenIssuersRequest,
-  ListTrustedTokenIssuersResponse,
-  ListTrustedTokenIssuersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTrustedTokenIssuersRequest,
-  ) => stream.Stream<
-    ListTrustedTokenIssuersResponse,
-    ListTrustedTokenIssuersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTrustedTokenIssuersRequest,
-  ) => stream.Stream<
-    TrustedTokenIssuerMetadata,
-    ListTrustedTokenIssuersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ProvisionPermissionSetError =
   | AccessDeniedException
@@ -5856,7 +5140,7 @@ export const provisionPermissionSet: API.OperationMethod<
   ProvisionPermissionSetRequest,
   ProvisionPermissionSetResponse,
   ProvisionPermissionSetError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ProvisionPermissionSetRequest,
   output: ProvisionPermissionSetResponse,
@@ -5888,7 +5172,7 @@ export const putApplicationAccessScope: API.OperationMethod<
   PutApplicationAccessScopeRequest,
   PutApplicationAccessScopeResponse,
   PutApplicationAccessScopeError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutApplicationAccessScopeRequest,
   output: PutApplicationAccessScopeResponse,
@@ -5920,7 +5204,7 @@ export const putApplicationAssignmentConfiguration: API.OperationMethod<
   PutApplicationAssignmentConfigurationRequest,
   PutApplicationAssignmentConfigurationResponse,
   PutApplicationAssignmentConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutApplicationAssignmentConfigurationRequest,
   output: PutApplicationAssignmentConfigurationResponse,
@@ -5952,7 +5236,7 @@ export const putApplicationAuthenticationMethod: API.OperationMethod<
   PutApplicationAuthenticationMethodRequest,
   PutApplicationAuthenticationMethodResponse,
   PutApplicationAuthenticationMethodError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutApplicationAuthenticationMethodRequest,
   output: PutApplicationAuthenticationMethodResponse,
@@ -6009,7 +5293,7 @@ export const putApplicationGrant: API.OperationMethod<
   PutApplicationGrantRequest,
   PutApplicationGrantResponse,
   PutApplicationGrantError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutApplicationGrantRequest,
   output: PutApplicationGrantResponse,
@@ -6043,7 +5327,7 @@ export const putApplicationSessionConfiguration: API.OperationMethod<
   PutApplicationSessionConfigurationRequest,
   PutApplicationSessionConfigurationResponse,
   PutApplicationSessionConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutApplicationSessionConfigurationRequest,
   output: PutApplicationSessionConfigurationResponse,
@@ -6078,7 +5362,7 @@ export const putInlinePolicyToPermissionSet: API.OperationMethod<
   PutInlinePolicyToPermissionSetRequest,
   PutInlinePolicyToPermissionSetResponse,
   PutInlinePolicyToPermissionSetError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutInlinePolicyToPermissionSetRequest,
   output: PutInlinePolicyToPermissionSetResponse,
@@ -6111,7 +5395,7 @@ export const putPermissionsBoundaryToPermissionSet: API.OperationMethod<
   PutPermissionsBoundaryToPermissionSetRequest,
   PutPermissionsBoundaryToPermissionSetResponse,
   PutPermissionsBoundaryToPermissionSetError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutPermissionsBoundaryToPermissionSetRequest,
   output: PutPermissionsBoundaryToPermissionSetResponse,
@@ -6151,7 +5435,7 @@ export const removeRegion: API.OperationMethod<
   RemoveRegionRequest,
   RemoveRegionResponse,
   RemoveRegionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RemoveRegionRequest,
   output: RemoveRegionResponse,
@@ -6184,7 +5468,7 @@ export const tagResource: API.OperationMethod<
   TagResourceRequest,
   TagResourceResponse,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -6217,7 +5501,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceRequest,
   UntagResourceResponse,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -6249,7 +5533,7 @@ export const updateApplication: API.OperationMethod<
   UpdateApplicationRequest,
   UpdateApplicationResponse,
   UpdateApplicationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateApplicationRequest,
   output: UpdateApplicationResponse,
@@ -6281,7 +5565,7 @@ export const updateInstance: API.OperationMethod<
   UpdateInstanceRequest,
   UpdateInstanceResponse,
   UpdateInstanceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateInstanceRequest,
   output: UpdateInstanceResponse,
@@ -6313,7 +5597,7 @@ export const updateInstanceAccessControlAttributeConfiguration: API.OperationMet
   UpdateInstanceAccessControlAttributeConfigurationRequest,
   UpdateInstanceAccessControlAttributeConfigurationResponse,
   UpdateInstanceAccessControlAttributeConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateInstanceAccessControlAttributeConfigurationRequest,
   output: UpdateInstanceAccessControlAttributeConfigurationResponse,
@@ -6345,7 +5629,7 @@ export const updatePermissionSet: API.OperationMethod<
   UpdatePermissionSetRequest,
   UpdatePermissionSetResponse,
   UpdatePermissionSetError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdatePermissionSetRequest,
   output: UpdatePermissionSetResponse,
@@ -6379,7 +5663,7 @@ export const updateTrustedTokenIssuer: API.OperationMethod<
   UpdateTrustedTokenIssuerRequest,
   UpdateTrustedTokenIssuerResponse,
   UpdateTrustedTokenIssuerError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateTrustedTokenIssuerRequest,
   output: UpdateTrustedTokenIssuerResponse,

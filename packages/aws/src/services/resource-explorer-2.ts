@@ -1,7 +1,6 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as redacted from "effect/Redacted";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -9,7 +8,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 import { SensitiveString } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "Resource Explorer 2",
@@ -90,50 +88,54 @@ const rules = T.EndpointResolver((p, _) => {
 export class AccessDeniedException
   extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
     "AccessDeniedException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(403),
   ).pipe(C.withAuthError) {}
 export class ConflictException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
     "ConflictException",
-    { Message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class InternalServerException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
     "InternalServerException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(500),
   ).pipe(C.withServerError) {}
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class ServiceQuotaExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
     "ServiceQuotaExceededException",
-    { Message: S.String, Name: S.String, Value: S.String },
+    {
+      message: S.String.pipe(T.ErrorMessage()),
+      Name: S.String,
+      Value: S.String,
+    },
     T.HttpError(402),
   ).pipe(C.withQuotaError) {}
 export class ThrottlingException
   extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
     "ThrottlingException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(429),
   ).pipe(C.withThrottlingError) {}
 export class UnauthorizedException
   extends /*@__PURE__*/ S.TaggedErrorClass<UnauthorizedException>()(
     "UnauthorizedException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(401),
   ).pipe(C.withAuthError) {}
 export class ValidationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
     "ValidationException",
     {
-      Message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       FieldList: S.optional(
         S.suspend(() => ValidationExceptionFieldList).annotate({
           identifier: "ValidationExceptionFieldList",
@@ -1458,7 +1460,7 @@ export const associateDefaultView: API.OperationMethod<
   AssociateDefaultViewInput,
   AssociateDefaultViewOutput,
   AssociateDefaultViewError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AssociateDefaultViewInput,
   output: AssociateDefaultViewOutput,
@@ -1488,7 +1490,7 @@ export const batchGetView: API.OperationMethod<
   BatchGetViewInput,
   BatchGetViewOutput,
   BatchGetViewError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchGetViewInput,
   output: BatchGetViewOutput,
@@ -1538,7 +1540,7 @@ export const createIndex: API.OperationMethod<
   CreateIndexInput,
   CreateIndexOutput,
   CreateIndexError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateIndexInput,
   output: CreateIndexOutput,
@@ -1568,7 +1570,7 @@ export const createResourceExplorerSetup: API.OperationMethod<
   CreateResourceExplorerSetupInput,
   CreateResourceExplorerSetupOutput,
   CreateResourceExplorerSetupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateResourceExplorerSetupInput,
   output: CreateResourceExplorerSetupOutput,
@@ -1602,7 +1604,7 @@ export const createView: API.OperationMethod<
   CreateViewInput,
   CreateViewOutput,
   CreateViewError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateViewInput,
   output: CreateViewOutput,
@@ -1636,7 +1638,7 @@ export const deleteIndex: API.OperationMethod<
   DeleteIndexInput,
   DeleteIndexOutput,
   DeleteIndexError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteIndexInput,
   output: DeleteIndexOutput,
@@ -1666,7 +1668,7 @@ export const deleteResourceExplorerSetup: API.OperationMethod<
   DeleteResourceExplorerSetupInput,
   DeleteResourceExplorerSetupOutput,
   DeleteResourceExplorerSetupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteResourceExplorerSetupInput,
   output: DeleteResourceExplorerSetupOutput,
@@ -1699,7 +1701,7 @@ export const deleteView: API.OperationMethod<
   DeleteViewInput,
   DeleteViewOutput,
   DeleteViewError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteViewInput,
   output: DeleteViewOutput,
@@ -1732,7 +1734,7 @@ export const disassociateDefaultView: API.OperationMethod<
   DisassociateDefaultViewRequest,
   DisassociateDefaultViewResponse,
   DisassociateDefaultViewError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DisassociateDefaultViewRequest,
   output: DisassociateDefaultViewResponse,
@@ -1761,7 +1763,7 @@ export const getAccountLevelServiceConfiguration: API.OperationMethod<
   GetAccountLevelServiceConfigurationRequest,
   GetAccountLevelServiceConfigurationOutput,
   GetAccountLevelServiceConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetAccountLevelServiceConfigurationRequest,
   output: GetAccountLevelServiceConfigurationOutput,
@@ -1790,7 +1792,7 @@ export const getDefaultView: API.OperationMethod<
   GetDefaultViewRequest,
   GetDefaultViewOutput,
   GetDefaultViewError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetDefaultViewRequest,
   output: GetDefaultViewOutput,
@@ -1820,7 +1822,7 @@ export const getIndex: API.OperationMethod<
   GetIndexRequest,
   GetIndexOutput,
   GetIndexError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetIndexRequest,
   output: GetIndexOutput,
@@ -1851,7 +1853,7 @@ export const getManagedView: API.OperationMethod<
   GetManagedViewInput,
   GetManagedViewOutput,
   GetManagedViewError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetManagedViewInput,
   output: GetManagedViewOutput,
@@ -1878,27 +1880,13 @@ export type GetResourceExplorerSetupError =
 /**
  * Retrieves the status and details of a Resource Explorer setup operation. This operation returns information about the progress of creating or deleting Resource Explorer configurations across Regions.
  */
-export const getResourceExplorerSetup: API.OperationMethod<
+export const getResourceExplorerSetup: API.PaginatedOperationMethod<
   GetResourceExplorerSetupInput,
   GetResourceExplorerSetupOutput,
   GetResourceExplorerSetupError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetResourceExplorerSetupInput,
-  ) => stream.Stream<
-    GetResourceExplorerSetupOutput,
-    GetResourceExplorerSetupError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetResourceExplorerSetupInput,
-  ) => stream.Stream<
-    RegionStatus,
-    GetResourceExplorerSetupError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  RegionStatus
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetResourceExplorerSetupInput,
   output: GetResourceExplorerSetupOutput,
   errors: [
@@ -1917,27 +1905,7 @@ export const getResourceExplorerSetup: API.OperationMethod<
     items: "Regions",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetResourceExplorerSetupInput,
-  GetResourceExplorerSetupOutput,
-  GetResourceExplorerSetupError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetResourceExplorerSetupInput,
-  ) => stream.Stream<
-    GetResourceExplorerSetupOutput,
-    GetResourceExplorerSetupError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetResourceExplorerSetupInput,
-  ) => stream.Stream<
-    RegionStatus,
-    GetResourceExplorerSetupError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetServiceIndexError =
   | AccessDeniedException
@@ -1953,7 +1921,7 @@ export const getServiceIndex: API.OperationMethod<
   GetServiceIndexRequest,
   GetServiceIndexOutput,
   GetServiceIndexError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetServiceIndexRequest,
   output: GetServiceIndexOutput,
@@ -1983,7 +1951,7 @@ export const getServiceView: API.OperationMethod<
   GetServiceViewInput,
   GetServiceViewOutput,
   GetServiceViewError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetServiceViewInput,
   output: GetServiceViewOutput,
@@ -2014,7 +1982,7 @@ export const getView: API.OperationMethod<
   GetViewInput,
   GetViewOutput,
   GetViewError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetViewInput,
   output: GetViewOutput,
@@ -2040,27 +2008,13 @@ export type ListIndexesError =
 /**
  * Retrieves a list of all of the indexes in Amazon Web Services Regions that are currently collecting resource information for Amazon Web Services Resource Explorer.
  */
-export const listIndexes: API.OperationMethod<
+export const listIndexes: API.PaginatedOperationMethod<
   ListIndexesInput,
   ListIndexesOutput,
   ListIndexesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListIndexesInput,
-  ) => stream.Stream<
-    ListIndexesOutput,
-    ListIndexesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListIndexesInput,
-  ) => stream.Stream<
-    Index,
-    ListIndexesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Index
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListIndexesInput,
   output: ListIndexesOutput,
   errors: [
@@ -2078,27 +2032,7 @@ export const listIndexes: API.OperationMethod<
     items: "Indexes",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListIndexesInput,
-  ListIndexesOutput,
-  ListIndexesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListIndexesInput,
-  ) => stream.Stream<
-    ListIndexesOutput,
-    ListIndexesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListIndexesInput,
-  ) => stream.Stream<
-    Index,
-    ListIndexesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListIndexesForMembersError =
   | AccessDeniedException
@@ -2109,27 +2043,13 @@ export type ListIndexesForMembersError =
 /**
  * Retrieves a list of a member's indexes in all Amazon Web Services Regions that are currently collecting resource information for Amazon Web Services Resource Explorer. Only the management account or a delegated administrator with service access enabled can invoke this API call.
  */
-export const listIndexesForMembers: API.OperationMethod<
+export const listIndexesForMembers: API.PaginatedOperationMethod<
   ListIndexesForMembersInput,
   ListIndexesForMembersOutput,
   ListIndexesForMembersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListIndexesForMembersInput,
-  ) => stream.Stream<
-    ListIndexesForMembersOutput,
-    ListIndexesForMembersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListIndexesForMembersInput,
-  ) => stream.Stream<
-    MemberIndex,
-    ListIndexesForMembersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  MemberIndex
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListIndexesForMembersInput,
   output: ListIndexesForMembersOutput,
   errors: [
@@ -2147,27 +2067,7 @@ export const listIndexesForMembers: API.OperationMethod<
     items: "Indexes",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListIndexesForMembersInput,
-  ListIndexesForMembersOutput,
-  ListIndexesForMembersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListIndexesForMembersInput,
-  ) => stream.Stream<
-    ListIndexesForMembersOutput,
-    ListIndexesForMembersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListIndexesForMembersInput,
-  ) => stream.Stream<
-    MemberIndex,
-    ListIndexesForMembersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListManagedViewsError =
   | AccessDeniedException
@@ -2179,27 +2079,13 @@ export type ListManagedViewsError =
 /**
  * Lists the Amazon resource names (ARNs) of the Amazon Web Services-managed views available in the Amazon Web Services Region in which you call this operation.
  */
-export const listManagedViews: API.OperationMethod<
+export const listManagedViews: API.PaginatedOperationMethod<
   ListManagedViewsInput,
   ListManagedViewsOutput,
   ListManagedViewsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListManagedViewsInput,
-  ) => stream.Stream<
-    ListManagedViewsOutput,
-    ListManagedViewsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListManagedViewsInput,
-  ) => stream.Stream<
-    string,
-    ListManagedViewsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  string
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListManagedViewsInput,
   output: ListManagedViewsOutput,
   errors: [
@@ -2218,27 +2104,7 @@ export const listManagedViews: API.OperationMethod<
     items: "ManagedViews",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListManagedViewsInput,
-  ListManagedViewsOutput,
-  ListManagedViewsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListManagedViewsInput,
-  ) => stream.Stream<
-    ListManagedViewsOutput,
-    ListManagedViewsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListManagedViewsInput,
-  ) => stream.Stream<
-    string,
-    ListManagedViewsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListResourcesError =
   | AccessDeniedException
@@ -2251,27 +2117,13 @@ export type ListResourcesError =
 /**
  * Returns a list of resources and their details that match the specified criteria. This query must use a view. If you don’t explicitly specify a view, then Resource Explorer uses the default view for the Amazon Web Services Region in which you call this operation.
  */
-export const listResources: API.OperationMethod<
+export const listResources: API.PaginatedOperationMethod<
   ListResourcesInput,
   ListResourcesOutput,
   ListResourcesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListResourcesInput,
-  ) => stream.Stream<
-    ListResourcesOutput,
-    ListResourcesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListResourcesInput,
-  ) => stream.Stream<
-    Resource,
-    ListResourcesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Resource
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListResourcesInput,
   output: ListResourcesOutput,
   errors: [
@@ -2291,27 +2143,7 @@ export const listResources: API.OperationMethod<
     items: "Resources",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListResourcesInput,
-  ListResourcesOutput,
-  ListResourcesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListResourcesInput,
-  ) => stream.Stream<
-    ListResourcesOutput,
-    ListResourcesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListResourcesInput,
-  ) => stream.Stream<
-    Resource,
-    ListResourcesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListServiceIndexesError =
   | AccessDeniedException
@@ -2322,27 +2154,13 @@ export type ListServiceIndexesError =
 /**
  * Lists all Resource Explorer indexes across the specified Amazon Web Services Regions. This operation returns information about indexes including their ARNs, types, and Regions.
  */
-export const listServiceIndexes: API.OperationMethod<
+export const listServiceIndexes: API.PaginatedOperationMethod<
   ListServiceIndexesInput,
   ListServiceIndexesOutput,
   ListServiceIndexesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListServiceIndexesInput,
-  ) => stream.Stream<
-    ListServiceIndexesOutput,
-    ListServiceIndexesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListServiceIndexesInput,
-  ) => stream.Stream<
-    Index,
-    ListServiceIndexesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Index
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListServiceIndexesInput,
   output: ListServiceIndexesOutput,
   errors: [
@@ -2360,27 +2178,7 @@ export const listServiceIndexes: API.OperationMethod<
     items: "Indexes",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListServiceIndexesInput,
-  ListServiceIndexesOutput,
-  ListServiceIndexesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListServiceIndexesInput,
-  ) => stream.Stream<
-    ListServiceIndexesOutput,
-    ListServiceIndexesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListServiceIndexesInput,
-  ) => stream.Stream<
-    Index,
-    ListServiceIndexesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListServiceViewsError =
   | AccessDeniedException
@@ -2391,27 +2189,13 @@ export type ListServiceViewsError =
 /**
  * Lists all Resource Explorer service views available in the current Amazon Web Services account. This operation returns the ARNs of available service views.
  */
-export const listServiceViews: API.OperationMethod<
+export const listServiceViews: API.PaginatedOperationMethod<
   ListServiceViewsInput,
   ListServiceViewsOutput,
   ListServiceViewsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListServiceViewsInput,
-  ) => stream.Stream<
-    ListServiceViewsOutput,
-    ListServiceViewsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListServiceViewsInput,
-  ) => stream.Stream<
-    string,
-    ListServiceViewsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  string
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListServiceViewsInput,
   output: ListServiceViewsOutput,
   errors: [
@@ -2429,27 +2213,7 @@ export const listServiceViews: API.OperationMethod<
     items: "ServiceViews",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListServiceViewsInput,
-  ListServiceViewsOutput,
-  ListServiceViewsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListServiceViewsInput,
-  ) => stream.Stream<
-    ListServiceViewsOutput,
-    ListServiceViewsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListServiceViewsInput,
-  ) => stream.Stream<
-    string,
-    ListServiceViewsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListStreamingAccessForServicesError =
   | AccessDeniedException
@@ -2459,27 +2223,13 @@ export type ListStreamingAccessForServicesError =
 /**
  * Returns a list of Amazon Web Services services that have been granted streaming access to your Resource Explorer data. Streaming access allows Amazon Web Services services to receive real-time updates about your resources as they are indexed by Resource Explorer.
  */
-export const listStreamingAccessForServices: API.OperationMethod<
+export const listStreamingAccessForServices: API.PaginatedOperationMethod<
   ListStreamingAccessForServicesInput,
   ListStreamingAccessForServicesOutput,
   ListStreamingAccessForServicesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListStreamingAccessForServicesInput,
-  ) => stream.Stream<
-    ListStreamingAccessForServicesOutput,
-    ListStreamingAccessForServicesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListStreamingAccessForServicesInput,
-  ) => stream.Stream<
-    StreamingAccessDetails,
-    ListStreamingAccessForServicesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  StreamingAccessDetails
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListStreamingAccessForServicesInput,
   output: ListStreamingAccessForServicesOutput,
   errors: [AccessDeniedException, InternalServerException, ValidationException],
@@ -2492,27 +2242,7 @@ export const listStreamingAccessForServices: API.OperationMethod<
     items: "StreamingAccessForServices",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListStreamingAccessForServicesInput,
-  ListStreamingAccessForServicesOutput,
-  ListStreamingAccessForServicesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListStreamingAccessForServicesInput,
-  ) => stream.Stream<
-    ListStreamingAccessForServicesOutput,
-    ListStreamingAccessForServicesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListStreamingAccessForServicesInput,
-  ) => stream.Stream<
-    StreamingAccessDetails,
-    ListStreamingAccessForServicesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListSupportedResourceTypesError =
   | AccessDeniedException
@@ -2523,27 +2253,13 @@ export type ListSupportedResourceTypesError =
 /**
  * Retrieves a list of all resource types currently supported by Amazon Web Services Resource Explorer.
  */
-export const listSupportedResourceTypes: API.OperationMethod<
+export const listSupportedResourceTypes: API.PaginatedOperationMethod<
   ListSupportedResourceTypesInput,
   ListSupportedResourceTypesOutput,
   ListSupportedResourceTypesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSupportedResourceTypesInput,
-  ) => stream.Stream<
-    ListSupportedResourceTypesOutput,
-    ListSupportedResourceTypesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSupportedResourceTypesInput,
-  ) => stream.Stream<
-    SupportedResourceType,
-    ListSupportedResourceTypesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  SupportedResourceType
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListSupportedResourceTypesInput,
   output: ListSupportedResourceTypesOutput,
   errors: [
@@ -2561,27 +2277,7 @@ export const listSupportedResourceTypes: API.OperationMethod<
     items: "ResourceTypes",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListSupportedResourceTypesInput,
-  ListSupportedResourceTypesOutput,
-  ListSupportedResourceTypesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSupportedResourceTypesInput,
-  ) => stream.Stream<
-    ListSupportedResourceTypesOutput,
-    ListSupportedResourceTypesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSupportedResourceTypesInput,
-  ) => stream.Stream<
-    SupportedResourceType,
-    ListSupportedResourceTypesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsForResourceError =
   | AccessDeniedException
@@ -2598,7 +2294,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceInput,
   ListTagsForResourceOutput,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceInput,
   output: ListTagsForResourceOutput,
@@ -2626,27 +2322,13 @@ export type ListViewsError =
  *
  * Always check the `NextToken` response parameter for a `null` value when calling a paginated operation. These operations can occasionally return an empty set of results even when there are more results available. The `NextToken` response parameter value is `null` *only* when there are no more results to display.
  */
-export const listViews: API.OperationMethod<
+export const listViews: API.PaginatedOperationMethod<
   ListViewsInput,
   ListViewsOutput,
   ListViewsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListViewsInput,
-  ) => stream.Stream<
-    ListViewsOutput,
-    ListViewsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListViewsInput,
-  ) => stream.Stream<
-    string,
-    ListViewsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  string
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListViewsInput,
   output: ListViewsOutput,
   errors: [
@@ -2664,27 +2346,7 @@ export const listViews: API.OperationMethod<
     items: "Views",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListViewsInput,
-  ListViewsOutput,
-  ListViewsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListViewsInput,
-  ) => stream.Stream<
-    ListViewsOutput,
-    ListViewsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListViewsInput,
-  ) => stream.Stream<
-    string,
-    ListViewsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type SearchError =
   | AccessDeniedException
@@ -2703,27 +2365,13 @@ export type SearchError =
  *
  * If your search results are empty, or are missing results that you think should be there, see Troubleshooting Resource Explorer search.
  */
-export const search: API.OperationMethod<
+export const search: API.PaginatedOperationMethod<
   SearchInput,
   SearchOutput,
   SearchError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: SearchInput,
-  ) => stream.Stream<
-    SearchOutput,
-    SearchError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: SearchInput,
-  ) => stream.Stream<
-    Resource,
-    SearchError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Resource
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: SearchInput,
   output: SearchOutput,
   errors: [
@@ -2743,27 +2391,7 @@ export const search: API.OperationMethod<
     items: "Resources",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  SearchInput,
-  SearchOutput,
-  SearchError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: SearchInput,
-  ) => stream.Stream<
-    SearchOutput,
-    SearchError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: SearchInput,
-  ) => stream.Stream<
-    Resource,
-    SearchError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type TagResourceError =
   | AccessDeniedException
@@ -2780,7 +2408,7 @@ export const tagResource: API.OperationMethod<
   TagResourceInput,
   TagResourceOutput,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceInput,
   output: TagResourceOutput,
@@ -2812,7 +2440,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceInput,
   UntagResourceOutput,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceInput,
   output: UntagResourceOutput,
@@ -2861,7 +2489,7 @@ export const updateIndexType: API.OperationMethod<
   UpdateIndexTypeInput,
   UpdateIndexTypeOutput,
   UpdateIndexTypeError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateIndexTypeInput,
   output: UpdateIndexTypeOutput,
@@ -2894,7 +2522,7 @@ export const updateView: API.OperationMethod<
   UpdateViewInput,
   UpdateViewOutput,
   UpdateViewError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateViewInput,
   output: UpdateViewOutput,

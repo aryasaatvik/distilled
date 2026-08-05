@@ -1,7 +1,6 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as redacted from "effect/Redacted";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -9,7 +8,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 import { SensitiveString } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "Snowball",
@@ -90,57 +88,63 @@ const rules = T.EndpointResolver((p, _) => {
 export class ClusterLimitExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<ClusterLimitExceededException>()(
     "ClusterLimitExceededException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class ConflictException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
     "ConflictException",
-    { ConflictResource: S.optional(S.String), Message: S.optional(S.String) },
+    {
+      ConflictResource: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
   ) {}
 export class Ec2RequestFailedException
   extends /*@__PURE__*/ S.TaggedErrorClass<Ec2RequestFailedException>()(
     "Ec2RequestFailedException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidAddressException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidAddressException>()(
     "InvalidAddressException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidInputCombinationException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidInputCombinationException>()(
     "InvalidInputCombinationException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidJobStateException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidJobStateException>()(
     "InvalidJobStateException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidNextTokenException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidNextTokenException>()(
     "InvalidNextTokenException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidResourceException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidResourceException>()(
     "InvalidResourceException",
-    { Message: S.optional(S.String), ResourceType: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      ResourceType: S.optional(S.String),
+    },
   ) {}
 export class KMSRequestFailedException
   extends /*@__PURE__*/ S.TaggedErrorClass<KMSRequestFailedException>()(
     "KMSRequestFailedException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class ReturnShippingLabelAlreadyExistsException
   extends /*@__PURE__*/ S.TaggedErrorClass<ReturnShippingLabelAlreadyExistsException>()(
     "ReturnShippingLabelAlreadyExistsException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ).pipe(C.withAlreadyExistsError) {}
 export class UnsupportedAddressException
   extends /*@__PURE__*/ S.TaggedErrorClass<UnsupportedAddressException>()(
     "UnsupportedAddressException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export type ClusterId = string;
 export interface CancelClusterRequest {
@@ -1515,7 +1519,7 @@ export const cancelCluster: API.OperationMethod<
   CancelClusterRequest,
   CancelClusterResult,
   CancelClusterError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CancelClusterRequest,
   output: CancelClusterResult,
@@ -1544,7 +1548,7 @@ export const cancelJob: API.OperationMethod<
   CancelJobRequest,
   CancelJobResult,
   CancelJobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CancelJobRequest,
   output: CancelJobResult,
@@ -1572,7 +1576,7 @@ export const createAddress: API.OperationMethod<
   CreateAddressRequest,
   CreateAddressResult,
   CreateAddressError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateAddressRequest,
   output: CreateAddressResult,
@@ -1596,7 +1600,7 @@ export const createCluster: API.OperationMethod<
   CreateClusterRequest,
   CreateClusterResult,
   CreateClusterError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateClusterRequest,
   output: CreateClusterResult,
@@ -1704,7 +1708,7 @@ export const createJob: API.OperationMethod<
   CreateJobRequest,
   CreateJobResult,
   CreateJobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateJobRequest,
   output: CreateJobResult,
@@ -1731,7 +1735,7 @@ export const createLongTermPricing: API.OperationMethod<
   CreateLongTermPricingRequest,
   CreateLongTermPricingResult,
   CreateLongTermPricingError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateLongTermPricingRequest,
   output: CreateLongTermPricingResult,
@@ -1755,7 +1759,7 @@ export const createReturnShippingLabel: API.OperationMethod<
   CreateReturnShippingLabelRequest,
   CreateReturnShippingLabelResult,
   CreateReturnShippingLabelError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateReturnShippingLabelRequest,
   output: CreateReturnShippingLabelResult,
@@ -1780,7 +1784,7 @@ export const describeAddress: API.OperationMethod<
   DescribeAddressRequest,
   DescribeAddressResult,
   DescribeAddressError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeAddressRequest,
   output: DescribeAddressResult,
@@ -1799,27 +1803,13 @@ export type DescribeAddressesError =
  * the US regions will return addresses from the list of all addresses associated with this
  * account in all US regions.
  */
-export const describeAddresses: API.OperationMethod<
+export const describeAddresses: API.PaginatedOperationMethod<
   DescribeAddressesRequest,
   DescribeAddressesResult,
   DescribeAddressesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeAddressesRequest,
-  ) => stream.Stream<
-    DescribeAddressesResult,
-    DescribeAddressesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeAddressesRequest,
-  ) => stream.Stream<
-    Address,
-    DescribeAddressesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Address
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeAddressesRequest,
   output: DescribeAddressesResult,
   errors: [InvalidNextTokenException, InvalidResourceException],
@@ -1832,27 +1822,7 @@ export const describeAddresses: API.OperationMethod<
     items: "Addresses",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeAddressesRequest,
-  DescribeAddressesResult,
-  DescribeAddressesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeAddressesRequest,
-  ) => stream.Stream<
-    DescribeAddressesResult,
-    DescribeAddressesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeAddressesRequest,
-  ) => stream.Stream<
-    Address,
-    DescribeAddressesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeClusterError = InvalidResourceException | CommonErrors;
 /**
@@ -1863,7 +1833,7 @@ export const describeCluster: API.OperationMethod<
   DescribeClusterRequest,
   DescribeClusterResult,
   DescribeClusterError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeClusterRequest,
   output: DescribeClusterResult,
@@ -1882,7 +1852,7 @@ export const describeJob: API.OperationMethod<
   DescribeJobRequest,
   DescribeJobResult,
   DescribeJobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeJobRequest,
   output: DescribeJobResult,
@@ -1904,7 +1874,7 @@ export const describeReturnShippingLabel: API.OperationMethod<
   DescribeReturnShippingLabelRequest,
   DescribeReturnShippingLabelResult,
   DescribeReturnShippingLabelError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeReturnShippingLabelRequest,
   output: DescribeReturnShippingLabelResult,
@@ -1947,7 +1917,7 @@ export const getJobManifest: API.OperationMethod<
   GetJobManifestRequest,
   GetJobManifestResult,
   GetJobManifestError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetJobManifestRequest,
   output: GetJobManifestResult,
@@ -1982,7 +1952,7 @@ export const getJobUnlockCode: API.OperationMethod<
   GetJobUnlockCodeRequest,
   GetJobUnlockCodeResult,
   GetJobUnlockCodeError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetJobUnlockCodeRequest,
   output: GetJobUnlockCodeResult,
@@ -2004,7 +1974,7 @@ export const getSnowballUsage: API.OperationMethod<
   GetSnowballUsageRequest,
   GetSnowballUsageResult,
   GetSnowballUsageError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetSnowballUsageRequest,
   output: GetSnowballUsageResult,
@@ -2026,7 +1996,7 @@ export const getSoftwareUpdates: API.OperationMethod<
   GetSoftwareUpdatesRequest,
   GetSoftwareUpdatesResult,
   GetSoftwareUpdatesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetSoftwareUpdatesRequest,
   output: GetSoftwareUpdatesResult,
@@ -2045,27 +2015,13 @@ export type ListClusterJobsError =
  * `JobListEntry` object is for a job in the specified cluster and contains a job's
  * state, a job's ID, and other information.
  */
-export const listClusterJobs: API.OperationMethod<
+export const listClusterJobs: API.PaginatedOperationMethod<
   ListClusterJobsRequest,
   ListClusterJobsResult,
   ListClusterJobsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListClusterJobsRequest,
-  ) => stream.Stream<
-    ListClusterJobsResult,
-    ListClusterJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListClusterJobsRequest,
-  ) => stream.Stream<
-    JobListEntry,
-    ListClusterJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  JobListEntry
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListClusterJobsRequest,
   output: ListClusterJobsResult,
   errors: [InvalidNextTokenException, InvalidResourceException],
@@ -2078,27 +2034,7 @@ export const listClusterJobs: API.OperationMethod<
     items: "JobListEntries",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListClusterJobsRequest,
-  ListClusterJobsResult,
-  ListClusterJobsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListClusterJobsRequest,
-  ) => stream.Stream<
-    ListClusterJobsResult,
-    ListClusterJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListClusterJobsRequest,
-  ) => stream.Stream<
-    JobListEntry,
-    ListClusterJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListClustersError = InvalidNextTokenException | CommonErrors;
 /**
@@ -2106,27 +2042,13 @@ export type ListClustersError = InvalidNextTokenException | CommonErrors;
  * `ClusterListEntry` object contains a cluster's state, a cluster's ID, and other
  * important status information.
  */
-export const listClusters: API.OperationMethod<
+export const listClusters: API.PaginatedOperationMethod<
   ListClustersRequest,
   ListClustersResult,
   ListClustersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListClustersRequest,
-  ) => stream.Stream<
-    ListClustersResult,
-    ListClustersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListClustersRequest,
-  ) => stream.Stream<
-    ClusterListEntry,
-    ListClustersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ClusterListEntry
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListClustersRequest,
   output: ListClustersResult,
   errors: [InvalidNextTokenException],
@@ -2139,27 +2061,7 @@ export const listClusters: API.OperationMethod<
     items: "ClusterListEntries",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListClustersRequest,
-  ListClustersResult,
-  ListClustersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListClustersRequest,
-  ) => stream.Stream<
-    ListClustersResult,
-    ListClustersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListClustersRequest,
-  ) => stream.Stream<
-    ClusterListEntry,
-    ListClustersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListCompatibleImagesError =
   | Ec2RequestFailedException
@@ -2171,27 +2073,13 @@ export type ListCompatibleImagesError =
  * device. Currently, supported AMIs are based on the Amazon Linux-2, Ubuntu 20.04 LTS - Focal, or Ubuntu 22.04 LTS - Jammy images, available on the
  * Amazon Web Services Marketplace. Ubuntu 16.04 LTS - Xenial (HVM) images are no longer supported in the Market, but still supported for use on devices through Amazon EC2 VM Import/Export and running locally in AMIs.
  */
-export const listCompatibleImages: API.OperationMethod<
+export const listCompatibleImages: API.PaginatedOperationMethod<
   ListCompatibleImagesRequest,
   ListCompatibleImagesResult,
   ListCompatibleImagesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCompatibleImagesRequest,
-  ) => stream.Stream<
-    ListCompatibleImagesResult,
-    ListCompatibleImagesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCompatibleImagesRequest,
-  ) => stream.Stream<
-    CompatibleImage,
-    ListCompatibleImagesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  CompatibleImage
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListCompatibleImagesRequest,
   output: ListCompatibleImagesResult,
   errors: [Ec2RequestFailedException, InvalidNextTokenException],
@@ -2204,27 +2092,7 @@ export const listCompatibleImages: API.OperationMethod<
     items: "CompatibleImages",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListCompatibleImagesRequest,
-  ListCompatibleImagesResult,
-  ListCompatibleImagesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCompatibleImagesRequest,
-  ) => stream.Stream<
-    ListCompatibleImagesResult,
-    ListCompatibleImagesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCompatibleImagesRequest,
-  ) => stream.Stream<
-    CompatibleImage,
-    ListCompatibleImagesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListJobsError = InvalidNextTokenException | CommonErrors;
 /**
@@ -2234,27 +2102,13 @@ export type ListJobsError = InvalidNextTokenException | CommonErrors;
  * in one of the US regions will return jobs from the list of all jobs associated with this
  * account in all US regions.
  */
-export const listJobs: API.OperationMethod<
+export const listJobs: API.PaginatedOperationMethod<
   ListJobsRequest,
   ListJobsResult,
   ListJobsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListJobsRequest,
-  ) => stream.Stream<
-    ListJobsResult,
-    ListJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListJobsRequest,
-  ) => stream.Stream<
-    JobListEntry,
-    ListJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  JobListEntry
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListJobsRequest,
   output: ListJobsResult,
   errors: [InvalidNextTokenException],
@@ -2267,27 +2121,7 @@ export const listJobs: API.OperationMethod<
     items: "JobListEntries",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListJobsRequest,
-  ListJobsResult,
-  ListJobsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListJobsRequest,
-  ) => stream.Stream<
-    ListJobsResult,
-    ListJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListJobsRequest,
-  ) => stream.Stream<
-    JobListEntry,
-    ListJobsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListLongTermPricingError =
   | InvalidNextTokenException
@@ -2296,27 +2130,13 @@ export type ListLongTermPricingError =
 /**
  * Lists all long-term pricing types.
  */
-export const listLongTermPricing: API.OperationMethod<
+export const listLongTermPricing: API.PaginatedOperationMethod<
   ListLongTermPricingRequest,
   ListLongTermPricingResult,
   ListLongTermPricingError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListLongTermPricingRequest,
-  ) => stream.Stream<
-    ListLongTermPricingResult,
-    ListLongTermPricingError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListLongTermPricingRequest,
-  ) => stream.Stream<
-    LongTermPricingListEntry,
-    ListLongTermPricingError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  LongTermPricingListEntry
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListLongTermPricingRequest,
   output: ListLongTermPricingResult,
   errors: [InvalidNextTokenException, InvalidResourceException],
@@ -2329,53 +2149,19 @@ export const listLongTermPricing: API.OperationMethod<
     items: "LongTermPricingEntries",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListLongTermPricingRequest,
-  ListLongTermPricingResult,
-  ListLongTermPricingError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListLongTermPricingRequest,
-  ) => stream.Stream<
-    ListLongTermPricingResult,
-    ListLongTermPricingError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListLongTermPricingRequest,
-  ) => stream.Stream<
-    LongTermPricingListEntry,
-    ListLongTermPricingError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListPickupLocationsError = InvalidResourceException | CommonErrors;
 /**
  * A list of locations from which the customer can choose to pickup a device.
  */
-export const listPickupLocations: API.OperationMethod<
+export const listPickupLocations: API.PaginatedOperationMethod<
   ListPickupLocationsRequest,
   ListPickupLocationsResult,
   ListPickupLocationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPickupLocationsRequest,
-  ) => stream.Stream<
-    ListPickupLocationsResult,
-    ListPickupLocationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPickupLocationsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListPickupLocationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListPickupLocationsRequest,
   output: ListPickupLocationsResult,
   errors: [InvalidResourceException],
@@ -2387,27 +2173,7 @@ export const listPickupLocations: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListPickupLocationsRequest,
-  ListPickupLocationsResult,
-  ListPickupLocationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPickupLocationsRequest,
-  ) => stream.Stream<
-    ListPickupLocationsResult,
-    ListPickupLocationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPickupLocationsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListPickupLocationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListServiceVersionsError =
   | InvalidNextTokenException
@@ -2421,7 +2187,7 @@ export const listServiceVersions: API.OperationMethod<
   ListServiceVersionsRequest,
   ListServiceVersionsResult,
   ListServiceVersionsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListServiceVersionsRequest,
   output: ListServiceVersionsResult,
@@ -2448,7 +2214,7 @@ export const updateCluster: API.OperationMethod<
   UpdateClusterRequest,
   UpdateClusterResult,
   UpdateClusterError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateClusterRequest,
   output: UpdateClusterResult,
@@ -2481,7 +2247,7 @@ export const updateJob: API.OperationMethod<
   UpdateJobRequest,
   UpdateJobResult,
   UpdateJobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateJobRequest,
   output: UpdateJobResult,
@@ -2509,7 +2275,7 @@ export const updateJobShipmentState: API.OperationMethod<
   UpdateJobShipmentStateRequest,
   UpdateJobShipmentStateResult,
   UpdateJobShipmentStateError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateJobShipmentStateRequest,
   output: UpdateJobShipmentStateResult,
@@ -2529,7 +2295,7 @@ export const updateLongTermPricing: API.OperationMethod<
   UpdateLongTermPricingRequest,
   UpdateLongTermPricingResult,
   UpdateLongTermPricingError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateLongTermPricingRequest,
   output: UpdateLongTermPricingResult,

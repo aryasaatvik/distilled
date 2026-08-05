@@ -1,7 +1,6 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as redacted from "effect/Redacted";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -9,7 +8,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 import { SensitiveString } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "Lambda Microvms",
@@ -90,14 +88,14 @@ const rules = T.EndpointResolver((p, _) => {
 export class AccessDeniedException
   extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
     "AccessDeniedException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(403),
   ).pipe(C.withAuthError) {}
 export class ConflictException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
     "ConflictException",
     {
-      message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       resourceId: S.optional(S.String),
       resourceType: S.optional(S.String),
     },
@@ -107,7 +105,7 @@ export class InternalServerException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
     "InternalServerException",
     {
-      message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       retryAfterSeconds: S.optional(S.Number).pipe(T.HttpHeader("Retry-After")),
     },
     T.all(T.HttpError(500), T.Retryable()),
@@ -115,20 +113,26 @@ export class InternalServerException
 export class InvalidParameterValueException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidParameterValueException>()(
     "InvalidParameterValueException",
-    { Type: S.optional(S.String), message: S.optional(S.String) },
+    {
+      Type: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class ResourceConflictException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceConflictException>()(
     "ResourceConflictException",
-    { Type: S.optional(S.String), message: S.optional(S.String) },
+    {
+      Type: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
     {
-      message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       resourceType: S.optional(S.String),
       resourceId: S.optional(S.String),
     },
@@ -137,14 +141,17 @@ export class ResourceNotFoundException
 export class ServiceException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceException>()(
     "ServiceException",
-    { Type: S.optional(S.String), message: S.optional(S.String) },
+    {
+      Type: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(500),
   ).pipe(C.withServerError) {}
 export class ServiceQuotaExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
     "ServiceQuotaExceededException",
     {
-      message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       resourceId: S.optional(S.String),
       resourceType: S.optional(S.String),
       serviceCode: S.optional(S.String),
@@ -156,7 +163,7 @@ export class ThrottlingException
   extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
     "ThrottlingException",
     {
-      message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       serviceCode: S.optional(S.String),
       quotaCode: S.optional(S.String),
       retryAfterSeconds: S.optional(S.Number).pipe(T.HttpHeader("Retry-After")),
@@ -166,13 +173,16 @@ export class ThrottlingException
 export class TooManyRequestsException
   extends /*@__PURE__*/ S.TaggedErrorClass<TooManyRequestsException>()(
     "TooManyRequestsException",
-    { Type: S.optional(S.String), message: S.optional(S.String) },
+    {
+      Type: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(429),
   ).pipe(C.withThrottlingError) {}
 export class ValidationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
     "ValidationException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export type MicrovmIdentifier = string;
@@ -1670,7 +1680,7 @@ export const createMicrovmAuthToken: API.OperationMethod<
   CreateMicrovmAuthTokenRequest,
   CreateMicrovmAuthTokenResponse,
   CreateMicrovmAuthTokenError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateMicrovmAuthTokenRequest,
   output: CreateMicrovmAuthTokenResponse,
@@ -1702,7 +1712,7 @@ export const createMicrovmImage: API.OperationMethod<
   CreateMicrovmImageRequest,
   CreateMicrovmImageResponse,
   CreateMicrovmImageError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateMicrovmImageRequest,
   output: CreateMicrovmImageResponse,
@@ -1734,7 +1744,7 @@ export const createMicrovmShellAuthToken: API.OperationMethod<
   CreateMicrovmShellAuthTokenRequest,
   CreateMicrovmShellAuthTokenResponse,
   CreateMicrovmShellAuthTokenError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateMicrovmShellAuthTokenRequest,
   output: CreateMicrovmShellAuthTokenResponse,
@@ -1765,7 +1775,7 @@ export const deleteMicrovmImage: API.OperationMethod<
   DeleteMicrovmImageInput,
   DeleteMicrovmImageOutput,
   DeleteMicrovmImageError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteMicrovmImageInput,
   output: DeleteMicrovmImageOutput,
@@ -1797,7 +1807,7 @@ export const deleteMicrovmImageVersion: API.OperationMethod<
   DeleteMicrovmImageVersionInput,
   DeleteMicrovmImageVersionOutput,
   DeleteMicrovmImageVersionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteMicrovmImageVersionInput,
   output: DeleteMicrovmImageVersionOutput,
@@ -1828,7 +1838,7 @@ export const getMicrovm: API.OperationMethod<
   GetMicrovmRequest,
   GetMicrovmResponse,
   GetMicrovmError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetMicrovmRequest,
   output: GetMicrovmResponse,
@@ -1858,7 +1868,7 @@ export const getMicrovmImage: API.OperationMethod<
   GetMicrovmImageInput,
   GetMicrovmImageOutput,
   GetMicrovmImageError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetMicrovmImageInput,
   output: GetMicrovmImageOutput,
@@ -1888,7 +1898,7 @@ export const getMicrovmImageBuild: API.OperationMethod<
   GetMicrovmImageBuildInput,
   GetMicrovmImageBuildOutput,
   GetMicrovmImageBuildError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetMicrovmImageBuildInput,
   output: GetMicrovmImageBuildOutput,
@@ -1918,7 +1928,7 @@ export const getMicrovmImageVersion: API.OperationMethod<
   GetMicrovmImageVersionInput,
   GetMicrovmImageVersionOutput,
   GetMicrovmImageVersionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetMicrovmImageVersionInput,
   output: GetMicrovmImageVersionOutput,
@@ -1943,27 +1953,13 @@ export type ListManagedMicrovmImagesError =
 /**
  * Lists AWS managed MicroVM images available for use as base images. We recommend using pagination to ensure that the operation returns quickly and successfully.
  */
-export const listManagedMicrovmImages: API.OperationMethod<
+export const listManagedMicrovmImages: API.PaginatedOperationMethod<
   ListManagedMicrovmImagesInput,
   ListManagedMicrovmImagesOutput,
   ListManagedMicrovmImagesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListManagedMicrovmImagesInput,
-  ) => stream.Stream<
-    ListManagedMicrovmImagesOutput,
-    ListManagedMicrovmImagesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListManagedMicrovmImagesInput,
-  ) => stream.Stream<
-    ManagedMicrovmImageSummary,
-    ListManagedMicrovmImagesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ManagedMicrovmImageSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListManagedMicrovmImagesInput,
   output: ListManagedMicrovmImagesOutput,
   errors: [
@@ -1981,27 +1977,7 @@ export const listManagedMicrovmImages: API.OperationMethod<
     items: "items",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListManagedMicrovmImagesInput,
-  ListManagedMicrovmImagesOutput,
-  ListManagedMicrovmImagesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListManagedMicrovmImagesInput,
-  ) => stream.Stream<
-    ListManagedMicrovmImagesOutput,
-    ListManagedMicrovmImagesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListManagedMicrovmImagesInput,
-  ) => stream.Stream<
-    ManagedMicrovmImageSummary,
-    ListManagedMicrovmImagesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListManagedMicrovmImageVersionsError =
   | AccessDeniedException
@@ -2013,27 +1989,13 @@ export type ListManagedMicrovmImageVersionsError =
 /**
  * Lists versions of a managed MicroVM image. We recommend using pagination to ensure that the operation returns quickly and successfully.
  */
-export const listManagedMicrovmImageVersions: API.OperationMethod<
+export const listManagedMicrovmImageVersions: API.PaginatedOperationMethod<
   ListManagedMicrovmImageVersionsInput,
   ListManagedMicrovmImageVersionsOutput,
   ListManagedMicrovmImageVersionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListManagedMicrovmImageVersionsInput,
-  ) => stream.Stream<
-    ListManagedMicrovmImageVersionsOutput,
-    ListManagedMicrovmImageVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListManagedMicrovmImageVersionsInput,
-  ) => stream.Stream<
-    ManagedMicrovmImageVersion,
-    ListManagedMicrovmImageVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ManagedMicrovmImageVersion
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListManagedMicrovmImageVersionsInput,
   output: ListManagedMicrovmImageVersionsOutput,
   errors: [
@@ -2052,27 +2014,7 @@ export const listManagedMicrovmImageVersions: API.OperationMethod<
     items: "items",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListManagedMicrovmImageVersionsInput,
-  ListManagedMicrovmImageVersionsOutput,
-  ListManagedMicrovmImageVersionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListManagedMicrovmImageVersionsInput,
-  ) => stream.Stream<
-    ListManagedMicrovmImageVersionsOutput,
-    ListManagedMicrovmImageVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListManagedMicrovmImageVersionsInput,
-  ) => stream.Stream<
-    ManagedMicrovmImageVersion,
-    ListManagedMicrovmImageVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListMicrovmImageBuildsError =
   | AccessDeniedException
@@ -2084,27 +2026,13 @@ export type ListMicrovmImageBuildsError =
 /**
  * Lists builds for a MicroVM image version with optional filtering by architecture and chipset. We recommend using pagination to ensure that the operation returns quickly and successfully.
  */
-export const listMicrovmImageBuilds: API.OperationMethod<
+export const listMicrovmImageBuilds: API.PaginatedOperationMethod<
   ListMicrovmImageBuildsInput,
   ListMicrovmImageBuildsOutput,
   ListMicrovmImageBuildsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListMicrovmImageBuildsInput,
-  ) => stream.Stream<
-    ListMicrovmImageBuildsOutput,
-    ListMicrovmImageBuildsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListMicrovmImageBuildsInput,
-  ) => stream.Stream<
-    MicrovmImageBuildSummary,
-    ListMicrovmImageBuildsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  MicrovmImageBuildSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListMicrovmImageBuildsInput,
   output: ListMicrovmImageBuildsOutput,
   errors: [
@@ -2123,27 +2051,7 @@ export const listMicrovmImageBuilds: API.OperationMethod<
     items: "items",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListMicrovmImageBuildsInput,
-  ListMicrovmImageBuildsOutput,
-  ListMicrovmImageBuildsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListMicrovmImageBuildsInput,
-  ) => stream.Stream<
-    ListMicrovmImageBuildsOutput,
-    ListMicrovmImageBuildsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListMicrovmImageBuildsInput,
-  ) => stream.Stream<
-    MicrovmImageBuildSummary,
-    ListMicrovmImageBuildsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListMicrovmImagesError =
   | AccessDeniedException
@@ -2154,27 +2062,13 @@ export type ListMicrovmImagesError =
 /**
  * Lists MicroVM images in the account with optional name filtering. We recommend using pagination to ensure that the operation returns quickly and successfully.
  */
-export const listMicrovmImages: API.OperationMethod<
+export const listMicrovmImages: API.PaginatedOperationMethod<
   ListMicrovmImagesRequest,
   ListMicrovmImagesResponse,
   ListMicrovmImagesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListMicrovmImagesRequest,
-  ) => stream.Stream<
-    ListMicrovmImagesResponse,
-    ListMicrovmImagesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListMicrovmImagesRequest,
-  ) => stream.Stream<
-    MicrovmImageSummary,
-    ListMicrovmImagesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  MicrovmImageSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListMicrovmImagesRequest,
   output: ListMicrovmImagesResponse,
   errors: [
@@ -2192,27 +2086,7 @@ export const listMicrovmImages: API.OperationMethod<
     items: "items",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListMicrovmImagesRequest,
-  ListMicrovmImagesResponse,
-  ListMicrovmImagesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListMicrovmImagesRequest,
-  ) => stream.Stream<
-    ListMicrovmImagesResponse,
-    ListMicrovmImagesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListMicrovmImagesRequest,
-  ) => stream.Stream<
-    MicrovmImageSummary,
-    ListMicrovmImagesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListMicrovmImageVersionsError =
   | AccessDeniedException
@@ -2224,27 +2098,13 @@ export type ListMicrovmImageVersionsError =
 /**
  * Lists versions of a MicroVM image. We recommend using pagination to ensure that the operation returns quickly and successfully.
  */
-export const listMicrovmImageVersions: API.OperationMethod<
+export const listMicrovmImageVersions: API.PaginatedOperationMethod<
   ListMicrovmImageVersionsInput,
   ListMicrovmImageVersionsOutput,
   ListMicrovmImageVersionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListMicrovmImageVersionsInput,
-  ) => stream.Stream<
-    ListMicrovmImageVersionsOutput,
-    ListMicrovmImageVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListMicrovmImageVersionsInput,
-  ) => stream.Stream<
-    MicrovmImageVersionSummary,
-    ListMicrovmImageVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  MicrovmImageVersionSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListMicrovmImageVersionsInput,
   output: ListMicrovmImageVersionsOutput,
   errors: [
@@ -2263,27 +2123,7 @@ export const listMicrovmImageVersions: API.OperationMethod<
     items: "items",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListMicrovmImageVersionsInput,
-  ListMicrovmImageVersionsOutput,
-  ListMicrovmImageVersionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListMicrovmImageVersionsInput,
-  ) => stream.Stream<
-    ListMicrovmImageVersionsOutput,
-    ListMicrovmImageVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListMicrovmImageVersionsInput,
-  ) => stream.Stream<
-    MicrovmImageVersionSummary,
-    ListMicrovmImageVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListMicrovmsError =
   | AccessDeniedException
@@ -2295,27 +2135,13 @@ export type ListMicrovmsError =
 /**
  * Lists MicroVMs in the account with optional filtering by image and version. We recommend using pagination to ensure that the operation returns quickly and successfully.
  */
-export const listMicrovms: API.OperationMethod<
+export const listMicrovms: API.PaginatedOperationMethod<
   ListMicrovmsRequest,
   ListMicrovmsResponse,
   ListMicrovmsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListMicrovmsRequest,
-  ) => stream.Stream<
-    ListMicrovmsResponse,
-    ListMicrovmsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListMicrovmsRequest,
-  ) => stream.Stream<
-    MicrovmItem,
-    ListMicrovmsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  MicrovmItem
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListMicrovmsRequest,
   output: ListMicrovmsResponse,
   errors: [
@@ -2334,27 +2160,7 @@ export const listMicrovms: API.OperationMethod<
     items: "items",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListMicrovmsRequest,
-  ListMicrovmsResponse,
-  ListMicrovmsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListMicrovmsRequest,
-  ) => stream.Stream<
-    ListMicrovmsResponse,
-    ListMicrovmsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListMicrovmsRequest,
-  ) => stream.Stream<
-    MicrovmItem,
-    ListMicrovmsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsError =
   | InvalidParameterValueException
@@ -2369,7 +2175,7 @@ export const listTags: API.OperationMethod<
   ListTagsRequest,
   ListTagsResponse,
   ListTagsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsRequest,
   output: ListTagsResponse,
@@ -2399,7 +2205,7 @@ export const resumeMicrovm: API.OperationMethod<
   ResumeMicrovmRequest,
   ResumeMicrovmResponse,
   ResumeMicrovmError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ResumeMicrovmRequest,
   output: ResumeMicrovmResponse,
@@ -2432,7 +2238,7 @@ export const runMicrovm: API.OperationMethod<
   RunMicrovmRequest,
   RunMicrovmResponse,
   RunMicrovmError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RunMicrovmRequest,
   output: RunMicrovmResponse,
@@ -2465,7 +2271,7 @@ export const suspendMicrovm: API.OperationMethod<
   SuspendMicrovmRequest,
   SuspendMicrovmResponse,
   SuspendMicrovmError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: SuspendMicrovmRequest,
   output: SuspendMicrovmResponse,
@@ -2496,7 +2302,7 @@ export const tagResource: API.OperationMethod<
   TagResourceRequest,
   TagResourceResponse,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -2527,7 +2333,7 @@ export const terminateMicrovm: API.OperationMethod<
   TerminateMicrovmRequest,
   TerminateMicrovmResponse,
   TerminateMicrovmError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TerminateMicrovmRequest,
   output: TerminateMicrovmResponse,
@@ -2558,7 +2364,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceRequest,
   UntagResourceResponse,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -2590,7 +2396,7 @@ export const updateMicrovmImage: API.OperationMethod<
   UpdateMicrovmImageRequest,
   UpdateMicrovmImageResponse,
   UpdateMicrovmImageError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateMicrovmImageRequest,
   output: UpdateMicrovmImageResponse,
@@ -2623,7 +2429,7 @@ export const updateMicrovmImageVersion: API.OperationMethod<
   UpdateMicrovmImageVersionRequest,
   UpdateMicrovmImageVersionResponse,
   UpdateMicrovmImageVersionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateMicrovmImageVersionRequest,
   output: UpdateMicrovmImageVersionResponse,

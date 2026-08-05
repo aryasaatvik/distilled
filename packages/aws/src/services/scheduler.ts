@@ -1,6 +1,5 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -8,7 +7,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 const svc = T.AwsApiService({
   sdkId: "Scheduler",
   serviceShapeName: "AWSChronosService",
@@ -88,37 +86,48 @@ const rules = T.EndpointResolver((p, _) => {
 export class ConflictException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
     "ConflictException",
-    { Message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(409),
   ).pipe(C.withConflictError, C.withRetryableError) {}
+export class ExecutionRoleNotAssumable
+  extends /*@__PURE__*/ S.TaggedErrorClass<ExecutionRoleNotAssumable>()(
+    "ExecutionRoleNotAssumable",
+    { message: S.String.pipe(T.ErrorMessage()) },
+    T.SyntheticError({
+      from: "ValidationException",
+      message: {
+        includes: "must allow AWS EventBridge Scheduler to assume the role",
+      },
+    }),
+  ) {}
 export class InternalServerException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
     "InternalServerException",
-    { Message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(500),
   ).pipe(C.withServerError) {}
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { Message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class ServiceQuotaExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
     "ServiceQuotaExceededException",
-    { Message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(402),
   ).pipe(C.withQuotaError) {}
 export class ThrottlingException
   extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
     "ThrottlingException",
-    { Message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(429),
   ).pipe(C.withThrottlingError) {}
 export class ValidationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
     "ValidationException",
-    { Message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export type Name = string;
@@ -898,6 +907,7 @@ export type CreateScheduleError =
   | ServiceQuotaExceededException
   | ThrottlingException
   | ValidationException
+  | ExecutionRoleNotAssumable
   | CommonErrors;
 /**
  * Creates the specified schedule.
@@ -906,7 +916,7 @@ export const createSchedule: API.OperationMethod<
   CreateScheduleInput,
   CreateScheduleOutput,
   CreateScheduleError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateScheduleInput,
   output: CreateScheduleOutput,
@@ -917,6 +927,7 @@ export const createSchedule: API.OperationMethod<
     ServiceQuotaExceededException,
     ThrottlingException,
     ValidationException,
+    ExecutionRoleNotAssumable,
   ],
   protocol: AwsProtocol,
   retry: Retry,
@@ -937,7 +948,7 @@ export const createScheduleGroup: API.OperationMethod<
   CreateScheduleGroupInput,
   CreateScheduleGroupOutput,
   CreateScheduleGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateScheduleGroupInput,
   output: CreateScheduleGroupOutput,
@@ -967,7 +978,7 @@ export const deleteSchedule: API.OperationMethod<
   DeleteScheduleInput,
   DeleteScheduleOutput,
   DeleteScheduleError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteScheduleInput,
   output: DeleteScheduleOutput,
@@ -1002,7 +1013,7 @@ export const deleteScheduleGroup: API.OperationMethod<
   DeleteScheduleGroupInput,
   DeleteScheduleGroupOutput,
   DeleteScheduleGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteScheduleGroupInput,
   output: DeleteScheduleGroupOutput,
@@ -1031,7 +1042,7 @@ export const getSchedule: API.OperationMethod<
   GetScheduleInput,
   GetScheduleOutput,
   GetScheduleError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetScheduleInput,
   output: GetScheduleOutput,
@@ -1059,7 +1070,7 @@ export const getScheduleGroup: API.OperationMethod<
   GetScheduleGroupInput,
   GetScheduleGroupOutput,
   GetScheduleGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetScheduleGroupInput,
   output: GetScheduleGroupOutput,
@@ -1082,27 +1093,13 @@ export type ListScheduleGroupsError =
 /**
  * Returns a paginated list of your schedule groups.
  */
-export const listScheduleGroups: API.OperationMethod<
+export const listScheduleGroups: API.PaginatedOperationMethod<
   ListScheduleGroupsInput,
   ListScheduleGroupsOutput,
   ListScheduleGroupsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListScheduleGroupsInput,
-  ) => stream.Stream<
-    ListScheduleGroupsOutput,
-    ListScheduleGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListScheduleGroupsInput,
-  ) => stream.Stream<
-    ScheduleGroupSummary,
-    ListScheduleGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ScheduleGroupSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListScheduleGroupsInput,
   output: ListScheduleGroupsOutput,
   errors: [InternalServerException, ThrottlingException, ValidationException],
@@ -1115,27 +1112,7 @@ export const listScheduleGroups: API.OperationMethod<
     items: "ScheduleGroups",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListScheduleGroupsInput,
-  ListScheduleGroupsOutput,
-  ListScheduleGroupsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListScheduleGroupsInput,
-  ) => stream.Stream<
-    ListScheduleGroupsOutput,
-    ListScheduleGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListScheduleGroupsInput,
-  ) => stream.Stream<
-    ScheduleGroupSummary,
-    ListScheduleGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListSchedulesError =
   | InternalServerException
@@ -1146,27 +1123,13 @@ export type ListSchedulesError =
 /**
  * Returns a paginated list of your EventBridge Scheduler schedules.
  */
-export const listSchedules: API.OperationMethod<
+export const listSchedules: API.PaginatedOperationMethod<
   ListSchedulesInput,
   ListSchedulesOutput,
   ListSchedulesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSchedulesInput,
-  ) => stream.Stream<
-    ListSchedulesOutput,
-    ListSchedulesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSchedulesInput,
-  ) => stream.Stream<
-    ScheduleSummary,
-    ListSchedulesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ScheduleSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListSchedulesInput,
   output: ListSchedulesOutput,
   errors: [
@@ -1184,27 +1147,7 @@ export const listSchedules: API.OperationMethod<
     items: "Schedules",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListSchedulesInput,
-  ListSchedulesOutput,
-  ListSchedulesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSchedulesInput,
-  ) => stream.Stream<
-    ListSchedulesOutput,
-    ListSchedulesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSchedulesInput,
-  ) => stream.Stream<
-    ScheduleSummary,
-    ListSchedulesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsForResourceError =
   | InternalServerException
@@ -1219,7 +1162,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceInput,
   ListTagsForResourceOutput,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceInput,
   output: ListTagsForResourceOutput,
@@ -1248,7 +1191,7 @@ export const tagResource: API.OperationMethod<
   TagResourceInput,
   TagResourceOutput,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceInput,
   output: TagResourceOutput,
@@ -1278,7 +1221,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceInput,
   UntagResourceOutput,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceInput,
   output: UntagResourceOutput,
@@ -1300,6 +1243,7 @@ export type UpdateScheduleError =
   | ResourceNotFoundException
   | ThrottlingException
   | ValidationException
+  | ExecutionRoleNotAssumable
   | CommonErrors;
 /**
  * Updates the specified schedule. When you call `UpdateSchedule`, EventBridge Scheduler uses all values, including empty values, specified in the request and
@@ -1313,7 +1257,7 @@ export const updateSchedule: API.OperationMethod<
   UpdateScheduleInput,
   UpdateScheduleOutput,
   UpdateScheduleError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateScheduleInput,
   output: UpdateScheduleOutput,
@@ -1323,6 +1267,7 @@ export const updateSchedule: API.OperationMethod<
     ResourceNotFoundException,
     ThrottlingException,
     ValidationException,
+    ExecutionRoleNotAssumable,
   ],
   protocol: AwsProtocol,
   retry: Retry,

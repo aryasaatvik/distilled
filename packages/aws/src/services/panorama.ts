@@ -1,7 +1,6 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as redacted from "effect/Redacted";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -9,7 +8,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region as Rgn } from "../region.ts";
 import { SensitiveString } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "Panorama",
@@ -90,14 +88,14 @@ const rules = T.EndpointResolver((p, _) => {
 export class AccessDeniedException
   extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
     "AccessDeniedException",
-    { Message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(403),
   ).pipe(C.withAuthError) {}
 export class ConflictException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
     "ConflictException",
     {
-      Message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       ResourceId: S.String,
       ResourceType: S.String,
       ErrorId: S.optional(S.String),
@@ -113,7 +111,7 @@ export class InternalServerException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
     "InternalServerException",
     {
-      Message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       RetryAfterSeconds: S.optional(S.Number).pipe(T.HttpHeader("Retry-After")),
     },
     T.HttpError(500),
@@ -121,14 +119,18 @@ export class InternalServerException
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { Message: S.String, ResourceId: S.String, ResourceType: S.String },
+    {
+      message: S.String.pipe(T.ErrorMessage()),
+      ResourceId: S.String,
+      ResourceType: S.String,
+    },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class ServiceQuotaExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
     "ServiceQuotaExceededException",
     {
-      Message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       ResourceId: S.optional(S.String),
       ResourceType: S.optional(S.String),
       QuotaCode: S.String,
@@ -140,7 +142,7 @@ export class ValidationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
     "ValidationException",
     {
-      Message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       Reason: S.optional(S.String),
       ErrorId: S.optional(S.String),
       ErrorArguments: S.optional(
@@ -2201,7 +2203,7 @@ export const createApplicationInstance: API.OperationMethod<
   CreateApplicationInstanceRequest,
   CreateApplicationInstanceResponse,
   CreateApplicationInstanceError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateApplicationInstanceRequest,
   output: CreateApplicationInstanceResponse,
@@ -2230,7 +2232,7 @@ export const createJobForDevices: API.OperationMethod<
   CreateJobForDevicesRequest,
   CreateJobForDevicesResponse,
   CreateJobForDevicesError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateJobForDevicesRequest,
   output: CreateJobForDevicesResponse,
@@ -2259,7 +2261,7 @@ export const createNodeFromTemplateJob: API.OperationMethod<
   CreateNodeFromTemplateJobRequest,
   CreateNodeFromTemplateJobResponse,
   CreateNodeFromTemplateJobError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateNodeFromTemplateJobRequest,
   output: CreateNodeFromTemplateJobResponse,
@@ -2287,7 +2289,7 @@ export const createPackage: API.OperationMethod<
   CreatePackageRequest,
   CreatePackageResponse,
   CreatePackageError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreatePackageRequest,
   output: CreatePackageResponse,
@@ -2315,7 +2317,7 @@ export const createPackageImportJob: API.OperationMethod<
   CreatePackageImportJobRequest,
   CreatePackageImportJobResponse,
   CreatePackageImportJobError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreatePackageImportJobRequest,
   output: CreatePackageImportJobResponse,
@@ -2344,7 +2346,7 @@ export const deleteDevice: API.OperationMethod<
   DeleteDeviceRequest,
   DeleteDeviceResponse,
   DeleteDeviceError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteDeviceRequest,
   output: DeleteDeviceResponse,
@@ -2377,7 +2379,7 @@ export const deletePackage: API.OperationMethod<
   DeletePackageRequest,
   DeletePackageResponse,
   DeletePackageError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeletePackageRequest,
   output: DeletePackageResponse,
@@ -2407,7 +2409,7 @@ export const deregisterPackageVersion: API.OperationMethod<
   DeregisterPackageVersionRequest,
   DeregisterPackageVersionResponse,
   DeregisterPackageVersionError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeregisterPackageVersionRequest,
   output: DeregisterPackageVersionResponse,
@@ -2437,7 +2439,7 @@ export const describeApplicationInstance: API.OperationMethod<
   DescribeApplicationInstanceRequest,
   DescribeApplicationInstanceResponse,
   DescribeApplicationInstanceError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeApplicationInstanceRequest,
   output: DescribeApplicationInstanceResponse,
@@ -2467,7 +2469,7 @@ export const describeApplicationInstanceDetails: API.OperationMethod<
   DescribeApplicationInstanceDetailsRequest,
   DescribeApplicationInstanceDetailsResponse,
   DescribeApplicationInstanceDetailsError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeApplicationInstanceDetailsRequest,
   output: DescribeApplicationInstanceDetailsResponse,
@@ -2496,7 +2498,7 @@ export const describeDevice: API.OperationMethod<
   DescribeDeviceRequest,
   DescribeDeviceResponse,
   DescribeDeviceError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeDeviceRequest,
   output: DescribeDeviceResponse,
@@ -2525,7 +2527,7 @@ export const describeDeviceJob: API.OperationMethod<
   DescribeDeviceJobRequest,
   DescribeDeviceJobResponse,
   DescribeDeviceJobError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeDeviceJobRequest,
   output: DescribeDeviceJobResponse,
@@ -2555,7 +2557,7 @@ export const describeNode: API.OperationMethod<
   DescribeNodeRequest,
   DescribeNodeResponse,
   DescribeNodeError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeNodeRequest,
   output: DescribeNodeResponse,
@@ -2584,7 +2586,7 @@ export const describeNodeFromTemplateJob: API.OperationMethod<
   DescribeNodeFromTemplateJobRequest,
   DescribeNodeFromTemplateJobResponse,
   DescribeNodeFromTemplateJobError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeNodeFromTemplateJobRequest,
   output: DescribeNodeFromTemplateJobResponse,
@@ -2613,7 +2615,7 @@ export const describePackage: API.OperationMethod<
   DescribePackageRequest,
   DescribePackageResponse,
   DescribePackageError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribePackageRequest,
   output: DescribePackageResponse,
@@ -2642,7 +2644,7 @@ export const describePackageImportJob: API.OperationMethod<
   DescribePackageImportJobRequest,
   DescribePackageImportJobResponse,
   DescribePackageImportJobError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribePackageImportJobRequest,
   output: DescribePackageImportJobResponse,
@@ -2671,7 +2673,7 @@ export const describePackageVersion: API.OperationMethod<
   DescribePackageVersionRequest,
   DescribePackageVersionResponse,
   DescribePackageVersionError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribePackageVersionRequest,
   output: DescribePackageVersionResponse,
@@ -2694,27 +2696,13 @@ export type ListApplicationInstanceDependenciesError =
 /**
  * Returns a list of application instance dependencies.
  */
-export const listApplicationInstanceDependencies: API.OperationMethod<
+export const listApplicationInstanceDependencies: API.PaginatedOperationMethod<
   ListApplicationInstanceDependenciesRequest,
   ListApplicationInstanceDependenciesResponse,
   ListApplicationInstanceDependenciesError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListApplicationInstanceDependenciesRequest,
-  ) => stream.Stream<
-    ListApplicationInstanceDependenciesResponse,
-    ListApplicationInstanceDependenciesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListApplicationInstanceDependenciesRequest,
-  ) => stream.Stream<
-    unknown,
-    ListApplicationInstanceDependenciesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListApplicationInstanceDependenciesRequest,
   output: ListApplicationInstanceDependenciesResponse,
   errors: [AccessDeniedException, InternalServerException],
@@ -2726,27 +2714,7 @@ export const listApplicationInstanceDependencies: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListApplicationInstanceDependenciesRequest,
-  ListApplicationInstanceDependenciesResponse,
-  ListApplicationInstanceDependenciesError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListApplicationInstanceDependenciesRequest,
-  ) => stream.Stream<
-    ListApplicationInstanceDependenciesResponse,
-    ListApplicationInstanceDependenciesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListApplicationInstanceDependenciesRequest,
-  ) => stream.Stream<
-    unknown,
-    ListApplicationInstanceDependenciesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListApplicationInstanceNodeInstancesError =
   | AccessDeniedException
@@ -2755,27 +2723,13 @@ export type ListApplicationInstanceNodeInstancesError =
 /**
  * Returns a list of application node instances.
  */
-export const listApplicationInstanceNodeInstances: API.OperationMethod<
+export const listApplicationInstanceNodeInstances: API.PaginatedOperationMethod<
   ListApplicationInstanceNodeInstancesRequest,
   ListApplicationInstanceNodeInstancesResponse,
   ListApplicationInstanceNodeInstancesError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListApplicationInstanceNodeInstancesRequest,
-  ) => stream.Stream<
-    ListApplicationInstanceNodeInstancesResponse,
-    ListApplicationInstanceNodeInstancesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListApplicationInstanceNodeInstancesRequest,
-  ) => stream.Stream<
-    unknown,
-    ListApplicationInstanceNodeInstancesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListApplicationInstanceNodeInstancesRequest,
   output: ListApplicationInstanceNodeInstancesResponse,
   errors: [AccessDeniedException, InternalServerException],
@@ -2787,27 +2741,7 @@ export const listApplicationInstanceNodeInstances: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListApplicationInstanceNodeInstancesRequest,
-  ListApplicationInstanceNodeInstancesResponse,
-  ListApplicationInstanceNodeInstancesError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListApplicationInstanceNodeInstancesRequest,
-  ) => stream.Stream<
-    ListApplicationInstanceNodeInstancesResponse,
-    ListApplicationInstanceNodeInstancesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListApplicationInstanceNodeInstancesRequest,
-  ) => stream.Stream<
-    unknown,
-    ListApplicationInstanceNodeInstancesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListApplicationInstancesError =
   | AccessDeniedException
@@ -2816,27 +2750,13 @@ export type ListApplicationInstancesError =
 /**
  * Returns a list of application instances.
  */
-export const listApplicationInstances: API.OperationMethod<
+export const listApplicationInstances: API.PaginatedOperationMethod<
   ListApplicationInstancesRequest,
   ListApplicationInstancesResponse,
   ListApplicationInstancesError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListApplicationInstancesRequest,
-  ) => stream.Stream<
-    ListApplicationInstancesResponse,
-    ListApplicationInstancesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListApplicationInstancesRequest,
-  ) => stream.Stream<
-    unknown,
-    ListApplicationInstancesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListApplicationInstancesRequest,
   output: ListApplicationInstancesResponse,
   errors: [AccessDeniedException, InternalServerException],
@@ -2848,27 +2768,7 @@ export const listApplicationInstances: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListApplicationInstancesRequest,
-  ListApplicationInstancesResponse,
-  ListApplicationInstancesError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListApplicationInstancesRequest,
-  ) => stream.Stream<
-    ListApplicationInstancesResponse,
-    ListApplicationInstancesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListApplicationInstancesRequest,
-  ) => stream.Stream<
-    unknown,
-    ListApplicationInstancesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListDevicesError =
   | AccessDeniedException
@@ -2879,27 +2779,13 @@ export type ListDevicesError =
 /**
  * Returns a list of devices.
  */
-export const listDevices: API.OperationMethod<
+export const listDevices: API.PaginatedOperationMethod<
   ListDevicesRequest,
   ListDevicesResponse,
   ListDevicesError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDevicesRequest,
-  ) => stream.Stream<
-    ListDevicesResponse,
-    ListDevicesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDevicesRequest,
-  ) => stream.Stream<
-    unknown,
-    ListDevicesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListDevicesRequest,
   output: ListDevicesResponse,
   errors: [
@@ -2916,27 +2802,7 @@ export const listDevices: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListDevicesRequest,
-  ListDevicesResponse,
-  ListDevicesError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDevicesRequest,
-  ) => stream.Stream<
-    ListDevicesResponse,
-    ListDevicesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDevicesRequest,
-  ) => stream.Stream<
-    unknown,
-    ListDevicesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListDevicesJobsError =
   | AccessDeniedException
@@ -2948,27 +2814,13 @@ export type ListDevicesJobsError =
 /**
  * Returns a list of jobs.
  */
-export const listDevicesJobs: API.OperationMethod<
+export const listDevicesJobs: API.PaginatedOperationMethod<
   ListDevicesJobsRequest,
   ListDevicesJobsResponse,
   ListDevicesJobsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDevicesJobsRequest,
-  ) => stream.Stream<
-    ListDevicesJobsResponse,
-    ListDevicesJobsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDevicesJobsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListDevicesJobsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListDevicesJobsRequest,
   output: ListDevicesJobsResponse,
   errors: [
@@ -2986,27 +2838,7 @@ export const listDevicesJobs: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListDevicesJobsRequest,
-  ListDevicesJobsResponse,
-  ListDevicesJobsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDevicesJobsRequest,
-  ) => stream.Stream<
-    ListDevicesJobsResponse,
-    ListDevicesJobsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDevicesJobsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListDevicesJobsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListNodeFromTemplateJobsError =
   | AccessDeniedException
@@ -3017,27 +2849,13 @@ export type ListNodeFromTemplateJobsError =
 /**
  * Returns a list of camera stream node jobs.
  */
-export const listNodeFromTemplateJobs: API.OperationMethod<
+export const listNodeFromTemplateJobs: API.PaginatedOperationMethod<
   ListNodeFromTemplateJobsRequest,
   ListNodeFromTemplateJobsResponse,
   ListNodeFromTemplateJobsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListNodeFromTemplateJobsRequest,
-  ) => stream.Stream<
-    ListNodeFromTemplateJobsResponse,
-    ListNodeFromTemplateJobsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListNodeFromTemplateJobsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListNodeFromTemplateJobsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListNodeFromTemplateJobsRequest,
   output: ListNodeFromTemplateJobsResponse,
   errors: [
@@ -3054,27 +2872,7 @@ export const listNodeFromTemplateJobs: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListNodeFromTemplateJobsRequest,
-  ListNodeFromTemplateJobsResponse,
-  ListNodeFromTemplateJobsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListNodeFromTemplateJobsRequest,
-  ) => stream.Stream<
-    ListNodeFromTemplateJobsResponse,
-    ListNodeFromTemplateJobsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListNodeFromTemplateJobsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListNodeFromTemplateJobsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListNodesError =
   | ConflictException
@@ -3084,27 +2882,13 @@ export type ListNodesError =
 /**
  * Returns a list of nodes.
  */
-export const listNodes: API.OperationMethod<
+export const listNodes: API.PaginatedOperationMethod<
   ListNodesRequest,
   ListNodesResponse,
   ListNodesError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListNodesRequest,
-  ) => stream.Stream<
-    ListNodesResponse,
-    ListNodesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListNodesRequest,
-  ) => stream.Stream<
-    unknown,
-    ListNodesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListNodesRequest,
   output: ListNodesResponse,
   errors: [ConflictException, InternalServerException, ValidationException],
@@ -3116,27 +2900,7 @@ export const listNodes: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListNodesRequest,
-  ListNodesResponse,
-  ListNodesError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListNodesRequest,
-  ) => stream.Stream<
-    ListNodesResponse,
-    ListNodesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListNodesRequest,
-  ) => stream.Stream<
-    unknown,
-    ListNodesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListPackageImportJobsError =
   | AccessDeniedException
@@ -3147,27 +2911,13 @@ export type ListPackageImportJobsError =
 /**
  * Returns a list of package import jobs.
  */
-export const listPackageImportJobs: API.OperationMethod<
+export const listPackageImportJobs: API.PaginatedOperationMethod<
   ListPackageImportJobsRequest,
   ListPackageImportJobsResponse,
   ListPackageImportJobsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPackageImportJobsRequest,
-  ) => stream.Stream<
-    ListPackageImportJobsResponse,
-    ListPackageImportJobsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPackageImportJobsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListPackageImportJobsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListPackageImportJobsRequest,
   output: ListPackageImportJobsResponse,
   errors: [
@@ -3184,27 +2934,7 @@ export const listPackageImportJobs: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListPackageImportJobsRequest,
-  ListPackageImportJobsResponse,
-  ListPackageImportJobsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPackageImportJobsRequest,
-  ) => stream.Stream<
-    ListPackageImportJobsResponse,
-    ListPackageImportJobsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPackageImportJobsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListPackageImportJobsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListPackagesError =
   | AccessDeniedException
@@ -3216,27 +2946,13 @@ export type ListPackagesError =
 /**
  * Returns a list of packages.
  */
-export const listPackages: API.OperationMethod<
+export const listPackages: API.PaginatedOperationMethod<
   ListPackagesRequest,
   ListPackagesResponse,
   ListPackagesError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPackagesRequest,
-  ) => stream.Stream<
-    ListPackagesResponse,
-    ListPackagesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPackagesRequest,
-  ) => stream.Stream<
-    unknown,
-    ListPackagesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListPackagesRequest,
   output: ListPackagesResponse,
   errors: [
@@ -3254,27 +2970,7 @@ export const listPackages: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListPackagesRequest,
-  ListPackagesResponse,
-  ListPackagesError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPackagesRequest,
-  ) => stream.Stream<
-    ListPackagesResponse,
-    ListPackagesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPackagesRequest,
-  ) => stream.Stream<
-    unknown,
-    ListPackagesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsForResourceError =
   | InternalServerException
@@ -3288,7 +2984,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceRequest,
   ListTagsForResourceResponse,
   ListTagsForResourceError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -3319,7 +3015,7 @@ export const provisionDevice: API.OperationMethod<
   ProvisionDeviceRequest,
   ProvisionDeviceResponse,
   ProvisionDeviceError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ProvisionDeviceRequest,
   output: ProvisionDeviceResponse,
@@ -3348,7 +3044,7 @@ export const registerPackageVersion: API.OperationMethod<
   RegisterPackageVersionRequest,
   RegisterPackageVersionResponse,
   RegisterPackageVersionError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RegisterPackageVersionRequest,
   output: RegisterPackageVersionResponse,
@@ -3377,7 +3073,7 @@ export const removeApplicationInstance: API.OperationMethod<
   RemoveApplicationInstanceRequest,
   RemoveApplicationInstanceResponse,
   RemoveApplicationInstanceError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RemoveApplicationInstanceRequest,
   output: RemoveApplicationInstanceResponse,
@@ -3406,7 +3102,7 @@ export const signalApplicationInstanceNodeInstances: API.OperationMethod<
   SignalApplicationInstanceNodeInstancesRequest,
   SignalApplicationInstanceNodeInstancesResponse,
   SignalApplicationInstanceNodeInstancesError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: SignalApplicationInstanceNodeInstancesRequest,
   output: SignalApplicationInstanceNodeInstancesResponse,
@@ -3433,7 +3129,7 @@ export const tagResource: API.OperationMethod<
   TagResourceRequest,
   TagResourceResponse,
   TagResourceError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -3459,7 +3155,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceRequest,
   UntagResourceResponse,
   UntagResourceError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -3487,7 +3183,7 @@ export const updateDeviceMetadata: API.OperationMethod<
   UpdateDeviceMetadataRequest,
   UpdateDeviceMetadataResponse,
   UpdateDeviceMetadataError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateDeviceMetadataRequest,
   output: UpdateDeviceMetadataResponse,

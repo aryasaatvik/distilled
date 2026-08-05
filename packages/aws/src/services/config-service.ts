@@ -1,6 +1,5 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -8,7 +7,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 const ns = T.XmlNamespace("http://config.amazonaws.com/doc/2014-11-12/");
 const svc = T.AwsApiService({
   sdkId: "Config Service",
@@ -92,283 +90,283 @@ const rules = T.EndpointResolver((p, _) => {
 export class ConflictException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
     "ConflictException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class ConformancePackTemplateValidationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConformancePackTemplateValidationException>()(
     "ConformancePackTemplateValidationException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class IdempotentParameterMismatch
   extends /*@__PURE__*/ S.TaggedErrorClass<IdempotentParameterMismatch>()(
     "IdempotentParameterMismatch",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError, C.withConflictError) {}
 export class InsufficientDeliveryPolicyException
   extends /*@__PURE__*/ S.TaggedErrorClass<InsufficientDeliveryPolicyException>()(
     "InsufficientDeliveryPolicyException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InsufficientPermissionsException
   extends /*@__PURE__*/ S.TaggedErrorClass<InsufficientPermissionsException>()(
     "InsufficientPermissionsException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidConfigurationRecorderNameException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidConfigurationRecorderNameException>()(
     "InvalidConfigurationRecorderNameException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidDeliveryChannelNameException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidDeliveryChannelNameException>()(
     "InvalidDeliveryChannelNameException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidExpressionException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidExpressionException>()(
     "InvalidExpressionException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidLimitException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidLimitException>()(
     "InvalidLimitException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidNextTokenException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidNextTokenException>()(
     "InvalidNextTokenException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidParameterValueException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidParameterValueException>()(
     "InvalidParameterValueException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidRecordingGroupException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidRecordingGroupException>()(
     "InvalidRecordingGroupException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidResultTokenException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidResultTokenException>()(
     "InvalidResultTokenException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidRoleException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidRoleException>()(
     "InvalidRoleException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidS3KeyPrefixException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidS3KeyPrefixException>()(
     "InvalidS3KeyPrefixException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidS3KmsKeyArnException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidS3KmsKeyArnException>()(
     "InvalidS3KmsKeyArnException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidSNSTopicARNException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidSNSTopicARNException>()(
     "InvalidSNSTopicARNException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidTimeRangeException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidTimeRangeException>()(
     "InvalidTimeRangeException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class LastDeliveryChannelDeleteFailedException
   extends /*@__PURE__*/ S.TaggedErrorClass<LastDeliveryChannelDeleteFailedException>()(
     "LastDeliveryChannelDeleteFailedException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class LimitExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<LimitExceededException>()(
     "LimitExceededException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class MaxActiveResourcesExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<MaxActiveResourcesExceededException>()(
     "MaxActiveResourcesExceededException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class MaxNumberOfConfigRulesExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<MaxNumberOfConfigRulesExceededException>()(
     "MaxNumberOfConfigRulesExceededException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class MaxNumberOfConfigurationRecordersExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<MaxNumberOfConfigurationRecordersExceededException>()(
     "MaxNumberOfConfigurationRecordersExceededException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class MaxNumberOfConformancePacksExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<MaxNumberOfConformancePacksExceededException>()(
     "MaxNumberOfConformancePacksExceededException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class MaxNumberOfDeliveryChannelsExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<MaxNumberOfDeliveryChannelsExceededException>()(
     "MaxNumberOfDeliveryChannelsExceededException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class MaxNumberOfOrganizationConfigRulesExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<MaxNumberOfOrganizationConfigRulesExceededException>()(
     "MaxNumberOfOrganizationConfigRulesExceededException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class MaxNumberOfOrganizationConformancePacksExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<MaxNumberOfOrganizationConformancePacksExceededException>()(
     "MaxNumberOfOrganizationConformancePacksExceededException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class MaxNumberOfRetentionConfigurationsExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<MaxNumberOfRetentionConfigurationsExceededException>()(
     "MaxNumberOfRetentionConfigurationsExceededException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class NoAvailableConfigurationRecorderException
   extends /*@__PURE__*/ S.TaggedErrorClass<NoAvailableConfigurationRecorderException>()(
     "NoAvailableConfigurationRecorderException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class NoAvailableDeliveryChannelException
   extends /*@__PURE__*/ S.TaggedErrorClass<NoAvailableDeliveryChannelException>()(
     "NoAvailableDeliveryChannelException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class NoAvailableOrganizationException
   extends /*@__PURE__*/ S.TaggedErrorClass<NoAvailableOrganizationException>()(
     "NoAvailableOrganizationException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class NoRunningConfigurationRecorderException
   extends /*@__PURE__*/ S.TaggedErrorClass<NoRunningConfigurationRecorderException>()(
     "NoRunningConfigurationRecorderException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class NoSuchBucketException
   extends /*@__PURE__*/ S.TaggedErrorClass<NoSuchBucketException>()(
     "NoSuchBucketException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class NoSuchConfigRuleException
   extends /*@__PURE__*/ S.TaggedErrorClass<NoSuchConfigRuleException>()(
     "NoSuchConfigRuleException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class NoSuchConfigRuleInConformancePackException
   extends /*@__PURE__*/ S.TaggedErrorClass<NoSuchConfigRuleInConformancePackException>()(
     "NoSuchConfigRuleInConformancePackException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class NoSuchConfigurationAggregatorException
   extends /*@__PURE__*/ S.TaggedErrorClass<NoSuchConfigurationAggregatorException>()(
     "NoSuchConfigurationAggregatorException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class NoSuchConfigurationRecorderException
   extends /*@__PURE__*/ S.TaggedErrorClass<NoSuchConfigurationRecorderException>()(
     "NoSuchConfigurationRecorderException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class NoSuchConformancePackException
   extends /*@__PURE__*/ S.TaggedErrorClass<NoSuchConformancePackException>()(
     "NoSuchConformancePackException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class NoSuchDeliveryChannelException
   extends /*@__PURE__*/ S.TaggedErrorClass<NoSuchDeliveryChannelException>()(
     "NoSuchDeliveryChannelException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class NoSuchOrganizationConfigRuleException
   extends /*@__PURE__*/ S.TaggedErrorClass<NoSuchOrganizationConfigRuleException>()(
     "NoSuchOrganizationConfigRuleException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class NoSuchOrganizationConformancePackException
   extends /*@__PURE__*/ S.TaggedErrorClass<NoSuchOrganizationConformancePackException>()(
     "NoSuchOrganizationConformancePackException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class NoSuchRemediationConfigurationException
   extends /*@__PURE__*/ S.TaggedErrorClass<NoSuchRemediationConfigurationException>()(
     "NoSuchRemediationConfigurationException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class NoSuchRemediationExceptionException
   extends /*@__PURE__*/ S.TaggedErrorClass<NoSuchRemediationExceptionException>()(
     "NoSuchRemediationExceptionException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class NoSuchRetentionConfigurationException
   extends /*@__PURE__*/ S.TaggedErrorClass<NoSuchRetentionConfigurationException>()(
     "NoSuchRetentionConfigurationException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class OrganizationAccessDeniedException
   extends /*@__PURE__*/ S.TaggedErrorClass<OrganizationAccessDeniedException>()(
     "OrganizationAccessDeniedException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ).pipe(C.withAuthError) {}
 export class OrganizationAllFeaturesNotEnabledException
   extends /*@__PURE__*/ S.TaggedErrorClass<OrganizationAllFeaturesNotEnabledException>()(
     "OrganizationAllFeaturesNotEnabledException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class OrganizationConformancePackTemplateValidationException
   extends /*@__PURE__*/ S.TaggedErrorClass<OrganizationConformancePackTemplateValidationException>()(
     "OrganizationConformancePackTemplateValidationException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class OversizedConfigurationItemException
   extends /*@__PURE__*/ S.TaggedErrorClass<OversizedConfigurationItemException>()(
     "OversizedConfigurationItemException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class RemediationInProgressException
   extends /*@__PURE__*/ S.TaggedErrorClass<RemediationInProgressException>()(
     "RemediationInProgressException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class ResourceConcurrentModificationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceConcurrentModificationException>()(
     "ResourceConcurrentModificationException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class ResourceInUseException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceInUseException>()(
     "ResourceInUseException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class ResourceNotDiscoveredException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotDiscoveredException>()(
     "ResourceNotDiscoveredException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class TooManyTagsException
   extends /*@__PURE__*/ S.TaggedErrorClass<TooManyTagsException>()(
     "TooManyTagsException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class UnmodifiableEntityException
   extends /*@__PURE__*/ S.TaggedErrorClass<UnmodifiableEntityException>()(
     "UnmodifiableEntityException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class ValidationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
     "ValidationException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export type AmazonResourceName = string;
 export type ResourceType =
@@ -6703,7 +6701,7 @@ export const associateResourceTypes: API.OperationMethod<
   AssociateResourceTypesRequest,
   AssociateResourceTypesResponse,
   AssociateResourceTypesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AssociateResourceTypesRequest,
   output: AssociateResourceTypesResponse,
@@ -6733,7 +6731,7 @@ export const batchGetAggregateResourceConfig: API.OperationMethod<
   BatchGetAggregateResourceConfigRequest,
   BatchGetAggregateResourceConfigResponse,
   BatchGetAggregateResourceConfigError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchGetAggregateResourceConfigRequest,
   output: BatchGetAggregateResourceConfigResponse,
@@ -6766,7 +6764,7 @@ export const batchGetResourceConfig: API.OperationMethod<
   BatchGetResourceConfigRequest,
   BatchGetResourceConfigResponse,
   BatchGetResourceConfigError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchGetResourceConfigRequest,
   output: BatchGetResourceConfigResponse,
@@ -6787,7 +6785,7 @@ export const deleteAggregationAuthorization: API.OperationMethod<
   DeleteAggregationAuthorizationRequest,
   DeleteAggregationAuthorizationResponse,
   DeleteAggregationAuthorizationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteAggregationAuthorizationRequest,
   output: DeleteAggregationAuthorizationResponse,
@@ -6830,7 +6828,7 @@ export const deleteConfigRule: API.OperationMethod<
   DeleteConfigRuleRequest,
   DeleteConfigRuleResponse,
   DeleteConfigRuleError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteConfigRuleRequest,
   output: DeleteConfigRuleResponse,
@@ -6851,7 +6849,7 @@ export const deleteConfigurationAggregator: API.OperationMethod<
   DeleteConfigurationAggregatorRequest,
   DeleteConfigurationAggregatorResponse,
   DeleteConfigurationAggregatorError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteConfigurationAggregatorRequest,
   output: DeleteConfigurationAggregatorResponse,
@@ -6879,7 +6877,7 @@ export const deleteConfigurationRecorder: API.OperationMethod<
   DeleteConfigurationRecorderRequest,
   DeleteConfigurationRecorderResponse,
   DeleteConfigurationRecorderError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteConfigurationRecorderRequest,
   output: DeleteConfigurationRecorderResponse,
@@ -6916,7 +6914,7 @@ export const deleteConformancePack: API.OperationMethod<
   DeleteConformancePackRequest,
   DeleteConformancePackResponse,
   DeleteConformancePackError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteConformancePackRequest,
   output: DeleteConformancePackResponse,
@@ -6939,7 +6937,7 @@ export const deleteDeliveryChannel: API.OperationMethod<
   DeleteDeliveryChannelRequest,
   DeleteDeliveryChannelResponse,
   DeleteDeliveryChannelError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteDeliveryChannelRequest,
   output: DeleteDeliveryChannelResponse,
@@ -6966,7 +6964,7 @@ export const deleteEvaluationResults: API.OperationMethod<
   DeleteEvaluationResultsRequest,
   DeleteEvaluationResultsResponse,
   DeleteEvaluationResultsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteEvaluationResultsRequest,
   output: DeleteEvaluationResultsResponse,
@@ -7007,7 +7005,7 @@ export const deleteOrganizationConfigRule: API.OperationMethod<
   DeleteOrganizationConfigRuleRequest,
   DeleteOrganizationConfigRuleResponse,
   DeleteOrganizationConfigRuleError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteOrganizationConfigRuleRequest,
   output: DeleteOrganizationConfigRuleResponse,
@@ -7053,7 +7051,7 @@ export const deleteOrganizationConformancePack: API.OperationMethod<
   DeleteOrganizationConformancePackRequest,
   DeleteOrganizationConformancePackResponse,
   DeleteOrganizationConformancePackError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteOrganizationConformancePackRequest,
   output: DeleteOrganizationConformancePackResponse,
@@ -7078,7 +7076,7 @@ export const deletePendingAggregationRequest: API.OperationMethod<
   DeletePendingAggregationRequestRequest,
   DeletePendingAggregationRequestResponse,
   DeletePendingAggregationRequestError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeletePendingAggregationRequestRequest,
   output: DeletePendingAggregationRequestResponse,
@@ -7101,7 +7099,7 @@ export const deleteRemediationConfiguration: API.OperationMethod<
   DeleteRemediationConfigurationRequest,
   DeleteRemediationConfigurationResponse,
   DeleteRemediationConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteRemediationConfigurationRequest,
   output: DeleteRemediationConfigurationResponse,
@@ -7129,7 +7127,7 @@ export const deleteRemediationExceptions: API.OperationMethod<
   DeleteRemediationExceptionsRequest,
   DeleteRemediationExceptionsResponse,
   DeleteRemediationExceptionsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteRemediationExceptionsRequest,
   output: DeleteRemediationExceptionsResponse,
@@ -7150,7 +7148,7 @@ export const deleteResourceConfig: API.OperationMethod<
   DeleteResourceConfigRequest,
   DeleteResourceConfigResponse,
   DeleteResourceConfigError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteResourceConfigRequest,
   output: DeleteResourceConfigResponse,
@@ -7171,7 +7169,7 @@ export const deleteRetentionConfiguration: API.OperationMethod<
   DeleteRetentionConfigurationRequest,
   DeleteRetentionConfigurationResponse,
   DeleteRetentionConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteRetentionConfigurationRequest,
   output: DeleteRetentionConfigurationResponse,
@@ -7206,7 +7204,7 @@ export const deleteServiceLinkedConfigurationRecorder: API.OperationMethod<
   DeleteServiceLinkedConfigurationRecorderRequest,
   DeleteServiceLinkedConfigurationRecorderResponse,
   DeleteServiceLinkedConfigurationRecorderError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteServiceLinkedConfigurationRecorderRequest,
   output: DeleteServiceLinkedConfigurationRecorderResponse,
@@ -7231,7 +7229,7 @@ export const deleteStoredQuery: API.OperationMethod<
   DeleteStoredQueryRequest,
   DeleteStoredQueryResponse,
   DeleteStoredQueryError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteStoredQueryRequest,
   output: DeleteStoredQueryResponse,
@@ -7264,7 +7262,7 @@ export const deliverConfigSnapshot: API.OperationMethod<
   DeliverConfigSnapshotRequest,
   DeliverConfigSnapshotResponse,
   DeliverConfigSnapshotError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeliverConfigSnapshotRequest,
   output: DeliverConfigSnapshotResponse,
@@ -7292,27 +7290,13 @@ export type DescribeAggregateComplianceByConfigRulesError =
  * have a `nextToken`, the results are displayed on the next
  * page.
  */
-export const describeAggregateComplianceByConfigRules: API.OperationMethod<
+export const describeAggregateComplianceByConfigRules: API.PaginatedOperationMethod<
   DescribeAggregateComplianceByConfigRulesRequest,
   DescribeAggregateComplianceByConfigRulesResponse,
   DescribeAggregateComplianceByConfigRulesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeAggregateComplianceByConfigRulesRequest,
-  ) => stream.Stream<
-    DescribeAggregateComplianceByConfigRulesResponse,
-    DescribeAggregateComplianceByConfigRulesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeAggregateComplianceByConfigRulesRequest,
-  ) => stream.Stream<
-    unknown,
-    DescribeAggregateComplianceByConfigRulesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeAggregateComplianceByConfigRulesRequest,
   output: DescribeAggregateComplianceByConfigRulesResponse,
   errors: [
@@ -7329,27 +7313,7 @@ export const describeAggregateComplianceByConfigRules: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "Limit",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeAggregateComplianceByConfigRulesRequest,
-  DescribeAggregateComplianceByConfigRulesResponse,
-  DescribeAggregateComplianceByConfigRulesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeAggregateComplianceByConfigRulesRequest,
-  ) => stream.Stream<
-    DescribeAggregateComplianceByConfigRulesResponse,
-    DescribeAggregateComplianceByConfigRulesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeAggregateComplianceByConfigRulesRequest,
-  ) => stream.Stream<
-    unknown,
-    DescribeAggregateComplianceByConfigRulesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeAggregateComplianceByConformancePacksError =
   | InvalidLimitException
@@ -7363,27 +7327,13 @@ export type DescribeAggregateComplianceByConformancePacksError =
  *
  * The results can return an empty result page, but if you have a `nextToken`, the results are displayed on the next page.
  */
-export const describeAggregateComplianceByConformancePacks: API.OperationMethod<
+export const describeAggregateComplianceByConformancePacks: API.PaginatedOperationMethod<
   DescribeAggregateComplianceByConformancePacksRequest,
   DescribeAggregateComplianceByConformancePacksResponse,
   DescribeAggregateComplianceByConformancePacksError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeAggregateComplianceByConformancePacksRequest,
-  ) => stream.Stream<
-    DescribeAggregateComplianceByConformancePacksResponse,
-    DescribeAggregateComplianceByConformancePacksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeAggregateComplianceByConformancePacksRequest,
-  ) => stream.Stream<
-    AggregateComplianceByConformancePack,
-    DescribeAggregateComplianceByConformancePacksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  AggregateComplianceByConformancePack
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeAggregateComplianceByConformancePacksRequest,
   output: DescribeAggregateComplianceByConformancePacksResponse,
   errors: [
@@ -7401,27 +7351,7 @@ export const describeAggregateComplianceByConformancePacks: API.OperationMethod<
     items: "AggregateComplianceByConformancePacks",
     pageSize: "Limit",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeAggregateComplianceByConformancePacksRequest,
-  DescribeAggregateComplianceByConformancePacksResponse,
-  DescribeAggregateComplianceByConformancePacksError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeAggregateComplianceByConformancePacksRequest,
-  ) => stream.Stream<
-    DescribeAggregateComplianceByConformancePacksResponse,
-    DescribeAggregateComplianceByConformancePacksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeAggregateComplianceByConformancePacksRequest,
-  ) => stream.Stream<
-    AggregateComplianceByConformancePack,
-    DescribeAggregateComplianceByConformancePacksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeAggregationAuthorizationsError =
   | InvalidLimitException
@@ -7432,27 +7362,13 @@ export type DescribeAggregationAuthorizationsError =
  * Returns a list of authorizations granted to various aggregator
  * accounts and regions.
  */
-export const describeAggregationAuthorizations: API.OperationMethod<
+export const describeAggregationAuthorizations: API.PaginatedOperationMethod<
   DescribeAggregationAuthorizationsRequest,
   DescribeAggregationAuthorizationsResponse,
   DescribeAggregationAuthorizationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeAggregationAuthorizationsRequest,
-  ) => stream.Stream<
-    DescribeAggregationAuthorizationsResponse,
-    DescribeAggregationAuthorizationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeAggregationAuthorizationsRequest,
-  ) => stream.Stream<
-    AggregationAuthorization,
-    DescribeAggregationAuthorizationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  AggregationAuthorization
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeAggregationAuthorizationsRequest,
   output: DescribeAggregationAuthorizationsResponse,
   errors: [
@@ -7469,27 +7385,7 @@ export const describeAggregationAuthorizations: API.OperationMethod<
     items: "AggregationAuthorizations",
     pageSize: "Limit",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeAggregationAuthorizationsRequest,
-  DescribeAggregationAuthorizationsResponse,
-  DescribeAggregationAuthorizationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeAggregationAuthorizationsRequest,
-  ) => stream.Stream<
-    DescribeAggregationAuthorizationsResponse,
-    DescribeAggregationAuthorizationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeAggregationAuthorizationsRequest,
-  ) => stream.Stream<
-    AggregationAuthorization,
-    DescribeAggregationAuthorizationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeComplianceByConfigRuleError =
   | InvalidNextTokenException
@@ -7528,27 +7424,13 @@ export type DescribeComplianceByConfigRuleError =
  * This can occur if the resources were deleted or removed from
  * the rule's scope.
  */
-export const describeComplianceByConfigRule: API.OperationMethod<
+export const describeComplianceByConfigRule: API.PaginatedOperationMethod<
   DescribeComplianceByConfigRuleRequest,
   DescribeComplianceByConfigRuleResponse,
   DescribeComplianceByConfigRuleError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeComplianceByConfigRuleRequest,
-  ) => stream.Stream<
-    DescribeComplianceByConfigRuleResponse,
-    DescribeComplianceByConfigRuleError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeComplianceByConfigRuleRequest,
-  ) => stream.Stream<
-    ComplianceByConfigRule,
-    DescribeComplianceByConfigRuleError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ComplianceByConfigRule
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeComplianceByConfigRuleRequest,
   output: DescribeComplianceByConfigRuleResponse,
   errors: [
@@ -7564,27 +7446,7 @@ export const describeComplianceByConfigRule: API.OperationMethod<
     outputToken: "NextToken",
     items: "ComplianceByConfigRules",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeComplianceByConfigRuleRequest,
-  DescribeComplianceByConfigRuleResponse,
-  DescribeComplianceByConfigRuleError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeComplianceByConfigRuleRequest,
-  ) => stream.Stream<
-    DescribeComplianceByConfigRuleResponse,
-    DescribeComplianceByConfigRuleError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeComplianceByConfigRuleRequest,
-  ) => stream.Stream<
-    ComplianceByConfigRule,
-    DescribeComplianceByConfigRuleError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeComplianceByResourceError =
   | InvalidNextTokenException
@@ -7622,27 +7484,13 @@ export type DescribeComplianceByResourceError =
  * This can occur if the resources were deleted or removed from
  * the rule's scope.
  */
-export const describeComplianceByResource: API.OperationMethod<
+export const describeComplianceByResource: API.PaginatedOperationMethod<
   DescribeComplianceByResourceRequest,
   DescribeComplianceByResourceResponse,
   DescribeComplianceByResourceError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeComplianceByResourceRequest,
-  ) => stream.Stream<
-    DescribeComplianceByResourceResponse,
-    DescribeComplianceByResourceError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeComplianceByResourceRequest,
-  ) => stream.Stream<
-    ComplianceByResource,
-    DescribeComplianceByResourceError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ComplianceByResource
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeComplianceByResourceRequest,
   output: DescribeComplianceByResourceResponse,
   errors: [InvalidNextTokenException, InvalidParameterValueException],
@@ -7655,27 +7503,7 @@ export const describeComplianceByResource: API.OperationMethod<
     items: "ComplianceByResources",
     pageSize: "Limit",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeComplianceByResourceRequest,
-  DescribeComplianceByResourceResponse,
-  DescribeComplianceByResourceError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeComplianceByResourceRequest,
-  ) => stream.Stream<
-    DescribeComplianceByResourceResponse,
-    DescribeComplianceByResourceError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeComplianceByResourceRequest,
-  ) => stream.Stream<
-    ComplianceByResource,
-    DescribeComplianceByResourceError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeConfigRuleEvaluationStatusError =
   | InvalidNextTokenException
@@ -7686,27 +7514,13 @@ export type DescribeConfigRuleEvaluationStatusError =
  * Returns status information for each of your Config managed rules. The status includes information such as the last time Config invoked the rule, the last time Config failed to invoke
  * the rule, and the related error for the last failure.
  */
-export const describeConfigRuleEvaluationStatus: API.OperationMethod<
+export const describeConfigRuleEvaluationStatus: API.PaginatedOperationMethod<
   DescribeConfigRuleEvaluationStatusRequest,
   DescribeConfigRuleEvaluationStatusResponse,
   DescribeConfigRuleEvaluationStatusError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeConfigRuleEvaluationStatusRequest,
-  ) => stream.Stream<
-    DescribeConfigRuleEvaluationStatusResponse,
-    DescribeConfigRuleEvaluationStatusError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeConfigRuleEvaluationStatusRequest,
-  ) => stream.Stream<
-    ConfigRuleEvaluationStatus,
-    DescribeConfigRuleEvaluationStatusError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ConfigRuleEvaluationStatus
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeConfigRuleEvaluationStatusRequest,
   output: DescribeConfigRuleEvaluationStatusResponse,
   errors: [
@@ -7723,27 +7537,7 @@ export const describeConfigRuleEvaluationStatus: API.OperationMethod<
     items: "ConfigRulesEvaluationStatus",
     pageSize: "Limit",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeConfigRuleEvaluationStatusRequest,
-  DescribeConfigRuleEvaluationStatusResponse,
-  DescribeConfigRuleEvaluationStatusError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeConfigRuleEvaluationStatusRequest,
-  ) => stream.Stream<
-    DescribeConfigRuleEvaluationStatusResponse,
-    DescribeConfigRuleEvaluationStatusError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeConfigRuleEvaluationStatusRequest,
-  ) => stream.Stream<
-    ConfigRuleEvaluationStatus,
-    DescribeConfigRuleEvaluationStatusError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeConfigRulesError =
   | InvalidNextTokenException
@@ -7753,27 +7547,13 @@ export type DescribeConfigRulesError =
 /**
  * Returns details about your Config rules.
  */
-export const describeConfigRules: API.OperationMethod<
+export const describeConfigRules: API.PaginatedOperationMethod<
   DescribeConfigRulesRequest,
   DescribeConfigRulesResponse,
   DescribeConfigRulesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeConfigRulesRequest,
-  ) => stream.Stream<
-    DescribeConfigRulesResponse,
-    DescribeConfigRulesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeConfigRulesRequest,
-  ) => stream.Stream<
-    ConfigRule,
-    DescribeConfigRulesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ConfigRule
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeConfigRulesRequest,
   output: DescribeConfigRulesResponse,
   errors: [
@@ -7789,27 +7569,7 @@ export const describeConfigRules: API.OperationMethod<
     outputToken: "NextToken",
     items: "ConfigRules",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeConfigRulesRequest,
-  DescribeConfigRulesResponse,
-  DescribeConfigRulesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeConfigRulesRequest,
-  ) => stream.Stream<
-    DescribeConfigRulesResponse,
-    DescribeConfigRulesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeConfigRulesRequest,
-  ) => stream.Stream<
-    ConfigRule,
-    DescribeConfigRulesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeConfigurationAggregatorsError =
   | InvalidLimitException
@@ -7823,27 +7583,13 @@ export type DescribeConfigurationAggregatorsError =
  * returns the details for all the configuration aggregators associated
  * with the account.
  */
-export const describeConfigurationAggregators: API.OperationMethod<
+export const describeConfigurationAggregators: API.PaginatedOperationMethod<
   DescribeConfigurationAggregatorsRequest,
   DescribeConfigurationAggregatorsResponse,
   DescribeConfigurationAggregatorsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeConfigurationAggregatorsRequest,
-  ) => stream.Stream<
-    DescribeConfigurationAggregatorsResponse,
-    DescribeConfigurationAggregatorsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeConfigurationAggregatorsRequest,
-  ) => stream.Stream<
-    ConfigurationAggregator,
-    DescribeConfigurationAggregatorsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ConfigurationAggregator
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeConfigurationAggregatorsRequest,
   output: DescribeConfigurationAggregatorsResponse,
   errors: [
@@ -7861,27 +7607,7 @@ export const describeConfigurationAggregators: API.OperationMethod<
     items: "ConfigurationAggregators",
     pageSize: "Limit",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeConfigurationAggregatorsRequest,
-  DescribeConfigurationAggregatorsResponse,
-  DescribeConfigurationAggregatorsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeConfigurationAggregatorsRequest,
-  ) => stream.Stream<
-    DescribeConfigurationAggregatorsResponse,
-    DescribeConfigurationAggregatorsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeConfigurationAggregatorsRequest,
-  ) => stream.Stream<
-    ConfigurationAggregator,
-    DescribeConfigurationAggregatorsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeConfigurationAggregatorSourcesStatusError =
   | InvalidLimitException
@@ -7893,27 +7619,13 @@ export type DescribeConfigurationAggregatorSourcesStatusError =
  * Returns status information for sources within an aggregator.
  * The status includes information about the last time Config verified authorization between the source account and an aggregator account. In case of a failure, the status contains the related error code or message.
  */
-export const describeConfigurationAggregatorSourcesStatus: API.OperationMethod<
+export const describeConfigurationAggregatorSourcesStatus: API.PaginatedOperationMethod<
   DescribeConfigurationAggregatorSourcesStatusRequest,
   DescribeConfigurationAggregatorSourcesStatusResponse,
   DescribeConfigurationAggregatorSourcesStatusError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeConfigurationAggregatorSourcesStatusRequest,
-  ) => stream.Stream<
-    DescribeConfigurationAggregatorSourcesStatusResponse,
-    DescribeConfigurationAggregatorSourcesStatusError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeConfigurationAggregatorSourcesStatusRequest,
-  ) => stream.Stream<
-    AggregatedSourceStatus,
-    DescribeConfigurationAggregatorSourcesStatusError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  AggregatedSourceStatus
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeConfigurationAggregatorSourcesStatusRequest,
   output: DescribeConfigurationAggregatorSourcesStatusResponse,
   errors: [
@@ -7931,27 +7643,7 @@ export const describeConfigurationAggregatorSourcesStatus: API.OperationMethod<
     items: "AggregatedSourceStatusList",
     pageSize: "Limit",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeConfigurationAggregatorSourcesStatusRequest,
-  DescribeConfigurationAggregatorSourcesStatusResponse,
-  DescribeConfigurationAggregatorSourcesStatusError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeConfigurationAggregatorSourcesStatusRequest,
-  ) => stream.Stream<
-    DescribeConfigurationAggregatorSourcesStatusResponse,
-    DescribeConfigurationAggregatorSourcesStatusError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeConfigurationAggregatorSourcesStatusRequest,
-  ) => stream.Stream<
-    AggregatedSourceStatus,
-    DescribeConfigurationAggregatorSourcesStatusError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeConfigurationRecordersError =
   | NoSuchConfigurationRecorderException
@@ -7969,7 +7661,7 @@ export const describeConfigurationRecorders: API.OperationMethod<
   DescribeConfigurationRecordersRequest,
   DescribeConfigurationRecordersResponse,
   DescribeConfigurationRecordersError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeConfigurationRecordersRequest,
   output: DescribeConfigurationRecordersResponse,
@@ -7998,7 +7690,7 @@ export const describeConfigurationRecorderStatus: API.OperationMethod<
   DescribeConfigurationRecorderStatusRequest,
   DescribeConfigurationRecorderStatusResponse,
   DescribeConfigurationRecorderStatusError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeConfigurationRecorderStatusRequest,
   output: DescribeConfigurationRecorderStatusResponse,
@@ -8020,27 +7712,13 @@ export type DescribeConformancePackComplianceError =
  *
  * You must provide exact rule names.
  */
-export const describeConformancePackCompliance: API.OperationMethod<
+export const describeConformancePackCompliance: API.PaginatedOperationMethod<
   DescribeConformancePackComplianceRequest,
   DescribeConformancePackComplianceResponse,
   DescribeConformancePackComplianceError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeConformancePackComplianceRequest,
-  ) => stream.Stream<
-    DescribeConformancePackComplianceResponse,
-    DescribeConformancePackComplianceError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeConformancePackComplianceRequest,
-  ) => stream.Stream<
-    ConformancePackRuleCompliance,
-    DescribeConformancePackComplianceError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ConformancePackRuleCompliance
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeConformancePackComplianceRequest,
   output: DescribeConformancePackComplianceResponse,
   errors: [
@@ -8059,27 +7737,7 @@ export const describeConformancePackCompliance: API.OperationMethod<
     items: "ConformancePackRuleComplianceList",
     pageSize: "Limit",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeConformancePackComplianceRequest,
-  DescribeConformancePackComplianceResponse,
-  DescribeConformancePackComplianceError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeConformancePackComplianceRequest,
-  ) => stream.Stream<
-    DescribeConformancePackComplianceResponse,
-    DescribeConformancePackComplianceError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeConformancePackComplianceRequest,
-  ) => stream.Stream<
-    ConformancePackRuleCompliance,
-    DescribeConformancePackComplianceError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeConformancePacksError =
   | InvalidLimitException
@@ -8090,27 +7748,13 @@ export type DescribeConformancePacksError =
 /**
  * Returns a list of one or more conformance packs.
  */
-export const describeConformancePacks: API.OperationMethod<
+export const describeConformancePacks: API.PaginatedOperationMethod<
   DescribeConformancePacksRequest,
   DescribeConformancePacksResponse,
   DescribeConformancePacksError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeConformancePacksRequest,
-  ) => stream.Stream<
-    DescribeConformancePacksResponse,
-    DescribeConformancePacksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeConformancePacksRequest,
-  ) => stream.Stream<
-    ConformancePackDetail,
-    DescribeConformancePacksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ConformancePackDetail
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeConformancePacksRequest,
   output: DescribeConformancePacksResponse,
   errors: [
@@ -8128,27 +7772,7 @@ export const describeConformancePacks: API.OperationMethod<
     items: "ConformancePackDetails",
     pageSize: "Limit",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeConformancePacksRequest,
-  DescribeConformancePacksResponse,
-  DescribeConformancePacksError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeConformancePacksRequest,
-  ) => stream.Stream<
-    DescribeConformancePacksResponse,
-    DescribeConformancePacksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeConformancePacksRequest,
-  ) => stream.Stream<
-    ConformancePackDetail,
-    DescribeConformancePacksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeConformancePackStatusError =
   | InvalidLimitException
@@ -8160,27 +7784,13 @@ export type DescribeConformancePackStatusError =
  *
  * If there are no conformance packs then you will see an empty result.
  */
-export const describeConformancePackStatus: API.OperationMethod<
+export const describeConformancePackStatus: API.PaginatedOperationMethod<
   DescribeConformancePackStatusRequest,
   DescribeConformancePackStatusResponse,
   DescribeConformancePackStatusError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeConformancePackStatusRequest,
-  ) => stream.Stream<
-    DescribeConformancePackStatusResponse,
-    DescribeConformancePackStatusError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeConformancePackStatusRequest,
-  ) => stream.Stream<
-    ConformancePackStatusDetail,
-    DescribeConformancePackStatusError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ConformancePackStatusDetail
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeConformancePackStatusRequest,
   output: DescribeConformancePackStatusResponse,
   errors: [
@@ -8197,27 +7807,7 @@ export const describeConformancePackStatus: API.OperationMethod<
     items: "ConformancePackStatusDetails",
     pageSize: "Limit",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeConformancePackStatusRequest,
-  DescribeConformancePackStatusResponse,
-  DescribeConformancePackStatusError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeConformancePackStatusRequest,
-  ) => stream.Stream<
-    DescribeConformancePackStatusResponse,
-    DescribeConformancePackStatusError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeConformancePackStatusRequest,
-  ) => stream.Stream<
-    ConformancePackStatusDetail,
-    DescribeConformancePackStatusError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeDeliveryChannelsError =
   | NoSuchDeliveryChannelException
@@ -8234,7 +7824,7 @@ export const describeDeliveryChannels: API.OperationMethod<
   DescribeDeliveryChannelsRequest,
   DescribeDeliveryChannelsResponse,
   DescribeDeliveryChannelsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeDeliveryChannelsRequest,
   output: DescribeDeliveryChannelsResponse,
@@ -8260,7 +7850,7 @@ export const describeDeliveryChannelStatus: API.OperationMethod<
   DescribeDeliveryChannelStatusRequest,
   DescribeDeliveryChannelStatusResponse,
   DescribeDeliveryChannelStatusError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeDeliveryChannelStatusRequest,
   output: DescribeDeliveryChannelStatusResponse,
@@ -8297,27 +7887,13 @@ export type DescribeOrganizationConfigRulesError =
  * the organization-related resource that were deployed from within the account calling
  * those APIs.
  */
-export const describeOrganizationConfigRules: API.OperationMethod<
+export const describeOrganizationConfigRules: API.PaginatedOperationMethod<
   DescribeOrganizationConfigRulesRequest,
   DescribeOrganizationConfigRulesResponse,
   DescribeOrganizationConfigRulesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeOrganizationConfigRulesRequest,
-  ) => stream.Stream<
-    DescribeOrganizationConfigRulesResponse,
-    DescribeOrganizationConfigRulesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeOrganizationConfigRulesRequest,
-  ) => stream.Stream<
-    OrganizationConfigRule,
-    DescribeOrganizationConfigRulesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  OrganizationConfigRule
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeOrganizationConfigRulesRequest,
   output: DescribeOrganizationConfigRulesResponse,
   errors: [
@@ -8335,27 +7911,7 @@ export const describeOrganizationConfigRules: API.OperationMethod<
     items: "OrganizationConfigRules",
     pageSize: "Limit",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeOrganizationConfigRulesRequest,
-  DescribeOrganizationConfigRulesResponse,
-  DescribeOrganizationConfigRulesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeOrganizationConfigRulesRequest,
-  ) => stream.Stream<
-    DescribeOrganizationConfigRulesResponse,
-    DescribeOrganizationConfigRulesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeOrganizationConfigRulesRequest,
-  ) => stream.Stream<
-    OrganizationConfigRule,
-    DescribeOrganizationConfigRulesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeOrganizationConfigRuleStatusesError =
   | InvalidLimitException
@@ -8373,27 +7929,13 @@ export type DescribeOrganizationConfigRuleStatusesError =
  * Limit and next token are not applicable if you specify organization Config rule names.
  * It is only applicable, when you request all the organization Config rules.
  */
-export const describeOrganizationConfigRuleStatuses: API.OperationMethod<
+export const describeOrganizationConfigRuleStatuses: API.PaginatedOperationMethod<
   DescribeOrganizationConfigRuleStatusesRequest,
   DescribeOrganizationConfigRuleStatusesResponse,
   DescribeOrganizationConfigRuleStatusesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeOrganizationConfigRuleStatusesRequest,
-  ) => stream.Stream<
-    DescribeOrganizationConfigRuleStatusesResponse,
-    DescribeOrganizationConfigRuleStatusesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeOrganizationConfigRuleStatusesRequest,
-  ) => stream.Stream<
-    OrganizationConfigRuleStatus,
-    DescribeOrganizationConfigRuleStatusesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  OrganizationConfigRuleStatus
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeOrganizationConfigRuleStatusesRequest,
   output: DescribeOrganizationConfigRuleStatusesResponse,
   errors: [
@@ -8411,27 +7953,7 @@ export const describeOrganizationConfigRuleStatuses: API.OperationMethod<
     items: "OrganizationConfigRuleStatuses",
     pageSize: "Limit",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeOrganizationConfigRuleStatusesRequest,
-  DescribeOrganizationConfigRuleStatusesResponse,
-  DescribeOrganizationConfigRuleStatusesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeOrganizationConfigRuleStatusesRequest,
-  ) => stream.Stream<
-    DescribeOrganizationConfigRuleStatusesResponse,
-    DescribeOrganizationConfigRuleStatusesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeOrganizationConfigRuleStatusesRequest,
-  ) => stream.Stream<
-    OrganizationConfigRuleStatus,
-    DescribeOrganizationConfigRuleStatusesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeOrganizationConformancePacksError =
   | InvalidLimitException
@@ -8460,27 +7982,13 @@ export type DescribeOrganizationConformancePacksError =
  * the organization-related resource that were deployed from within the account calling
  * those APIs.
  */
-export const describeOrganizationConformancePacks: API.OperationMethod<
+export const describeOrganizationConformancePacks: API.PaginatedOperationMethod<
   DescribeOrganizationConformancePacksRequest,
   DescribeOrganizationConformancePacksResponse,
   DescribeOrganizationConformancePacksError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeOrganizationConformancePacksRequest,
-  ) => stream.Stream<
-    DescribeOrganizationConformancePacksResponse,
-    DescribeOrganizationConformancePacksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeOrganizationConformancePacksRequest,
-  ) => stream.Stream<
-    OrganizationConformancePack,
-    DescribeOrganizationConformancePacksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  OrganizationConformancePack
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeOrganizationConformancePacksRequest,
   output: DescribeOrganizationConformancePacksResponse,
   errors: [
@@ -8498,27 +8006,7 @@ export const describeOrganizationConformancePacks: API.OperationMethod<
     items: "OrganizationConformancePacks",
     pageSize: "Limit",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeOrganizationConformancePacksRequest,
-  DescribeOrganizationConformancePacksResponse,
-  DescribeOrganizationConformancePacksError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeOrganizationConformancePacksRequest,
-  ) => stream.Stream<
-    DescribeOrganizationConformancePacksResponse,
-    DescribeOrganizationConformancePacksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeOrganizationConformancePacksRequest,
-  ) => stream.Stream<
-    OrganizationConformancePack,
-    DescribeOrganizationConformancePacksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeOrganizationConformancePackStatusesError =
   | InvalidLimitException
@@ -8536,27 +8024,13 @@ export type DescribeOrganizationConformancePackStatusesError =
  * Limit and next token are not applicable if you specify organization conformance pack names.
  * They are only applicable, when you request all the organization conformance packs.
  */
-export const describeOrganizationConformancePackStatuses: API.OperationMethod<
+export const describeOrganizationConformancePackStatuses: API.PaginatedOperationMethod<
   DescribeOrganizationConformancePackStatusesRequest,
   DescribeOrganizationConformancePackStatusesResponse,
   DescribeOrganizationConformancePackStatusesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeOrganizationConformancePackStatusesRequest,
-  ) => stream.Stream<
-    DescribeOrganizationConformancePackStatusesResponse,
-    DescribeOrganizationConformancePackStatusesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeOrganizationConformancePackStatusesRequest,
-  ) => stream.Stream<
-    OrganizationConformancePackStatus,
-    DescribeOrganizationConformancePackStatusesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  OrganizationConformancePackStatus
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeOrganizationConformancePackStatusesRequest,
   output: DescribeOrganizationConformancePackStatusesResponse,
   errors: [
@@ -8574,27 +8048,7 @@ export const describeOrganizationConformancePackStatuses: API.OperationMethod<
     items: "OrganizationConformancePackStatuses",
     pageSize: "Limit",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeOrganizationConformancePackStatusesRequest,
-  DescribeOrganizationConformancePackStatusesResponse,
-  DescribeOrganizationConformancePackStatusesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeOrganizationConformancePackStatusesRequest,
-  ) => stream.Stream<
-    DescribeOrganizationConformancePackStatusesResponse,
-    DescribeOrganizationConformancePackStatusesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeOrganizationConformancePackStatusesRequest,
-  ) => stream.Stream<
-    OrganizationConformancePackStatus,
-    DescribeOrganizationConformancePackStatusesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribePendingAggregationRequestsError =
   | InvalidLimitException
@@ -8604,27 +8058,13 @@ export type DescribePendingAggregationRequestsError =
 /**
  * Returns a list of all pending aggregation requests.
  */
-export const describePendingAggregationRequests: API.OperationMethod<
+export const describePendingAggregationRequests: API.PaginatedOperationMethod<
   DescribePendingAggregationRequestsRequest,
   DescribePendingAggregationRequestsResponse,
   DescribePendingAggregationRequestsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribePendingAggregationRequestsRequest,
-  ) => stream.Stream<
-    DescribePendingAggregationRequestsResponse,
-    DescribePendingAggregationRequestsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribePendingAggregationRequestsRequest,
-  ) => stream.Stream<
-    PendingAggregationRequest,
-    DescribePendingAggregationRequestsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  PendingAggregationRequest
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribePendingAggregationRequestsRequest,
   output: DescribePendingAggregationRequestsResponse,
   errors: [
@@ -8641,27 +8081,7 @@ export const describePendingAggregationRequests: API.OperationMethod<
     items: "PendingAggregationRequests",
     pageSize: "Limit",
   } as const,
-})) as any as API.OperationMethod<
-  DescribePendingAggregationRequestsRequest,
-  DescribePendingAggregationRequestsResponse,
-  DescribePendingAggregationRequestsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribePendingAggregationRequestsRequest,
-  ) => stream.Stream<
-    DescribePendingAggregationRequestsResponse,
-    DescribePendingAggregationRequestsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribePendingAggregationRequestsRequest,
-  ) => stream.Stream<
-    PendingAggregationRequest,
-    DescribePendingAggregationRequestsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeRemediationConfigurationsError = CommonErrors;
 /**
@@ -8671,7 +8091,7 @@ export const describeRemediationConfigurations: API.OperationMethod<
   DescribeRemediationConfigurationsRequest,
   DescribeRemediationConfigurationsResponse,
   DescribeRemediationConfigurationsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeRemediationConfigurationsRequest,
   output: DescribeRemediationConfigurationsResponse,
@@ -8696,27 +8116,13 @@ export type DescribeRemediationExceptionsError =
  *
  * Limit and next token are not applicable if you request resources in batch. It is only applicable, when you request all resources.
  */
-export const describeRemediationExceptions: API.OperationMethod<
+export const describeRemediationExceptions: API.PaginatedOperationMethod<
   DescribeRemediationExceptionsRequest,
   DescribeRemediationExceptionsResponse,
   DescribeRemediationExceptionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeRemediationExceptionsRequest,
-  ) => stream.Stream<
-    DescribeRemediationExceptionsResponse,
-    DescribeRemediationExceptionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeRemediationExceptionsRequest,
-  ) => stream.Stream<
-    unknown,
-    DescribeRemediationExceptionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeRemediationExceptionsRequest,
   output: DescribeRemediationExceptionsResponse,
   errors: [InvalidNextTokenException, InvalidParameterValueException],
@@ -8728,27 +8134,7 @@ export const describeRemediationExceptions: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "Limit",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeRemediationExceptionsRequest,
-  DescribeRemediationExceptionsResponse,
-  DescribeRemediationExceptionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeRemediationExceptionsRequest,
-  ) => stream.Stream<
-    DescribeRemediationExceptionsResponse,
-    DescribeRemediationExceptionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeRemediationExceptionsRequest,
-  ) => stream.Stream<
-    unknown,
-    DescribeRemediationExceptionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeRemediationExecutionStatusError =
   | InvalidNextTokenException
@@ -8759,27 +8145,13 @@ export type DescribeRemediationExecutionStatusError =
  * Provides a detailed view of a Remediation Execution for a set of resources including state, timestamps for when steps for the remediation execution occur, and any error messages for steps that have failed.
  * When you specify the limit and the next token, you receive a paginated response.
  */
-export const describeRemediationExecutionStatus: API.OperationMethod<
+export const describeRemediationExecutionStatus: API.PaginatedOperationMethod<
   DescribeRemediationExecutionStatusRequest,
   DescribeRemediationExecutionStatusResponse,
   DescribeRemediationExecutionStatusError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeRemediationExecutionStatusRequest,
-  ) => stream.Stream<
-    DescribeRemediationExecutionStatusResponse,
-    DescribeRemediationExecutionStatusError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeRemediationExecutionStatusRequest,
-  ) => stream.Stream<
-    RemediationExecutionStatus,
-    DescribeRemediationExecutionStatusError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  RemediationExecutionStatus
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeRemediationExecutionStatusRequest,
   output: DescribeRemediationExecutionStatusResponse,
   errors: [
@@ -8796,27 +8168,7 @@ export const describeRemediationExecutionStatus: API.OperationMethod<
     items: "RemediationExecutionStatuses",
     pageSize: "Limit",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeRemediationExecutionStatusRequest,
-  DescribeRemediationExecutionStatusResponse,
-  DescribeRemediationExecutionStatusError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeRemediationExecutionStatusRequest,
-  ) => stream.Stream<
-    DescribeRemediationExecutionStatusResponse,
-    DescribeRemediationExecutionStatusError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeRemediationExecutionStatusRequest,
-  ) => stream.Stream<
-    RemediationExecutionStatus,
-    DescribeRemediationExecutionStatusError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeRetentionConfigurationsError =
   | InvalidNextTokenException
@@ -8832,27 +8184,13 @@ export type DescribeRetentionConfigurationsError =
  * Currently, Config supports only one retention
  * configuration per region in your account.
  */
-export const describeRetentionConfigurations: API.OperationMethod<
+export const describeRetentionConfigurations: API.PaginatedOperationMethod<
   DescribeRetentionConfigurationsRequest,
   DescribeRetentionConfigurationsResponse,
   DescribeRetentionConfigurationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeRetentionConfigurationsRequest,
-  ) => stream.Stream<
-    DescribeRetentionConfigurationsResponse,
-    DescribeRetentionConfigurationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeRetentionConfigurationsRequest,
-  ) => stream.Stream<
-    RetentionConfiguration,
-    DescribeRetentionConfigurationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  RetentionConfiguration
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeRetentionConfigurationsRequest,
   output: DescribeRetentionConfigurationsResponse,
   errors: [
@@ -8868,27 +8206,7 @@ export const describeRetentionConfigurations: API.OperationMethod<
     outputToken: "NextToken",
     items: "RetentionConfigurations",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeRetentionConfigurationsRequest,
-  DescribeRetentionConfigurationsResponse,
-  DescribeRetentionConfigurationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeRetentionConfigurationsRequest,
-  ) => stream.Stream<
-    DescribeRetentionConfigurationsResponse,
-    DescribeRetentionConfigurationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeRetentionConfigurationsRequest,
-  ) => stream.Stream<
-    RetentionConfiguration,
-    DescribeRetentionConfigurationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DisassociateResourceTypesError =
   | ConflictException
@@ -8904,7 +8222,7 @@ export const disassociateResourceTypes: API.OperationMethod<
   DisassociateResourceTypesRequest,
   DisassociateResourceTypesResponse,
   DisassociateResourceTypesError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DisassociateResourceTypesRequest,
   output: DisassociateResourceTypesResponse,
@@ -8934,27 +8252,13 @@ export type GetAggregateComplianceDetailsByConfigRuleError =
  * have a `nextToken`, the results are displayed on the next
  * page.
  */
-export const getAggregateComplianceDetailsByConfigRule: API.OperationMethod<
+export const getAggregateComplianceDetailsByConfigRule: API.PaginatedOperationMethod<
   GetAggregateComplianceDetailsByConfigRuleRequest,
   GetAggregateComplianceDetailsByConfigRuleResponse,
   GetAggregateComplianceDetailsByConfigRuleError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetAggregateComplianceDetailsByConfigRuleRequest,
-  ) => stream.Stream<
-    GetAggregateComplianceDetailsByConfigRuleResponse,
-    GetAggregateComplianceDetailsByConfigRuleError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetAggregateComplianceDetailsByConfigRuleRequest,
-  ) => stream.Stream<
-    AggregateEvaluationResult,
-    GetAggregateComplianceDetailsByConfigRuleError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  AggregateEvaluationResult
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetAggregateComplianceDetailsByConfigRuleRequest,
   output: GetAggregateComplianceDetailsByConfigRuleResponse,
   errors: [
@@ -8972,27 +8276,7 @@ export const getAggregateComplianceDetailsByConfigRule: API.OperationMethod<
     items: "AggregateEvaluationResults",
     pageSize: "Limit",
   } as const,
-})) as any as API.OperationMethod<
-  GetAggregateComplianceDetailsByConfigRuleRequest,
-  GetAggregateComplianceDetailsByConfigRuleResponse,
-  GetAggregateComplianceDetailsByConfigRuleError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetAggregateComplianceDetailsByConfigRuleRequest,
-  ) => stream.Stream<
-    GetAggregateComplianceDetailsByConfigRuleResponse,
-    GetAggregateComplianceDetailsByConfigRuleError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetAggregateComplianceDetailsByConfigRuleRequest,
-  ) => stream.Stream<
-    AggregateEvaluationResult,
-    GetAggregateComplianceDetailsByConfigRuleError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetAggregateConfigRuleComplianceSummaryError =
   | InvalidLimitException
@@ -9008,27 +8292,13 @@ export type GetAggregateConfigRuleComplianceSummaryError =
  * have a nextToken, the results are displayed on the next
  * page.
  */
-export const getAggregateConfigRuleComplianceSummary: API.OperationMethod<
+export const getAggregateConfigRuleComplianceSummary: API.PaginatedOperationMethod<
   GetAggregateConfigRuleComplianceSummaryRequest,
   GetAggregateConfigRuleComplianceSummaryResponse,
   GetAggregateConfigRuleComplianceSummaryError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetAggregateConfigRuleComplianceSummaryRequest,
-  ) => stream.Stream<
-    GetAggregateConfigRuleComplianceSummaryResponse,
-    GetAggregateConfigRuleComplianceSummaryError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetAggregateConfigRuleComplianceSummaryRequest,
-  ) => stream.Stream<
-    unknown,
-    GetAggregateConfigRuleComplianceSummaryError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetAggregateConfigRuleComplianceSummaryRequest,
   output: GetAggregateConfigRuleComplianceSummaryResponse,
   errors: [
@@ -9045,27 +8315,7 @@ export const getAggregateConfigRuleComplianceSummary: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "Limit",
   } as const,
-})) as any as API.OperationMethod<
-  GetAggregateConfigRuleComplianceSummaryRequest,
-  GetAggregateConfigRuleComplianceSummaryResponse,
-  GetAggregateConfigRuleComplianceSummaryError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetAggregateConfigRuleComplianceSummaryRequest,
-  ) => stream.Stream<
-    GetAggregateConfigRuleComplianceSummaryResponse,
-    GetAggregateConfigRuleComplianceSummaryError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetAggregateConfigRuleComplianceSummaryRequest,
-  ) => stream.Stream<
-    unknown,
-    GetAggregateConfigRuleComplianceSummaryError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetAggregateConformancePackComplianceSummaryError =
   | InvalidLimitException
@@ -9078,27 +8328,13 @@ export type GetAggregateConformancePackComplianceSummaryError =
  *
  * The results can return an empty result page, but if you have a nextToken, the results are displayed on the next page.
  */
-export const getAggregateConformancePackComplianceSummary: API.OperationMethod<
+export const getAggregateConformancePackComplianceSummary: API.PaginatedOperationMethod<
   GetAggregateConformancePackComplianceSummaryRequest,
   GetAggregateConformancePackComplianceSummaryResponse,
   GetAggregateConformancePackComplianceSummaryError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetAggregateConformancePackComplianceSummaryRequest,
-  ) => stream.Stream<
-    GetAggregateConformancePackComplianceSummaryResponse,
-    GetAggregateConformancePackComplianceSummaryError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetAggregateConformancePackComplianceSummaryRequest,
-  ) => stream.Stream<
-    unknown,
-    GetAggregateConformancePackComplianceSummaryError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetAggregateConformancePackComplianceSummaryRequest,
   output: GetAggregateConformancePackComplianceSummaryResponse,
   errors: [
@@ -9115,27 +8351,7 @@ export const getAggregateConformancePackComplianceSummary: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "Limit",
   } as const,
-})) as any as API.OperationMethod<
-  GetAggregateConformancePackComplianceSummaryRequest,
-  GetAggregateConformancePackComplianceSummaryResponse,
-  GetAggregateConformancePackComplianceSummaryError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetAggregateConformancePackComplianceSummaryRequest,
-  ) => stream.Stream<
-    GetAggregateConformancePackComplianceSummaryResponse,
-    GetAggregateConformancePackComplianceSummaryError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetAggregateConformancePackComplianceSummaryRequest,
-  ) => stream.Stream<
-    unknown,
-    GetAggregateConformancePackComplianceSummaryError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetAggregateDiscoveredResourceCountsError =
   | InvalidLimitException
@@ -9149,27 +8365,13 @@ export type GetAggregateDiscoveredResourceCountsError =
  * For example, if the input contains accountID 12345678910 and region us-east-1 in filters, the API returns the count of resources in account ID 12345678910 and region us-east-1.
  * If the input contains ACCOUNT_ID as a GroupByKey, the API returns resource counts for all source accounts that are present in your aggregator.
  */
-export const getAggregateDiscoveredResourceCounts: API.OperationMethod<
+export const getAggregateDiscoveredResourceCounts: API.PaginatedOperationMethod<
   GetAggregateDiscoveredResourceCountsRequest,
   GetAggregateDiscoveredResourceCountsResponse,
   GetAggregateDiscoveredResourceCountsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetAggregateDiscoveredResourceCountsRequest,
-  ) => stream.Stream<
-    GetAggregateDiscoveredResourceCountsResponse,
-    GetAggregateDiscoveredResourceCountsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetAggregateDiscoveredResourceCountsRequest,
-  ) => stream.Stream<
-    unknown,
-    GetAggregateDiscoveredResourceCountsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetAggregateDiscoveredResourceCountsRequest,
   output: GetAggregateDiscoveredResourceCountsResponse,
   errors: [
@@ -9186,27 +8388,7 @@ export const getAggregateDiscoveredResourceCounts: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "Limit",
   } as const,
-})) as any as API.OperationMethod<
-  GetAggregateDiscoveredResourceCountsRequest,
-  GetAggregateDiscoveredResourceCountsResponse,
-  GetAggregateDiscoveredResourceCountsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetAggregateDiscoveredResourceCountsRequest,
-  ) => stream.Stream<
-    GetAggregateDiscoveredResourceCountsResponse,
-    GetAggregateDiscoveredResourceCountsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetAggregateDiscoveredResourceCountsRequest,
-  ) => stream.Stream<
-    unknown,
-    GetAggregateDiscoveredResourceCountsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetAggregateResourceConfigError =
   | NoSuchConfigurationAggregatorException
@@ -9223,7 +8405,7 @@ export const getAggregateResourceConfig: API.OperationMethod<
   GetAggregateResourceConfigRequest,
   GetAggregateResourceConfigResponse,
   GetAggregateResourceConfigError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetAggregateResourceConfigRequest,
   output: GetAggregateResourceConfigResponse,
@@ -9249,27 +8431,13 @@ export type GetComplianceDetailsByConfigRuleError =
  * rule, when each resource was last evaluated, and whether each
  * resource complies with the rule.
  */
-export const getComplianceDetailsByConfigRule: API.OperationMethod<
+export const getComplianceDetailsByConfigRule: API.PaginatedOperationMethod<
   GetComplianceDetailsByConfigRuleRequest,
   GetComplianceDetailsByConfigRuleResponse,
   GetComplianceDetailsByConfigRuleError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetComplianceDetailsByConfigRuleRequest,
-  ) => stream.Stream<
-    GetComplianceDetailsByConfigRuleResponse,
-    GetComplianceDetailsByConfigRuleError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetComplianceDetailsByConfigRuleRequest,
-  ) => stream.Stream<
-    EvaluationResult,
-    GetComplianceDetailsByConfigRuleError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  EvaluationResult
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetComplianceDetailsByConfigRuleRequest,
   output: GetComplianceDetailsByConfigRuleResponse,
   errors: [
@@ -9286,27 +8454,7 @@ export const getComplianceDetailsByConfigRule: API.OperationMethod<
     items: "EvaluationResults",
     pageSize: "Limit",
   } as const,
-})) as any as API.OperationMethod<
-  GetComplianceDetailsByConfigRuleRequest,
-  GetComplianceDetailsByConfigRuleResponse,
-  GetComplianceDetailsByConfigRuleError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetComplianceDetailsByConfigRuleRequest,
-  ) => stream.Stream<
-    GetComplianceDetailsByConfigRuleResponse,
-    GetComplianceDetailsByConfigRuleError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetComplianceDetailsByConfigRuleRequest,
-  ) => stream.Stream<
-    EvaluationResult,
-    GetComplianceDetailsByConfigRuleError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetComplianceDetailsByResourceError =
   | InvalidParameterValueException
@@ -9317,27 +8465,13 @@ export type GetComplianceDetailsByResourceError =
  * the resource, when each rule was last invoked, and whether the resource
  * complies with each rule.
  */
-export const getComplianceDetailsByResource: API.OperationMethod<
+export const getComplianceDetailsByResource: API.PaginatedOperationMethod<
   GetComplianceDetailsByResourceRequest,
   GetComplianceDetailsByResourceResponse,
   GetComplianceDetailsByResourceError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetComplianceDetailsByResourceRequest,
-  ) => stream.Stream<
-    GetComplianceDetailsByResourceResponse,
-    GetComplianceDetailsByResourceError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetComplianceDetailsByResourceRequest,
-  ) => stream.Stream<
-    EvaluationResult,
-    GetComplianceDetailsByResourceError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  EvaluationResult
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetComplianceDetailsByResourceRequest,
   output: GetComplianceDetailsByResourceResponse,
   errors: [InvalidParameterValueException],
@@ -9349,27 +8483,7 @@ export const getComplianceDetailsByResource: API.OperationMethod<
     outputToken: "NextToken",
     items: "EvaluationResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetComplianceDetailsByResourceRequest,
-  GetComplianceDetailsByResourceResponse,
-  GetComplianceDetailsByResourceError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetComplianceDetailsByResourceRequest,
-  ) => stream.Stream<
-    GetComplianceDetailsByResourceResponse,
-    GetComplianceDetailsByResourceError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetComplianceDetailsByResourceRequest,
-  ) => stream.Stream<
-    EvaluationResult,
-    GetComplianceDetailsByResourceError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetComplianceSummaryByConfigRuleError = CommonErrors;
 /**
@@ -9380,7 +8494,7 @@ export const getComplianceSummaryByConfigRule: API.OperationMethod<
   GetComplianceSummaryByConfigRuleRequest,
   GetComplianceSummaryByConfigRuleResponse,
   GetComplianceSummaryByConfigRuleError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetComplianceSummaryByConfigRuleRequest,
   output: GetComplianceSummaryByConfigRuleResponse,
@@ -9403,7 +8517,7 @@ export const getComplianceSummaryByResourceType: API.OperationMethod<
   GetComplianceSummaryByResourceTypeRequest,
   GetComplianceSummaryByResourceTypeResponse,
   GetComplianceSummaryByResourceTypeError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetComplianceSummaryByResourceTypeRequest,
   output: GetComplianceSummaryByResourceTypeResponse,
@@ -9423,27 +8537,13 @@ export type GetConformancePackComplianceDetailsError =
 /**
  * Returns compliance details of a conformance pack for all Amazon Web Services resources that are monitered by conformance pack.
  */
-export const getConformancePackComplianceDetails: API.OperationMethod<
+export const getConformancePackComplianceDetails: API.PaginatedOperationMethod<
   GetConformancePackComplianceDetailsRequest,
   GetConformancePackComplianceDetailsResponse,
   GetConformancePackComplianceDetailsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetConformancePackComplianceDetailsRequest,
-  ) => stream.Stream<
-    GetConformancePackComplianceDetailsResponse,
-    GetConformancePackComplianceDetailsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetConformancePackComplianceDetailsRequest,
-  ) => stream.Stream<
-    unknown,
-    GetConformancePackComplianceDetailsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetConformancePackComplianceDetailsRequest,
   output: GetConformancePackComplianceDetailsResponse,
   errors: [
@@ -9461,27 +8561,7 @@ export const getConformancePackComplianceDetails: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "Limit",
   } as const,
-})) as any as API.OperationMethod<
-  GetConformancePackComplianceDetailsRequest,
-  GetConformancePackComplianceDetailsResponse,
-  GetConformancePackComplianceDetailsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetConformancePackComplianceDetailsRequest,
-  ) => stream.Stream<
-    GetConformancePackComplianceDetailsResponse,
-    GetConformancePackComplianceDetailsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetConformancePackComplianceDetailsRequest,
-  ) => stream.Stream<
-    unknown,
-    GetConformancePackComplianceDetailsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetConformancePackComplianceSummaryError =
   | InvalidLimitException
@@ -9491,27 +8571,13 @@ export type GetConformancePackComplianceSummaryError =
 /**
  * Returns compliance details for the conformance pack based on the cumulative compliance results of all the rules in that conformance pack.
  */
-export const getConformancePackComplianceSummary: API.OperationMethod<
+export const getConformancePackComplianceSummary: API.PaginatedOperationMethod<
   GetConformancePackComplianceSummaryRequest,
   GetConformancePackComplianceSummaryResponse,
   GetConformancePackComplianceSummaryError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetConformancePackComplianceSummaryRequest,
-  ) => stream.Stream<
-    GetConformancePackComplianceSummaryResponse,
-    GetConformancePackComplianceSummaryError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetConformancePackComplianceSummaryRequest,
-  ) => stream.Stream<
-    ConformancePackComplianceSummary,
-    GetConformancePackComplianceSummaryError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ConformancePackComplianceSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetConformancePackComplianceSummaryRequest,
   output: GetConformancePackComplianceSummaryResponse,
   errors: [
@@ -9528,27 +8594,7 @@ export const getConformancePackComplianceSummary: API.OperationMethod<
     items: "ConformancePackComplianceSummaryList",
     pageSize: "Limit",
   } as const,
-})) as any as API.OperationMethod<
-  GetConformancePackComplianceSummaryRequest,
-  GetConformancePackComplianceSummaryResponse,
-  GetConformancePackComplianceSummaryError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetConformancePackComplianceSummaryRequest,
-  ) => stream.Stream<
-    GetConformancePackComplianceSummaryResponse,
-    GetConformancePackComplianceSummaryError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetConformancePackComplianceSummaryRequest,
-  ) => stream.Stream<
-    ConformancePackComplianceSummary,
-    GetConformancePackComplianceSummaryError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetCustomRulePolicyError = NoSuchConfigRuleException | CommonErrors;
 /**
@@ -9558,7 +8604,7 @@ export const getCustomRulePolicy: API.OperationMethod<
   GetCustomRulePolicyRequest,
   GetCustomRulePolicyResponse,
   GetCustomRulePolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetCustomRulePolicyRequest,
   output: GetCustomRulePolicyResponse,
@@ -9618,27 +8664,13 @@ export type GetDiscoveredResourceCountsError =
  * count your resources. Wait a few minutes and then retry the
  * GetDiscoveredResourceCounts action.
  */
-export const getDiscoveredResourceCounts: API.OperationMethod<
+export const getDiscoveredResourceCounts: API.PaginatedOperationMethod<
   GetDiscoveredResourceCountsRequest,
   GetDiscoveredResourceCountsResponse,
   GetDiscoveredResourceCountsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetDiscoveredResourceCountsRequest,
-  ) => stream.Stream<
-    GetDiscoveredResourceCountsResponse,
-    GetDiscoveredResourceCountsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetDiscoveredResourceCountsRequest,
-  ) => stream.Stream<
-    unknown,
-    GetDiscoveredResourceCountsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetDiscoveredResourceCountsRequest,
   output: GetDiscoveredResourceCountsResponse,
   errors: [
@@ -9654,27 +8686,7 @@ export const getDiscoveredResourceCounts: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "limit",
   } as const,
-})) as any as API.OperationMethod<
-  GetDiscoveredResourceCountsRequest,
-  GetDiscoveredResourceCountsResponse,
-  GetDiscoveredResourceCountsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetDiscoveredResourceCountsRequest,
-  ) => stream.Stream<
-    GetDiscoveredResourceCountsResponse,
-    GetDiscoveredResourceCountsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetDiscoveredResourceCountsRequest,
-  ) => stream.Stream<
-    unknown,
-    GetDiscoveredResourceCountsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetOrganizationConfigRuleDetailedStatusError =
   | InvalidLimitException
@@ -9685,27 +8697,13 @@ export type GetOrganizationConfigRuleDetailedStatusError =
 /**
  * Returns detailed status for each member account within an organization for a given organization Config rule.
  */
-export const getOrganizationConfigRuleDetailedStatus: API.OperationMethod<
+export const getOrganizationConfigRuleDetailedStatus: API.PaginatedOperationMethod<
   GetOrganizationConfigRuleDetailedStatusRequest,
   GetOrganizationConfigRuleDetailedStatusResponse,
   GetOrganizationConfigRuleDetailedStatusError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetOrganizationConfigRuleDetailedStatusRequest,
-  ) => stream.Stream<
-    GetOrganizationConfigRuleDetailedStatusResponse,
-    GetOrganizationConfigRuleDetailedStatusError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetOrganizationConfigRuleDetailedStatusRequest,
-  ) => stream.Stream<
-    MemberAccountStatus,
-    GetOrganizationConfigRuleDetailedStatusError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  MemberAccountStatus
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetOrganizationConfigRuleDetailedStatusRequest,
   output: GetOrganizationConfigRuleDetailedStatusResponse,
   errors: [
@@ -9723,27 +8721,7 @@ export const getOrganizationConfigRuleDetailedStatus: API.OperationMethod<
     items: "OrganizationConfigRuleDetailedStatus",
     pageSize: "Limit",
   } as const,
-})) as any as API.OperationMethod<
-  GetOrganizationConfigRuleDetailedStatusRequest,
-  GetOrganizationConfigRuleDetailedStatusResponse,
-  GetOrganizationConfigRuleDetailedStatusError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetOrganizationConfigRuleDetailedStatusRequest,
-  ) => stream.Stream<
-    GetOrganizationConfigRuleDetailedStatusResponse,
-    GetOrganizationConfigRuleDetailedStatusError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetOrganizationConfigRuleDetailedStatusRequest,
-  ) => stream.Stream<
-    MemberAccountStatus,
-    GetOrganizationConfigRuleDetailedStatusError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetOrganizationConformancePackDetailedStatusError =
   | InvalidLimitException
@@ -9754,27 +8732,13 @@ export type GetOrganizationConformancePackDetailedStatusError =
 /**
  * Returns detailed status for each member account within an organization for a given organization conformance pack.
  */
-export const getOrganizationConformancePackDetailedStatus: API.OperationMethod<
+export const getOrganizationConformancePackDetailedStatus: API.PaginatedOperationMethod<
   GetOrganizationConformancePackDetailedStatusRequest,
   GetOrganizationConformancePackDetailedStatusResponse,
   GetOrganizationConformancePackDetailedStatusError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetOrganizationConformancePackDetailedStatusRequest,
-  ) => stream.Stream<
-    GetOrganizationConformancePackDetailedStatusResponse,
-    GetOrganizationConformancePackDetailedStatusError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetOrganizationConformancePackDetailedStatusRequest,
-  ) => stream.Stream<
-    OrganizationConformancePackDetailedStatus,
-    GetOrganizationConformancePackDetailedStatusError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  OrganizationConformancePackDetailedStatus
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetOrganizationConformancePackDetailedStatusRequest,
   output: GetOrganizationConformancePackDetailedStatusResponse,
   errors: [
@@ -9792,27 +8756,7 @@ export const getOrganizationConformancePackDetailedStatus: API.OperationMethod<
     items: "OrganizationConformancePackDetailedStatuses",
     pageSize: "Limit",
   } as const,
-})) as any as API.OperationMethod<
-  GetOrganizationConformancePackDetailedStatusRequest,
-  GetOrganizationConformancePackDetailedStatusResponse,
-  GetOrganizationConformancePackDetailedStatusError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetOrganizationConformancePackDetailedStatusRequest,
-  ) => stream.Stream<
-    GetOrganizationConformancePackDetailedStatusResponse,
-    GetOrganizationConformancePackDetailedStatusError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetOrganizationConformancePackDetailedStatusRequest,
-  ) => stream.Stream<
-    OrganizationConformancePackDetailedStatus,
-    GetOrganizationConformancePackDetailedStatusError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetOrganizationCustomRulePolicyError =
   | NoSuchOrganizationConfigRuleException
@@ -9825,7 +8769,7 @@ export const getOrganizationCustomRulePolicy: API.OperationMethod<
   GetOrganizationCustomRulePolicyRequest,
   GetOrganizationCustomRulePolicyResponse,
   GetOrganizationCustomRulePolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetOrganizationCustomRulePolicyRequest,
   output: GetOrganizationCustomRulePolicyResponse,
@@ -9877,27 +8821,13 @@ export type GetResourceConfigHistoryError =
  * you can make another call, using the
  * `nextToken`.
  */
-export const getResourceConfigHistory: API.OperationMethod<
+export const getResourceConfigHistory: API.PaginatedOperationMethod<
   GetResourceConfigHistoryRequest,
   GetResourceConfigHistoryResponse,
   GetResourceConfigHistoryError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetResourceConfigHistoryRequest,
-  ) => stream.Stream<
-    GetResourceConfigHistoryResponse,
-    GetResourceConfigHistoryError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetResourceConfigHistoryRequest,
-  ) => stream.Stream<
-    ConfigurationItem,
-    GetResourceConfigHistoryError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ConfigurationItem
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetResourceConfigHistoryRequest,
   output: GetResourceConfigHistoryResponse,
   errors: [
@@ -9917,27 +8847,7 @@ export const getResourceConfigHistory: API.OperationMethod<
     items: "configurationItems",
     pageSize: "limit",
   } as const,
-})) as any as API.OperationMethod<
-  GetResourceConfigHistoryRequest,
-  GetResourceConfigHistoryResponse,
-  GetResourceConfigHistoryError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetResourceConfigHistoryRequest,
-  ) => stream.Stream<
-    GetResourceConfigHistoryResponse,
-    GetResourceConfigHistoryError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetResourceConfigHistoryRequest,
-  ) => stream.Stream<
-    ConfigurationItem,
-    GetResourceConfigHistoryError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetResourceEvaluationSummaryError =
   | ResourceNotFoundException
@@ -9954,7 +8864,7 @@ export const getResourceEvaluationSummary: API.OperationMethod<
   GetResourceEvaluationSummaryRequest,
   GetResourceEvaluationSummaryResponse,
   GetResourceEvaluationSummaryError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetResourceEvaluationSummaryRequest,
   output: GetResourceEvaluationSummaryResponse,
@@ -9975,7 +8885,7 @@ export const getStoredQuery: API.OperationMethod<
   GetStoredQueryRequest,
   GetStoredQueryResponse,
   GetStoredQueryError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetStoredQueryRequest,
   output: GetStoredQueryResponse,
@@ -9998,27 +8908,13 @@ export type ListAggregateDiscoveredResourcesError =
  *
  * For example, if the input consists of accountID 12345678910 and the region is us-east-1 for resource type `AWS::EC2::Instance` then the API returns all the EC2 instance identifiers of accountID 12345678910 and region us-east-1.
  */
-export const listAggregateDiscoveredResources: API.OperationMethod<
+export const listAggregateDiscoveredResources: API.PaginatedOperationMethod<
   ListAggregateDiscoveredResourcesRequest,
   ListAggregateDiscoveredResourcesResponse,
   ListAggregateDiscoveredResourcesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAggregateDiscoveredResourcesRequest,
-  ) => stream.Stream<
-    ListAggregateDiscoveredResourcesResponse,
-    ListAggregateDiscoveredResourcesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAggregateDiscoveredResourcesRequest,
-  ) => stream.Stream<
-    AggregateResourceIdentifier,
-    ListAggregateDiscoveredResourcesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  AggregateResourceIdentifier
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListAggregateDiscoveredResourcesRequest,
   output: ListAggregateDiscoveredResourcesResponse,
   errors: [
@@ -10036,27 +8932,7 @@ export const listAggregateDiscoveredResources: API.OperationMethod<
     items: "ResourceIdentifiers",
     pageSize: "Limit",
   } as const,
-})) as any as API.OperationMethod<
-  ListAggregateDiscoveredResourcesRequest,
-  ListAggregateDiscoveredResourcesResponse,
-  ListAggregateDiscoveredResourcesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAggregateDiscoveredResourcesRequest,
-  ) => stream.Stream<
-    ListAggregateDiscoveredResourcesResponse,
-    ListAggregateDiscoveredResourcesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAggregateDiscoveredResourcesRequest,
-  ) => stream.Stream<
-    AggregateResourceIdentifier,
-    ListAggregateDiscoveredResourcesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListConfigurationRecordersError =
   | ValidationException
@@ -10064,27 +8940,13 @@ export type ListConfigurationRecordersError =
 /**
  * Returns a list of configuration recorders depending on the filters you specify.
  */
-export const listConfigurationRecorders: API.OperationMethod<
+export const listConfigurationRecorders: API.PaginatedOperationMethod<
   ListConfigurationRecordersRequest,
   ListConfigurationRecordersResponse,
   ListConfigurationRecordersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListConfigurationRecordersRequest,
-  ) => stream.Stream<
-    ListConfigurationRecordersResponse,
-    ListConfigurationRecordersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListConfigurationRecordersRequest,
-  ) => stream.Stream<
-    ConfigurationRecorderSummary,
-    ListConfigurationRecordersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ConfigurationRecorderSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListConfigurationRecordersRequest,
   output: ListConfigurationRecordersResponse,
   errors: [ValidationException],
@@ -10097,27 +8959,7 @@ export const listConfigurationRecorders: API.OperationMethod<
     items: "ConfigurationRecorderSummaries",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListConfigurationRecordersRequest,
-  ListConfigurationRecordersResponse,
-  ListConfigurationRecordersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListConfigurationRecordersRequest,
-  ) => stream.Stream<
-    ListConfigurationRecordersResponse,
-    ListConfigurationRecordersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListConfigurationRecordersRequest,
-  ) => stream.Stream<
-    ConfigurationRecorderSummary,
-    ListConfigurationRecordersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListConformancePackComplianceScoresError =
   | InvalidLimitException
@@ -10132,27 +8974,13 @@ export type ListConformancePackComplianceScoresError =
  *
  * Conformance packs with no evaluation results will have a compliance score of `INSUFFICIENT_DATA`.
  */
-export const listConformancePackComplianceScores: API.OperationMethod<
+export const listConformancePackComplianceScores: API.PaginatedOperationMethod<
   ListConformancePackComplianceScoresRequest,
   ListConformancePackComplianceScoresResponse,
   ListConformancePackComplianceScoresError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListConformancePackComplianceScoresRequest,
-  ) => stream.Stream<
-    ListConformancePackComplianceScoresResponse,
-    ListConformancePackComplianceScoresError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListConformancePackComplianceScoresRequest,
-  ) => stream.Stream<
-    unknown,
-    ListConformancePackComplianceScoresError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListConformancePackComplianceScoresRequest,
   output: ListConformancePackComplianceScoresResponse,
   errors: [
@@ -10168,27 +8996,7 @@ export const listConformancePackComplianceScores: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "Limit",
   } as const,
-})) as any as API.OperationMethod<
-  ListConformancePackComplianceScoresRequest,
-  ListConformancePackComplianceScoresResponse,
-  ListConformancePackComplianceScoresError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListConformancePackComplianceScoresRequest,
-  ) => stream.Stream<
-    ListConformancePackComplianceScoresResponse,
-    ListConformancePackComplianceScoresError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListConformancePackComplianceScoresRequest,
-  ) => stream.Stream<
-    unknown,
-    ListConformancePackComplianceScoresError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListDiscoveredResourcesError =
   | InvalidLimitException
@@ -10232,27 +9040,13 @@ export type ListDiscoveredResourcesError =
  * for that stack in Config, even after the stack is deleted. This helps make sure that Config only
  * tracks resources that were successfully provisioned.
  */
-export const listDiscoveredResources: API.OperationMethod<
+export const listDiscoveredResources: API.PaginatedOperationMethod<
   ListDiscoveredResourcesRequest,
   ListDiscoveredResourcesResponse,
   ListDiscoveredResourcesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDiscoveredResourcesRequest,
-  ) => stream.Stream<
-    ListDiscoveredResourcesResponse,
-    ListDiscoveredResourcesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDiscoveredResourcesRequest,
-  ) => stream.Stream<
-    ResourceIdentifier,
-    ListDiscoveredResourcesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ResourceIdentifier
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListDiscoveredResourcesRequest,
   output: ListDiscoveredResourcesResponse,
   errors: [
@@ -10270,27 +9064,7 @@ export const listDiscoveredResources: API.OperationMethod<
     items: "resourceIdentifiers",
     pageSize: "limit",
   } as const,
-})) as any as API.OperationMethod<
-  ListDiscoveredResourcesRequest,
-  ListDiscoveredResourcesResponse,
-  ListDiscoveredResourcesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDiscoveredResourcesRequest,
-  ) => stream.Stream<
-    ListDiscoveredResourcesResponse,
-    ListDiscoveredResourcesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDiscoveredResourcesRequest,
-  ) => stream.Stream<
-    ResourceIdentifier,
-    ListDiscoveredResourcesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListResourceEvaluationsError =
   | InvalidNextTokenException
@@ -10300,27 +9074,13 @@ export type ListResourceEvaluationsError =
 /**
  * Returns a list of proactive resource evaluations.
  */
-export const listResourceEvaluations: API.OperationMethod<
+export const listResourceEvaluations: API.PaginatedOperationMethod<
   ListResourceEvaluationsRequest,
   ListResourceEvaluationsResponse,
   ListResourceEvaluationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListResourceEvaluationsRequest,
-  ) => stream.Stream<
-    ListResourceEvaluationsResponse,
-    ListResourceEvaluationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListResourceEvaluationsRequest,
-  ) => stream.Stream<
-    ResourceEvaluation,
-    ListResourceEvaluationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ResourceEvaluation
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListResourceEvaluationsRequest,
   output: ListResourceEvaluationsResponse,
   errors: [
@@ -10337,27 +9097,7 @@ export const listResourceEvaluations: API.OperationMethod<
     items: "ResourceEvaluations",
     pageSize: "Limit",
   } as const,
-})) as any as API.OperationMethod<
-  ListResourceEvaluationsRequest,
-  ListResourceEvaluationsResponse,
-  ListResourceEvaluationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListResourceEvaluationsRequest,
-  ) => stream.Stream<
-    ListResourceEvaluationsResponse,
-    ListResourceEvaluationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListResourceEvaluationsRequest,
-  ) => stream.Stream<
-    ResourceEvaluation,
-    ListResourceEvaluationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListStoredQueriesError =
   | InvalidNextTokenException
@@ -10366,27 +9106,13 @@ export type ListStoredQueriesError =
 /**
  * Lists the stored queries for a single Amazon Web Services account and a single Amazon Web Services Region. The default is 100.
  */
-export const listStoredQueries: API.OperationMethod<
+export const listStoredQueries: API.PaginatedOperationMethod<
   ListStoredQueriesRequest,
   ListStoredQueriesResponse,
   ListStoredQueriesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListStoredQueriesRequest,
-  ) => stream.Stream<
-    ListStoredQueriesResponse,
-    ListStoredQueriesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListStoredQueriesRequest,
-  ) => stream.Stream<
-    unknown,
-    ListStoredQueriesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListStoredQueriesRequest,
   output: ListStoredQueriesResponse,
   errors: [InvalidNextTokenException, ValidationException],
@@ -10398,27 +9124,7 @@ export const listStoredQueries: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListStoredQueriesRequest,
-  ListStoredQueriesResponse,
-  ListStoredQueriesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListStoredQueriesRequest,
-  ) => stream.Stream<
-    ListStoredQueriesResponse,
-    ListStoredQueriesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListStoredQueriesRequest,
-  ) => stream.Stream<
-    unknown,
-    ListStoredQueriesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsForResourceError =
   | InvalidLimitException
@@ -10429,27 +9135,13 @@ export type ListTagsForResourceError =
 /**
  * List the tags for Config resource.
  */
-export const listTagsForResource: API.OperationMethod<
+export const listTagsForResource: API.PaginatedOperationMethod<
   ListTagsForResourceRequest,
   ListTagsForResourceResponse,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTagsForResourceRequest,
-  ) => stream.Stream<
-    ListTagsForResourceResponse,
-    ListTagsForResourceError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTagsForResourceRequest,
-  ) => stream.Stream<
-    Tag,
-    ListTagsForResourceError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Tag
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
   errors: [
@@ -10467,27 +9159,7 @@ export const listTagsForResource: API.OperationMethod<
     items: "Tags",
     pageSize: "Limit",
   } as const,
-})) as any as API.OperationMethod<
-  ListTagsForResourceRequest,
-  ListTagsForResourceResponse,
-  ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTagsForResourceRequest,
-  ) => stream.Stream<
-    ListTagsForResourceResponse,
-    ListTagsForResourceError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTagsForResourceRequest,
-  ) => stream.Stream<
-    Tag,
-    ListTagsForResourceError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type PutAggregationAuthorizationError =
   | InvalidParameterValueException
@@ -10507,7 +9179,7 @@ export const putAggregationAuthorization: API.OperationMethod<
   PutAggregationAuthorizationRequest,
   PutAggregationAuthorizationResponse,
   PutAggregationAuthorizationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutAggregationAuthorizationRequest,
   output: PutAggregationAuthorizationResponse,
@@ -10582,7 +9254,7 @@ export const putConfigRule: API.OperationMethod<
   PutConfigRuleRequest,
   PutConfigRuleResponse,
   PutConfigRuleError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutConfigRuleRequest,
   output: PutConfigRuleResponse,
@@ -10634,7 +9306,7 @@ export const putConfigurationAggregator: API.OperationMethod<
   PutConfigurationAggregatorRequest,
   PutConfigurationAggregatorResponse,
   PutConfigurationAggregatorError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutConfigurationAggregatorRequest,
   output: PutConfigurationAggregatorResponse,
@@ -10691,7 +9363,7 @@ export const putConfigurationRecorder: API.OperationMethod<
   PutConfigurationRecorderRequest,
   PutConfigurationRecorderResponse,
   PutConfigurationRecorderError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutConfigurationRecorderRequest,
   output: PutConfigurationRecorderResponse,
@@ -10749,7 +9421,7 @@ export const putConformancePack: API.OperationMethod<
   PutConformancePackRequest,
   PutConformancePackResponse,
   PutConformancePackError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutConformancePackRequest,
   output: PutConformancePackResponse,
@@ -10794,7 +9466,7 @@ export const putDeliveryChannel: API.OperationMethod<
   PutDeliveryChannelRequest,
   PutDeliveryChannelResponse,
   PutDeliveryChannelError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutDeliveryChannelRequest,
   output: PutDeliveryChannelResponse,
@@ -10827,7 +9499,7 @@ export const putEvaluations: API.OperationMethod<
   PutEvaluationsRequest,
   PutEvaluationsResponse,
   PutEvaluationsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutEvaluationsRequest,
   output: PutEvaluationsResponse,
@@ -10853,7 +9525,7 @@ export const putExternalEvaluation: API.OperationMethod<
   PutExternalEvaluationRequest,
   PutExternalEvaluationResponse,
   PutExternalEvaluationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutExternalEvaluationRequest,
   output: PutExternalEvaluationResponse,
@@ -10921,7 +9593,7 @@ export const putOrganizationConfigRule: API.OperationMethod<
   PutOrganizationConfigRuleRequest,
   PutOrganizationConfigRuleResponse,
   PutOrganizationConfigRuleError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutOrganizationConfigRuleRequest,
   output: PutOrganizationConfigRuleResponse,
@@ -10991,7 +9663,7 @@ export const putOrganizationConformancePack: API.OperationMethod<
   PutOrganizationConformancePackRequest,
   PutOrganizationConformancePackResponse,
   PutOrganizationConformancePackError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutOrganizationConformancePackRequest,
   output: PutOrganizationConformancePackResponse,
@@ -11048,7 +9720,7 @@ export const putRemediationConfigurations: API.OperationMethod<
   PutRemediationConfigurationsRequest,
   PutRemediationConfigurationsResponse,
   PutRemediationConfigurationsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutRemediationConfigurationsRequest,
   output: PutRemediationConfigurationsResponse,
@@ -11102,7 +9774,7 @@ export const putRemediationExceptions: API.OperationMethod<
   PutRemediationExceptionsRequest,
   PutRemediationExceptionsResponse,
   PutRemediationExceptionsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutRemediationExceptionsRequest,
   output: PutRemediationExceptionsResponse,
@@ -11134,7 +9806,7 @@ export const putResourceConfig: API.OperationMethod<
   PutResourceConfigRequest,
   PutResourceConfigResponse,
   PutResourceConfigError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutResourceConfigRequest,
   output: PutResourceConfigResponse,
@@ -11169,7 +9841,7 @@ export const putRetentionConfiguration: API.OperationMethod<
   PutRetentionConfigurationRequest,
   PutRetentionConfigurationResponse,
   PutRetentionConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutRetentionConfigurationRequest,
   output: PutRetentionConfigurationResponse,
@@ -11211,7 +9883,7 @@ export const putServiceLinkedConfigurationRecorder: API.OperationMethod<
   PutServiceLinkedConfigurationRecorderRequest,
   PutServiceLinkedConfigurationRecorderResponse,
   PutServiceLinkedConfigurationRecorderError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutServiceLinkedConfigurationRecorderRequest,
   output: PutServiceLinkedConfigurationRecorderResponse,
@@ -11244,7 +9916,7 @@ export const putStoredQuery: API.OperationMethod<
   PutStoredQueryRequest,
   PutStoredQueryResponse,
   PutStoredQueryError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutStoredQueryRequest,
   output: PutStoredQueryResponse,
@@ -11279,27 +9951,13 @@ export type SelectAggregateResourceConfigError =
  * If you run a non-aggregation query (i.e., not using `GROUP BY` or aggregate function; e.g., `SELECT * WHERE resourceType = 'AWS::IAM::Role'`)
  * and do not specify the `MaxResults` or the `Limit` query parameters, the default page size is set to 25.
  */
-export const selectAggregateResourceConfig: API.OperationMethod<
+export const selectAggregateResourceConfig: API.PaginatedOperationMethod<
   SelectAggregateResourceConfigRequest,
   SelectAggregateResourceConfigResponse,
   SelectAggregateResourceConfigError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: SelectAggregateResourceConfigRequest,
-  ) => stream.Stream<
-    SelectAggregateResourceConfigResponse,
-    SelectAggregateResourceConfigError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: SelectAggregateResourceConfigRequest,
-  ) => stream.Stream<
-    string,
-    SelectAggregateResourceConfigError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  string
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: SelectAggregateResourceConfigRequest,
   output: SelectAggregateResourceConfigResponse,
   errors: [
@@ -11317,27 +9975,7 @@ export const selectAggregateResourceConfig: API.OperationMethod<
     items: "Results",
     pageSize: "Limit",
   } as const,
-})) as any as API.OperationMethod<
-  SelectAggregateResourceConfigRequest,
-  SelectAggregateResourceConfigResponse,
-  SelectAggregateResourceConfigError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: SelectAggregateResourceConfigRequest,
-  ) => stream.Stream<
-    SelectAggregateResourceConfigResponse,
-    SelectAggregateResourceConfigError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: SelectAggregateResourceConfigRequest,
-  ) => stream.Stream<
-    string,
-    SelectAggregateResourceConfigError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type SelectResourceConfigError =
   | InvalidExpressionException
@@ -11352,27 +9990,13 @@ export type SelectResourceConfigError =
  * **Query Components**
  * section in the *Config Developer Guide*.
  */
-export const selectResourceConfig: API.OperationMethod<
+export const selectResourceConfig: API.PaginatedOperationMethod<
   SelectResourceConfigRequest,
   SelectResourceConfigResponse,
   SelectResourceConfigError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: SelectResourceConfigRequest,
-  ) => stream.Stream<
-    SelectResourceConfigResponse,
-    SelectResourceConfigError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: SelectResourceConfigRequest,
-  ) => stream.Stream<
-    string,
-    SelectResourceConfigError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  string
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: SelectResourceConfigRequest,
   output: SelectResourceConfigResponse,
   errors: [
@@ -11389,27 +10013,7 @@ export const selectResourceConfig: API.OperationMethod<
     items: "Results",
     pageSize: "Limit",
   } as const,
-})) as any as API.OperationMethod<
-  SelectResourceConfigRequest,
-  SelectResourceConfigResponse,
-  SelectResourceConfigError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: SelectResourceConfigRequest,
-  ) => stream.Stream<
-    SelectResourceConfigResponse,
-    SelectResourceConfigError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: SelectResourceConfigRequest,
-  ) => stream.Stream<
-    string,
-    SelectResourceConfigError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type StartConfigRulesEvaluationError =
   | InvalidParameterValueException
@@ -11463,7 +10067,7 @@ export const startConfigRulesEvaluation: API.OperationMethod<
   StartConfigRulesEvaluationRequest,
   StartConfigRulesEvaluationResponse,
   StartConfigRulesEvaluationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartConfigRulesEvaluationRequest,
   output: StartConfigRulesEvaluationResponse,
@@ -11493,7 +10097,7 @@ export const startConfigurationRecorder: API.OperationMethod<
   StartConfigurationRecorderRequest,
   StartConfigurationRecorderResponse,
   StartConfigurationRecorderError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartConfigurationRecorderRequest,
   output: StartConfigurationRecorderResponse,
@@ -11521,7 +10125,7 @@ export const startRemediationExecution: API.OperationMethod<
   StartRemediationExecutionRequest,
   StartRemediationExecutionResponse,
   StartRemediationExecutionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartRemediationExecutionRequest,
   output: StartRemediationExecutionResponse,
@@ -11557,7 +10161,7 @@ export const startResourceEvaluation: API.OperationMethod<
   StartResourceEvaluationRequest,
   StartResourceEvaluationResponse,
   StartResourceEvaluationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartResourceEvaluationRequest,
   output: StartResourceEvaluationResponse,
@@ -11578,7 +10182,7 @@ export const stopConfigurationRecorder: API.OperationMethod<
   StopConfigurationRecorderRequest,
   StopConfigurationRecorderResponse,
   StopConfigurationRecorderError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StopConfigurationRecorderRequest,
   output: StopConfigurationRecorderResponse,
@@ -11601,7 +10205,7 @@ export const tagResource: API.OperationMethod<
   TagResourceRequest,
   TagResourceResponse,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -11626,7 +10230,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceRequest,
   UntagResourceResponse,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,

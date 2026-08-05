@@ -1,6 +1,5 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -8,7 +7,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 const svc = T.AwsApiService({
   sdkId: "VPC Lattice",
   serviceShapeName: "MercuryControlPlane",
@@ -88,20 +86,24 @@ const rules = T.EndpointResolver((p, _) => {
 export class AccessDeniedException
   extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
     "AccessDeniedException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(403),
   ).pipe(C.withAuthError) {}
 export class ConflictException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
     "ConflictException",
-    { message: S.String, resourceId: S.String, resourceType: S.String },
+    {
+      message: S.String.pipe(T.ErrorMessage()),
+      resourceId: S.String,
+      resourceType: S.String,
+    },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class InternalServerException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
     "InternalServerException",
     {
-      message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       retryAfterSeconds: S.optional(S.Number).pipe(T.HttpHeader("Retry-After")),
     },
     T.all(T.HttpError(500), T.Retryable()),
@@ -109,14 +111,18 @@ export class InternalServerException
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { message: S.String, resourceId: S.String, resourceType: S.String },
+    {
+      message: S.String.pipe(T.ErrorMessage()),
+      resourceId: S.String,
+      resourceType: S.String,
+    },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class ServiceQuotaExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
     "ServiceQuotaExceededException",
     {
-      message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       resourceId: S.optional(S.String),
       resourceType: S.String,
       serviceCode: S.String,
@@ -128,7 +134,7 @@ export class ThrottlingException
   extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
     "ThrottlingException",
     {
-      message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       serviceCode: S.optional(S.String),
       quotaCode: S.optional(S.String),
       retryAfterSeconds: S.optional(S.Number).pipe(T.HttpHeader("Retry-After")),
@@ -139,7 +145,7 @@ export class ValidationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
     "ValidationException",
     {
-      message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       reason: S.String,
       fieldList: S.optional(
         S.suspend(() => ValidationExceptionFieldList).annotate({
@@ -4313,7 +4319,7 @@ export const batchUpdateRule: API.OperationMethod<
   BatchUpdateRuleRequest,
   BatchUpdateRuleResponse,
   BatchUpdateRuleError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchUpdateRuleRequest,
   output: BatchUpdateRuleResponse,
@@ -4345,7 +4351,7 @@ export const createAccessLogSubscription: API.OperationMethod<
   CreateAccessLogSubscriptionRequest,
   CreateAccessLogSubscriptionResponse,
   CreateAccessLogSubscriptionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateAccessLogSubscriptionRequest,
   output: CreateAccessLogSubscriptionResponse,
@@ -4378,7 +4384,7 @@ export const createListener: API.OperationMethod<
   CreateListenerRequest,
   CreateListenerResponse,
   CreateListenerError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateListenerRequest,
   output: CreateListenerResponse,
@@ -4412,7 +4418,7 @@ export const createResourceConfiguration: API.OperationMethod<
   CreateResourceConfigurationRequest,
   CreateResourceConfigurationResponse,
   CreateResourceConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateResourceConfigurationRequest,
   output: CreateResourceConfigurationResponse,
@@ -4446,7 +4452,7 @@ export const createResourceGateway: API.OperationMethod<
   CreateResourceGatewayRequest,
   CreateResourceGatewayResponse,
   CreateResourceGatewayError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateResourceGatewayRequest,
   output: CreateResourceGatewayResponse,
@@ -4480,7 +4486,7 @@ export const createRule: API.OperationMethod<
   CreateRuleRequest,
   CreateRuleResponse,
   CreateRuleError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateRuleRequest,
   output: CreateRuleResponse,
@@ -4516,7 +4522,7 @@ export const createService: API.OperationMethod<
   CreateServiceRequest,
   CreateServiceResponse,
   CreateServiceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateServiceRequest,
   output: CreateServiceResponse,
@@ -4552,7 +4558,7 @@ export const createServiceNetwork: API.OperationMethod<
   CreateServiceNetworkRequest,
   CreateServiceNetworkResponse,
   CreateServiceNetworkError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateServiceNetworkRequest,
   output: CreateServiceNetworkResponse,
@@ -4586,7 +4592,7 @@ export const createServiceNetworkResourceAssociation: API.OperationMethod<
   CreateServiceNetworkResourceAssociationRequest,
   CreateServiceNetworkResourceAssociationResponse,
   CreateServiceNetworkResourceAssociationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateServiceNetworkResourceAssociationRequest,
   output: CreateServiceNetworkResourceAssociationResponse,
@@ -4626,7 +4632,7 @@ export const createServiceNetworkServiceAssociation: API.OperationMethod<
   CreateServiceNetworkServiceAssociationRequest,
   CreateServiceNetworkServiceAssociationResponse,
   CreateServiceNetworkServiceAssociationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateServiceNetworkServiceAssociationRequest,
   output: CreateServiceNetworkServiceAssociationResponse,
@@ -4666,7 +4672,7 @@ export const createServiceNetworkVpcAssociation: API.OperationMethod<
   CreateServiceNetworkVpcAssociationRequest,
   CreateServiceNetworkVpcAssociationResponse,
   CreateServiceNetworkVpcAssociationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateServiceNetworkVpcAssociationRequest,
   output: CreateServiceNetworkVpcAssociationResponse,
@@ -4702,7 +4708,7 @@ export const createTargetGroup: API.OperationMethod<
   CreateTargetGroupRequest,
   CreateTargetGroupResponse,
   CreateTargetGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateTargetGroupRequest,
   output: CreateTargetGroupResponse,
@@ -4734,7 +4740,7 @@ export const deleteAccessLogSubscription: API.OperationMethod<
   DeleteAccessLogSubscriptionRequest,
   DeleteAccessLogSubscriptionResponse,
   DeleteAccessLogSubscriptionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteAccessLogSubscriptionRequest,
   output: DeleteAccessLogSubscriptionResponse,
@@ -4764,7 +4770,7 @@ export const deleteAuthPolicy: API.OperationMethod<
   DeleteAuthPolicyRequest,
   DeleteAuthPolicyResponse,
   DeleteAuthPolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteAuthPolicyRequest,
   output: DeleteAuthPolicyResponse,
@@ -4794,7 +4800,7 @@ export const deleteDomainVerification: API.OperationMethod<
   DeleteDomainVerificationRequest,
   DeleteDomainVerificationResponse,
   DeleteDomainVerificationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteDomainVerificationRequest,
   output: DeleteDomainVerificationResponse,
@@ -4825,7 +4831,7 @@ export const deleteListener: API.OperationMethod<
   DeleteListenerRequest,
   DeleteListenerResponse,
   DeleteListenerError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteListenerRequest,
   output: DeleteListenerResponse,
@@ -4857,7 +4863,7 @@ export const deleteResourceConfiguration: API.OperationMethod<
   DeleteResourceConfigurationRequest,
   DeleteResourceConfigurationResponse,
   DeleteResourceConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteResourceConfigurationRequest,
   output: DeleteResourceConfigurationResponse,
@@ -4888,7 +4894,7 @@ export const deleteResourceEndpointAssociation: API.OperationMethod<
   DeleteResourceEndpointAssociationRequest,
   DeleteResourceEndpointAssociationResponse,
   DeleteResourceEndpointAssociationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteResourceEndpointAssociationRequest,
   output: DeleteResourceEndpointAssociationResponse,
@@ -4919,7 +4925,7 @@ export const deleteResourceGateway: API.OperationMethod<
   DeleteResourceGatewayRequest,
   DeleteResourceGatewayResponse,
   DeleteResourceGatewayError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteResourceGatewayRequest,
   output: DeleteResourceGatewayResponse,
@@ -4950,7 +4956,7 @@ export const deleteResourcePolicy: API.OperationMethod<
   DeleteResourcePolicyRequest,
   DeleteResourcePolicyResponse,
   DeleteResourcePolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteResourcePolicyRequest,
   output: DeleteResourcePolicyResponse,
@@ -4983,7 +4989,7 @@ export const deleteRule: API.OperationMethod<
   DeleteRuleRequest,
   DeleteRuleResponse,
   DeleteRuleError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteRuleRequest,
   output: DeleteRuleResponse,
@@ -5015,7 +5021,7 @@ export const deleteService: API.OperationMethod<
   DeleteServiceRequest,
   DeleteServiceResponse,
   DeleteServiceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteServiceRequest,
   output: DeleteServiceResponse,
@@ -5047,7 +5053,7 @@ export const deleteServiceNetwork: API.OperationMethod<
   DeleteServiceNetworkRequest,
   DeleteServiceNetworkResponse,
   DeleteServiceNetworkError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteServiceNetworkRequest,
   output: DeleteServiceNetworkResponse,
@@ -5079,7 +5085,7 @@ export const deleteServiceNetworkResourceAssociation: API.OperationMethod<
   DeleteServiceNetworkResourceAssociationRequest,
   DeleteServiceNetworkResourceAssociationResponse,
   DeleteServiceNetworkResourceAssociationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteServiceNetworkResourceAssociationRequest,
   output: DeleteServiceNetworkResourceAssociationResponse,
@@ -5111,7 +5117,7 @@ export const deleteServiceNetworkServiceAssociation: API.OperationMethod<
   DeleteServiceNetworkServiceAssociationRequest,
   DeleteServiceNetworkServiceAssociationResponse,
   DeleteServiceNetworkServiceAssociationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteServiceNetworkServiceAssociationRequest,
   output: DeleteServiceNetworkServiceAssociationResponse,
@@ -5143,7 +5149,7 @@ export const deleteServiceNetworkVpcAssociation: API.OperationMethod<
   DeleteServiceNetworkVpcAssociationRequest,
   DeleteServiceNetworkVpcAssociationResponse,
   DeleteServiceNetworkVpcAssociationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteServiceNetworkVpcAssociationRequest,
   output: DeleteServiceNetworkVpcAssociationResponse,
@@ -5174,7 +5180,7 @@ export const deleteTargetGroup: API.OperationMethod<
   DeleteTargetGroupRequest,
   DeleteTargetGroupResponse,
   DeleteTargetGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteTargetGroupRequest,
   output: DeleteTargetGroupResponse,
@@ -5205,7 +5211,7 @@ export const deregisterTargets: API.OperationMethod<
   DeregisterTargetsRequest,
   DeregisterTargetsResponse,
   DeregisterTargetsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeregisterTargetsRequest,
   output: DeregisterTargetsResponse,
@@ -5236,7 +5242,7 @@ export const getAccessLogSubscription: API.OperationMethod<
   GetAccessLogSubscriptionRequest,
   GetAccessLogSubscriptionResponse,
   GetAccessLogSubscriptionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetAccessLogSubscriptionRequest,
   output: GetAccessLogSubscriptionResponse,
@@ -5266,7 +5272,7 @@ export const getAuthPolicy: API.OperationMethod<
   GetAuthPolicyRequest,
   GetAuthPolicyResponse,
   GetAuthPolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetAuthPolicyRequest,
   output: GetAuthPolicyResponse,
@@ -5296,7 +5302,7 @@ export const getDomainVerification: API.OperationMethod<
   GetDomainVerificationRequest,
   GetDomainVerificationResponse,
   GetDomainVerificationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetDomainVerificationRequest,
   output: GetDomainVerificationResponse,
@@ -5326,7 +5332,7 @@ export const getListener: API.OperationMethod<
   GetListenerRequest,
   GetListenerResponse,
   GetListenerError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetListenerRequest,
   output: GetListenerResponse,
@@ -5356,7 +5362,7 @@ export const getResourceConfiguration: API.OperationMethod<
   GetResourceConfigurationRequest,
   GetResourceConfigurationResponse,
   GetResourceConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetResourceConfigurationRequest,
   output: GetResourceConfigurationResponse,
@@ -5386,7 +5392,7 @@ export const getResourceGateway: API.OperationMethod<
   GetResourceGatewayRequest,
   GetResourceGatewayResponse,
   GetResourceGatewayError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetResourceGatewayRequest,
   output: GetResourceGatewayResponse,
@@ -5416,7 +5422,7 @@ export const getResourcePolicy: API.OperationMethod<
   GetResourcePolicyRequest,
   GetResourcePolicyResponse,
   GetResourcePolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetResourcePolicyRequest,
   output: GetResourcePolicyResponse,
@@ -5446,7 +5452,7 @@ export const getRule: API.OperationMethod<
   GetRuleRequest,
   GetRuleResponse,
   GetRuleError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetRuleRequest,
   output: GetRuleResponse,
@@ -5476,7 +5482,7 @@ export const getService: API.OperationMethod<
   GetServiceRequest,
   GetServiceResponse,
   GetServiceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetServiceRequest,
   output: GetServiceResponse,
@@ -5506,7 +5512,7 @@ export const getServiceNetwork: API.OperationMethod<
   GetServiceNetworkRequest,
   GetServiceNetworkResponse,
   GetServiceNetworkError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetServiceNetworkRequest,
   output: GetServiceNetworkResponse,
@@ -5536,7 +5542,7 @@ export const getServiceNetworkResourceAssociation: API.OperationMethod<
   GetServiceNetworkResourceAssociationRequest,
   GetServiceNetworkResourceAssociationResponse,
   GetServiceNetworkResourceAssociationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetServiceNetworkResourceAssociationRequest,
   output: GetServiceNetworkResourceAssociationResponse,
@@ -5566,7 +5572,7 @@ export const getServiceNetworkServiceAssociation: API.OperationMethod<
   GetServiceNetworkServiceAssociationRequest,
   GetServiceNetworkServiceAssociationResponse,
   GetServiceNetworkServiceAssociationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetServiceNetworkServiceAssociationRequest,
   output: GetServiceNetworkServiceAssociationResponse,
@@ -5596,7 +5602,7 @@ export const getServiceNetworkVpcAssociation: API.OperationMethod<
   GetServiceNetworkVpcAssociationRequest,
   GetServiceNetworkVpcAssociationResponse,
   GetServiceNetworkVpcAssociationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetServiceNetworkVpcAssociationRequest,
   output: GetServiceNetworkVpcAssociationResponse,
@@ -5626,7 +5632,7 @@ export const getTargetGroup: API.OperationMethod<
   GetTargetGroupRequest,
   GetTargetGroupResponse,
   GetTargetGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetTargetGroupRequest,
   output: GetTargetGroupResponse,
@@ -5652,27 +5658,13 @@ export type ListAccessLogSubscriptionsError =
 /**
  * Lists the access log subscriptions for the specified service network or service.
  */
-export const listAccessLogSubscriptions: API.OperationMethod<
+export const listAccessLogSubscriptions: API.PaginatedOperationMethod<
   ListAccessLogSubscriptionsRequest,
   ListAccessLogSubscriptionsResponse,
   ListAccessLogSubscriptionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAccessLogSubscriptionsRequest,
-  ) => stream.Stream<
-    ListAccessLogSubscriptionsResponse,
-    ListAccessLogSubscriptionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAccessLogSubscriptionsRequest,
-  ) => stream.Stream<
-    AccessLogSubscriptionSummary,
-    ListAccessLogSubscriptionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  AccessLogSubscriptionSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListAccessLogSubscriptionsRequest,
   output: ListAccessLogSubscriptionsResponse,
   errors: [
@@ -5691,27 +5683,7 @@ export const listAccessLogSubscriptions: API.OperationMethod<
     items: "items",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListAccessLogSubscriptionsRequest,
-  ListAccessLogSubscriptionsResponse,
-  ListAccessLogSubscriptionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAccessLogSubscriptionsRequest,
-  ) => stream.Stream<
-    ListAccessLogSubscriptionsResponse,
-    ListAccessLogSubscriptionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAccessLogSubscriptionsRequest,
-  ) => stream.Stream<
-    AccessLogSubscriptionSummary,
-    ListAccessLogSubscriptionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListDomainVerificationsError =
   | AccessDeniedException
@@ -5723,27 +5695,13 @@ export type ListDomainVerificationsError =
 /**
  * Lists the domain verifications.
  */
-export const listDomainVerifications: API.OperationMethod<
+export const listDomainVerifications: API.PaginatedOperationMethod<
   ListDomainVerificationsRequest,
   ListDomainVerificationsResponse,
   ListDomainVerificationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDomainVerificationsRequest,
-  ) => stream.Stream<
-    ListDomainVerificationsResponse,
-    ListDomainVerificationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDomainVerificationsRequest,
-  ) => stream.Stream<
-    DomainVerificationSummary,
-    ListDomainVerificationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  DomainVerificationSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListDomainVerificationsRequest,
   output: ListDomainVerificationsResponse,
   errors: [
@@ -5762,27 +5720,7 @@ export const listDomainVerifications: API.OperationMethod<
     items: "items",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListDomainVerificationsRequest,
-  ListDomainVerificationsResponse,
-  ListDomainVerificationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDomainVerificationsRequest,
-  ) => stream.Stream<
-    ListDomainVerificationsResponse,
-    ListDomainVerificationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDomainVerificationsRequest,
-  ) => stream.Stream<
-    DomainVerificationSummary,
-    ListDomainVerificationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListListenersError =
   | AccessDeniedException
@@ -5794,27 +5732,13 @@ export type ListListenersError =
 /**
  * Lists the listeners for the specified service.
  */
-export const listListeners: API.OperationMethod<
+export const listListeners: API.PaginatedOperationMethod<
   ListListenersRequest,
   ListListenersResponse,
   ListListenersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListListenersRequest,
-  ) => stream.Stream<
-    ListListenersResponse,
-    ListListenersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListListenersRequest,
-  ) => stream.Stream<
-    ListenerSummary,
-    ListListenersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ListenerSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListListenersRequest,
   output: ListListenersResponse,
   errors: [
@@ -5833,27 +5757,7 @@ export const listListeners: API.OperationMethod<
     items: "items",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListListenersRequest,
-  ListListenersResponse,
-  ListListenersError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListListenersRequest,
-  ) => stream.Stream<
-    ListListenersResponse,
-    ListListenersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListListenersRequest,
-  ) => stream.Stream<
-    ListenerSummary,
-    ListListenersError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListResourceConfigurationsError =
   | AccessDeniedException
@@ -5864,27 +5768,13 @@ export type ListResourceConfigurationsError =
 /**
  * Lists the resource configurations owned by or shared with this account.
  */
-export const listResourceConfigurations: API.OperationMethod<
+export const listResourceConfigurations: API.PaginatedOperationMethod<
   ListResourceConfigurationsRequest,
   ListResourceConfigurationsResponse,
   ListResourceConfigurationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListResourceConfigurationsRequest,
-  ) => stream.Stream<
-    ListResourceConfigurationsResponse,
-    ListResourceConfigurationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListResourceConfigurationsRequest,
-  ) => stream.Stream<
-    ResourceConfigurationSummary,
-    ListResourceConfigurationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ResourceConfigurationSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListResourceConfigurationsRequest,
   output: ListResourceConfigurationsResponse,
   errors: [
@@ -5902,27 +5792,7 @@ export const listResourceConfigurations: API.OperationMethod<
     items: "items",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListResourceConfigurationsRequest,
-  ListResourceConfigurationsResponse,
-  ListResourceConfigurationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListResourceConfigurationsRequest,
-  ) => stream.Stream<
-    ListResourceConfigurationsResponse,
-    ListResourceConfigurationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListResourceConfigurationsRequest,
-  ) => stream.Stream<
-    ResourceConfigurationSummary,
-    ListResourceConfigurationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListResourceEndpointAssociationsError =
   | AccessDeniedException
@@ -5933,27 +5803,13 @@ export type ListResourceEndpointAssociationsError =
 /**
  * Lists the associations for the specified VPC endpoint.
  */
-export const listResourceEndpointAssociations: API.OperationMethod<
+export const listResourceEndpointAssociations: API.PaginatedOperationMethod<
   ListResourceEndpointAssociationsRequest,
   ListResourceEndpointAssociationsResponse,
   ListResourceEndpointAssociationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListResourceEndpointAssociationsRequest,
-  ) => stream.Stream<
-    ListResourceEndpointAssociationsResponse,
-    ListResourceEndpointAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListResourceEndpointAssociationsRequest,
-  ) => stream.Stream<
-    ResourceEndpointAssociationSummary,
-    ListResourceEndpointAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ResourceEndpointAssociationSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListResourceEndpointAssociationsRequest,
   output: ListResourceEndpointAssociationsResponse,
   errors: [
@@ -5971,27 +5827,7 @@ export const listResourceEndpointAssociations: API.OperationMethod<
     items: "items",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListResourceEndpointAssociationsRequest,
-  ListResourceEndpointAssociationsResponse,
-  ListResourceEndpointAssociationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListResourceEndpointAssociationsRequest,
-  ) => stream.Stream<
-    ListResourceEndpointAssociationsResponse,
-    ListResourceEndpointAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListResourceEndpointAssociationsRequest,
-  ) => stream.Stream<
-    ResourceEndpointAssociationSummary,
-    ListResourceEndpointAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListResourceGatewaysError =
   | AccessDeniedException
@@ -6002,27 +5838,13 @@ export type ListResourceGatewaysError =
 /**
  * Lists the resource gateways that you own or that were shared with you.
  */
-export const listResourceGateways: API.OperationMethod<
+export const listResourceGateways: API.PaginatedOperationMethod<
   ListResourceGatewaysRequest,
   ListResourceGatewaysResponse,
   ListResourceGatewaysError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListResourceGatewaysRequest,
-  ) => stream.Stream<
-    ListResourceGatewaysResponse,
-    ListResourceGatewaysError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListResourceGatewaysRequest,
-  ) => stream.Stream<
-    ResourceGatewaySummary,
-    ListResourceGatewaysError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ResourceGatewaySummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListResourceGatewaysRequest,
   output: ListResourceGatewaysResponse,
   errors: [
@@ -6040,27 +5862,7 @@ export const listResourceGateways: API.OperationMethod<
     items: "items",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListResourceGatewaysRequest,
-  ListResourceGatewaysResponse,
-  ListResourceGatewaysError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListResourceGatewaysRequest,
-  ) => stream.Stream<
-    ListResourceGatewaysResponse,
-    ListResourceGatewaysError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListResourceGatewaysRequest,
-  ) => stream.Stream<
-    ResourceGatewaySummary,
-    ListResourceGatewaysError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListRulesError =
   | AccessDeniedException
@@ -6072,27 +5874,13 @@ export type ListRulesError =
 /**
  * Lists the rules for the specified listener.
  */
-export const listRules: API.OperationMethod<
+export const listRules: API.PaginatedOperationMethod<
   ListRulesRequest,
   ListRulesResponse,
   ListRulesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListRulesRequest,
-  ) => stream.Stream<
-    ListRulesResponse,
-    ListRulesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListRulesRequest,
-  ) => stream.Stream<
-    RuleSummary,
-    ListRulesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  RuleSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListRulesRequest,
   output: ListRulesResponse,
   errors: [
@@ -6111,27 +5899,7 @@ export const listRules: API.OperationMethod<
     items: "items",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListRulesRequest,
-  ListRulesResponse,
-  ListRulesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListRulesRequest,
-  ) => stream.Stream<
-    ListRulesResponse,
-    ListRulesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListRulesRequest,
-  ) => stream.Stream<
-    RuleSummary,
-    ListRulesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListServiceNetworkResourceAssociationsError =
   | AccessDeniedException
@@ -6142,27 +5910,13 @@ export type ListServiceNetworkResourceAssociationsError =
 /**
  * Lists the associations between a service network and a resource configuration.
  */
-export const listServiceNetworkResourceAssociations: API.OperationMethod<
+export const listServiceNetworkResourceAssociations: API.PaginatedOperationMethod<
   ListServiceNetworkResourceAssociationsRequest,
   ListServiceNetworkResourceAssociationsResponse,
   ListServiceNetworkResourceAssociationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListServiceNetworkResourceAssociationsRequest,
-  ) => stream.Stream<
-    ListServiceNetworkResourceAssociationsResponse,
-    ListServiceNetworkResourceAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListServiceNetworkResourceAssociationsRequest,
-  ) => stream.Stream<
-    ServiceNetworkResourceAssociationSummary,
-    ListServiceNetworkResourceAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ServiceNetworkResourceAssociationSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListServiceNetworkResourceAssociationsRequest,
   output: ListServiceNetworkResourceAssociationsResponse,
   errors: [
@@ -6180,27 +5934,7 @@ export const listServiceNetworkResourceAssociations: API.OperationMethod<
     items: "items",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListServiceNetworkResourceAssociationsRequest,
-  ListServiceNetworkResourceAssociationsResponse,
-  ListServiceNetworkResourceAssociationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListServiceNetworkResourceAssociationsRequest,
-  ) => stream.Stream<
-    ListServiceNetworkResourceAssociationsResponse,
-    ListServiceNetworkResourceAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListServiceNetworkResourceAssociationsRequest,
-  ) => stream.Stream<
-    ServiceNetworkResourceAssociationSummary,
-    ListServiceNetworkResourceAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListServiceNetworksError =
   | AccessDeniedException
@@ -6211,27 +5945,13 @@ export type ListServiceNetworksError =
 /**
  * Lists the service networks owned by or shared with this account. The account ID in the ARN shows which account owns the service network.
  */
-export const listServiceNetworks: API.OperationMethod<
+export const listServiceNetworks: API.PaginatedOperationMethod<
   ListServiceNetworksRequest,
   ListServiceNetworksResponse,
   ListServiceNetworksError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListServiceNetworksRequest,
-  ) => stream.Stream<
-    ListServiceNetworksResponse,
-    ListServiceNetworksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListServiceNetworksRequest,
-  ) => stream.Stream<
-    ServiceNetworkSummary,
-    ListServiceNetworksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ServiceNetworkSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListServiceNetworksRequest,
   output: ListServiceNetworksResponse,
   errors: [
@@ -6249,27 +5969,7 @@ export const listServiceNetworks: API.OperationMethod<
     items: "items",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListServiceNetworksRequest,
-  ListServiceNetworksResponse,
-  ListServiceNetworksError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListServiceNetworksRequest,
-  ) => stream.Stream<
-    ListServiceNetworksResponse,
-    ListServiceNetworksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListServiceNetworksRequest,
-  ) => stream.Stream<
-    ServiceNetworkSummary,
-    ListServiceNetworksError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListServiceNetworkServiceAssociationsError =
   | AccessDeniedException
@@ -6282,27 +5982,13 @@ export type ListServiceNetworkServiceAssociationsError =
  *
  * Every association in Amazon VPC Lattice has a unique Amazon Resource Name (ARN), such as when a service network is associated with a VPC or when a service is associated with a service network. If the association is for a resource is shared with another account, the association includes the local account ID as the prefix in the ARN.
  */
-export const listServiceNetworkServiceAssociations: API.OperationMethod<
+export const listServiceNetworkServiceAssociations: API.PaginatedOperationMethod<
   ListServiceNetworkServiceAssociationsRequest,
   ListServiceNetworkServiceAssociationsResponse,
   ListServiceNetworkServiceAssociationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListServiceNetworkServiceAssociationsRequest,
-  ) => stream.Stream<
-    ListServiceNetworkServiceAssociationsResponse,
-    ListServiceNetworkServiceAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListServiceNetworkServiceAssociationsRequest,
-  ) => stream.Stream<
-    ServiceNetworkServiceAssociationSummary,
-    ListServiceNetworkServiceAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ServiceNetworkServiceAssociationSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListServiceNetworkServiceAssociationsRequest,
   output: ListServiceNetworkServiceAssociationsResponse,
   errors: [
@@ -6320,27 +6006,7 @@ export const listServiceNetworkServiceAssociations: API.OperationMethod<
     items: "items",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListServiceNetworkServiceAssociationsRequest,
-  ListServiceNetworkServiceAssociationsResponse,
-  ListServiceNetworkServiceAssociationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListServiceNetworkServiceAssociationsRequest,
-  ) => stream.Stream<
-    ListServiceNetworkServiceAssociationsResponse,
-    ListServiceNetworkServiceAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListServiceNetworkServiceAssociationsRequest,
-  ) => stream.Stream<
-    ServiceNetworkServiceAssociationSummary,
-    ListServiceNetworkServiceAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListServiceNetworkVpcAssociationsError =
   | AccessDeniedException
@@ -6351,27 +6017,13 @@ export type ListServiceNetworkVpcAssociationsError =
 /**
  * Lists the associations between a service network and a VPC. You can filter the list either by VPC or service network. You must provide either the ID of the service network identifier or the ID of the VPC.
  */
-export const listServiceNetworkVpcAssociations: API.OperationMethod<
+export const listServiceNetworkVpcAssociations: API.PaginatedOperationMethod<
   ListServiceNetworkVpcAssociationsRequest,
   ListServiceNetworkVpcAssociationsResponse,
   ListServiceNetworkVpcAssociationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListServiceNetworkVpcAssociationsRequest,
-  ) => stream.Stream<
-    ListServiceNetworkVpcAssociationsResponse,
-    ListServiceNetworkVpcAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListServiceNetworkVpcAssociationsRequest,
-  ) => stream.Stream<
-    ServiceNetworkVpcAssociationSummary,
-    ListServiceNetworkVpcAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ServiceNetworkVpcAssociationSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListServiceNetworkVpcAssociationsRequest,
   output: ListServiceNetworkVpcAssociationsResponse,
   errors: [
@@ -6389,27 +6041,7 @@ export const listServiceNetworkVpcAssociations: API.OperationMethod<
     items: "items",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListServiceNetworkVpcAssociationsRequest,
-  ListServiceNetworkVpcAssociationsResponse,
-  ListServiceNetworkVpcAssociationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListServiceNetworkVpcAssociationsRequest,
-  ) => stream.Stream<
-    ListServiceNetworkVpcAssociationsResponse,
-    ListServiceNetworkVpcAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListServiceNetworkVpcAssociationsRequest,
-  ) => stream.Stream<
-    ServiceNetworkVpcAssociationSummary,
-    ListServiceNetworkVpcAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListServiceNetworkVpcEndpointAssociationsError =
   | AccessDeniedException
@@ -6420,27 +6052,13 @@ export type ListServiceNetworkVpcEndpointAssociationsError =
 /**
  * Lists the associations between a service network and a VPC endpoint.
  */
-export const listServiceNetworkVpcEndpointAssociations: API.OperationMethod<
+export const listServiceNetworkVpcEndpointAssociations: API.PaginatedOperationMethod<
   ListServiceNetworkVpcEndpointAssociationsRequest,
   ListServiceNetworkVpcEndpointAssociationsResponse,
   ListServiceNetworkVpcEndpointAssociationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListServiceNetworkVpcEndpointAssociationsRequest,
-  ) => stream.Stream<
-    ListServiceNetworkVpcEndpointAssociationsResponse,
-    ListServiceNetworkVpcEndpointAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListServiceNetworkVpcEndpointAssociationsRequest,
-  ) => stream.Stream<
-    ServiceNetworkEndpointAssociation,
-    ListServiceNetworkVpcEndpointAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ServiceNetworkEndpointAssociation
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListServiceNetworkVpcEndpointAssociationsRequest,
   output: ListServiceNetworkVpcEndpointAssociationsResponse,
   errors: [
@@ -6458,27 +6076,7 @@ export const listServiceNetworkVpcEndpointAssociations: API.OperationMethod<
     items: "items",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListServiceNetworkVpcEndpointAssociationsRequest,
-  ListServiceNetworkVpcEndpointAssociationsResponse,
-  ListServiceNetworkVpcEndpointAssociationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListServiceNetworkVpcEndpointAssociationsRequest,
-  ) => stream.Stream<
-    ListServiceNetworkVpcEndpointAssociationsResponse,
-    ListServiceNetworkVpcEndpointAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListServiceNetworkVpcEndpointAssociationsRequest,
-  ) => stream.Stream<
-    ServiceNetworkEndpointAssociation,
-    ListServiceNetworkVpcEndpointAssociationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListServicesError =
   | AccessDeniedException
@@ -6489,27 +6087,13 @@ export type ListServicesError =
 /**
  * Lists the services owned by the caller account or shared with the caller account.
  */
-export const listServices: API.OperationMethod<
+export const listServices: API.PaginatedOperationMethod<
   ListServicesRequest,
   ListServicesResponse,
   ListServicesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListServicesRequest,
-  ) => stream.Stream<
-    ListServicesResponse,
-    ListServicesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListServicesRequest,
-  ) => stream.Stream<
-    ServiceSummary,
-    ListServicesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ServiceSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListServicesRequest,
   output: ListServicesResponse,
   errors: [
@@ -6527,27 +6111,7 @@ export const listServices: API.OperationMethod<
     items: "items",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListServicesRequest,
-  ListServicesResponse,
-  ListServicesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListServicesRequest,
-  ) => stream.Stream<
-    ListServicesResponse,
-    ListServicesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListServicesRequest,
-  ) => stream.Stream<
-    ServiceSummary,
-    ListServicesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsForResourceError =
   | AccessDeniedException
@@ -6562,7 +6126,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceRequest,
   ListTagsForResourceResponse,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -6586,27 +6150,13 @@ export type ListTargetGroupsError =
 /**
  * Lists your target groups. You can narrow your search by using the filters below in your request.
  */
-export const listTargetGroups: API.OperationMethod<
+export const listTargetGroups: API.PaginatedOperationMethod<
   ListTargetGroupsRequest,
   ListTargetGroupsResponse,
   ListTargetGroupsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTargetGroupsRequest,
-  ) => stream.Stream<
-    ListTargetGroupsResponse,
-    ListTargetGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTargetGroupsRequest,
-  ) => stream.Stream<
-    TargetGroupSummary,
-    ListTargetGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  TargetGroupSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListTargetGroupsRequest,
   output: ListTargetGroupsResponse,
   errors: [
@@ -6624,27 +6174,7 @@ export const listTargetGroups: API.OperationMethod<
     items: "items",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListTargetGroupsRequest,
-  ListTargetGroupsResponse,
-  ListTargetGroupsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTargetGroupsRequest,
-  ) => stream.Stream<
-    ListTargetGroupsResponse,
-    ListTargetGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTargetGroupsRequest,
-  ) => stream.Stream<
-    TargetGroupSummary,
-    ListTargetGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTargetsError =
   | AccessDeniedException
@@ -6656,27 +6186,13 @@ export type ListTargetsError =
 /**
  * Lists the targets for the target group. By default, all targets are included. You can use this API to check the health status of targets. You can also ﬁlter the results by target.
  */
-export const listTargets: API.OperationMethod<
+export const listTargets: API.PaginatedOperationMethod<
   ListTargetsRequest,
   ListTargetsResponse,
   ListTargetsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTargetsRequest,
-  ) => stream.Stream<
-    ListTargetsResponse,
-    ListTargetsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTargetsRequest,
-  ) => stream.Stream<
-    TargetSummary,
-    ListTargetsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  TargetSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListTargetsRequest,
   output: ListTargetsResponse,
   errors: [
@@ -6695,27 +6211,7 @@ export const listTargets: API.OperationMethod<
     items: "items",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListTargetsRequest,
-  ListTargetsResponse,
-  ListTargetsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTargetsRequest,
-  ) => stream.Stream<
-    ListTargetsResponse,
-    ListTargetsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTargetsRequest,
-  ) => stream.Stream<
-    TargetSummary,
-    ListTargetsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type PutAuthPolicyError =
   | AccessDeniedException
@@ -6733,7 +6229,7 @@ export const putAuthPolicy: API.OperationMethod<
   PutAuthPolicyRequest,
   PutAuthPolicyResponse,
   PutAuthPolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutAuthPolicyRequest,
   output: PutAuthPolicyResponse,
@@ -6763,7 +6259,7 @@ export const putResourcePolicy: API.OperationMethod<
   PutResourcePolicyRequest,
   PutResourcePolicyResponse,
   PutResourcePolicyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutResourcePolicyRequest,
   output: PutResourcePolicyResponse,
@@ -6795,7 +6291,7 @@ export const registerTargets: API.OperationMethod<
   RegisterTargetsRequest,
   RegisterTargetsResponse,
   RegisterTargetsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RegisterTargetsRequest,
   output: RegisterTargetsResponse,
@@ -6828,7 +6324,7 @@ export const startDomainVerification: API.OperationMethod<
   StartDomainVerificationRequest,
   StartDomainVerificationResponse,
   StartDomainVerificationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartDomainVerificationRequest,
   output: StartDomainVerificationResponse,
@@ -6859,7 +6355,7 @@ export const tagResource: API.OperationMethod<
   TagResourceRequest,
   TagResourceResponse,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -6888,7 +6384,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceRequest,
   UntagResourceResponse,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -6918,7 +6414,7 @@ export const updateAccessLogSubscription: API.OperationMethod<
   UpdateAccessLogSubscriptionRequest,
   UpdateAccessLogSubscriptionResponse,
   UpdateAccessLogSubscriptionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateAccessLogSubscriptionRequest,
   output: UpdateAccessLogSubscriptionResponse,
@@ -6951,7 +6447,7 @@ export const updateListener: API.OperationMethod<
   UpdateListenerRequest,
   UpdateListenerResponse,
   UpdateListenerError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateListenerRequest,
   output: UpdateListenerResponse,
@@ -6984,7 +6480,7 @@ export const updateResourceConfiguration: API.OperationMethod<
   UpdateResourceConfigurationRequest,
   UpdateResourceConfigurationResponse,
   UpdateResourceConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateResourceConfigurationRequest,
   output: UpdateResourceConfigurationResponse,
@@ -7016,7 +6512,7 @@ export const updateResourceGateway: API.OperationMethod<
   UpdateResourceGatewayRequest,
   UpdateResourceGatewayResponse,
   UpdateResourceGatewayError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateResourceGatewayRequest,
   output: UpdateResourceGatewayResponse,
@@ -7049,7 +6545,7 @@ export const updateRule: API.OperationMethod<
   UpdateRuleRequest,
   UpdateRuleResponse,
   UpdateRuleError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateRuleRequest,
   output: UpdateRuleResponse,
@@ -7083,7 +6579,7 @@ export const updateService: API.OperationMethod<
   UpdateServiceRequest,
   UpdateServiceResponse,
   UpdateServiceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateServiceRequest,
   output: UpdateServiceResponse,
@@ -7116,7 +6612,7 @@ export const updateServiceNetwork: API.OperationMethod<
   UpdateServiceNetworkRequest,
   UpdateServiceNetworkResponse,
   UpdateServiceNetworkError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateServiceNetworkRequest,
   output: UpdateServiceNetworkResponse,
@@ -7148,7 +6644,7 @@ export const updateServiceNetworkVpcAssociation: API.OperationMethod<
   UpdateServiceNetworkVpcAssociationRequest,
   UpdateServiceNetworkVpcAssociationResponse,
   UpdateServiceNetworkVpcAssociationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateServiceNetworkVpcAssociationRequest,
   output: UpdateServiceNetworkVpcAssociationResponse,
@@ -7181,7 +6677,7 @@ export const updateTargetGroup: API.OperationMethod<
   UpdateTargetGroupRequest,
   UpdateTargetGroupResponse,
   UpdateTargetGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateTargetGroupRequest,
   output: UpdateTargetGroupResponse,

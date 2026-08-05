@@ -1,7 +1,6 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as redacted from "effect/Redacted";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -9,7 +8,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region as Rgn } from "../region.ts";
 import { SensitiveString } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "FSx",
@@ -90,7 +88,10 @@ const rules = T.EndpointResolver((p, _) => {
 export class AccessPointAlreadyOwnedByYou
   extends /*@__PURE__*/ S.TaggedErrorClass<AccessPointAlreadyOwnedByYou>()(
     "AccessPointAlreadyOwnedByYou",
-    { ErrorCode: S.optional(S.String), Message: S.optional(S.String) },
+    {
+      ErrorCode: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class ActiveDirectoryError
@@ -103,108 +104,120 @@ export class ActiveDirectoryError
           identifier: "ActiveDirectoryErrorType",
         }),
       ),
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
     },
   ) {}
 export class BackupBeingCopied
   extends /*@__PURE__*/ S.TaggedErrorClass<BackupBeingCopied>()(
     "BackupBeingCopied",
-    { Message: S.optional(S.String), BackupId: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      BackupId: S.optional(S.String),
+    },
   ) {}
 export class BackupInProgress
   extends /*@__PURE__*/ S.TaggedErrorClass<BackupInProgress>()(
     "BackupInProgress",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class BackupNotFound
   extends /*@__PURE__*/ S.TaggedErrorClass<BackupNotFound>()("BackupNotFound", {
-    Message: S.optional(S.String),
+    message: S.optional(S.String).pipe(T.ErrorMessage()),
   }) {}
 export class BackupRestoring
   extends /*@__PURE__*/ S.TaggedErrorClass<BackupRestoring>()(
     "BackupRestoring",
-    { Message: S.optional(S.String), FileSystemId: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      FileSystemId: S.optional(S.String),
+    },
   ) {}
 export class BadRequest
   extends /*@__PURE__*/ S.TaggedErrorClass<BadRequest>()("BadRequest", {
-    Message: S.optional(S.String),
+    message: S.optional(S.String).pipe(T.ErrorMessage()),
   }) {}
 export class DataRepositoryAssociationNotFound
   extends /*@__PURE__*/ S.TaggedErrorClass<DataRepositoryAssociationNotFound>()(
     "DataRepositoryAssociationNotFound",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class DataRepositoryTaskEnded
   extends /*@__PURE__*/ S.TaggedErrorClass<DataRepositoryTaskEnded>()(
     "DataRepositoryTaskEnded",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class DataRepositoryTaskExecuting
   extends /*@__PURE__*/ S.TaggedErrorClass<DataRepositoryTaskExecuting>()(
     "DataRepositoryTaskExecuting",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class DataRepositoryTaskNotFound
   extends /*@__PURE__*/ S.TaggedErrorClass<DataRepositoryTaskNotFound>()(
     "DataRepositoryTaskNotFound",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class FileCacheNotFound
   extends /*@__PURE__*/ S.TaggedErrorClass<FileCacheNotFound>()(
     "FileCacheNotFound",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class FileSystemNotFound
   extends /*@__PURE__*/ S.TaggedErrorClass<FileSystemNotFound>()(
     "FileSystemNotFound",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class IncompatibleParameterError
   extends /*@__PURE__*/ S.TaggedErrorClass<IncompatibleParameterError>()(
     "IncompatibleParameterError",
-    { Parameter: S.optional(S.String), Message: S.optional(S.String) },
+    {
+      Parameter: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
   ) {}
 export class IncompatibleRegionForMultiAZ
   extends /*@__PURE__*/ S.TaggedErrorClass<IncompatibleRegionForMultiAZ>()(
     "IncompatibleRegionForMultiAZ",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InternalServerError
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerError>()(
     "InternalServerError",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidAccessPoint
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidAccessPoint>()(
     "InvalidAccessPoint",
-    { ErrorCode: S.optional(S.String), Message: S.optional(S.String) },
+    {
+      ErrorCode: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class InvalidDataRepositoryType
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidDataRepositoryType>()(
     "InvalidDataRepositoryType",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidDestinationKmsKey
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidDestinationKmsKey>()(
     "InvalidDestinationKmsKey",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidExportPath
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidExportPath>()(
     "InvalidExportPath",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidImportPath
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidImportPath>()(
     "InvalidImportPath",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidNetworkSettings
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidNetworkSettings>()(
     "InvalidNetworkSettings",
     {
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       InvalidSubnetId: S.optional(S.String),
       InvalidSecurityGroupId: S.optional(S.String),
       InvalidRouteTableId: S.optional(S.String),
@@ -213,57 +226,69 @@ export class InvalidNetworkSettings
 export class InvalidPerUnitStorageThroughput
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidPerUnitStorageThroughput>()(
     "InvalidPerUnitStorageThroughput",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidRegion
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidRegion>()("InvalidRegion", {
-    Message: S.optional(S.String),
+    message: S.optional(S.String).pipe(T.ErrorMessage()),
   }) {}
 export class InvalidRequest
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidRequest>()(
     "InvalidRequest",
-    { ErrorCode: S.optional(S.String), Message: S.optional(S.String) },
+    {
+      ErrorCode: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class InvalidSourceKmsKey
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidSourceKmsKey>()(
     "InvalidSourceKmsKey",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class MissingFileCacheConfiguration
   extends /*@__PURE__*/ S.TaggedErrorClass<MissingFileCacheConfiguration>()(
     "MissingFileCacheConfiguration",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class MissingFileSystemConfiguration
   extends /*@__PURE__*/ S.TaggedErrorClass<MissingFileSystemConfiguration>()(
     "MissingFileSystemConfiguration",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class MissingVolumeConfiguration
   extends /*@__PURE__*/ S.TaggedErrorClass<MissingVolumeConfiguration>()(
     "MissingVolumeConfiguration",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class NotServiceResourceError
   extends /*@__PURE__*/ S.TaggedErrorClass<NotServiceResourceError>()(
     "NotServiceResourceError",
-    { ResourceARN: S.optional(S.String), Message: S.optional(S.String) },
+    {
+      ResourceARN: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
   ) {}
 export class ResourceDoesNotSupportTagging
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceDoesNotSupportTagging>()(
     "ResourceDoesNotSupportTagging",
-    { ResourceARN: S.optional(S.String), Message: S.optional(S.String) },
+    {
+      ResourceARN: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
   ) {}
 export class ResourceNotFound
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFound>()(
     "ResourceNotFound",
-    { ResourceARN: S.optional(S.String), Message: S.optional(S.String) },
+    {
+      ResourceARN: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
   ) {}
 export class RestoreSnapshotNotFound
   extends /*@__PURE__*/ S.TaggedErrorClass<RestoreSnapshotNotFound>()(
     "RestoreSnapshotNotFound",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.SyntheticError({
       from: "BadRequest",
       message: { includes: "snapshot cannot be found" },
@@ -272,7 +297,7 @@ export class RestoreSnapshotNotFound
 export class S3AccessPointAttachmentNotFound
   extends /*@__PURE__*/ S.TaggedErrorClass<S3AccessPointAttachmentNotFound>()(
     "S3AccessPointAttachmentNotFound",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class ServiceLimitExceeded
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceLimitExceeded>()(
@@ -281,18 +306,18 @@ export class ServiceLimitExceeded
       Limit: S.optional(
         S.suspend(() => ServiceLimit).annotate({ identifier: "ServiceLimit" }),
       ),
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
     },
   ).pipe(C.withThrottlingError) {}
 export class SnapshotNotFound
   extends /*@__PURE__*/ S.TaggedErrorClass<SnapshotNotFound>()(
     "SnapshotNotFound",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class SnapshotVolumeNotFound
   extends /*@__PURE__*/ S.TaggedErrorClass<SnapshotVolumeNotFound>()(
     "SnapshotVolumeNotFound",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.SyntheticError({
       from: "BadRequest",
       message: { includes: "volume was not found" },
@@ -301,12 +326,15 @@ export class SnapshotVolumeNotFound
 export class SourceBackupUnavailable
   extends /*@__PURE__*/ S.TaggedErrorClass<SourceBackupUnavailable>()(
     "SourceBackupUnavailable",
-    { Message: S.optional(S.String), BackupId: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      BackupId: S.optional(S.String),
+    },
   ) {}
 export class SourceSnapshotNotFound
   extends /*@__PURE__*/ S.TaggedErrorClass<SourceSnapshotNotFound>()(
     "SourceSnapshotNotFound",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.SyntheticError({
       from: "BadRequest",
       message: { includes: "SourceSnapshotARN provided is not a valid ARN" },
@@ -315,23 +343,26 @@ export class SourceSnapshotNotFound
 export class StorageVirtualMachineNotFound
   extends /*@__PURE__*/ S.TaggedErrorClass<StorageVirtualMachineNotFound>()(
     "StorageVirtualMachineNotFound",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class TooManyAccessPoints
   extends /*@__PURE__*/ S.TaggedErrorClass<TooManyAccessPoints>()(
     "TooManyAccessPoints",
-    { ErrorCode: S.optional(S.String), Message: S.optional(S.String) },
+    {
+      ErrorCode: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class UnsupportedOperation
   extends /*@__PURE__*/ S.TaggedErrorClass<UnsupportedOperation>()(
     "UnsupportedOperation",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class UpdateSnapshotNotFound
   extends /*@__PURE__*/ S.TaggedErrorClass<UpdateSnapshotNotFound>()(
     "UpdateSnapshotNotFound",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.SyntheticError({
       from: "BadRequest",
       message: { includes: "the snapshot is not found" },
@@ -339,7 +370,7 @@ export class UpdateSnapshotNotFound
   ).pipe(C.withNotFoundError) {}
 export class VolumeNotFound
   extends /*@__PURE__*/ S.TaggedErrorClass<VolumeNotFound>()("VolumeNotFound", {
-    Message: S.optional(S.String),
+    message: S.optional(S.String).pipe(T.ErrorMessage()),
   }) {}
 export type ClientRequestToken = string;
 export type FileSystemId = string;
@@ -5871,7 +5902,7 @@ export const associateFileSystemAliases: API.OperationMethod<
   AssociateFileSystemAliasesRequest,
   AssociateFileSystemAliasesResponse,
   AssociateFileSystemAliasesError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: AssociateFileSystemAliasesRequest,
   output: AssociateFileSystemAliasesResponse,
@@ -5906,7 +5937,7 @@ export const cancelDataRepositoryTask: API.OperationMethod<
   CancelDataRepositoryTaskRequest,
   CancelDataRepositoryTaskResponse,
   CancelDataRepositoryTaskError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CancelDataRepositoryTaskRequest,
   output: CancelDataRepositoryTaskResponse,
@@ -5966,7 +5997,7 @@ export const copyBackup: API.OperationMethod<
   CopyBackupRequest,
   CopyBackupResponse,
   CopyBackupError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CopyBackupRequest,
   output: CopyBackupResponse,
@@ -6003,7 +6034,7 @@ export const copySnapshotAndUpdateVolume: API.OperationMethod<
   CopySnapshotAndUpdateVolumeRequest,
   CopySnapshotAndUpdateVolumeResponse,
   CopySnapshotAndUpdateVolumeError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CopySnapshotAndUpdateVolumeRequest,
   output: CopySnapshotAndUpdateVolumeResponse,
@@ -6058,7 +6089,7 @@ export const createAndAttachS3AccessPoint: API.OperationMethod<
   CreateAndAttachS3AccessPointRequest,
   CreateAndAttachS3AccessPointResponse,
   CreateAndAttachS3AccessPointError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateAndAttachS3AccessPointRequest,
   output: CreateAndAttachS3AccessPointResponse,
@@ -6141,7 +6172,7 @@ export const createBackup: API.OperationMethod<
   CreateBackupRequest,
   CreateBackupResponse,
   CreateBackupError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateBackupRequest,
   output: CreateBackupResponse,
@@ -6191,7 +6222,7 @@ export const createDataRepositoryAssociation: API.OperationMethod<
   CreateDataRepositoryAssociationRequest,
   CreateDataRepositoryAssociationResponse,
   CreateDataRepositoryAssociationError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateDataRepositoryAssociationRequest,
   output: CreateDataRepositoryAssociationResponse,
@@ -6241,7 +6272,7 @@ export const createDataRepositoryTask: API.OperationMethod<
   CreateDataRepositoryTaskRequest,
   CreateDataRepositoryTaskResponse,
   CreateDataRepositoryTaskError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateDataRepositoryTaskRequest,
   output: CreateDataRepositoryTaskResponse,
@@ -6294,7 +6325,7 @@ export const createFileCache: API.OperationMethod<
   CreateFileCacheRequest,
   CreateFileCacheResponse,
   CreateFileCacheError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateFileCacheRequest,
   output: CreateFileCacheResponse,
@@ -6367,7 +6398,7 @@ export const createFileSystem: API.OperationMethod<
   CreateFileSystemRequest,
   CreateFileSystemResponse,
   CreateFileSystemError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateFileSystemRequest,
   output: CreateFileSystemResponse,
@@ -6436,7 +6467,7 @@ export const createFileSystemFromBackup: API.OperationMethod<
   CreateFileSystemFromBackupRequest,
   CreateFileSystemFromBackupResponse,
   CreateFileSystemFromBackupError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateFileSystemFromBackupRequest,
   output: CreateFileSystemFromBackupResponse,
@@ -6496,7 +6527,7 @@ export const createSnapshot: API.OperationMethod<
   CreateSnapshotRequest,
   CreateSnapshotResponse,
   CreateSnapshotError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateSnapshotRequest,
   output: CreateSnapshotResponse,
@@ -6528,7 +6559,7 @@ export const createStorageVirtualMachine: API.OperationMethod<
   CreateStorageVirtualMachineRequest,
   CreateStorageVirtualMachineResponse,
   CreateStorageVirtualMachineError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateStorageVirtualMachineRequest,
   output: CreateStorageVirtualMachineResponse,
@@ -6563,7 +6594,7 @@ export const createVolume: API.OperationMethod<
   CreateVolumeRequest,
   CreateVolumeResponse,
   CreateVolumeError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateVolumeRequest,
   output: CreateVolumeResponse,
@@ -6600,7 +6631,7 @@ export const createVolumeFromBackup: API.OperationMethod<
   CreateVolumeFromBackupRequest,
   CreateVolumeFromBackupResponse,
   CreateVolumeFromBackupError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateVolumeFromBackupRequest,
   output: CreateVolumeFromBackupResponse,
@@ -6642,7 +6673,7 @@ export const deleteBackup: API.OperationMethod<
   DeleteBackupRequest,
   DeleteBackupResponse,
   DeleteBackupError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteBackupRequest,
   output: DeleteBackupResponse,
@@ -6680,7 +6711,7 @@ export const deleteDataRepositoryAssociation: API.OperationMethod<
   DeleteDataRepositoryAssociationRequest,
   DeleteDataRepositoryAssociationResponse,
   DeleteDataRepositoryAssociationError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteDataRepositoryAssociationRequest,
   output: DeleteDataRepositoryAssociationResponse,
@@ -6721,7 +6752,7 @@ export const deleteFileCache: API.OperationMethod<
   DeleteFileCacheRequest,
   DeleteFileCacheResponse,
   DeleteFileCacheError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteFileCacheRequest,
   output: DeleteFileCacheResponse,
@@ -6796,7 +6827,7 @@ export const deleteFileSystem: API.OperationMethod<
   DeleteFileSystemRequest,
   DeleteFileSystemResponse,
   DeleteFileSystemError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteFileSystemRequest,
   output: DeleteFileSystemResponse,
@@ -6829,7 +6860,7 @@ export const deleteSnapshot: API.OperationMethod<
   DeleteSnapshotRequest,
   DeleteSnapshotResponse,
   DeleteSnapshotError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteSnapshotRequest,
   output: DeleteSnapshotResponse,
@@ -6853,7 +6884,7 @@ export const deleteStorageVirtualMachine: API.OperationMethod<
   DeleteStorageVirtualMachineRequest,
   DeleteStorageVirtualMachineResponse,
   DeleteStorageVirtualMachineError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteStorageVirtualMachineRequest,
   output: DeleteStorageVirtualMachineResponse,
@@ -6883,7 +6914,7 @@ export const deleteVolume: API.OperationMethod<
   DeleteVolumeRequest,
   DeleteVolumeResponse,
   DeleteVolumeError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteVolumeRequest,
   output: DeleteVolumeResponse,
@@ -6933,27 +6964,13 @@ export type DescribeBackupsError =
  * `DescribeBackups` call and the order of the backups returned
  * across the responses of a multi-call iteration is unspecified.
  */
-export const describeBackups: API.OperationMethod<
+export const describeBackups: API.PaginatedOperationMethod<
   DescribeBackupsRequest,
   DescribeBackupsResponse,
   DescribeBackupsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeBackupsRequest,
-  ) => stream.Stream<
-    DescribeBackupsResponse,
-    DescribeBackupsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeBackupsRequest,
-  ) => stream.Stream<
-    unknown,
-    DescribeBackupsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeBackupsRequest,
   output: DescribeBackupsResponse,
   errors: [
@@ -6971,27 +6988,7 @@ export const describeBackups: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeBackupsRequest,
-  DescribeBackupsResponse,
-  DescribeBackupsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeBackupsRequest,
-  ) => stream.Stream<
-    DescribeBackupsResponse,
-    DescribeBackupsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeBackupsRequest,
-  ) => stream.Stream<
-    unknown,
-    DescribeBackupsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeDataRepositoryAssociationsError =
   | BadRequest
@@ -7023,27 +7020,13 @@ export type DescribeDataRepositoryAssociationsError =
  * request with the `NextToken` request parameter set to the value of
  * `NextToken` from the last response.
  */
-export const describeDataRepositoryAssociations: API.OperationMethod<
+export const describeDataRepositoryAssociations: API.PaginatedOperationMethod<
   DescribeDataRepositoryAssociationsRequest,
   DescribeDataRepositoryAssociationsResponse,
   DescribeDataRepositoryAssociationsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeDataRepositoryAssociationsRequest,
-  ) => stream.Stream<
-    DescribeDataRepositoryAssociationsResponse,
-    DescribeDataRepositoryAssociationsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeDataRepositoryAssociationsRequest,
-  ) => stream.Stream<
-    unknown,
-    DescribeDataRepositoryAssociationsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeDataRepositoryAssociationsRequest,
   output: DescribeDataRepositoryAssociationsResponse,
   errors: [
@@ -7061,27 +7044,7 @@ export const describeDataRepositoryAssociations: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeDataRepositoryAssociationsRequest,
-  DescribeDataRepositoryAssociationsResponse,
-  DescribeDataRepositoryAssociationsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeDataRepositoryAssociationsRequest,
-  ) => stream.Stream<
-    DescribeDataRepositoryAssociationsResponse,
-    DescribeDataRepositoryAssociationsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeDataRepositoryAssociationsRequest,
-  ) => stream.Stream<
-    unknown,
-    DescribeDataRepositoryAssociationsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeDataRepositoryTasksError =
   | BadRequest
@@ -7102,27 +7065,13 @@ export type DescribeDataRepositoryTasksError =
  * request with the `NextToken` request parameter set to the value of
  * `NextToken` from the last response.
  */
-export const describeDataRepositoryTasks: API.OperationMethod<
+export const describeDataRepositoryTasks: API.PaginatedOperationMethod<
   DescribeDataRepositoryTasksRequest,
   DescribeDataRepositoryTasksResponse,
   DescribeDataRepositoryTasksError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeDataRepositoryTasksRequest,
-  ) => stream.Stream<
-    DescribeDataRepositoryTasksResponse,
-    DescribeDataRepositoryTasksError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeDataRepositoryTasksRequest,
-  ) => stream.Stream<
-    unknown,
-    DescribeDataRepositoryTasksError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeDataRepositoryTasksRequest,
   output: DescribeDataRepositoryTasksResponse,
   errors: [
@@ -7139,27 +7088,7 @@ export const describeDataRepositoryTasks: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeDataRepositoryTasksRequest,
-  DescribeDataRepositoryTasksResponse,
-  DescribeDataRepositoryTasksError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeDataRepositoryTasksRequest,
-  ) => stream.Stream<
-    DescribeDataRepositoryTasksResponse,
-    DescribeDataRepositoryTasksError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeDataRepositoryTasksRequest,
-  ) => stream.Stream<
-    unknown,
-    DescribeDataRepositoryTasksError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeFileCachesError =
   | BadRequest
@@ -7195,27 +7124,13 @@ export type DescribeFileCachesError =
  * `DescribeFileCaches` call and the order of caches returned
  * across the responses of a multicall iteration is unspecified.
  */
-export const describeFileCaches: API.OperationMethod<
+export const describeFileCaches: API.PaginatedOperationMethod<
   DescribeFileCachesRequest,
   DescribeFileCachesResponse,
   DescribeFileCachesError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeFileCachesRequest,
-  ) => stream.Stream<
-    DescribeFileCachesResponse,
-    DescribeFileCachesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeFileCachesRequest,
-  ) => stream.Stream<
-    unknown,
-    DescribeFileCachesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeFileCachesRequest,
   output: DescribeFileCachesResponse,
   errors: [BadRequest, FileCacheNotFound, InternalServerError],
@@ -7227,27 +7142,7 @@ export const describeFileCaches: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeFileCachesRequest,
-  DescribeFileCachesResponse,
-  DescribeFileCachesError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeFileCachesRequest,
-  ) => stream.Stream<
-    DescribeFileCachesResponse,
-    DescribeFileCachesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeFileCachesRequest,
-  ) => stream.Stream<
-    unknown,
-    DescribeFileCachesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeFileSystemAliasesError =
   | BadRequest
@@ -7259,27 +7154,13 @@ export type DescribeFileSystemAliasesError =
  * all DNS aliases that have been associated with and disassociated from the file system is available in the list of AdministrativeAction
  * provided in the DescribeFileSystems operation response.
  */
-export const describeFileSystemAliases: API.OperationMethod<
+export const describeFileSystemAliases: API.PaginatedOperationMethod<
   DescribeFileSystemAliasesRequest,
   DescribeFileSystemAliasesResponse,
   DescribeFileSystemAliasesError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeFileSystemAliasesRequest,
-  ) => stream.Stream<
-    DescribeFileSystemAliasesResponse,
-    DescribeFileSystemAliasesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeFileSystemAliasesRequest,
-  ) => stream.Stream<
-    unknown,
-    DescribeFileSystemAliasesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeFileSystemAliasesRequest,
   output: DescribeFileSystemAliasesResponse,
   errors: [BadRequest, FileSystemNotFound, InternalServerError],
@@ -7291,27 +7172,7 @@ export const describeFileSystemAliases: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeFileSystemAliasesRequest,
-  DescribeFileSystemAliasesResponse,
-  DescribeFileSystemAliasesError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeFileSystemAliasesRequest,
-  ) => stream.Stream<
-    DescribeFileSystemAliasesResponse,
-    DescribeFileSystemAliasesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeFileSystemAliasesRequest,
-  ) => stream.Stream<
-    unknown,
-    DescribeFileSystemAliasesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeFileSystemsError =
   | BadRequest
@@ -7347,27 +7208,13 @@ export type DescribeFileSystemsError =
  * `DescribeFileSystems` call and the order of file systems returned
  * across the responses of a multicall iteration is unspecified.
  */
-export const describeFileSystems: API.OperationMethod<
+export const describeFileSystems: API.PaginatedOperationMethod<
   DescribeFileSystemsRequest,
   DescribeFileSystemsResponse,
   DescribeFileSystemsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeFileSystemsRequest,
-  ) => stream.Stream<
-    DescribeFileSystemsResponse,
-    DescribeFileSystemsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeFileSystemsRequest,
-  ) => stream.Stream<
-    unknown,
-    DescribeFileSystemsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeFileSystemsRequest,
   output: DescribeFileSystemsResponse,
   errors: [BadRequest, FileSystemNotFound, InternalServerError],
@@ -7379,27 +7226,7 @@ export const describeFileSystems: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeFileSystemsRequest,
-  DescribeFileSystemsResponse,
-  DescribeFileSystemsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeFileSystemsRequest,
-  ) => stream.Stream<
-    DescribeFileSystemsResponse,
-    DescribeFileSystemsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeFileSystemsRequest,
-  ) => stream.Stream<
-    unknown,
-    DescribeFileSystemsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeS3AccessPointAttachmentsError =
   | BadRequest
@@ -7414,27 +7241,13 @@ export type DescribeS3AccessPointAttachmentsError =
  *
  * - `fsx:DescribeS3AccessPointAttachments`
  */
-export const describeS3AccessPointAttachments: API.OperationMethod<
+export const describeS3AccessPointAttachments: API.PaginatedOperationMethod<
   DescribeS3AccessPointAttachmentsRequest,
   DescribeS3AccessPointAttachmentsResponse,
   DescribeS3AccessPointAttachmentsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeS3AccessPointAttachmentsRequest,
-  ) => stream.Stream<
-    DescribeS3AccessPointAttachmentsResponse,
-    DescribeS3AccessPointAttachmentsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeS3AccessPointAttachmentsRequest,
-  ) => stream.Stream<
-    S3AccessPointAttachment,
-    DescribeS3AccessPointAttachmentsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  S3AccessPointAttachment
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeS3AccessPointAttachmentsRequest,
   output: DescribeS3AccessPointAttachmentsResponse,
   errors: [
@@ -7452,27 +7265,7 @@ export const describeS3AccessPointAttachments: API.OperationMethod<
     items: "S3AccessPointAttachments",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeS3AccessPointAttachmentsRequest,
-  DescribeS3AccessPointAttachmentsResponse,
-  DescribeS3AccessPointAttachmentsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeS3AccessPointAttachmentsRequest,
-  ) => stream.Stream<
-    DescribeS3AccessPointAttachmentsResponse,
-    DescribeS3AccessPointAttachmentsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeS3AccessPointAttachmentsRequest,
-  ) => stream.Stream<
-    S3AccessPointAttachment,
-    DescribeS3AccessPointAttachmentsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeSharedVpcConfigurationError =
   | BadRequest
@@ -7486,7 +7279,7 @@ export const describeSharedVpcConfiguration: API.OperationMethod<
   DescribeSharedVpcConfigurationRequest,
   DescribeSharedVpcConfigurationResponse,
   DescribeSharedVpcConfigurationError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeSharedVpcConfigurationRequest,
   output: DescribeSharedVpcConfigurationResponse,
@@ -7529,27 +7322,13 @@ export type DescribeSnapshotsError =
  * `DescribeSnapshots` call and the order of backups returned across
  * the responses of a multi-call iteration is unspecified.
  */
-export const describeSnapshots: API.OperationMethod<
+export const describeSnapshots: API.PaginatedOperationMethod<
   DescribeSnapshotsRequest,
   DescribeSnapshotsResponse,
   DescribeSnapshotsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeSnapshotsRequest,
-  ) => stream.Stream<
-    DescribeSnapshotsResponse,
-    DescribeSnapshotsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeSnapshotsRequest,
-  ) => stream.Stream<
-    Snapshot,
-    DescribeSnapshotsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Snapshot
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeSnapshotsRequest,
   output: DescribeSnapshotsResponse,
   errors: [BadRequest, InternalServerError, SnapshotNotFound],
@@ -7562,27 +7341,7 @@ export const describeSnapshots: API.OperationMethod<
     items: "Snapshots",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeSnapshotsRequest,
-  DescribeSnapshotsResponse,
-  DescribeSnapshotsError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeSnapshotsRequest,
-  ) => stream.Stream<
-    DescribeSnapshotsResponse,
-    DescribeSnapshotsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeSnapshotsRequest,
-  ) => stream.Stream<
-    Snapshot,
-    DescribeSnapshotsError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeStorageVirtualMachinesError =
   | BadRequest
@@ -7592,27 +7351,13 @@ export type DescribeStorageVirtualMachinesError =
 /**
  * Describes one or more Amazon FSx for NetApp ONTAP storage virtual machines (SVMs).
  */
-export const describeStorageVirtualMachines: API.OperationMethod<
+export const describeStorageVirtualMachines: API.PaginatedOperationMethod<
   DescribeStorageVirtualMachinesRequest,
   DescribeStorageVirtualMachinesResponse,
   DescribeStorageVirtualMachinesError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeStorageVirtualMachinesRequest,
-  ) => stream.Stream<
-    DescribeStorageVirtualMachinesResponse,
-    DescribeStorageVirtualMachinesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeStorageVirtualMachinesRequest,
-  ) => stream.Stream<
-    StorageVirtualMachine,
-    DescribeStorageVirtualMachinesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  StorageVirtualMachine
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeStorageVirtualMachinesRequest,
   output: DescribeStorageVirtualMachinesResponse,
   errors: [BadRequest, InternalServerError, StorageVirtualMachineNotFound],
@@ -7625,27 +7370,7 @@ export const describeStorageVirtualMachines: API.OperationMethod<
     items: "StorageVirtualMachines",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeStorageVirtualMachinesRequest,
-  DescribeStorageVirtualMachinesResponse,
-  DescribeStorageVirtualMachinesError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeStorageVirtualMachinesRequest,
-  ) => stream.Stream<
-    DescribeStorageVirtualMachinesResponse,
-    DescribeStorageVirtualMachinesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeStorageVirtualMachinesRequest,
-  ) => stream.Stream<
-    StorageVirtualMachine,
-    DescribeStorageVirtualMachinesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DescribeVolumesError =
   | BadRequest
@@ -7656,27 +7381,13 @@ export type DescribeVolumesError =
  * Describes one or more Amazon FSx for NetApp ONTAP or Amazon FSx for
  * OpenZFS volumes.
  */
-export const describeVolumes: API.OperationMethod<
+export const describeVolumes: API.PaginatedOperationMethod<
   DescribeVolumesRequest,
   DescribeVolumesResponse,
   DescribeVolumesError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeVolumesRequest,
-  ) => stream.Stream<
-    DescribeVolumesResponse,
-    DescribeVolumesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeVolumesRequest,
-  ) => stream.Stream<
-    Volume,
-    DescribeVolumesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Volume
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeVolumesRequest,
   output: DescribeVolumesResponse,
   errors: [BadRequest, InternalServerError, VolumeNotFound],
@@ -7689,27 +7400,7 @@ export const describeVolumes: API.OperationMethod<
     items: "Volumes",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeVolumesRequest,
-  DescribeVolumesResponse,
-  DescribeVolumesError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeVolumesRequest,
-  ) => stream.Stream<
-    DescribeVolumesResponse,
-    DescribeVolumesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeVolumesRequest,
-  ) => stream.Stream<
-    Volume,
-    DescribeVolumesError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type DetachAndDeleteS3AccessPointError =
   | BadRequest
@@ -7731,7 +7422,7 @@ export const detachAndDeleteS3AccessPoint: API.OperationMethod<
   DetachAndDeleteS3AccessPointRequest,
   DetachAndDeleteS3AccessPointResponse,
   DetachAndDeleteS3AccessPointError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DetachAndDeleteS3AccessPointRequest,
   output: DetachAndDeleteS3AccessPointResponse,
@@ -7768,7 +7459,7 @@ export const disassociateFileSystemAliases: API.OperationMethod<
   DisassociateFileSystemAliasesRequest,
   DisassociateFileSystemAliasesResponse,
   DisassociateFileSystemAliasesError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DisassociateFileSystemAliasesRequest,
   output: DisassociateFileSystemAliasesResponse,
@@ -7810,27 +7501,13 @@ export type ListTagsForResourceError =
  * `ListTagsForResource` call and the order of tags returned across
  * the responses of a multi-call iteration is unspecified.
  */
-export const listTagsForResource: API.OperationMethod<
+export const listTagsForResource: API.PaginatedOperationMethod<
   ListTagsForResourceRequest,
   ListTagsForResourceResponse,
   ListTagsForResourceError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTagsForResourceRequest,
-  ) => stream.Stream<
-    ListTagsForResourceResponse,
-    ListTagsForResourceError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTagsForResourceRequest,
-  ) => stream.Stream<
-    unknown,
-    ListTagsForResourceError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
   errors: [
@@ -7848,27 +7525,7 @@ export const listTagsForResource: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListTagsForResourceRequest,
-  ListTagsForResourceResponse,
-  ListTagsForResourceError,
-  Credentials | Rgn | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTagsForResourceRequest,
-  ) => stream.Stream<
-    ListTagsForResourceResponse,
-    ListTagsForResourceError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTagsForResourceRequest,
-  ) => stream.Stream<
-    unknown,
-    ListTagsForResourceError,
-    Credentials | Rgn | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ReleaseFileSystemNfsV3LocksError =
   | BadRequest
@@ -7885,7 +7542,7 @@ export const releaseFileSystemNfsV3Locks: API.OperationMethod<
   ReleaseFileSystemNfsV3LocksRequest,
   ReleaseFileSystemNfsV3LocksResponse,
   ReleaseFileSystemNfsV3LocksError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ReleaseFileSystemNfsV3LocksRequest,
   output: ReleaseFileSystemNfsV3LocksResponse,
@@ -7915,7 +7572,7 @@ export const restoreVolumeFromSnapshot: API.OperationMethod<
   RestoreVolumeFromSnapshotRequest,
   RestoreVolumeFromSnapshotResponse,
   RestoreVolumeFromSnapshotError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: RestoreVolumeFromSnapshotRequest,
   output: RestoreVolumeFromSnapshotResponse,
@@ -7943,7 +7600,7 @@ export const startMisconfiguredStateRecovery: API.OperationMethod<
   StartMisconfiguredStateRecoveryRequest,
   StartMisconfiguredStateRecoveryResponse,
   StartMisconfiguredStateRecoveryError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartMisconfiguredStateRecoveryRequest,
   output: StartMisconfiguredStateRecoveryResponse,
@@ -7967,7 +7624,7 @@ export const tagResource: API.OperationMethod<
   TagResourceRequest,
   TagResourceResponse,
   TagResourceError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -7997,7 +7654,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceRequest,
   UntagResourceResponse,
   UntagResourceError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -8030,7 +7687,7 @@ export const updateDataRepositoryAssociation: API.OperationMethod<
   UpdateDataRepositoryAssociationRequest,
   UpdateDataRepositoryAssociationResponse,
   UpdateDataRepositoryAssociationError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateDataRepositoryAssociationRequest,
   output: UpdateDataRepositoryAssociationResponse,
@@ -8063,7 +7720,7 @@ export const updateFileCache: API.OperationMethod<
   UpdateFileCacheRequest,
   UpdateFileCacheResponse,
   UpdateFileCacheError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateFileCacheRequest,
   output: UpdateFileCacheResponse,
@@ -8203,7 +7860,7 @@ export const updateFileSystem: API.OperationMethod<
   UpdateFileSystemRequest,
   UpdateFileSystemResponse,
   UpdateFileSystemError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateFileSystemRequest,
   output: UpdateFileSystemResponse,
@@ -8242,7 +7899,7 @@ export const updateSharedVpcConfiguration: API.OperationMethod<
   UpdateSharedVpcConfigurationRequest,
   UpdateSharedVpcConfigurationResponse,
   UpdateSharedVpcConfigurationError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateSharedVpcConfigurationRequest,
   output: UpdateSharedVpcConfigurationResponse,
@@ -8265,7 +7922,7 @@ export const updateSnapshot: API.OperationMethod<
   UpdateSnapshotRequest,
   UpdateSnapshotResponse,
   UpdateSnapshotError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateSnapshotRequest,
   output: UpdateSnapshotResponse,
@@ -8294,7 +7951,7 @@ export const updateStorageVirtualMachine: API.OperationMethod<
   UpdateStorageVirtualMachineRequest,
   UpdateStorageVirtualMachineResponse,
   UpdateStorageVirtualMachineError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateStorageVirtualMachineRequest,
   output: UpdateStorageVirtualMachineResponse,
@@ -8324,7 +7981,7 @@ export const updateVolume: API.OperationMethod<
   UpdateVolumeRequest,
   UpdateVolumeResponse,
   UpdateVolumeError,
-  Credentials | Rgn | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateVolumeRequest,
   output: UpdateVolumeResponse,

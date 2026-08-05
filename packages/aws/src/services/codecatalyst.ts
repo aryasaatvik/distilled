@@ -1,14 +1,12 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as redacted from "effect/Redacted";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
 import * as T from "../traits.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 import { SensitiveString } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "CodeCatalyst",
@@ -2121,7 +2119,7 @@ export const createAccessToken: API.OperationMethod<
   CreateAccessTokenRequest,
   CreateAccessTokenResponse,
   CreateAccessTokenError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateAccessTokenRequest,
   output: CreateAccessTokenResponse,
@@ -2143,7 +2141,7 @@ export const createDevEnvironment: API.OperationMethod<
   CreateDevEnvironmentRequest,
   CreateDevEnvironmentResponse,
   CreateDevEnvironmentError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateDevEnvironmentRequest,
   output: CreateDevEnvironmentResponse,
@@ -2161,7 +2159,7 @@ export const createProject: API.OperationMethod<
   CreateProjectRequest,
   CreateProjectResponse,
   CreateProjectError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateProjectRequest,
   output: CreateProjectResponse,
@@ -2180,7 +2178,7 @@ export const createSourceRepository: API.OperationMethod<
   CreateSourceRepositoryRequest,
   CreateSourceRepositoryResponse,
   CreateSourceRepositoryError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateSourceRepositoryRequest,
   output: CreateSourceRepositoryResponse,
@@ -2200,7 +2198,7 @@ export const createSourceRepositoryBranch: API.OperationMethod<
   CreateSourceRepositoryBranchRequest,
   CreateSourceRepositoryBranchResponse,
   CreateSourceRepositoryBranchError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateSourceRepositoryBranchRequest,
   output: CreateSourceRepositoryBranchResponse,
@@ -2218,7 +2216,7 @@ export const deleteAccessToken: API.OperationMethod<
   DeleteAccessTokenRequest,
   DeleteAccessTokenResponse,
   DeleteAccessTokenError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteAccessTokenRequest,
   output: DeleteAccessTokenResponse,
@@ -2236,7 +2234,7 @@ export const deleteDevEnvironment: API.OperationMethod<
   DeleteDevEnvironmentRequest,
   DeleteDevEnvironmentResponse,
   DeleteDevEnvironmentError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteDevEnvironmentRequest,
   output: DeleteDevEnvironmentResponse,
@@ -2254,7 +2252,7 @@ export const deleteProject: API.OperationMethod<
   DeleteProjectRequest,
   DeleteProjectResponse,
   DeleteProjectError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteProjectRequest,
   output: DeleteProjectResponse,
@@ -2272,7 +2270,7 @@ export const deleteSourceRepository: API.OperationMethod<
   DeleteSourceRepositoryRequest,
   DeleteSourceRepositoryResponse,
   DeleteSourceRepositoryError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteSourceRepositoryRequest,
   output: DeleteSourceRepositoryResponse,
@@ -2292,7 +2290,7 @@ export const deleteSpace: API.OperationMethod<
   DeleteSpaceRequest,
   DeleteSpaceResponse,
   DeleteSpaceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteSpaceRequest,
   output: DeleteSpaceResponse,
@@ -2310,7 +2308,7 @@ export const getDevEnvironment: API.OperationMethod<
   GetDevEnvironmentRequest,
   GetDevEnvironmentResponse,
   GetDevEnvironmentError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetDevEnvironmentRequest,
   output: GetDevEnvironmentResponse,
@@ -2328,7 +2326,7 @@ export const getProject: API.OperationMethod<
   GetProjectRequest,
   GetProjectResponse,
   GetProjectError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetProjectRequest,
   output: GetProjectResponse,
@@ -2346,7 +2344,7 @@ export const getSourceRepository: API.OperationMethod<
   GetSourceRepositoryRequest,
   GetSourceRepositoryResponse,
   GetSourceRepositoryError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetSourceRepositoryRequest,
   output: GetSourceRepositoryResponse,
@@ -2365,7 +2363,7 @@ export const getSourceRepositoryCloneUrls: API.OperationMethod<
   GetSourceRepositoryCloneUrlsRequest,
   GetSourceRepositoryCloneUrlsResponse,
   GetSourceRepositoryCloneUrlsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetSourceRepositoryCloneUrlsRequest,
   output: GetSourceRepositoryCloneUrlsResponse,
@@ -2383,7 +2381,7 @@ export const getSpace: API.OperationMethod<
   GetSpaceRequest,
   GetSpaceResponse,
   GetSpaceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetSpaceRequest,
   output: GetSpaceResponse,
@@ -2402,7 +2400,7 @@ export const getSubscription: API.OperationMethod<
   GetSubscriptionRequest,
   GetSubscriptionResponse,
   GetSubscriptionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetSubscriptionRequest,
   output: GetSubscriptionResponse,
@@ -2420,7 +2418,7 @@ export const getUserDetails: API.OperationMethod<
   GetUserDetailsRequest,
   GetUserDetailsResponse,
   GetUserDetailsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetUserDetailsRequest,
   output: GetUserDetailsResponse,
@@ -2438,7 +2436,7 @@ export const getWorkflow: API.OperationMethod<
   GetWorkflowRequest,
   GetWorkflowResponse,
   GetWorkflowError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetWorkflowRequest,
   output: GetWorkflowResponse,
@@ -2456,7 +2454,7 @@ export const getWorkflowRun: API.OperationMethod<
   GetWorkflowRunRequest,
   GetWorkflowRunResponse,
   GetWorkflowRunError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetWorkflowRunRequest,
   output: GetWorkflowRunResponse,
@@ -2470,27 +2468,13 @@ export type ListAccessTokensError = CommonErrors;
 /**
  * Lists all personal access tokens (PATs) associated with the user who calls the API. You can only list PATs associated with your Amazon Web Services Builder ID.
  */
-export const listAccessTokens: API.OperationMethod<
+export const listAccessTokens: API.PaginatedOperationMethod<
   ListAccessTokensRequest,
   ListAccessTokensResponse,
   ListAccessTokensError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAccessTokensRequest,
-  ) => stream.Stream<
-    ListAccessTokensResponse,
-    ListAccessTokensError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAccessTokensRequest,
-  ) => stream.Stream<
-    AccessTokenSummary,
-    ListAccessTokensError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  AccessTokenSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListAccessTokensRequest,
   output: ListAccessTokensResponse,
   errors: [],
@@ -2503,53 +2487,19 @@ export const listAccessTokens: API.OperationMethod<
     items: "items",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListAccessTokensRequest,
-  ListAccessTokensResponse,
-  ListAccessTokensError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListAccessTokensRequest,
-  ) => stream.Stream<
-    ListAccessTokensResponse,
-    ListAccessTokensError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListAccessTokensRequest,
-  ) => stream.Stream<
-    AccessTokenSummary,
-    ListAccessTokensError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListDevEnvironmentsError = CommonErrors;
 /**
  * Retrieves a list of Dev Environments in a project.
  */
-export const listDevEnvironments: API.OperationMethod<
+export const listDevEnvironments: API.PaginatedOperationMethod<
   ListDevEnvironmentsRequest,
   ListDevEnvironmentsResponse,
   ListDevEnvironmentsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDevEnvironmentsRequest,
-  ) => stream.Stream<
-    ListDevEnvironmentsResponse,
-    ListDevEnvironmentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDevEnvironmentsRequest,
-  ) => stream.Stream<
-    DevEnvironmentSummary,
-    ListDevEnvironmentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  DevEnvironmentSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListDevEnvironmentsRequest,
   output: ListDevEnvironmentsResponse,
   errors: [],
@@ -2562,53 +2512,19 @@ export const listDevEnvironments: API.OperationMethod<
     items: "items",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListDevEnvironmentsRequest,
-  ListDevEnvironmentsResponse,
-  ListDevEnvironmentsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDevEnvironmentsRequest,
-  ) => stream.Stream<
-    ListDevEnvironmentsResponse,
-    ListDevEnvironmentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDevEnvironmentsRequest,
-  ) => stream.Stream<
-    DevEnvironmentSummary,
-    ListDevEnvironmentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListDevEnvironmentSessionsError = CommonErrors;
 /**
  * Retrieves a list of active sessions for a Dev Environment in a project.
  */
-export const listDevEnvironmentSessions: API.OperationMethod<
+export const listDevEnvironmentSessions: API.PaginatedOperationMethod<
   ListDevEnvironmentSessionsRequest,
   ListDevEnvironmentSessionsResponse,
   ListDevEnvironmentSessionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDevEnvironmentSessionsRequest,
-  ) => stream.Stream<
-    ListDevEnvironmentSessionsResponse,
-    ListDevEnvironmentSessionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDevEnvironmentSessionsRequest,
-  ) => stream.Stream<
-    DevEnvironmentSessionSummary,
-    ListDevEnvironmentSessionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  DevEnvironmentSessionSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListDevEnvironmentSessionsRequest,
   output: ListDevEnvironmentSessionsResponse,
   errors: [],
@@ -2621,27 +2537,7 @@ export const listDevEnvironmentSessions: API.OperationMethod<
     items: "items",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListDevEnvironmentSessionsRequest,
-  ListDevEnvironmentSessionsResponse,
-  ListDevEnvironmentSessionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDevEnvironmentSessionsRequest,
-  ) => stream.Stream<
-    ListDevEnvironmentSessionsResponse,
-    ListDevEnvironmentSessionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDevEnvironmentSessionsRequest,
-  ) => stream.Stream<
-    DevEnvironmentSessionSummary,
-    ListDevEnvironmentSessionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListEventLogsError = CommonErrors;
 /**
@@ -2655,27 +2551,13 @@ export type ListEventLogsError = CommonErrors;
  * and maintain a record of events that extends past 90 days. For more information, see Working with CloudTrail Event History and Working with
  * CloudTrail trails.
  */
-export const listEventLogs: API.OperationMethod<
+export const listEventLogs: API.PaginatedOperationMethod<
   ListEventLogsRequest,
   ListEventLogsResponse,
   ListEventLogsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListEventLogsRequest,
-  ) => stream.Stream<
-    ListEventLogsResponse,
-    ListEventLogsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListEventLogsRequest,
-  ) => stream.Stream<
-    EventLogEntry,
-    ListEventLogsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  EventLogEntry
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListEventLogsRequest,
   output: ListEventLogsResponse,
   errors: [],
@@ -2688,53 +2570,19 @@ export const listEventLogs: API.OperationMethod<
     items: "items",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListEventLogsRequest,
-  ListEventLogsResponse,
-  ListEventLogsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListEventLogsRequest,
-  ) => stream.Stream<
-    ListEventLogsResponse,
-    ListEventLogsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListEventLogsRequest,
-  ) => stream.Stream<
-    EventLogEntry,
-    ListEventLogsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListProjectsError = CommonErrors;
 /**
  * Retrieves a list of projects.
  */
-export const listProjects: API.OperationMethod<
+export const listProjects: API.PaginatedOperationMethod<
   ListProjectsRequest,
   ListProjectsResponse,
   ListProjectsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListProjectsRequest,
-  ) => stream.Stream<
-    ListProjectsResponse,
-    ListProjectsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListProjectsRequest,
-  ) => stream.Stream<
-    ProjectSummary,
-    ListProjectsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ProjectSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListProjectsRequest,
   output: ListProjectsResponse,
   errors: [],
@@ -2747,53 +2595,19 @@ export const listProjects: API.OperationMethod<
     items: "items",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListProjectsRequest,
-  ListProjectsResponse,
-  ListProjectsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListProjectsRequest,
-  ) => stream.Stream<
-    ListProjectsResponse,
-    ListProjectsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListProjectsRequest,
-  ) => stream.Stream<
-    ProjectSummary,
-    ListProjectsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListSourceRepositoriesError = CommonErrors;
 /**
  * Retrieves a list of source repositories in a project.
  */
-export const listSourceRepositories: API.OperationMethod<
+export const listSourceRepositories: API.PaginatedOperationMethod<
   ListSourceRepositoriesRequest,
   ListSourceRepositoriesResponse,
   ListSourceRepositoriesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSourceRepositoriesRequest,
-  ) => stream.Stream<
-    ListSourceRepositoriesResponse,
-    ListSourceRepositoriesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSourceRepositoriesRequest,
-  ) => stream.Stream<
-    ListSourceRepositoriesItem,
-    ListSourceRepositoriesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ListSourceRepositoriesItem
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListSourceRepositoriesRequest,
   output: ListSourceRepositoriesResponse,
   errors: [],
@@ -2806,53 +2620,19 @@ export const listSourceRepositories: API.OperationMethod<
     items: "items",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListSourceRepositoriesRequest,
-  ListSourceRepositoriesResponse,
-  ListSourceRepositoriesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSourceRepositoriesRequest,
-  ) => stream.Stream<
-    ListSourceRepositoriesResponse,
-    ListSourceRepositoriesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSourceRepositoriesRequest,
-  ) => stream.Stream<
-    ListSourceRepositoriesItem,
-    ListSourceRepositoriesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListSourceRepositoryBranchesError = CommonErrors;
 /**
  * Retrieves a list of branches in a specified source repository.
  */
-export const listSourceRepositoryBranches: API.OperationMethod<
+export const listSourceRepositoryBranches: API.PaginatedOperationMethod<
   ListSourceRepositoryBranchesRequest,
   ListSourceRepositoryBranchesResponse,
   ListSourceRepositoryBranchesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSourceRepositoryBranchesRequest,
-  ) => stream.Stream<
-    ListSourceRepositoryBranchesResponse,
-    ListSourceRepositoryBranchesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSourceRepositoryBranchesRequest,
-  ) => stream.Stream<
-    ListSourceRepositoryBranchesItem,
-    ListSourceRepositoryBranchesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ListSourceRepositoryBranchesItem
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListSourceRepositoryBranchesRequest,
   output: ListSourceRepositoryBranchesResponse,
   errors: [],
@@ -2865,53 +2645,19 @@ export const listSourceRepositoryBranches: API.OperationMethod<
     items: "items",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListSourceRepositoryBranchesRequest,
-  ListSourceRepositoryBranchesResponse,
-  ListSourceRepositoryBranchesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSourceRepositoryBranchesRequest,
-  ) => stream.Stream<
-    ListSourceRepositoryBranchesResponse,
-    ListSourceRepositoryBranchesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSourceRepositoryBranchesRequest,
-  ) => stream.Stream<
-    ListSourceRepositoryBranchesItem,
-    ListSourceRepositoryBranchesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListSpacesError = CommonErrors;
 /**
  * Retrieves a list of spaces.
  */
-export const listSpaces: API.OperationMethod<
+export const listSpaces: API.PaginatedOperationMethod<
   ListSpacesRequest,
   ListSpacesResponse,
   ListSpacesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSpacesRequest,
-  ) => stream.Stream<
-    ListSpacesResponse,
-    ListSpacesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSpacesRequest,
-  ) => stream.Stream<
-    SpaceSummary,
-    ListSpacesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  SpaceSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListSpacesRequest,
   output: ListSpacesResponse,
   errors: [],
@@ -2923,53 +2669,19 @@ export const listSpaces: API.OperationMethod<
     outputToken: "nextToken",
     items: "items",
   } as const,
-})) as any as API.OperationMethod<
-  ListSpacesRequest,
-  ListSpacesResponse,
-  ListSpacesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSpacesRequest,
-  ) => stream.Stream<
-    ListSpacesResponse,
-    ListSpacesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSpacesRequest,
-  ) => stream.Stream<
-    SpaceSummary,
-    ListSpacesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListWorkflowRunsError = CommonErrors;
 /**
  * Retrieves a list of workflow runs of a specified workflow.
  */
-export const listWorkflowRuns: API.OperationMethod<
+export const listWorkflowRuns: API.PaginatedOperationMethod<
   ListWorkflowRunsRequest,
   ListWorkflowRunsResponse,
   ListWorkflowRunsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListWorkflowRunsRequest,
-  ) => stream.Stream<
-    ListWorkflowRunsResponse,
-    ListWorkflowRunsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListWorkflowRunsRequest,
-  ) => stream.Stream<
-    WorkflowRunSummary,
-    ListWorkflowRunsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  WorkflowRunSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListWorkflowRunsRequest,
   output: ListWorkflowRunsResponse,
   errors: [],
@@ -2982,53 +2694,19 @@ export const listWorkflowRuns: API.OperationMethod<
     items: "items",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListWorkflowRunsRequest,
-  ListWorkflowRunsResponse,
-  ListWorkflowRunsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListWorkflowRunsRequest,
-  ) => stream.Stream<
-    ListWorkflowRunsResponse,
-    ListWorkflowRunsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListWorkflowRunsRequest,
-  ) => stream.Stream<
-    WorkflowRunSummary,
-    ListWorkflowRunsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListWorkflowsError = CommonErrors;
 /**
  * Retrieves a list of workflows in a specified project.
  */
-export const listWorkflows: API.OperationMethod<
+export const listWorkflows: API.PaginatedOperationMethod<
   ListWorkflowsRequest,
   ListWorkflowsResponse,
   ListWorkflowsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListWorkflowsRequest,
-  ) => stream.Stream<
-    ListWorkflowsResponse,
-    ListWorkflowsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListWorkflowsRequest,
-  ) => stream.Stream<
-    WorkflowSummary,
-    ListWorkflowsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  WorkflowSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListWorkflowsRequest,
   output: ListWorkflowsResponse,
   errors: [],
@@ -3041,27 +2719,7 @@ export const listWorkflows: API.OperationMethod<
     items: "items",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListWorkflowsRequest,
-  ListWorkflowsResponse,
-  ListWorkflowsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListWorkflowsRequest,
-  ) => stream.Stream<
-    ListWorkflowsResponse,
-    ListWorkflowsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListWorkflowsRequest,
-  ) => stream.Stream<
-    WorkflowSummary,
-    ListWorkflowsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type StartDevEnvironmentError = CommonErrors;
 /**
@@ -3071,7 +2729,7 @@ export const startDevEnvironment: API.OperationMethod<
   StartDevEnvironmentRequest,
   StartDevEnvironmentResponse,
   StartDevEnvironmentError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartDevEnvironmentRequest,
   output: StartDevEnvironmentResponse,
@@ -3089,7 +2747,7 @@ export const startDevEnvironmentSession: API.OperationMethod<
   StartDevEnvironmentSessionRequest,
   StartDevEnvironmentSessionResponse,
   StartDevEnvironmentSessionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartDevEnvironmentSessionRequest,
   output: StartDevEnvironmentSessionResponse,
@@ -3107,7 +2765,7 @@ export const startWorkflowRun: API.OperationMethod<
   StartWorkflowRunRequest,
   StartWorkflowRunResponse,
   StartWorkflowRunError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartWorkflowRunRequest,
   output: StartWorkflowRunResponse,
@@ -3125,7 +2783,7 @@ export const stopDevEnvironment: API.OperationMethod<
   StopDevEnvironmentRequest,
   StopDevEnvironmentResponse,
   StopDevEnvironmentError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StopDevEnvironmentRequest,
   output: StopDevEnvironmentResponse,
@@ -3143,7 +2801,7 @@ export const stopDevEnvironmentSession: API.OperationMethod<
   StopDevEnvironmentSessionRequest,
   StopDevEnvironmentSessionResponse,
   StopDevEnvironmentSessionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StopDevEnvironmentSessionRequest,
   output: StopDevEnvironmentSessionResponse,
@@ -3161,7 +2819,7 @@ export const updateDevEnvironment: API.OperationMethod<
   UpdateDevEnvironmentRequest,
   UpdateDevEnvironmentResponse,
   UpdateDevEnvironmentError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateDevEnvironmentRequest,
   output: UpdateDevEnvironmentResponse,
@@ -3179,7 +2837,7 @@ export const updateProject: API.OperationMethod<
   UpdateProjectRequest,
   UpdateProjectResponse,
   UpdateProjectError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateProjectRequest,
   output: UpdateProjectResponse,
@@ -3197,7 +2855,7 @@ export const updateSpace: API.OperationMethod<
   UpdateSpaceRequest,
   UpdateSpaceResponse,
   UpdateSpaceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateSpaceRequest,
   output: UpdateSpaceResponse,
@@ -3215,7 +2873,7 @@ export const verifySession: API.OperationMethod<
   VerifySessionRequest,
   VerifySessionResponse,
   VerifySessionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: VerifySessionRequest,
   output: VerifySessionResponse,

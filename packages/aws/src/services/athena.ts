@@ -1,6 +1,5 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -8,7 +7,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 const svc = T.AwsApiService({
   sdkId: "Athena",
   serviceShapeName: "AmazonAthena",
@@ -88,7 +86,10 @@ const rules = T.EndpointResolver((p, _) => {
 export class DataCatalogNotFound
   extends /*@__PURE__*/ S.TaggedErrorClass<DataCatalogNotFound>()(
     "DataCatalogNotFound",
-    { AthenaErrorCode: S.optional(S.String), Message: S.optional(S.String) },
+    {
+      AthenaErrorCode: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.SyntheticError({
       from: "InvalidRequestException",
       message: { matches: "DataCatalog.*not found" },
@@ -97,22 +98,28 @@ export class DataCatalogNotFound
 export class InternalServerException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
     "InternalServerException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class InvalidRequestException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidRequestException>()(
     "InvalidRequestException",
-    { AthenaErrorCode: S.optional(S.String), Message: S.optional(S.String) },
+    {
+      AthenaErrorCode: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
   ) {}
 export class MetadataException
   extends /*@__PURE__*/ S.TaggedErrorClass<MetadataException>()(
     "MetadataException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class NamedQueryNotFound
   extends /*@__PURE__*/ S.TaggedErrorClass<NamedQueryNotFound>()(
     "NamedQueryNotFound",
-    { AthenaErrorCode: S.optional(S.String), Message: S.optional(S.String) },
+    {
+      AthenaErrorCode: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.SyntheticError({
       from: "InvalidRequestException",
       message: { matches: "NamedQuery.*does not exist" },
@@ -121,18 +128,21 @@ export class NamedQueryNotFound
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { Message: S.optional(S.String), ResourceName: S.optional(S.String) },
+    {
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+      ResourceName: S.optional(S.String),
+    },
   ) {}
 export class SessionAlreadyExistsException
   extends /*@__PURE__*/ S.TaggedErrorClass<SessionAlreadyExistsException>()(
     "SessionAlreadyExistsException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ).pipe(C.withAlreadyExistsError) {}
 export class TooManyRequestsException
   extends /*@__PURE__*/ S.TaggedErrorClass<TooManyRequestsException>()(
     "TooManyRequestsException",
     {
-      Message: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
       Reason: S.optional(
         S.suspend(() => ThrottleReason).annotate({
           identifier: "ThrottleReason",
@@ -143,7 +153,10 @@ export class TooManyRequestsException
 export class WorkGroupNotFound
   extends /*@__PURE__*/ S.TaggedErrorClass<WorkGroupNotFound>()(
     "WorkGroupNotFound",
-    { AthenaErrorCode: S.optional(S.String), Message: S.optional(S.String) },
+    {
+      AthenaErrorCode: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
+    },
     T.SyntheticError({
       from: "InvalidRequestException",
       message: { matches: "WorkGroup.*not found" },
@@ -3270,7 +3283,7 @@ export const batchGetNamedQuery: API.OperationMethod<
   BatchGetNamedQueryInput,
   BatchGetNamedQueryOutput,
   BatchGetNamedQueryError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchGetNamedQueryInput,
   output: BatchGetNamedQueryOutput,
@@ -3295,7 +3308,7 @@ export const batchGetPreparedStatement: API.OperationMethod<
   BatchGetPreparedStatementInput,
   BatchGetPreparedStatementOutput,
   BatchGetPreparedStatementError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchGetPreparedStatementInput,
   output: BatchGetPreparedStatementOutput,
@@ -3321,7 +3334,7 @@ export const batchGetQueryExecution: API.OperationMethod<
   BatchGetQueryExecutionInput,
   BatchGetQueryExecutionOutput,
   BatchGetQueryExecutionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchGetQueryExecutionInput,
   output: BatchGetQueryExecutionOutput,
@@ -3345,7 +3358,7 @@ export const cancelCapacityReservation: API.OperationMethod<
   CancelCapacityReservationInput,
   CancelCapacityReservationOutput,
   CancelCapacityReservationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CancelCapacityReservationInput,
   output: CancelCapacityReservationOutput,
@@ -3367,7 +3380,7 @@ export const createCapacityReservation: API.OperationMethod<
   CreateCapacityReservationInput,
   CreateCapacityReservationOutput,
   CreateCapacityReservationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateCapacityReservationInput,
   output: CreateCapacityReservationOutput,
@@ -3404,7 +3417,7 @@ export const createDataCatalog: API.OperationMethod<
   CreateDataCatalogInput,
   CreateDataCatalogOutput,
   CreateDataCatalogError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateDataCatalogInput,
   output: CreateDataCatalogOutput,
@@ -3426,7 +3439,7 @@ export const createNamedQuery: API.OperationMethod<
   CreateNamedQueryInput,
   CreateNamedQueryOutput,
   CreateNamedQueryError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateNamedQueryInput,
   output: CreateNamedQueryOutput,
@@ -3450,7 +3463,7 @@ export const createNotebook: API.OperationMethod<
   CreateNotebookInput,
   CreateNotebookOutput,
   CreateNotebookError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateNotebookInput,
   output: CreateNotebookOutput,
@@ -3475,7 +3488,7 @@ export const createPreparedStatement: API.OperationMethod<
   CreatePreparedStatementInput,
   CreatePreparedStatementOutput,
   CreatePreparedStatementError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreatePreparedStatementInput,
   output: CreatePreparedStatementOutput,
@@ -3501,7 +3514,7 @@ export const createPresignedNotebookUrl: API.OperationMethod<
   CreatePresignedNotebookUrlRequest,
   CreatePresignedNotebookUrlResponse,
   CreatePresignedNotebookUrlError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreatePresignedNotebookUrlRequest,
   output: CreatePresignedNotebookUrlResponse,
@@ -3527,7 +3540,7 @@ export const createWorkGroup: API.OperationMethod<
   CreateWorkGroupInput,
   CreateWorkGroupOutput,
   CreateWorkGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateWorkGroupInput,
   output: CreateWorkGroupOutput,
@@ -3552,7 +3565,7 @@ export const deleteCapacityReservation: API.OperationMethod<
   DeleteCapacityReservationInput,
   DeleteCapacityReservationOutput,
   DeleteCapacityReservationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteCapacityReservationInput,
   output: DeleteCapacityReservationOutput,
@@ -3574,7 +3587,7 @@ export const deleteDataCatalog: API.OperationMethod<
   DeleteDataCatalogInput,
   DeleteDataCatalogOutput,
   DeleteDataCatalogError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteDataCatalogInput,
   output: DeleteDataCatalogOutput,
@@ -3601,7 +3614,7 @@ export const deleteNamedQuery: API.OperationMethod<
   DeleteNamedQueryInput,
   DeleteNamedQueryOutput,
   DeleteNamedQueryError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteNamedQueryInput,
   output: DeleteNamedQueryOutput,
@@ -3627,7 +3640,7 @@ export const deleteNotebook: API.OperationMethod<
   DeleteNotebookInput,
   DeleteNotebookOutput,
   DeleteNotebookError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteNotebookInput,
   output: DeleteNotebookOutput,
@@ -3655,7 +3668,7 @@ export const deletePreparedStatement: API.OperationMethod<
   DeletePreparedStatementInput,
   DeletePreparedStatementOutput,
   DeletePreparedStatementError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeletePreparedStatementInput,
   output: DeletePreparedStatementOutput,
@@ -3682,7 +3695,7 @@ export const deleteWorkGroup: API.OperationMethod<
   DeleteWorkGroupInput,
   DeleteWorkGroupOutput,
   DeleteWorkGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteWorkGroupInput,
   output: DeleteWorkGroupOutput,
@@ -3704,7 +3717,7 @@ export const exportNotebook: API.OperationMethod<
   ExportNotebookInput,
   ExportNotebookOutput,
   ExportNotebookError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ExportNotebookInput,
   output: ExportNotebookOutput,
@@ -3730,7 +3743,7 @@ export const getCalculationExecution: API.OperationMethod<
   GetCalculationExecutionRequest,
   GetCalculationExecutionResponse,
   GetCalculationExecutionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetCalculationExecutionRequest,
   output: GetCalculationExecutionResponse,
@@ -3756,7 +3769,7 @@ export const getCalculationExecutionCode: API.OperationMethod<
   GetCalculationExecutionCodeRequest,
   GetCalculationExecutionCodeResponse,
   GetCalculationExecutionCodeError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetCalculationExecutionCodeRequest,
   output: GetCalculationExecutionCodeResponse,
@@ -3782,7 +3795,7 @@ export const getCalculationExecutionStatus: API.OperationMethod<
   GetCalculationExecutionStatusRequest,
   GetCalculationExecutionStatusResponse,
   GetCalculationExecutionStatusError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetCalculationExecutionStatusRequest,
   output: GetCalculationExecutionStatusResponse,
@@ -3808,7 +3821,7 @@ export const getCapacityAssignmentConfiguration: API.OperationMethod<
   GetCapacityAssignmentConfigurationInput,
   GetCapacityAssignmentConfigurationOutput,
   GetCapacityAssignmentConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetCapacityAssignmentConfigurationInput,
   output: GetCapacityAssignmentConfigurationOutput,
@@ -3829,7 +3842,7 @@ export const getCapacityReservation: API.OperationMethod<
   GetCapacityReservationInput,
   GetCapacityReservationOutput,
   GetCapacityReservationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetCapacityReservationInput,
   output: GetCapacityReservationOutput,
@@ -3851,7 +3864,7 @@ export const getDatabase: API.OperationMethod<
   GetDatabaseInput,
   GetDatabaseOutput,
   GetDatabaseError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetDatabaseInput,
   output: GetDatabaseOutput,
@@ -3873,7 +3886,7 @@ export const getDataCatalog: API.OperationMethod<
   GetDataCatalogInput,
   GetDataCatalogOutput,
   GetDataCatalogError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetDataCatalogInput,
   output: GetDataCatalogOutput,
@@ -3900,7 +3913,7 @@ export const getNamedQuery: API.OperationMethod<
   GetNamedQueryInput,
   GetNamedQueryOutput,
   GetNamedQueryError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetNamedQueryInput,
   output: GetNamedQueryOutput,
@@ -3926,7 +3939,7 @@ export const getNotebookMetadata: API.OperationMethod<
   GetNotebookMetadataInput,
   GetNotebookMetadataOutput,
   GetNotebookMetadataError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetNotebookMetadataInput,
   output: GetNotebookMetadataOutput,
@@ -3954,7 +3967,7 @@ export const getPreparedStatement: API.OperationMethod<
   GetPreparedStatementInput,
   GetPreparedStatementOutput,
   GetPreparedStatementError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetPreparedStatementInput,
   output: GetPreparedStatementOutput,
@@ -3982,7 +3995,7 @@ export const getQueryExecution: API.OperationMethod<
   GetQueryExecutionInput,
   GetQueryExecutionOutput,
   GetQueryExecutionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetQueryExecutionInput,
   output: GetQueryExecutionOutput,
@@ -4015,27 +4028,13 @@ export type GetQueryResultsError =
  * ensure that Amazon S3 permissions to the Athena query location
  * are denied.
  */
-export const getQueryResults: API.OperationMethod<
+export const getQueryResults: API.PaginatedOperationMethod<
   GetQueryResultsInput,
   GetQueryResultsOutput,
   GetQueryResultsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetQueryResultsInput,
-  ) => stream.Stream<
-    GetQueryResultsOutput,
-    GetQueryResultsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetQueryResultsInput,
-  ) => stream.Stream<
-    unknown,
-    GetQueryResultsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetQueryResultsInput,
   output: GetQueryResultsOutput,
   errors: [
@@ -4051,27 +4050,7 @@ export const getQueryResults: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  GetQueryResultsInput,
-  GetQueryResultsOutput,
-  GetQueryResultsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetQueryResultsInput,
-  ) => stream.Stream<
-    GetQueryResultsOutput,
-    GetQueryResultsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetQueryResultsInput,
-  ) => stream.Stream<
-    unknown,
-    GetQueryResultsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetQueryRuntimeStatisticsError =
   | InternalServerException
@@ -4090,7 +4069,7 @@ export const getQueryRuntimeStatistics: API.OperationMethod<
   GetQueryRuntimeStatisticsInput,
   GetQueryRuntimeStatisticsOutput,
   GetQueryRuntimeStatisticsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetQueryRuntimeStatisticsInput,
   output: GetQueryRuntimeStatisticsOutput,
@@ -4112,7 +4091,7 @@ export const getResourceDashboard: API.OperationMethod<
   GetResourceDashboardRequest,
   GetResourceDashboardResponse,
   GetResourceDashboardError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetResourceDashboardRequest,
   output: GetResourceDashboardResponse,
@@ -4139,7 +4118,7 @@ export const getSession: API.OperationMethod<
   GetSessionRequest,
   GetSessionResponse,
   GetSessionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetSessionRequest,
   output: GetSessionResponse,
@@ -4165,7 +4144,7 @@ export const getSessionEndpoint: API.OperationMethod<
   GetSessionEndpointRequest,
   GetSessionEndpointResponse,
   GetSessionEndpointError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetSessionEndpointRequest,
   output: GetSessionEndpointResponse,
@@ -4191,7 +4170,7 @@ export const getSessionStatus: API.OperationMethod<
   GetSessionStatusRequest,
   GetSessionStatusResponse,
   GetSessionStatusError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetSessionStatusRequest,
   output: GetSessionStatusResponse,
@@ -4217,7 +4196,7 @@ export const getTableMetadata: API.OperationMethod<
   GetTableMetadataInput,
   GetTableMetadataOutput,
   GetTableMetadataError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetTableMetadataInput,
   output: GetTableMetadataOutput,
@@ -4239,7 +4218,7 @@ export const getWorkGroup: API.OperationMethod<
   GetWorkGroupInput,
   GetWorkGroupOutput,
   GetWorkGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetWorkGroupInput,
   output: GetWorkGroupOutput,
@@ -4266,7 +4245,7 @@ export const importNotebook: API.OperationMethod<
   ImportNotebookInput,
   ImportNotebookOutput,
   ImportNotebookError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ImportNotebookInput,
   output: ImportNotebookOutput,
@@ -4289,27 +4268,13 @@ export type ListApplicationDPUSizesError =
  * Returns the supported DPU sizes for the supported application runtimes (for example,
  * `Athena notebook version 1`).
  */
-export const listApplicationDPUSizes: API.OperationMethod<
+export const listApplicationDPUSizes: API.PaginatedOperationMethod<
   ListApplicationDPUSizesInput,
   ListApplicationDPUSizesOutput,
   ListApplicationDPUSizesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListApplicationDPUSizesInput,
-  ) => stream.Stream<
-    ListApplicationDPUSizesOutput,
-    ListApplicationDPUSizesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListApplicationDPUSizesInput,
-  ) => stream.Stream<
-    unknown,
-    ListApplicationDPUSizesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListApplicationDPUSizesInput,
   output: ListApplicationDPUSizesOutput,
   errors: [
@@ -4325,27 +4290,7 @@ export const listApplicationDPUSizes: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListApplicationDPUSizesInput,
-  ListApplicationDPUSizesOutput,
-  ListApplicationDPUSizesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListApplicationDPUSizesInput,
-  ) => stream.Stream<
-    ListApplicationDPUSizesOutput,
-    ListApplicationDPUSizesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListApplicationDPUSizesInput,
-  ) => stream.Stream<
-    unknown,
-    ListApplicationDPUSizesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListCalculationExecutionsError =
   | InternalServerException
@@ -4356,27 +4301,13 @@ export type ListCalculationExecutionsError =
  * Lists the calculations that have been submitted to a session in descending order.
  * Newer calculations are listed first; older calculations are listed later.
  */
-export const listCalculationExecutions: API.OperationMethod<
+export const listCalculationExecutions: API.PaginatedOperationMethod<
   ListCalculationExecutionsRequest,
   ListCalculationExecutionsResponse,
   ListCalculationExecutionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCalculationExecutionsRequest,
-  ) => stream.Stream<
-    ListCalculationExecutionsResponse,
-    ListCalculationExecutionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCalculationExecutionsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListCalculationExecutionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListCalculationExecutionsRequest,
   output: ListCalculationExecutionsResponse,
   errors: [
@@ -4392,27 +4323,7 @@ export const listCalculationExecutions: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListCalculationExecutionsRequest,
-  ListCalculationExecutionsResponse,
-  ListCalculationExecutionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCalculationExecutionsRequest,
-  ) => stream.Stream<
-    ListCalculationExecutionsResponse,
-    ListCalculationExecutionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCalculationExecutionsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListCalculationExecutionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListCapacityReservationsError =
   | InternalServerException
@@ -4421,27 +4332,13 @@ export type ListCapacityReservationsError =
 /**
  * Lists the capacity reservations for the current account.
  */
-export const listCapacityReservations: API.OperationMethod<
+export const listCapacityReservations: API.PaginatedOperationMethod<
   ListCapacityReservationsInput,
   ListCapacityReservationsOutput,
   ListCapacityReservationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCapacityReservationsInput,
-  ) => stream.Stream<
-    ListCapacityReservationsOutput,
-    ListCapacityReservationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCapacityReservationsInput,
-  ) => stream.Stream<
-    unknown,
-    ListCapacityReservationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListCapacityReservationsInput,
   output: ListCapacityReservationsOutput,
   errors: [InternalServerException, InvalidRequestException],
@@ -4453,27 +4350,7 @@ export const listCapacityReservations: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListCapacityReservationsInput,
-  ListCapacityReservationsOutput,
-  ListCapacityReservationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCapacityReservationsInput,
-  ) => stream.Stream<
-    ListCapacityReservationsOutput,
-    ListCapacityReservationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCapacityReservationsInput,
-  ) => stream.Stream<
-    unknown,
-    ListCapacityReservationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListDatabasesError =
   | InternalServerException
@@ -4483,27 +4360,13 @@ export type ListDatabasesError =
 /**
  * Lists the databases in the specified data catalog.
  */
-export const listDatabases: API.OperationMethod<
+export const listDatabases: API.PaginatedOperationMethod<
   ListDatabasesInput,
   ListDatabasesOutput,
   ListDatabasesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDatabasesInput,
-  ) => stream.Stream<
-    ListDatabasesOutput,
-    ListDatabasesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDatabasesInput,
-  ) => stream.Stream<
-    Database,
-    ListDatabasesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Database
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListDatabasesInput,
   output: ListDatabasesOutput,
   errors: [InternalServerException, InvalidRequestException, MetadataException],
@@ -4516,27 +4379,7 @@ export const listDatabases: API.OperationMethod<
     items: "DatabaseList",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListDatabasesInput,
-  ListDatabasesOutput,
-  ListDatabasesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDatabasesInput,
-  ) => stream.Stream<
-    ListDatabasesOutput,
-    ListDatabasesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDatabasesInput,
-  ) => stream.Stream<
-    Database,
-    ListDatabasesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListDataCatalogsError =
   | InternalServerException
@@ -4548,27 +4391,13 @@ export type ListDataCatalogsError =
  * In the Athena console, data catalogs are listed as "data sources" on
  * the **Data sources** page under the **Data source name** column.
  */
-export const listDataCatalogs: API.OperationMethod<
+export const listDataCatalogs: API.PaginatedOperationMethod<
   ListDataCatalogsInput,
   ListDataCatalogsOutput,
   ListDataCatalogsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDataCatalogsInput,
-  ) => stream.Stream<
-    ListDataCatalogsOutput,
-    ListDataCatalogsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDataCatalogsInput,
-  ) => stream.Stream<
-    DataCatalogSummary,
-    ListDataCatalogsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  DataCatalogSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListDataCatalogsInput,
   output: ListDataCatalogsOutput,
   errors: [InternalServerException, InvalidRequestException],
@@ -4581,27 +4410,7 @@ export const listDataCatalogs: API.OperationMethod<
     items: "DataCatalogsSummary",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListDataCatalogsInput,
-  ListDataCatalogsOutput,
-  ListDataCatalogsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDataCatalogsInput,
-  ) => stream.Stream<
-    ListDataCatalogsOutput,
-    ListDataCatalogsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDataCatalogsInput,
-  ) => stream.Stream<
-    DataCatalogSummary,
-    ListDataCatalogsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListEngineVersionsError =
   | InternalServerException
@@ -4611,27 +4420,13 @@ export type ListEngineVersionsError =
  * Returns a list of engine versions that are available to choose from, including the
  * Auto option.
  */
-export const listEngineVersions: API.OperationMethod<
+export const listEngineVersions: API.PaginatedOperationMethod<
   ListEngineVersionsInput,
   ListEngineVersionsOutput,
   ListEngineVersionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListEngineVersionsInput,
-  ) => stream.Stream<
-    ListEngineVersionsOutput,
-    ListEngineVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListEngineVersionsInput,
-  ) => stream.Stream<
-    unknown,
-    ListEngineVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListEngineVersionsInput,
   output: ListEngineVersionsOutput,
   errors: [InternalServerException, InvalidRequestException],
@@ -4643,27 +4438,7 @@ export const listEngineVersions: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListEngineVersionsInput,
-  ListEngineVersionsOutput,
-  ListEngineVersionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListEngineVersionsInput,
-  ) => stream.Stream<
-    ListEngineVersionsOutput,
-    ListEngineVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListEngineVersionsInput,
-  ) => stream.Stream<
-    unknown,
-    ListEngineVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListExecutorsError =
   | InternalServerException
@@ -4675,27 +4450,13 @@ export type ListExecutorsError =
  * listed first; older executors are listed later. The result can be optionally filtered by
  * state.
  */
-export const listExecutors: API.OperationMethod<
+export const listExecutors: API.PaginatedOperationMethod<
   ListExecutorsRequest,
   ListExecutorsResponse,
   ListExecutorsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListExecutorsRequest,
-  ) => stream.Stream<
-    ListExecutorsResponse,
-    ListExecutorsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListExecutorsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListExecutorsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListExecutorsRequest,
   output: ListExecutorsResponse,
   errors: [
@@ -4711,27 +4472,7 @@ export const listExecutors: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListExecutorsRequest,
-  ListExecutorsResponse,
-  ListExecutorsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListExecutorsRequest,
-  ) => stream.Stream<
-    ListExecutorsResponse,
-    ListExecutorsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListExecutorsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListExecutorsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListNamedQueriesError =
   | InternalServerException
@@ -4742,27 +4483,13 @@ export type ListNamedQueriesError =
  * workgroup. Requires that you have access to the specified workgroup. If a workgroup is
  * not specified, lists the saved queries for the primary workgroup.
  */
-export const listNamedQueries: API.OperationMethod<
+export const listNamedQueries: API.PaginatedOperationMethod<
   ListNamedQueriesInput,
   ListNamedQueriesOutput,
   ListNamedQueriesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListNamedQueriesInput,
-  ) => stream.Stream<
-    ListNamedQueriesOutput,
-    ListNamedQueriesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListNamedQueriesInput,
-  ) => stream.Stream<
-    unknown,
-    ListNamedQueriesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListNamedQueriesInput,
   output: ListNamedQueriesOutput,
   errors: [InternalServerException, InvalidRequestException],
@@ -4774,27 +4501,7 @@ export const listNamedQueries: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListNamedQueriesInput,
-  ListNamedQueriesOutput,
-  ListNamedQueriesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListNamedQueriesInput,
-  ) => stream.Stream<
-    ListNamedQueriesOutput,
-    ListNamedQueriesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListNamedQueriesInput,
-  ) => stream.Stream<
-    unknown,
-    ListNamedQueriesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListNotebookMetadataError =
   | InternalServerException
@@ -4808,7 +4515,7 @@ export const listNotebookMetadata: API.OperationMethod<
   ListNotebookMetadataInput,
   ListNotebookMetadataOutput,
   ListNotebookMetadataError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListNotebookMetadataInput,
   output: ListNotebookMetadataOutput,
@@ -4837,7 +4544,7 @@ export const listNotebookSessions: API.OperationMethod<
   ListNotebookSessionsRequest,
   ListNotebookSessionsResponse,
   ListNotebookSessionsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListNotebookSessionsRequest,
   output: ListNotebookSessionsResponse,
@@ -4858,27 +4565,13 @@ export type ListPreparedStatementsError =
 /**
  * Lists the prepared statements in the specified workgroup.
  */
-export const listPreparedStatements: API.OperationMethod<
+export const listPreparedStatements: API.PaginatedOperationMethod<
   ListPreparedStatementsInput,
   ListPreparedStatementsOutput,
   ListPreparedStatementsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPreparedStatementsInput,
-  ) => stream.Stream<
-    ListPreparedStatementsOutput,
-    ListPreparedStatementsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPreparedStatementsInput,
-  ) => stream.Stream<
-    unknown,
-    ListPreparedStatementsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListPreparedStatementsInput,
   output: ListPreparedStatementsOutput,
   errors: [InternalServerException, InvalidRequestException],
@@ -4890,27 +4583,7 @@ export const listPreparedStatements: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListPreparedStatementsInput,
-  ListPreparedStatementsOutput,
-  ListPreparedStatementsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPreparedStatementsInput,
-  ) => stream.Stream<
-    ListPreparedStatementsOutput,
-    ListPreparedStatementsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPreparedStatementsInput,
-  ) => stream.Stream<
-    unknown,
-    ListPreparedStatementsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListQueryExecutionsError =
   | InternalServerException
@@ -4922,27 +4595,13 @@ export type ListQueryExecutionsError =
  * specified, returns a list of query execution IDs for the primary workgroup. Requires you
  * to have access to the workgroup in which the queries ran.
  */
-export const listQueryExecutions: API.OperationMethod<
+export const listQueryExecutions: API.PaginatedOperationMethod<
   ListQueryExecutionsInput,
   ListQueryExecutionsOutput,
   ListQueryExecutionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListQueryExecutionsInput,
-  ) => stream.Stream<
-    ListQueryExecutionsOutput,
-    ListQueryExecutionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListQueryExecutionsInput,
-  ) => stream.Stream<
-    unknown,
-    ListQueryExecutionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListQueryExecutionsInput,
   output: ListQueryExecutionsOutput,
   errors: [InternalServerException, InvalidRequestException],
@@ -4954,27 +4613,7 @@ export const listQueryExecutions: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListQueryExecutionsInput,
-  ListQueryExecutionsOutput,
-  ListQueryExecutionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListQueryExecutionsInput,
-  ) => stream.Stream<
-    ListQueryExecutionsOutput,
-    ListQueryExecutionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListQueryExecutionsInput,
-  ) => stream.Stream<
-    unknown,
-    ListQueryExecutionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListSessionsError =
   | InternalServerException
@@ -4987,27 +4626,13 @@ export type ListSessionsError =
  * `BUSY`. Newer sessions are listed first; older sessions are listed
  * later.
  */
-export const listSessions: API.OperationMethod<
+export const listSessions: API.PaginatedOperationMethod<
   ListSessionsRequest,
   ListSessionsResponse,
   ListSessionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSessionsRequest,
-  ) => stream.Stream<
-    ListSessionsResponse,
-    ListSessionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSessionsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListSessionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListSessionsRequest,
   output: ListSessionsResponse,
   errors: [
@@ -5023,27 +4648,7 @@ export const listSessions: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListSessionsRequest,
-  ListSessionsResponse,
-  ListSessionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSessionsRequest,
-  ) => stream.Stream<
-    ListSessionsResponse,
-    ListSessionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSessionsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListSessionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTableMetadataError =
   | InternalServerException
@@ -5053,27 +4658,13 @@ export type ListTableMetadataError =
 /**
  * Lists the metadata for the tables in the specified data catalog database.
  */
-export const listTableMetadata: API.OperationMethod<
+export const listTableMetadata: API.PaginatedOperationMethod<
   ListTableMetadataInput,
   ListTableMetadataOutput,
   ListTableMetadataError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTableMetadataInput,
-  ) => stream.Stream<
-    ListTableMetadataOutput,
-    ListTableMetadataError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTableMetadataInput,
-  ) => stream.Stream<
-    TableMetadata,
-    ListTableMetadataError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  TableMetadata
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListTableMetadataInput,
   output: ListTableMetadataOutput,
   errors: [InternalServerException, InvalidRequestException, MetadataException],
@@ -5086,27 +4677,7 @@ export const listTableMetadata: API.OperationMethod<
     items: "TableMetadataList",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListTableMetadataInput,
-  ListTableMetadataOutput,
-  ListTableMetadataError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTableMetadataInput,
-  ) => stream.Stream<
-    ListTableMetadataOutput,
-    ListTableMetadataError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTableMetadataInput,
-  ) => stream.Stream<
-    TableMetadata,
-    ListTableMetadataError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsForResourceError =
   | InternalServerException
@@ -5116,27 +4687,13 @@ export type ListTagsForResourceError =
 /**
  * Lists the tags associated with an Athena resource.
  */
-export const listTagsForResource: API.OperationMethod<
+export const listTagsForResource: API.PaginatedOperationMethod<
   ListTagsForResourceInput,
   ListTagsForResourceOutput,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTagsForResourceInput,
-  ) => stream.Stream<
-    ListTagsForResourceOutput,
-    ListTagsForResourceError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTagsForResourceInput,
-  ) => stream.Stream<
-    Tag,
-    ListTagsForResourceError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Tag
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListTagsForResourceInput,
   output: ListTagsForResourceOutput,
   errors: [
@@ -5153,27 +4710,7 @@ export const listTagsForResource: API.OperationMethod<
     items: "Tags",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListTagsForResourceInput,
-  ListTagsForResourceOutput,
-  ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTagsForResourceInput,
-  ) => stream.Stream<
-    ListTagsForResourceOutput,
-    ListTagsForResourceError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTagsForResourceInput,
-  ) => stream.Stream<
-    Tag,
-    ListTagsForResourceError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListWorkGroupsError =
   | InternalServerException
@@ -5182,27 +4719,13 @@ export type ListWorkGroupsError =
 /**
  * Lists available workgroups for the account.
  */
-export const listWorkGroups: API.OperationMethod<
+export const listWorkGroups: API.PaginatedOperationMethod<
   ListWorkGroupsInput,
   ListWorkGroupsOutput,
   ListWorkGroupsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListWorkGroupsInput,
-  ) => stream.Stream<
-    ListWorkGroupsOutput,
-    ListWorkGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListWorkGroupsInput,
-  ) => stream.Stream<
-    unknown,
-    ListWorkGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListWorkGroupsInput,
   output: ListWorkGroupsOutput,
   errors: [InternalServerException, InvalidRequestException],
@@ -5214,27 +4737,7 @@ export const listWorkGroups: API.OperationMethod<
     outputToken: "NextToken",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListWorkGroupsInput,
-  ListWorkGroupsOutput,
-  ListWorkGroupsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListWorkGroupsInput,
-  ) => stream.Stream<
-    ListWorkGroupsOutput,
-    ListWorkGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListWorkGroupsInput,
-  ) => stream.Stream<
-    unknown,
-    ListWorkGroupsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type PutCapacityAssignmentConfigurationError =
   | InternalServerException
@@ -5249,7 +4752,7 @@ export const putCapacityAssignmentConfiguration: API.OperationMethod<
   PutCapacityAssignmentConfigurationInput,
   PutCapacityAssignmentConfigurationOutput,
   PutCapacityAssignmentConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutCapacityAssignmentConfigurationInput,
   output: PutCapacityAssignmentConfigurationOutput,
@@ -5277,7 +4780,7 @@ export const startCalculationExecution: API.OperationMethod<
   StartCalculationExecutionRequest,
   StartCalculationExecutionResponse,
   StartCalculationExecutionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartCalculationExecutionRequest,
   output: StartCalculationExecutionResponse,
@@ -5308,7 +4811,7 @@ export const startQueryExecution: API.OperationMethod<
   StartQueryExecutionInput,
   StartQueryExecutionOutput,
   StartQueryExecutionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartQueryExecutionInput,
   output: StartQueryExecutionOutput,
@@ -5337,7 +4840,7 @@ export const startSession: API.OperationMethod<
   StartSessionRequest,
   StartSessionResponse,
   StartSessionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartSessionRequest,
   output: StartSessionResponse,
@@ -5373,7 +4876,7 @@ export const stopCalculationExecution: API.OperationMethod<
   StopCalculationExecutionRequest,
   StopCalculationExecutionResponse,
   StopCalculationExecutionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StopCalculationExecutionRequest,
   output: StopCalculationExecutionResponse,
@@ -5399,7 +4902,7 @@ export const stopQueryExecution: API.OperationMethod<
   StopQueryExecutionInput,
   StopQueryExecutionOutput,
   StopQueryExecutionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StopQueryExecutionInput,
   output: StopQueryExecutionOutput,
@@ -5431,7 +4934,7 @@ export const tagResource: API.OperationMethod<
   TagResourceInput,
   TagResourceOutput,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceInput,
   output: TagResourceOutput,
@@ -5461,7 +4964,7 @@ export const terminateSession: API.OperationMethod<
   TerminateSessionRequest,
   TerminateSessionResponse,
   TerminateSessionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TerminateSessionRequest,
   output: TerminateSessionResponse,
@@ -5487,7 +4990,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceInput,
   UntagResourceOutput,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceInput,
   output: UntagResourceOutput,
@@ -5513,7 +5016,7 @@ export const updateCapacityReservation: API.OperationMethod<
   UpdateCapacityReservationInput,
   UpdateCapacityReservationOutput,
   UpdateCapacityReservationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateCapacityReservationInput,
   output: UpdateCapacityReservationOutput,
@@ -5535,7 +5038,7 @@ export const updateDataCatalog: API.OperationMethod<
   UpdateDataCatalogInput,
   UpdateDataCatalogOutput,
   UpdateDataCatalogError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateDataCatalogInput,
   output: UpdateDataCatalogOutput,
@@ -5562,7 +5065,7 @@ export const updateNamedQuery: API.OperationMethod<
   UpdateNamedQueryInput,
   UpdateNamedQueryOutput,
   UpdateNamedQueryError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateNamedQueryInput,
   output: UpdateNamedQueryOutput,
@@ -5588,7 +5091,7 @@ export const updateNotebook: API.OperationMethod<
   UpdateNotebookInput,
   UpdateNotebookOutput,
   UpdateNotebookError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateNotebookInput,
   output: UpdateNotebookOutput,
@@ -5614,7 +5117,7 @@ export const updateNotebookMetadata: API.OperationMethod<
   UpdateNotebookMetadataInput,
   UpdateNotebookMetadataOutput,
   UpdateNotebookMetadataError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateNotebookMetadataInput,
   output: UpdateNotebookMetadataOutput,
@@ -5640,7 +5143,7 @@ export const updatePreparedStatement: API.OperationMethod<
   UpdatePreparedStatementInput,
   UpdatePreparedStatementOutput,
   UpdatePreparedStatementError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdatePreparedStatementInput,
   output: UpdatePreparedStatementOutput,
@@ -5667,7 +5170,7 @@ export const updateWorkGroup: API.OperationMethod<
   UpdateWorkGroupInput,
   UpdateWorkGroupOutput,
   UpdateWorkGroupError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateWorkGroupInput,
   output: UpdateWorkGroupOutput,

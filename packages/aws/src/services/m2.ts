@@ -1,6 +1,5 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -8,7 +7,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 const svc = T.AwsApiService({
   sdkId: "m2",
   serviceShapeName: "AwsSupernovaControlPlaneService",
@@ -88,14 +86,14 @@ const rules = T.EndpointResolver((p, _) => {
 export class AccessDeniedException
   extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
     "AccessDeniedException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(403),
   ).pipe(C.withAuthError) {}
 export class ConflictException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
     "ConflictException",
     {
-      message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       resourceId: S.optional(S.String),
       resourceType: S.optional(S.String),
     },
@@ -104,14 +102,14 @@ export class ConflictException
 export class ExecutionTimeoutException
   extends /*@__PURE__*/ S.TaggedErrorClass<ExecutionTimeoutException>()(
     "ExecutionTimeoutException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.all(T.HttpError(504), T.Retryable()),
   ).pipe(C.withTimeoutError, C.withRetryableError) {}
 export class InternalServerException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
     "InternalServerException",
     {
-      message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       retryAfterSeconds: S.optional(S.Number).pipe(T.HttpHeader("Retry-After")),
     },
     T.all(T.HttpError(500), T.Retryable()),
@@ -120,7 +118,7 @@ export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
     {
-      message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       resourceId: S.optional(S.String),
       resourceType: S.optional(S.String),
     },
@@ -130,7 +128,7 @@ export class ServiceQuotaExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
     "ServiceQuotaExceededException",
     {
-      message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       resourceId: S.optional(S.String),
       resourceType: S.optional(S.String),
       serviceCode: S.optional(S.String),
@@ -141,14 +139,14 @@ export class ServiceQuotaExceededException
 export class ServiceUnavailableException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceUnavailableException>()(
     "ServiceUnavailableException",
-    { message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.all(T.HttpError(503), T.Retryable()),
   ).pipe(C.withServerError, C.withRetryableError) {}
 export class ThrottlingException
   extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
     "ThrottlingException",
     {
-      message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       serviceCode: S.optional(S.String),
       quotaCode: S.optional(S.String),
       retryAfterSeconds: S.optional(S.Number).pipe(T.HttpHeader("Retry-After")),
@@ -159,7 +157,7 @@ export class ValidationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
     "ValidationException",
     {
-      message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       reason: S.optional(S.String),
       fieldList: S.optional(
         S.suspend(() => ValidationExceptionFieldList).annotate({
@@ -2381,7 +2379,7 @@ export const cancelBatchJobExecution: API.OperationMethod<
   CancelBatchJobExecutionRequest,
   CancelBatchJobExecutionResponse,
   CancelBatchJobExecutionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CancelBatchJobExecutionRequest,
   output: CancelBatchJobExecutionResponse,
@@ -2414,7 +2412,7 @@ export const createApplication: API.OperationMethod<
   CreateApplicationRequest,
   CreateApplicationResponse,
   CreateApplicationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateApplicationRequest,
   output: CreateApplicationResponse,
@@ -2447,7 +2445,7 @@ export const createDataSetExportTask: API.OperationMethod<
   CreateDataSetExportTaskRequest,
   CreateDataSetExportTaskResponse,
   CreateDataSetExportTaskError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateDataSetExportTaskRequest,
   output: CreateDataSetExportTaskResponse,
@@ -2481,7 +2479,7 @@ export const createDataSetImportTask: API.OperationMethod<
   CreateDataSetImportTaskRequest,
   CreateDataSetImportTaskResponse,
   CreateDataSetImportTaskError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateDataSetImportTaskRequest,
   output: CreateDataSetImportTaskResponse,
@@ -2516,7 +2514,7 @@ export const createDeployment: API.OperationMethod<
   CreateDeploymentRequest,
   CreateDeploymentResponse,
   CreateDeploymentError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateDeploymentRequest,
   output: CreateDeploymentResponse,
@@ -2549,7 +2547,7 @@ export const createEnvironment: API.OperationMethod<
   CreateEnvironmentRequest,
   CreateEnvironmentResponse,
   CreateEnvironmentError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateEnvironmentRequest,
   output: CreateEnvironmentResponse,
@@ -2580,7 +2578,7 @@ export const deleteApplication: API.OperationMethod<
   DeleteApplicationRequest,
   DeleteApplicationResponse,
   DeleteApplicationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteApplicationRequest,
   output: DeleteApplicationResponse,
@@ -2614,7 +2612,7 @@ export const deleteApplicationFromEnvironment: API.OperationMethod<
   DeleteApplicationFromEnvironmentRequest,
   DeleteApplicationFromEnvironmentResponse,
   DeleteApplicationFromEnvironmentError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteApplicationFromEnvironmentRequest,
   output: DeleteApplicationFromEnvironmentResponse,
@@ -2647,7 +2645,7 @@ export const deleteEnvironment: API.OperationMethod<
   DeleteEnvironmentRequest,
   DeleteEnvironmentResponse,
   DeleteEnvironmentError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteEnvironmentRequest,
   output: DeleteEnvironmentResponse,
@@ -2677,7 +2675,7 @@ export const getApplication: API.OperationMethod<
   GetApplicationRequest,
   GetApplicationResponse,
   GetApplicationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetApplicationRequest,
   output: GetApplicationResponse,
@@ -2707,7 +2705,7 @@ export const getApplicationVersion: API.OperationMethod<
   GetApplicationVersionRequest,
   GetApplicationVersionResponse,
   GetApplicationVersionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetApplicationVersionRequest,
   output: GetApplicationVersionResponse,
@@ -2737,7 +2735,7 @@ export const getBatchJobExecution: API.OperationMethod<
   GetBatchJobExecutionRequest,
   GetBatchJobExecutionResponse,
   GetBatchJobExecutionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetBatchJobExecutionRequest,
   output: GetBatchJobExecutionResponse,
@@ -2770,7 +2768,7 @@ export const getDataSetDetails: API.OperationMethod<
   GetDataSetDetailsRequest,
   GetDataSetDetailsResponse,
   GetDataSetDetailsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetDataSetDetailsRequest,
   output: GetDataSetDetailsResponse,
@@ -2803,7 +2801,7 @@ export const getDataSetExportTask: API.OperationMethod<
   GetDataSetExportTaskRequest,
   GetDataSetExportTaskResponse,
   GetDataSetExportTaskError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetDataSetExportTaskRequest,
   output: GetDataSetExportTaskResponse,
@@ -2833,7 +2831,7 @@ export const getDataSetImportTask: API.OperationMethod<
   GetDataSetImportTaskRequest,
   GetDataSetImportTaskResponse,
   GetDataSetImportTaskError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetDataSetImportTaskRequest,
   output: GetDataSetImportTaskResponse,
@@ -2863,7 +2861,7 @@ export const getDeployment: API.OperationMethod<
   GetDeploymentRequest,
   GetDeploymentResponse,
   GetDeploymentError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetDeploymentRequest,
   output: GetDeploymentResponse,
@@ -2893,7 +2891,7 @@ export const getEnvironment: API.OperationMethod<
   GetEnvironmentRequest,
   GetEnvironmentResponse,
   GetEnvironmentError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetEnvironmentRequest,
   output: GetEnvironmentResponse,
@@ -2921,7 +2919,7 @@ export const getSignedBluinsightsUrl: API.OperationMethod<
   GetSignedBluinsightsUrlRequest,
   GetSignedBluinsightsUrlResponse,
   GetSignedBluinsightsUrlError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetSignedBluinsightsUrlRequest,
   output: GetSignedBluinsightsUrlResponse,
@@ -2942,27 +2940,13 @@ export type ListApplicationsError =
  * unique identifier of a specific runtime environment in a query parameter to see all
  * applications associated with that environment.
  */
-export const listApplications: API.OperationMethod<
+export const listApplications: API.PaginatedOperationMethod<
   ListApplicationsRequest,
   ListApplicationsResponse,
   ListApplicationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListApplicationsRequest,
-  ) => stream.Stream<
-    ListApplicationsResponse,
-    ListApplicationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListApplicationsRequest,
-  ) => stream.Stream<
-    ApplicationSummary,
-    ListApplicationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ApplicationSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListApplicationsRequest,
   output: ListApplicationsResponse,
   errors: [
@@ -2980,27 +2964,7 @@ export const listApplications: API.OperationMethod<
     items: "applications",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListApplicationsRequest,
-  ListApplicationsResponse,
-  ListApplicationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListApplicationsRequest,
-  ) => stream.Stream<
-    ListApplicationsResponse,
-    ListApplicationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListApplicationsRequest,
-  ) => stream.Stream<
-    ApplicationSummary,
-    ListApplicationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListApplicationVersionsError =
   | AccessDeniedException
@@ -3012,27 +2976,13 @@ export type ListApplicationVersionsError =
 /**
  * Returns a list of the application versions for a specific application.
  */
-export const listApplicationVersions: API.OperationMethod<
+export const listApplicationVersions: API.PaginatedOperationMethod<
   ListApplicationVersionsRequest,
   ListApplicationVersionsResponse,
   ListApplicationVersionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListApplicationVersionsRequest,
-  ) => stream.Stream<
-    ListApplicationVersionsResponse,
-    ListApplicationVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListApplicationVersionsRequest,
-  ) => stream.Stream<
-    ApplicationVersionSummary,
-    ListApplicationVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ApplicationVersionSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListApplicationVersionsRequest,
   output: ListApplicationVersionsResponse,
   errors: [
@@ -3051,27 +3001,7 @@ export const listApplicationVersions: API.OperationMethod<
     items: "applicationVersions",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListApplicationVersionsRequest,
-  ListApplicationVersionsResponse,
-  ListApplicationVersionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListApplicationVersionsRequest,
-  ) => stream.Stream<
-    ListApplicationVersionsResponse,
-    ListApplicationVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListApplicationVersionsRequest,
-  ) => stream.Stream<
-    ApplicationVersionSummary,
-    ListApplicationVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListBatchJobDefinitionsError =
   | AccessDeniedException
@@ -3085,27 +3015,13 @@ export type ListBatchJobDefinitionsError =
  * during the application creation. You can use the batch job definitions in the list to start
  * a batch job.
  */
-export const listBatchJobDefinitions: API.OperationMethod<
+export const listBatchJobDefinitions: API.PaginatedOperationMethod<
   ListBatchJobDefinitionsRequest,
   ListBatchJobDefinitionsResponse,
   ListBatchJobDefinitionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListBatchJobDefinitionsRequest,
-  ) => stream.Stream<
-    ListBatchJobDefinitionsResponse,
-    ListBatchJobDefinitionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListBatchJobDefinitionsRequest,
-  ) => stream.Stream<
-    BatchJobDefinition,
-    ListBatchJobDefinitionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  BatchJobDefinition
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListBatchJobDefinitionsRequest,
   output: ListBatchJobDefinitionsResponse,
   errors: [
@@ -3124,27 +3040,7 @@ export const listBatchJobDefinitions: API.OperationMethod<
     items: "batchJobDefinitions",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListBatchJobDefinitionsRequest,
-  ListBatchJobDefinitionsResponse,
-  ListBatchJobDefinitionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListBatchJobDefinitionsRequest,
-  ) => stream.Stream<
-    ListBatchJobDefinitionsResponse,
-    ListBatchJobDefinitionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListBatchJobDefinitionsRequest,
-  ) => stream.Stream<
-    BatchJobDefinition,
-    ListBatchJobDefinitionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListBatchJobExecutionsError =
   | AccessDeniedException
@@ -3157,27 +3053,13 @@ export type ListBatchJobExecutionsError =
  * Lists historical, current, and scheduled batch job executions for a specific
  * application.
  */
-export const listBatchJobExecutions: API.OperationMethod<
+export const listBatchJobExecutions: API.PaginatedOperationMethod<
   ListBatchJobExecutionsRequest,
   ListBatchJobExecutionsResponse,
   ListBatchJobExecutionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListBatchJobExecutionsRequest,
-  ) => stream.Stream<
-    ListBatchJobExecutionsResponse,
-    ListBatchJobExecutionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListBatchJobExecutionsRequest,
-  ) => stream.Stream<
-    BatchJobExecutionSummary,
-    ListBatchJobExecutionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  BatchJobExecutionSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListBatchJobExecutionsRequest,
   output: ListBatchJobExecutionsResponse,
   errors: [
@@ -3196,27 +3078,7 @@ export const listBatchJobExecutions: API.OperationMethod<
     items: "batchJobExecutions",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListBatchJobExecutionsRequest,
-  ListBatchJobExecutionsResponse,
-  ListBatchJobExecutionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListBatchJobExecutionsRequest,
-  ) => stream.Stream<
-    ListBatchJobExecutionsResponse,
-    ListBatchJobExecutionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListBatchJobExecutionsRequest,
-  ) => stream.Stream<
-    BatchJobExecutionSummary,
-    ListBatchJobExecutionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListBatchJobRestartPointsError =
   | AccessDeniedException
@@ -3233,7 +3095,7 @@ export const listBatchJobRestartPoints: API.OperationMethod<
   ListBatchJobRestartPointsRequest,
   ListBatchJobRestartPointsResponse,
   ListBatchJobRestartPointsError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListBatchJobRestartPointsRequest,
   output: ListBatchJobRestartPointsResponse,
@@ -3260,27 +3122,13 @@ export type ListDataSetExportHistoryError =
 /**
  * Lists the data set exports for the specified application.
  */
-export const listDataSetExportHistory: API.OperationMethod<
+export const listDataSetExportHistory: API.PaginatedOperationMethod<
   ListDataSetExportHistoryRequest,
   ListDataSetExportHistoryResponse,
   ListDataSetExportHistoryError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDataSetExportHistoryRequest,
-  ) => stream.Stream<
-    ListDataSetExportHistoryResponse,
-    ListDataSetExportHistoryError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDataSetExportHistoryRequest,
-  ) => stream.Stream<
-    DataSetExportTask,
-    ListDataSetExportHistoryError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  DataSetExportTask
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListDataSetExportHistoryRequest,
   output: ListDataSetExportHistoryResponse,
   errors: [
@@ -3299,27 +3147,7 @@ export const listDataSetExportHistory: API.OperationMethod<
     items: "dataSetExportTasks",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListDataSetExportHistoryRequest,
-  ListDataSetExportHistoryResponse,
-  ListDataSetExportHistoryError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDataSetExportHistoryRequest,
-  ) => stream.Stream<
-    ListDataSetExportHistoryResponse,
-    ListDataSetExportHistoryError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDataSetExportHistoryRequest,
-  ) => stream.Stream<
-    DataSetExportTask,
-    ListDataSetExportHistoryError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListDataSetImportHistoryError =
   | AccessDeniedException
@@ -3331,27 +3159,13 @@ export type ListDataSetImportHistoryError =
 /**
  * Lists the data set imports for the specified application.
  */
-export const listDataSetImportHistory: API.OperationMethod<
+export const listDataSetImportHistory: API.PaginatedOperationMethod<
   ListDataSetImportHistoryRequest,
   ListDataSetImportHistoryResponse,
   ListDataSetImportHistoryError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDataSetImportHistoryRequest,
-  ) => stream.Stream<
-    ListDataSetImportHistoryResponse,
-    ListDataSetImportHistoryError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDataSetImportHistoryRequest,
-  ) => stream.Stream<
-    DataSetImportTask,
-    ListDataSetImportHistoryError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  DataSetImportTask
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListDataSetImportHistoryRequest,
   output: ListDataSetImportHistoryResponse,
   errors: [
@@ -3370,27 +3184,7 @@ export const listDataSetImportHistory: API.OperationMethod<
     items: "dataSetImportTasks",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListDataSetImportHistoryRequest,
-  ListDataSetImportHistoryResponse,
-  ListDataSetImportHistoryError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDataSetImportHistoryRequest,
-  ) => stream.Stream<
-    ListDataSetImportHistoryResponse,
-    ListDataSetImportHistoryError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDataSetImportHistoryRequest,
-  ) => stream.Stream<
-    DataSetImportTask,
-    ListDataSetImportHistoryError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListDataSetsError =
   | AccessDeniedException
@@ -3407,27 +3201,13 @@ export type ListDataSetsError =
  * associated with applications deployed on runtime environments. This is known as importing
  * data sets. Currently, Amazon Web Services Mainframe Modernization can import data sets into catalogs using CreateDataSetImportTask.
  */
-export const listDataSets: API.OperationMethod<
+export const listDataSets: API.PaginatedOperationMethod<
   ListDataSetsRequest,
   ListDataSetsResponse,
   ListDataSetsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDataSetsRequest,
-  ) => stream.Stream<
-    ListDataSetsResponse,
-    ListDataSetsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDataSetsRequest,
-  ) => stream.Stream<
-    DataSetSummary,
-    ListDataSetsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  DataSetSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListDataSetsRequest,
   output: ListDataSetsResponse,
   errors: [
@@ -3449,27 +3229,7 @@ export const listDataSets: API.OperationMethod<
     items: "dataSets",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListDataSetsRequest,
-  ListDataSetsResponse,
-  ListDataSetsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDataSetsRequest,
-  ) => stream.Stream<
-    ListDataSetsResponse,
-    ListDataSetsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDataSetsRequest,
-  ) => stream.Stream<
-    DataSetSummary,
-    ListDataSetsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListDeploymentsError =
   | AccessDeniedException
@@ -3483,27 +3243,13 @@ export type ListDeploymentsError =
  * combination of a specific application and a specific version of that application. Each
  * deployment is mapped to a particular application version.
  */
-export const listDeployments: API.OperationMethod<
+export const listDeployments: API.PaginatedOperationMethod<
   ListDeploymentsRequest,
   ListDeploymentsResponse,
   ListDeploymentsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDeploymentsRequest,
-  ) => stream.Stream<
-    ListDeploymentsResponse,
-    ListDeploymentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDeploymentsRequest,
-  ) => stream.Stream<
-    DeploymentSummary,
-    ListDeploymentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  DeploymentSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListDeploymentsRequest,
   output: ListDeploymentsResponse,
   errors: [
@@ -3522,27 +3268,7 @@ export const listDeployments: API.OperationMethod<
     items: "deployments",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListDeploymentsRequest,
-  ListDeploymentsResponse,
-  ListDeploymentsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDeploymentsRequest,
-  ) => stream.Stream<
-    ListDeploymentsResponse,
-    ListDeploymentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDeploymentsRequest,
-  ) => stream.Stream<
-    DeploymentSummary,
-    ListDeploymentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListEngineVersionsError =
   | AccessDeniedException
@@ -3553,27 +3279,13 @@ export type ListEngineVersionsError =
 /**
  * Lists the available engine versions.
  */
-export const listEngineVersions: API.OperationMethod<
+export const listEngineVersions: API.PaginatedOperationMethod<
   ListEngineVersionsRequest,
   ListEngineVersionsResponse,
   ListEngineVersionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListEngineVersionsRequest,
-  ) => stream.Stream<
-    ListEngineVersionsResponse,
-    ListEngineVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListEngineVersionsRequest,
-  ) => stream.Stream<
-    EngineVersionsSummary,
-    ListEngineVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  EngineVersionsSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListEngineVersionsRequest,
   output: ListEngineVersionsResponse,
   errors: [
@@ -3591,27 +3303,7 @@ export const listEngineVersions: API.OperationMethod<
     items: "engineVersions",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListEngineVersionsRequest,
-  ListEngineVersionsResponse,
-  ListEngineVersionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListEngineVersionsRequest,
-  ) => stream.Stream<
-    ListEngineVersionsResponse,
-    ListEngineVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListEngineVersionsRequest,
-  ) => stream.Stream<
-    EngineVersionsSummary,
-    ListEngineVersionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListEnvironmentsError =
   | AccessDeniedException
@@ -3622,27 +3314,13 @@ export type ListEnvironmentsError =
 /**
  * Lists the runtime environments.
  */
-export const listEnvironments: API.OperationMethod<
+export const listEnvironments: API.PaginatedOperationMethod<
   ListEnvironmentsRequest,
   ListEnvironmentsResponse,
   ListEnvironmentsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListEnvironmentsRequest,
-  ) => stream.Stream<
-    ListEnvironmentsResponse,
-    ListEnvironmentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListEnvironmentsRequest,
-  ) => stream.Stream<
-    EnvironmentSummary,
-    ListEnvironmentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  EnvironmentSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListEnvironmentsRequest,
   output: ListEnvironmentsResponse,
   errors: [
@@ -3660,27 +3338,7 @@ export const listEnvironments: API.OperationMethod<
     items: "environments",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListEnvironmentsRequest,
-  ListEnvironmentsResponse,
-  ListEnvironmentsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListEnvironmentsRequest,
-  ) => stream.Stream<
-    ListEnvironmentsResponse,
-    ListEnvironmentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListEnvironmentsRequest,
-  ) => stream.Stream<
-    EnvironmentSummary,
-    ListEnvironmentsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsForResourceError =
   | AccessDeniedException
@@ -3696,7 +3354,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceRequest,
   ListTagsForResourceResponse,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -3727,7 +3385,7 @@ export const startApplication: API.OperationMethod<
   StartApplicationRequest,
   StartApplicationResponse,
   StartApplicationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartApplicationRequest,
   output: StartApplicationResponse,
@@ -3760,7 +3418,7 @@ export const startBatchJob: API.OperationMethod<
   StartBatchJobRequest,
   StartBatchJobResponse,
   StartBatchJobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartBatchJobRequest,
   output: StartBatchJobResponse,
@@ -3792,7 +3450,7 @@ export const stopApplication: API.OperationMethod<
   StopApplicationRequest,
   StopApplicationResponse,
   StopApplicationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StopApplicationRequest,
   output: StopApplicationResponse,
@@ -3824,7 +3482,7 @@ export const tagResource: API.OperationMethod<
   TagResourceRequest,
   TagResourceResponse,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -3855,7 +3513,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceRequest,
   UntagResourceResponse,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -3886,7 +3544,7 @@ export const updateApplication: API.OperationMethod<
   UpdateApplicationRequest,
   UpdateApplicationResponse,
   UpdateApplicationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateApplicationRequest,
   output: UpdateApplicationResponse,
@@ -3919,7 +3577,7 @@ export const updateEnvironment: API.OperationMethod<
   UpdateEnvironmentRequest,
   UpdateEnvironmentResponse,
   UpdateEnvironmentError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateEnvironmentRequest,
   output: UpdateEnvironmentResponse,

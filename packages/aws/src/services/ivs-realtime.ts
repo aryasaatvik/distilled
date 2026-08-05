@@ -1,7 +1,6 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as redacted from "effect/Redacted";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -9,7 +8,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 import { SensitiveString } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "IVS RealTime",
@@ -112,6 +110,7 @@ export class AccessDeniedException
         T.HttpHeader("x-amzn-ErrorType"),
       ),
       exceptionMessage: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
     },
     T.HttpError(403),
   ).pipe(C.withAuthError) {}
@@ -140,6 +139,7 @@ export class ConflictException
         T.HttpHeader("x-amzn-ErrorType"),
       ),
       exceptionMessage: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
     },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
@@ -168,6 +168,7 @@ export class InternalServerException
         T.HttpHeader("x-amzn-ErrorType"),
       ),
       exceptionMessage: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
     },
     T.HttpError(500),
   ).pipe(C.withServerError) {}
@@ -196,6 +197,7 @@ export class PendingVerification
         T.HttpHeader("x-amzn-ErrorType"),
       ),
       exceptionMessage: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
     },
     T.HttpError(403),
   ).pipe(C.withAuthError) {}
@@ -224,6 +226,7 @@ export class ResourceNotFoundException
         T.HttpHeader("x-amzn-ErrorType"),
       ),
       exceptionMessage: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
     },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
@@ -252,13 +255,14 @@ export class ServiceQuotaExceededException
         T.HttpHeader("x-amzn-ErrorType"),
       ),
       exceptionMessage: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
     },
     T.HttpError(402),
   ).pipe(C.withQuotaError) {}
 export class ThrottlingException
   extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
     "ThrottlingException",
-    {},
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
   ) {}
 export class ValidationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
@@ -285,6 +289,7 @@ export class ValidationException
         T.HttpHeader("x-amzn-ErrorType"),
       ),
       exceptionMessage: S.optional(S.String),
+      message: S.optional(S.String).pipe(T.ErrorMessage()),
     },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
@@ -2477,7 +2482,7 @@ export const createEncoderConfiguration: API.OperationMethod<
   CreateEncoderConfigurationRequest,
   CreateEncoderConfigurationResponse,
   CreateEncoderConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateEncoderConfigurationRequest,
   output: CreateEncoderConfigurationResponse,
@@ -2508,7 +2513,7 @@ export const createIngestConfiguration: API.OperationMethod<
   CreateIngestConfigurationRequest,
   CreateIngestConfigurationResponse,
   CreateIngestConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateIngestConfigurationRequest,
   output: CreateIngestConfigurationResponse,
@@ -2542,7 +2547,7 @@ export const createParticipantToken: API.OperationMethod<
   CreateParticipantTokenRequest,
   CreateParticipantTokenResponse,
   CreateParticipantTokenError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateParticipantTokenRequest,
   output: CreateParticipantTokenResponse,
@@ -2572,7 +2577,7 @@ export const createStage: API.OperationMethod<
   CreateStageRequest,
   CreateStageResponse,
   CreateStageError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateStageRequest,
   output: CreateStageResponse,
@@ -2606,7 +2611,7 @@ export const createStorageConfiguration: API.OperationMethod<
   CreateStorageConfigurationRequest,
   CreateStorageConfigurationResponse,
   CreateStorageConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateStorageConfigurationRequest,
   output: CreateStorageConfigurationResponse,
@@ -2640,7 +2645,7 @@ export const deleteEncoderConfiguration: API.OperationMethod<
   DeleteEncoderConfigurationRequest,
   DeleteEncoderConfigurationResponse,
   DeleteEncoderConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteEncoderConfigurationRequest,
   output: DeleteEncoderConfigurationResponse,
@@ -2671,7 +2676,7 @@ export const deleteIngestConfiguration: API.OperationMethod<
   DeleteIngestConfigurationRequest,
   DeleteIngestConfigurationResponse,
   DeleteIngestConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteIngestConfigurationRequest,
   output: DeleteIngestConfigurationResponse,
@@ -2702,7 +2707,7 @@ export const deletePublicKey: API.OperationMethod<
   DeletePublicKeyRequest,
   DeletePublicKeyResponse,
   DeletePublicKeyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeletePublicKeyRequest,
   output: DeletePublicKeyResponse,
@@ -2735,7 +2740,7 @@ export const deleteStage: API.OperationMethod<
   DeleteStageRequest,
   DeleteStageResponse,
   DeleteStageError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteStageRequest,
   output: DeleteStageResponse,
@@ -2771,7 +2776,7 @@ export const deleteStorageConfiguration: API.OperationMethod<
   DeleteStorageConfigurationRequest,
   DeleteStorageConfigurationResponse,
   DeleteStorageConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteStorageConfigurationRequest,
   output: DeleteStorageConfigurationResponse,
@@ -2803,7 +2808,7 @@ export const disconnectParticipant: API.OperationMethod<
   DisconnectParticipantRequest,
   DisconnectParticipantResponse,
   DisconnectParticipantError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DisconnectParticipantRequest,
   output: DisconnectParticipantResponse,
@@ -2833,7 +2838,7 @@ export const getComposition: API.OperationMethod<
   GetCompositionRequest,
   GetCompositionResponse,
   GetCompositionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetCompositionRequest,
   output: GetCompositionResponse,
@@ -2865,7 +2870,7 @@ export const getEncoderConfiguration: API.OperationMethod<
   GetEncoderConfigurationRequest,
   GetEncoderConfigurationResponse,
   GetEncoderConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetEncoderConfigurationRequest,
   output: GetEncoderConfigurationResponse,
@@ -2894,7 +2899,7 @@ export const getIngestConfiguration: API.OperationMethod<
   GetIngestConfigurationRequest,
   GetIngestConfigurationResponse,
   GetIngestConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetIngestConfigurationRequest,
   output: GetIngestConfigurationResponse,
@@ -2920,7 +2925,7 @@ export const getParticipant: API.OperationMethod<
   GetParticipantRequest,
   GetParticipantResponse,
   GetParticipantError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetParticipantRequest,
   output: GetParticipantResponse,
@@ -2946,7 +2951,7 @@ export const getPublicKey: API.OperationMethod<
   GetPublicKeyRequest,
   GetPublicKeyResponse,
   GetPublicKeyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetPublicKeyRequest,
   output: GetPublicKeyResponse,
@@ -2973,7 +2978,7 @@ export const getStage: API.OperationMethod<
   GetStageRequest,
   GetStageResponse,
   GetStageError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetStageRequest,
   output: GetStageResponse,
@@ -3000,7 +3005,7 @@ export const getStageSession: API.OperationMethod<
   GetStageSessionRequest,
   GetStageSessionResponse,
   GetStageSessionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetStageSessionRequest,
   output: GetStageSessionResponse,
@@ -3029,7 +3034,7 @@ export const getStorageConfiguration: API.OperationMethod<
   GetStorageConfigurationRequest,
   GetStorageConfigurationResponse,
   GetStorageConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetStorageConfigurationRequest,
   output: GetStorageConfigurationResponse,
@@ -3060,7 +3065,7 @@ export const importPublicKey: API.OperationMethod<
   ImportPublicKeyRequest,
   ImportPublicKeyResponse,
   ImportPublicKeyError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ImportPublicKeyRequest,
   output: ImportPublicKeyResponse,
@@ -3087,27 +3092,13 @@ export type ListCompositionsError =
  * Gets summary information about all Compositions in your account, in the AWS region
  * where the API request is processed.
  */
-export const listCompositions: API.OperationMethod<
+export const listCompositions: API.PaginatedOperationMethod<
   ListCompositionsRequest,
   ListCompositionsResponse,
   ListCompositionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCompositionsRequest,
-  ) => stream.Stream<
-    ListCompositionsResponse,
-    ListCompositionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCompositionsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListCompositionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListCompositionsRequest,
   output: ListCompositionsResponse,
   errors: [
@@ -3125,27 +3116,7 @@ export const listCompositions: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListCompositionsRequest,
-  ListCompositionsResponse,
-  ListCompositionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCompositionsRequest,
-  ) => stream.Stream<
-    ListCompositionsResponse,
-    ListCompositionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCompositionsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListCompositionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListEncoderConfigurationsError =
   | AccessDeniedException
@@ -3158,27 +3129,13 @@ export type ListEncoderConfigurationsError =
  * Gets summary information about all EncoderConfigurations in your account, in the AWS
  * region where the API request is processed.
  */
-export const listEncoderConfigurations: API.OperationMethod<
+export const listEncoderConfigurations: API.PaginatedOperationMethod<
   ListEncoderConfigurationsRequest,
   ListEncoderConfigurationsResponse,
   ListEncoderConfigurationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListEncoderConfigurationsRequest,
-  ) => stream.Stream<
-    ListEncoderConfigurationsResponse,
-    ListEncoderConfigurationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListEncoderConfigurationsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListEncoderConfigurationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListEncoderConfigurationsRequest,
   output: ListEncoderConfigurationsResponse,
   errors: [
@@ -3196,27 +3153,7 @@ export const listEncoderConfigurations: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListEncoderConfigurationsRequest,
-  ListEncoderConfigurationsResponse,
-  ListEncoderConfigurationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListEncoderConfigurationsRequest,
-  ) => stream.Stream<
-    ListEncoderConfigurationsResponse,
-    ListEncoderConfigurationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListEncoderConfigurationsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListEncoderConfigurationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListIngestConfigurationsError =
   | AccessDeniedException
@@ -3225,27 +3162,13 @@ export type ListIngestConfigurationsError =
 /**
  * Lists all IngestConfigurations in your account, in the AWS region where the API request is processed.
  */
-export const listIngestConfigurations: API.OperationMethod<
+export const listIngestConfigurations: API.PaginatedOperationMethod<
   ListIngestConfigurationsRequest,
   ListIngestConfigurationsResponse,
   ListIngestConfigurationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListIngestConfigurationsRequest,
-  ) => stream.Stream<
-    ListIngestConfigurationsResponse,
-    ListIngestConfigurationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListIngestConfigurationsRequest,
-  ) => stream.Stream<
-    IngestConfigurationSummary,
-    ListIngestConfigurationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  IngestConfigurationSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListIngestConfigurationsRequest,
   output: ListIngestConfigurationsResponse,
   errors: [AccessDeniedException, ValidationException],
@@ -3258,27 +3181,7 @@ export const listIngestConfigurations: API.OperationMethod<
     items: "ingestConfigurations",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListIngestConfigurationsRequest,
-  ListIngestConfigurationsResponse,
-  ListIngestConfigurationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListIngestConfigurationsRequest,
-  ) => stream.Stream<
-    ListIngestConfigurationsResponse,
-    ListIngestConfigurationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListIngestConfigurationsRequest,
-  ) => stream.Stream<
-    IngestConfigurationSummary,
-    ListIngestConfigurationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListParticipantEventsError =
   | AccessDeniedException
@@ -3288,27 +3191,13 @@ export type ListParticipantEventsError =
  * Lists events for a specified participant that occurred during a specified stage
  * session.
  */
-export const listParticipantEvents: API.OperationMethod<
+export const listParticipantEvents: API.PaginatedOperationMethod<
   ListParticipantEventsRequest,
   ListParticipantEventsResponse,
   ListParticipantEventsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListParticipantEventsRequest,
-  ) => stream.Stream<
-    ListParticipantEventsResponse,
-    ListParticipantEventsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListParticipantEventsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListParticipantEventsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListParticipantEventsRequest,
   output: ListParticipantEventsResponse,
   errors: [AccessDeniedException, ValidationException],
@@ -3320,27 +3209,7 @@ export const listParticipantEvents: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListParticipantEventsRequest,
-  ListParticipantEventsResponse,
-  ListParticipantEventsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListParticipantEventsRequest,
-  ) => stream.Stream<
-    ListParticipantEventsResponse,
-    ListParticipantEventsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListParticipantEventsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListParticipantEventsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListParticipantReplicasError =
   | AccessDeniedException
@@ -3349,27 +3218,13 @@ export type ListParticipantReplicasError =
 /**
  * Lists all the replicas for a participant from a source stage.
  */
-export const listParticipantReplicas: API.OperationMethod<
+export const listParticipantReplicas: API.PaginatedOperationMethod<
   ListParticipantReplicasRequest,
   ListParticipantReplicasResponse,
   ListParticipantReplicasError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListParticipantReplicasRequest,
-  ) => stream.Stream<
-    ListParticipantReplicasResponse,
-    ListParticipantReplicasError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListParticipantReplicasRequest,
-  ) => stream.Stream<
-    ParticipantReplica,
-    ListParticipantReplicasError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ParticipantReplica
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListParticipantReplicasRequest,
   output: ListParticipantReplicasResponse,
   errors: [AccessDeniedException, ValidationException],
@@ -3382,27 +3237,7 @@ export const listParticipantReplicas: API.OperationMethod<
     items: "replicas",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListParticipantReplicasRequest,
-  ListParticipantReplicasResponse,
-  ListParticipantReplicasError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListParticipantReplicasRequest,
-  ) => stream.Stream<
-    ListParticipantReplicasResponse,
-    ListParticipantReplicasError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListParticipantReplicasRequest,
-  ) => stream.Stream<
-    ParticipantReplica,
-    ListParticipantReplicasError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListParticipantsError =
   | AccessDeniedException
@@ -3411,27 +3246,13 @@ export type ListParticipantsError =
 /**
  * Lists all participants in a specified stage session.
  */
-export const listParticipants: API.OperationMethod<
+export const listParticipants: API.PaginatedOperationMethod<
   ListParticipantsRequest,
   ListParticipantsResponse,
   ListParticipantsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListParticipantsRequest,
-  ) => stream.Stream<
-    ListParticipantsResponse,
-    ListParticipantsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListParticipantsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListParticipantsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListParticipantsRequest,
   output: ListParticipantsResponse,
   errors: [AccessDeniedException, ValidationException],
@@ -3443,27 +3264,7 @@ export const listParticipants: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListParticipantsRequest,
-  ListParticipantsResponse,
-  ListParticipantsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListParticipantsRequest,
-  ) => stream.Stream<
-    ListParticipantsResponse,
-    ListParticipantsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListParticipantsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListParticipantsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListPublicKeysError =
   | AccessDeniedException
@@ -3472,27 +3273,13 @@ export type ListPublicKeysError =
 /**
  * Gets summary information about all public keys in your account, in the AWS region where the API request is processed.
  */
-export const listPublicKeys: API.OperationMethod<
+export const listPublicKeys: API.PaginatedOperationMethod<
   ListPublicKeysRequest,
   ListPublicKeysResponse,
   ListPublicKeysError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPublicKeysRequest,
-  ) => stream.Stream<
-    ListPublicKeysResponse,
-    ListPublicKeysError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPublicKeysRequest,
-  ) => stream.Stream<
-    PublicKeySummary,
-    ListPublicKeysError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  PublicKeySummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListPublicKeysRequest,
   output: ListPublicKeysResponse,
   errors: [AccessDeniedException, ValidationException],
@@ -3505,27 +3292,7 @@ export const listPublicKeys: API.OperationMethod<
     items: "publicKeys",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListPublicKeysRequest,
-  ListPublicKeysResponse,
-  ListPublicKeysError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListPublicKeysRequest,
-  ) => stream.Stream<
-    ListPublicKeysResponse,
-    ListPublicKeysError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListPublicKeysRequest,
-  ) => stream.Stream<
-    PublicKeySummary,
-    ListPublicKeysError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListStagesError =
   | AccessDeniedException
@@ -3537,27 +3304,13 @@ export type ListStagesError =
  * Gets summary information about all stages in your account, in the AWS region where the
  * API request is processed.
  */
-export const listStages: API.OperationMethod<
+export const listStages: API.PaginatedOperationMethod<
   ListStagesRequest,
   ListStagesResponse,
   ListStagesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListStagesRequest,
-  ) => stream.Stream<
-    ListStagesResponse,
-    ListStagesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListStagesRequest,
-  ) => stream.Stream<
-    unknown,
-    ListStagesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListStagesRequest,
   output: ListStagesResponse,
   errors: [
@@ -3574,27 +3327,7 @@ export const listStages: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListStagesRequest,
-  ListStagesResponse,
-  ListStagesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListStagesRequest,
-  ) => stream.Stream<
-    ListStagesResponse,
-    ListStagesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListStagesRequest,
-  ) => stream.Stream<
-    unknown,
-    ListStagesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListStageSessionsError =
   | AccessDeniedException
@@ -3603,27 +3336,13 @@ export type ListStageSessionsError =
 /**
  * Gets all sessions for a specified stage.
  */
-export const listStageSessions: API.OperationMethod<
+export const listStageSessions: API.PaginatedOperationMethod<
   ListStageSessionsRequest,
   ListStageSessionsResponse,
   ListStageSessionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListStageSessionsRequest,
-  ) => stream.Stream<
-    ListStageSessionsResponse,
-    ListStageSessionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListStageSessionsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListStageSessionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListStageSessionsRequest,
   output: ListStageSessionsResponse,
   errors: [AccessDeniedException, ValidationException],
@@ -3635,27 +3354,7 @@ export const listStageSessions: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListStageSessionsRequest,
-  ListStageSessionsResponse,
-  ListStageSessionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListStageSessionsRequest,
-  ) => stream.Stream<
-    ListStageSessionsResponse,
-    ListStageSessionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListStageSessionsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListStageSessionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListStorageConfigurationsError =
   | AccessDeniedException
@@ -3668,27 +3367,13 @@ export type ListStorageConfigurationsError =
  * Gets summary information about all storage configurations in your account,
  * in the AWS region where the API request is processed.
  */
-export const listStorageConfigurations: API.OperationMethod<
+export const listStorageConfigurations: API.PaginatedOperationMethod<
   ListStorageConfigurationsRequest,
   ListStorageConfigurationsResponse,
   ListStorageConfigurationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListStorageConfigurationsRequest,
-  ) => stream.Stream<
-    ListStorageConfigurationsResponse,
-    ListStorageConfigurationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListStorageConfigurationsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListStorageConfigurationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  unknown
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListStorageConfigurationsRequest,
   output: ListStorageConfigurationsResponse,
   errors: [
@@ -3706,27 +3391,7 @@ export const listStorageConfigurations: API.OperationMethod<
     outputToken: "nextToken",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListStorageConfigurationsRequest,
-  ListStorageConfigurationsResponse,
-  ListStorageConfigurationsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListStorageConfigurationsRequest,
-  ) => stream.Stream<
-    ListStorageConfigurationsResponse,
-    ListStorageConfigurationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListStorageConfigurationsRequest,
-  ) => stream.Stream<
-    unknown,
-    ListStorageConfigurationsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsForResourceError =
   | InternalServerException
@@ -3741,7 +3406,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceRequest,
   ListTagsForResourceResponse,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -3789,7 +3454,7 @@ export const startComposition: API.OperationMethod<
   StartCompositionRequest,
   StartCompositionResponse,
   StartCompositionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartCompositionRequest,
   output: StartCompositionResponse,
@@ -3823,7 +3488,7 @@ export const startParticipantReplication: API.OperationMethod<
   StartParticipantReplicationRequest,
   StartParticipantReplicationResponse,
   StartParticipantReplicationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartParticipantReplicationRequest,
   output: StartParticipantReplicationResponse,
@@ -3857,7 +3522,7 @@ export const stopComposition: API.OperationMethod<
   StopCompositionRequest,
   StopCompositionResponse,
   StopCompositionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StopCompositionRequest,
   output: StopCompositionResponse,
@@ -3887,7 +3552,7 @@ export const stopParticipantReplication: API.OperationMethod<
   StopParticipantReplicationRequest,
   StopParticipantReplicationResponse,
   StopParticipantReplicationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StopParticipantReplicationRequest,
   output: StopParticipantReplicationResponse,
@@ -3915,7 +3580,7 @@ export const tagResource: API.OperationMethod<
   TagResourceRequest,
   TagResourceResponse,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -3943,7 +3608,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceRequest,
   UntagResourceResponse,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -3972,7 +3637,7 @@ export const updateIngestConfiguration: API.OperationMethod<
   UpdateIngestConfigurationRequest,
   UpdateIngestConfigurationResponse,
   UpdateIngestConfigurationError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateIngestConfigurationRequest,
   output: UpdateIngestConfigurationResponse,
@@ -4004,7 +3669,7 @@ export const updateStage: API.OperationMethod<
   UpdateStageRequest,
   UpdateStageResponse,
   UpdateStageError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateStageRequest,
   output: UpdateStageResponse,

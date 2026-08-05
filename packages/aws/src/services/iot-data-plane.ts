@@ -1,6 +1,5 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -8,7 +7,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 const svc = T.AwsApiService({
   sdkId: "IoT Data Plane",
   serviceShapeName: "IotMoonrakerService",
@@ -121,73 +119,73 @@ const rules = T.EndpointResolver((p, _) => {
 export class ConflictException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
     "ConflictException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(409),
   ).pipe(C.withConflictError) {}
 export class ForbiddenException
   extends /*@__PURE__*/ S.TaggedErrorClass<ForbiddenException>()(
     "ForbiddenException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(403),
   ).pipe(C.withAuthError) {}
 export class GatewayTimeoutException
   extends /*@__PURE__*/ S.TaggedErrorClass<GatewayTimeoutException>()(
     "GatewayTimeoutException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(504),
   ).pipe(C.withTimeoutError) {}
 export class InternalFailureException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalFailureException>()(
     "InternalFailureException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(500),
   ).pipe(C.withServerError) {}
 export class InvalidRequestException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidRequestException>()(
     "InvalidRequestException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class MethodNotAllowedException
   extends /*@__PURE__*/ S.TaggedErrorClass<MethodNotAllowedException>()(
     "MethodNotAllowedException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(405),
   ).pipe(C.withBadRequestError) {}
 export class RequestEntityTooLargeException
   extends /*@__PURE__*/ S.TaggedErrorClass<RequestEntityTooLargeException>()(
     "RequestEntityTooLargeException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(413),
   ).pipe(C.withBadRequestError) {}
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class ServiceUnavailableException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceUnavailableException>()(
     "ServiceUnavailableException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(503),
   ).pipe(C.withServerError) {}
 export class ThrottlingException
   extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
     "ThrottlingException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(429),
   ).pipe(C.withThrottlingError) {}
 export class UnauthorizedException
   extends /*@__PURE__*/ S.TaggedErrorClass<UnauthorizedException>()(
     "UnauthorizedException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(401),
   ).pipe(C.withAuthError) {}
 export class UnsupportedDocumentEncodingException
   extends /*@__PURE__*/ S.TaggedErrorClass<UnsupportedDocumentEncodingException>()(
     "UnsupportedDocumentEncodingException",
-    { message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(415),
   ).pipe(C.withBadRequestError) {}
 export type ClientId = string;
@@ -701,7 +699,7 @@ export const deleteConnection: API.OperationMethod<
   DeleteConnectionRequest,
   DeleteConnectionResponse,
   DeleteConnectionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteConnectionRequest,
   output: DeleteConnectionResponse,
@@ -739,7 +737,7 @@ export const deleteThingShadow: API.OperationMethod<
   DeleteThingShadowRequest,
   DeleteThingShadowResponse,
   DeleteThingShadowError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteThingShadowRequest,
   output: DeleteThingShadowResponse,
@@ -775,7 +773,7 @@ export const getConnection: API.OperationMethod<
   GetConnectionRequest,
   GetConnectionResponse,
   GetConnectionError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetConnectionRequest,
   output: GetConnectionResponse,
@@ -817,7 +815,7 @@ export const getRetainedMessage: API.OperationMethod<
   GetRetainedMessageRequest,
   GetRetainedMessageResponse,
   GetRetainedMessageError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetRetainedMessageRequest,
   output: GetRetainedMessageResponse,
@@ -859,7 +857,7 @@ export const getThingShadow: API.OperationMethod<
   GetThingShadowRequest,
   GetThingShadowResponse,
   GetThingShadowError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetThingShadowRequest,
   output: GetThingShadowResponse,
@@ -898,7 +896,7 @@ export const listNamedShadowsForThing: API.OperationMethod<
   ListNamedShadowsForThingRequest,
   ListNamedShadowsForThingResponse,
   ListNamedShadowsForThingError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListNamedShadowsForThingRequest,
   output: ListNamedShadowsForThingResponse,
@@ -942,27 +940,13 @@ export type ListRetainedMessagesError =
  * For more information about messaging costs, see Amazon Web Services IoT Core
  * pricing - Messaging.
  */
-export const listRetainedMessages: API.OperationMethod<
+export const listRetainedMessages: API.PaginatedOperationMethod<
   ListRetainedMessagesRequest,
   ListRetainedMessagesResponse,
   ListRetainedMessagesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListRetainedMessagesRequest,
-  ) => stream.Stream<
-    ListRetainedMessagesResponse,
-    ListRetainedMessagesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListRetainedMessagesRequest,
-  ) => stream.Stream<
-    RetainedMessageSummary,
-    ListRetainedMessagesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  RetainedMessageSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListRetainedMessagesRequest,
   output: ListRetainedMessagesResponse,
   errors: [
@@ -983,27 +967,7 @@ export const listRetainedMessages: API.OperationMethod<
     items: "retainedTopics",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListRetainedMessagesRequest,
-  ListRetainedMessagesResponse,
-  ListRetainedMessagesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListRetainedMessagesRequest,
-  ) => stream.Stream<
-    ListRetainedMessagesResponse,
-    ListRetainedMessagesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListRetainedMessagesRequest,
-  ) => stream.Stream<
-    RetainedMessageSummary,
-    ListRetainedMessagesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListSubscriptionsError =
   | ForbiddenException
@@ -1017,27 +981,13 @@ export type ListSubscriptionsError =
  *
  * Requires permission to access the ListSubscriptions action.
  */
-export const listSubscriptions: API.OperationMethod<
+export const listSubscriptions: API.PaginatedOperationMethod<
   ListSubscriptionsRequest,
   ListSubscriptionsResponse,
   ListSubscriptionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSubscriptionsRequest,
-  ) => stream.Stream<
-    ListSubscriptionsResponse,
-    ListSubscriptionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSubscriptionsRequest,
-  ) => stream.Stream<
-    SubscriptionSummary,
-    ListSubscriptionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  SubscriptionSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListSubscriptionsRequest,
   output: ListSubscriptionsResponse,
   errors: [
@@ -1056,27 +1006,7 @@ export const listSubscriptions: API.OperationMethod<
     items: "subscriptions",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListSubscriptionsRequest,
-  ListSubscriptionsResponse,
-  ListSubscriptionsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSubscriptionsRequest,
-  ) => stream.Stream<
-    ListSubscriptionsResponse,
-    ListSubscriptionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSubscriptionsRequest,
-  ) => stream.Stream<
-    SubscriptionSummary,
-    ListSubscriptionsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type PublishError =
   | InternalFailureException
@@ -1102,7 +1032,7 @@ export const publish: API.OperationMethod<
   PublishRequest,
   PublishResponse,
   PublishError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PublishRequest,
   output: PublishResponse,
@@ -1144,7 +1074,7 @@ export const sendDirectMessage: API.OperationMethod<
   SendDirectMessageRequest,
   SendDirectMessageResponse,
   SendDirectMessageError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: SendDirectMessageRequest,
   output: SendDirectMessageResponse,
@@ -1187,7 +1117,7 @@ export const updateThingShadow: API.OperationMethod<
   UpdateThingShadowRequest,
   UpdateThingShadowResponse,
   UpdateThingShadowError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateThingShadowRequest,
   output: UpdateThingShadowResponse,

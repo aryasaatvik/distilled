@@ -1,7 +1,6 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as redacted from "effect/Redacted";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -9,7 +8,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 import { SensitiveString } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "ConnectCampaigns",
@@ -91,7 +89,7 @@ export class AccessDeniedException
   extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
     "AccessDeniedException",
     {
-      message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       xAmzErrorType: S.optional(S.String).pipe(
         T.HttpHeader("x-amzn-ErrorType"),
       ),
@@ -102,7 +100,7 @@ export class ConflictException
   extends /*@__PURE__*/ S.TaggedErrorClass<ConflictException>()(
     "ConflictException",
     {
-      message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       xAmzErrorType: S.optional(S.String).pipe(
         T.HttpHeader("x-amzn-ErrorType"),
       ),
@@ -113,7 +111,7 @@ export class InternalServerException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
     "InternalServerException",
     {
-      message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       xAmzErrorType: S.optional(S.String).pipe(
         T.HttpHeader("x-amzn-ErrorType"),
       ),
@@ -125,7 +123,7 @@ export class InvalidCampaignStateException
     "InvalidCampaignStateException",
     {
       state: S.String,
-      message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       xAmzErrorType: S.optional(S.String).pipe(
         T.HttpHeader("x-amzn-ErrorType"),
       ),
@@ -136,7 +134,7 @@ export class InvalidStateException
   extends /*@__PURE__*/ S.TaggedErrorClass<InvalidStateException>()(
     "InvalidStateException",
     {
-      message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       xAmzErrorType: S.optional(S.String).pipe(
         T.HttpHeader("x-amzn-ErrorType"),
       ),
@@ -147,7 +145,7 @@ export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
     {
-      message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       xAmzErrorType: S.optional(S.String).pipe(
         T.HttpHeader("x-amzn-ErrorType"),
       ),
@@ -158,7 +156,7 @@ export class ServiceQuotaExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<ServiceQuotaExceededException>()(
     "ServiceQuotaExceededException",
     {
-      message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       xAmzErrorType: S.optional(S.String).pipe(
         T.HttpHeader("x-amzn-ErrorType"),
       ),
@@ -169,7 +167,7 @@ export class ThrottlingException
   extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
     "ThrottlingException",
     {
-      message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       xAmzErrorType: S.optional(S.String).pipe(
         T.HttpHeader("x-amzn-ErrorType"),
       ),
@@ -180,7 +178,7 @@ export class ValidationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
     "ValidationException",
     {
-      message: S.String,
+      message: S.String.pipe(T.ErrorMessage()),
       xAmzErrorType: S.optional(S.String).pipe(
         T.HttpHeader("x-amzn-ErrorType"),
       ),
@@ -1112,7 +1110,7 @@ export const createCampaign: API.OperationMethod<
   CreateCampaignRequest,
   CreateCampaignResponse,
   CreateCampaignError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateCampaignRequest,
   output: CreateCampaignResponse,
@@ -1143,7 +1141,7 @@ export const deleteCampaign: API.OperationMethod<
   DeleteCampaignRequest,
   DeleteCampaignResponse,
   DeleteCampaignError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteCampaignRequest,
   output: DeleteCampaignResponse,
@@ -1173,7 +1171,7 @@ export const deleteConnectInstanceConfig: API.OperationMethod<
   DeleteConnectInstanceConfigRequest,
   DeleteConnectInstanceConfigResponse,
   DeleteConnectInstanceConfigError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteConnectInstanceConfigRequest,
   output: DeleteConnectInstanceConfigResponse,
@@ -1204,7 +1202,7 @@ export const deleteInstanceOnboardingJob: API.OperationMethod<
   DeleteInstanceOnboardingJobRequest,
   DeleteInstanceOnboardingJobResponse,
   DeleteInstanceOnboardingJobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteInstanceOnboardingJobRequest,
   output: DeleteInstanceOnboardingJobResponse,
@@ -1233,7 +1231,7 @@ export const describeCampaign: API.OperationMethod<
   DescribeCampaignRequest,
   DescribeCampaignResponse,
   DescribeCampaignError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeCampaignRequest,
   output: DescribeCampaignResponse,
@@ -1262,7 +1260,7 @@ export const getCampaignState: API.OperationMethod<
   GetCampaignStateRequest,
   GetCampaignStateResponse,
   GetCampaignStateError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetCampaignStateRequest,
   output: GetCampaignStateResponse,
@@ -1291,7 +1289,7 @@ export const getCampaignStateBatch: API.OperationMethod<
   GetCampaignStateBatchRequest,
   GetCampaignStateBatchResponse,
   GetCampaignStateBatchError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetCampaignStateBatchRequest,
   output: GetCampaignStateBatchResponse,
@@ -1319,7 +1317,7 @@ export const getConnectInstanceConfig: API.OperationMethod<
   GetConnectInstanceConfigRequest,
   GetConnectInstanceConfigResponse,
   GetConnectInstanceConfigError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetConnectInstanceConfigRequest,
   output: GetConnectInstanceConfigResponse,
@@ -1347,7 +1345,7 @@ export const getInstanceOnboardingJobStatus: API.OperationMethod<
   GetInstanceOnboardingJobStatusRequest,
   GetInstanceOnboardingJobStatusResponse,
   GetInstanceOnboardingJobStatusError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetInstanceOnboardingJobStatusRequest,
   output: GetInstanceOnboardingJobStatusResponse,
@@ -1370,27 +1368,13 @@ export type ListCampaignsError =
 /**
  * Provides summary information about the campaigns under the specified Amazon Connect account.
  */
-export const listCampaigns: API.OperationMethod<
+export const listCampaigns: API.PaginatedOperationMethod<
   ListCampaignsRequest,
   ListCampaignsResponse,
   ListCampaignsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCampaignsRequest,
-  ) => stream.Stream<
-    ListCampaignsResponse,
-    ListCampaignsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCampaignsRequest,
-  ) => stream.Stream<
-    CampaignSummary,
-    ListCampaignsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  CampaignSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListCampaignsRequest,
   output: ListCampaignsResponse,
   errors: [AccessDeniedException, InternalServerException, ValidationException],
@@ -1403,27 +1387,7 @@ export const listCampaigns: API.OperationMethod<
     items: "campaignSummaryList",
     pageSize: "maxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListCampaignsRequest,
-  ListCampaignsResponse,
-  ListCampaignsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCampaignsRequest,
-  ) => stream.Stream<
-    ListCampaignsResponse,
-    ListCampaignsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCampaignsRequest,
-  ) => stream.Stream<
-    CampaignSummary,
-    ListCampaignsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTagsForResourceError =
   | AccessDeniedException
@@ -1439,7 +1403,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceRequest,
   ListTagsForResourceResponse,
   ListTagsForResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -1471,7 +1435,7 @@ export const pauseCampaign: API.OperationMethod<
   PauseCampaignRequest,
   PauseCampaignResponse,
   PauseCampaignError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PauseCampaignRequest,
   output: PauseCampaignResponse,
@@ -1505,7 +1469,7 @@ export const putDialRequestBatch: API.OperationMethod<
   PutDialRequestBatchRequest,
   PutDialRequestBatchResponse,
   PutDialRequestBatchError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: PutDialRequestBatchRequest,
   output: PutDialRequestBatchResponse,
@@ -1539,7 +1503,7 @@ export const resumeCampaign: API.OperationMethod<
   ResumeCampaignRequest,
   ResumeCampaignResponse,
   ResumeCampaignError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ResumeCampaignRequest,
   output: ResumeCampaignResponse,
@@ -1573,7 +1537,7 @@ export const startCampaign: API.OperationMethod<
   StartCampaignRequest,
   StartCampaignResponse,
   StartCampaignError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartCampaignRequest,
   output: StartCampaignResponse,
@@ -1606,7 +1570,7 @@ export const startInstanceOnboardingJob: API.OperationMethod<
   StartInstanceOnboardingJobRequest,
   StartInstanceOnboardingJobResponse,
   StartInstanceOnboardingJobError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StartInstanceOnboardingJobRequest,
   output: StartInstanceOnboardingJobResponse,
@@ -1639,7 +1603,7 @@ export const stopCampaign: API.OperationMethod<
   StopCampaignRequest,
   StopCampaignResponse,
   StopCampaignError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: StopCampaignRequest,
   output: StopCampaignResponse,
@@ -1671,7 +1635,7 @@ export const tagResource: API.OperationMethod<
   TagResourceRequest,
   TagResourceResponse,
   TagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -1701,7 +1665,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceRequest,
   UntagResourceResponse,
   UntagResourceError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -1731,7 +1695,7 @@ export const updateCampaignDialerConfig: API.OperationMethod<
   UpdateCampaignDialerConfigRequest,
   UpdateCampaignDialerConfigResponse,
   UpdateCampaignDialerConfigError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateCampaignDialerConfigRequest,
   output: UpdateCampaignDialerConfigResponse,
@@ -1761,7 +1725,7 @@ export const updateCampaignName: API.OperationMethod<
   UpdateCampaignNameRequest,
   UpdateCampaignNameResponse,
   UpdateCampaignNameError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateCampaignNameRequest,
   output: UpdateCampaignNameResponse,
@@ -1792,7 +1756,7 @@ export const updateCampaignOutboundCallConfig: API.OperationMethod<
   UpdateCampaignOutboundCallConfigRequest,
   UpdateCampaignOutboundCallConfigResponse,
   UpdateCampaignOutboundCallConfigError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: UpdateCampaignOutboundCallConfigRequest,
   output: UpdateCampaignOutboundCallConfigResponse,

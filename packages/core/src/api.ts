@@ -322,8 +322,15 @@ export function make<
 //#region MakePaginated
 
 /**
- * The element type `.items()` yields: the array element of the page response
- * itself, of its `result` member, or `unknown` when no items shape applies.
+ * STRUCTURAL fallback for the element type `.items()` yields: the array
+ * element of the page response itself, or of its `result` member.
+ *
+ * It can only see shapes it was taught, so any other envelope
+ * (`{ branches: […] }`, `{ data: […] }`, …) lands on `unknown` — which is
+ * why generators pass the item type EXPLICITLY as
+ * {@link PaginatedOperationMethod}'s `Item` argument, resolved from the
+ * pagination trait's `items` path against the response shape. This default
+ * only applies to hand-written operations.
  */
 export type PaginatedItem<A> =
   A extends ReadonlyArray<infer Item>
@@ -335,19 +342,34 @@ export type PaginatedItem<A> =
         : unknown;
 
 /**
- * A paginated operation: callable like any {@link OperationMethod}, plus
+ * The callable half of a paginated operation: the operation call itself, plus
  * `.pages(input)` streaming every page response and `.items(input)` streaming
  * the individual items across pages.
+ *
+ * Used twice in {@link PaginatedOperationMethod} — once with the operation's
+ * requirements (`R`) for the direct-call style, once with `R = never` for the
+ * value `yield* operation` hands back, which has the caller's context baked in.
  */
-export type PaginatedOperationMethod<I, O, E, R> = OperationMethod<
+export interface PaginatedCall<I, O, E, R, Item> {
+  (input: I): Effect.Effect<O, E, R>;
+  readonly pages: (input: I) => Stream.Stream<O, E, R>;
+  readonly items: (input: I) => Stream.Stream<Item, E, R>;
+}
+
+/**
+ * A paginated operation: usable both ways an {@link OperationMethod} is, with
+ * `.pages` / `.items` on BOTH — the operation object for
+ * `yield* op.items(input)`, and the requirement-free call function for
+ * `const op = yield* operation; yield* op.items(input)` (distilled #145).
+ */
+export type PaginatedOperationMethod<
   I,
   O,
   E,
-  R
-> & {
-  readonly pages: (input: I) => Stream.Stream<O, E, R>;
-  readonly items: (input: I) => Stream.Stream<PaginatedItem<O>, E, R>;
-};
+  R,
+  Item = PaginatedItem<O>,
+> = Effect.Effect<PaginatedCall<I, O, E, never, Item>, never, R> &
+  PaginatedCall<I, O, E, R, Item>;
 
 export interface PaginatedOperationConfig<
   I extends S.Top,
@@ -388,14 +410,37 @@ export function makePaginated<
   let pagination: Pagination.PaginatedTrait | undefined;
   const pag = () => (pagination ??= configFn().pagination);
   const paginate = strategy ?? Pagination.paginateWithDefaults;
-  fn.pages = (input: Record<string, unknown>) => paginate(fn, input, pag());
-  fn.items = (input: Record<string, unknown>) => {
-    const p = pag();
-    return p.items
-      ? Pagination.extractItems(fn.pages(input), p.items)
-      : fn.pages(input);
+
+  // The streams are built over a CALL FUNCTION, so the same code serves both
+  // call styles: the operation itself (requirements intact), and the
+  // context-bound function `yield* operation` hands back — whose streams
+  // inherit that captured context and so need nothing after the yield.
+  const withStreams = (
+    call: (input: any) => Effect.Effect<any, any, any>,
+  ): any => {
+    const pages = (input: Record<string, unknown>) =>
+      paginate(call, input, pag());
+    const items = (input: Record<string, unknown>) => {
+      const p = pag();
+      return p.items
+        ? Pagination.extractItems(pages(input), p.items)
+        : pages(input);
+    };
+    return Object.assign(call, { pages, items });
   };
-  return fn;
+
+  // `yield* operation` runs through `make`'s Proto.asEffect, which builds a
+  // fresh arrow and would drop `.pages` / `.items` (distilled #145). Override
+  // it here — Proto's `[Symbol.iterator]`/`pipe` dispatch on `this`, so both
+  // pick this up. Only paginated operations pay for it.
+  fn.asEffect = () =>
+    Effect.map(Effect.context(), (context) =>
+      withStreams((input: unknown) =>
+        Effect.provideContext(fn(input), context),
+      ),
+    );
+
+  return withStreams(fn);
 }
 
 //#endregion

@@ -1,6 +1,5 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -8,7 +7,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 const svc = T.AwsApiService({
   sdkId: "Redshift Data",
   serviceShapeName: "RedshiftData",
@@ -88,55 +86,55 @@ const rules = T.EndpointResolver((p, _) => {
 export class ActiveSessionsExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<ActiveSessionsExceededException>()(
     "ActiveSessionsExceededException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class ActiveStatementsExceededException
   extends /*@__PURE__*/ S.TaggedErrorClass<ActiveStatementsExceededException>()(
     "ActiveStatementsExceededException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class BatchExecuteStatementException
   extends /*@__PURE__*/ S.TaggedErrorClass<BatchExecuteStatementException>()(
     "BatchExecuteStatementException",
-    { Message: S.String, StatementId: S.String },
+    { message: S.String.pipe(T.ErrorMessage()), StatementId: S.String },
     T.HttpError(500),
   ).pipe(C.withServerError) {}
 export class DatabaseConnectionException
   extends /*@__PURE__*/ S.TaggedErrorClass<DatabaseConnectionException>()(
     "DatabaseConnectionException",
-    { Message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(500),
   ).pipe(C.withServerError) {}
 export class ExecuteStatementException
   extends /*@__PURE__*/ S.TaggedErrorClass<ExecuteStatementException>()(
     "ExecuteStatementException",
-    { Message: S.String, StatementId: S.String },
+    { message: S.String.pipe(T.ErrorMessage()), StatementId: S.String },
     T.HttpError(500),
   ).pipe(C.withServerError) {}
 export class InternalServerException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
     "InternalServerException",
-    { Message: S.String },
+    { message: S.String.pipe(T.ErrorMessage()) },
     T.HttpError(500),
   ).pipe(C.withServerError) {}
 export class QueryTimeoutException
   extends /*@__PURE__*/ S.TaggedErrorClass<QueryTimeoutException>()(
     "QueryTimeoutException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { Message: S.String, ResourceId: S.String },
+    { message: S.String.pipe(T.ErrorMessage()), ResourceId: S.String },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class ValidationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
     "ValidationException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export type StatementString = string;
@@ -836,7 +834,7 @@ export const batchExecuteStatement: API.OperationMethod<
   BatchExecuteStatementInput,
   BatchExecuteStatementOutput,
   BatchExecuteStatementError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: BatchExecuteStatementInput,
   output: BatchExecuteStatementOutput,
@@ -869,7 +867,7 @@ export const cancelStatement: API.OperationMethod<
   CancelStatementRequest,
   CancelStatementResponse,
   CancelStatementError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: CancelStatementRequest,
   output: CancelStatementResponse,
@@ -899,7 +897,7 @@ export const describeStatement: API.OperationMethod<
   DescribeStatementRequest,
   DescribeStatementResponse,
   DescribeStatementError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: DescribeStatementRequest,
   output: DescribeStatementResponse,
@@ -935,27 +933,13 @@ export type DescribeTableError =
  *
  * For more information about the Amazon Redshift Data API and CLI usage examples, see Using the Amazon Redshift Data API in the *Amazon Redshift Management Guide*.
  */
-export const describeTable: API.OperationMethod<
+export const describeTable: API.PaginatedOperationMethod<
   DescribeTableRequest,
   DescribeTableResponse,
   DescribeTableError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeTableRequest,
-  ) => stream.Stream<
-    DescribeTableResponse,
-    DescribeTableError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeTableRequest,
-  ) => stream.Stream<
-    ColumnMetadata,
-    DescribeTableError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ColumnMetadata
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: DescribeTableRequest,
   output: DescribeTableResponse,
   errors: [
@@ -974,27 +958,7 @@ export const describeTable: API.OperationMethod<
     items: "ColumnList",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  DescribeTableRequest,
-  DescribeTableResponse,
-  DescribeTableError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: DescribeTableRequest,
-  ) => stream.Stream<
-    DescribeTableResponse,
-    DescribeTableError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: DescribeTableRequest,
-  ) => stream.Stream<
-    ColumnMetadata,
-    DescribeTableError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ExecuteStatementError =
   | ActiveSessionsExceededException
@@ -1023,7 +987,7 @@ export const executeStatement: API.OperationMethod<
   ExecuteStatementInput,
   ExecuteStatementOutput,
   ExecuteStatementError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: ExecuteStatementInput,
   output: ExecuteStatementOutput,
@@ -1050,27 +1014,13 @@ export type GetStatementResultError =
  *
  * For more information about the Amazon Redshift Data API and CLI usage examples, see Using the Amazon Redshift Data API in the *Amazon Redshift Management Guide*.
  */
-export const getStatementResult: API.OperationMethod<
+export const getStatementResult: API.PaginatedOperationMethod<
   GetStatementResultRequest,
   GetStatementResultResponse,
   GetStatementResultError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetStatementResultRequest,
-  ) => stream.Stream<
-    GetStatementResultResponse,
-    GetStatementResultError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetStatementResultRequest,
-  ) => stream.Stream<
-    Field[],
-    GetStatementResultError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  Field[]
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetStatementResultRequest,
   output: GetStatementResultResponse,
   errors: [
@@ -1086,27 +1036,7 @@ export const getStatementResult: API.OperationMethod<
     outputToken: "NextToken",
     items: "Records",
   } as const,
-})) as any as API.OperationMethod<
-  GetStatementResultRequest,
-  GetStatementResultResponse,
-  GetStatementResultError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetStatementResultRequest,
-  ) => stream.Stream<
-    GetStatementResultResponse,
-    GetStatementResultError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetStatementResultRequest,
-  ) => stream.Stream<
-    Field[],
-    GetStatementResultError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type GetStatementResultV2Error =
   | InternalServerException
@@ -1118,27 +1048,13 @@ export type GetStatementResultV2Error =
  *
  * For more information about the Amazon Redshift Data API and CLI usage examples, see Using the Amazon Redshift Data API in the *Amazon Redshift Management Guide*.
  */
-export const getStatementResultV2: API.OperationMethod<
+export const getStatementResultV2: API.PaginatedOperationMethod<
   GetStatementResultV2Request,
   GetStatementResultV2Response,
   GetStatementResultV2Error,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetStatementResultV2Request,
-  ) => stream.Stream<
-    GetStatementResultV2Response,
-    GetStatementResultV2Error,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetStatementResultV2Request,
-  ) => stream.Stream<
-    QueryRecords,
-    GetStatementResultV2Error,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  QueryRecords
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: GetStatementResultV2Request,
   output: GetStatementResultV2Response,
   errors: [
@@ -1154,27 +1070,7 @@ export const getStatementResultV2: API.OperationMethod<
     outputToken: "NextToken",
     items: "Records",
   } as const,
-})) as any as API.OperationMethod<
-  GetStatementResultV2Request,
-  GetStatementResultV2Response,
-  GetStatementResultV2Error,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: GetStatementResultV2Request,
-  ) => stream.Stream<
-    GetStatementResultV2Response,
-    GetStatementResultV2Error,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: GetStatementResultV2Request,
-  ) => stream.Stream<
-    QueryRecords,
-    GetStatementResultV2Error,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListDatabasesError =
   | DatabaseConnectionException
@@ -1198,27 +1094,13 @@ export type ListDatabasesError =
  *
  * For more information about the Amazon Redshift Data API and CLI usage examples, see Using the Amazon Redshift Data API in the *Amazon Redshift Management Guide*.
  */
-export const listDatabases: API.OperationMethod<
+export const listDatabases: API.PaginatedOperationMethod<
   ListDatabasesRequest,
   ListDatabasesResponse,
   ListDatabasesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDatabasesRequest,
-  ) => stream.Stream<
-    ListDatabasesResponse,
-    ListDatabasesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDatabasesRequest,
-  ) => stream.Stream<
-    string,
-    ListDatabasesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  string
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListDatabasesRequest,
   output: ListDatabasesResponse,
   errors: [
@@ -1237,27 +1119,7 @@ export const listDatabases: API.OperationMethod<
     items: "Databases",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListDatabasesRequest,
-  ListDatabasesResponse,
-  ListDatabasesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDatabasesRequest,
-  ) => stream.Stream<
-    ListDatabasesResponse,
-    ListDatabasesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDatabasesRequest,
-  ) => stream.Stream<
-    string,
-    ListDatabasesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListSchemasError =
   | DatabaseConnectionException
@@ -1281,27 +1143,13 @@ export type ListSchemasError =
  *
  * For more information about the Amazon Redshift Data API and CLI usage examples, see Using the Amazon Redshift Data API in the *Amazon Redshift Management Guide*.
  */
-export const listSchemas: API.OperationMethod<
+export const listSchemas: API.PaginatedOperationMethod<
   ListSchemasRequest,
   ListSchemasResponse,
   ListSchemasError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSchemasRequest,
-  ) => stream.Stream<
-    ListSchemasResponse,
-    ListSchemasError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSchemasRequest,
-  ) => stream.Stream<
-    string,
-    ListSchemasError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  string
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListSchemasRequest,
   output: ListSchemasResponse,
   errors: [
@@ -1320,27 +1168,7 @@ export const listSchemas: API.OperationMethod<
     items: "Schemas",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListSchemasRequest,
-  ListSchemasResponse,
-  ListSchemasError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListSchemasRequest,
-  ) => stream.Stream<
-    ListSchemasResponse,
-    ListSchemasError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListSchemasRequest,
-  ) => stream.Stream<
-    string,
-    ListSchemasError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListStatementsError =
   | InternalServerException
@@ -1354,27 +1182,13 @@ export type ListStatementsError =
  *
  * For more information about the Amazon Redshift Data API and CLI usage examples, see Using the Amazon Redshift Data API in the *Amazon Redshift Management Guide*.
  */
-export const listStatements: API.OperationMethod<
+export const listStatements: API.PaginatedOperationMethod<
   ListStatementsRequest,
   ListStatementsResponse,
   ListStatementsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListStatementsRequest,
-  ) => stream.Stream<
-    ListStatementsResponse,
-    ListStatementsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListStatementsRequest,
-  ) => stream.Stream<
-    StatementData,
-    ListStatementsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  StatementData
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListStatementsRequest,
   output: ListStatementsResponse,
   errors: [
@@ -1391,27 +1205,7 @@ export const listStatements: API.OperationMethod<
     items: "Statements",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListStatementsRequest,
-  ListStatementsResponse,
-  ListStatementsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListStatementsRequest,
-  ) => stream.Stream<
-    ListStatementsResponse,
-    ListStatementsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListStatementsRequest,
-  ) => stream.Stream<
-    StatementData,
-    ListStatementsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListTablesError =
   | DatabaseConnectionException
@@ -1435,27 +1229,13 @@ export type ListTablesError =
  *
  * For more information about the Amazon Redshift Data API and CLI usage examples, see Using the Amazon Redshift Data API in the *Amazon Redshift Management Guide*.
  */
-export const listTables: API.OperationMethod<
+export const listTables: API.PaginatedOperationMethod<
   ListTablesRequest,
   ListTablesResponse,
   ListTablesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTablesRequest,
-  ) => stream.Stream<
-    ListTablesResponse,
-    ListTablesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTablesRequest,
-  ) => stream.Stream<
-    TableMember,
-    ListTablesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  TableMember
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListTablesRequest,
   output: ListTablesResponse,
   errors: [
@@ -1474,24 +1254,4 @@ export const listTables: API.OperationMethod<
     items: "Tables",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListTablesRequest,
-  ListTablesResponse,
-  ListTablesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListTablesRequest,
-  ) => stream.Stream<
-    ListTablesResponse,
-    ListTablesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListTablesRequest,
-  ) => stream.Stream<
-    TableMember,
-    ListTablesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;

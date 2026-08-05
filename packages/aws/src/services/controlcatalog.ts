@@ -1,6 +1,5 @@
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as S from "@distilled.cloud/core/schema";
-import * as stream from "effect/Stream";
 import * as API from "@distilled.cloud/core/api";
 import { AwsProtocol } from "../protocol.ts";
 import { Retry } from "../retry.ts";
@@ -8,7 +7,6 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
 const svc = T.AwsApiService({
   sdkId: "ControlCatalog",
   serviceShapeName: "ControlCatalog",
@@ -88,31 +86,31 @@ const rules = T.EndpointResolver((p, _) => {
 export class AccessDeniedException
   extends /*@__PURE__*/ S.TaggedErrorClass<AccessDeniedException>()(
     "AccessDeniedException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(403),
   ).pipe(C.withAuthError) {}
 export class InternalServerException
   extends /*@__PURE__*/ S.TaggedErrorClass<InternalServerException>()(
     "InternalServerException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(T.HttpError(500), T.Retryable()),
   ).pipe(C.withServerError, C.withRetryableError) {}
 export class ResourceNotFoundException
   extends /*@__PURE__*/ S.TaggedErrorClass<ResourceNotFoundException>()(
     "ResourceNotFoundException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(404),
   ).pipe(C.withBadRequestError) {}
 export class ThrottlingException
   extends /*@__PURE__*/ S.TaggedErrorClass<ThrottlingException>()(
     "ThrottlingException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.all(T.HttpError(429), T.Retryable({ throttling: true })),
   ).pipe(C.withThrottlingError, C.withRetryableError) {}
 export class ValidationException
   extends /*@__PURE__*/ S.TaggedErrorClass<ValidationException>()(
     "ValidationException",
-    { Message: S.optional(S.String) },
+    { message: S.optional(S.String).pipe(T.ErrorMessage()) },
     T.HttpError(400),
   ).pipe(C.withBadRequestError) {}
 export type ControlArn = string;
@@ -730,7 +728,7 @@ export const getControl: API.OperationMethod<
   GetControlRequest,
   GetControlResponse,
   GetControlError,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
   input: GetControlRequest,
   output: GetControlResponse,
@@ -757,27 +755,13 @@ export type ListCommonControlsError =
  *
  * You can apply an optional filter to see common controls that have a specific objective. If you don’t provide a filter, the operation returns all common controls.
  */
-export const listCommonControls: API.OperationMethod<
+export const listCommonControls: API.PaginatedOperationMethod<
   ListCommonControlsRequest,
   ListCommonControlsResponse,
   ListCommonControlsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCommonControlsRequest,
-  ) => stream.Stream<
-    ListCommonControlsResponse,
-    ListCommonControlsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCommonControlsRequest,
-  ) => stream.Stream<
-    CommonControlSummary,
-    ListCommonControlsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  CommonControlSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListCommonControlsRequest,
   output: ListCommonControlsResponse,
   errors: [
@@ -795,27 +779,7 @@ export const listCommonControls: API.OperationMethod<
     items: "CommonControls",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListCommonControlsRequest,
-  ListCommonControlsResponse,
-  ListCommonControlsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListCommonControlsRequest,
-  ) => stream.Stream<
-    ListCommonControlsResponse,
-    ListCommonControlsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListCommonControlsRequest,
-  ) => stream.Stream<
-    CommonControlSummary,
-    ListCommonControlsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListControlMappingsError =
   | AccessDeniedException
@@ -826,27 +790,13 @@ export type ListControlMappingsError =
 /**
  * Returns a paginated list of control mappings from the Control Catalog. Control mappings show relationships between controls and other entities, such as common controls or compliance frameworks.
  */
-export const listControlMappings: API.OperationMethod<
+export const listControlMappings: API.PaginatedOperationMethod<
   ListControlMappingsRequest,
   ListControlMappingsResponse,
   ListControlMappingsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListControlMappingsRequest,
-  ) => stream.Stream<
-    ListControlMappingsResponse,
-    ListControlMappingsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListControlMappingsRequest,
-  ) => stream.Stream<
-    ControlMapping,
-    ListControlMappingsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ControlMapping
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListControlMappingsRequest,
   output: ListControlMappingsResponse,
   errors: [
@@ -864,27 +814,7 @@ export const listControlMappings: API.OperationMethod<
     items: "ControlMappings",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListControlMappingsRequest,
-  ListControlMappingsResponse,
-  ListControlMappingsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListControlMappingsRequest,
-  ) => stream.Stream<
-    ListControlMappingsResponse,
-    ListControlMappingsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListControlMappingsRequest,
-  ) => stream.Stream<
-    ControlMapping,
-    ListControlMappingsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListControlsError =
   | AccessDeniedException
@@ -895,27 +825,13 @@ export type ListControlsError =
 /**
  * Returns a paginated list of all available controls in the Control Catalog library. Allows you to discover available controls. The list of controls is given as structures of type *controlSummary*. The ARN is returned in the global *controlcatalog* format, as shown in the examples.
  */
-export const listControls: API.OperationMethod<
+export const listControls: API.PaginatedOperationMethod<
   ListControlsRequest,
   ListControlsResponse,
   ListControlsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListControlsRequest,
-  ) => stream.Stream<
-    ListControlsResponse,
-    ListControlsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListControlsRequest,
-  ) => stream.Stream<
-    ControlSummary,
-    ListControlsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ControlSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListControlsRequest,
   output: ListControlsResponse,
   errors: [
@@ -933,27 +849,7 @@ export const listControls: API.OperationMethod<
     items: "Controls",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListControlsRequest,
-  ListControlsResponse,
-  ListControlsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListControlsRequest,
-  ) => stream.Stream<
-    ListControlsResponse,
-    ListControlsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListControlsRequest,
-  ) => stream.Stream<
-    ControlSummary,
-    ListControlsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListDomainsError =
   | AccessDeniedException
@@ -964,27 +860,13 @@ export type ListDomainsError =
 /**
  * Returns a paginated list of domains from the Control Catalog.
  */
-export const listDomains: API.OperationMethod<
+export const listDomains: API.PaginatedOperationMethod<
   ListDomainsRequest,
   ListDomainsResponse,
   ListDomainsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDomainsRequest,
-  ) => stream.Stream<
-    ListDomainsResponse,
-    ListDomainsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDomainsRequest,
-  ) => stream.Stream<
-    DomainSummary,
-    ListDomainsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  DomainSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListDomainsRequest,
   output: ListDomainsResponse,
   errors: [
@@ -1002,27 +884,7 @@ export const listDomains: API.OperationMethod<
     items: "Domains",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListDomainsRequest,
-  ListDomainsResponse,
-  ListDomainsError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListDomainsRequest,
-  ) => stream.Stream<
-    ListDomainsResponse,
-    ListDomainsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListDomainsRequest,
-  ) => stream.Stream<
-    DomainSummary,
-    ListDomainsError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
 
 export type ListObjectivesError =
   | AccessDeniedException
@@ -1035,27 +897,13 @@ export type ListObjectivesError =
  *
  * You can apply an optional filter to see the objectives that belong to a specific domain. If you don’t provide a filter, the operation returns all objectives.
  */
-export const listObjectives: API.OperationMethod<
+export const listObjectives: API.PaginatedOperationMethod<
   ListObjectivesRequest,
   ListObjectivesResponse,
   ListObjectivesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListObjectivesRequest,
-  ) => stream.Stream<
-    ListObjectivesResponse,
-    ListObjectivesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListObjectivesRequest,
-  ) => stream.Stream<
-    ObjectiveSummary,
-    ListObjectivesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-} = /*@__PURE__*/ API.makePaginated(() => ({
+  Credentials | HttpClient.HttpClient,
+  ObjectiveSummary
+> = /*@__PURE__*/ API.makePaginated(() => ({
   input: ListObjectivesRequest,
   output: ListObjectivesResponse,
   errors: [
@@ -1073,24 +921,4 @@ export const listObjectives: API.OperationMethod<
     items: "Objectives",
     pageSize: "MaxResults",
   } as const,
-})) as any as API.OperationMethod<
-  ListObjectivesRequest,
-  ListObjectivesResponse,
-  ListObjectivesError,
-  Credentials | Region | HttpClient.HttpClient
-> & {
-  pages: (
-    input: ListObjectivesRequest,
-  ) => stream.Stream<
-    ListObjectivesResponse,
-    ListObjectivesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-  items: (
-    input: ListObjectivesRequest,
-  ) => stream.Stream<
-    ObjectiveSummary,
-    ListObjectivesError,
-    Credentials | Region | HttpClient.HttpClient
-  >;
-};
+})) as any;
