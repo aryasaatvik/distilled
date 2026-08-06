@@ -187,8 +187,8 @@
         "@types/node": "catalog:",
       },
     },
-    "packages/otelcol": {
-      "name": "@distilled.cloud/otelcol",
+    "packages/otel-collector": {
+      "name": "@distilled.cloud/otel-collector",
       "version": "0.30.2",
       "dependencies": {
         "@distilled.cloud/core": "workspace:*",
@@ -312,11 +312,11 @@
     "@aws-crypto/util": "^5.2.0",
     "@aws-sdk/credential-providers": "^3.994.0",
     "@aws-sdk/types": "^3.973.1",
-    "@effect/platform-bun": ">=4.0.0-beta.102 || >=4.0.0",
-    "@effect/platform-node": ">=4.0.0-beta.102 || >=4.0.0",
-    "@effect/platform-node-shared": ">=4.0.0-beta.102 || >=4.0.0",
-    "@effect/sql-pg": ">=4.0.0-beta.102 || >=4.0.0",
-    "@effect/vitest": ">=4.0.0-beta.102 || >=4.0.0",
+    "@effect/platform-bun": ">=4.0.0-beta.102 <4.0.0-beta.104",
+    "@effect/platform-node": ">=4.0.0-beta.102 <4.0.0-beta.104",
+    "@effect/platform-node-shared": ">=4.0.0-beta.102 <4.0.0-beta.104",
+    "@effect/sql-pg": ">=4.0.0-beta.102 <4.0.0-beta.104",
+    "@effect/vitest": ">=4.0.0-beta.102 <4.0.0-beta.104",
     "@smithy/shared-ini-file-loader": "^4.4.3",
     "@smithy/types": "^4.12.0",
     "@smithy/util-base64": "^4.3.0",
@@ -326,7 +326,7 @@
     "aws4fetch": "^1.0.20",
     "dedent": "^1.7.0",
     "dotenv": "^16.5.0",
-    "effect": ">=4.0.0-beta.102 || >=4.0.0",
+    "effect": ">=4.0.0-beta.102 <4.0.0-beta.104",
     "fast-xml-parser": "^5.3.2",
     "pathe": "^2.0.3",
     "typescript": "^7.0.2",
@@ -395,7 +395,7 @@
 
     "@distilled.cloud/neon": ["@distilled.cloud/neon@workspace:packages/neon"],
 
-    "@distilled.cloud/otelcol": ["@distilled.cloud/otelcol@workspace:packages/otelcol"],
+    "@distilled.cloud/otel-collector": ["@distilled.cloud/otel-collector@workspace:packages/otel-collector"],
 
     "@distilled.cloud/planetscale": ["@distilled.cloud/planetscale@workspace:packages/planetscale"],
 
@@ -1035,7 +1035,7 @@
 
     "@distilled.cloud/neon/@types/node": ["@types/node@26.1.2", "", { "dependencies": { "undici-types": "~8.3.0" } }, "sha512-Vu4a5UFA9rIIFJ7rB/Vaafh9lrCQszopTCx6KjFboXTGQbPNasehVR5TEiithSDGyd1DEiUByggTZsg8jukeIg=="],
 
-    "@distilled.cloud/otelcol/@types/node": ["@types/node@26.1.2", "", { "dependencies": { "undici-types": "~8.3.0" } }, "sha512-Vu4a5UFA9rIIFJ7rB/Vaafh9lrCQszopTCx6KjFboXTGQbPNasehVR5TEiithSDGyd1DEiUByggTZsg8jukeIg=="],
+    "@distilled.cloud/otel-collector/@types/node": ["@types/node@26.1.2", "", { "dependencies": { "undici-types": "~8.3.0" } }, "sha512-Vu4a5UFA9rIIFJ7rB/Vaafh9lrCQszopTCx6KjFboXTGQbPNasehVR5TEiithSDGyd1DEiUByggTZsg8jukeIg=="],
 
     "@distilled.cloud/planetscale/@types/node": ["@types/node@26.1.2", "", { "dependencies": { "undici-types": "~8.3.0" } }, "sha512-Vu4a5UFA9rIIFJ7rB/Vaafh9lrCQszopTCx6KjFboXTGQbPNasehVR5TEiithSDGyd1DEiUByggTZsg8jukeIg=="],
 
@@ -1097,7 +1097,7 @@
 
     "@distilled.cloud/neon/@types/node/undici-types": ["undici-types@8.3.0", "", {}, "sha512-j375ScV60dom+YkPFIfTLcOiPxkN/buHz5GobjLhixFuANaNs3C9l4GmrWqejgXWJ7BbJcFYpTEUkS1Ge8bpZQ=="],
 
-    "@distilled.cloud/otelcol/@types/node/undici-types": ["undici-types@8.3.0", "", {}, "sha512-j375ScV60dom+YkPFIfTLcOiPxkN/buHz5GobjLhixFuANaNs3C9l4GmrWqejgXWJ7BbJcFYpTEUkS1Ge8bpZQ=="],
+    "@distilled.cloud/otel-collector/@types/node/undici-types": ["undici-types@8.3.0", "", {}, "sha512-j375ScV60dom+YkPFIfTLcOiPxkN/buHz5GobjLhixFuANaNs3C9l4GmrWqejgXWJ7BbJcFYpTEUkS1Ge8bpZQ=="],
 
     "@distilled.cloud/planetscale/@types/node/undici-types": ["undici-types@8.3.0", "", {}, "sha512-j375ScV60dom+YkPFIfTLcOiPxkN/buHz5GobjLhixFuANaNs3C9l4GmrWqejgXWJ7BbJcFYpTEUkS1Ge8bpZQ=="],
 
