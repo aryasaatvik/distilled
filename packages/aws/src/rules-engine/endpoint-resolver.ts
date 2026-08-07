@@ -77,6 +77,8 @@ export interface EndpointResolverInput {
   input: unknown;
   /** The AWS region */
   region: string;
+  /** Client-level endpoint parameters such as Endpoint and ForcePathStyle. */
+  clientContextParams?: Readonly<EndpointParams>;
   /** The serialized request (path may be adjusted based on endpoint resolution) */
   request: Request;
 }
@@ -115,11 +117,12 @@ export const makeEndpointResolver = (operation: Operation) => {
 
   // Return a function that resolves endpoints and adjusts request
   return Effect.fn(function* (resolverInput: EndpointResolverInput) {
-    const { input, region, request } = resolverInput;
+    const { input, region, clientContextParams, request } = resolverInput;
 
     // Build endpoint params from input + region
     const endpointParams: EndpointParams = {
       Region: region,
+      ...clientContextParams,
     };
 
     // Apply static context params first (operation-level fixed values)
@@ -213,6 +216,7 @@ function adjustRequestPath(
   try {
     const url = new URL(endpointUrl);
     const hostname = url.hostname;
+    const endpointPath = url.pathname.replace(/\/$/, "");
 
     // Check each context param that is also an HTTP label
     for (const [propName, info] of contextParamMappings) {
@@ -221,12 +225,14 @@ function adjustRequestPath(
       const value = input[propName];
       if (typeof value !== "string") continue;
 
-      // Check if the hostname starts with this value (virtual-hosted style)
-      // e.g., "mybucket.s3.us-east-1.amazonaws.com" starts with "mybucket."
-      if (hostname.startsWith(`${value}.`)) {
-        // The HTTP label would have been serialized as "/{value}" in the path
-        const pathPrefix = `/${encodeURIComponent(value)}`;
+      const pathPrefix = `/${encodeURIComponent(value)}`;
+      const movedToHostname = hostname.startsWith(`${value}.`);
+      const movedToEndpointPath = endpointPath.endsWith(pathPrefix);
 
+      // Endpoint rules can move an HTTP label into either the hostname
+      // (virtual-hosted S3) or the endpoint path (path-style S3).
+      if (movedToHostname || movedToEndpointPath) {
+        // The HTTP label would have been serialized as "/{value}" in the path
         if (request.path.startsWith(pathPrefix)) {
           let adjustedPath = request.path.slice(pathPrefix.length);
           // Normalize empty path
