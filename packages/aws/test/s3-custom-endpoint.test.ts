@@ -7,7 +7,7 @@ import * as Credentials from "../src/credentials.browser.ts";
 import * as Endpoint from "../src/endpoint.ts";
 import { createBucket, headBucket } from "../src/services/s3.ts";
 
-const customEndpoint = "http://floci.test:4566";
+const customEndpoint = "http://floci.test:4566/aws";
 
 const captureRequest = (
   requests: Array<{ readonly method: string; readonly url: string }>,
