@@ -172,14 +172,18 @@ const encode = ({
     let signingServiceName = serviceName; // Default to service name from sigv4 trait
     const customEndpoint = yield* Endpoint.resolve(serviceName);
 
-    if (customEndpoint) {
-      // User provided a custom endpoint - use it directly
+    if (customEndpoint && (serviceName !== "s3" || !rulesResolver)) {
+      // Most services use custom endpoints directly. S3 must still run its
+      // Smithy rules because bucket addressing changes the host or path.
       endpoint = customEndpoint;
     } else if (rulesResolver) {
       // Use the rules resolver - it handles endpoint resolution AND path adjustment
       const resolved = yield* rulesResolver({
         input,
         region,
+        clientContextParams: customEndpoint
+          ? { Endpoint: customEndpoint, ForcePathStyle: true }
+          : undefined,
         request,
       });
       endpoint = resolved.endpoint.url;
