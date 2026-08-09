@@ -5,6 +5,7 @@
   "type": "module",
   "sideEffects": false,
   "files": [
+    "lib",
     "src"
   ],
   "exports": {
