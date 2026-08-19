@@ -97,6 +97,7 @@
     "fmt": "oxfmt --write src",
     "lint": "oxlint --fix src",
     "check": "tsc && oxlint src && oxfmt --check src",
+    "test": "vitest run test --passWithNoTests",
     "generate": "bun run scripts/generate.ts",
     "specs:fetch": "git submodule update --force --init --recursive --depth=1 specs/api-models-aws && git -C specs/api-models-aws checkout -- .",
     "specs:update": "git -C specs/api-models-aws fetch && git -C specs/api-models-aws checkout main && git -C specs/api-models-aws pull"
@@ -115,10 +116,12 @@
   },
   "devDependencies": {
     "@effect/platform-bun": "catalog:effect",
+    "@effect/vitest": "catalog:effect",
     "@types/bun": "catalog:tooling",
     "@types/node": "catalog:tooling",
     "dedent": "catalog:tooling",
-    "pathe": "catalog:tooling"
+    "pathe": "catalog:tooling",
+    "vitest": "catalog:testing"
   },
   "peerDependencies": {
     "effect": "catalog:effect"
