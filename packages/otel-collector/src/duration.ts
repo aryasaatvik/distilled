@@ -1,6 +1,5 @@
 import * as Duration from "effect/Duration";
 import * as Effect from "effect/Effect";
-import * as Option from "effect/Option";
 import * as Schema from "effect/Schema";
 import * as SchemaIssue from "effect/SchemaIssue";
 import * as SchemaTransformation from "effect/SchemaTransformation";
@@ -69,13 +68,17 @@ export const DurationFromGoString = Schema.String.pipe(
   Schema.decodeTo(
     Schema.Duration,
     SchemaTransformation.transformOrFail({
-      decode: (text: string) => {
+      decode: (text: string, options) => {
         const match = GO_DURATION_PATTERN.exec(text);
         if (match === null) {
           return Effect.fail(
-            new SchemaIssue.InvalidValue(Option.some(text), {
-              message: `expected a Go duration such as "1s", "100ms" or "2h" (got ${JSON.stringify(text)})`,
-            }),
+            new SchemaIssue.InvalidValue(
+              {
+                message: `expected a Go duration such as "1s", "100ms" or "2h" (got ${JSON.stringify(text)})`,
+              },
+              text,
+              options,
+            ),
           );
         }
         const scale = NANOS_PER_UNIT[match[1]!]!;
@@ -83,14 +86,18 @@ export const DurationFromGoString = Schema.String.pipe(
           Duration.nanos(BigInt(text.slice(0, -match[1]!.length)) * scale),
         );
       },
-      encode: (duration: Duration.Duration) =>
+      encode: (duration: Duration.Duration, options) =>
         Duration.isFinite(duration)
           ? Effect.succeed(toGoString(duration))
           : Effect.fail(
-              new SchemaIssue.InvalidValue(Option.some(duration), {
-                message:
-                  "an infinite Duration has no collector representation — use a finite duration",
-              }),
+              new SchemaIssue.InvalidValue(
+                {
+                  message:
+                    "an infinite Duration has no collector representation — use a finite duration",
+                },
+                duration,
+                options,
+              ),
             ),
     }),
   ),

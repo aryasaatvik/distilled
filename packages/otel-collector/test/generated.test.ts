@@ -13,7 +13,7 @@ import { Service } from "../src/layer-collector-0.22.0/service.ts";
  * checking is what turns a typo into an error. It is not the default, and any
  * consumer that skips it silently drops the misspelt key.
  */
-const strict = { onExcessProperty: "error" } as const;
+const strict = { onExcessProperty: "error", reportInput: true } as const;
 
 const decode = <A, I>(schema: Schema.Codec<A, I>) =>
   Schema.decodeUnknownSync(schema, strict);

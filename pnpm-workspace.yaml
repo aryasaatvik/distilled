@@ -21,6 +21,8 @@ catalogs:
     effect: ">=4.0.0-rc.110 || >=4.0.0"
   shared:
     fast-xml-parser: ^5.3.4
+  testing:
+    vitest: ^4.1.8
   tooling:
     "@types/bun": latest
     "@types/node": latest
