@@ -2,6 +2,7 @@ packages:
   - packages/*
 
 allowBuilds:
+  esbuild: true
   msgpackr-extract: true
 
 catalogs:
@@ -29,6 +30,7 @@ catalogs:
     oxfmt: latest
     oxlint: latest
     pathe: ^2.0.3
+    vitest: ^4.1.8
 
 minimumReleaseAgeExclude:
   - "@effect/platform-bun@4.0.0-rc.111"
