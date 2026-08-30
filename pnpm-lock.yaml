@@ -36,11 +36,11 @@ catalogs:
       version: 7.0.2
   effect:
     '@effect/platform-bun':
-      specifier: '>=4.0.0-rc.111 || >=4.0.0'
-      version: 4.0.0-rc.111
+      specifier: 4.0.0-rc.112
+      version: 4.0.0-rc.112
     effect:
-      specifier: '>=4.0.0-rc.111 || >=4.0.0'
-      version: 4.0.0-rc.111
+      specifier: 4.0.0-rc.112
+      version: 4.0.0-rc.112
   shared:
     fast-xml-parser:
       specifier: ^5.3.4
@@ -125,14 +125,14 @@ importers:
         version: 1.0.20
       effect:
         specifier: catalog:effect
-        version: 4.0.0-rc.111
+        version: 4.0.0-rc.112
       fast-xml-parser:
         specifier: catalog:shared
         version: 5.10.1
     devDependencies:
       '@effect/platform-bun':
         specifier: catalog:effect
-        version: 4.0.0-rc.111(effect@4.0.0-rc.111)
+        version: 4.0.0-rc.112(effect@4.0.0-rc.112)
       '@types/bun':
         specifier: catalog:tooling
         version: 1.4.0
@@ -153,11 +153,11 @@ importers:
         version: link:../core
       effect:
         specifier: catalog:effect
-        version: 4.0.0-rc.111
+        version: 4.0.0-rc.112
     devDependencies:
       '@effect/platform-bun':
         specifier: catalog:effect
-        version: 4.0.0-rc.111(effect@4.0.0-rc.111)
+        version: 4.0.0-rc.112(effect@4.0.0-rc.112)
       '@types/bun':
         specifier: catalog:tooling
         version: 1.4.0
@@ -172,11 +172,11 @@ importers:
         version: link:../core
       effect:
         specifier: catalog:effect
-        version: 4.0.0-rc.111
+        version: 4.0.0-rc.112
     devDependencies:
       '@effect/platform-bun':
         specifier: catalog:effect
-        version: 4.0.0-rc.111(effect@4.0.0-rc.111)
+        version: 4.0.0-rc.112(effect@4.0.0-rc.112)
       '@types/bun':
         specifier: catalog:tooling
         version: 1.4.0
@@ -191,11 +191,11 @@ importers:
         version: link:../core
       effect:
         specifier: catalog:effect
-        version: 4.0.0-rc.111
+        version: 4.0.0-rc.112
     devDependencies:
       '@effect/platform-bun':
         specifier: catalog:effect
-        version: 4.0.0-rc.111(effect@4.0.0-rc.111)
+        version: 4.0.0-rc.112(effect@4.0.0-rc.112)
       '@types/bun':
         specifier: catalog:tooling
         version: 1.4.0
@@ -210,11 +210,11 @@ importers:
         version: link:../core
       effect:
         specifier: catalog:effect
-        version: 4.0.0-rc.111
+        version: 4.0.0-rc.112
     devDependencies:
       '@effect/platform-bun':
         specifier: catalog:effect
-        version: 4.0.0-rc.111(effect@4.0.0-rc.111)
+        version: 4.0.0-rc.112(effect@4.0.0-rc.112)
       '@types/bun':
         specifier: catalog:tooling
         version: 1.4.0
@@ -226,7 +226,7 @@ importers:
     devDependencies:
       '@effect/platform-bun':
         specifier: catalog:effect
-        version: 4.0.0-rc.111(effect@4.0.0-rc.111)
+        version: 4.0.0-rc.112(effect@4.0.0-rc.112)
       '@types/bun':
         specifier: catalog:tooling
         version: 1.4.0
@@ -235,7 +235,7 @@ importers:
         version: 26.2.0
       effect:
         specifier: catalog:effect
-        version: 4.0.0-rc.111
+        version: 4.0.0-rc.112
 
   packages/discord:
     dependencies:
@@ -244,11 +244,11 @@ importers:
         version: link:../core
       effect:
         specifier: catalog:effect
-        version: 4.0.0-rc.111
+        version: 4.0.0-rc.112
     devDependencies:
       '@effect/platform-bun':
         specifier: catalog:effect
-        version: 4.0.0-rc.111(effect@4.0.0-rc.111)
+        version: 4.0.0-rc.112(effect@4.0.0-rc.112)
       '@types/bun':
         specifier: catalog:tooling
         version: 1.4.0
@@ -263,11 +263,11 @@ importers:
         version: link:../core
       effect:
         specifier: catalog:effect
-        version: 4.0.0-rc.111
+        version: 4.0.0-rc.112
     devDependencies:
       '@effect/platform-bun':
         specifier: catalog:effect
-        version: 4.0.0-rc.111(effect@4.0.0-rc.111)
+        version: 4.0.0-rc.112(effect@4.0.0-rc.112)
       '@types/bun':
         specifier: catalog:tooling
         version: 1.4.0
@@ -282,11 +282,11 @@ importers:
         version: link:../core
       effect:
         specifier: catalog:effect
-        version: 4.0.0-rc.111
+        version: 4.0.0-rc.112
     devDependencies:
       '@effect/platform-bun':
         specifier: catalog:effect
-        version: 4.0.0-rc.111(effect@4.0.0-rc.111)
+        version: 4.0.0-rc.112(effect@4.0.0-rc.112)
       '@types/bun':
         specifier: catalog:tooling
         version: 1.4.0
@@ -301,11 +301,11 @@ importers:
         version: link:../core
       effect:
         specifier: catalog:effect
-        version: 4.0.0-rc.111
+        version: 4.0.0-rc.112
     devDependencies:
       '@effect/platform-bun':
         specifier: catalog:effect
-        version: 4.0.0-rc.111(effect@4.0.0-rc.111)
+        version: 4.0.0-rc.112(effect@4.0.0-rc.112)
       '@types/bun':
         specifier: catalog:tooling
         version: 1.4.0
@@ -320,11 +320,11 @@ importers:
         version: link:../core
       effect:
         specifier: catalog:effect
-        version: 4.0.0-rc.111
+        version: 4.0.0-rc.112
     devDependencies:
       '@effect/platform-bun':
         specifier: catalog:effect
-        version: 4.0.0-rc.111(effect@4.0.0-rc.111)
+        version: 4.0.0-rc.112(effect@4.0.0-rc.112)
       '@types/bun':
         specifier: catalog:tooling
         version: 1.4.0
@@ -339,11 +339,11 @@ importers:
         version: link:../core
       effect:
         specifier: catalog:effect
-        version: 4.0.0-rc.111
+        version: 4.0.0-rc.112
     devDependencies:
       '@effect/platform-bun':
         specifier: catalog:effect
-        version: 4.0.0-rc.111(effect@4.0.0-rc.111)
+        version: 4.0.0-rc.112(effect@4.0.0-rc.112)
       '@types/bun':
         specifier: catalog:tooling
         version: 1.4.0
@@ -358,11 +358,11 @@ importers:
         version: link:../core
       effect:
         specifier: catalog:effect
-        version: 4.0.0-rc.111
+        version: 4.0.0-rc.112
     devDependencies:
       '@effect/platform-bun':
         specifier: catalog:effect
-        version: 4.0.0-rc.111(effect@4.0.0-rc.111)
+        version: 4.0.0-rc.112(effect@4.0.0-rc.112)
       '@types/bun':
         specifier: catalog:tooling
         version: 1.4.0
@@ -377,11 +377,11 @@ importers:
         version: link:../core
       effect:
         specifier: catalog:effect
-        version: 4.0.0-rc.111
+        version: 4.0.0-rc.112
     devDependencies:
       '@effect/platform-bun':
         specifier: catalog:effect
-        version: 4.0.0-rc.111(effect@4.0.0-rc.111)
+        version: 4.0.0-rc.112(effect@4.0.0-rc.112)
       '@types/bun':
         specifier: catalog:tooling
         version: 1.4.0
@@ -396,11 +396,11 @@ importers:
         version: link:../core
       effect:
         specifier: catalog:effect
-        version: 4.0.0-rc.111
+        version: 4.0.0-rc.112
     devDependencies:
       '@effect/platform-bun':
         specifier: catalog:effect
-        version: 4.0.0-rc.111(effect@4.0.0-rc.111)
+        version: 4.0.0-rc.112(effect@4.0.0-rc.112)
       '@types/bun':
         specifier: catalog:tooling
         version: 1.4.0
@@ -415,11 +415,11 @@ importers:
         version: link:../core
       effect:
         specifier: catalog:effect
-        version: 4.0.0-rc.111
+        version: 4.0.0-rc.112
     devDependencies:
       '@effect/platform-bun':
         specifier: catalog:effect
-        version: 4.0.0-rc.111(effect@4.0.0-rc.111)
+        version: 4.0.0-rc.112(effect@4.0.0-rc.112)
       '@types/bun':
         specifier: catalog:tooling
         version: 1.4.0
@@ -441,7 +441,7 @@ importers:
         version: 26.2.0
       effect:
         specifier: catalog:effect
-        version: 4.0.0-rc.111
+        version: 4.0.0-rc.112
       vitest:
         specifier: ^4.1.8
         version: 4.1.11(@types/node@26.2.0)(vite@7.3.6(@types/node@26.2.0)(jiti@2.7.0)(yaml@2.9.0))
@@ -453,11 +453,11 @@ importers:
         version: link:../core
       effect:
         specifier: catalog:effect
-        version: 4.0.0-rc.111
+        version: 4.0.0-rc.112
     devDependencies:
       '@effect/platform-bun':
         specifier: catalog:effect
-        version: 4.0.0-rc.111(effect@4.0.0-rc.111)
+        version: 4.0.0-rc.112(effect@4.0.0-rc.112)
       '@types/bun':
         specifier: catalog:tooling
         version: 1.4.0
@@ -472,11 +472,11 @@ importers:
         version: link:../core
       effect:
         specifier: catalog:effect
-        version: 4.0.0-rc.111
+        version: 4.0.0-rc.112
     devDependencies:
       '@effect/platform-bun':
         specifier: catalog:effect
-        version: 4.0.0-rc.111(effect@4.0.0-rc.111)
+        version: 4.0.0-rc.112(effect@4.0.0-rc.112)
       '@types/bun':
         specifier: catalog:tooling
         version: 1.4.0
@@ -491,11 +491,11 @@ importers:
         version: link:../core
       effect:
         specifier: catalog:effect
-        version: 4.0.0-rc.111
+        version: 4.0.0-rc.112
     devDependencies:
       '@effect/platform-bun':
         specifier: catalog:effect
-        version: 4.0.0-rc.111(effect@4.0.0-rc.111)
+        version: 4.0.0-rc.112(effect@4.0.0-rc.112)
       '@types/bun':
         specifier: catalog:tooling
         version: 1.4.0
@@ -510,11 +510,11 @@ importers:
         version: link:../core
       effect:
         specifier: catalog:effect
-        version: 4.0.0-rc.111
+        version: 4.0.0-rc.112
     devDependencies:
       '@effect/platform-bun':
         specifier: catalog:effect
-        version: 4.0.0-rc.111(effect@4.0.0-rc.111)
+        version: 4.0.0-rc.112(effect@4.0.0-rc.112)
       '@types/bun':
         specifier: catalog:tooling
         version: 1.4.0
@@ -529,11 +529,11 @@ importers:
         version: link:../core
       effect:
         specifier: catalog:effect
-        version: 4.0.0-rc.111
+        version: 4.0.0-rc.112
     devDependencies:
       '@effect/platform-bun':
         specifier: catalog:effect
-        version: 4.0.0-rc.111(effect@4.0.0-rc.111)
+        version: 4.0.0-rc.112(effect@4.0.0-rc.112)
       '@types/bun':
         specifier: catalog:tooling
         version: 1.4.0
@@ -548,11 +548,11 @@ importers:
         version: link:../core
       effect:
         specifier: catalog:effect
-        version: 4.0.0-rc.111
+        version: 4.0.0-rc.112
     devDependencies:
       '@effect/platform-bun':
         specifier: catalog:effect
-        version: 4.0.0-rc.111(effect@4.0.0-rc.111)
+        version: 4.0.0-rc.112(effect@4.0.0-rc.112)
       '@types/bun':
         specifier: catalog:tooling
         version: 1.4.0
@@ -567,11 +567,11 @@ importers:
         version: link:../core
       effect:
         specifier: catalog:effect
-        version: 4.0.0-rc.111
+        version: 4.0.0-rc.112
     devDependencies:
       '@effect/platform-bun':
         specifier: catalog:effect
-        version: 4.0.0-rc.111(effect@4.0.0-rc.111)
+        version: 4.0.0-rc.112(effect@4.0.0-rc.112)
       '@types/bun':
         specifier: catalog:tooling
         version: 1.4.0
@@ -586,11 +586,11 @@ importers:
         version: link:../core
       effect:
         specifier: catalog:effect
-        version: 4.0.0-rc.111
+        version: 4.0.0-rc.112
     devDependencies:
       '@effect/platform-bun':
         specifier: catalog:effect
-        version: 4.0.0-rc.111(effect@4.0.0-rc.111)
+        version: 4.0.0-rc.112(effect@4.0.0-rc.112)
       '@types/bun':
         specifier: catalog:tooling
         version: 1.4.0
@@ -605,11 +605,11 @@ importers:
         version: link:../core
       effect:
         specifier: catalog:effect
-        version: 4.0.0-rc.111
+        version: 4.0.0-rc.112
     devDependencies:
       '@effect/platform-bun':
         specifier: catalog:effect
-        version: 4.0.0-rc.111(effect@4.0.0-rc.111)
+        version: 4.0.0-rc.112(effect@4.0.0-rc.112)
       '@types/bun':
         specifier: catalog:tooling
         version: 1.4.0
@@ -624,11 +624,11 @@ importers:
         version: link:../core
       effect:
         specifier: catalog:effect
-        version: 4.0.0-rc.111
+        version: 4.0.0-rc.112
     devDependencies:
       '@effect/platform-bun':
         specifier: catalog:effect
-        version: 4.0.0-rc.111(effect@4.0.0-rc.111)
+        version: 4.0.0-rc.112(effect@4.0.0-rc.112)
       '@types/bun':
         specifier: catalog:tooling
         version: 1.4.0
@@ -713,16 +713,16 @@ packages:
     resolution: {integrity: sha512-sl4Bm6yiMNYrZKkqqDFWN0UfnWhlS8ivKxrYl+6t0gCLrqr8y3B2IqZZbFRkfaVVp7C/baApyh71P+LeE1A2sQ==}
     engines: {node: '>=18.0.0'}
 
-  '@effect/platform-bun@4.0.0-rc.111':
-    resolution: {integrity: sha512-z6MF1ztw8oSvh4nlvI90wraB63ib5K67JPaSYtz5K9IIAgjXgXYC0hjbcqF+PlC9ytlQmu8tWzk2+yGePWWe5A==}
+  '@effect/platform-bun@4.0.0-rc.112':
+    resolution: {integrity: sha512-Y5n2HhV/vsbrJls9ukX42RL7zqXQxISHegWFsP9njsCyDmGTnq7QYSO82rglwrLPwtTrv5dkSRTuGw4+oXxgMg==}
     peerDependencies:
-      effect: ^4.0.0-rc.111
+      effect: ^4.0.0-rc.112
 
-  '@effect/platform-node-shared@4.0.0-rc.111':
-    resolution: {integrity: sha512-iES0Q9vmjhaUKqeW9ceonuD45MUg/Ouk08LzRSptZ+B5qB0w9WlRjDmUz5TJmY2betNop5FRI5k4AD4mtQt3Bw==}
+  '@effect/platform-node-shared@4.0.0-rc.112':
+    resolution: {integrity: sha512-ttjz0xKamFN7vL8pNDYVwddJLjZvqKePc05djlz2VcdaKbLsnYbtMnL1rbOfHgEnIUSHGh7FkjaN4DM1Ov81sQ==}
     engines: {node: '>=18.0.0'}
     peerDependencies:
-      effect: ^4.0.0-rc.111
+      effect: ^4.0.0-rc.112
 
   '@esbuild/aix-ppc64@0.28.2':
     resolution: {integrity: sha512-XExcO+dvLKvVtNTibSTBej1NCAbaGhWn9Ww1ZPx80qsahhPFe/8jgWP0IchNe0F3HwkU7n8ejhH8bjonqht8mQ==}
@@ -1676,8 +1676,8 @@ packages:
     resolution: {integrity: sha512-nI4U3TottKAcAD9LLud4Cb7b2QztQMUEfHbvhTH09bqXTxnSie8WnjPALV/WMCrJZ6UV/qHJ6L03OqO3LcdYZw==}
     engines: {node: '>=12'}
 
-  effect@4.0.0-rc.111:
-    resolution: {integrity: sha512-ASd5L58EIR0CUNueZNKKjSsyOCd+2alxOAIaTcHaqkJkPsaYSsw5Cg/cfANk5K4Jr2YsX756xvX11shzqsreWA==}
+  effect@4.0.0-rc.112:
+    resolution: {integrity: sha512-wXxwuh1Ywnv4cPRM3Wfa0vDwuOHnZ1TsTgHJkG9XgzND6inhBH9n1vBxhg3iIXOia/OrpmvVmd3lrD4vq6bF3A==}
 
   es-module-lexer@2.3.2:
     resolution: {integrity: sha512-poHGpORABojJJucnV9KbOavETW8lBVnphkW77ER5/BQ5Fz7oXSoCNek7IH3vR5nRjdsEz926ibFYX8KtLQmdyw==}
@@ -2390,18 +2390,18 @@ snapshots:
 
   '@aws/lambda-invoke-store@0.3.0': {}
 
-  '@effect/platform-bun@4.0.0-rc.111(effect@4.0.0-rc.111)':
+  '@effect/platform-bun@4.0.0-rc.112(effect@4.0.0-rc.112)':
     dependencies:
-      '@effect/platform-node-shared': 4.0.0-rc.111(effect@4.0.0-rc.111)
-      effect: 4.0.0-rc.111
+      '@effect/platform-node-shared': 4.0.0-rc.112(effect@4.0.0-rc.112)
+      effect: 4.0.0-rc.112
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
 
-  '@effect/platform-node-shared@4.0.0-rc.111(effect@4.0.0-rc.111)':
+  '@effect/platform-node-shared@4.0.0-rc.112(effect@4.0.0-rc.112)':
     dependencies:
       '@types/ws': 8.18.1
-      effect: 4.0.0-rc.111
+      effect: 4.0.0-rc.112
       ws: 8.21.3
     transitivePeerDependencies:
       - bufferutil
@@ -3044,9 +3044,8 @@ snapshots:
 
   dotenv@17.4.2: {}
 
-  effect@4.0.0-rc.111:
+  effect@4.0.0-rc.112:
     dependencies:
-      '@standard-schema/spec': 1.1.0
       fast-check: 4.9.0
       msgpackr: 2.0.5
 
