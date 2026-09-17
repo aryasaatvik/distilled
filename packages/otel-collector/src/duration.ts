@@ -68,7 +68,7 @@ export const toGoString = (duration: Duration.Duration): string => {
 export const DurationFromGoString = Schema.String.pipe(
   Schema.decodeTo(
     Schema.Duration,
-    SchemaTransformation.transformOrFail({
+    SchemaTransformation.transformEffect({
       decode: (text: string) => {
         const match = GO_DURATION_PATTERN.exec(text);
         if (match === null) {
