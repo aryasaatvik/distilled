@@ -20,6 +20,9 @@
       "path": "./packages/axiom/tsconfig.json"
     },
     {
+      "path": "./packages/otel-collector/tsconfig.json"
+    },
+    {
       "path": "./packages/axiom/tsconfig.scripts.json"
     },
     {
