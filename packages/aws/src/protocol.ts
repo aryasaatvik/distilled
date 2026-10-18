@@ -156,9 +156,8 @@ const encode = ({
     let resolvedRequest = request;
     let signingRegion = region; // Default to context region
     let signingServiceName = serviceName; // Default to service name from sigv4 trait
-    const customEndpoint = yield* yield* Effect.serviceOption(Endpoint.Endpoint).pipe(
-      Effect.map(Option.getOrElse(() => Effect.undefined)),
-    );
+    // SDK service IDs distinguish services that share a signing name, such as SES.
+    const customEndpoint = yield* Endpoint.resolve(serviceSdkId ?? serviceName);
 
     if (customEndpoint) {
       // User provided a custom endpoint - use it directly

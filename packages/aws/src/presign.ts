@@ -1,5 +1,4 @@
 import * as Effect from "effect/Effect";
-import * as Option from "effect/Option";
 import * as Redacted from "effect/Redacted";
 import * as Credentials from "./credentials-service.ts";
 import * as Endpoint from "./endpoint.ts";
@@ -148,7 +147,7 @@ export interface PresignS3UrlOptions {
  *
  * Produces a virtual-hosted-style URL
  * (`https://{bucket}.s3.{region}.amazonaws.com/{key}`), or a path-style URL
- * under the custom {@link Endpoint.Endpoint} when one is provided (e.g.
+ * under the custom endpoint selected by {@link Endpoint.resolve} (e.g.
  * LocalStack or S3-compatible stores).
  *
  * Pure client-side computation — no AWS API call is made. The URL inherits
@@ -161,9 +160,7 @@ export const presignS3Url: (
   options: PresignS3UrlOptions,
 ) {
   const region = options.region ?? (yield* yield* Region.Region);
-  const customEndpoint = yield* yield* Effect.serviceOption(Endpoint.Endpoint).pipe(
-    Effect.map(Option.getOrElse(() => Effect.undefined)),
-  );
+  const customEndpoint = yield* Endpoint.resolve("S3");
 
   const encodedKey = encodeGreedyLabel(options.key);
   const url = new URL(
