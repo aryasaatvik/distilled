@@ -347,6 +347,8 @@ const barrelOf = (src: string, file: string): { code: string; targets: string[] 
 //#region rolldown
 
 const COMMON_INPUT = {
+  // Virtual entries must not discover an enclosing consumer repository config.
+  tsconfig: join(ROOT, "tsconfig.base.json"),
   logLevel: "warn",
   treeshake: { moduleSideEffects: true },
   // Same tsconfig semantics as tsc: ESNext target, define class fields.

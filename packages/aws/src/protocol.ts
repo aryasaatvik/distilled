@@ -164,6 +164,7 @@ type Fiber = Parameters<typeof SigV4.signSync>[1];
  */
 const withAwsContext = (
   context: Context.Context<any>,
+  service: string,
   f: (
     credentials: Credentials.ResolvedCredentials,
     region: string,
@@ -176,9 +177,15 @@ const withAwsContext = (
     // operation's requirements.
     const withRegion = (region: string) => {
       const endpoint = Context.getOrUndefined(context, Endpoint.Endpoint);
+      const withEndpoint = (custom: string | undefined) =>
+        f(
+          credentials,
+          region,
+          custom ?? Context.getOrUndefined(context, Endpoint.ServiceEndpoint)?.resolve(service),
+        );
       return endpoint === undefined
-        ? f(credentials, region, undefined)
-        : API.withValue(endpoint, (custom) => f(credentials, region, custom));
+        ? withEndpoint(undefined)
+        : API.withValue(endpoint, withEndpoint);
     };
     const regionOverride = Context.getOrUndefined(context, Region.Region);
     return regionOverride === undefined
@@ -506,8 +513,12 @@ const encodeWith = <A>(
 ): Effect.Effect<A, any, any> => {
   const debug = debugEnabled(fiber.context as Context.Context<any>);
   const sendSigned = (request: Request) =>
-    withAwsContext(fiber.context as Context.Context<any>, (credentials, region, custom) =>
-      thenSend(toHttpRequest(prepared, input, request, credentials, region, custom, fiber), f),
+    withAwsContext(
+      fiber.context as Context.Context<any>,
+      // SDK IDs distinguish services sharing a signing name, such as SES and SESv2.
+      prepared.serviceSdkId ?? prepared.sigv4?.name ?? "s3",
+      (credentials, region, custom) =>
+        thenSend(toHttpRequest(prepared, input, request, credentials, region, custom, fiber), f),
     );
   const send = debug
     ? (request: Request) =>

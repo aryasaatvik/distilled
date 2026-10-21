@@ -1,3 +1,4 @@
+import { fileURLToPath } from "node:url";
 import { defineConfig } from "vitest/config";
 
 // Workspace packages export their TypeScript source under the `bun` condition
@@ -6,6 +7,8 @@ import { defineConfig } from "vitest/config";
 const conditions = ["bun", "import", "module", "node", "default"];
 
 export default defineConfig({
+  // Root scripts are outside the package projects; keep lookup in this checkout.
+  tsconfig: fileURLToPath(new URL("./tsconfig.base.json", import.meta.url)),
   resolve: { conditions },
   ssr: { resolve: { conditions, externalConditions: conditions } },
   test: {
