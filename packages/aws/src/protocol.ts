@@ -161,10 +161,12 @@ type Fiber = Parameters<typeof SigV4.signSync>[1];
 /**
  * Credentials, region and the custom endpoint from `context`, then `f` on
  * them. Each service holds an effect; an already-resolved one costs no
- * fiber step (see `API.withValue`).
+ * fiber step (see `API.withValue`). An operation-scoped `Endpoint` wins over
+ * the `ServiceEndpoint` resolver, which is keyed by the SDK service ID.
  */
 const withAwsContext = (
   context: Context.Context<any>,
+  service: string,
   f: (
     credentials: Credentials.ResolvedCredentials,
     region: string,
@@ -177,9 +179,15 @@ const withAwsContext = (
     // operation's requirements.
     const withRegion = (region: string) => {
       const endpoint = Context.getOrUndefined(context, Endpoint.Endpoint);
+      const withEndpoint = (custom: string | undefined) =>
+        f(
+          credentials,
+          region,
+          custom ?? Context.getOrUndefined(context, Endpoint.ServiceEndpoint)?.resolve(service),
+        );
       return endpoint === undefined
-        ? f(credentials, region, undefined)
-        : API.withValue(endpoint, (custom) => f(credentials, region, custom));
+        ? withEndpoint(undefined)
+        : API.withValue(endpoint, withEndpoint);
     };
     const regionOverride = Context.getOrUndefined(context, Region.Region);
     return regionOverride === undefined
@@ -532,8 +540,10 @@ const encodeWith = <A>(
   const context = fiber.context as Context.Context<any>;
   const debug = debugEnabled(context);
   const traceDebug = Telemetry.isDebug(context);
+  // SDK IDs distinguish services sharing a signing name, such as SES and SESv2.
+  const service = prepared.serviceSdkId ?? prepared.sigv4?.name ?? "s3";
   const sendSigned = (request: Request) =>
-    withAwsContext(context, (credentials, region, custom) => {
+    withAwsContext(context, service, (credentials, region, custom) => {
       Telemetry.annotate(context, "cloud.region", region);
       if (!traceDebug) {
         return thenSend(

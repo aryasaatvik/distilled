@@ -394,6 +394,8 @@ const barrelOf = (src: string, file: string): { code: string; targets: string[] 
 const BATCH_BYTES = Number(process.env.BUNDLE_LIB_BATCH_BYTES ?? 8 * 1024 * 1024);
 
 const COMMON_INPUT = {
+  // Virtual entries must not discover an enclosing consumer repository config.
+  tsconfig: join(ROOT, "tsconfig.base.json"),
   logLevel: "warn",
   treeshake: { moduleSideEffects: true },
   // Same tsconfig semantics as tsc: ESNext target, define class fields.
